@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Module as Contao_Module;
+use PageModel;
 
 
 /**
@@ -96,29 +97,36 @@ abstract class Module extends Contao_Module
     {
         if (null === $this->arrCategories) {
 
-            $arrCategories = null;
-
             if ($this->defineRoot && $this->rootPage > 0) {
-                $objPage = $this->getPageDetails($this->rootPage);
+                $objPage = PageModel::findWithDetails($this->rootPage);
             } else {
                 global $objPage;
+            }
+
+            $t = PageModel::getTable();
+            $arrCategories = null;
+            $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
+
+            if (!BE_USER_LOGGED_IN) {
+                $time = time();
+                $strWhere .= " AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time) AND $t.published='1'";
             }
 
             switch ($this->iso_category_scope) {
 
                 case 'global':
-                    $arrCategories   = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page');
-                    $arrCategories[] = $objPage->rootId;
+                    $arrCategories = array($objPage->rootId);
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
                 case 'current_and_first_child':
-                    $arrCategories   = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id}")->fetchEach('id');
+                    $arrCategories   = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id} AND $strWhere")->fetchEach('id');
                     $arrCategories[] = $objPage->id;
                     break;
 
                 case 'current_and_all_children':
-                    $arrCategories   = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page');
-                    $arrCategories[] = $objPage->id;
+                    $arrCategories = array($objPage->id);
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
                 case 'parent':
@@ -129,7 +137,7 @@ abstract class Module extends Contao_Module
                     $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
                     if ($objProduct !== null) {
-                        $arrCategories = $objProduct->getCategories();
+                        $arrCategories = $objProduct->getCategories(true);
                     } else {
                         $arrCategories = array(0);
                     }

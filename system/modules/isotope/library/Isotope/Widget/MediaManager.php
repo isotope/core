@@ -166,8 +166,8 @@ class MediaManager extends \Widget implements \uploadable
         foreach ($this->varValue as $k => $v) {
             if (is_array($arrFallback) && in_array($v, $arrFallback)) {
                 $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
-            } else {
-                $this->varValue[$k]['translate'] = ($arrFallback === false) ? '' : 'all';
+            } elseif ($arrFallback !== false) {
+                $this->varValue[$k]['translate'] = 'all';
             }
         }
 
@@ -340,7 +340,7 @@ class MediaManager extends \Widget implements \uploadable
             }
 
             $strTranslateText = ($blnLanguage && $this->varValue[$i]['translate'] != 'all') ? ' disabled="disabled"' : '';
-            $strTranslateNone = ($blnLanguage && !$this->varValue[$i]['translate']) ? ' disabled="disabled"' : '';
+            $strTranslateNone = ($blnLanguage && $this->varValue[$i]['translate'] == 'none') ? ' disabled="disabled"' : '';
 
             $return .= '
   <tr>
@@ -351,7 +351,7 @@ class MediaManager extends \Widget implements \uploadable
         '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value=""'.$this->optionChecked('1', $this->varValue[$i]['translate'].'1').($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.$this->optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
             <span>
                 <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.$this->optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>

@@ -16,8 +16,6 @@ namespace Isotope\Upgrade;
 class To0020010004 extends \System
 {
 
-    protected $objGaleries;
-
     public function run($blnInstalled)
     {
         if ($blnInstalled) {

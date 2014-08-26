@@ -525,10 +525,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->iso_addToAddressbook && $this->member > 0) {
 
             if (null !== $objBillingAddress && $objBillingAddress->ptable != \MemberModel::getTable()) {
-                $objAddress         = clone $objBillingAddress;
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress           = clone $objBillingAddress;
+                $objAddress->pid      = $this->member;
+                $objAddress->tstamp   = time();
+                $objAddress->ptable   = \MemberModel::getTable();
+                $objAddress->store_id = $this->store_id;
                 $objAddress->save();
 
                 $this->updateDefaultAddress($objAddress);
@@ -539,10 +540,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 && $objBillingAddress->id != $objShippingAddress->id
                 && $objShippingAddress->ptable != \MemberModel::getTable()
             ) {
-                $objAddress         = clone $objShippingAddress;
-                $objAddress->pid    = $this->member;
-                $objAddress->tstamp = time();
-                $objAddress->ptable = \MemberModel::getTable();
+                $objAddress           = clone $objShippingAddress;
+                $objAddress->pid      = $this->member;
+                $objAddress->tstamp   = time();
+                $objAddress->ptable   = \MemberModel::getTable();
+                $objAddress->store_id = $this->store_id;
                 $objAddress->save();
 
                 $this->updateDefaultAddress($objAddress);
@@ -551,10 +553,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
-            $objNew         = clone $objBillingAddress;
-            $objNew->pid    = $this->id;
-            $objNew->tstamp = time();
-            $objNew->ptable = static::$strTable;
+            $objNew           = clone $objBillingAddress;
+            $objNew->pid      = $this->id;
+            $objNew->tstamp   = time();
+            $objNew->ptable   = static::$strTable;
+            $objNew->store_id = $this->store_id;
             $objNew->save();
 
             $this->setBillingAddress($objNew);
@@ -569,10 +572,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
 
-            $objNew         = clone $objShippingAddress;
-            $objNew->pid    = $this->id;
-            $objNew->tstamp = time();
-            $objNew->ptable = static::$strTable;
+            $objNew           = clone $objShippingAddress;
+            $objNew->pid      = $this->id;
+            $objNew->tstamp   = time();
+            $objNew->ptable   = static::$strTable;
+            $objNew->store_id = $this->store_id;
             $objNew->save();
 
             $this->setShippingAddress($objNew);
