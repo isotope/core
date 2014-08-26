@@ -1285,7 +1285,7 @@ abstract class ProductCollection extends TypeAgent
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $arrCSS[1]),
         );
 
-        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct) {
+        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct && $objProduct->isAvailableInFrontend()) {
             $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
 
