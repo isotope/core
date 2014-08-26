@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.1.6-stable (2014-??-??)
+Version 2.1.6-stable (2014-08-26)
 ---------------------------------
 
 ### Fixed
