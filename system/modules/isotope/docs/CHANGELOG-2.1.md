@@ -11,6 +11,7 @@ Version 2.1.6-stable (2014-??-??)
 - It was not possible to translate product images
 - Order details should not link to unavailable products (#1232)
 - Do not show products assigned to unpublished pages (#1231)
+- TCPDF issue for documents on Contao 3.3 (#1210)
 
 
 Version 2.1.5-stable (2014-08-11)
