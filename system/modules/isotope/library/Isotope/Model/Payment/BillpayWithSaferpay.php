@@ -86,9 +86,9 @@ class BillpayWithSaferpay extends Saferpay
         ) {
             $arrPayment = deserialize($objCollection->payment_data);
 
-            if (!empty($arrPayment) && is_array($arrPayment)) {
+            if (!empty($arrPayment) && is_array($arrPayment) && is_array($arrPayment['POSTSALE'])) {
                 $doc = new \DOMDocument();
-                $doc->loadXML(end($arrPayment));
+                $doc->loadXML(end($arrPayment['POSTSALE']));
                 $this->objXML = $doc->getElementsByTagName('IDP')->item(0)->attributes;
 
                 $objTemplate->billpay = true;
