@@ -125,7 +125,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return false;
         }
 
-        return $this->isAvailableForCollection($objCart);
+        return $this->isAvailableForCollection($objCollection);
     }
 
     /**
