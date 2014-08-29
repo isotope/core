@@ -53,7 +53,7 @@
         <td class="col_<?php echo $i++; ?> col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
-        <td colspan="<?php echo --$i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
+        <td colspan="<?php echo $i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
     </tr>
 <?php endif; ?>
 <?php endforeach; ?>
