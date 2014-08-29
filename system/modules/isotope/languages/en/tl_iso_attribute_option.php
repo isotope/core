@@ -30,7 +30,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute_option']['show']                  = array(
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_iso_attribute_option']['attribute_legend']      = 'Type &amp; Label';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label_legend']          = 'Type &amp; Label';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend']        = 'Publishing';
 
 /**
