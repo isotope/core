@@ -266,10 +266,9 @@ class AddressBook extends Module
 
     protected function triggerNotificationCenter($objAddress, $arrOldAddress, $objMember, $objConfig)
     {
-        if(!in_array('notification_center', \Config::getInstance()->getActiveModules())) return;
-        if(!$this->nc_notification) return;
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($this->nc_notification);
-        if(!$objNotification) return;
+        if (!$this->nc_notification) {
+            return;
+        }
 
         $arrTokens = array();
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
