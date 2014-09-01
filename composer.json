@@ -16,15 +16,15 @@
     ],
     "require":{
         "php":">=5.3.2",
-        "contao/core":">=3.2.2,<3.4",
+        "contao/core":">=3.3.4,<3.4",
         "contao-community-alliance/composer-plugin":"2.*",
         "contao-legacy/conditionalselectmenu":"2.*",
-        "contao-legacy/namespaceclassloader":">=1.0.1,<2.0",
-        "terminal42/dcawizard":">=2.0.2,<3.0",
-        "contao-legacy/haste":"~4.2",
+        "contao-legacy/namespaceclassloader":"1.*",
+        "terminal42/dcawizard":"2.*",
+        "contao-legacy/haste":"~4.3",
         "menatwork/contao-multicolumnwizard": "~3.2",
-        "contao-legacy/tablelookupwizard":">=2.0.1,<3.0",
-        "terminal42/notification_center":">=1.0.4,<2.0"
+        "contao-legacy/tablelookupwizard":"2.*",
+        "terminal42/notification_center":"1.*"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
