@@ -39,7 +39,7 @@ class Analytics extends Frontend
     /**
      * Actually execute the GoogleAnalytics tracking
      * @param Database_Result
-     * @param IsotopeProductCollection
+     * @param IsotopeProductCollection $objOrder
      */
     protected function trackGATransaction($objConfig, $objOrder)
     {
@@ -87,8 +87,8 @@ class Analytics extends Frontend
             $item->setQuantity($objItem->quantity);
 
             $arrOptionValues = array();
-            foreach (Isotope::formatOptions($objItem->getOptions()) as $option) {
-                $arrOptionValues[] = $option['value'];
+            foreach ($objItem->getConfiguration() as $option) {
+                $arrOptionValues[] = (string) $option;
             }
 
             if (!empty($arrOptionValues)) {

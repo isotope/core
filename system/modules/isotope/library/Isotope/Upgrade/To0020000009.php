@@ -13,30 +13,14 @@
 namespace Isotope\Upgrade;
 
 
-class To0020000009 extends \System
+class To0020000009 extends Base
 {
 
     public function run($blnInstalled)
     {
         if ($blnInstalled) {
-
-            if (\Database::getInstance()->fieldExists('address1_id', 'tl_iso_product_collection')
-                && !\Database::getInstance()->fieldExists('billing_address_id', 'tl_iso_product_collection')
-            ) {
-                \Database::getInstance()->query("
-                    ALTER TABLE tl_iso_product_collection
-                    CHANGE COLUMN `address1_id` `billing_address_id` int(10) unsigned NOT NULL default '0'
-                ");
-            }
-
-            if (\Database::getInstance()->fieldExists('address2_id', 'tl_iso_product_collection')
-                && !\Database::getInstance()->fieldExists('shipping_address_id', 'tl_iso_product_collection')
-            ) {
-                \Database::getInstance()->query("
-                    ALTER TABLE tl_iso_product_collection
-                    CHANGE COLUMN `address2_id` `shipping_address_id` int(10) unsigned NOT NULL default '0'
-                ");
-            }
+            $this->renameDatabaseField('address1_id', 'billing_address_id', 'tl_iso_product_collection');
+            $this->renameDatabaseField('address2_id', 'shipping_address_id', 'tl_iso_product_collection');
         }
     }
 }

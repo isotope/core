@@ -100,32 +100,25 @@ class Payone extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getItems() as $objItem) {
 
-            // Set the active product for insert tags replacement
-            if ($objItem->hasProduct()) {
-                Product::setActive($objItem->getProduct());
-            }
+            $strConfig = '';
+            $arrConfig = $objItem->getConfiguration();
 
-            $strOptions = '';
-            $arrOptions = Isotope::formatOptions($objItem->getOptions());
-
-            Product::unsetActive();
-
-            if (!empty($arrOptions)) {
+            if (!empty($arrConfig)) {
 
                 array_walk(
-                    $arrOptions,
+                    $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . $option['value'];
+                        $option = $option['label'] . ': ' . (string) $option;
                     }
                 );
 
-                $strOptions = ' (' . implode(', ', $arrOptions) . ')';
+                $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strOptions);
+            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strConfig);
         }
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {

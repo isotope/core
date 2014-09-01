@@ -435,7 +435,6 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'price_tiers' => array
         (
             // This is only for automated table generation in the frontend
-            'eval'                  => array('dynamic'=>true),
             'attributes'            => array('type'=>'\Isotope\Model\Attribute\PriceTiers'),
             'tableformat' => array
             (

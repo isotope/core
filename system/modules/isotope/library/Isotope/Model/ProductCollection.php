@@ -29,11 +29,13 @@ use Isotope\Model\Shipping;
 /**
  * Class ProductCollection
  *
- * Provide methods to handle Isotope product collections.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @property int    id
+ * @property int    tstamp
+ * @property string type
+ * @property int    member
+ * @property int    locked
+ * @property int    store_id
+ * @property mixed  settings
  */
 abstract class ProductCollection extends TypeAgent
 {
@@ -805,7 +807,7 @@ abstract class ProductCollection extends TypeAgent
     {
         $strClass = array_search(get_class($objProduct), Product::getModelTypes());
 
-        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'options=?'), array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions())));
+        $objItem = ProductCollectionItem::findOneBy(array('pid=?', 'type=?', 'product_id=?', 'configuration=?'), array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions())));
 
         return $objItem;
     }
@@ -902,7 +904,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->product_id     = $objProduct->{$objProduct->getPk()};
             $objItem->sku            = (string) $objProduct->sku;
             $objItem->name           = (string) $objProduct->name;
-            $objItem->options        = $objProduct->getOptions();
+            $objItem->configuration  = $objProduct->getOptions(); // @todo use getConfiguration or similar in Isotope 3.0
             $objItem->quantity       = (int) $intQuantity;
             $objItem->price          = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
@@ -1373,6 +1375,7 @@ abstract class ProductCollection extends TypeAgent
             'sku'               => $objItem->getSku(),
             'name'              => $objItem->getName(),
             'options'           => Isotope::formatOptions($objItem->getOptions()),
+            'configuration'     => $objItem->getConfiguration(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
             'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),

@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -23,8 +24,22 @@ use Isotope\Translation;
 /**
  * Attribute represents a product attribute in Isotope eCommerce
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int           id
+ * @property int           tstamp
+ * @property string        name
+ * @property string        field_name
+ * @property string        type
+ * @property string        description
+ * @property bool          variant_option
+ * @property bool          customer_defined
+ * @property string        optionsSource
+ * @property string|array  options
+ * @property string        foreignKey
+ * @property bool          be_search
+ * @property bool          be_filter
+ * @property bool          multiple
+ * @property int           size
+ * @property bool          includeBlankOption
  */
 abstract class Attribute extends TypeAgent
 {
@@ -63,6 +78,10 @@ abstract class Attribute extends TypeAgent
      */
     public function isCustomerDefined()
     {
+        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
+            return false;
+        }
+
         return (bool) $this->customer_defined;
     }
 
@@ -94,7 +113,9 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Load attribute configuration from given DCA array
-     * @param   array
+     *
+     * @param array  $arrData
+     * @param string $strName
      */
     public function loadFromDCA(array &$arrData, $strName)
     {
@@ -113,6 +134,7 @@ abstract class Attribute extends TypeAgent
         $this->be_filter   = $arrField['filter'] ? '1' : '';
         $this->be_search   = $arrField['search'] ? '1' : '';
         $this->foreignKey  = $arrField['foreignKey'];
+        $this->optionsSource = '';
     }
 
     /**
@@ -126,11 +148,15 @@ abstract class Attribute extends TypeAgent
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
-        $arrField['inputType']                      = array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+        $arrField['inputType']                      = '';
         $arrField['attributes']                     = $this->row();
         $arrField['attributes']['variant_option']   = (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption());
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+
+        if (!$this->isCustomerDefined()) {
+            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+        }
 
         // Support numeric paths (fileTree)
         unset($arrField['eval']['path']);
@@ -154,28 +180,25 @@ abstract class Attribute extends TypeAgent
         // Variant selection is always mandatory
         if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
-
-            $this->customer_defined = false;
-            $arrField['attributes']['customer_defined'] = false;
         }
 
-        // Parse multiline/multilingual foreignKey
-        $this->foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
+        if ($this->blankOptionLabel != '') {
+            $arrField['eval']['blankOptionLabel'] = Translation::get($this->blankOptionLabel);
+        }
 
         // Prepare options
-        if ($this->foreignKey != '' && /* @todo in 3.0: !($this instanceof IsotopeAttributeForVariants) && */!$this->isVariantOption()) {
-            $arrField['foreignKey']                 = $this->foreignKey;
-            $arrField['eval']['includeBlankOption'] = true;
+        if ($this->optionsSource == 'foreignKey') {
+            $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options']);
-        } else {
-            if ($this->foreignKey) {
-                $arrKey     = explode('.', $this->foreignKey, 2);
-                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
-            } else {
-                $arrOptions = deserialize($this->options);
-            }
+            unset($arrField['reference']);
 
-            if (is_array($arrOptions) && !empty($arrOptions)) {
+        }
+
+        // @deprecated remove in Isotope 3.0
+        elseif ($this->optionsSource == 'attribute') {
+            $arrOptions = deserialize($this->options);
+
+            if (!empty($arrOptions) && is_array($arrOptions)) {
                 $arrField['default'] = array();
                 $arrField['options'] = array();
                 $arrField['eval']['isAssociative'] = true;
@@ -183,11 +206,7 @@ abstract class Attribute extends TypeAgent
                 $strGroup = '';
 
                 foreach ($arrOptions as $option) {
-                    if ($option['value'] == '') {
-                        $arrField['eval']['includeBlankOption'] = true;
-                        $arrField['eval']['blankOptionLabel']   = Translation::get($option['label']);
-                        continue;
-                    } elseif ($option['group']) {
+                    if ($option['group']) {
                         $strGroup = Translation::get($option['label']);
                         continue;
                     }
@@ -203,6 +222,10 @@ abstract class Attribute extends TypeAgent
                     }
                 }
             }
+
+        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
+            unset($arrField['options']);
+            unset($arrField['reference']);
         }
 
         unset($arrField['eval']['foreignKey']);
@@ -255,8 +278,11 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Generate HTML markup of product data for this attribute
-     * @param   IsotopeProduct
-     * @param   array
+     *
+     * @param   IsotopeProduct $objProduct
+     * @param   array          $arrOptions
+     *
+     * @return string
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
