@@ -1382,6 +1382,7 @@ abstract class ProductCollection extends TypeAgent
             'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
             'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice()),
             'tax_id'            => $objItem->tax_id,
+            'href'              => false,
             'hasProduct'        => $blnHasProduct,
             'product'           => $objProduct,
             'item'              => $objItem,

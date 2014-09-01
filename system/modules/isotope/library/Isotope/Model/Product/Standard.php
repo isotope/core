@@ -122,39 +122,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function isAvailableInFrontend()
     {
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+        $objCollection = Isotope::getCart();
+
+        if (null === $objCollection) {
             return false;
         }
 
-        // Show to guests only
-        if ($this->arrData['guests'] && FE_USER_LOGGED_IN === true && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
-            return false;
-        }
-
-        // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
-            if (FE_USER_LOGGED_IN !== true) {
-                return false;
-            }
-
-            $groups = deserialize($this->arrData['groups']);
-
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
-                return false;
-            }
-        }
-
-        // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), \FrontendUser::getInstance())) == 0) {
-            return false;
-        }
-
-        // Check if "advanced price" is available
-        if (null === $this->getPrice() && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
-            return false;
-        }
-
-        return true;
+        return $this->isAvailableForCollection($objCollection);
     }
 
     /**
