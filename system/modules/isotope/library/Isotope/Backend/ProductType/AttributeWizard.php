@@ -42,7 +42,6 @@ class AttributeWizard extends \Backend
 
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
                 if (null !== $objAttribute && $objAttribute->isVariantOption()) {
-                    $objWidget->addDataToFieldAtIndex($i, 'name', array('eval' => array('tl_class' => '" style="font-style:italic;"')));
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
                 }
             }
@@ -104,14 +103,21 @@ class AttributeWizard extends \Backend
 
         $arrField = array_shift($arrValues);
         $strName  = $arrField['name'];
+        $style = '';
+
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+        if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+            $style = ';font-style:italic';
+        }
 
         return sprintf(
-            '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
+            '<input type="hidden" name="%s[%s][name]" id="ctrl_%s_row%s_name" value="%s"><div style="width:300px%s">%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span></div>',
             $objWidget->name,
             $i,
             $objWidget->name,
             $i++,
             $strName,
+            $style,
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? : $strName,
             $strName
         );
