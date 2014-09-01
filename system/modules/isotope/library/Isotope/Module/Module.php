@@ -191,8 +191,11 @@ abstract class Module extends Contao_Module
 
         // If our current category scope does not match with any product category, use the first product category in the current root page
         if (empty($arrCategories)) {
-            $arrCategories = array_intersect($objProduct->getCategories(), \Database::getInstance()->getChildRecords($objPage->rootId, $objPage->getTable()));
-        }
+            
+            $arrCategorieFB =$objProduct->getCategories();
+            $arrCategories = array($arrCategorieFB[0]);
+         
+         }
 
         foreach ($arrCategories as $intCategory) {
             $objCategory = \PageModel::findByPk($intCategory);
