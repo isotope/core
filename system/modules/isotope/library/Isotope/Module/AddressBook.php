@@ -16,6 +16,8 @@ use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
+use Isotope\Model\Config;
+use NotificationCenter\Model\Notification;
 
 /**
  * Class ModuleIsotopeAddressBook
@@ -49,6 +51,7 @@ class AddressBook extends Module
 
     /**
      * Return a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -81,8 +84,7 @@ class AddressBook extends Module
 
 
     /**
-     * Generate module
-     * @return mixed
+     * Compile module
      */
     protected function compile()
     {
@@ -99,20 +101,26 @@ class AddressBook extends Module
             }
         }
 
-        // Do not add a break statement. If ID is not available, it will show all addresses.
         switch (\Input::get('act')) {
             case 'create':
-                return $this->edit();
+                $this->edit();
+                break;
 
             case 'edit':
                 if (strlen(\Input::get('address'))) {
-                    return $this->edit(\Input::get('address'));
+                    $this->edit(\Input::get('address'));
+                } else {
+                    $this->show();
                 }
+                break;
 
             case 'delete':
                 if (strlen(\Input::get('address'))) {
-                    return $this->delete(\Input::get('address'));
+                    $this->delete(\Input::get('address'));
+                } else {
+                    $this->show();
                 }
+                break;
 
             default:
                 $this->show();
@@ -123,23 +131,24 @@ class AddressBook extends Module
 
     /**
      * List all addresses for the current frontend user
-     * @return void
      */
     protected function show()
     {
+        /** @type \PageModel $objPage */
         global $objPage;
+
         $arrAddresses = array();
-        $strUrl       = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
+        $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
+
+        /** @type Address[] $objAddresses */
         $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
-            while ($objAddresses->next()) {
-                $objAddress = $objAddresses->current();
-
+            foreach ($objAddresses as $objAddress) {
                 $arrAddresses[] = array_merge($objAddress->row(), array(
-                    'id'                => $objAddresses->id,
+                    'id'                => $objAddress->id,
                     'class'             => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
-                    'text'              => $objAddress->generateHtml(),
+                    'text'              => $objAddress->generate(),
                     'edit_url'          => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
                     'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
                     'default_billing'   => ($objAddress->isDefaultBilling ? true : false),
@@ -166,8 +175,8 @@ class AddressBook extends Module
 
     /**
      * Edit an address record. Based on the PersonalData core module
-     * @param integer
-     * @return void
+     *
+     * @param int $intAddressId
      */
     protected function edit($intAddressId = 0)
     {
@@ -185,11 +194,13 @@ class AddressBook extends Module
         }
 
         if (null === $objAddress) {
+            /** @type \PageModel $objPage */
             global $objPage;
+
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
-        $objForm = new Form($table . '_' . $this->id, 'POST', function($objForm) {
+        $objForm = new Form($table . '_' . $this->id, 'POST', function(Form $objForm) {
             return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
         }, (boolean) $this->tableless);
 
@@ -235,7 +246,9 @@ class AddressBook extends Module
                 // Send notifications
                 $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
 
+                /** @type \PageModel $objPage */
                 global $objPage;
+
                 \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
 
             } else {
@@ -263,10 +276,24 @@ class AddressBook extends Module
         $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
     }
 
-
-    protected function triggerNotificationCenter($objAddress, $arrOldAddress, $objMember, $objConfig)
+    /**
+     * Send a notification when address has been changed
+     *
+     * @param Address $objAddress
+     * @param array   $arrOldAddress
+     * @param \User   $objMember
+     * @param Config  $objConfig
+     */
+    protected function triggerNotificationCenter(Address $objAddress, array $arrOldAddress, \User $objMember, Config $objConfig)
     {
         if (!$this->nc_notification) {
+            return;
+        }
+
+        /** @type Notification $objNotification */
+        $objNotification = Notification::findByPk($this->nc_notification);
+
+        if (null === $objNotification) {
             return;
         }
 
@@ -275,10 +302,21 @@ class AddressBook extends Module
         $arrTokens['domain'] = \Environment::get('host');
         $arrTokens['link'] = \Environment::get('base').\Environment::get('request');
 
-        foreach($objAddress->row() as $k => $v) $arrTokens['address_'.$k] = $v;
-        foreach($arrOldAddress as $k => $v) $arrTokens['address_old_'.$k] = $v;
-        foreach($objMember->getData() as $k => $v) $arrTokens['member_'.$k] = $v;
-        foreach($objConfig->row() as $k => $v) $arrTokens['config_'.$k] = $v;
+        foreach ($objAddress->row() as $k => $v) {
+            $arrTokens['address_'.$k] = $v;
+        }
+
+        foreach ($arrOldAddress as $k => $v) {
+            $arrTokens['address_old_' . $k] = $v;
+        }
+
+        foreach ($objMember->getData() as $k => $v) {
+            $arrTokens['member_' . $k] = $v;
+        }
+
+        foreach ($objConfig->row() as $k => $v) {
+            $arrTokens['config_' . $k] = $v;
+        }
 
         $objNotification->send($arrTokens);
     }
@@ -286,8 +324,8 @@ class AddressBook extends Module
 
     /**
      * Delete the given address and make sure it belongs to the current frontend user
-     * @param integer
-     * @return void
+     *
+     * @param int $intAddressId
      */
     protected function delete($intAddressId)
     {
@@ -295,7 +333,9 @@ class AddressBook extends Module
             $objAddress->delete();
         }
 
+        /** @type \PageModel $objPage */
         global $objPage;
+
         \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
     }
 }
