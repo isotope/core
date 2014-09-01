@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.1.7-stable (2014-09-01)
+---------------------------------
+
+### Fixed
+- Runtime notice on the 2.1.6 upgrade (#1233)
+- Recoverable error when viewing backend order details (#1234)
+- Broken table (incorrect colspan) when product in collection had an error
+- Issue in product type attributes manager when moving variant attributes (#1213)
+
+
 Version 2.1.6-stable (2014-08-26)
 ---------------------------------
 
