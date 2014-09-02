@@ -13,6 +13,10 @@
 namespace Isotope\Report;
 
 use Isotope\Isotope;
+use Isotope\Model\OrderStatus;
+use Isotope\Model\Product;
+use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
 
 
@@ -68,11 +72,11 @@ class SalesProduct extends Sales
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
                 DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
-            FROM " . \Isotope\Model\ProductCollectionItem::getTable() . " i
-            LEFT JOIN " . \Isotope\Model\ProductCollection::getTable() . " o ON i.pid=o.id
-            LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
-            LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p1 ON i.product_id=p1.id
-            LEFT OUTER JOIN " . \Isotope\Model\Product::getTable() . " p2 ON p1.pid=p2.id
+            FROM " . ProductCollectionItem::getTable() . " i
+            LEFT JOIN " . ProductCollection::getTable() . " o ON i.pid=o.id
+            LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
+            LEFT OUTER JOIN " . Product::getTable() . " p1 ON i.product_id=p1.id
+            LEFT OUTER JOIN " . Product::getTable() . " p2 ON p1.pid=p2.id
             WHERE o.type='order' AND o.order_status>0 AND o.locked!=''
                 " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
                 " . $this->getProductProcedure('p1') . "
@@ -96,6 +100,7 @@ class SalesProduct extends Sales
 
             // Can't use it without a type
             if ($objProducts->type > 0 && ($objType = ProductType::findByPk($objProducts->type)) !== null) {
+                /** @type ProductType $objType */
                 $arrAttributes = $objType->getAttributes();
                 $arrVariantAttributes = $objType->getVariantAttributes();
                 $blnHasVariants = $objType->hasVariants();
@@ -270,7 +275,7 @@ class SalesProduct extends Sales
         {
             $arrHeader[] = array
             (
-                'value' => $this->parseDate($strFormat, $intStart),
+                'value' => \Date::parse($strFormat, $intStart),
             );
 
             $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
