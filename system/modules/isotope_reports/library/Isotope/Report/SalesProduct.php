@@ -68,7 +68,7 @@ class SalesProduct extends Sales
                 p1.sku AS product_sku,
                 p2.sku AS variant_sku,
                 IF(p1.pid=0, p1.type, p2.type) AS type,
-                i.options AS product_options,
+                i.configuration AS product_configuration,
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
                 DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
@@ -123,7 +123,7 @@ class SalesProduct extends Sales
                     $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
                 }
 
-                foreach (deserialize($objProducts->product_options, true) as $strName => $strValue) {
+                foreach (deserialize($objProducts->product_configuration, true) as $strName => $strValue) {
                     if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName])) {
                         $strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] : $strValue;
                         $strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;
