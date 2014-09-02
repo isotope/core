@@ -19,6 +19,7 @@ Version 2.2.0-rc1 (2014-??-??)
 - Performance when finding the correct jumpTo page (#1104)
 - Redirect message for payment methods when JavaScript is disabled (#1079)
 - Better error logging on invalid PayPal email (#1252)
+- Allow to pass attribute options in product collection template
 
 ### Fixed
 - Warning when product attribute had no options

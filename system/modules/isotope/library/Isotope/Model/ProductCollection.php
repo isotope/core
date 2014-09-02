@@ -1247,7 +1247,7 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->subtotal   = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total      = Isotope::formatPriceWithCurrency($this->getTotal());
 
-        $objTemplate->generateAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
+        $objTemplate->generateAttribute = function ($strAttribute, ProductCollectionItem $objItem, array $arrOptions = array()) {
 
             if (!$objItem->hasProduct()) {
                 return '';
@@ -1259,7 +1259,7 @@ abstract class ProductCollection extends TypeAgent
                 throw new \InvalidArgumentException($strAttribute . ' is not a valid attribute');
             }
 
-            return $objAttribute->generate($objItem->getProduct());
+            return $objAttribute->generate($objItem->getProduct(), $arrOptions);
         };
 
         $objTemplate->getGallery = function ($strAttribute, ProductCollectionItem $objItem) use ($arrConfig, &$arrGalleries) {
