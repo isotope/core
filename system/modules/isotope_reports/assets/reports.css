@@ -17,6 +17,7 @@ table.iso_report {
 }
 table.iso_report .tl_file_list {
 	line-height: 1.5;
+    vertical-align: top;
 }
 table.iso_report .tl_file_list .variant {
 	font-size: 10px;
