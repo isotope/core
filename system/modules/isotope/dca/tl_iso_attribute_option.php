@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'translatableFor'=>'*', 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'published' => array
