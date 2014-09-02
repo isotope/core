@@ -342,7 +342,7 @@ class Backend extends Contao_Backend
                 if ($GLOBALS['TL_DCA'][$dc->table]['config']['dataContainer'] == 'File') {
                     $varValue = $GLOBALS['TL_CONFIG'][$strField];
                 } elseif ($intId > 0 && $this->Database->tableExists($dc->table)) {
-                    $objRow = $this->Database->prepare("SELECT * FROM " . $dc->table . " WHERE id=?")
+                    $objRow = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")
                                              ->execute($intId);
 
                     // The record does not exist

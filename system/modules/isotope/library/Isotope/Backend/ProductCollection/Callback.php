@@ -13,7 +13,9 @@
 namespace Isotope\Backend\ProductCollection;
 
 use \Haste\Haste;
+use Haste\Util\Debug;
 use Haste\Util\Format;
+use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
@@ -26,9 +28,13 @@ class Callback extends \Backend
 
     /**
      * Generate the order label and return it as string
-     * @param   array
-     * @param   string
-     * @return  string
+     *
+     * @param array          $row
+     * @param string         $label
+     * @param \DataContainer $dc
+     * @param array          $args
+     *
+     * @return string
      */
     public function getOrderLabel($row, $label, \DataContainer $dc, $args)
     {
@@ -61,12 +67,12 @@ class Callback extends \Backend
         return $args;
     }
 
-
     /**
      * Generate the order details view when editing an order
-     * @param   object
-     * @param   string
-     * @return  string
+     *
+     * @param object $dc
+     *
+     * @return string
      */
     public function generateOrderDetails($dc)
     {
@@ -76,7 +82,7 @@ class Callback extends \Backend
             return '';
         }
 
-        $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
+        $GLOBALS['TL_CSS'][] = Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
         // Try to find a order details module or create a dummy FE module model
         if (($objModuleModel = \ModuleModel::findOneBy('type', 'iso_orderdetails')) === null) {
@@ -92,12 +98,12 @@ class Callback extends \Backend
         return Haste::getInstance()->call('replaceInsertTags', $objModule->generate(true));
     }
 
-
     /**
      * Generate the order details view when editing an order
-     * @param       object
-     * @param       string
-     * @return      string
+     *
+     * @param object $dc
+     *
+     * @return string
      * @deprecated  we should probably remove this in 3.0 as it does no longer make sense
      */
     public function generateEmailData($dc)
@@ -144,12 +150,12 @@ class Callback extends \Backend
         return $strBuffer;
     }
 
-
     /**
      * Generate the billing address details
-     * @param   object
-     * @param   string
-     * @return  string
+     *
+     * @param object $dc
+     *
+     * @return string
      */
     public function generateBillingAddressData($dc)
     {
@@ -159,12 +165,12 @@ class Callback extends \Backend
         return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getBillingAddress());
     }
 
-
     /**
      * Generate the shipping address details
-     * @param   object
-     * @param   string
-     * @return  string
+     *
+     * @param object $dc
+     *
+     * @return string
      */
     public function generateShippingAddressData($dc)
     {
@@ -174,11 +180,12 @@ class Callback extends \Backend
         return $this->generateAddressData((null === $objOrder) ? null : $objOrder->getShippingAddress());
     }
 
-
     /**
      * Generate address details amd return it as string
-     * @param   Address
-     * @return  string
+     *
+     * @param Address $objAddress
+     *
+     * @return string
      */
     protected function generateAddressData(Address $objAddress = null)
     {
@@ -218,11 +225,8 @@ class Callback extends \Backend
         return $strBuffer;
     }
 
-
     /**
      * Review order page stores temporary information in this table to know it when user is redirected to a payment provider. We do not show this data in backend.
-     * @param   object
-     * @return  void
      */
     public function checkPermission()
     {
@@ -259,14 +263,16 @@ class Callback extends \Backend
     }
 
     /**
-     * Return the paymnet button if a payment method is available
-     * @param   array
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   string
-     * @return  string
+     * Return the payment button if a payment method is available
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
@@ -275,8 +281,10 @@ class Callback extends \Backend
 
     /**
      * Generate a payment interface and return it as HTML string
-     * @param   object
-     * @return  string
+     *
+     * @param object $dc
+     *
+     * @return string
      */
     public function paymentInterface($dc)
     {
@@ -297,13 +305,15 @@ class Callback extends \Backend
 
     /**
      * Return the shipping button if a shipping method is available
-     * @param   array
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   string
-     * @param   string
-     * @return  string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
@@ -312,7 +322,9 @@ class Callback extends \Backend
 
     /**
      * Generate a shipping interface and return it as HTML string
-     * @param   object
+     *
+     * @param object $dc
+     *
      * @return  string
      */
     public function shippingInterface($dc)
@@ -335,7 +347,11 @@ class Callback extends \Backend
 
     /**
      * Pass an order to the document
-     * @param   DataContainer
+     *
+     * @param \DataContainer $dc
+     *
+     * @throws \Exception
+     * @return string
      */
     public function printDocument(\DataContainer $dc)
     {
@@ -408,11 +424,12 @@ class Callback extends \Backend
 </form>';
     }
 
-
     /**
      * Trigger order status update when changing the status in the backend
+     *
      * @param   string
      * @param   DataContainer
+     *
      * @return  string
      * @link    http://www.contao.org/callbacks.html#save_callback
      */
@@ -431,7 +448,6 @@ class Callback extends \Backend
 
         return $varValue;
     }
-
 
     /**
      * Execute the saveCollection hook when a collection is saved
