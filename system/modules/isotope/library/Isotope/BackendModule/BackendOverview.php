@@ -177,7 +177,7 @@ abstract class BackendOverview extends \BackendModule
         elseif (class_exists($arrModule['callback'])) {
 
             /** @type \BackendModule $objCallback */
-            $objCallback = new $arrModule['callback']($dc);
+            $objCallback = new $arrModule['callback']($dc, $arrModule);
 
             return $objCallback->generate();
         }

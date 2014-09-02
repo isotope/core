@@ -55,7 +55,7 @@ abstract class Report extends \Backend
     protected $arrSortingOptions = array();
 
 
-    public function __construct($arrData)
+    public function __construct($dc, $arrData)
     {
         $this->arrData = $arrData;
 
