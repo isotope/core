@@ -363,13 +363,7 @@ class Callback extends \Backend
                 \Controller::redirect($strRedirectUrl);
             }
 
-            if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                \Message::addError('Could not find config id.');
-                \Controller::redirect($strRedirectUrl);
-            }
-
-            // Set current config
-            Isotope::setConfig($objConfig);
+            Frontend::loadOrderEnvironment($objOrder);
 
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
             if (($objDocument = Document::findByPk(\Input::post('document'))) === null) {
