@@ -615,6 +615,38 @@ window.addEvent('domready', function()
     }
 
     /**
+     * Initialize environment (language, objPage) for a given order
+     *
+     * @param Order  $objOrder
+     * @param string $strLanguage
+     */
+    public static function loadOrderEnvironment(Order $objOrder, $strLanguage = null)
+    {
+        global $objPage;
+
+        $strLanguage ?: $objOrder->language;
+
+        // Load page configuration
+        if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
+            $objPage = \PageModel::findWithDetails($objOrder->pageId);
+            $objPage = static::loadPageConfig($objPage);
+        }
+
+        // Set the current system to the language when the user placed the order.
+        // This will result in correct e-mails and payment description.
+        if ($GLOBALS['TL_LANGUAGE'] != $strLanguage) {
+            $GLOBALS['TL_LANGUAGE'] = $strLanguage;
+            \System::loadLanguageFile('default', $strLanguage, true);
+        }
+
+        Isotope::setConfig($objOrder->getRelated('config_id'));
+
+        if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
+            Isotope::setCart($objCart);
+        }
+    }
+
+    /**
      * Load system configuration into page object
      * @param \Database\Result
      */

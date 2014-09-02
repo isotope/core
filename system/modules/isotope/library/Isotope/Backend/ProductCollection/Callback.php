@@ -439,6 +439,15 @@ class Callback extends \Backend
 
             /** @var Order $objOrder */
             if (($objOrder = Order::findByPk($dc->id)) !== null) {
+
+                if (TL_MODE == 'BE') {
+                    if ($objOrder->pageId == 0) {
+                        unset($GLOBALS['objPage']);
+                    }
+
+                    Frontend::loadOrderEnvironment($objOrder);
+                }
+
                 // Status update has been cancelled, do not update
                 if (!$objOrder->updateOrderStatus($varValue)) {
                     return $dc->activeRecord->order_status;
