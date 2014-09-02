@@ -24,7 +24,8 @@
         "contao-legacy/haste":"~4.3",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "contao-legacy/tablelookupwizard":"2.*",
-        "terminal42/notification_center":"1.*"
+        "terminal42/notification_center":"1.*",
+        "terminal42/dc_multilingual":"2.*"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
