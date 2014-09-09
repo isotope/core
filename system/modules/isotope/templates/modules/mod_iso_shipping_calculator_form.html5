@@ -1,0 +1,20 @@
+
+<!-- indexer::stop -->
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<?php if ($this->headline): ?>
+
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<?php if ($this->noCart): ?>
+
+    <p class="info no_products"><?php echo $GLOBALS['TL_LANG']['MSC']['noProductsInCart']; ?></p>
+
+<?php else: ?>
+
+    <?php echo $this->form; ?>
+
+<?php endif; ?>
+
+</div>
+<!-- indexer::continue -->

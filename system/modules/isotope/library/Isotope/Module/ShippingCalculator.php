@@ -12,11 +12,8 @@
 
 namespace Isotope\Module;
 
-use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
-use Isotope\Model\Address;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\Shipping;
 
 
@@ -34,12 +31,6 @@ class ShippingCalculator extends Module
      * @var array
      */
     protected $arrShippingMethods = array();
-
-    /**
-     * Shipping address fields
-     * @var array
-     */
-    protected $arrShippingAddressFields = array();
 
     /**
      * Display a wildcard in the back end
@@ -61,10 +52,8 @@ class ShippingCalculator extends Module
         }
 
         $this->arrShippingMethods = deserialize($this->iso_shipping_modules, true);
-        $this->arrShippingAddressFields = deserialize($this->iso_shippingAddressFields, true);
 
-
-        if (empty($this->arrShippingMethods) || empty($this->arrShippingAddressFields)) {
+        if (empty($this->arrShippingMethods)) {
             return '';
         }
 
@@ -77,83 +66,44 @@ class ShippingCalculator extends Module
      */
     protected function compile()
     {
-        $arrMethods = array();
-
+        $objCart = Isotope::getCart();
+        $objAddress = $objCart->getShippingAddress();
         $this->Template->showResults = false;
         $this->Template->requiresShipping = false;
 
-        // Temporary address
-        $objAddress = new Address();
-        $objAddress->pid = Isotope::getCart()->id;
-        $objAddress->tstamp = time();
-        $objAddress->ptable = ProductCollection::getTable();
+        // There is no address
+        if (!$objAddress->id) {
+            return;
+        }
 
-        // Create form and bind address to it
-        $objForm = $this->createForm();
-        $objForm->bindModel($objAddress);
+        $this->Template->showResults = true;
+        $arrMethods = array();
 
-        if ($objForm->validate()) {
-            $this->Template->showResults = true;
+        // Get the shipping methods
+        if ($objCart->getShippingAddress()->id && $objCart->requiresShipping()) {
+            $this->Template->requiresShipping = true;
+            $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
 
-            if (Isotope::getCart()->requiresShipping()) {
-                $this->Template->requiresShipping = true;
+            /* @var Shipping $objShipping */
+            foreach ($objShippingMethods as $objShipping) {
+                if ($objShipping->isAvailable($objCart, $objAddress)) {
 
-                $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
+                    $fltPrice = $objShipping->getPrice();
 
-                /* @var Shipping $objShipping */
-                foreach ($objShippingMethods as $objShipping) {
-                    if ($objShipping->isAvailable(Isotope::getCart(), $objAddress)) {
-
-                        $fltPrice = $objShipping->getPrice();
-
-                        $arrMethods[] = array(
-                            'label' => $objShipping->getLabel(),
-                            'price' => $fltPrice,
-                            'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
-                            'shipping' => $objShipping
-                        );
-                    }
+                    $arrMethods[] = array(
+                        'label' => $objShipping->getLabel(),
+                        'price' => $fltPrice,
+                        'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
+                        'shipping' => $objShipping
+                    );
                 }
-
-                RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo(
-                    $arrMethods
-                );
             }
+
+            RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo(
+                $arrMethods
+            );
         }
 
         $this->Template->shippingMethods = $arrMethods;
-        $this->Template->form = $objForm->generate();
-    }
-
-    /**
-     * Create form
-     */
-    protected function createForm()
-    {
-        \System::loadLanguageFile(Address::getTable());
-        $this->loadDataContainer(Address::getTable());
-
-        $objForm = new Form('iso_shipping_calculator_' . $this->id, 'POST', function($objHaste) {
-            return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
-        });
-
-        foreach (Isotope::getConfig()->getShippingFieldsConfig() as $field) {
-            if (!$field['enabled'] || !in_array($field['value'], $this->arrShippingAddressFields)) {
-                continue;
-            }
-
-            $arrDca = $GLOBALS['TL_DCA'][Address::getTable()]['fields'][$field['value']];
-            // override mandatory settings
-            $arrDca['eval']['mandatory'] = $field['mandatory'];
-
-            $objForm->addFormField($field['value'], $arrDca);
-        }
-
-        $objForm->addFormField('submit', array(
-            'label'     => $GLOBALS['TL_LANG']['MSC']['checkShippingCostsButton'],
-            'inputType' => 'submit'
-        ));
-
-        return $objForm;
     }
 }

@@ -6,10 +6,11 @@
 <<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
 <?php endif; ?>
 
-<?php echo $this->form; ?>
+<?php if (!$this->showResults): ?>
 
-<?php if ($this->showResults): ?>
-<?php if (!$this->requiresShipping): ?>
+    <p class="info no_shipping_address"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingAddress']; ?></p>
+
+<?php elseif (!$this->requiresShipping): ?>
 
     <p class="info no_shipping_required"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']; ?></p>
 
@@ -31,7 +32,6 @@
         </tbody>
     </table>
 
-<?php endif; ?>
 <?php endif; ?>
 
 </div>
