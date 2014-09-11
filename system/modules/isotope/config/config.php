@@ -357,6 +357,7 @@ $GLOBALS['ISO_INTEGRITY'] = array
 (
     '\Isotope\IntegrityCheck\PriceTable',
     '\Isotope\IntegrityCheck\VariantOrphans',
+    '\Isotope\IntegrityCheck\AttributeOptionOrphans',
     '\Isotope\IntegrityCheck\UnusedRules'
 );
 
