@@ -34,8 +34,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']         = '{
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']              = '{title_legend},name,headline,type;{template_legend},customTpl,memberTpl,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']          = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages']                 = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator']      = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
-$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator_form'] = '{title_legend},name,headline,type;{config_legend},iso_shippingAddressFields;{redirect_legend:hide},jumpTo;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator']      = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_temporary_address']        = '{title_legend},name,headline,type;{config_legend},iso_addressTypes,iso_addressFields;{redirect_legend:hide},jumpTo;{template_legend:hide},customTpl,memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 
 /**
@@ -544,9 +544,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_continueShopping'] = array
     'sql'                       => "char(1) NOT NULL default ''",
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_shippingAddressFields'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressTypes'] = array
 (
-    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_shippingAddressFields'],
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_addressTypes'],
+    'exclude'                   => true,
+    'inputType'                 => 'checkbox',
+    'options'                   => array('billing', 'shipping'),
+    'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_addressTypes'],
+    'eval'                      => array('mandatory'=>true, 'multiple'=>true),
+    'sql'                       => "blob NULL",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_addressFields'],
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => function() {
@@ -565,7 +576,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shippingAddressFields'] = array
 
             return $arrOptions;
         },
-    'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
+    'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
     'sql'                       => "blob NULL"
 );
 

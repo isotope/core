@@ -80,13 +80,13 @@ class ShippingCalculator extends Module
         $arrMethods = array();
 
         // Get the shipping methods
-        if ($objCart->getShippingAddress()->id && $objCart->requiresShipping()) {
+        if ($objAddress->id && $objCart->requiresShipping()) {
             $this->Template->requiresShipping = true;
             $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
 
             /* @var Shipping $objShipping */
             foreach ($objShippingMethods as $objShipping) {
-                if ($objShipping->isAvailable($objCart, $objAddress)) {
+                if ($objShipping->isAvailable()) {
 
                     $fltPrice = $objShipping->getPrice();
 

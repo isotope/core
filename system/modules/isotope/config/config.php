@@ -184,7 +184,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_relatedproducts'           => 'Isotope\Module\RelatedProducts',
     'iso_messages'                  => 'Isotope\Module\Messages',
     'iso_shipping_calculator'       => 'Isotope\Module\ShippingCalculator',
-    'iso_shipping_calculator_form'  => 'Isotope\Module\ShippingCalculatorForm',
+    'iso_temporary_address'         => 'Isotope\Module\TemporaryAddress',
 );
 
 
