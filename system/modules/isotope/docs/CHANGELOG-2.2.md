@@ -8,7 +8,7 @@ Version 2.2.0-rc1 (2014-??-??)
 - Added the an integrity check to check for attribute option orphans (#1237)
 
 ### Improved
-- Improved performance when finding the correct jumpTo page (#1104)
+- Performance when finding the correct jumpTo page (#1104)
 
 Version 2.2.0-beta1 (2014-09-02)
 --------------------------------
