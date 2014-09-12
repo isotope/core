@@ -219,7 +219,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'options_callback'      => function($dc) {
                 $arrOptions = array('table', 'foreignKey', 'attribute');
 
-                if ($dc->activeRecord->variant_option == '' && $dc->activeRecord->customer_defined== '1') {
+                if ($dc->activeRecord->variant_option == '' && $dc->activeRecord->customer_defined == '1') {
                     $arrOptions = array('table', 'product', 'foreignKey', 'attribute');
                 }
 
