@@ -25,7 +25,7 @@ class TemporaryAddress extends Module
      * Template
      * @var string
      */
-    protected $strTemplate = 'mod_iso_temporary_address';
+    protected $strTemplate = 'member_default';
 
     /**
      * Address fields
@@ -59,6 +59,11 @@ class TemporaryAddress extends Module
             return '';
         }
 
+        // Set the custom member template
+        if ($this->memberTpl != '') {
+            $this->strTemplate = $this->memberTpl;
+        }
+
         return parent::generate();
     }
 
@@ -68,7 +73,6 @@ class TemporaryAddress extends Module
      */
     protected function compile()
     {
-        $this->Template            = new \Isotope\Template($this->memberTpl);
         $this->Template->hasError  = false;
         $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
 

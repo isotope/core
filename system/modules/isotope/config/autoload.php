@@ -74,5 +74,4 @@ TemplateLoader::addFiles(array
     'mod_iso_productlist_caching'       => 'system/modules/isotope/templates/modules',
     'mod_iso_productreader'             => 'system/modules/isotope/templates/modules',
     'mod_iso_shipping_calculator'       => 'system/modules/isotope/templates/modules',
-    'mod_iso_temporary_address'         => 'system/modules/isotope/templates/modules',
 ));
