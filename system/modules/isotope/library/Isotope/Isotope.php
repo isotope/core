@@ -229,7 +229,7 @@ class Isotope extends \Controller
 
         // Possibly add/subtract tax
         /** @var TaxClass $objTaxClass */
-        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
+        if ($intTaxClass > 0 && ($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
