@@ -68,15 +68,6 @@ class TemporaryAddress extends Module
      */
     protected function compile()
     {
-        $objCart = Isotope::getCart();
-        $this->Template->noCart = false;
-
-        // There is no cart initialized
-        if (!$objCart->id) {
-            $this->Template->noCart = true;
-            return;
-        }
-
         $this->Template            = new \Isotope\Template($this->memberTpl);
         $this->Template->hasError  = false;
         $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
@@ -125,6 +116,8 @@ class TemporaryAddress extends Module
 
             return true;
         });
+
+        $objCart = Isotope::getCart();
 
         // Save the data
         if ($objForm->validate()) {
