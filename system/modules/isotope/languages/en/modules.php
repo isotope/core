@@ -36,7 +36,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_configswitcher']            = array('Store Confi
 $GLOBALS['TL_LANG']['FMD']['iso_relatedproducts']           = array('Related products', 'List products related to the current one.');
 $GLOBALS['TL_LANG']['FMD']['iso_messages']                  = array('Messages', 'Displays all Isotope messages if they have not been displayed elsewhere.');
 $GLOBALS['TL_LANG']['FMD']['iso_shipping_calculator']       = array('Shipping cost calculator', 'Displays a module to calculate the shipping costs before going to the checkout page.');
-$GLOBALS['TL_LANG']['FMD']['iso_temporary_address']         = array('Temporary address', 'Displays a form to enter the temporary address data that will be used to calculate the shipping costs.');
+$GLOBALS['TL_LANG']['FMD']['iso_cart_address']              = array('Cart address', 'Displays a form to enter the cart address data that will be used to calculate prices.');
 
 /**
  * Isotope Modules

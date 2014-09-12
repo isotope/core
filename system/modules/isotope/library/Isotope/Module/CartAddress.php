@@ -18,7 +18,7 @@ use Isotope\Model\Address;
 use Isotope\Model\ProductCollection;
 
 
-class TemporaryAddress extends Module
+class CartAddress extends Module
 {
 
     /**
@@ -42,7 +42,7 @@ class TemporaryAddress extends Module
         if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: TEMPORARY ADDRESS ###';
+            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ADDRESS ###';
 
             $objTemplate->title = $this->headline;
             $objTemplate->id    = $this->id;
@@ -52,10 +52,10 @@ class TemporaryAddress extends Module
             return $objTemplate->parse();
         }
 
-        $this->iso_addressTypes = deserialize($this->iso_addressTypes, true);
+        $this->iso_address = deserialize($this->iso_address, true);
         $this->arrAddressFields = deserialize($this->iso_addressFields, true);
 
-        if (empty($this->iso_addressTypes) || empty($this->arrAddressFields)) {
+        if (empty($this->iso_address) || empty($this->arrAddressFields)) {
             return '';
         }
 
@@ -91,7 +91,7 @@ class TemporaryAddress extends Module
 
         $objAddress = $this->getDefaultAddress();
 
-        $objForm = new Form('iso_temporary_address_' . $this->id, 'POST', function($objHaste) {
+        $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
             return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
         }, (boolean) $this->tableless);
 
@@ -125,9 +125,13 @@ class TemporaryAddress extends Module
 
         // Save the data
         if ($objForm->validate()) {
-            $objAddress->pid = FE_USER_LOGGED_IN ? \FrontendUser::getInstance()->id : $objCart->id;
+
+            if (!$objCart->id) {
+                $objCart->save();
+            }
+
             $objAddress->tstamp = time();
-            $objAddress->ptable = FE_USER_LOGGED_IN ? 'tl_member' : ProductCollection::getTable();
+            $objAddress->pid = $objCart->id;
             $objAddress->save();
 
             // Call onsubmit_callback
@@ -139,16 +143,14 @@ class TemporaryAddress extends Module
             }
 
             // Set the billing address
-            if (in_array('billing', $this->iso_addressTypes)) {
+            if (in_array('billing', $this->iso_address)) {
                 $objCart->setBillingAddress($objAddress);
             }
 
             // Set the shipping address
-            if (in_array('shipping', $this->iso_addressTypes)) {
+            if (in_array('shipping', $this->iso_address)) {
                 $objCart->setShippingAddress($objAddress);
             }
-
-            $objCart->save();
 
             $this->jumpToOrReload($this->jumpTo);
         }
@@ -179,25 +181,29 @@ class TemporaryAddress extends Module
      */
     protected function getDefaultAddress()
     {
-        $strTable = FE_USER_LOGGED_IN ? 'tl_member' : 'tl_iso_product_collection';
-        $intPid = FE_USER_LOGGED_IN ? \FrontendUser::getInstance()->id : Isotope::getCart()->id;
+        $objAddress = null;
+        $intCart = Isotope::getCart()->id;
+        $strDefault = in_array('billing', $this->iso_address) ? 'isDefaultBilling' : 'isDefaultShipping';
 
-        $objAddress = Address::findOneBy(array('ptable=?', 'pid=?', 'isDefaultBilling=?'), array($strTable, $intPid, '1'));
+        if ($intCart > 0) {
+            $objAddress = Address::findOneBy(
+                array(
+                    "ptable='tl_iso_product_collection'",
+                    "pid=?",
+                    "$strDefault='1'"
+                ),
+                array(
+                    $intCart
+                )
+            );
+        }
 
         if ($objAddress === null) {
-            $objCartAddress = in_array('billing', $this->iso_addressTypes) ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress();
-
-            if ($objCartAddress === null) {
-                $objAddress = new AddressModel();
-            } else {
-                $objAddress = clone $objCartAddress;
-            }
-
-            $objAddress->ptable            = $strTable;
-            $objAddress->pid               = $intPid;
-            $objAddress->isDefaultBilling  = in_array('billing', $this->iso_addressTypes) ? '1' : '';
-            $objAddress->isDefaultShipping = in_array('shipping', $this->iso_addressTypes) ? '1' : '';
+            $objAddress = new AddressModel();
+            $objAddress->ptable = 'tl_iso_product_collection';
         }
+
+        $objAddress->$strDefault = '1';
 
         return $objAddress;
     }
