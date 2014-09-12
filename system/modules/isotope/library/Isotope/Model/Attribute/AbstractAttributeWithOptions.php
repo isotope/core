@@ -77,7 +77,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 if (null === $objOptions) {
                     return array();
 
-                } else if ($this->isCustomerDefined()) {
+                } elseif ($this->isCustomerDefined()) {
                     return $objOptions->getArrayForFrontendWidget();
 
                 } else {

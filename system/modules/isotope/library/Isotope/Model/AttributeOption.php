@@ -52,6 +52,7 @@ class AttributeOption extends \MultilingualModel
             'label'     => $this->label,
             'group'     => ($this->type == 'group' ? '1' : ''),
             'default'   => ($this->isDefault ? '1' : ''),
+            'model'     => $this
         );
     }
 
