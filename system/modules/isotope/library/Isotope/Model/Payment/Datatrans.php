@@ -118,14 +118,14 @@ class Datatrans extends Postsale implements IsotopePayment
         // Security signature (see Security Level 2)
         $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'], $this->datatrans_sign);
 
-        $objTemplate                            = new \Isotope\Template('iso_payment_datatrans');
-        $objTemplate->id                        = $this->id;
-        $objTemplate->action                    = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
-        $objTemplate->params                    = $arrParams;
-        $objTemplate->headline                  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message                   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel                    = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noRedirectPossibleMessage = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
+        $objTemplate->id       = $this->id;
+        $objTemplate->action   = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
+        $objTemplate->params   = $arrParams;
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

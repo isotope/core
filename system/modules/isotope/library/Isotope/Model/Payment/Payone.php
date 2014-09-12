@@ -137,15 +137,15 @@ class Payone extends Postsale implements IsotopePayment
         // Do not urlencode values because Payone does not properly decode POST values (whatever...)
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate                            = new \Isotope\Template('iso_payment_payone');
-        $objTemplate->id                        = $this->id;
-        $objTemplate->data                      = $arrData;
-        $objTemplate->hash                      = $strHash;
-        $objTemplate->billing_address           = $objOrder->getBillingAddress()->row();
-        $objTemplate->headline                  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message                   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel                    = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noRedirectPossibleMessage = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate                  = new \Isotope\Template('iso_payment_payone');
+        $objTemplate->id              = $this->id;
+        $objTemplate->data            = $arrData;
+        $objTemplate->hash            = $strHash;
+        $objTemplate->billing_address = $objOrder->getBillingAddress()->row();
+        $objTemplate->headline        = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message         = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel          = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

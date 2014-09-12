@@ -150,11 +150,11 @@ abstract class PSP extends Payment
         $objTemplate = new \Isotope\Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->params                    = $arrParams;
-        $objTemplate->headline                  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message                   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel                    = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noRedirectPossibleMessage = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->params   = $arrParams;
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

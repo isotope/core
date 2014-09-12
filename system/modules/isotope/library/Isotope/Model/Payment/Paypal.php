@@ -168,20 +168,20 @@ class Paypal extends Postsale implements IsotopePayment
         $objTemplate = new \Isotope\Template('iso_payment_paypal');
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->id                        = $this->id;
-        $objTemplate->action                    = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
-        $objTemplate->invoice                   = $objOrder->id;
-        $objTemplate->data                      = array_map('specialchars', $arrData);
-        $objTemplate->discount                  = $fltDiscount;
-        $objTemplate->address                   = $objOrder->getBillingAddress();
-        $objTemplate->currency                  = $objOrder->currency;
-        $objTemplate->return                    = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return             = \Environment::get('base') . $objModule->generateUrlForStep('failed');
-        $objTemplate->notify_url                = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->headline                  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message                   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel                    = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noRedirectPossibleMessage = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->id            = $this->id;
+        $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
+        $objTemplate->invoice       = $objOrder->id;
+        $objTemplate->data          = array_map('specialchars', $arrData);
+        $objTemplate->discount      = $fltDiscount;
+        $objTemplate->address       = $objOrder->getBillingAddress();
+        $objTemplate->currency      = $objOrder->currency;
+        $objTemplate->return        = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancel_return = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->headline      = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message       = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel        = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

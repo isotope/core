@@ -48,11 +48,11 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
     {
         $objTemplate = new \Isotope\Template('iso_payment_paybyway');
 
-        $objTemplate->action                    = 'https://www.paybyway.com/e-payments/pay';
-        $objTemplate->headline                  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message                   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel                    = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noRedirectPossibleMessage = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->action   = 'https://www.paybyway.com/e-payments/pay';
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         $objTemplate->merchant_id = (int) $this->paybyway_merchant_id;
         $objTemplate->amount = round($objOrder->getTotal() * 100);

@@ -36,7 +36,7 @@
 <input type="hidden" name="notify_url" value="<?php echo $this->notify_url; ?>">
 
 <noscript>
-<p class="message noredirect_possible"><?php echo $this->noRedirectPossibleMessage; ?></p>
+<p><?php echo $this->noscript; ?></p>
 <input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
 </form>
