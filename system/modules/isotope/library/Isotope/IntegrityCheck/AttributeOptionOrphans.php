@@ -69,27 +69,17 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
             ")->fetchEach('id');
 
             // Options of products where the attribute has the wrong optionsSource
-            $arrErrors3 = array();
-            $arrOptions = \Database::getInstance()->query("
-                SELECT id, field_name
-                FROM tl_iso_attribute_option
+            $arrErrors3 = \Database::getInstance()->query("
+                SELECT o.id
+                FROM tl_iso_attribute_option o
+                LEFT JOIN tl_iso_attribute a ON o.field_name=a.field_name
                 WHERE
-                    ptable = 'tl_iso_product'
-                    AND field_name != ''
-            ")->fetchAllAssoc();
-
-            foreach ($arrOptions as $arrOption) {
-                $objCheck = \Database::getInstance()->prepare("
-                    SELECT id
-                    FROM tl_iso_attribute
-                    WHERE field_name = ?
-                      AND optionsSource != 'product'
-                ")->execute($arrOption['field_name']);
-
-                if ($objCheck->numRows) {
-                    $arrErrors3[] = $arrOption['id'];
-                }
-            }
+                    o.ptable = 'tl_iso_product'
+                    AND (a.optionsSource != 'product'
+                        OR a.variant_option != ''
+                        OR a.customer_defined != '1'
+                    )
+            ")->fetchEach('id');
 
             // Options of products that do not exist anymore
             $arrErrors4 = \Database::getInstance()->query("
