@@ -65,6 +65,10 @@ class Callback extends \Backend
             $label = '<strong>'.$label.'</strong>';
         }
 
+        if ($row['price'] != '') {
+            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">(' . $row['price'] . ')</span>';
+        }
+
         return $label;
     }
 

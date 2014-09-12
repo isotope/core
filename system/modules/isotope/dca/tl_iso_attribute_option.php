@@ -112,7 +112,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
     (
         '__selector__'              => array('type'),
         'default'                   => '{label_legend},type',
-        'option'                    => '{label_legend},type,isDefault,label;{publish_legend},published',
+        'option'                    => '{label_legend},type,isDefault,label;{price_legend:hide},price;{publish_legend},published',
         'group'                     => '{label_legend},type,label;{publish_legend},published',
     ),
 
@@ -181,6 +181,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'translatableFor'=>'*', 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'price' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'published' => array
         (
