@@ -122,8 +122,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             \Haste\Haste::getInstance()->call('loadDataContainer', static::$strTable);
             \System::loadLanguageFile(static::$strTable);
 
-            $arrData['fields'][$this->field_name] = array_merge($arrData['fields'][$this->field_name], $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']);
-            $arrData['fields'][$this->field_name]['attributes']['dynamic'] = true;
+            $arrField = array_merge($arrData['fields'][$this->field_name], $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']);
+            $arrField['label'] = $arrData['fields'][$this->field_name]['label'];
+            $arrField['attributes']['dynamic'] = true;
+
+            $arrData['fields'][$this->field_name] = $arrField;
         }
     }
 } 
