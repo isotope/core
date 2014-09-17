@@ -13,6 +13,9 @@ Version 2.2.0-rc1 (2014-??-??)
 - Better error logging on invalid PayPal email (#1252)
 - Added inline edit option for advanced prices
 
+### Fixed
+- Warning when product attribute had no options
+
 
 Version 2.2.0-beta1 (2014-09-02)
 --------------------------------
