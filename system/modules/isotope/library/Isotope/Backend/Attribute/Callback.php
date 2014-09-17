@@ -20,8 +20,8 @@ class Callback extends \Backend
 
     /**
      * Disable the internal field name field if it is not empty.
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function disableFieldName($dc)
     {
@@ -41,8 +41,10 @@ class Callback extends \Backend
 
     /**
      * Make sure the system columns are not added as attribute
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -59,11 +61,10 @@ class Callback extends \Backend
         return $varValue;
     }
 
-
     /**
      * Alter attribtue columns in tl_iso_product table
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function updateDatabase($dc)
     {
@@ -78,7 +79,6 @@ class Callback extends \Backend
         $objUpdater = new DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_product'));
     }
-
 
     /**
      * Return an array of select-attributes
@@ -99,13 +99,12 @@ class Callback extends \Backend
         return $arrFields;
     }
 
-
     /**
      * Return a list of available rte config files
-     * @param object
+     *
      * @return array
      */
-    public function getRTE($dc)
+    public function getRTE()
     {
         $arrOptions = array();
 
@@ -118,11 +117,12 @@ class Callback extends \Backend
         return $arrOptions;
     }
 
-
     /**
      * Validate table and field of foreignKey
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      */
     public function validateForeignKey($varValue, $dc)
@@ -147,11 +147,12 @@ class Callback extends \Backend
         return $varValue;
     }
 
-
     /**
      * To enable date picker, the rgxp must be date, time or datim
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      */
     public function validateDatepicker($varValue, $dc)
