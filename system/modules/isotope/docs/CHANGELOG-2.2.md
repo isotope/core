@@ -10,6 +10,8 @@ Version 2.2.0-rc1 (2014-??-??)
 ### Improved
 - Performance when finding the correct jumpTo page (#1104)
 - Redirect message for payment methods when JavaScript is disabled (#1079)
+- Better error logging on invalid PayPal email (#1252)
+
 
 Version 2.2.0-beta1 (2014-09-02)
 --------------------------------
