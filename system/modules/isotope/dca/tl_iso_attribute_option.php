@@ -125,27 +125,27 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'pid' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'sorting' => array
         (
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'ptable' => array
         (
-            'sql'                   =>  "varchar(64) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'langPid' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'language' => array
         (
-            'sql'                   =>  "varchar(5) NOT NULL default ''",
+            'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'field_name' => array
         (
