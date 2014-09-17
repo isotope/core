@@ -78,7 +78,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    return $objOptions->getArrayForFrontendWidget();
+                    return $objOptions->getArrayForFrontendWidget($objProduct);
 
                 } else {
                     return $objOptions->getArrayForBackendWidget();
@@ -96,7 +96,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } else {
-                    return $objOptions->getArrayForFrontendWidget();
+                    return $objOptions->getArrayForFrontendWidget($objProduct);
                 }
 
                 break;

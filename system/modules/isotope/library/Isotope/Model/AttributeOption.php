@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Isotope;
 
 
 /**
@@ -43,17 +44,106 @@ class AttributeOption extends \MultilingualModel
     /**
      * Get array representation of the attribute option
      *
+     * @param IsotopeProduct $objProduct
+     *
      * @return array
      */
-    public function getAsArray()
+    public function getAsArray(IsotopeProduct $objProduct = null)
     {
         return array(
             'value'     => $this->id,
-            'label'     => $this->label,
+            'label'     => $this->getLabel($objProduct),
             'group'     => ($this->type == 'group' ? '1' : ''),
             'default'   => ($this->isDefault ? '1' : ''),
             'model'     => $this
         );
+    }
+
+    /**
+     * Return true if the option price is a percentage (not fixed) amount
+     *
+     * @return bool
+     */
+    public function isPercentage()
+    {
+        return substr($this->arrData['price'], -1) == '%' ? true : false;
+    }
+
+    /**
+     * Return percentage amount (if applicable)
+     *
+     * @return float
+     * @throws \UnexpectedValueException
+     */
+    public function getPercentage()
+    {
+        if (!$this->isPercentage()) {
+            throw new \UnexpectedValueException('Attribute option does not have a percentage amount.');
+        }
+
+        return (float) substr($this->arrData['price'], 0, -1);
+    }
+
+    /**
+     * Return calculated price for this attribute option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return float
+     */
+    public function getPrice(IsotopeProduct $objProduct = null)
+    {
+        if ($this->isPercentage() && null !== $objProduct) {
+            $objPrice = $objProduct->getPrice();
+
+            if (null !== $objPrice) {
+                $fltAmount = $objPrice->getOriginalAmount();
+
+                return $fltAmount / 100 * $this->getPercentage();
+            }
+        }
+
+        return $this->price;
+    }
+
+    /**
+     * Get formatted label for the attribute option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return string
+     */
+    public function getLabel(IsotopeProduct $objProduct = null)
+    {
+        $strLabel = $this->label;
+
+        /** @type Attribute $objAttribute */
+        $objAttribute = null;
+
+        switch ($this->ptable) {
+            case 'tl_iso_product':
+                $objAttribute = Attribute::findByFieldName($this->field_name);
+                break;
+
+            case 'tl_iso_attribute':
+                $objAttribute = Attribute::findByPk($this->pid);
+                break;
+        }
+
+        if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
+
+            $strLabel .= ' (';
+
+            if (!$this->isPercentage() || null !== $objProduct) {
+                $strLabel .= Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
+            } else {
+                $strLabel .= $this->price;
+            }
+
+            $strLabel .= ')';
+        }
+
+        return $strLabel;
     }
 
     /**
