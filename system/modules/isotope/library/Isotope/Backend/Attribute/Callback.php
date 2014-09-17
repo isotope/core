@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Attribute;
 
 use Isotope\Model\Attribute;
+use Isotope\Model\AttributeOption;
 use Isotope\DatabaseUpdater;
 
 class Callback extends \Backend
@@ -38,6 +39,29 @@ class Callback extends \Backend
         }
     }
 
+    /**
+     * Show price column in dcaWizard if attribute is not a variant option
+     *
+     * @param \Widget $objWidget
+     *
+     * @return string
+     */
+    public function initializeTableOptions(\Widget $objWidget)
+    {
+        /** @type Attribute $objAttribute */
+
+        if (\Input::get('do') == 'iso_products') {
+            $objAttribute = Attribute::findOneBy('field_name', $objWidget->name);
+        } else {
+            $objAttribute = Attribute::findByPk(\Input::get('id'));
+        }
+
+        if (null !== $objAttribute && !$objAttribute->isVariantOption()) {
+            $objWidget->fields = array_merge($objWidget->fields, array('price'));
+        }
+
+        return AttributeOption::getTable();
+    }
 
     /**
      * Make sure the system columns are not added as attribute

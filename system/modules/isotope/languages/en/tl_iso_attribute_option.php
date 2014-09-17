@@ -17,6 +17,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']                  = array(
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault']             = array('Default', 'Check here if this should be the default option.');
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['label']                 = array('Label', 'Enter the label for this option.');
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['price']                 = array('Price surcharge or deduction', 'You can enter a positive or negative amount to alter the product price if this option is selected.');
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short']           = array('Price');
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['published']             = array('Published', 'Make this option available in the product.');
 
 /**
