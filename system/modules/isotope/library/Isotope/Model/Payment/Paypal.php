@@ -43,8 +43,18 @@ class Paypal extends Postsale implements IsotopePayment
 
         if ($objRequest->hasError()) {
             \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
-            exit;
-        } elseif ($objRequest->response == 'VERIFIED' && (\Input::post('receiver_email', true) == $this->paypal_account || $this->debug)) {
+            return;
+
+        } elseif ($objRequest->response != 'VERIFIED') {
+            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+            return;
+
+        } elseif ((\Input::post('receiver_email', true) != $this->paypal_account && !$this->debug)) {
+            \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
+            return;
+
+        } else {
+
             // Validate payment data (see #2221)
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
                 \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
@@ -96,8 +106,6 @@ class Paypal extends Postsale implements IsotopePayment
             $objOrder->save();
 
             \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
-        } else {
-            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
         }
 
         // 200 OK
