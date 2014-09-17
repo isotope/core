@@ -81,7 +81,7 @@ class AttributeOption extends \MultilingualModel
             throw new \UnexpectedValueException('Attribute option does not have a percentage amount.');
         }
 
-        return (float) substr($this->arrData['price'], 0, -1);
+        return substr($this->arrData['price'], 0, -1);
     }
 
     /**
