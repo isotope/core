@@ -468,7 +468,7 @@ class DcaManager extends \Backend
         ) {
 
             /** @var IsotopeAttributeWithOptions|Attribute $objAttribute */
-            $objAttribute = Attribute::findOneBy('field_name', $arrData['strField']);
+            $objAttribute = Attribute::findByFieldName($arrData['strField']);
 
             if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
                 $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();

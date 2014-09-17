@@ -657,7 +657,7 @@ abstract class Attribute extends TypeAgent
      *
      * @return \Isotope\Model\Attribute[]|null The model collection or null if the result is empty
      */
-    public static function findValid(array $arrOptions=array())
+    public static function findValid(array $arrOptions = array())
     {
         $t = static::getTable();
 
@@ -672,5 +672,18 @@ abstract class Attribute extends TypeAgent
         $arrOptions['column'][] = "$t.field_name!=''";
 
         return static::findAll($arrOptions);
+    }
+
+    /**
+     * Get an attribute by database field name
+     *
+     * @param string $strField
+     * @param array  $arrOptions
+     *
+     * @return \Model|null
+     */
+    public static function findByFieldName($strField, array $arrOptions = array())
+    {
+        return static::findOneBy('field_name', $strField, $arrOptions);
     }
 }

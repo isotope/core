@@ -51,7 +51,7 @@ class Callback extends \Backend
         /** @type Attribute $objAttribute */
 
         if (\Input::get('do') == 'iso_products') {
-            $objAttribute = Attribute::findOneBy('field_name', $objWidget->name);
+            $objAttribute = Attribute::findByFieldName($objWidget->name);
         } else {
             $objAttribute = Attribute::findByPk(\Input::get('id'));
         }
