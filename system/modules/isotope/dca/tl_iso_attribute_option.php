@@ -192,7 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'sql'                   => "varchar(16) NOT NULL default ''",
             'save_callback' => array(
                 function($varValue) {
-                    if (strpos($varValue, '.') === false && strpos($varValue, '%') === false) {
+                    if ($varValue != '' && strpos($varValue, '.') === false && strpos($varValue, '%') === false) {
                         $varValue = number_format($varValue, 2, '.', '');
 
                         if ($varValue > 0) {
