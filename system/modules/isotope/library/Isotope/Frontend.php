@@ -12,11 +12,14 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductPrice;
 
 /**
  * Class Isotope\Frontend
@@ -708,5 +711,42 @@ window.addEvent('domready', function()
             $objPostsale->setModule('pay');
             $objPostsale->setModuleId($intId);
         }
+    }
+
+    /**
+     * Calculate price surcharge for attribute options
+     *
+     * @param float  $fltPrice
+     * @param object $objSource
+     * @param string $strField
+     * @param int    $intTaxClass
+     * @param array  $arrOptions
+     *
+     * @return float
+     * @throws \Exception
+     */
+    public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
+    {
+        if ($objSource instanceof ProductPrice && $strField == 'price' && ($objProduct = $objSource->getRelated('pid')) !== null) {
+            /** @type IsotopeProduct $objProduct */
+
+            foreach ($arrOptions as $field => $value) {
+                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null && $objAttribute instanceof IsotopeAttributeWithOptions) {
+                    $attributeOptions = $objAttribute->getOptionsForWidget($objProduct);
+
+                    foreach ($attributeOptions as $option) {
+                        if ($option['value'] == $value && isset($option['model'])) {
+
+                            /** @type AttributeOption $objOption */
+                            $objOption = $option['model'];
+                            $fltPrice += $objOption->getPrice($objProduct);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fltPrice;
     }
 }
