@@ -27,6 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         'onload_callback' => array
         (
             array('\Isotope\Backend\AttributeOption\Callback', 'initWrappers'),
+            array('\Isotope\Backend\AttributeOption\Callback', 'checkPermission'),
         ),
         'onsubmit_callback' => array
         (
