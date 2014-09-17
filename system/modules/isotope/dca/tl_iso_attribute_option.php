@@ -190,6 +190,19 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount'),
             'sql'                   => "varchar(16) NOT NULL default ''",
+            'save_callback' => array(
+                function($varValue) {
+                    if (strpos($varValue, '.') === false && strpos($varValue, '%') === false) {
+                        $varValue = number_format($varValue, 2, '.', '');
+
+                        if ($varValue > 0) {
+                            $varValue = '+' . $varValue;
+                        }
+                    }
+
+                    return $varValue;
+                }
+            )
         ),
         'published' => array
         (
