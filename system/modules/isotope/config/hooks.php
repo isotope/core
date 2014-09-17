@@ -29,9 +29,6 @@ $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Fronten
 if (TL_MODE == 'FE') {
     // Only limit countries in FE
     $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
-
-    // Set module and module id for payment and/or shipping modules
-    $GLOBALS['ISO_HOOKS']['initializePostsale'][]       = array('Isotope\Frontend', 'setPostsaleModuleSettings');
 }
 
 if (TL_MODE == 'BE') {
