@@ -63,6 +63,12 @@ abstract class Attribute extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
+     * Holds a map for field name to ID
+     * @type array
+     */
+    protected static $arrFieldNameMap = array();
+
+    /**
      * Return true if attribute is a variant option
      * @return      bool
      * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
@@ -684,6 +690,21 @@ abstract class Attribute extends TypeAgent
      */
     public static function findByFieldName($strField, array $arrOptions = array())
     {
-        return static::findOneBy('field_name', $strField, $arrOptions);
+        if (!isset(static::$arrFieldNameMap[$strField])) {
+            $objAttribute = static::findOneBy('field_name', $strField, $arrOptions);
+
+            if (null === $objAttribute) {
+                static::$arrFieldNameMap[$strField] = false;
+            } else {
+                static::$arrFieldNameMap[$strField] = $objAttribute->id;
+            }
+
+            return $objAttribute;
+
+        } elseif (static::$arrFieldNameMap[$strField] === false) {
+            return null;
+        }
+
+        return static::findByPk(static::$arrFieldNameMap[$strField], $arrOptions);
     }
 }
