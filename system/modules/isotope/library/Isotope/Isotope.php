@@ -74,7 +74,7 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
             \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters

@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -443,7 +442,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -468,7 +467,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
@@ -493,7 +492,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -518,7 +517,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -543,7 +542,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -569,7 +568,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -595,7 +594,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -621,7 +620,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -646,7 +645,7 @@ abstract class Attribute extends TypeAgent
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];

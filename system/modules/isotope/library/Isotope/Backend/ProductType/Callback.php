@@ -199,7 +199,7 @@ class Callback extends \Backend
      */
     public function validateVariantAttributes($varValue)
     {
-        \Haste\Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
         $arrAttributes = deserialize($varValue);

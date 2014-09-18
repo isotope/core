@@ -45,7 +45,7 @@ class Permission extends \Backend
         }
 
         // Disable variants if no such attributes are available
-        \Haste\Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
         $blnVariants = false;
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $strName => $arrConfig) {
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
