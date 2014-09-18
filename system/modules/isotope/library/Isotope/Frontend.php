@@ -510,7 +510,7 @@ window.addEvent('domready', function()
     {
         global $objPage;
 
-        // $objPage not available, we dont know if the page is allowed
+        // $objPage not available, we don't know if the page is allowed
         if (null === $objPage || $objPage == 0) {
             return $arrPages;
         }
@@ -521,11 +521,7 @@ window.addEvent('domready', function()
         $intMember = 0;
         if (null !== $objMember) {
             $intMember = $objMember->id;
-            $arrGroups = deserialize($objMember->groups);
-
-            if (!is_array($arrGroups)) {
-                $arrGroups = array();
-            }
+            $arrGroups = deserialize($objMember->groups, true);
         }
 
         foreach (array_diff($arrPages, $arrAvailable, $arrUnavailable) as $intPage) {

@@ -13,8 +13,6 @@
 namespace Isotope\Upgrade;
 
 
-use Haste\Haste;
-
 class To0020010064 extends \System
 {
 
@@ -22,7 +20,7 @@ class To0020010064 extends \System
     {
         if ($blnInstalled) {
 
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
 

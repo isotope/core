@@ -5,6 +5,7 @@
 <input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
 <?php endforeach; ?>
 <noscript>
+<p><?php echo $this->noscript; ?></p>
 <input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
 </form>

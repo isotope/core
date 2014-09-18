@@ -11,6 +11,7 @@
 <input type="hidden" name="AUTHCODE" value="<?php echo $this->authcode; ?>">
 
 <noscript>
+<p><?php echo $this->noscript; ?></p>
 <input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
 </form>

@@ -140,8 +140,12 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
 
         $objTemplate = new \Isotope\Template('iso_payment_sofortueberweisung');
         $objTemplate->setData($this->arrData);
-        $objTemplate->action = $strUrl;
-        $objTemplate->params = array_filter(array_diff_key($arrParams, array('project_password' => '')));
+        $objTemplate->action   = $strUrl;
+        $objTemplate->params   = array_filter(array_diff_key($arrParams, array('project_password' => '')));
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

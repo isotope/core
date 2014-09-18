@@ -40,7 +40,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.2.0-dev';
+    const VERSION = '2.2.0-rc1';
 
     /**
      * True if the system has been initialized
@@ -74,7 +74,7 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
             \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
@@ -229,7 +229,7 @@ class Isotope extends \Controller
 
         // Possibly add/subtract tax
         /** @var TaxClass $objTaxClass */
-        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
+        if ($intTaxClass > 0 && ($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
@@ -369,7 +369,7 @@ class Isotope extends \Controller
                 break;
 
             case 'discount':
-                if (!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue)) {
+                if (!preg_match('/^[-+]\d+(\.\d+)?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
                 }
 
@@ -377,7 +377,7 @@ class Isotope extends \Controller
                 break;
 
             case 'surcharge':
-                if (!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue)) {
+                if (!preg_match('/^-?\d+(\.\d+)?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
                 }
 

@@ -357,6 +357,7 @@ $GLOBALS['ISO_INTEGRITY'] = array
 (
     '\Isotope\IntegrityCheck\PriceTable',
     '\Isotope\IntegrityCheck\VariantOrphans',
+    '\Isotope\IntegrityCheck\AttributeOptionOrphans',
     '\Isotope\IntegrityCheck\UnusedRules'
 );
 
@@ -414,6 +415,11 @@ if (\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
     $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
+
+    // Set module and module id for payment and/or shipping modules
+    if (TL_MODE == 'FE') {
+        $GLOBALS['ISO_HOOKS']['initializePostsale'][]       = array('Isotope\Frontend', 'setPostsaleModuleSettings');
+    }
 }
 
 

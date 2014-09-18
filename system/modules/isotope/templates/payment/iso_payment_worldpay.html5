@@ -1,5 +1,5 @@
-<h2><?php echo $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]; ?></h2>
-<p class="message"><?php echo $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]; ?></p>
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
 <form id="worldpay<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
 <input type="hidden" name="instId" value="<?php echo $this->instId; ?>">
 <input type="hidden" name="cartId" value="<?php echo $this->cartId; ?>">
@@ -23,7 +23,8 @@
 <input type="hidden" name="signature" value="<?php echo $this->signature; ?>">
 <input type="hidden" name="M_pageId" value="<?php echo $this->pageId; ?>">
 <noscript>
-<input type="submit" value="<?php echo specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]); ?>">
+<p><?php echo $this->noscript; ?></p>
+<input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
 </form>
 <script>

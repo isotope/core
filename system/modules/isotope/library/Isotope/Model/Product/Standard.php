@@ -717,9 +717,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                         unset($arrField['options'][$k]);
                     }
                 }
+
+                $arrField['options'] = array_values($arrField['options']);
             }
 
-            $arrField['options'] = array_values($arrField['options']);
             $arrField['value']   = $this->$strField;
 
         } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {

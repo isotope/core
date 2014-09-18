@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
@@ -176,8 +177,8 @@ abstract class Module extends Contao_Module
 
     /**
      * Find jumpTo page for current category scope
-     * @param   Product
-     * @return  PageModel
+     * @param   $objProduct \Isotope\Interfaces\IsotopeProduct
+     * @return  \PageModel
      */
     protected function findJumpToPage($objProduct)
     {
@@ -186,23 +187,39 @@ abstract class Module extends Contao_Module
 
         $arrCategories = array();
 
-        if ($this->iso_category_scope != 'current_category' && $this->iso_category_scope != '' && $objPage->alias != 'index') {
-            $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
+        if ($this->iso_category_scope != 'current_category'
+            && $this->iso_category_scope != ''
+            && $objPage->alias != 'index'
+        ) {
+            $arrCategories = array_intersect(
+                $objProduct->getCategories(true),
+                $this->findCategories()
+            );
         }
 
-        // If our current category scope does not match with any product category, use the first product category in the current root page
+        // If our current category scope does not match with any product category,
+        // use the first allowed product category in the current root page
         if (empty($arrCategories)) {
-            $arrCategories = array_intersect($objProduct->getCategories(), \Database::getInstance()->getChildRecords($objPage->rootId, $objPage->getTable()));
+            $arrCategories = Frontend::getPagesInCurrentRoot(
+                $objProduct->getCategories(true),
+                \FrontendUser::getInstance()
+            );
         }
 
-        foreach ($arrCategories as $intCategory) {
-            $objCategory = \PageModel::findByPk($intCategory);
+        if (!empty($arrCategories)
+         && ($objCategories = \PageModel::findMultipleByIds($arrCategories)) !== null
+        ) {
+            $blnMoreThanOne = $objCategories->count() > 1;
+            foreach ($objCategories as $objCategory) {
 
-            if ($objCategory->alias == 'index' && count($arrCategories) > 1) {
-                continue;
+                if ($objCategory->alias == 'index'
+                    && $blnMoreThanOne
+                ) {
+                    continue;
+                }
+
+                return $objCategory;
             }
-
-            return $objCategory;
         }
 
         return $objIsotopeListPage ? : $objPage;

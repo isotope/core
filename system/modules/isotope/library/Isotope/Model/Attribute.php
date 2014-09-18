@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -417,8 +416,10 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Generate HTML list for array values
-     * @param   array
-     * @return  string
+     *
+     * @param array $arrValues
+     *
+     * @return string
      */
     protected function generateList(array $arrValues)
     {
@@ -439,14 +440,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Get list of system columns
-     * @return  array
+     *
+     * @return array
      */
     public static function getSystemColumnsFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -463,14 +465,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of variant option fields
-     * @return  array
+     *
+     * @return array
      */
     public static function getVariantOptionFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
@@ -487,14 +490,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that are customer defined
-     * @return  array
+     *
+     * @return array
      */
     public static function getCustomerDefinedFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -511,14 +515,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that are multilingual
-     * @return  array
+     *
+     * @return array
      */
     public static function getMultilingualFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -535,14 +540,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that have fetch_fallback set
-     * @return  array
+     *
+     * @return array
      */
     public static function getFetchFallbackFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -560,14 +566,15 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of dynamic fields
      * Dynamic fields cannot be filtered on database level (e.g. product price)
-     * @return  array
+     *
+     * @return array
      */
     public static function getDynamicAttributeFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -585,14 +592,15 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
-     * @return  array
+     *
+     * @return array
      */
     public static function getFixedFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -610,14 +618,15 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
-     * @return  array
+     *
+     * @return array
      */
     public static function getVariantFixedFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
@@ -634,14 +643,15 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that must be inherited by variants
-     * @return  array
+     *
+     * @return array
      */
     public static function getInheritFields()
     {
         static $arrFields;
 
         if (null === $arrFields) {
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];

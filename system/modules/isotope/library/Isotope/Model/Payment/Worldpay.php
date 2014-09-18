@@ -124,10 +124,14 @@ class Worldpay extends Postsale implements IsotopePayment
         $objTemplate = new \Isotope\Template('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);
-        $objTemplate->id     = $this->id;
-        $objTemplate->pageId = $objPage->id;
-        $objTemplate->debug  = $this->debug;
-        $objTemplate->action = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : 'https://secure.worldpay.com/wcc/purchase');
+        $objTemplate->id       = $this->id;
+        $objTemplate->pageId   = $objPage->id;
+        $objTemplate->debug    = $this->debug;
+        $objTemplate->action   = ($this->debug ? 'https://secure-test.worldpay.com/wcc/purchase' : 'https://secure.worldpay.com/wcc/purchase');
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }
