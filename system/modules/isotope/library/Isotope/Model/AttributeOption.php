@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -89,6 +90,34 @@ class AttributeOption extends \MultilingualModel
     }
 
     /**
+     * Check if we show from price for option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return bool
+     */
+    public function isFromPrice(IsotopeProduct $objProduct = null)
+    {
+        if ($this->isPercentage() && null !== $objProduct) {
+
+            /** @type ProductPrice[] $objPrice */
+            $objPrice = $objProduct->getPrice();
+
+            if (null !== $objPrice && $objPrice instanceof ProductPriceCollection) {
+                $arrPrices = array();
+
+                foreach ($objPrice as $objPriceModel) {
+                    $arrPrices[] = $objPriceModel->getValueForTier($objPriceModel->getLowestTier());
+                }
+
+                return count(array_unique($arrPrices)) > 1;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Return percentage amount (if applicable)
      *
      * @return float
@@ -113,12 +142,35 @@ class AttributeOption extends \MultilingualModel
     public function getPrice(IsotopeProduct $objProduct = null)
     {
         if ($this->isPercentage() && null !== $objProduct) {
+
+            /** @type ProductPrice|ProductPrice[] $objPrice */
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice) {
-                $fltAmount = $objPrice->getOriginalAmount();
 
-                return $fltAmount / 100 * $this->getPercentage();
+                if ($objPrice instanceof ProductPriceCollection) {
+                    $fltPrice = null;
+
+                    foreach ($objPrice as $objPriceModel) {
+                        $fltAmount = $objPriceModel->getAmount();
+
+                        if (null === $fltPrice || $fltAmount < $fltPrice) {
+                            $fltPrice = $fltAmount;
+                        }
+                    }
+                } else {
+                    $fltPrice = $objPrice->getAmount();
+                }
+
+                return $fltPrice / 100 * $this->getPercentage();
+            }
+        } else {
+
+            /** @type ProductPrice|ProductPrice[] $objPrice */
+            if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
+                return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
+            } else {
+                return Isotope::calculatePrice($this->price, $this, 'price');
             }
         }
 
@@ -152,13 +204,15 @@ class AttributeOption extends \MultilingualModel
         if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
 
             $strLabel .= ' (';
+            $strPrice = '';
 
             if (!$this->isPercentage() || null !== $objProduct) {
-                $strLabel .= Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
+                $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
             } else {
-                $strLabel .= $this->price;
+                $strPrice = $this->price;
             }
 
+            $strLabel .= $this->isFromPrice($objProduct) ? sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice) : $strPrice;
             $strLabel .= ')';
         }
 
@@ -168,7 +222,7 @@ class AttributeOption extends \MultilingualModel
     /**
      * Find all options by attribute
      *
-     * @param Attribute $objAttribute
+     * @param IsotopeAttributeWithOptions|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
      */
