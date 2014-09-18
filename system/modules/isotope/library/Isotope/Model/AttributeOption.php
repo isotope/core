@@ -27,14 +27,15 @@ use Isotope\Isotope;
  * @property string ptable
  * @property int    langPid
  * @property string language
- * @property string label
+ * @property string field_name
  * @property string type
  * @property bool   isDefault
+ * @property string label
+ * @property string price
  * @property bool   published
  */
 class AttributeOption extends \MultilingualModel
 {
-
     /**
      * Name of the current table
      * @var string
