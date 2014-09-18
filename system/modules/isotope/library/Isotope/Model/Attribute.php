@@ -411,8 +411,10 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Generate HTML list for array values
-     * @param   array
-     * @return  string
+     *
+     * @param array $arrValues
+     *
+     * @return string
      */
     protected function generateList(array $arrValues)
     {
@@ -433,7 +435,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Get list of system columns
-     * @return  array
+     *
+     * @return array
      */
     public static function getSystemColumnsFields()
     {
@@ -457,7 +460,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of variant option fields
-     * @return  array
+     *
+     * @return array
      */
     public static function getVariantOptionFields()
     {
@@ -481,7 +485,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that are customer defined
-     * @return  array
+     *
+     * @return array
      */
     public static function getCustomerDefinedFields()
     {
@@ -505,7 +510,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that are multilingual
-     * @return  array
+     *
+     * @return array
      */
     public static function getMultilingualFields()
     {
@@ -529,7 +535,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that have fetch_fallback set
-     * @return  array
+     *
+     * @return array
      */
     public static function getFetchFallbackFields()
     {
@@ -554,7 +561,8 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of dynamic fields
      * Dynamic fields cannot be filtered on database level (e.g. product price)
-     * @return  array
+     *
+     * @return array
      */
     public static function getDynamicAttributeFields()
     {
@@ -579,7 +587,8 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
-     * @return  array
+     *
+     * @return array
      */
     public static function getFixedFields()
     {
@@ -604,7 +613,8 @@ abstract class Attribute extends TypeAgent
     /**
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
-     * @return  array
+     *
+     * @return array
      */
     public static function getVariantFixedFields()
     {
@@ -628,7 +638,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return list of fields that must be inherited by variants
-     * @return  array
+     *
+     * @return array
      */
     public static function getInheritFields()
     {
