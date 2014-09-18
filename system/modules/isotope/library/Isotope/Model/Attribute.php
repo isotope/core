@@ -535,12 +535,14 @@ abstract class Attribute extends TypeAgent
 
                 UNION
 
-                SELECT field_name
-                FROM tl_iso_attribute_option
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.field_name=o.field_name
                 WHERE
-                  ptable='tl_iso_product'
-                  AND published='1'
-                  AND price!=''
+                  a.optionsSource='product'
+                  AND o.ptable='tl_iso_product'
+                  AND o.published='1'
+                  AND o.price!=''
             ")->fetchEach('field_name');
         }
 
