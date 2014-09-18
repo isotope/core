@@ -16,6 +16,7 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -595,7 +596,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions);
+                $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions);
 
                 if ($strWidget != '') {
                     $arrProductOptions[$attribute] = array_merge($arrData, array
@@ -603,10 +604,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                         'name'    => $attribute,
                         'html'    => $strWidget,
                     ));
-
-                    if ($arrData['attributes']['variant_option'] || $arrData['attributes']['ajax_option']) {
-                        $arrAjaxOptions[] = $attribute;
-                    }
                 }
 
             }
@@ -675,9 +672,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @param   boolean
      * @return  string
      */
-    protected function generateProductOptionWidget($strField, &$arrVariantOptions)
+    protected function generateProductOptionWidget($strField, &$arrVariantOptions, &$arrAjaxOptions)
     {
-        /** @var IsotopeAttribute|Attribute $objAttribute */
+        /** @var IsotopeAttribute|IsotopeAttributeWithOptions|IsotopeAttributeForVariants|Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
@@ -725,6 +722,15 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
             return '';
+        }
+
+        if ($objAttribute->isVariantOption()
+            || (
+                $objAttribute instanceof IsotopeAttributeWithOptions
+                && $objAttribute->canHavePrices()
+            )
+            || $arrField['attributes']['ajax_option']) {
+            $arrAjaxOptions[] = $strField;
         }
 
         // Convert optgroups so they work with FormSelectMenu

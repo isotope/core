@@ -514,6 +514,40 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * Return array of attributes that have price relevant information
+     *
+     * @return array
+     */
+    public static function getPricedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = \Database::getInstance()->query("
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.id=o.pid
+                WHERE
+                  a.optionsSource='table'
+                  AND o.ptable='tl_iso_attribute'
+                  AND o.published='1'
+                  AND o.price!=''
+
+                UNION
+
+                SELECT field_name
+                FROM tl_iso_attribute_option
+                WHERE
+                  ptable='tl_iso_product'
+                  AND published='1'
+                  AND price!=''
+            ")->fetchEach('field_name');
+        }
+
+        return $arrFields;
+    }
+
+    /**
      * Return list of fields that are multilingual
      *
      * @return array

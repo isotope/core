@@ -33,4 +33,11 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
      * @return  array
      */
     public function getOptionsForWidget(IsotopeProduct $objProduct = null);
+
+    /**
+     * Return true if attribute can have prices
+     *
+     * @return bool
+     */
+    public function canHavePrices();
 }

@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
@@ -20,6 +21,20 @@ use Isotope\Translation;
 
 abstract class AbstractAttributeWithOptions extends Attribute implements IsotopeAttributeWithOptions
 {
+
+    /**
+     * Return true if attribute can have prices
+     *
+     * @return bool
+     */
+    public function canHavePrices()
+    {
+        if ($this instanceof IsotopeAttributeForVariants && $this->isVariantOption()) {
+            return false;
+        }
+
+        return in_array($this->field_name, Attribute::getPricedFields());
+    }
 
     /**
      * Get options of attribute from database
