@@ -61,6 +61,24 @@ class AttributeOption extends \MultilingualModel
     }
 
     /**
+     * Get attribute of option
+     *
+     * @return Attribute|null
+     */
+    public function getAttribute()
+    {
+        if ($this->ptable == 'tl_iso_attribute') {
+            return Attribute::findByPk($this->pid);
+
+        } elseif ($this->ptable == 'tl_iso_product') {
+            return Attribute::findByFieldName($this->field_name);
+
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Return true if the option price is a percentage (not fixed) amount
      *
      * @return bool
