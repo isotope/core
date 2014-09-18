@@ -16,6 +16,7 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -720,6 +721,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $arrField['options'] = array_values($arrField['options']);
             $arrField['value']   = $this->$strField;
+
+        } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
+            return '';
         }
 
         // Convert optgroups so they work with FormSelectMenu
