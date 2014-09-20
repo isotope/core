@@ -15,8 +15,10 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
+use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductPrice;
@@ -724,17 +726,27 @@ window.addEvent('domready', function()
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
         if ($objSource instanceof ProductPrice && $strField == 'price' && ($objProduct = $objSource->getRelated('pid')) !== null) {
-            /** @type IsotopeProduct $objProduct */
+            /** @type IsotopeProduct|Standard $objProduct */
 
-            foreach ($arrOptions as $field => $value) {
-                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null && $objAttribute instanceof IsotopeAttributeWithOptions) {
-                    $attributeOptions = $objAttribute->getOptionsForWidget($objProduct);
+            $arrAttributes = array_intersect(
+                Attribute::getPricedFields(),
+                array_merge(
+                    $objProduct->getAttributes(),
+                    $objProduct->getVariantAttributes()
+                )
+            );
 
-                    foreach ($attributeOptions as $option) {
-                        if ($option['value'] == $value && isset($option['model'])) {
+            foreach ($arrAttributes as $field) {
+                $value = isset($arrOptions[$field]) ? $arrOptions[$field] : $objProduct->$field;
 
-                            /** @type AttributeOption $objOption */
-                            $objOption = $option['model'];
+                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null
+                    && $objAttribute instanceof IsotopeAttributeWithOptions
+                    && $objAttribute->canHavePrices()
+                    && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
+                ) {
+                    /** @type AttributeOption $objOption */
+                    foreach ($objOptions as $objOption) {
+                        if ($objOption->id == $value) {
                             $fltPrice += $objOption->getPrice($objProduct);
                             break;
                         }
