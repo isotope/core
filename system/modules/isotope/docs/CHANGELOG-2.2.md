@@ -6,6 +6,7 @@ Version 2.2.0-rc1 (2014-??-??)
 
 ### New
 - Added the an integrity check to check for attribute option orphans (#1237)
+- Added price surcharges for attribute options (#1165)
 
 ### Improved
 - Performance when finding the correct jumpTo page (#1104)

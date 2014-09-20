@@ -247,12 +247,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'],
             'exclude'               => true,
             'inputType'             => 'dcaWizard',
-            'foreignTable'          => \Isotope\Model\AttributeOption::getTable(),
+            'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (
                 'fields'            => array('type', 'label', 'isDefault', 'published'),
                 'tl_class'          => 'clr',
-                'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable']['edit'],
+                'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable_edit'],
+                'showOperations'    => true,
+                'operations'        => array('edit', 'show'),
             ),
         ),
         'foreignKey' => array

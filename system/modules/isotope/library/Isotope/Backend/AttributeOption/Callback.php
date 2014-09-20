@@ -12,6 +12,9 @@
 
 namespace Isotope\Backend\AttributeOption;
 
+use Isotope\Model\Attribute;
+use Isotope\Model\AttributeOption;
+
 class Callback extends \Backend
 {
 
@@ -27,6 +30,41 @@ class Callback extends \Backend
                 'stop' => array(),
                 'single' => array()
             );
+        }
+    }
+
+    /**
+     * Modify DCA
+     */
+    public function checkPermission()
+    {
+        // Attribute options for products can always have a price
+        if (\Input::get('do') != 'iso_products') {
+
+            /** @type Attribute $objAttribute */
+            $objAttribute = null;
+
+            switch (\Input::get('act')) {
+
+                case 'edit':
+                case 'delete':
+                case 'paste':
+                    if (($objOption = AttributeOption::findByPk(\Input::get('id'))) !== null) {
+                        $objAttribute = Attribute::findByPk($objOption->pid);
+                    }
+                    break;
+
+                case '':
+                case 'select':
+                case 'editAll':
+                case 'overwriteAll':
+                    $objAttribute = Attribute::findByPk(\Input::get('id'));
+                    break;
+            }
+
+            if (null === $objAttribute || $objAttribute->isVariantOption()) {
+                unset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price']);
+            }
         }
     }
 
@@ -63,6 +101,10 @@ class Callback extends \Backend
 
         if ($row['isDefault']) {
             $label = '<strong>'.$label.'</strong>';
+        }
+
+        if ($row['price'] != '' && isset($GLOBALS['TL_DCA'][AttributeOption::getTable()]['fields']['price'])) {
+            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">(' . $row['price'] . ')</span>';
         }
 
         return $label;

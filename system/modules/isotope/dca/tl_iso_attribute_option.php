@@ -27,6 +27,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         'onload_callback' => array
         (
             array('\Isotope\Backend\AttributeOption\Callback', 'initWrappers'),
+            array('\Isotope\Backend\AttributeOption\Callback', 'checkPermission'),
         ),
         'onsubmit_callback' => array
         (
@@ -112,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
     (
         '__selector__'              => array('type'),
         'default'                   => '{label_legend},type',
-        'option'                    => '{label_legend},type,isDefault,label;{publish_legend},published',
+        'option'                    => '{label_legend},type,isDefault,label;{price_legend:hide},price;{publish_legend},published',
         'group'                     => '{label_legend},type,label;{publish_legend},published',
     ),
 
@@ -125,27 +126,27 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'pid' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'sorting' => array
         (
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+            'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
         'tstamp' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'ptable' => array
         (
-            'sql'                   =>  "varchar(64) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'langPid' => array
         (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'language' => array
         (
-            'sql'                   =>  "varchar(5) NOT NULL default ''",
+            'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'field_name' => array
         (
@@ -181,6 +182,27 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'translatableFor'=>'*', 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'price' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option'][(\Input::get('popup') ? 'price' : 'price_short')],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
+            'save_callback' => array(
+                function($varValue) {
+                    if ($varValue != '' && strpos($varValue, '.') === false && strpos($varValue, '%') === false) {
+                        $varValue = number_format($varValue, 2, '.', '');
+
+                        if ($varValue > 0) {
+                            $varValue = '+' . $varValue;
+                        }
+                    }
+
+                    return $varValue;
+                }
+            )
         ),
         'published' => array
         (

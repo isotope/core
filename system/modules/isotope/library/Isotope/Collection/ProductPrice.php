@@ -21,7 +21,6 @@ use Model\Collection;
  */
 class ProductPrice extends Collection implements IsotopePrice
 {
-
     /**
      * Remove duplicate models with the same column value (first model will be kept)
      *
@@ -53,7 +52,8 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return true if more than one price is available
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasTiers()
     {
@@ -62,7 +62,8 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return lowest tier (= minimum quantity)
-     * @return  int
+     *
+     * @return int
      */
     public function getLowestTier()
     {
@@ -71,8 +72,11 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return price
-     * @param   int
-     * @return  float
+     *
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
+     * @return float
      */
     public function getAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -81,7 +85,10 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return original price
-     * @param   int
+     *
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
      * @return  float
      */
     public function getOriginalAmount($intQuantity = 1, array $arrOptions = array())
@@ -91,8 +98,11 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return net price (without taxes)
-     * @param   int
-     * @return  float
+     *
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
+     * @return float
      */
     public function getNetAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -101,8 +111,11 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Return gross price (with all taxes)
-     * @param   int
-     * @return  float
+     *
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
+     * @return float
      */
     public function getGrossAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -111,10 +124,14 @@ class ProductPrice extends Collection implements IsotopePrice
 
     /**
      * Generate price for HTML rendering
-     * @param   bool
-     * @return  string
+     *
+     * @param bool  $blnShowTiers
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
+     * @return string
      */
-    public function generate($blnShowTiers=false)
+    public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array())
     {
         if (count($this->arrModels) > 1) {
 
@@ -124,12 +141,12 @@ class ProductPrice extends Collection implements IsotopePrice
 
             /** @var \Isotope\Model\ProductPrice $objPrice */
             foreach ($this->arrModels as $objPrice) {
-                $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
+                $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount($arrOptions) : $objPrice->getAmount($intQuantity, $arrOptions);
                 $arrPrices[]  = $fltNew;
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
                     $fltPrice         = $fltNew;
-                    $fltOriginalPrice = $objPrice->getOriginalAmount();
+                    $fltOriginalPrice = $objPrice->getOriginalAmount($intQuantity, $arrOptions);
                 }
             }
 
@@ -148,7 +165,7 @@ class ProductPrice extends Collection implements IsotopePrice
             }
 
         } else {
-            return $this->current()->generate($blnShowTiers);
+            return $this->current()->generate($blnShowTiers, $intQuantity, $arrOptions);
         }
     }
 }

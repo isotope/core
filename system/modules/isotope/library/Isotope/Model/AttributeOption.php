@@ -12,8 +12,10 @@
 
 namespace Isotope\Model;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Isotope;
 
 
 /**
@@ -26,14 +28,15 @@ use Isotope\Interfaces\IsotopeProduct;
  * @property string ptable
  * @property int    langPid
  * @property string language
- * @property string label
+ * @property string field_name
  * @property string type
  * @property bool   isDefault
+ * @property string label
+ * @property string price
  * @property bool   published
  */
 class AttributeOption extends \MultilingualModel
 {
-
     /**
      * Name of the current table
      * @var string
@@ -43,22 +46,183 @@ class AttributeOption extends \MultilingualModel
     /**
      * Get array representation of the attribute option
      *
+     * @param IsotopeProduct $objProduct
+     *
      * @return array
      */
-    public function getAsArray()
+    public function getAsArray(IsotopeProduct $objProduct = null)
     {
         return array(
             'value'     => $this->id,
-            'label'     => $this->label,
+            'label'     => $this->getLabel($objProduct),
             'group'     => ($this->type == 'group' ? '1' : ''),
             'default'   => ($this->isDefault ? '1' : ''),
+            'model'     => $this
         );
+    }
+
+    /**
+     * Get attribute of option
+     *
+     * @return Attribute|null
+     */
+    public function getAttribute()
+    {
+        if ($this->ptable == 'tl_iso_attribute') {
+            return Attribute::findByPk($this->pid);
+
+        } elseif ($this->ptable == 'tl_iso_product') {
+            return Attribute::findByFieldName($this->field_name);
+
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Return true if the option price is a percentage (not fixed) amount
+     *
+     * @return bool
+     */
+    public function isPercentage()
+    {
+        return substr($this->arrData['price'], -1) == '%' ? true : false;
+    }
+
+    /**
+     * Check if we show from price for option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return bool
+     */
+    public function isFromPrice(IsotopeProduct $objProduct = null)
+    {
+        if ($this->isPercentage() && null !== $objProduct) {
+
+            /** @type ProductPrice[] $objPrice */
+            $objPrice = $objProduct->getPrice();
+
+            if (null !== $objPrice && $objPrice instanceof ProductPriceCollection) {
+                $arrPrices = array();
+
+                foreach ($objPrice as $objPriceModel) {
+                    $arrPrices[] = $objPriceModel->getValueForTier($objPriceModel->getLowestTier());
+                }
+
+                return count(array_unique($arrPrices)) > 1;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return percentage amount (if applicable)
+     *
+     * @return float
+     * @throws \UnexpectedValueException
+     */
+    public function getPercentage()
+    {
+        if (!$this->isPercentage()) {
+            throw new \UnexpectedValueException('Attribute option does not have a percentage amount.');
+        }
+
+        return substr($this->arrData['price'], 0, -1);
+    }
+
+    /**
+     * Return calculated price for this attribute option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return float
+     */
+    public function getPrice(IsotopeProduct $objProduct = null)
+    {
+        if ($this->isPercentage() && null !== $objProduct) {
+
+            /** @type ProductPrice|ProductPrice[] $objPrice */
+            $objPrice = $objProduct->getPrice();
+
+            if (null !== $objPrice) {
+
+                if ($objPrice instanceof ProductPriceCollection) {
+                    $fltPrice = null;
+
+                    foreach ($objPrice as $objPriceModel) {
+                        $fltAmount = $objPriceModel->getAmount();
+
+                        if (null === $fltPrice || $fltAmount < $fltPrice) {
+                            $fltPrice = $fltAmount;
+                        }
+                    }
+                } else {
+                    $fltPrice = $objPrice->getAmount();
+                }
+
+                return $fltPrice / 100 * $this->getPercentage();
+            }
+        } else {
+
+            /** @type ProductPrice|ProductPrice[] $objPrice */
+            if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
+                return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
+            } else {
+                return Isotope::calculatePrice($this->price, $this, 'price');
+            }
+        }
+
+        return $this->price;
+    }
+
+    /**
+     * Get formatted label for the attribute option
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return string
+     */
+    public function getLabel(IsotopeProduct $objProduct = null)
+    {
+        $strLabel = $this->label;
+
+        /** @type Attribute $objAttribute */
+        $objAttribute = null;
+
+        switch ($this->ptable) {
+            case 'tl_iso_product':
+                $objAttribute = Attribute::findByFieldName($this->field_name);
+                break;
+
+            case 'tl_iso_attribute':
+                $objAttribute = Attribute::findByPk($this->pid);
+                break;
+        }
+
+        if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
+
+            $strLabel .= ' (';
+            $strPrice = '';
+
+            if (!$this->isPercentage() || null !== $objProduct) {
+                $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
+            } else {
+                $strPrice = $this->price;
+            }
+
+            $strLabel .= $this->isFromPrice($objProduct) ? sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice) : $strPrice;
+            $strLabel .= ')';
+        }
+
+        return $strLabel;
     }
 
     /**
      * Find all options by attribute
      *
-     * @param Attribute $objAttribute
+     * @param IsotopeAttributeWithOptions|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
      */

@@ -12,14 +12,16 @@
 
 namespace Isotope;
 
-use Haste\Haste;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Attribute;
+use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
+use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Module\Messages;
-
 
 /**
  * Class Isotope\Frontend
@@ -707,5 +709,52 @@ window.addEvent('domready', function()
             $objPostsale->setModule('pay');
             $objPostsale->setModuleId($intId);
         }
+    }
+
+    /**
+     * Calculate price surcharge for attribute options
+     *
+     * @param float  $fltPrice
+     * @param object $objSource
+     * @param string $strField
+     * @param int    $intTaxClass
+     * @param array  $arrOptions
+     *
+     * @return float
+     * @throws \Exception
+     */
+    public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
+    {
+        if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
+            /** @type IsotopeProduct|Standard $objProduct */
+
+            $arrAttributes = array_intersect(
+                Attribute::getPricedFields(),
+                array_merge(
+                    $objProduct->getAttributes(),
+                    $objProduct->getVariantAttributes()
+                )
+            );
+
+            foreach ($arrAttributes as $field) {
+                $value = isset($arrOptions[$field]) ? $arrOptions[$field] : $objProduct->$field;
+
+                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null
+                    && $objAttribute instanceof IsotopeAttributeWithOptions
+                    && $objAttribute->canHavePrices()
+                    && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
+                ) {
+                    /** @type AttributeOption $objOption */
+                    foreach ($objOptions as $objOption) {
+                        if ($objOption->id == $value) {
+                            $fltPrice += $objOption->getPrice($objProduct);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fltPrice;
     }
 }

@@ -62,6 +62,12 @@ abstract class Attribute extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
+     * Holds a map for field name to ID
+     * @type array
+     */
+    protected static $arrFieldNameMap = array();
+
+    /**
      * Return true if attribute is a variant option
      * @return      bool
      * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
@@ -508,6 +514,42 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * Return array of attributes that have price relevant information
+     *
+     * @return array
+     */
+    public static function getPricedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            $arrFields = \Database::getInstance()->query("
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.id=o.pid
+                WHERE
+                  a.optionsSource='table'
+                  AND o.ptable='tl_iso_attribute'
+                  AND o.published='1'
+                  AND o.price!=''
+
+                UNION
+
+                SELECT a.field_name
+                FROM tl_iso_attribute a
+                JOIN tl_iso_attribute_option o ON a.field_name=o.field_name
+                WHERE
+                  a.optionsSource='product'
+                  AND o.ptable='tl_iso_product'
+                  AND o.published='1'
+                  AND o.price!=''
+            ")->fetchEach('field_name');
+        }
+
+        return $arrFields;
+    }
+
+    /**
      * Return list of fields that are multilingual
      *
      * @return array
@@ -667,7 +709,7 @@ abstract class Attribute extends TypeAgent
      *
      * @return \Isotope\Model\Attribute[]|null The model collection or null if the result is empty
      */
-    public static function findValid(array $arrOptions=array())
+    public static function findValid(array $arrOptions = array())
     {
         $t = static::getTable();
 
@@ -682,5 +724,33 @@ abstract class Attribute extends TypeAgent
         $arrOptions['column'][] = "$t.field_name!=''";
 
         return static::findAll($arrOptions);
+    }
+
+    /**
+     * Get an attribute by database field name
+     *
+     * @param string $strField
+     * @param array  $arrOptions
+     *
+     * @return \Model|null
+     */
+    public static function findByFieldName($strField, array $arrOptions = array())
+    {
+        if (!isset(static::$arrFieldNameMap[$strField])) {
+            $objAttribute = static::findOneBy('field_name', $strField, $arrOptions);
+
+            if (null === $objAttribute) {
+                static::$arrFieldNameMap[$strField] = false;
+            } else {
+                static::$arrFieldNameMap[$strField] = $objAttribute->id;
+            }
+
+            return $objAttribute;
+
+        } elseif (static::$arrFieldNameMap[$strField] === false) {
+            return null;
+        }
+
+        return static::findByPk(static::$arrFieldNameMap[$strField], $arrOptions);
     }
 }
