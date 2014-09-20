@@ -125,11 +125,13 @@ class ProductPrice extends Collection implements IsotopePrice
     /**
      * Generate price for HTML rendering
      *
-     * @param bool $blnShowTiers
+     * @param bool  $blnShowTiers
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
      * @return string
      */
-    public function generate($blnShowTiers = false)
+    public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array())
     {
         if (count($this->arrModels) > 1) {
 
@@ -139,12 +141,12 @@ class ProductPrice extends Collection implements IsotopePrice
 
             /** @var \Isotope\Model\ProductPrice $objPrice */
             foreach ($this->arrModels as $objPrice) {
-                $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount() : $objPrice->getAmount();
+                $fltNew       = $blnShowTiers ? $objPrice->getLowestAmount($arrOptions) : $objPrice->getAmount($intQuantity, $arrOptions);
                 $arrPrices[]  = $fltNew;
 
                 if (null === $fltPrice || $fltNew < $fltPrice) {
                     $fltPrice         = $fltNew;
-                    $fltOriginalPrice = $objPrice->getOriginalAmount();
+                    $fltOriginalPrice = $objPrice->getOriginalAmount($intQuantity, $arrOptions);
                 }
             }
 
@@ -163,7 +165,7 @@ class ProductPrice extends Collection implements IsotopePrice
             }
 
         } else {
-            return $this->current()->generate($blnShowTiers);
+            return $this->current()->generate($blnShowTiers, $intQuantity, $arrOptions);
         }
     }
 }
