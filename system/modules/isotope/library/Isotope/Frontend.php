@@ -13,6 +13,7 @@
 namespace Isotope;
 
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
@@ -21,7 +22,6 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\ProductPrice;
 
 /**
  * Class Isotope\Frontend
@@ -725,7 +725,7 @@ window.addEvent('domready', function()
      */
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
-        if ($objSource instanceof ProductPrice && $strField == 'price' && ($objProduct = $objSource->getRelated('pid')) !== null) {
+        if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
             /** @type IsotopeProduct|Standard $objProduct */
 
             $arrAttributes = array_intersect(
