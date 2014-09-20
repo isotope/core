@@ -12,6 +12,8 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Collection\AttributeOption;
+
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
 {
 
@@ -33,6 +35,15 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
      * @return array
      */
     public function getOptionsForWidget(IsotopeProduct $objProduct = null);
+
+    /**
+     * Get AttributeOption models for current attribute
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return AttributeOption
+     */
+    public function getOptionsFromManager(IsotopeProduct $objProduct = null);
 
     /**
      * Return true if attribute can have prices

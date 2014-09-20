@@ -17,10 +17,17 @@ use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
+use Isotope\Model\Product;
 use Isotope\Translation;
 
 abstract class AbstractAttributeWithOptions extends Attribute implements IsotopeAttributeWithOptions
 {
+    /**
+     * Cache product options for attribute
+     * "false" as long as the cache is not built
+     * @type \Isotope\Collection\AttributeOption|array
+     */
+    protected $varOptionsCache = false;
 
     /**
      * Return true if attribute can have prices
@@ -87,7 +94,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             case 'table':
-                $objOptions = AttributeOption::findByAttribute($this);
+                $objOptions = $this->getOptionsFromManager();
 
                 if (null === $objOptions) {
                     return array();
@@ -105,7 +112,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"');
                 }
 
-                $objOptions = AttributeOption::findByProductAndAttribute($objProduct, $this);
+                $objOptions = $this->getOptionsFromManager($objProduct);
 
                 if (null === $objOptions) {
                     return array();
@@ -121,6 +128,39 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Get AttributeOption models for current attribute
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return \Isotope\Collection\AttributeOption
+     */
+    public function getOptionsFromManager(IsotopeProduct $objProduct = null)
+    {
+        switch ($this->optionsSource) {
+
+            case 'table':
+                if (false === $this->varOptionsCache) {
+                    $this->varOptionsCache = AttributeOption::findByAttribute($this);
+                }
+
+                return $this->varOptionsCache;
+
+            case 'product':
+                /** @type IsotopeProduct|Product $objProduct */
+                if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
+                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"');
+                } elseif (!is_array($this->varOptionsCache) || array_key_exists($objProduct->id, $this->varOptionsCache)) {
+                    $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute($objProduct, $this);
+                }
+
+                return $this->varOptionsCache[$objProduct->id];
+
+            default:
+                throw new \UnexpectedValueException(static::$strTable.'.'.$this->field_name . ' does not use options manager');
+        }
     }
 
     /**
