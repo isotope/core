@@ -53,6 +53,8 @@ abstract class PSP extends Payment
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        /** @type Order $objOrder */
+
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
             return false;
@@ -67,6 +69,7 @@ abstract class PSP extends Payment
         // Validate payment status
         switch ($this->getRequestData('STATUS')) {
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 9:  // Zahlung beantragt (Authorize & Capture)
                 $objOrder->date_paid = time();
                 // no break
