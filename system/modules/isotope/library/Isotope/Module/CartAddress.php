@@ -98,9 +98,10 @@ class CartAddress extends Module
 
         $objForm->bindModel($objAddress);
         $arrFields = $this->arrAddressFields;
+        $useBilling = in_array('billing', $this->iso_address);
 
         // Add form fields
-        $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
+        $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
 
             if (!in_array($strName, $arrFields)
                 || !$arrDca['eval']['feEditable']
@@ -111,10 +112,16 @@ class CartAddress extends Module
 
             // Special field "country"
             if ($strName == 'country') {
-                $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
+                if ($useBilling) {
+                    $arrCountries = Isotope::getConfig()->getBillingCountries();
+                    $arrDca['default'] = Isotope::getConfig()->billing_country;
+                } else {
+                    $arrCountries = Isotope::getConfig()->getShippingCountries();
+                    $arrDca['default'] = Isotope::getConfig()->shipping_country;
+                }
+
                 $arrDca['reference'] = $arrDca['options'];
                 $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
-                $arrDca['default'] = Isotope::getConfig()->billing_country;
             }
 
             return true;
@@ -142,7 +149,7 @@ class CartAddress extends Module
             }
 
             // Set the billing address
-            if (in_array('billing', $this->iso_address)) {
+            if ($useBilling) {
                 $objCart->setBillingAddress($objAddress);
             }
 
