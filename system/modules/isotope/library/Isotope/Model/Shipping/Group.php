@@ -14,7 +14,6 @@ namespace Isotope\Model\Shipping;
 
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
-use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
 
@@ -45,13 +44,11 @@ class Group extends Shipping implements IsotopeShipping
 
     /**
      * Is available if at least one shipping method was available
-     * @param   \Isotope\Interfaces\IsotopeProductCollection
-     * @param   \Isotope\Model\Address
      * @return  bool
      */
-    public function isAvailable($objCollection = null, $objAddress = null)
+    public function isAvailable()
     {
-        $this->getGroupMethods($objCollection, $objAddress);
+        $this->getGroupMethods();
 
         return !empty($this->arrMethods);
     }
@@ -109,16 +106,10 @@ class Group extends Shipping implements IsotopeShipping
     /**
      * Get shipping methods for this group
      * Must be lazy-loaded to prevent recursion
-     * @param   \Isotope\Interfaces\IsotopeProductCollection
-     * @param   \Isotope\Model\Address
      * @return  array
      */
-    protected function getGroupMethods($objCollection = null, $objAddress = null)
+    protected function getGroupMethods()
     {
-        // BC
-        $objCollection = ($objCollection === null) ? Isotope::getCart() : $objCollection;
-        $objAddress = ($objAddress === null) ? $objCollection->getShippingAddress() : $objAddress;
-
         if (false === $this->arrMethods) {
             $this->arrMethods = array();
             $arrMethods = deserialize($this->group_methods, true);
@@ -130,7 +121,7 @@ class Group extends Shipping implements IsotopeShipping
 
             if (($objMethods = Shipping::findMultipleByIds($arrMethods)) !== null) {
                 foreach ($objMethods as $objMethod) {
-                    if ($objMethod->isAvailable($objCollection, $objAddress)) {
+                    if ($objMethod->isAvailable()) {
                         $this->arrMethods[] = $objMethod;
                     }
                 }

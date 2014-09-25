@@ -57,16 +57,11 @@ abstract class Shipping extends TypeAgent
 
     /**
      * Return true or false depending on if shipping method is available
-     * @param   \Isotope\Interfaces\IsotopeProductCollection
-     * @param   \Isotope\Model\Address
      * @return  bool
+     * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
      */
-    public function isAvailable($objCollection = null, $objAddress = null)
+    public function isAvailable()
     {
-        // BC
-        $objCollection = ($objCollection === null) ? Isotope::getCart() : $objCollection;
-        $objAddress = ($objAddress === null) ? $objCollection->getShippingAddress() : $objAddress;
-
         if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
             return false;
         }
@@ -83,11 +78,11 @@ abstract class Shipping extends TypeAgent
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > $objCollection->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < $objCollection->getSubtotal())) {
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
             return false;
         }
 
-        $objScale = $objCollection->addToScale();
+        $objScale = Isotope::getCart()->addToScale();
 
         if (($minWeight = Weight::createFromTimePeriod($this->minimum_weight)) !== null && $objScale->isLessThan($minWeight)) {
             return false;
@@ -101,6 +96,8 @@ abstract class Shipping extends TypeAgent
         if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
+
+        $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
         if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries)) {
@@ -124,7 +121,7 @@ abstract class Shipping extends TypeAgent
         $arrTypes = deserialize($this->product_types);
 
         if (is_array($arrTypes) && !empty($arrTypes)) {
-            $arrItems = $objCollection->getItems();
+            $arrItems = Isotope::getCart()->getItems();
 
             foreach ($arrItems as $objItem) {
                 if (!$objItem->hasProduct() || !in_array($objItem->getProduct()->type, $arrTypes)) {
