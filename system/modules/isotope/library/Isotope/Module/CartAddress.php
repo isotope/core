@@ -102,7 +102,10 @@ class CartAddress extends Module
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
 
-            if (!in_array($strName, $arrFields) || !$arrDca['eval']['feEditable']) {
+            if (!in_array($strName, $arrFields)
+                || !$arrDca['eval']['feEditable']
+                || ($arrDca['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
+            ) {
                 return false;
             }
 
