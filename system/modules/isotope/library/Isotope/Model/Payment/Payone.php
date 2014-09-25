@@ -125,7 +125,9 @@ class Payone extends Postsale implements IsotopePayment
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strOptions);
+            $arrData['de[' . $i . ']']   = specialchars(
+                \String::restoreBasicEntities($objItem->getName() . $strOptions)
+            );
         }
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {

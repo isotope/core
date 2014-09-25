@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.8-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- Restore basic entities in payment methods (#1256)
 
 Version 2.1.7-stable (2014-09-01)
 ---------------------------------
