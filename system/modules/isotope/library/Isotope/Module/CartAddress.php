@@ -109,11 +109,6 @@ class CartAddress extends Module
                 return false;
             }
 
-            // Map checkboxWizard to regular checkbox widget
-            if ($arrDca['inputType'] == 'checkboxWizard') {
-                $arrDca['inputType'] = 'checkbox';
-            }
-
             // Special field "country"
             if ($strName == 'country') {
                 $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
