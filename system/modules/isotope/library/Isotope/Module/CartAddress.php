@@ -92,6 +92,7 @@ class CartAddress extends Module
         $objAddress = $this->getDefaultAddress();
 
         $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
+            /** @type Form $objHaste */
             return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
         }, (boolean) $this->tableless);
 
@@ -199,7 +200,7 @@ class CartAddress extends Module
         }
 
         if ($objAddress === null) {
-            $objAddress = new AddressModel();
+            $objAddress = new Address();
             $objAddress->ptable = 'tl_iso_product_collection';
         }
 
