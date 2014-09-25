@@ -79,7 +79,7 @@ class CartAddress extends Module
         $table = Address::getTable();
 
         \System::loadLanguageFile($table);
-        $this->loadDataContainer($table);
+        \Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {

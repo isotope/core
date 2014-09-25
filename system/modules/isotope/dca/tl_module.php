@@ -561,21 +561,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => function() {
-            $arrOptions = array();
-            $this->loadDataContainer(\Isotope\Model\Address::getTable());
-            \System::loadLanguageFile(\Isotope\Model\Address::getTable());
-            $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];
+        \Controller::loadDataContainer(\Isotope\Model\Address::getTable());
+        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
 
-            foreach ($arrDCA as $k => $arrField) {
-                if (!$arrField['eval']['feEditable']) {
-                    continue;
-                }
+        $arrOptions = array();
+        $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];
 
-                $arrOptions[$k] = $arrField['label'][0];
+        foreach ($arrDCA as $k => $arrField) {
+            if (!$arrField['eval']['feEditable']) {
+                continue;
             }
 
-            return $arrOptions;
-        },
+            $arrOptions[$k] = $arrField['label'][0];
+        }
+
+        return $arrOptions;
+    },
     'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
     'sql'                       => "blob NULL"
 );
