@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Database\Result;
 use Haste\Util\Format;
 use Isotope\Isotope;
 
@@ -52,8 +53,12 @@ class Address extends \Model
      */
     protected static $strTable = 'tl_iso_address';
 
-
-    public function __construct(\Database\Result $objResult = null)
+    /**
+     * Construct the model
+     *
+     * @param Result $objResult
+     */
+    public function __construct(Result $objResult = null)
     {
         parent::__construct($objResult);
 
@@ -63,7 +68,9 @@ class Address extends \Model
         }
     }
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->generate();
@@ -71,7 +78,9 @@ class Address extends \Model
 
     /**
      * Return formatted address (hCard)
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
      */
     public function generate($arrFields = null)
@@ -90,9 +99,11 @@ class Address extends \Model
 
     /**
      * Return this address formatted as text
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
-     * @deprecated
+     * @deprecated use Address::generate() and strip_tags
      */
     public function generateText($arrFields = null)
     {
@@ -101,9 +112,11 @@ class Address extends \Model
 
     /**
      * Return an address formatted with HTML (hCard)
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
-     * @deprecated
+     * @deprecated use Address::generate()
      */
     public function generateHtml($arrFields = null)
     {
@@ -112,8 +125,10 @@ class Address extends \Model
 
     /**
      * Compile the list of hCard tokens for this address
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrFields
+     *
+     * @return array
      */
     public function getTokens($arrFields = null)
     {
@@ -189,9 +204,11 @@ class Address extends \Model
 
     /**
      * Find address for member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  Collection|null
+     *
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {
@@ -200,10 +217,12 @@ class Address extends \Model
 
     /**
      * Find address by ID and member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   int
-     * @param   array
-     * @return  Address|null
+     *
+     * @param int   $intId
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return Address|null
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {
@@ -212,9 +231,11 @@ class Address extends \Model
 
     /**
      * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  Address|null
+     *
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return Address|null
      */
     public static function findDefaultBillingForMember($intMember, array $arrOptions = array())
     {
@@ -223,9 +244,11 @@ class Address extends \Model
 
     /**
      * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  Address|null
+     *
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return Address|null
      */
     public static function findDefaultShippingForMember($intMember, array $arrOptions = array())
     {
@@ -234,9 +257,11 @@ class Address extends \Model
 
     /**
      * Create a new address for a member and automatically set default properties
-     * @param   int
-     * @param   array|null
-     * @return  Address
+     *
+     * @param int        $intMember
+     * @param array|null $arrFill
+     *
+     * @return Address
      */
     public static function createForMember($intMember, $arrFill = null)
     {
