@@ -364,13 +364,13 @@ class Address extends \Model
                 ),
                 array_flip($arrFill)
             );
+        }
 
-            if ($objAddress->country == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
-                if ($blnDefaultBilling) {
-                    $objAddress->country = Isotope::getConfig()->billing_country ?: Isotope::getConfig()->country;
-                } elseif ($blnDefaultShipping) {
-                    $objAddress->country = Isotope::getConfig()->shipping_country ?: Isotope::getConfig()->country;
-                }
+        if ($objAddress->country == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
+            if ($blnDefaultBilling) {
+                $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
+            } elseif ($blnDefaultShipping) {
+                $arrData['country'] = $objConfig->shipping_country ?: $objConfig->country;
             }
         }
 
