@@ -182,6 +182,16 @@ class MediaManager extends \Widget implements \uploadable
         foreach ($this->varValue as $k => $v) {
             if (stripos($v['src'], $this->strTempFolder) !== false) {
                 $strFile = $this->getFilePath(basename($v['src']));
+
+                if (is_file(TL_ROOT . '/' . $strFile)
+                    && md5_file(TL_ROOT . '/' .  $v['src']) != md5_file(TL_ROOT . '/' . $strFile)
+                ) {
+                    $pathinfo = pathinfo($v['src']);
+                    $strFile = $this->getFilePath(
+                        standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
+                    );
+                }
+
                 \Haste\Haste::mkdirr(dirname($strFile));
 
                 if (\Files::getInstance()->rename($v['src'], $strFile)) {
