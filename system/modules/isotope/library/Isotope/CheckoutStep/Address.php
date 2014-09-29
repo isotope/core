@@ -314,4 +314,39 @@ abstract class Address extends CheckoutStep
 
         return null === $objAddresses ? array() : $objAddresses->getModels();
     }
+
+    /**
+     * Get default address for this collection and address type
+     *
+     * @return AddressModel
+     */
+    abstract protected function getDefaultAddress();
+
+    /**
+     * Get field configuration for this address type
+     *
+     * @return array
+     */
+    abstract protected function getAddressFields();
+
+    /**
+     * Get allowed countries for this address type
+     *
+     * @return array
+     */
+    abstract protected function getAddressCountries();
+
+    /**
+     * Get the current address (from Cart) for this address type
+     *
+     * @return AddressModel
+     */
+    abstract protected function getAddress();
+
+    /**
+     * Set new address in cart
+     *
+     * @param AddressModel $objAddress
+     */
+    abstract protected function setAddress(AddressModel $objAddress);
 }
