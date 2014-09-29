@@ -219,8 +219,10 @@ class Backend extends Contao_Backend
     {
         $arrStatus = array();
         if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
-            while ($objStatus->next()) {
-                $arrStatus[$objStatus->id] = $objStatus->current()->getName();
+
+            /** @type OrderStatus $status */
+            foreach ($objStatus as $status) {
+                $arrStatus[$status->id] = $status->getName();
             }
         }
 
@@ -234,7 +236,10 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable()) || !\BackendUser::getInstance()->hasAccess('iso_orders', 'modules')) {
+        /** @type \BackendUser $objUser */
+        $objUser = \BackendUser::getInstance();
+
+        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable()) || !$objUser->hasAccess('iso_orders', 'modules')) {
             return '';
         }
 
@@ -358,6 +363,7 @@ class Backend extends Contao_Backend
                 $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
                 $arrData['name']     = \Input::post('name');
 
+                /** @type \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
                 $strFile   = $objWidget->validateUpload();
 
@@ -426,6 +432,7 @@ class Backend extends Contao_Backend
                 $arrAttribs['strField']     = $strField;
                 $arrAttribs['activeRecord'] = $dc->activeRecord;
 
+                /** @type \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
                 echo $objWidget->generate();
                 exit;
