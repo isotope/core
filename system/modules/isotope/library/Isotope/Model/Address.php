@@ -227,7 +227,7 @@ class Address extends \Model
      * @param int   $intMember
      * @param array $arrOptions
      *
-     * @return Address|null
+     * @return static|null
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {
@@ -242,7 +242,7 @@ class Address extends \Model
      * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Address|null
+     * @return  static|null
      */
     public static function findDefaultBillingForMember($intMember, array $arrOptions = array())
     {
@@ -257,7 +257,7 @@ class Address extends \Model
      * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Address|null
+     * @return  static|null
      */
     public static function findDefaultShippingForMember($intMember, array $arrOptions = array())
     {
@@ -304,11 +304,11 @@ class Address extends \Model
      * @param int        $intMember
      * @param array|null $arrFill
      *
-     * @return Address
+     * @return static
      */
     public static function createForMember($intMember, $arrFill = null)
     {
-        $objAddress = new Address();
+        $objAddress = new static();
 
         $arrData = array(
             'pid'      => $intMember,
@@ -347,7 +347,7 @@ class Address extends \Model
      * @param bool                     $blnDefaultBilling
      * @param bool                     $blnDefaultShipping
      *
-     * @return Address
+     * @return static
      */
     public static function createForProductCollection(
         IsotopeProductCollection $objCollection,
@@ -355,7 +355,7 @@ class Address extends \Model
         $blnDefaultBilling = false,
         $blnDefaultShipping = false
     ) {
-        $objAddress = new Address();
+        $objAddress = new static();
 
         $arrData = array(
             'pid'               => (int) $objCollection->id,
