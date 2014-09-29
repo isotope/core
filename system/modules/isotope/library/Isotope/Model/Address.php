@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 
 
@@ -246,6 +247,40 @@ class Address extends \Model
     }
 
     /**
+     * Find default billing address for a product collection
+     *
+     * @param int   $intCollection
+     * @param array $arrOptions
+     *
+     * @return static|null
+     */
+    public static function findDefaultBillingForProductCollection($intCollection, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'isDefaultBilling=?'),
+            array($intCollection, 'tl_product_collection', '1'),
+            $arrOptions
+        );
+    }
+
+    /**
+     * Find default shipping address for a product collection
+     *
+     * @param int   $intCollection
+     * @param array $arrOptions
+     *
+     * @return static|null
+     */
+    public static function findDefaultShippingForProductCollection($intCollection, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'isDefaultShipping=?'),
+            array($intCollection, 'tl_product_collection', '1'),
+            $arrOptions
+        );
+    }
+
+    /**
      * Create a new address for a member and automatically set default properties
      * @param   int
      * @param   array|null
@@ -273,6 +308,58 @@ class Address extends \Model
 
                          // Trying to guess subdivision by country and state
                          'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
+                    )
+                ),
+                array_flip($arrFill)
+            );
+        }
+
+        $objAddress->setRow($arrData);
+
+        return $objAddress;
+    }
+
+    /**
+     * Create a new address for a product collection
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array|null               $arrFill an array of member fields to inherit
+     * @param bool                     $blnDefaultBilling
+     * @param bool                     $blnDefaultShipping
+     *
+     * @return Address
+     */
+    public static function createForProductCollection(
+        IsotopeProductCollection $objCollection,
+        $arrFill = null,
+        $blnDefaultBilling = false,
+        $blnDefaultShipping = false
+    ) {
+        $objAddress = new Address();
+
+        $arrData = array(
+            'pid'               => (int) $objCollection->id,
+            'ptable'            => 'tl_iso_product_collection',
+            'tstamp'            => time(),
+            'store_id'          => (int) $objCollection->store_id,
+            'isDefaultBilling'  => ($blnDefaultBilling ? '1' : ''),
+            'isDefaultShipping' => ($blnDefaultShipping ? '1' : ''),
+        );
+
+        if ($objCollection->member > 0
+            && !empty($arrFill)
+            && is_array($arrFill)
+            && ($objMember = \MemberModel::findByPk($objCollection->member)) !== null
+        ) {
+            $arrData = array_intersect_key(
+                array_merge(
+                    $objMember->row(),
+                    $arrData,
+                    array(
+                        'street_1'    => $objMember->street,
+
+                        // Trying to guess subdivision by country and state
+                        'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
                     )
                 ),
                 array_flip($arrFill)
