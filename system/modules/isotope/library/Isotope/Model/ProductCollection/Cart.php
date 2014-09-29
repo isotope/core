@@ -56,22 +56,29 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     {
         $objAddress = parent::getBillingAddress();
 
+        // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
             $objAddress = Address::findDefaultBillingForMember(\FrontendUser::getInstance()->id);
-
-            if (null === $objAddress) {
-                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getBillingFields());
-            }
         }
 
+        // Try to load the default collection address
         if (null === $objAddress) {
-            $objAddress          = new Address();
-            $objAddress->country = (Isotope::getConfig()->billing_country ? : Isotope::getConfig()->country);
+            $objAddress = Address::findDefaultBillingForProductCollection($this->id);
         }
 
-        $objAddress->pid = (int) $this->id;
-        $objAddress->ptable = 'tl_iso_product_collection';
-        $objAddress->isDefaultBilling = '1';
+        // Last option: create a new address, including member data if available
+        if (null === $objAddress) {
+            $objAddress = Address::createForProductCollection(
+                $this,
+                Isotope::getConfig()->getBillingFields(),
+                true
+            );
+        }
+
+        // Set the default billing country if the address has none
+        if ($objAddress->country == '') {
+            $objAddress->country = (Isotope::getConfig()->billing_country ?: Isotope::getConfig()->country);
+        }
 
         return $objAddress;
     }
@@ -84,22 +91,30 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     {
         $objAddress = parent::getShippingAddress();
 
+        // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
             $objAddress = Address::findDefaultShippingForMember(\FrontendUser::getInstance()->id);
-
-            if (null === $objAddress) {
-                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getShippingFields());
-            }
         }
 
+        // Try to load the default collection address
         if (null === $objAddress) {
-            $objAddress          = new Address();
-            $objAddress->country = Isotope::getConfig()->shipping_country;
+            $objAddress = Address::findDefaultShippingForProductCollection($this->id);
         }
 
-        $objAddress->pid = (int) $this->id;
-        $objAddress->ptable = 'tl_iso_product_collection';
-        $objAddress->isDefaultShipping = '1';
+        // Last option: create a new address, including member data if available
+        if (null === $objAddress) {
+            $objAddress = Address::createForProductCollection(
+                $this,
+                Isotope::getConfig()->getShippingFields(),
+                false,
+                true
+            );
+        }
+
+        // Set the default shipping country if the address has none
+        if ($objAddress->country == '') {
+            $objAddress->country = (Isotope::getConfig()->shipping_country ?: Isotope::getConfig()->country);
+        }
 
         return $objAddress;
     }
