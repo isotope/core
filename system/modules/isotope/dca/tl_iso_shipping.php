@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,weight_unit,product_types,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
