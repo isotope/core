@@ -142,25 +142,15 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getDefaultAddress()
     {
-        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultShipping=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+        $objAddress = AddressModel::findDefaultShippingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
-            $objShippingAddress = Isotope::getCart()->getShippingAddress();
-
-            if (null === $objShippingAddress) {
-                $objAddress = new AddressModel();
-            } else {
-                $objAddress = clone $objShippingAddress;
-            }
-
-            $objAddress->ptable            = 'tl_iso_product_collection';
-            $objAddress->pid               = Isotope::getCart()->id;
-            $objAddress->isDefaultShipping = '1';
-            $objAddress->isDefaultBilling  = '';
-
-            if ($objAddress->country == '') {
-                $objAddress->country = Isotope::getConfig()->shipping_country;
-            }
+            $objAddress = AddressModel::createForProductCollection(
+                Isotope::getCart(),
+                Isotope::getConfig()->getShippingFields(),
+                false,
+                true
+            );
         }
 
         return $objAddress;

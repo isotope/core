@@ -143,25 +143,14 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getDefaultAddress()
     {
-        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultBilling=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+        $objAddress = AddressModel::findDefaultBillingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
-            $objBillingAddress = Isotope::getCart()->getBillingAddress();
-
-            if (null === $objBillingAddress) {
-                $objAddress = new AddressModel();
-            } else {
-                $objAddress = clone $objBillingAddress;
-            }
-
-            $objAddress->ptable            = 'tl_iso_product_collection';
-            $objAddress->pid               = Isotope::getCart()->id;
-            $objAddress->isDefaultBilling  = '1';
-            $objAddress->isDefaultShipping = '';
-
-            if ($objAddress->country == '') {
-                $objAddress->country = Isotope::getConfig()->billing_country;
-            }
+            $objAddress = AddressModel::createForProductCollection(
+                Isotope::getCart(),
+                Isotope::getConfig()->getBillingFields(),
+                true
+            );
         }
 
         return $objAddress;
