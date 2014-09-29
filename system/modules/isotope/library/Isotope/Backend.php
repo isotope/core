@@ -332,32 +332,6 @@ class Backend extends Contao_Backend
     public function executePostActions($action, $dc)
     {
         switch ($action) {
-            case 'loadProductTree':
-                $arrData['strTable'] = $dc->table;
-                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name']     = \Input::post('name');
-
-                $this->loadDataContainer($dc->table);
-                $arrData = array_merge($GLOBALS['TL_DCA'][$dc->table]['fields'][$arrData['name']]['eval'], $arrData);
-
-                $objWidget = new $GLOBALS['BE_FFL']['productTree']($arrData, $dc);
-
-                echo json_encode(array
-                                 (
-                                 'content' => $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level'))),
-                                 'token'   => REQUEST_TOKEN
-                                 ));
-                exit;
-
-            case 'loadProductGroupTree':
-                $arrData['strTable'] = $dc->table;
-                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name']     = \Input::post('name');
-
-                $objWidget = new $GLOBALS['BE_FFL']['productGroupSelector']($arrData, $dc);
-                echo $objWidget->generateAjax($this->strAjaxId, \Input::post('field'), intval(\Input::post('level')));
-                exit;
-
             case 'uploadMediaManager':
                 $arrData['strTable'] = $dc->table;
                 $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
