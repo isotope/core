@@ -204,11 +204,6 @@ class CartAddress extends Module
             );
         }
 
-        if ($objAddress->country == '') {
-            $countryField = $useBilling ? 'billing_country' : 'shipping_country';
-            $objAddress->country = Isotope::getConfig()->$countryField ?: Isotope::getConfig()->country;
-        }
-
         return $objAddress;
     }
 }

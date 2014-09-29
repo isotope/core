@@ -75,11 +75,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             );
         }
 
-        // Set the default billing country if the address has none
-        if ($objAddress->country == '') {
-            $objAddress->country = (Isotope::getConfig()->billing_country ?: Isotope::getConfig()->country);
-        }
-
         return $objAddress;
     }
 
@@ -109,11 +104,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
                 false,
                 true
             );
-        }
-
-        // Set the default shipping country if the address has none
-        if ($objAddress->country == '') {
-            $objAddress->country = (Isotope::getConfig()->shipping_country ?: Isotope::getConfig()->country);
         }
 
         return $objAddress;
