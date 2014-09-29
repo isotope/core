@@ -23,7 +23,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Returns true if the current cart has shipping
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAvailable()
     {
@@ -36,7 +37,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Generate the checkout step
-     * @return  string
+     *
+     * @return string
      */
     public function generate()
     {
@@ -48,7 +50,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Return review information for last page of checkout
-     * @return  string
+     *
+     * @return string
      */
     public function review()
     {
@@ -68,8 +71,10 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return array
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
@@ -78,7 +83,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get available address options
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressOptions()
     {
@@ -101,9 +107,11 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get address object for a selected option
-     * @param   string
-     * @param   bool
-     * @return  AddressModel
+     *
+     * @param mixed $varValue
+     * @param bool  $blnValidate
+     *
+     * @return AddressModel
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -129,29 +137,20 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get default address for this collection and address type
-     * @return  AddressModel
+     *
+     * @return AddressModel
      */
     protected function getDefaultAddress()
     {
-        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultShipping=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+        $objAddress = AddressModel::findDefaultShippingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
-            $objShippingAddress = Isotope::getCart()->getShippingAddress();
-
-            if (null === $objShippingAddress) {
-                $objAddress = new AddressModel();
-            } else {
-                $objAddress = clone $objShippingAddress;
-            }
-
-            $objAddress->ptable            = 'tl_iso_product_collection';
-            $objAddress->pid               = Isotope::getCart()->id;
-            $objAddress->isDefaultShipping = '1';
-            $objAddress->isDefaultBilling  = '';
-
-            if ($objAddress->country == '') {
-                $objAddress->country = Isotope::getConfig()->shipping_country;
-            }
+            $objAddress = AddressModel::createForProductCollection(
+                Isotope::getCart(),
+                Isotope::getConfig()->getShippingFields(),
+                false,
+                true
+            );
         }
 
         return $objAddress;
@@ -159,7 +158,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get field configuration for this address type
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressFields()
     {
@@ -168,7 +168,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get allowed countries for this address type
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressCountries()
     {
@@ -177,7 +178,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get the current address (from Cart) for this address type
-     * @return  AddressModel
+     *
+     * @return AddressModel
      */
     protected function getAddress()
     {
@@ -186,7 +188,8 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Set new address in cart
-     * @param   Isotope\Model\Address
+     *
+     * @param AddressModel $objAddress
      */
     protected function setAddress(AddressModel $objAddress)
     {

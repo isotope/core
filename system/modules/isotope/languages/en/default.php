@@ -188,6 +188,12 @@ $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name']    = 'by produc
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price']    = 'by price (ascending)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price']   = 'by price (descending)';
 
+$GLOBALS['TL_LANG']['MSC']['noShippingAddress']                 = 'Please fill in the shipping address.';
+$GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']             = 'None of the products in your shopping cart require shipping!';
+$GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']       = 'The following shipping methods are available for your current shopping cart and the shipping address details you provided:';
+$GLOBALS['TL_LANG']['MSC']['saveAddressButton']                 = 'Save address';
+
+
 
 /**
  * Content elements

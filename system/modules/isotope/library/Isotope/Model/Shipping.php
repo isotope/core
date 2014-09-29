@@ -57,7 +57,7 @@ abstract class Shipping extends TypeAgent
 
     /**
      * Return true or false depending on if shipping method is available
-     * @return bool
+     * @return  bool
      * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
      */
     public function isAvailable()

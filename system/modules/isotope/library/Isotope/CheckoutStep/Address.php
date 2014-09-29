@@ -81,6 +81,8 @@ abstract class Address extends CheckoutStep
             }
 
             $strClass  = $GLOBALS['TL_FFL']['radio'];
+
+            /** @type \Widget $objWidget */
             $objWidget = new $strClass(array(
                 'id'            => $this->getStepClass(),
                 'name'          => $this->getStepClass(),
@@ -121,7 +123,10 @@ abstract class Address extends CheckoutStep
 
         $objAddress = $this->getAddressForOption($varValue, $blnValidate);
 
-        if (null === $objAddress || !\Model\Registry::getInstance()->isRegistered($objAddress)) {
+        /** @type \Model\Registry $objModelRegistry */
+        $objModelRegistry = \Model\Registry::getInstance();
+
+        if (null === $objAddress || !$objModelRegistry->isRegistered($objAddress)) {
             $this->blnError = true;
         } elseif ($blnValidate) {
             $this->setAddress($objAddress);
@@ -221,6 +226,7 @@ abstract class Address extends CheckoutStep
                     continue;
                 }
 
+                /** @type \Widget $strClass */
                 $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
                 // Continue if the class is not defined
@@ -254,7 +260,8 @@ abstract class Address extends CheckoutStep
 
     /**
      * Get options for all addresses in the user's address book
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressOptions()
     {
@@ -287,9 +294,11 @@ abstract class Address extends CheckoutStep
 
     /**
      * Get address object for a selected option
-     * @param   string
-     * @param   bool
-     * @return  \Isotope\Model\Address
+     *
+     * @param mixed $varValue
+     * @param bool  $blnValidate
+     *
+     * @return AddressModel
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -306,12 +315,53 @@ abstract class Address extends CheckoutStep
 
     /**
      * Get addresses for the current member
-     * @return  array
+     *
+     * @return AddressModel[]
      */
     protected function getAddresses()
     {
-        $objAddresses = AddressModel::findForMember(\FrontendUser::getInstance()->id, array('order' => 'isDefaultBilling DESC, isDefaultShipping DESC'));
+        $objAddresses = AddressModel::findForMember(
+            \FrontendUser::getInstance()->id,
+            array(
+                'order' => 'isDefaultBilling DESC, isDefaultShipping DESC'
+            )
+        );
 
         return null === $objAddresses ? array() : $objAddresses->getModels();
     }
+
+    /**
+     * Get default address for this collection and address type
+     *
+     * @return AddressModel
+     */
+    abstract protected function getDefaultAddress();
+
+    /**
+     * Get field configuration for this address type
+     *
+     * @return array
+     */
+    abstract protected function getAddressFields();
+
+    /**
+     * Get allowed countries for this address type
+     *
+     * @return array
+     */
+    abstract protected function getAddressCountries();
+
+    /**
+     * Get the current address (from Cart) for this address type
+     *
+     * @return AddressModel
+     */
+    abstract protected function getAddress();
+
+    /**
+     * Set new address in cart
+     *
+     * @param AddressModel $objAddress
+     */
+    abstract protected function setAddress(AddressModel $objAddress);
 }
