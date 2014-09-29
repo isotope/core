@@ -28,12 +28,6 @@ class CartAddress extends Module
     protected $strTemplate = 'member_default';
 
     /**
-     * Address fields
-     * @var array
-     */
-    protected $arrAddressFields = array();
-
-    /**
      * Display a wildcard in the back end
      * @return string
      */
@@ -53,9 +47,9 @@ class CartAddress extends Module
         }
 
         $this->iso_address = deserialize($this->iso_address, true);
-        $this->arrAddressFields = deserialize($this->iso_addressFields, true);
+        $this->iso_addressFields = deserialize($this->iso_addressFields, true);
 
-        if (empty($this->iso_address) || empty($this->arrAddressFields)) {
+        if (empty($this->iso_address) || empty($this->iso_addressFields)) {
             return '';
         }
 
@@ -90,6 +84,8 @@ class CartAddress extends Module
         }
 
         $objAddress = $this->getDefaultAddress();
+        $arrFields = $this->iso_addressFields;
+        $useBilling = in_array('billing', $this->iso_address);
 
         $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
             /** @type Form $objHaste */
@@ -97,8 +93,6 @@ class CartAddress extends Module
         }, (boolean) $this->tableless);
 
         $objForm->bindModel($objAddress);
-        $arrFields = $this->arrAddressFields;
-        $useBilling = in_array('billing', $this->iso_address);
 
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
