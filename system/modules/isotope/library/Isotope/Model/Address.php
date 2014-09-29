@@ -196,7 +196,11 @@ class Address extends \Model
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {
-        return static::findBy(array('pid=?', 'ptable=?', 'store_id=?'), array($intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
+        return static::findBy(
+            array('pid=?', 'ptable=?', 'store_id=?'),
+            array($intMember, 'tl_member', Isotope::getCart()->store_id),
+            $arrOptions
+        );
     }
 
     /**
@@ -208,7 +212,11 @@ class Address extends \Model
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {
-        return static::findOneBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
+        return static::findOneBy(
+            array('id=?', 'pid=?', 'ptable=?', 'store_id=?'),
+            array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id),
+            $arrOptions
+        );
     }
 
     /**
@@ -219,7 +227,11 @@ class Address extends \Model
      */
     public static function findDefaultBillingForMember($intMember, array $arrOptions = array())
     {
-        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'), array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'), $arrOptions);
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'),
+            array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'),
+            $arrOptions
+        );
     }
 
     /**
@@ -247,7 +259,7 @@ class Address extends \Model
             'pid'      => $intMember,
             'ptable'   => 'tl_member',
             'tstamp'   => time(),
-            'store_id' => Isotope::getCart()->store_id,
+            'store_id' => (int) Isotope::getCart()->store_id,
         );
 
         if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
