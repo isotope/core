@@ -7,6 +7,9 @@ Version 2.2.0-rc1 (2014-??-??)
 ### New
 - Added the an integrity check to check for attribute option orphans (#1237)
 - Added price surcharges for attribute options (#1165)
+- Added module to set address before checkout (e.g. for price or shipping calculation)
+- Added shipping calculation module (#1187)
+- Added condition to payment and shipping restriction on product type
 
 ### Improved
 - Performance when finding the correct jumpTo page (#1104)
