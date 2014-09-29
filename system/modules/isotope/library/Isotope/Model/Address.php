@@ -258,7 +258,7 @@ class Address extends \Model
     {
         return static::findOneBy(
             array('pid=?', 'ptable=?', 'isDefaultBilling=?'),
-            array($intCollection, 'tl_product_collection', '1'),
+            array($intCollection, 'tl_iso_product_collection', '1'),
             $arrOptions
         );
     }
@@ -275,7 +275,7 @@ class Address extends \Model
     {
         return static::findOneBy(
             array('pid=?', 'ptable=?', 'isDefaultShipping=?'),
-            array($intCollection, 'tl_product_collection', '1'),
+            array($intCollection, 'tl_iso_product_collection', '1'),
             $arrOptions
         );
     }
