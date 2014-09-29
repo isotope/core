@@ -17,8 +17,52 @@ use Isotope\Translation;
 /**
  * Isotope\Model\Config represents an Isotope config model
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string label
+ * @property bool   fallback
+ * @property string firstname
+ * @property string lastname
+ * @property string company
+ * @property string vat_no
+ * @property string street_1
+ * @property string street_2
+ * @property string street_3
+ * @property string postal
+ * @property string city
+ * @property string subdivision
+ * @property string country
+ * @property string phone
+ * @property string email
+ * @property array  address_fields
+ * @property string billing_country
+ * @property string shipping_country
+ * @property array  billing_countries
+ * @property array  shipping_countries
+ * @property bool   limitMemberCountries
+ * @property int    priceRoundPrecision
+ * @property string priceRoundIncrement
+ * @property float  cartMinSubtotal
+ * @property string currency
+ * @property string currencySymbol
+ * @property bool   currencySpace
+ * @property string currencyPosition
+ * @property string currencyFormat
+ * @property string priceCalculateFactor
+ * @property string priceCalculateMode
+ * @property bool   currencyAutomator
+ * @property string currencyOrigin
+ * @property string currencyProvider
+ * @property string orderPrefix
+ * @property int    orderDigits
+ * @property int    orderstatus_new
+ * @property int    orderstatus_error
+ * @property string templateGroup
+ * @property array  newProductPeriod
+ * @property bool   ga_enable
+ * @property string ga_account
+ * @property string ga_member
  */
 class Config extends \Model
 {
