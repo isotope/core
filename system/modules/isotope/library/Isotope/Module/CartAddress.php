@@ -83,9 +83,9 @@ class CartAddress extends Module
             }
         }
 
-        $objAddress = $this->getDefaultAddress();
         $arrFields = $this->iso_addressFields;
         $useBilling = in_array('billing', $this->iso_address);
+        $objAddress = $this->getDefaultAddress($useBilling);
 
         $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
             /** @type Form $objHaste */
@@ -177,33 +177,37 @@ class CartAddress extends Module
 
     /**
      * Get default address for this collection and address type
-     * @return  \Isotope\Model\Address
+     *
+     * @param bool $useBilling
+     *
+     * @return Address
      */
-    protected function getDefaultAddress()
+    private function getDefaultAddress($useBilling)
     {
         $objAddress = null;
         $intCart = Isotope::getCart()->id;
-        $strDefault = in_array('billing', $this->iso_address) ? 'isDefaultBilling' : 'isDefaultShipping';
 
         if ($intCart > 0) {
-            $objAddress = Address::findOneBy(
-                array(
-                    "ptable='tl_iso_product_collection'",
-                    "pid=?",
-                    "$strDefault='1'"
-                ),
-                array(
-                    $intCart
-                )
+            if ($useBilling) {
+                $objAddress = Address::findDefaultBillingForProductCollection($intCart);
+            } else {
+                $objAddress = Address::findDefaultShippingForProductCollection($intCart);
+            }
+        }
+
+        if (null === $objAddress) {
+            $objAddress = Address::createForProductCollection(
+                Isotope::getCart(),
+                ($useBilling ? Isotope::getConfig()->getBillingFields() : Isotope::getConfig()->getShippingFields()),
+                $useBilling,
+                !$useBilling
             );
         }
 
-        if ($objAddress === null) {
-            $objAddress = new Address();
-            $objAddress->ptable = 'tl_iso_product_collection';
+        if ($objAddress->country == '') {
+            $countryField = $useBilling ? 'billing_country' : 'shipping_country';
+            $objAddress->country = Isotope::getConfig()->$countryField ?: Isotope::getConfig()->country;
         }
-
-        $objAddress->$strDefault = '1';
 
         return $objAddress;
     }
