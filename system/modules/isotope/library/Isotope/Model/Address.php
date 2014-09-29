@@ -193,7 +193,7 @@ class Address extends \Model
      * Find address for member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Collection|null
+     * @return \Model\Collection|null
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {
