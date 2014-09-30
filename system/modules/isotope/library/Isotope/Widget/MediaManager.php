@@ -55,7 +55,7 @@ class MediaManager extends \Widget implements \uploadable
     public function __construct($arrAttributes = null)
     {
         parent::__construct($arrAttributes);
-        $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.1.min.js');
+        $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.3.min.js');
     }
 
     /**
