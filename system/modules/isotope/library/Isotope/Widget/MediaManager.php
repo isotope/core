@@ -82,6 +82,26 @@ class MediaManager extends \Widget implements \uploadable
     }
 
     /**
+     * Handle uploads from fineuploader.
+     * Unfortunately, IE does use iframes and not ajax, so postAjax hook does not always work
+     */
+    public function ajaxUpload()
+    {
+        $strFile = $this->validateUpload();
+
+        if ($this->hasErrors()) {
+            $arrResponse = array('success' => false, 'error' => $this->getErrorAsString(), 'preventRetry' => true);
+        } else {
+            $arrResponse = array('success' => true, 'file' => $strFile);
+        }
+
+        // Can't use Haste\Response\JsonResponse, it triggers a json download in IE iframes
+        while(ob_end_clean());
+        echo json_encode($arrResponse);
+        exit;
+    }
+
+    /**
      * Validate the upload
      *
      * @return string
@@ -227,6 +247,10 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function generate()
     {
+        if (\Input::post('action') == 'uploadMediaManager') {
+            $this->ajaxUpload();
+        }
+
         $blnLanguage = false;
         $arrFallback = $this->getFallbackData();
 

@@ -6,6 +6,9 @@ Version 2.1.8-stable (2014-??-??)
 
 ### Fixed
 - Restore basic entities in payment methods (#1256)
+- Images with same name did overwrite previous uploads (#1247)
+- Multiple upload issues on IE browser (#1238)
+
 
 Version 2.1.7-stable (2014-09-01)
 ---------------------------------
@@ -15,7 +18,6 @@ Version 2.1.7-stable (2014-09-01)
 - Recoverable error when viewing backend order details (#1234)
 - Broken table (incorrect colspan) when product in collection had an error
 - Issue in product type attributes manager when moving variant attributes (#1213)
-- Images with same name did overwrite previous uploads (#1247)
 
 
 Version 2.1.6-stable (2014-08-26)

@@ -339,15 +339,7 @@ class Backend extends Contao_Backend
 
                 /** @type \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
-                $strFile   = $objWidget->validateUpload();
-
-                if ($objWidget->hasErrors()) {
-                    $arrResponse = array('success' => false, 'error' => $objWidget->getErrorAsString(), 'preventRetry' => true);
-                } else {
-                    $arrResponse = array('success' => true, 'file' => $strFile);
-                }
-
-                echo json_encode($arrResponse);
+                $objWidget->ajaxUpload();
                 exit;
 
             case 'reloadMediaManager':
