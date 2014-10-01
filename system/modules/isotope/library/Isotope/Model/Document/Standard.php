@@ -143,6 +143,13 @@ class Standard extends Document implements IsotopeDocument
 
         $objTemplate->products = $objCollectionTemplate->parse();
 
+        // !HOOK: customize the document template
+        if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'] as $callback) {
+                \System::importStatic($callback[0])->$callback[1]($objTemplate, $objCollection, $this);
+            }
+        }
+
         // Generate template and fix PDF issues, see Contao's ModuleArticle
         $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
         $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);

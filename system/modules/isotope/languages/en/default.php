@@ -192,7 +192,9 @@ $GLOBALS['TL_LANG']['MSC']['noShippingAddress']                 = 'Please fill i
 $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']             = 'None of the products in your shopping cart require shipping!';
 $GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']       = 'The following shipping methods are available for your current shopping cart and the shipping address details you provided:';
 $GLOBALS['TL_LANG']['MSC']['saveAddressButton']                 = 'Save address';
-
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_de'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_ch'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-ch#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_at'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-at#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
 
 
 /**
@@ -217,6 +219,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIV
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.billpay_saferpay']     = array('BillPay (using Saferpay)');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sofortueberweisung']   = array('sofortüberweisung.de');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('ExperCash');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.epay']                 = array('ePay', 'Implements payment provider <a href="http://www.epay.eu" target="_blank">ePay</a>.');

@@ -38,7 +38,7 @@ abstract class CheckoutStep extends \Controller
 
     /**
      * Check if checkout step has an error
-     * @return  bool
+     * @return bool
      */
     public function hasError()
     {
@@ -47,7 +47,7 @@ abstract class CheckoutStep extends \Controller
 
     /**
      * Return short name of current class (e.g. for CSS)
-     * @return  string
+     * @return string
      */
     public function getStepClass()
     {

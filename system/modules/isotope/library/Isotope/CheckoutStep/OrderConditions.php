@@ -21,7 +21,7 @@ abstract class OrderConditions extends CheckoutStep
 
     /**
      * Haste form
-     * @var object
+     * @var \Haste\Form\Form
      */
     protected $objForm;
 
@@ -31,7 +31,7 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function isAvailable()
     {
-        return (boolean) $this->objModule->iso_order_conditions;
+        return true;
     }
 
     /**
@@ -40,18 +40,40 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $objFormConfig = \FormModel::findByPk($this->objModule->iso_order_conditions);
-
         $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
             return \Input::post('FORM_SUBMIT') === $haste->getFormId();
-        }, (boolean) $objFormConfig->tableless);
-
-        // Don't catch the exception here because we want it to be shown to the user
-        $this->objForm->addFieldsFromFormGenerator($this->objModule->iso_order_conditions, function ($strName, &$arrDca) {
-            $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ? : $arrDca['value'];
-
-            return true;
         });
+
+
+        if ($this->objModule->iso_order_conditions) {
+            $objFormConfig = \FormModel::findByPk($this->objModule->iso_order_conditions);
+
+            if (null === $objFormConfig) {
+                throw new \InvalidArgumentException('Order condition form "' . $this->objModule->iso_order_conditions . '" not found.');
+            }
+
+            $this->objForm->setTableless($objFormConfig->tableless);
+
+            $this->objForm->addFieldsFromFormGenerator(
+                $this->objModule->iso_order_conditions,
+                function ($strName, &$arrDca) {
+                    $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ?: $arrDca['value'];
+
+                    return true;
+                }
+            );
+        }
+
+        if (!empty($GLOBALS['ISO_HOOKS']['orderConditions']) && is_array($GLOBALS['ISO_HOOKS']['orderConditions'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['orderConditions'] as $callback) {
+                \System::importStatic($callback[0])->{$callback[1]}($this->objForm, $this->objModule);
+            }
+        }
+
+        if (!$this->objForm->hasFields()) {
+            $this->blnError = false;
+            return '';
+        }
 
         // Change enctype if there are uploads
         if ($this->objForm->hasUploads()) {
