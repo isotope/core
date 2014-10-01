@@ -100,6 +100,11 @@ class Payone extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getItems() as $objItem) {
 
+            // Set the active product for insert tags replacement
+            if ($objItem->hasProduct()) {
+                Product::setActive($objItem->getProduct());
+            }
+
             $strConfig = '';
             $arrConfig = $objItem->getConfiguration();
 
@@ -118,7 +123,10 @@ class Payone extends Postsale implements IsotopePayment
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = specialchars($objItem->getName() . $strConfig);
+            $arrData['de[' . $i . ']']   = specialchars(
+                \String::restoreBasicEntities($objItem->getName() . $strConfig),
+                true
+            );
         }
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {

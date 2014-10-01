@@ -12,6 +12,7 @@
 
 namespace Isotope\Widget;
 
+use Haste\Util\Debug;
 use Isotope\Model\Gallery;
 
 
@@ -48,17 +49,20 @@ class MediaManager extends \Widget implements \uploadable
 
     /**
      * Instantiate widget and initialize uploader
+     *
+     * @param array $arrAttributes
      */
-    public function __construct($arrAttributes = false)
+    public function __construct($arrAttributes = null)
     {
         parent::__construct($arrAttributes);
-        $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.1.min.js');
+        $GLOBALS['TL_JAVASCRIPT']['fineuploader'] = Debug::uncompressedFile('system/modules/isotope/assets/plugins/fineuploader/fineuploader-4.0.3.min.js');
     }
 
     /**
      * Add specific attributes
-     * @param string
-     * @param mixed
+     *
+     * @param string $strKey
+     * @param mixed  $varValue
      */
     public function __set($strKey, $varValue)
     {
@@ -78,7 +82,28 @@ class MediaManager extends \Widget implements \uploadable
     }
 
     /**
+     * Handle uploads from fineuploader.
+     * Unfortunately, IE does use iframes and not ajax, so postAjax hook does not always work
+     */
+    public function ajaxUpload()
+    {
+        $strFile = $this->validateUpload();
+
+        if ($this->hasErrors()) {
+            $arrResponse = array('success' => false, 'error' => $this->getErrorAsString(), 'preventRetry' => true);
+        } else {
+            $arrResponse = array('success' => true, 'file' => $strFile);
+        }
+
+        // Can't use Haste\Response\JsonResponse, it triggers a json download in IE iframes
+        while(ob_end_clean());
+        echo json_encode($arrResponse);
+        exit;
+    }
+
+    /**
      * Validate the upload
+     *
      * @return string
      */
     public function validateUpload()
@@ -95,7 +120,9 @@ class MediaManager extends \Widget implements \uploadable
             $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
             $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
 
-            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName) && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)) {
+            if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
+                && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
+            ) {
                 $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']), 0, 8) . '.' . $pathinfo['extension'];
                 $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
             }
@@ -175,6 +202,16 @@ class MediaManager extends \Widget implements \uploadable
         foreach ($this->varValue as $k => $v) {
             if (stripos($v['src'], $this->strTempFolder) !== false) {
                 $strFile = $this->getFilePath(basename($v['src']));
+
+                if (is_file(TL_ROOT . '/' . $strFile)
+                    && md5_file(TL_ROOT . '/' .  $v['src']) != md5_file(TL_ROOT . '/' . $strFile)
+                ) {
+                    $pathinfo = pathinfo($v['src']);
+                    $strFile = $this->getFilePath(
+                        standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
+                    );
+                }
+
                 \Haste\Haste::mkdirr(dirname($strFile));
 
                 if (\Files::getInstance()->rename($v['src'], $strFile)) {
@@ -205,10 +242,16 @@ class MediaManager extends \Widget implements \uploadable
 
     /**
      * Generate the widget and return it as string
+     *
      * @return string
      */
     public function generate()
     {
+        if (\Input::post('action') == 'uploadMediaManager') {
+            $this->ajaxUpload();
+        }
+
+        $blnLanguage = false;
         $arrFallback = $this->getFallbackData();
 
         // Adapt the temporary files
@@ -390,11 +433,13 @@ class MediaManager extends \Widget implements \uploadable
 
     /**
      * Get the file path or folder only
-     * @param string
-     * @param boolean
+     *
+     * @param string $strFile
+     * @param bool   $blnFolder
+     *
      * @return string
      */
-    protected function getFilePath($strFile, $blnFolder=false)
+    protected function getFilePath($strFile, $blnFolder = false)
     {
         if (stripos($strFile, $this->strTempFolder) !== false) {
             return $blnFolder ? dirname($blnFolder) : $strFile;
@@ -405,6 +450,7 @@ class MediaManager extends \Widget implements \uploadable
 
     /**
      * Retrieve image data from fallback language
+     *
      * @return array|false
      */
     protected function getFallbackData()

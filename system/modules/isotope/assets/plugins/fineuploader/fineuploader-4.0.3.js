@@ -3,14 +3,14 @@
 *
 * Copyright 2013, Widen Enterprises, Inc. info@fineuploader.com
 *
-* Version: 4.0.1
+* Version: 4.0.3
 *
 * Homepage: http://fineuploader.com
 *
 * Repository: git://github.com/Widen/fine-uploader.git
 *
 * Licensed under GNU GPL v3, see LICENSE
-*/
+*/ 
 
 
 /*globals window, navigator, document, FormData, File, HTMLInputElement, XMLHttpRequest, Blob, Storage*/
@@ -152,6 +152,30 @@ var qq = function(element) {
 
         clearText: function() {
             return qq(element).setText("");
+        },
+
+        // Returns true if the attribute exists on the element
+        // AND the value of the attribute is NOT "false" (case-insensitive)
+        hasAttribute: function(attrName) {
+            var attrVal;
+
+            if (element.hasAttribute) {
+
+                if (!element.hasAttribute(attrName)) {
+                    return false;
+                }
+
+                return /^false$/i.exec(element.getAttribute(attrName)) == null;
+            }
+            else {
+                attrVal = element[attrName];
+
+                if (attrVal === undefined) {
+                    return false;
+                }
+
+                return /^false$/i.exec(attrVal) == null;
+            }
         }
     };
 };
@@ -809,7 +833,7 @@ qq.DisposeSupport = function() {
     };
 };
 
-qq.version="4.0.1";
+qq.version="4.0.3";
 
 qq.supportedFeatures = (function () {
     var supportsUploading,
@@ -2859,7 +2883,7 @@ qq.FineUploaderBasic = function(o) {
             this._pasteHandler = this._createPasteHandler();
         }
         else {
-            qq.log("Paste support module not found", "error");
+            qq.log("Paste support module not found", "info");
         }
     }
 
@@ -4285,11 +4309,6 @@ qq.uiPrivateApi = {
         return new qq.FilenameClickHandler(spec);
     },
 
-    _leaving_document_out: function(e){
-        return ((qq.chrome() || (qq.safari() && qq.windows())) && e.clientX == 0 && e.clientY == 0) // null coords for Chrome and Safari Windows
-            || (qq.firefox() && !e.relatedTarget); // null e.relatedTarget for Firefox
-    },
-
     _storeForLater: function(id) {
         this._parent.prototype._storeForLater.apply(this, arguments);
         this._templating.hideSpinner(id);
@@ -4763,7 +4782,7 @@ qq.FineUploader = function(o, namespace) {
 
         this._setupClickAndEditEventHandlers();
 
-        if (qq.DragAndDrop) {
+        if (qq.DragAndDrop && qq.supportedFeatures.fileDrop) {
             this._dnd = this._setupDragAndDrop();
         }
 
@@ -4772,7 +4791,7 @@ qq.FineUploader = function(o, namespace) {
                 this._setupPastePrompt();
             }
             else {
-                qq.log("Paste support module not found!", "error");
+                qq.log("Paste support module not found.", "info");
             }
         }
 
@@ -4806,6 +4825,8 @@ qq.Templating = function(spec) {
         THUMBNAIL_MAX_SIZE_ATTR = "qq-max-size",
         PREVIEW_GENERATED_ATTR = "qq-preview-generated",
         THUMBNAIL_SERVER_SCALE_ATTR = "qq-server-scale",
+        // This variable is duplicated in the DnD module since it can function as a standalone as well
+        HIDE_DROPZONE_ATTR = "qq-hide-dropzone",
         isCancelDisabled = false,
         thumbnailMaxSize = -1,
         options = {
@@ -4871,7 +4892,7 @@ qq.Templating = function(spec) {
             tempTemplateEl,
             fileListHtml,
             defaultButton,
-            dropzone,
+            dropArea,
             thumbnail,
             dropProcessing;
 
@@ -4922,6 +4943,28 @@ qq.Templating = function(spec) {
             if (dropProcessing) {
                 qq(dropProcessing).remove();
             }
+
+        }
+
+        dropArea = qq(tempTemplateEl).getByClass(selectorClasses.drop)[0];
+
+        // If DnD is not available then remove
+        // it from the DOM as well.
+        if (dropArea && !qq.DragAndDrop) {
+            qq.log("DnD module unavailable.", "info");
+            qq(dropArea).remove();
+        }
+
+        // If there is a drop area defined in the template, and the current UA doesn't support DnD,
+        // and the drop area is marked as "hide before enter", ensure it is hidden as the DnD module
+        // will not do this (since we will not be loading the DnD module)
+        if (dropArea
+            && !qq.supportedFeatures.fileDrop
+            && qq(dropArea).hasAttribute(HIDE_DROPZONE_ATTR)) {
+
+            qq(dropArea).css({
+                display: "none"
+            });
         }
 
         // Ensure the `showThumbnails` flag is only set if the thumbnail element
@@ -4935,7 +4978,7 @@ qq.Templating = function(spec) {
             // Only enforce max size if the attr value is non-zero
             thumbnailMaxSize = thumbnailMaxSize > 0 ? thumbnailMaxSize : null;
 
-            serverScale = hasAttr(thumbnail, THUMBNAIL_SERVER_SCALE_ATTR);
+            serverScale = qq(thumbnail).hasAttribute(THUMBNAIL_SERVER_SCALE_ATTR);
         }
         showThumbnails = showThumbnails && thumbnail;
 
@@ -5025,10 +5068,6 @@ qq.Templating = function(spec) {
 
     function show(el) {
         el && qq(el).removeClass(options.classes.hide);
-    }
-
-    function hasAttr(el, attr) {
-        return /true/i.exec(el.getAttribute(attr)) !== null;
     }
 
     function setProgressBarWidth(id, percent) {
@@ -5121,7 +5160,7 @@ qq.Templating = function(spec) {
 
     // Allows us to determine if a thumbnail element has already received a valid preview.
     function hasValidPreview(thumbnail) {
-        return hasAttr(thumbnail, PREVIEW_GENERATED_ATTR);
+        return qq(thumbnail).hasAttribute(PREVIEW_GENERATED_ATTR);
     }
 
 
@@ -5427,11 +5466,6 @@ qq.Templating = function(spec) {
         }
     };
 
-    /*<testing>*/
-    api._testing = {};
-    api._testing.hasAttr = hasAttr;
-    /*</testing>*/
-
     return api;
 };
 
@@ -5547,7 +5581,7 @@ qq.UploadHandlerForm = function(options, uploadCompleteCallback, onUuidChanged, 
 /*globals qq, File, XMLHttpRequest, FormData, Blob*/
 qq.UploadHandlerXhr = function(options, uploadCompleteCallback, onUuidChanged, logCallback) {
     "use strict";
-
+    
     var uploadComplete = uploadCompleteCallback,
         log = logCallback,
         fileState = [],
@@ -5772,7 +5806,7 @@ qq.UploadHandlerXhr = function(options, uploadCompleteCallback, onUuidChanged, l
 
     function parseResponse(id, xhr) {
         var response;
-console.log(xhr); // @debug
+
         try {
             log(qq.format("Received response status {} with body: {}", xhr.status, xhr.responseText));
 
@@ -6306,7 +6340,7 @@ qq.DragAndDrop = function(o) {
                 qq(dropArea).removeClass(options.classes.dropActive);
             },
             onDrop: function(e){
-                dropArea.hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropArea).hide();
+                qq(dropArea).hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropArea).hide();
                 qq(dropArea).removeClass(options.classes.dropActive);
 
                 handleDataTransfer(e.dataTransfer, dropZone).done(function() {
@@ -6319,7 +6353,7 @@ qq.DragAndDrop = function(o) {
             dropZone.dispose();
         });
 
-        dropArea.hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropArea).hide();
+        qq(dropArea).hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropArea).hide();
 
         uploadDropZones.push(dropZone);
 
@@ -6337,6 +6371,11 @@ qq.DragAndDrop = function(o) {
         });
 
         return fileDrag;
+    }
+
+    function leavingDocumentOut(e) {
+        return ((qq.chrome() || (qq.safari() && qq.windows())) && e.clientX == 0 && e.clientY == 0) // null coords for Chrome and Safari Windows
+            || (qq.firefox() && !e.relatedTarget); // null e.relatedTarget for Firefox
     }
 
     function setupDragDrop() {
@@ -6357,16 +6396,16 @@ qq.DragAndDrop = function(o) {
             }
         });
 
-        disposeSupport.attach(document, 'dragleave', function(e){
-            if (qq.FineUploader.prototype._leaving_document_out(e)) {
+        disposeSupport.attach(document, 'dragleave', function(e) {
+            if (leavingDocumentOut(e)) {
                 qq.each(dropZones, function(idx, dropZone) {
-                    dropZone.hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropZone).hide();
+                    qq(dropZone).hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropZone).hide();
                 });
             }
         });
         disposeSupport.attach(document, 'drop', function(e){
             qq.each(dropZones, function(idx, dropZone) {
-                dropZone.hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropZone).hide();
+                qq(dropZone).hasAttribute(HIDE_BEFORE_ENTER_ATTR) && qq(dropZone).hide();
             });
             e.preventDefault();
         });
@@ -6998,7 +7037,7 @@ qq.ImageGenerator = function(log) {
     // failure if the target is not an <img> or a <canvas>, or if the drawing
     // attempt was not successful.
     function registerThumbnailRenderedListener(imgOrCanvas, promise) {
-        var registered = isImg || isCanvas;
+        var registered = isImg(imgOrCanvas) || isCanvas(imgOrCanvas);
 
         if (isImg(imgOrCanvas)) {
             registerImgLoadListeners(imgOrCanvas, promise);
@@ -7007,7 +7046,7 @@ qq.ImageGenerator = function(log) {
             registerCanvasDrawImageListener(imgOrCanvas, promise);
         }
         else {
-            promise.fail(imgOrCanvas);
+            promise.failure(imgOrCanvas);
             log(qq.format("Element container of type {} is not supported!", imgOrCanvas.tagName), "error");
         }
 
@@ -7739,4 +7778,4 @@ qq.FilenameEditHandler = function(s, inheritedInternalApi) {
     return publicApi;
 };
 
-/*! 2013-10-28 */
+/*! 2014-09-30 */

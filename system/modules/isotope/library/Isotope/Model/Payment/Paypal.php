@@ -136,6 +136,11 @@ class Paypal extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getItems() as $objItem) {
 
+            // Set the active product for insert tags replacement
+            if ($objItem->hasProduct()) {
+                Product::setActive($objItem->getProduct());
+            }
+
             $strConfig = '';
             $arrConfig = $objItem->getConfiguration();
 
@@ -152,7 +157,9 @@ class Paypal extends Postsale implements IsotopePayment
             }
 
             $arrData['item_number_' . ++$i] = $objItem->getSku();
-            $arrData['item_name_' . $i]     = $objItem->getName() . $strConfig;
+            $arrData['item_name_' . $i]     = \String::restoreBasicEntities(
+                $objItem->getName() . $strConfig
+            );
             $arrData['amount_' . $i]        = $objItem->getPrice();
             $arrData['quantity_' . $i]      = $objItem->quantity;
         }
