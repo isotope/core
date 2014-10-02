@@ -19,6 +19,7 @@ Version 2.2.0-rc1 (2014-??-??)
 
 ### Fixed
 - Warning when product attribute had no options
+- Address ID was not correctly update in product collection (#1263)
 
 
 Version 2.2.0-beta1 (2014-09-02)

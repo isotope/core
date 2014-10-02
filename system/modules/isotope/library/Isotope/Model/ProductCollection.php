@@ -563,8 +563,8 @@ abstract class ProductCollection extends TypeAgent
         $this->pageId = (int) $objPage->id;
         $this->language = (string) $GLOBALS['TL_LANGUAGE'];
 
-        $this->updateDatabase();
         $this->createPrivateAddresses();
+        $this->updateDatabase();
 
         // Add surcharges to the collection
         $sorting = 128;
@@ -1555,7 +1555,7 @@ abstract class ProductCollection extends TypeAgent
             if (null !== $objShippingAddress && $objBillingAddress->id == $objShippingAddress->id) {
                 $this->setShippingAddress($objNew);
 
-                // Return here, we do not need to check shipping address
+                // Stop here, we do not need to check shipping address
                 return;
             }
         }
