@@ -14,8 +14,3 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Configuración de la tienda';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Divisa';
-$GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Todos';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Estado';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Columnas';

@@ -14,10 +14,3 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Suma';
-$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Suma';
-$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Konfiguracja sklepu';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Waluta';
-$GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Wszystko';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Kolumny';

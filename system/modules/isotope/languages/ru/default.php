@@ -90,7 +90,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Я до А';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'от ранее до поздее';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'от поздее до ранее';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Обработка платежа';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Вы будете перенаправлены на сайт платежного шлюза. Если вы не были перенаправлены автоматически, то нажмите кнопку "Оплатить сейчас".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Оплатить сейчас';
 $GLOBALS['TL_LANG']['MSC']['checkout_shipping'] = 'Доставка';
 $GLOBALS['TL_LANG']['MSC']['checkout_payment'] = 'Оплата';
