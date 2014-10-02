@@ -20,6 +20,7 @@ Version 2.2.0-rc1 (2014-??-??)
 ### Fixed
 - Warning when product attribute had no options
 - Address ID was not correctly update in product collection (#1263)
+- Show labels from attribute option table in backend filters (#1253)
 
 
 Version 2.2.0-beta1 (2014-09-02)

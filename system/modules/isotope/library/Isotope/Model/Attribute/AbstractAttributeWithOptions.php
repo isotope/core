@@ -172,16 +172,27 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         parent::saveToDCA($arrData);
 
-        if (TL_MODE == 'BE' && $this->isCustomerDefined() && $this->optionsSource == 'product') {
+        if (TL_MODE == 'BE') {
 
-            \Controller::loadDataContainer(static::$strTable);
-            \System::loadLanguageFile(static::$strTable);
+            if ($this->be_filter && \Input::get('act') == '') {
+                $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
+            }
 
-            $arrField = array_merge($arrData['fields'][$this->field_name], $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']);
-            $arrField['label'] = $arrData['fields'][$this->field_name]['label'];
-            $arrField['attributes']['dynamic'] = true;
+            if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
 
-            $arrData['fields'][$this->field_name] = $arrField;
+                \Controller::loadDataContainer(static::$strTable);
+                \System::loadLanguageFile(static::$strTable);
+
+                $arrField = array_merge(
+                    $arrData['fields'][$this->field_name],
+                    $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']
+                );
+
+                $arrField['label']                 = $arrData['fields'][$this->field_name]['label'];
+                $arrField['attributes']['dynamic'] = true;
+
+                $arrData['fields'][$this->field_name] = $arrField;
+            }
         }
     }
 } 
