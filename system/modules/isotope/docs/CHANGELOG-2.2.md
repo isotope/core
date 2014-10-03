@@ -10,12 +10,12 @@ Version 2.2.0-rc1 (2014-??-??)
 - Added module to set address before checkout (e.g. for price or shipping calculation)
 - Added shipping calculation module (#1187)
 - Added condition to payment and shipping restriction on product type
+- Added inline edit option for advanced prices
 
 ### Improved
 - Performance when finding the correct jumpTo page (#1104)
 - Redirect message for payment methods when JavaScript is disabled (#1079)
 - Better error logging on invalid PayPal email (#1252)
-- Added inline edit option for advanced prices
 
 ### Fixed
 - Warning when product attribute had no options
