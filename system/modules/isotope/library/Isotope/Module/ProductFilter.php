@@ -44,13 +44,14 @@ class ProductFilter extends Module implements IsotopeFilterModule
 
     /**
      * Update request cache
-     * @var boolean
+     * @var bool
      */
     protected $blnUpdateCache = false;
 
 
     /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -95,10 +96,8 @@ class ProductFilter extends Module implements IsotopeFilterModule
         return $strBuffer;
     }
 
-
     /**
      * Generate ajax
-     * @return mixed
      */
     public function generateAjax()
     {
@@ -120,10 +119,10 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Initialize module data. You can override this function in a child class
-     * @return boolean
+     *
+     * @return bool
      */
     protected function initializeFilters()
     {
@@ -142,10 +141,8 @@ class ProductFilter extends Module implements IsotopeFilterModule
         return true;
     }
 
-
     /**
      * Generate the module
-     * @return void
      */
     protected function compile()
     {
@@ -172,10 +169,8 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Generate a search form
-     * @return void
      */
     protected function generateSearch()
     {
@@ -191,10 +186,13 @@ class ProductFilter extends Module implements IsotopeFilterModule
                 // Redirect to search result page if one is set (see #1068)
                 if (!$this->blnUpdateCache && $this->jumpTo != $objPage->id && null !== $this->objModel->getRelated('jumpTo')) {
 
+                    /** @type \PageModel $objJumpTo */
+                    $objJumpTo = $this->objModel->getRelated('jumpTo');
+
                     // Include \Environment::base or the URL would not work on the index page
                     \Controller::redirect(
                         \Environment::get('base') .
-                        $this->objModel->getRelated('jumpTo')->getFrontendUrl() .
+                        $objJumpTo->getFrontendUrl() .
                         '?' . $_SERVER['QUERY_STRING']
                     );
                 }
@@ -220,10 +218,8 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Generate a filter form
-     * @return void
      */
     protected function generateFilters()
     {
@@ -259,16 +255,21 @@ class ProductFilter extends Module implements IsotopeFilterModule
                         Filter::attribute($strField)->isEqualTo($arrInput[$strField]),
                         $this->id
                     );
+
                 } elseif ($this->blnUpdateCache && $arrInput[$strField] == '') {
                     Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
-                } // Request cache contains wrong value, delete it!
-                elseif (($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id)) !== null && $objFilter->valueNotIn($arrValues)) {
+
+                } elseif (($objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id)) !== null && $objFilter->valueNotIn($arrValues)) {
+                    // Request cache contains wrong value, delete it!
+
                     $this->blnUpdateCache = true;
                     Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
 
                     RequestCache::deleteById(\Input::get('isorc'));
-                } // No need to generate options if we reload anyway
-                elseif (!$this->blnUpdateCache) {
+
+                } elseif (!$this->blnUpdateCache) {
+                    // Only generate options if we do not reload anyway
+
                     if (empty($arrValues)) {
                         continue;
                     }
@@ -328,17 +329,16 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Generate a sorting form
-     * @return void
      */
     protected function generateSorting()
     {
         $this->Template->hasSorting = false;
 
-        if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields)) // Can't use empty() because its an object property (using __get)
-        {
+        if (is_array($this->iso_sortingFields) && count($this->iso_sortingFields)) {
+            // Can't use empty() because its an object property (using __get)
+
             $arrOptions = array();
 
             // Cache new request value
@@ -351,14 +351,18 @@ class ProductFilter extends Module implements IsotopeFilterModule
                     ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending()),
                     $this->id
                 );
-            } // Request cache contains wrong value, delete it!
-            elseif (array_diff(array_keys(Isotope::getRequestCache()->getSortingsForModules(array($this->id))), $this->iso_sortingFields)) {
+
+            } elseif (array_diff(array_keys(Isotope::getRequestCache()->getSortingsForModules(array($this->id))), $this->iso_sortingFields)) {
+                // Request cache contains wrong value, delete it!
+
                 $this->blnUpdateCache = true;
                 Isotope::getRequestCache()->unsetSortingsForModule($this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
-            } // No need to generate options if we reload anyway
-            elseif (!$this->blnUpdateCache) {
+
+            } elseif (!$this->blnUpdateCache) {
+                // No need to generate options if we reload anyway
+
                 $first = Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id);
 
                 foreach ($this->iso_sortingFields as $field) {
@@ -387,10 +391,8 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Generate a limit form
-     * @return void
      */
     protected function generateLimit()
     {
@@ -403,17 +405,22 @@ class ProductFilter extends Module implements IsotopeFilterModule
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);
 
-            // Cache new request value
             if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit)) {
+                // Cache new request value
+
                 Isotope::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
-            } // Request cache contains wrong value, delete it!
-            elseif ($objLimit->notIn($arrLimit)) {
+
+            } elseif ($objLimit->notIn($arrLimit)) {
+                // Request cache contains wrong value, delete it!
+
                 $this->blnUpdateCache = true;
                 Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[0]), $this->id);
 
                 RequestCache::deleteById(\Input::get('isorc'));
-            } // No need to generate options if we reload anyway
-            elseif (!$this->blnUpdateCache) {
+
+            } elseif (!$this->blnUpdateCache) {
+                // No need to generate options if we reload anyway
+
                 foreach ($arrLimit as $limit) {
                     $arrOptions[] = array
                     (
@@ -430,10 +437,11 @@ class ProductFilter extends Module implements IsotopeFilterModule
         }
     }
 
-
     /**
      * Get the sorting labels (asc/desc) for an attribute
+     *
      * @param string
+     *
      * @return array
      */
     protected function getSortingLabels($field)

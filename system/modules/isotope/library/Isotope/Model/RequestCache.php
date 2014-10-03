@@ -52,7 +52,8 @@ class RequestCache extends \Model
 
     /**
      * Check if request cache is empty
-     * @return  bool
+     *
+     * @return bool
      */
     public function isEmpty()
     {
@@ -61,7 +62,8 @@ class RequestCache extends \Model
 
     /**
      * Get filter configuration
-     * @return  array|null
+     *
+     * @return array|null
      */
     public function getFilters()
     {
@@ -70,8 +72,10 @@ class RequestCache extends \Model
 
     /**
      * Get filter config for multiple modules
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrIds
+     *
+     * @return array
      */
     public function getFiltersForModules(array $arrIds)
     {
@@ -90,8 +94,9 @@ class RequestCache extends \Model
 
     /**
      * Set filter config for a frontend module
-     * @param   array
-     * @param   int
+     *
+     * @param array $arrFilters
+     * @param int   $intModule
      */
     public function setFiltersForModule(array $arrFilters, $intModule)
     {
@@ -103,6 +108,8 @@ class RequestCache extends \Model
 
     /**
      * Remove all filters for a frontend module
+     *
+     * @param int $intModule
      */
     public function unsetFiltersForModule($intModule)
     {
@@ -116,9 +123,11 @@ class RequestCache extends \Model
 
     /**
      * Return a specific filter by name and module
-     * @param   string
-     * @param   int
-     * @return  Filter|null
+     *
+     * @param string $strName
+     * @param int    $intModule
+     *
+     * @return Filter|null
      */
     public function getFilterForModule($strName, $intModule)
     {
@@ -131,8 +140,9 @@ class RequestCache extends \Model
 
     /**
      * Add an additional filter for a frontend module
-     * @param   Filter
-     * @param   int
+     *
+     * @param Filter $objFilter
+     * @param int    $intModule
      */
     public function addFilterForModule(Filter $objFilter, $intModule)
     {
@@ -144,9 +154,10 @@ class RequestCache extends \Model
 
     /**
      * Set filter by name for a frontend module
-     * @param   string
-     * @param   Filter
-     * @param   int
+     *
+     * @param string $strName
+     * @param Filter $objFilter
+     * @param int    $intModule
      */
     public function setFilterForModule($strName, Filter $objFilter, $intModule)
     {
@@ -158,8 +169,9 @@ class RequestCache extends \Model
 
     /**
      * Remove a filter for a frontend module
-     * @param   string
-     * @param   int
+     *
+     * @param string $strName
+     * @param int    $intModule
      */
     public function removeFilterForModule($strName, $intModule)
     {
@@ -177,6 +189,7 @@ class RequestCache extends \Model
 
     /**
      * Get sorting configuration
+     *
      * @return  array|null
      */
     public function getSortings()
@@ -186,8 +199,10 @@ class RequestCache extends \Model
 
     /**
      * Get sorting configs for multiple modules
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrIds
+     *
+     * @return array
      */
     public function getSortingsForModules(array $arrIds)
     {
@@ -206,8 +221,9 @@ class RequestCache extends \Model
 
     /**
      * Set sorting config for a frontend module
-     * @param   array
-     * @param   int
+     *
+     * @param array $arrSortings
+     * @param int   $intModule
      */
     public function setSortingsForModule(array $arrSortings, $intModule)
     {
@@ -219,7 +235,8 @@ class RequestCache extends \Model
 
     /**
      * Remove sorting configs for a frontend module
-     * @param   int
+     *
+     * @param int $intModule
      */
     public function unsetSortingsForModule($intModule)
     {
@@ -233,8 +250,10 @@ class RequestCache extends \Model
 
     /**
      * Get first sorting field name for a frontend module
-     * @param   int
-     * @return  string
+     *
+     * @param int $intModule
+     *
+     * @return string
      */
     public function getFirstSortingFieldForModule($intModule)
     {
@@ -249,9 +268,11 @@ class RequestCache extends \Model
 
     /**
      * Return a specific sorting by name and module
-     * @param   string
-     * @param   int
-     * @return  Sort|null
+     *
+     * @param string $strName
+     * @param int    $intModule
+     *
+     * @return Sort|null
      */
     public function getSortingForModule($strName, $intModule)
     {
@@ -264,8 +285,9 @@ class RequestCache extends \Model
 
     /**
      * Add an additional sorting for a frontend module
-     * @param   Sort
-     * @param   int
+     *
+     * @param Sort $objSort
+     * @param int  $intModule
      */
     public function addSortingForModule(Sort $objSort, $intModule)
     {
@@ -281,9 +303,10 @@ class RequestCache extends \Model
 
     /**
      * Set sorting by name for a frontend module
-     * @param   string
-     * @param   Sort
-     * @param   int
+     *
+     * @param string $strName
+     * @param Sort   $objSort
+     * @param int    $intModule
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
@@ -303,8 +326,9 @@ class RequestCache extends \Model
 
     /**
      * Remove a sorting for a frontend module
-     * @param   string
-     * @param   int
+     *
+     * @param string $strName
+     * @param int    $intModule
      */
     public function removeSortingForModule($strName, $intModule)
     {
@@ -322,7 +346,8 @@ class RequestCache extends \Model
 
     /**
      * Get limit configuration
-     * @return  array|null
+     *
+     * @return array|null
      */
     public function getLimits()
     {
@@ -331,8 +356,9 @@ class RequestCache extends \Model
 
     /**
      * Set limit for a frontend module
-     * @param   Limit
-     * @param   int
+     *
+     * @param Limit $objLimit
+     * @param int   $intModule
      */
     public function setLimitForModule(Limit $objLimit, $intModule)
     {
@@ -344,9 +370,11 @@ class RequestCache extends \Model
 
     /**
      * Return the first limit we can find
-     * @param   array
-     * @param   int
-     * @return  int
+     *
+     * @param array $arrIds
+     * @param int $intDefault
+     *
+     * @return Limit
      */
     public function getFirstLimitForModules(array $arrIds, $intDefault = 0)
     {
@@ -363,9 +391,9 @@ class RequestCache extends \Model
 
     /**
      * Do not allow to overwrite existing cache
-     * @param   bool
-     * @return  RequestCache
-     * @throws  \BadMethodCallException
+     *
+     * @return RequestCache
+     * @throws \BadMethodCallException
      */
     public function save()
     {
@@ -378,7 +406,8 @@ class RequestCache extends \Model
 
     /**
      * Return cache matching the current config, create or update if necessary
-     * @return  RequestCache
+     *
+     * @return RequestCache
      */
     public function saveNewConfiguration()
     {
@@ -407,8 +436,10 @@ class RequestCache extends \Model
 
     /**
      * Set the current record from an array
-     * @param   array
-     * @return  \Model
+     *
+     * @param array $arrData
+     *
+     * @return \Model
      */
     public function setRow(array $arrData)
     {
@@ -424,8 +455,10 @@ class RequestCache extends \Model
 
     /**
      * Add object data to row
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrSet
+     *
+     * @return array
      */
     protected function preSave(array $arrSet)
     {
@@ -440,9 +473,12 @@ class RequestCache extends \Model
 
     /**
      * Find cache by ID and store
-     * @param   int
-     * @param   int
-     * @return  RequestCache|null
+     *
+     * @param int   $intId
+     * @param int   $intStore
+     * @param array $arrOptions
+     *
+     * @return RequestCache|null
      */
     public static function findByIdAndStore($intId, $intStore, array $arrOptions = array())
     {
@@ -451,7 +487,10 @@ class RequestCache extends \Model
 
     /**
      * Delete a cache by ID
-     * @param   int
+     *
+     * @param int $intId
+     *
+     * @return bool
      */
     public static function deleteById($intId)
     {
@@ -468,8 +507,10 @@ class RequestCache extends \Model
 
     /**
      * Generate query string for native filters
-     * @param    array
-     * @return   array
+     *
+     * @param array $arrFilters
+     *
+     * @return array
      */
     public static function buildSqlFilters(array $arrFilters)
     {

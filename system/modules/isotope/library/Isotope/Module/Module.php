@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Util\Debug;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -47,9 +48,9 @@ abstract class Module extends Contao_Module
 
     /**
      * Load libraries and scripts
-     * @param object
-     * @param string
-     * @return void
+     *
+     * @param object $objModule
+     * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
     {
@@ -59,8 +60,8 @@ abstract class Module extends Contao_Module
 
         if (TL_MODE == 'FE') {
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
+            $GLOBALS['TL_CSS'][]        = Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
@@ -76,6 +77,7 @@ abstract class Module extends Contao_Module
 
     /**
      * Include messages if enabled
+     *
      * @return string
      */
     public function generate()
@@ -93,6 +95,7 @@ abstract class Module extends Contao_Module
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
+     *
      * @return array
      */
     protected function findCategories()
@@ -177,8 +180,10 @@ abstract class Module extends Contao_Module
 
     /**
      * Find jumpTo page for current category scope
-     * @param   $objProduct \Isotope\Interfaces\IsotopeProduct
-     * @return  \PageModel
+     *
+     * @param $objProduct \Isotope\Interfaces\IsotopeProduct
+     *
+     * @return \PageModel
      */
     protected function findJumpToPage($objProduct)
     {
@@ -229,8 +234,9 @@ abstract class Module extends Contao_Module
     /**
      * Generate the URL from existing $_GET parameters.
      * Use \Input::setGet('var', null) to remove a parameter from the final URL.
-     * @return      string
-     * @deprecated  use \Haste\Util\Url::addQueryString instead
+     *
+     * @return string
+     * @deprecated use \Haste\Util\Url::addQueryString instead
      */
     protected function generateRequestUrl()
     {
@@ -279,6 +285,7 @@ abstract class Module extends Contao_Module
             }
         }
 
+        /** @type PageModel $objPage */
         global $objPage;
 
         return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');
