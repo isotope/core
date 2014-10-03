@@ -46,6 +46,15 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     public function getOptionsFromManager(IsotopeProduct $objProduct = null);
 
     /**
+     * Get a list of options for the frontend product filter
+     *
+     * @param array $arrValues
+     *
+     * @return array
+     */
+    public function getOptionsForProductFilter(array $arrValues);
+
+    /**
      * Return true if attribute can have prices
      *
      * @return bool

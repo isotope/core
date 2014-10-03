@@ -152,6 +152,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 /** @type IsotopeProduct|Product $objProduct */
                 if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"');
+
                 } elseif (!is_array($this->varOptionsCache) || array_key_exists($objProduct->id, $this->varOptionsCache)) {
                     $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute($objProduct, $this);
                 }
@@ -160,6 +161,47 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             default:
                 throw new \UnexpectedValueException(static::$strTable.'.'.$this->field_name . ' does not use options manager');
+        }
+    }
+
+    /**
+     * Get options for the frontend product filter widget
+     *
+     * @param array $arrValues
+     *
+     * @return array
+     */
+    public function getOptionsForProductFilter(array $arrValues)
+    {
+        switch ($this->optionsSource) {
+
+            // @deprecated remove in Isotope 3.0
+            case 'attribute':
+                $arrOptions = array();
+                $options = deserialize($this->options);
+
+                if (!empty($options) && is_array($options)) {
+                    foreach ($options as $option) {
+                        if (in_array($option['value'], $arrValues)) {
+                            $option['label'] = Translation::get($option['label']);
+                            $arrOptions[] = $option;
+                        }
+                    }
+                }
+
+                return $arrOptions;
+                break;
+
+            case 'table':
+            case 'product':
+                /** @type \Isotope\Collection\AttributeOption $objOptions */
+                $objOptions = AttributeOption::findPublishedByIds($arrValues);
+
+                return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
+                break;
+
+            default:
+                throw new \UnexpectedValueException('Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
         }
     }
 

@@ -16,6 +16,7 @@ use Haste\Haste;
 use Haste\Http\Response\JsonResponse;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\Model\Product;
@@ -287,6 +288,12 @@ class ProductFilter extends Module implements IsotopeFilterModule
                     $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
                     $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
 
+                    if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
+                        && $objAttribute instanceof IsotopeAttributeWithOptions
+                    ) {
+                        $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
+                    }
+
                     // Must have options to apply the filter
                     if (!is_array($arrWidget['options'])) {
                         continue;
@@ -297,7 +304,10 @@ class ProductFilter extends Module implements IsotopeFilterModule
                             $arrWidget['blankOptionLabel'] = $option['label'];
                             unset($arrWidget['options'][$k]);
                             continue;
+
                         } elseif (!in_array($option['value'], $arrValues) || $option['value'] == '-') {
+                            // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
+
                             unset($arrWidget['options'][$k]);
                             continue;
                         }

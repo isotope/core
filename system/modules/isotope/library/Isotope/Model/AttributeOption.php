@@ -284,6 +284,28 @@ class AttributeOption extends \MultilingualModel
     }
 
     /**
+     * Find published attribute options by IDs
+     *
+     * @param array $arrIds
+     * @param array $arrOptions
+     *
+     * @return \Isotope\Collection\AttributeOption|null
+     */
+    public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
+    {
+        $t = static::getTable();
+
+        return static::findBy(
+            array(
+                "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")",
+                "$t.published='1'"
+            ),
+            null,
+            $arrOptions
+        );
+    }
+
+    /**
      * Create a Model\Collection object
      *
      * @param array  $arrModels An array of models
