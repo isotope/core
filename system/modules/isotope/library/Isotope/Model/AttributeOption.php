@@ -47,14 +47,15 @@ class AttributeOption extends \MultilingualModel
      * Get array representation of the attribute option
      *
      * @param IsotopeProduct $objProduct
+     * @param bool           $blnPriceInLabel
      *
      * @return array
      */
-    public function getAsArray(IsotopeProduct $objProduct = null)
+    public function getAsArray(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
     {
         return array(
             'value'     => $this->id,
-            'label'     => $this->getLabel($objProduct),
+            'label'     => ($blnPriceInLabel ? $this->getLabel($objProduct) : $this->label),
             'group'     => ($this->type == 'group' ? '1' : ''),
             'default'   => ($this->isDefault ? '1' : ''),
             'model'     => $this
