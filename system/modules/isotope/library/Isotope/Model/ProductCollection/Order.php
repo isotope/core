@@ -34,6 +34,16 @@ use NotificationCenter\Model\Notification;
  * Provide methods to handle Isotope orders.
  *
  * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
+ *
+ * @property int    locked
+ * @property array  checkout_info
+ * @property array  payment_data
+ * @property array  shipping_data
+ * @property string document_number
+ * @property int    order_status
+ * @property int    date_paid
+ * @property int    date_shipped
+ * @property string notes
  */
 class Order extends ProductCollection implements IsotopeProductCollection
 {

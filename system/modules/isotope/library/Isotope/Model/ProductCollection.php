@@ -33,9 +33,21 @@ use Isotope\Model\Shipping;
  * @property int    tstamp
  * @property string type
  * @property int    member
- * @property int    locked
  * @property int    store_id
  * @property mixed  settings
+ * @property int    source_collection_id
+ * @property string uniqid
+ * @property int    config_id
+ * @property int    payment_id
+ * @property int    shipping_id
+ * @property int    billing_address_id
+ * @property int    shipping_address_id
+ * @property float  subtotal
+ * @property float  tax_free_subtotal
+ * @property float  total
+ * @property float  tax_free_total
+ * @property string currency
+ * @property string language
  */
 abstract class ProductCollection extends TypeAgent
 {
