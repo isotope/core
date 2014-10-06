@@ -11,6 +11,7 @@ Version 2.2.0-rc1 (2014-??-??)
 - Added shipping calculation module (#1187)
 - Added condition to payment and shipping restriction on product type
 - Added inline edit option for advanced prices
+- Payment and shipping methods can now handle on order status updates
 
 ### Improved
 - Performance when finding the correct jumpTo page (#1104)

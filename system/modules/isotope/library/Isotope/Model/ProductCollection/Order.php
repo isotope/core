@@ -15,6 +15,7 @@ namespace Isotope\Model\ProductCollection;
 use Haste\Generator\RowClass;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -294,6 +295,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
             }
+        }
+
+        // Trigger payment and shipping methods that implement the interface
+        if (($objPayment = $this->getPaymentMethod()) !== null && $objPayment instanceof IsotopeOrderStatusAware) {
+            $objPayment->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+        }
+        if (($objShipping = $this->getShippingMethod()) !== null && $objShipping instanceof IsotopeOrderStatusAware) {
+            $objShipping->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
         }
 
         return true;
