@@ -88,8 +88,9 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         if ($this->trans_type != 'auth') {
             $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
             $objOrder->date_paid = time();
-            $objOrder->updateOrderStatus($this->new_order_status);
         }
+
+        $objOrder->updateOrderStatus($this->new_order_status);
     }
 
     /**
