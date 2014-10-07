@@ -155,9 +155,9 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
 
             if (TL_MODE == 'BE') {
                 if ($blnResult) {
-                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusSuccess']);
+                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
-                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusError']);
+                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']);
                 }
             }
         }

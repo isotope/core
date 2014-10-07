@@ -121,8 +121,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha256']              
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha512']                              = 'SHA-512';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][3]                            = 'Full screen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][4]                            = 'Integrated payment form';
-$GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusSuccess']                                  = 'Saferpay status was successfully updated.';
-$GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusError']                                    = 'Saferpay status could not be updated! Please check the Saferpay web interface.';
 
 /**
  * Legends
