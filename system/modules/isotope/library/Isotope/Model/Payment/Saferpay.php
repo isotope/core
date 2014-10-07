@@ -12,12 +12,14 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 
 
-class Saferpay extends Postsale implements IsotopePayment
+class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAware
 {
 
     /**
@@ -128,6 +130,37 @@ class Saferpay extends Postsale implements IsotopePayment
 <h2>' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] . '</h2>
 <p class="message">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] . '</p>
 <p><a href="' . $objRequest->response . '">' . $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] . '</a></p>';
+    }
+
+    /**
+     * Update order on Saferpay terminal when changing order status in backend
+     *
+     * @param Order       $objOrder
+     * @param int         $intOldStatus
+     * @param OrderStatus $objNewStatus
+     */
+    public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus)
+    {
+        $blnCancel = null;
+
+        if ($objNewStatus->saferpay_status == 'capture') {
+            $blnCancel = false;
+        } elseif ($objNewStatus->saferpay_status == 'cancel') {
+            $blnCancel = true;
+        }
+
+        if (null !== $blnCancel) {
+            $arrPayment = deserialize($objOrder->payment_data, true);
+            $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN'], $blnCancel);
+
+            if (TL_MODE == 'BE') {
+                if ($blnResult) {
+                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusSuccess']);
+                } else {
+                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_payment']['saferpayStatusError']);
+                }
+            }
+        }
     }
 
     /**
