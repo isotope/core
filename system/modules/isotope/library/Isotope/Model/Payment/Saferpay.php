@@ -260,7 +260,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $objRequest->send(static::payCompleteURI, http_build_query($params, null, '&'), 'POST');
 
         // Stop if capture was not successful
-        if ($objRequest->hasError() || strtoupper($objRequest->response) != 'OK') {
+        if ($objRequest->hasError() || strtoupper(substr($objRequest->response, 0, 3)) != 'OK:') {
             \System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
