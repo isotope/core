@@ -36,7 +36,7 @@ class Saferpay extends Postsale implements IsotopePayment
      * PayCompleteURI
      * @var string
      */
-    const payCompleteURI = 'https://www.saferpay.com/hosting/PayComplete.asp';
+    const payCompleteURI = 'https://www.saferpay.com/hosting/PayCompleteV2.asp';
 
 
     protected $objXML;
@@ -65,30 +65,13 @@ class Saferpay extends Postsale implements IsotopePayment
             return;
         }
 
-        // everything has been okay so far and the debit has been authorized. We capture it now if this is requested (usually it is).
-        if ($this->trans_type != 'auth') {
+        $arrResponse = array();
+        parse_str(substr($objRequest->response, 3), $arrResponse);
 
-            $arrResponse = array();
-            parse_str(substr($objRequest->response, 3), $arrResponse);
-
-            $strUrl = static::payCompleteURI . '?ACCOUNTID=' . $this->saferpay_accountid . '&ID=' . urlencode($arrResponse['ID']) . '&TOKEN=' . urlencode($arrResponse['TOKEN']);
-
-            // This is only for the sandbox mode where a password is required
-            if (substr($this->saferpay_accountid, 0, 6) == '99867-') {
-                $strUrl .= '&spPassword=XAjc3Kna';
-            }
-
-            $objRequest = new \Request();
-            $objRequest->send($strUrl);
-
-            // Stop if capture was not successful
-            if (strtoupper($objRequest->response) != 'OK') {
-                \System::log(sprintf('Payment capture failed. See log files for further details.'), __METHOD__, TL_ERROR);
-                log_message(sprintf('Payment capture failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
-
-                return;
-            }
-        }
+        // Store request data in order for future references
+        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment['POSTSALE'][] = $this->getPostData();
+        $arrPayment['PAYCONFIRM'] = $arrResponse;
 
         if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
@@ -96,15 +79,15 @@ class Saferpay extends Postsale implements IsotopePayment
             return;
         }
 
-        // Store request data in order for future references
-        $arrPayment = deserialize($objOrder->payment_data, true);
-        $arrPayment['POSTSALE'][] = $this->getPostData();
         $objOrder->payment_data = $arrPayment;
-
-        $objOrder->date_paid = time();
-        $objOrder->updateOrderStatus($this->new_order_status);
-
         $objOrder->save();
+
+        // everything has been okay so far and the debit has been authorized. We capture it now if this is requested (usually it is).
+        if ($this->trans_type != 'auth') {
+            $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
+            $objOrder->date_paid = time();
+            $objOrder->updateOrderStatus($this->new_order_status);
+        }
     }
 
     /**
@@ -214,6 +197,44 @@ class Saferpay extends Postsale implements IsotopePayment
         }
 
         return (string) $this->objXML->getNamedItem($strKey)->nodeValue;
+    }
+
+    /**
+     * Send a PayComplete request to the Saferpay terminal
+     *
+     * @param string $strId
+     * @param string $strToken
+     * @param bool   $blnCancel
+     *
+     * @return bool
+     */
+    protected function sendPayComplete($strId, $strToken, $blnCancel = false)
+    {
+        $params = array(
+            'ID'          => $strId,
+            'ACCOUNTID'   => $this->saferpay_accountid,
+            'ACTION'      => ($blnCancel ? 'Cancel' : 'Settlement'),
+            'TOKEN'       => $strToken
+        );
+
+        // This is only for the sandbox mode where a password is required
+        if (substr($this->saferpay_accountid, 0, 6) == '99867-') {
+            $params['spPassword'] = 'XAjc3Kna';
+        }
+
+        $objRequest = new \Request();
+        $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $objRequest->send(static::payCompleteURI, http_build_query($params, null, '&'), 'POST');
+
+        // Stop if capture was not successful
+        if ($objRequest->hasError() || strtoupper($objRequest->response) != 'OK') {
+            \System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
+            log_message(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
+
+            return false;
+        }
+
+        return true;
     }
 
 
