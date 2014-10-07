@@ -278,6 +278,7 @@ abstract class Payment extends TypeAgent
 
     /**
      * Get the checkout surcharge for this payment method
+     *
      * @return  \Isotope\Model\ProductCollectionSurcharge\Payment|null
      */
     public function getSurcharge($objCollection)
@@ -294,7 +295,8 @@ abstract class Payment extends TypeAgent
      * Validate a credit card number and return the card type.
      * http://regexlib.com/UserPatterns.aspx?authorid=7128ecda-5ab1-451d-98d9-f94d2a453b37
      *
-     * @param string
+     * @param string $strNumber
+     *
      * @return mixed
      */
     protected static function validateCreditCard($strNumber)
@@ -333,6 +335,7 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return a list of valid credit card types for this payment module
+     *
      * @return array
      */
     public static function getAllowedCCTypes()

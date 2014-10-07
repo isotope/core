@@ -17,9 +17,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 
 
-/**
- * Class PaymentSaferpay
- */
 class Saferpay extends Postsale implements IsotopePayment
 {
 
