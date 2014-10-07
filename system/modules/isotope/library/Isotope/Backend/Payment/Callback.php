@@ -142,6 +142,7 @@ class Callback extends \Backend
      * @param \DataContainer $dc
      *
      * @return array
+     * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
      */
     public function getAllowedCCTypes(\DataContainer $dc)
     {

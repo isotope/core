@@ -337,6 +337,7 @@ abstract class Payment extends TypeAgent
      * Return a list of valid credit card types for this payment module
      *
      * @return array
+     * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
      */
     public static function getAllowedCCTypes()
     {

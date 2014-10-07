@@ -223,6 +223,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'sql'                   => "int(10) NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
+        // @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own field instead.
         'allowed_cc_types' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types'],
