@@ -177,9 +177,8 @@ class Saferpay extends Postsale implements IsotopePayment
             $arrData['VTCONFIG'] = $this->saferpay_vtconfig;
         }
 
-        // Provider sets
-        if ($this->saferpay_providerset) {
-            $arrData['PROVIDERSET'] = $this->saferpay_providerset;
+        if ($this->saferpay_paymentmethods != '') {
+            $arrData['PAYMENTMETHODS'] = $this->saferpay_paymentmethods;
         }
 
         return $arrData;

@@ -56,7 +56,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['sofortueberweisung_project_password']    
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_accountid']                     = array('Saferpay Account-ID', 'Please enter your unique Saferpay account id.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description']                   = array('Checkout description', 'The customer will see this description on the Saferpay checkout page.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig']                      = array('Payment page configuration (VTCONFIG)', 'You can create different Payment Page configurations. If you want to use a specific one of them, enter its "Parameter for the request" value here.');
-$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_providerset']                   = array('Payment provider restrictions (PROVIDERSET)', 'You can limit the available payment providers (e.g. only MasterCard). Enter a comma separated list of provider IDs.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods']                = array('Payment methods', 'You can limit the available payment methods (e.g. only MasterCard). If you do not select anything, all payment methods will be allowed.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId']                      = array('ExperCash Popup-ID', 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_profile']                      = array('ExperCash Profile', 'Geben Sie die dreistellige Profilnummer ein.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupKey']                     = array('ExperCash Popup-Key', 'Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.');
