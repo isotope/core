@@ -1,36 +1,11 @@
 <div style="font-size: 62.5%; font-family: Arial, Helvetica, sans-serif">
     <table cellspacing="0" cellpadding="20" border="0">
         <tr>
-            <td width="60%">
-            <!-- The "generateHtml" method accepts an array of fields that map to your shop configuration settings - see example in shipping address -->
-            <?php if ($this->collection->getBillingAddress()): ?>
-                <strong>Billing address</strong>
-                <?php echo $this->collection->getBillingAddress()->generateHtml(); ?>
-            <?php endif; ?>
-            <!-- BTW: If the shipping address is the same as the billing address, this will return null -->
-            <?php if ($this->collection->getShippingAddress()): ?>
-                <strong>Shipping address</strong>
-                <?php echo $this->collection->getShippingAddress()->generateHtml(array(
-                    'company',
-                    'street_1'
-                )); ?>
-            <?php endif; ?>
-            </td>
-            <td width="40%">
-                <strong><?php echo $this->collection->getRelated('config_id')->company; ?></strong><br>
-                <?php echo $this->collection->getRelated('config_id')->street_1; ?><br>
-                <?php echo $this->collection->getRelated('config_id')->postal; ?> <?php echo $this->collection->getRelated('config_id')->city; ?><br>
-            </td>
-        </tr>
-        <tr>
-            <td width="60%">
+            <td>
                 <h2><?php echo $this->title; ?></h2>
             </td>
-            <td width="40%">
-                <strong>Order date:</strong> <?php echo Date::parse('m-d-Y', $this->collection->locked); ?><br> <!-- "locked" contains the timestamp when a collection was locked and cannot be changed anymore (for an order this means the date it was ordered) -->
-                <strong>Customer ID:</strong> <?php echo $this->collection->member ?: '-'; ?><br> <!-- If you allowed guest orders you don't have any customer ID -->
-                <strong>Shipping method:</strong> <?php echo ($this->collection->getShippingMethod()) ? $this->collection->getShippingMethod()->getLabel() : '-'; ?><br>
-                <strong>Payment method:</strong> <?php echo ($this->collection->getPaymentMethod()) ? $this->collection->getPaymentMethod()->getLabel() : '-'; ?>
+            <td>
+                <?php if ($this->collection->getBillingAddress()) echo $this->collection->getBillingAddress()->generateHtml(); ?>
             </td>
         </tr>
         <tr>
