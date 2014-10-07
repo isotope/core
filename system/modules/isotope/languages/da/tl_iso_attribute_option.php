@@ -14,9 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_shipping']['price'][0] = 'Pris';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['tax_class'][0] = 'Moms klasse';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['label'][0] = 'Mærkat';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Produkttyper';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Butiksindstillinger';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Forsendelsesmetoder';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Mærkat';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Pris';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend'] = 'Publiseringsindstillinger';

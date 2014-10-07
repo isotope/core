@@ -16,6 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][0] = 'Forsendelsesmetoder';
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Produkttyper';
+$GLOBALS['TL_LANG']['tl_iso_payment']['config_ids'][0] = 'Butiksindstillinger';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][0] = 'Pris';
 $GLOBALS['TL_LANG']['tl_iso_payment']['tax_class'][0] = 'Moms klasse';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod'][0] = 'Betalingsmetode';

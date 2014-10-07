@@ -44,6 +44,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][0] = 'Maksymalna waga';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][1] = 'Proszę wprowadzić maksymalną wagę do kontroli dostępności opartej na produktach w koszyku.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Typy produktów';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Tutaj możesz zastrzec dla jakich typów produktów ta metoda wysyłki jest dostępna. Jeśli koszyk zawiera produkt, który nie jest zaznaczony, moduł wysyłki będzie niedostępny.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Konfiguracje sklepu';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Metody dostawy';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][1] = 'Proszę wybrać metody wysyłki do grupy w tej metodzie.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'][0] = 'Grupowa kalkulacja';

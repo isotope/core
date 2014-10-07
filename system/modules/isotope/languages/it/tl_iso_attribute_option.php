@@ -14,9 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Totale';
-$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Totale';
-$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Configurazione negozio';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Stato';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Colonne';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Tipo';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['group'] = 'Gruppo';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'][0] = 'Preimpostato';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Etichetta';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Prezzo';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend'] = 'Pubblicazione';

@@ -76,6 +76,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_noFilter'][1] = 'Geben Sie eine eigene Nac
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][0] = 'Kategorie-Anwendungsbereich';
 $GLOBALS['TL_LANG']['tl_module']['iso_category_scope'][1] = 'Spezifizieren Sie den Anwendungsbereich diese Produktliste.';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Bedingung';
+$GLOBALS['TL_LANG']['tl_module']['iso_list_where'][1] = 'Geben Sie eine SQL-Bedingung zum filtern der Produkte ein. Sie müssen die Felder mit "tl_iso_product." beginnen (z. B. <em>tl_iso_product.featured=1</em> oder <em>tl_iso_product.color!=\'red\'</em>)!';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][0] = 'Filter-Module';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules'][1] = 'Wählen Sie die Filter-Module die Sie für diese Produkt-Liste in Betracht ziehen wollen.';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Aktivierte Filter';
@@ -113,6 +114,9 @@ $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][0] = 'Nachrichten einbin
 $GLOBALS['TL_LANG']['tl_module']['iso_includeMessages'][1] = 'Diese Einstellung ermöglicht es dem Modul Fehler, Hinweise oder Bestätigungen anzuzeigen, die der Besucher sehen sollte.';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][0] = '"Einkauf fortsetzen"-Schaltfläche aktivieren';
 $GLOBALS['TL_LANG']['tl_module']['iso_continueShopping'][1] = 'Link zum gerade hinzugefügten Produkt hinzufügen.';
+$GLOBALS['TL_LANG']['tl_module']['iso_address']['billing'] = 'Rechnungsadresse';
+$GLOBALS['TL_LANG']['tl_module']['iso_address']['shipping'] = 'Versandadresse';
+$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions_legend'] = 'Bestellbedingungsformular';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['member'] = 'Anmelden/Registrieren erforderlich';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['guest'] = 'Nur Gast-Bestellungen';
 $GLOBALS['TL_LANG']['tl_module']['iso_checkout_method_ref']['both'] = 'Beides erlaubt';

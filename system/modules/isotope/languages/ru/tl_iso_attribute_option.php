@@ -9,13 +9,11 @@
  * or to help to maintain an existing one, please register at transifex.com.
  * 
  * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/i/isotope/language/sl/
+ * @link https://www.transifex.com/projects/i/isotope/language/ru/
  * 
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Skupaj';
-$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Skupaj';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Stolpci';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Тип';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Метка';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Цена';

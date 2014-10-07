@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][0] = 'Modes de livrais
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][1] = 'Vous pouvez limiter ce mode de paiement à certains modes de livraison (par exemple, en espèces uniquement lors du ramassage).';
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Types de produits';
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][1] = 'Limiter ce mode de paiement pour certains types de produits. Si le panier contient un type de produit que vous n\'avez pas sélectionné, le module de paiement n\'est pas disponible.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['config_ids'][0] = 'Configurations de boutique';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][0] = 'Prix';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][1] = 'Entrez un prix ou une valeur en pourcentage (ex: "10" ou "10%").';
 $GLOBALS['TL_LANG']['tl_iso_payment']['tax_class'][0] = 'Taxe';

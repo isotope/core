@@ -14,8 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Skupaj';
-$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Skupaj';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Stolpci';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Tip';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Oznaka';

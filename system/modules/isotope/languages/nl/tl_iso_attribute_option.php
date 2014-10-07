@@ -14,10 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Totaal';
-$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Totaal';
-$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Winkelconfiguratie';
-$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
-$GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Alle';
-$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
-$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Kolommen';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Soort';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['group'] = 'Groep';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'][0] = 'Standaard';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Label';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Prijs';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend'] = 'Publicatie instellingen';

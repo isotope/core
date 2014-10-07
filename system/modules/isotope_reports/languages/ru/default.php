@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Валюта';
+$GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Состояние';
+$GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Колонки';
