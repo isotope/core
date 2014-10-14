@@ -38,9 +38,6 @@ class PaymentPostfinance extends IsotopePayment
 
 	/**
 	 * Process payment on confirmation page.
-	 *
-	 * @access public
-	 * @return void
 	 */
 	public function processPayment()
 	{
@@ -220,7 +217,7 @@ class PaymentPostfinance extends IsotopePayment
 			}
 		}
 
-		uksort($arrParam, 'strcasecmp');
+        uksort($arrParam, 'strnatcasecmp');
 
 		foreach( $arrParam as $k => $v )
 		{
@@ -230,10 +227,19 @@ class PaymentPostfinance extends IsotopePayment
 			$strSHASign .= strtoupper($k) . '=' . $v . $this->postfinance_secret;
 		}
 
-		if ($this->getRequestData('SHASIGN') == strtoupper(sha1($strSHASign)))
+        $strHash = strtoupper(sha1($strSHASign));
+
+        if ($this->getRequestData('SHASIGN') == $strHash)
 		{
 			return true;
 		}
+
+        log_message(
+            "Received invalid Postfinance postsale data:
+Calculated hash ($strHash) does not match input value ({$this->getRequestData('SHASIGN')})
+URL: " . \Environment::getInstance()->url . \Environment::getInstance()->request . "
+POST Data: ". print_r($_POST, true),
+            'postfinance.log');
 
 		return false;
 	}
