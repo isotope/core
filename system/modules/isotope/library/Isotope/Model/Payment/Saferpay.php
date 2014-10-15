@@ -142,25 +142,21 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
      */
     public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus)
     {
-        $blnCancel = null;
-
         if ($objNewStatus->saferpay_status == 'capture') {
-            $blnCancel = false;
-        } elseif ($objNewStatus->saferpay_status == 'cancel') {
-            $blnCancel = true;
-        }
 
-        if (null !== $blnCancel) {
             $arrPayment = deserialize($objOrder->payment_data, true);
-            $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN'], $blnCancel);
+            $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
             if (TL_MODE == 'BE') {
                 if ($blnResult) {
-                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
+                    \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
                     \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']);
                 }
             }
+
+        } elseif ($objNewStatus->saferpay_status == 'cancel' && TL_MODE == 'BE') {
+            \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }
 

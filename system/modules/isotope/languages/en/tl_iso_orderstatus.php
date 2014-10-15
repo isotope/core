@@ -43,4 +43,4 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['payment_legend'] = 'Payment Gateways'
  * References
  */
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status']['capture'] = 'Capture payment';
-$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status']['cancel']  = 'Cancel transaction';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status']['cancel']  = 'Suggest manual payment cancellation';
