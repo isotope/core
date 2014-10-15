@@ -327,7 +327,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
             } elseif ($blnNotificationError === false) {
                 \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
             }

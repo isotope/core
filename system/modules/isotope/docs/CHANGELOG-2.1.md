@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.9-stable (2014-??-??)
 ---------------------------------
 
+### Improved
+- Show error instead of confirm message if order status notification could not be sent
+
 
 Version 2.1.8-stable (2014-10-01)
 ---------------------------------
