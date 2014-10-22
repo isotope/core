@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.0-stable (2014-??-??)
+---------------------------------
+
+### Fixed
+- Checkout step "address" could not be completed when a member was logged in (#1271)
+
+
 Version 2.2.0-rc1 (2014-10-07)
 --------------------------------
 
