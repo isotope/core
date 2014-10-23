@@ -809,8 +809,6 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $objItem->increaseQuantityBy($intQuantity);
-
-            return $objItem;
         } else {
             if ($intQuantity < $intMinimumQuantity) {
                 $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
@@ -835,8 +833,17 @@ abstract class ProductCollection extends TypeAgent
             // Add the new item to our cache
             $this->arrItems[$objItem->id] = $objItem;
 
-            return $objItem;
         }
+
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postAddProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['postAddProductToCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objItem, $intQuantity, $this);
+            }
+        }
+
+        return $objItem;
     }
 
 
