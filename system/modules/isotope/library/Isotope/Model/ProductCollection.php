@@ -915,6 +915,14 @@ abstract class ProductCollection extends TypeAgent
         $objItem->save();
         $this->tstamp = time();
 
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection']) && is_array($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objItem, $arrSet['quantity'], $this);
+            }
+        }
+
         return true;
     }
 
