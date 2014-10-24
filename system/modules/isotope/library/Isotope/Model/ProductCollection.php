@@ -901,8 +901,6 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $objItem->increaseQuantityBy($intQuantity);
-
-            return $objItem;
         } else {
             if ($intQuantity < $intMinimumQuantity) {
                 $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
@@ -927,8 +925,17 @@ abstract class ProductCollection extends TypeAgent
             // Add the new item to our cache
             $this->arrItems[$objItem->id] = $objItem;
 
-            return $objItem;
         }
+
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postAddProductToCollection']) && is_array($GLOBALS['ISO_HOOKS']['postAddProductToCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objItem, $intQuantity, $this);
+            }
+        }
+
+        return $objItem;
     }
 
 
@@ -1004,6 +1011,14 @@ abstract class ProductCollection extends TypeAgent
         $objItem->save();
         $this->tstamp = time();
 
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection']) && is_array($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objItem, $arrSet['quantity'], $this);
+            }
+        }
+
         return true;
     }
 
@@ -1037,11 +1052,13 @@ abstract class ProductCollection extends TypeAgent
             return false;
         }
 
+        $objItem = $arrItems[$intId];
+
         // !HOOK: additional functionality when a product is removed from the collection
         if (isset($GLOBALS['ISO_HOOKS']['deleteItemFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnRemove   = $objCallback->$callback[1]($arrItems[$intId], $this);
+                $blnRemove   = $objCallback->$callback[1]($objItem, $this);
 
                 if ($blnRemove === false) {
                     return false;
@@ -1049,11 +1066,19 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        $arrItems[$intId]->delete();
+        $objItem->delete();
 
         unset($this->arrItems[$intId]);
 
         $this->tstamp = time();
+
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postDeleteItemFromCollection']) && is_array($GLOBALS['ISO_HOOKS']['postDeleteItemFromCollection'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['postDeleteItemFromCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objItem, $this);
+            }
+        }
 
         return true;
     }
