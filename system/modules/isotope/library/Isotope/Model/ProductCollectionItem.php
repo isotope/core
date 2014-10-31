@@ -151,6 +151,7 @@ class ProductCollectionItem extends \Model
             $this->objProduct = $strClass::findByPk($this->product_id);
         }
 
+        $this->objProduct->arrOptions = deserialize($this->options);
         return $this->objProduct;
     }
 

@@ -302,6 +302,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $this->objPrice = ProductPrice::findByProductAndCollection($this, $objCollection);
         }
 
+        $this->objPrice->arrOptions = $this->arrOptions;
         return $this->objPrice;
     }
 
