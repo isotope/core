@@ -7,6 +7,7 @@ Version 2.2.0-stable (2014-??-??)
 ### Fixed
 - Checkout step "address" could not be completed when a member was logged in (#1271)
 - Duplicating attribute did not copy the attribute options (#1265)
+- Rules were not applied to orders (#1290)
 
 
 Version 2.2.0-rc1 (2014-10-07)

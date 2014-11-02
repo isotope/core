@@ -15,6 +15,7 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
 use Isotope\Model\Rule;
 
@@ -130,8 +131,8 @@ class Rules extends \Controller
      */
     public function findSurcharges(IsotopeProductCollection $objCollection)
     {
-        // Rules should only be applied to Cart, not any other product collection
-        if (!($objCollection instanceof Cart)) {
+        // Rules should only be applied to Cart & Order, not any other product collection
+        if (!($objCollection instanceof Cart) && !($objCollection instanceof Order)) {
             return array();
         }
 
