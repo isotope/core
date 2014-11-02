@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
         'closed'                    => true,
+        'ctable'                    => array(\Isotope\Model\AttributeOption::getTable()),
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
