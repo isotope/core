@@ -7,6 +7,9 @@ Version 2.1.9-stable (2014-??-??)
 ### Improved
 - Show error instead of confirm message if order status notification could not be sent
 
+### Fixed
+- Order total was not shown in the backend order list (#1282)
+
 
 Version 2.1.8-stable (2014-10-01)
 ---------------------------------
