@@ -91,7 +91,16 @@ class Rule extends \Model
         return static::findByConditions(array("type='cart'", "enableCode='1'"));
     }
 
+    /**
+     * @deprecated Deprecated since 2.1.9, to be removed in 3.0
+     * @see Rule::findActiveWithoutCoupons
+     */
     public static function findActiveWitoutCoupons()
+    {
+        return static::findActiveWithoutCoupons();
+    }
+
+    public static function findActiveWithoutCoupons()
     {
         return static::findByConditions(array("(type='product' OR (type='cart' AND enableCode=''))"));
     }
