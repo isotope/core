@@ -181,10 +181,8 @@ class PostSale extends \Frontend
 
             // Set the current system to the language when the user placed the order.
             // This will result in correct e-mails and payment description.
-            if ($GLOBALS['TL_LANGUAGE'] != $objOrder->language) {
-                $GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-                \System::loadLanguageFile('default', $objOrder->language, true);
-            }
+            $GLOBALS['TL_LANGUAGE'] = $objOrder->language;
+            \System::loadLanguageFile('default', $objOrder->language, true);
 
             Isotope::setConfig($objOrder->getRelated('config_id'));
 
