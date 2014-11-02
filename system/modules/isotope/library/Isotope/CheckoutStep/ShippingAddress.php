@@ -78,11 +78,14 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get available address options
-     * @return  array
+     *
+     * @param array $arrFields
+     *
+     * @return array
      */
-    protected function getAddressOptions()
+    protected function getAddressOptions($arrFields = null)
     {
-        $arrOptions = parent::getAddressOptions();
+        $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getShippingFieldsConfig());
 
         array_insert($arrOptions, 0, array(array(
             'value'     => '-1',

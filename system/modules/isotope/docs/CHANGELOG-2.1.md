@@ -10,6 +10,7 @@ Version 2.1.9-stable (2014-??-??)
 ### Fixed
 - Order total was not shown in the backend order list (#1282)
 - Always load language files in postsale script (#1281)
+- Correctly format shipping addresses in checkout step (#1278)
 
 
 Version 2.1.8-stable (2014-10-01)
