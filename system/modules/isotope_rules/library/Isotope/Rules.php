@@ -223,7 +223,7 @@ class Rules extends \Controller
 
         $objRules = Rule::findForCartWithCoupons();
 
-        if (null === $objRules || !count(array_diff($objRules->fetchEach('code'), $arrCoupons))) {
+        if (null === $objRules) {
             return '';
         }
 
