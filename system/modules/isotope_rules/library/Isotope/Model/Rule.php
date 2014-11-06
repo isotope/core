@@ -313,69 +313,176 @@ class Rule extends \Model
      * Fetch rules
      */
     protected static function findByConditions(
-        $whereParts,
-        $parameters = array(),
-        $arrProducts = null,
+        array $whereParts,
+        array $parameters = array(),
+        array $arrProducts = null,
         $blnIncludeVariants = false,
-        $arrAttributeData = array()
+        array $arrAttributeData = array()
     ) {
-        // Only enabled rules
-        $whereParts[] = "enabled='1'";
+        if (!is_array($arrProducts)) {
+            $arrProducts = Isotope::getCart()->getItems();
+        }
 
-        // Date & Time restrictions
-        $date = date('Y-m-d');
-        $time = date('H:i:s');
+        static::addEnabledRestrictions($whereParts, $parameters);
+        static::addDateTimeRestrictions($whereParts, $parameters);
+        static::addConfigLimitRestrictions($whereParts, $parameters);
+        static::addMemberLimitRestrictions($whereParts, $parameters);
+        static::addStoreConfigRestrictions($whereParts, $parameters);
+        static::addMemberRestrictions($whereParts, $parameters);
+        static::addGuestRestrictions($whereParts, $parameters);
+        static::addProductRestrictions($arrProducts, $blnIncludeVariants, $arrAttributeData, $whereParts, $parameters);
 
-        $whereParts[] = "(startDate='' OR startDate <= UNIX_TIMESTAMP('$date'))";
-        $whereParts[] = "(endDate='' OR endDate >= UNIX_TIMESTAMP('$date'))";
-        $whereParts[] = "(startTime='' OR startTime <= UNIX_TIMESTAMP('1970-01-01 $time'))";
-        $whereParts[] = "(endTime='' OR endTime >= UNIX_TIMESTAMP('1970-01-01 $time'))";
+        $resultSet = \Database::getInstance()
+            ->prepare(
+                sprintf(
+                    "SELECT * FROM %s r WHERE %s",
+                    static::$strTable,
+                    implode(' AND ', $whereParts)
+                )
+            )
+            ->execute($parameters);
 
+        if ($resultSet->numRows) {
+            return \Model\Collection::createFromDbResult($resultSet, static::$strTable);
+        }
+
+        return null;
+    }
+
+    /**
+     * Add enabled rule restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addEnabledRestrictions(array &$whereParts, array &$parameters)
+    {
+        $whereParts[] = <<<'SQL'
+enabled=?
+SQL;
+
+        $parameters[] = '1';
+    }
+
+    /**
+     * Add start/end date/time restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addDateTimeRestrictions(array &$whereParts, array &$parameters)
+    {
+        $date = mktime(0, 0, 0);
+        $time = mktime(null, null, null, 1, 1, 1970);
+
+        $whereParts[] = <<<'SQL'
+(
+    startDate=''
+    OR startDate <= ?
+)
+AND
+(
+    endDate=''
+    OR endDate >= ?
+)
+AND
+(
+    startTime=''
+    OR startTime <= ?
+)
+AND
+(
+    endTime=''
+    OR endTime >= ?
+)
+SQL;
+
+        $parameters[] = $date;
+        $parameters[] = $date;
+        $parameters[] = $time;
+        $parameters[] = $time;
+    }
+
+    /**
+     * Add config limit restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addConfigLimitRestrictions(array &$whereParts, array &$parameters)
+    {
         $configId = (int)Isotope::getConfig()->id;
-        $userId   = (int)\FrontendUser::getInstance()->id;
-        $cartId   = (int)Isotope::getCart()->id;
 
-        // Limits
-        $whereParts[] = <<<SQL
+        $whereParts[] = <<<'SQL'
 (
     limitPerConfig=0
     OR limitPerConfig > (
         SELECT COUNT(*)
         FROM tl_iso_rule_usage
         WHERE pid=r.id
-        AND config_id={$configId}
+        AND config_id=?
         AND order_id NOT IN (
             SELECT id
             FROM tl_iso_product_collection
             WHERE type='order'
-            AND source_collection_id={$configId}
+            AND source_collection_id=?
         )
     )
 )
 SQL;
 
-        if (Isotope::getCart()->member > 0) {
-            $whereParts[] = <<<SQL
+        $parameters[] = $configId;
+        $parameters[] = $configId;
+    }
+
+    /**
+     * Add member limits restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addMemberLimitRestrictions(array &$whereParts, array &$parameters)
+    {
+        if (!Isotope::getCart()->member) {
+            return;
+        }
+
+        $userId = (int)\FrontendUser::getInstance()->id;
+        $cartId = (int)Isotope::getCart()->id;
+
+        $whereParts[] = <<<'SQL'
 (
     limitPerMember=0
     OR limitPerMember > (
         SELECT COUNT(*)
         FROM tl_iso_rule_usage
         WHERE pid=r.id
-        AND member_id={$userId}
+        AND member_id=?
         AND order_id NOT IN (
             SELECT id
             FROM tl_iso_product_collection
             WHERE type='order'
-            AND source_collection_id={$cartId}
+            AND source_collection_id=?
         )
     )
 )
 SQL;
-        }
 
-        // Store config restrictions
-        $whereParts[] = <<<SQL
+        $parameters[] = $userId;
+        $parameters[] = $cartId;
+    }
+
+    /**
+     * Add store config restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addStoreConfigRestrictions(array &$whereParts, array &$parameters)
+    {
+        $configId = (int)Isotope::getConfig()->id;
+
+        $whereParts[] = <<<'SQL'
 (
     configRestrictions=''
     OR (
@@ -386,7 +493,7 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='configs'
-            AND object_id={$configId}
+            AND object_id=?
         ) > 0
     )
     OR (
@@ -397,22 +504,39 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='configs'
-            AND object_id={$configId}
+            AND object_id=?
         ) = 0
     )
 )
 SQL;
 
+        $parameters[] = $configId;
+        $parameters[] = $configId;
+    }
+
+    /**
+     * Add member restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addMemberRestrictions(array &$whereParts, array &$parameters)
+    {
         // Member restrictions
-        if (Isotope::getCart()->member > 0) {
+        if (!Isotope::getCart()->member) {
+            return;
+        }
 
-            $groups = array_map('intval', deserialize(\FrontendUser::getInstance()->groups, true));
-            $groups = implode(',', $groups);
+        $userId = (int)\FrontendUser::getInstance()->id;
+        $groupIds = deserialize(\FrontendUser::getInstance()->groups, true);
 
-            $procedure = <<<SQL
+        $procedure = <<<SQL
 (
     memberRestrictions='none'
-    OR (memberRestrictions='guests' AND memberCondition='0')
+    OR (
+        memberRestrictions='guests'
+        AND memberCondition='0'
+    )
     OR (
         memberRestrictions='members'
         AND memberCondition='1'
@@ -421,7 +545,7 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='members'
-            AND object_id={$userId}
+            AND object_id=?
         ) > 0
     )
     OR (
@@ -432,14 +556,19 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='members'
-            AND object_id={$userId}
+            AND object_id=?
         ) = 0
     )
 
 SQL;
 
-            if (!empty($groups)) {
-                $procedure .= <<<SQL
+        $parameters[] = $userId;
+        $parameters[] = $userId;
+
+        if (!empty($groups)) {
+            $placeholders = implode(',', array_fill(0, count($groupIds), '?'));
+
+            $procedure .= <<<SQL
     OR (
         memberRestrictions='groups'
         AND memberCondition='1'
@@ -448,7 +577,7 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='groups'
-            AND object_id IN ({$groups})
+            AND object_id IN ({$placeholders})
         ) > 0
     )
     OR (
@@ -459,15 +588,34 @@ SQL;
             FROM tl_iso_rule_restriction
             WHERE pid=r.id
             AND type='groups'
-            AND object_id IN ({$groups})
+            AND object_id IN ({$placeholders})
         ) = 0
     )
 SQL;
-            }
 
-            $whereParts[] = $procedure;
-        } else {
-            $whereParts[] = <<<SQL
+            $parameters = array_merge($parameters, $groups);
+        }
+
+        $procedure .= <<<SQL
+)
+SQL;
+
+        $whereParts[] = $procedure;
+    }
+
+    /**
+     * Add guest restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addGuestRestrictions(array &$whereParts, array &$parameters)
+    {
+        if (Isotope::getCart()->member) {
+            return;
+        }
+
+        $whereParts[] = <<<SQL
 (
     memberRestrictions='none'
     OR (
@@ -476,13 +624,21 @@ SQL;
     )
 )
 SQL;
-        }
+    }
 
-        // Product restrictions
-        if (!is_array($arrProducts)) {
-            $arrProducts = Isotope::getCart()->getItems();
-        }
-
+    /**
+     * Add product restrictions to the where parts.
+     *
+     * @param array $whereParts The SQL where parts.
+     * @param array $parameters The prepared statement parameters.
+     */
+    private static function addProductRestrictions(
+        $arrProducts,
+        $blnIncludeVariants,
+        $arrAttributeData,
+        array &$whereParts,
+        array &$parameters
+    ) {
         if (!empty($arrProducts)) {
             $arrProductIds = array(0);
             $arrVariantIds = array(0);
@@ -799,21 +955,5 @@ SQL;
 
             $whereParts[] = '(' . implode(' OR ', $restrictionParts) . ')';
         }
-
-        $resultSet = \Database::getInstance()
-            ->prepare(
-                sprintf(
-                    "SELECT * FROM %s r WHERE %s",
-                    static::$strTable,
-                    implode(' AND ', $whereParts)
-                )
-            )
-            ->execute($parameters);
-
-        if ($resultSet->numRows) {
-            return \Model\Collection::createFromDbResult($resultSet, static::$strTable);
-        }
-
-        return null;
     }
 }
