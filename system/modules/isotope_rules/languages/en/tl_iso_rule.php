@@ -67,6 +67,9 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['enabled_legend']                       = 'Av
  */
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['product']                      = 'Product';
 $GLOBALS['TL_LANG']['tl_iso_rule']['type']['cart']                         = 'Cart';
+$GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits']['']                    = 'Price';
+$GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits']['%']                   = '%';
+$GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits']['unit']                = 'Item units';
 $GLOBALS['TL_LANG']['tl_iso_rule']['memberRestrictions']['none']           = 'No restrictions';
 $GLOBALS['TL_LANG']['tl_iso_rule']['memberRestrictions']['guests']         = 'Guests';
 $GLOBALS['TL_LANG']['tl_iso_rule']['memberRestrictions']['groups']         = 'Specific groups';

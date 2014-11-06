@@ -87,6 +87,8 @@ class Rules extends \Controller
 
             if (null !== $objRules) {
                 while ($objRules->next()) {
+                    $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
+
                     // Check cart quantity
                     if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0) {
                         if ($objRules->quantityMode == 'cart_products') {
@@ -94,7 +96,6 @@ class Rules extends \Controller
                         } elseif ($objRules->quantityMode == 'cart_items') {
                             $intTotal = Isotope::getCart()->sumItemsQuantity();
                         } else {
-                            $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
                             $intTotal = (null === $objItem) ? 0 : $objItem->quantity;
                         }
 
@@ -108,15 +109,10 @@ class Rules extends \Controller
                         continue;
                     }
 
-                    if ($objRules->current()->isPercentage()) {
-                        $fltDiscount = 100 + $objRules->current()->getPercentage();
-                        $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
-                        $fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
+                    /** @var Rule $objRule */
+                    $objRule = $objRules->current();
 
-                        $fltPrice = $fltPrice - $fltDiscount;
-                    } else {
-                        $fltPrice = $fltPrice + $objRules->discount;
-                    }
+                    $fltPrice = $objRule->applyDiscount($fltPrice, $objItem);
                 }
             }
         }

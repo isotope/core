@@ -65,58 +65,214 @@ use Isotope\Translation;
  */
 class Rule extends \Model
 {
+    /**
+     * Cached $this->discount['unit'] value.
+     *
+     * @var string
+     */
+    private $discountUnit = null;
 
     /**
-     * Name of the current table
+     * Cached $this->discount['value'] value.
+     *
+     * @var float
+     */
+    private $discountValue = null;
+
+    /**
+     * Name of the current table.
+     *
      * @var string
      */
     protected static $strTable = 'tl_iso_rule';
 
     /**
-     * Get label for rule
+     * Get label for rule.
+     *
      * @return  string
      */
     public function getLabel()
     {
-        return Translation::get(($this->label ? : $this->name));
+        return Translation::get(($this->label ?: $this->name));
     }
 
     /**
-     * Return true if the rule has a percentage (not fixed) amount
+     * Parse the serialized discount field and save prepared results to $this->discountUnit and $this->discountValue.
+     *
+     * @return void
+     */
+    private function loadDiscount()
+    {
+        if (null === $this->discountValue) {
+            $discount = deserialize($this->discount, true);
+
+            if (1 == count($discount)) {
+                // fallback for all non-upgraded fields
+                $discount            = array_shift($discount);
+                $this->discountUnit  = substr($discount, -1) == '%' ? '%' : '';
+                $this->discountValue = (float)($this->discountUnit ? substr($discount, 0, -1) : $discount);
+            } else {
+                $this->discountUnit  = $discount['unit'];
+                $this->discountValue = (float)$discount['value'];
+            }
+        }
+    }
+
+    /**
+     * Return the discount value.
+     *
+     * @return float
+     */
+    public function getDiscountValue()
+    {
+        $this->loadDiscount();
+        return $this->discountValue;
+    }
+
+    /**
+     * Return the discount unit.
+     *
+     * @return string Return "%", "unit" or "".
+     */
+    public function getDiscountUnit()
+    {
+        $this->loadDiscount();
+        return $this->discountUnit;
+    }
+
+    /**
+     * Return discount label.
+     *
+     * @return string
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
+     */
+    public function getDiscountLabel()
+    {
+        $this->loadDiscount();
+        $unit = $GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits'][$this->discountUnit];
+
+        if ($unit) {
+            list($whole, $decimal) = sscanf($this->discountValue, '%d.%d');
+            return \Controller::getFormattedNumber($this->discountValue, strlen($decimal)) . ' ' . $unit;
+        }
+
+        return '';
+    }
+
+    /**
+     * Return true if the rule has a percentage based.
+     *
      * @return bool
      */
     public function isPercentage()
     {
-        return (substr($this->discount, -1) == '%') ? true : false;
+        return '%' === $this->getDiscountUnit();
     }
 
     /**
-     * Return percentage amount (if applicable)
+     * Return true if the rule is item unit based.
+     *
+     * @return bool
+     */
+    public function isItemUnit()
+    {
+        return 'unit' === $this->getDiscountUnit();
+    }
+
+    /**
+     * Return true if the rule has a fixed value.
+     *
+     * @return bool
+     */
+    public function isFixedValue()
+    {
+        return '' === $this->getDiscountUnit();
+    }
+
+    /**
+     * Return percentage unit (if applicable).
+     *
      * @return float
-     * @throws UnexpectedValueException
+     * @deprecated Use Rule::getDiscountValue() instead.
      */
     public function getPercentage()
     {
-        if (!$this->isPercentage()) {
-            throw new \UnexpectedValueException('Rule does not have a percentage amount.');
-        }
-
-        return (float) substr($this->discount, 0, -1);
+        return $this->discountValue;
     }
 
     /**
-     * Return percentage label if price is percentage
-     * @return  string
+     * Return percentage label if price is percentage.
+     *
+     * @return string
+     * @deprecated Use Rule::getDiscountLabel() instead.
      */
     public function getPercentageLabel()
     {
-        return $this->isPercentage() ? $this->discount : '';
+        return $this->getDiscountLabel();
     }
 
+    /**
+     * Calculate the rule discount on the given price.
+     *
+     * @param float $fltPrice The item price to calculate the discount on.
+     * @param int   $quantity The item quantity.
+     *
+     * @return float
+     */
+    public function calculateDiscount(
+        $fltPrice,
+        $quantity = 1
+    ) {
+        if ($this->isPercentage()) {
+            $fltDiscount = $this->getDiscountValue();
+            $fltDiscount = round($fltPrice / 100 * $fltDiscount, 10);
+            $fltDiscount = $fltDiscount > 0
+                ? (floor($fltDiscount * 100) / 100)
+                : (ceil($fltDiscount * 100) / 100);
+        } elseif ($this->isItemUnit()) {
+            $fltItemPrice = $fltPrice / $quantity;
+            $fltDiscount  = $fltItemPrice * $this->getDiscountValue();
+        } elseif ($this->isFixedValue()) {
+            $fltDiscount = $this->getDiscountValue();
+        } else {
+            throw new \RuntimeException(
+                sprintf(
+                    'Unsupported discount type: "%s"',
+                    $this->getDiscountUnit()
+                )
+            );
+        }
+
+        return $fltDiscount;
+    }
+
+    /**
+     * Apply the rule discount on the given price.
+     *
+     * @param float $fltPrice The item price to calculate the discount on.
+     * @param int   $quantity The item quantity.
+     *
+     * @return float
+     */
+    public function applyDiscount(
+        $fltPrice,
+        $quantity = 1
+    ) {
+        $fltPrice += static::calculateDiscount($fltPrice, $quantity);
+
+        return $fltPrice;
+    }
 
     public static function findByProduct(IsotopeProduct $objProduct, $strField, $fltPrice)
     {
-        return static::findByConditions(array("type='product'"), array(), array($objProduct), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
+        return static::findByConditions(
+            array("type='product'"),
+            array(),
+            array($objProduct),
+            ($strField == 'low_price' ? true : false),
+            array($strField => $fltPrice)
+        );
     }
 
 
@@ -139,7 +295,11 @@ class Rule extends \Model
 
     public static function findOneByCouponCode($strCode, $arrCollectionItems)
     {
-        $objRules = static::findByConditions(array("type='cart'", "enableCode='1'", 'code=?'), array($strCode), $arrCollectionItems);
+        $objRules = static::findByConditions(
+            array("type='cart'", "enableCode='1'", 'code=?'),
+            array($strCode),
+            $arrCollectionItems
+        );
 
         if (null !== $objRules) {
             return $objRules->current();
@@ -152,49 +312,171 @@ class Rule extends \Model
     /**
      * Fetch rules
      */
-    protected static function findByConditions($arrProcedures, $arrValues = array(), $arrProducts = null, $blnIncludeVariants = false, $arrAttributeData = array())
-    {
+    protected static function findByConditions(
+        $whereParts,
+        $parameters = array(),
+        $arrProducts = null,
+        $blnIncludeVariants = false,
+        $arrAttributeData = array()
+    ) {
         // Only enabled rules
-        $arrProcedures[] = "enabled='1'";
+        $whereParts[] = "enabled='1'";
 
         // Date & Time restrictions
         $date = date('Y-m-d');
         $time = date('H:i:s');
-        $arrProcedures[] = "(startDate='' OR startDate <= UNIX_TIMESTAMP('$date'))";
-        $arrProcedures[] = "(endDate='' OR endDate >= UNIX_TIMESTAMP('$date'))";
-        $arrProcedures[] = "(startTime='' OR startTime <= UNIX_TIMESTAMP('1970-01-01 $time'))";
-        $arrProcedures[] = "(endTime='' OR endTime >= UNIX_TIMESTAMP('1970-01-01 $time'))";
 
+        $whereParts[] = "(startDate='' OR startDate <= UNIX_TIMESTAMP('$date'))";
+        $whereParts[] = "(endDate='' OR endDate >= UNIX_TIMESTAMP('$date'))";
+        $whereParts[] = "(startTime='' OR startTime <= UNIX_TIMESTAMP('1970-01-01 $time'))";
+        $whereParts[] = "(endTime='' OR endTime >= UNIX_TIMESTAMP('1970-01-01 $time'))";
+
+        $configId = (int)Isotope::getConfig()->id;
+        $userId   = (int)\FrontendUser::getInstance()->id;
+        $cartId   = (int)Isotope::getCart()->id;
 
         // Limits
-        $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=" . (int) Isotope::getConfig()->id . " AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")))";
+        $whereParts[] = <<<SQL
+(
+    limitPerConfig=0
+    OR limitPerConfig > (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_usage
+        WHERE pid=r.id
+        AND config_id={$configId}
+        AND order_id NOT IN (
+            SELECT id
+            FROM tl_iso_product_collection
+            WHERE type='order'
+            AND source_collection_id={$configId}
+        )
+    )
+)
+SQL;
 
         if (Isotope::getCart()->member > 0) {
-            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=" . (int) \FrontendUser::getInstance()->id . " AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")))";
+            $whereParts[] = <<<SQL
+(
+    limitPerMember=0
+    OR limitPerMember > (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_usage
+        WHERE pid=r.id
+        AND member_id={$userId}
+        AND order_id NOT IN (
+            SELECT id
+            FROM tl_iso_product_collection
+            WHERE type='order'
+            AND source_collection_id={$cartId}
+        )
+    )
+)
+SQL;
         }
 
         // Store config restrictions
-        $arrProcedures[] = "(configRestrictions=''
-                            OR (configRestrictions='1' AND configCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='configs' AND object_id=" . (int) Isotope::getConfig()->id . ")>0)
-                            OR (configRestrictions='1' AND configCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='configs' AND object_id=" . (int) Isotope::getConfig()->id . ")=0))";
-
+        $whereParts[] = <<<SQL
+(
+    configRestrictions=''
+    OR (
+        configRestrictions='1'
+        AND configCondition='1'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='configs'
+            AND object_id={$configId}
+        ) > 0
+    )
+    OR (
+        configRestrictions='1'
+        AND configCondition='0'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='configs'
+            AND object_id={$configId}
+        ) = 0
+    )
+)
+SQL;
 
         // Member restrictions
         if (Isotope::getCart()->member > 0) {
 
-            $arrGroups = array_map('intval', deserialize(\FrontendUser::getInstance()->groups, true));
+            $groups = array_map('intval', deserialize(\FrontendUser::getInstance()->groups, true));
+            $groups = implode(',', $groups);
 
-            $arrProcedures[] = "(memberRestrictions='none'
-                                OR (memberRestrictions='guests' AND memberCondition='0')
-                                OR (memberRestrictions='members' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) \FrontendUser::getInstance()->id . ")>0)
-                                OR (memberRestrictions='members' AND memberCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) \FrontendUser::getInstance()->id . ")=0)
-                                " . (!empty($arrGroups) ? "
-                                OR (memberRestrictions='groups' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))>0)
-                                OR (memberRestrictions='groups' AND memberCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))=0)" : '') . ")";
+            $procedure = <<<SQL
+(
+    memberRestrictions='none'
+    OR (memberRestrictions='guests' AND memberCondition='0')
+    OR (
+        memberRestrictions='members'
+        AND memberCondition='1'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='members'
+            AND object_id={$userId}
+        ) > 0
+    )
+    OR (
+        memberRestrictions='members'
+        AND memberCondition='0'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='members'
+            AND object_id={$userId}
+        ) = 0
+    )
+
+SQL;
+
+            if (!empty($groups)) {
+                $procedure .= <<<SQL
+    OR (
+        memberRestrictions='groups'
+        AND memberCondition='1'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='groups'
+            AND object_id IN ({$groups})
+        ) > 0
+    )
+    OR (
+        memberRestrictions='groups'
+        AND memberCondition='0'
+        AND (
+            SELECT COUNT(*)
+            FROM tl_iso_rule_restriction
+            WHERE pid=r.id
+            AND type='groups'
+            AND object_id IN ({$groups})
+        ) = 0
+    )
+SQL;
+            }
+
+            $whereParts[] = $procedure;
         } else {
-            $arrProcedures[] = "(memberRestrictions='none' OR (memberRestrictions='guests' AND memberCondition='1'))";
+            $whereParts[] = <<<SQL
+(
+    memberRestrictions='none'
+    OR (
+        memberRestrictions='guests'
+        AND memberCondition='1'
+    )
+)
+SQL;
         }
-
 
         // Product restrictions
         if (!is_array($arrProducts)) {
@@ -205,10 +487,20 @@ class Rule extends \Model
             $arrProductIds = array(0);
             $arrVariantIds = array(0);
             $arrAttributes = array(0);
-            $arrTypes = array(0);
+            $arrTypes      = array(0);
 
             // Prepare product attribute condition
-            $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+            $objAttributeRules = \Database::getInstance()
+                ->execute(
+                    sprintf(
+                        'SELECT * FROM %s
+                         WHERE enabled = "1"
+                         AND productRestrictions = "attribute"
+                         AND attributeName != ""
+                         GROUP BY attributeName, attributeCondition',
+                        static::$strTable
+                    )
+                );
             while ($objAttributeRules->next()) {
                 $arrAttributes[] = array
                 (
@@ -227,12 +519,12 @@ class Rule extends \Model
                     $objProduct = $objProduct->getProduct();
                 }
 
-                $arrProductIds[] = (int) $objProduct->getProductId();
-                $arrVariantIds[] = (int) $objProduct->{$objProduct->getPk()};
-                $arrTypes[] = (int) $objProduct->type;
+                $arrProductIds[] = (int)$objProduct->getProductId();
+                $arrVariantIds[] = (int)$objProduct->{$objProduct->getPk()};
+                $arrTypes[]      = (int)$objProduct->type;
 
                 if ($objProduct->isVariant()) {
-                    $arrVariantIds[] = (int) $objProduct->pid;
+                    $arrVariantIds[] = (int)$objProduct->pid;
                 }
 
                 if ($blnIncludeVariants && $objProduct->hasVariants()) {
@@ -260,65 +552,266 @@ class Rule extends \Model
             $arrProductIds = array_unique($arrProductIds);
             $arrVariantIds = array_unique($arrVariantIds);
 
-            $arrRestrictions = array("productRestrictions='none'");
-            $arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))=0)";
-            $arrRestrictions[] = "(productRestrictions='products' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='products' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))=0)";
-            $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))=0)";
-            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
-            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
+            $types                    = implode(',', $arrTypes);
+            $productIds               = implode(',', $arrProductIds);
+            $variantIds               = implode(',', $arrVariantIds);
+            $productCategoryTableName = \Isotope\Model\ProductCategory::getTable();
+
+            $restrictionParts   = array("productRestrictions='none'");
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='producttypes'
+    AND productCondition='1'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='producttypes'
+        AND object_id IN ({$types})
+    ) > 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='producttypes'
+    AND productCondition='0'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='producttypes'
+        AND object_id IN ({$types})
+    ) = 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='products'
+    AND productCondition='1'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='products'
+        AND object_id IN ({$productIds})
+    ) > 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='products'
+    AND productCondition='0'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='products'
+        AND object_id IN ({$productIds})
+    ) = 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='variants'
+    AND productCondition='1'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='variants'
+        AND object_id IN ({$variantIds})
+    ) > 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='variants'
+    AND productCondition='0'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='variants'
+        AND object_id IN ({$variantIds})
+    ) = 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='pages'
+    AND productCondition='1'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='pages'
+        AND object_id IN (
+            SELECT page_id
+            FROM {$productCategoryTableName}
+            WHERE pid IN ({$productIds})
+        )
+    ) > 0
+)
+SQL;
+            $restrictionParts[] = <<<SQL
+(
+    productRestrictions='pages'
+    AND productCondition='0'
+    AND (
+        SELECT COUNT(*)
+        FROM tl_iso_rule_restriction
+        WHERE pid=r.id
+        AND type='pages'
+        AND object_id IN (
+            SELECT page_id
+            FROM {$productCategoryTableName}
+            WHERE pid IN ({$productIds})
+        )
+    ) = 0
+)
+SQL;
 
             foreach ($arrAttributes as $restriction) {
-                if (empty($restriction['values']))
+                if (empty($restriction['values'])) {
                     continue;
+                }
 
-                $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
+                $attributeName      = $restriction['attribute'];
+                $attributeCondition = $restriction['condition'];
+
+                $strRestriction = <<<SQL
+(
+    productRestrictions='attribute'
+    AND attributeName='{$attributeName}'
+    AND attributeCondition='{$attributeCondition}'
+    AND
+
+SQL;
 
                 switch ($restriction['condition']) {
                     case 'eq':
                     case 'neq':
-                        $strRestriction .= "attributeValue" . ($restriction['condition'] == 'neq' ? " NOT" : '') . " IN ('" . implode("','", array_map('mysql_real_escape_string', $restriction['values'])) . "')";
+                        switch ($restriction['condition']) {
+                            case 'eq':
+                                $condition = 'IN';
+                                break;
+                            case 'neq':
+                                $condition = 'NOT IN';
+                                break;
+                            default:
+                                throw new \RuntimeException(
+                                    sprintf(
+                                        'Invalid condition "%s"',
+                                        $restriction['condition']
+                                    )
+                                );
+                        }
+
+                        $set = implode(',', array_fill(0, count($restriction['values']), '?'));
+
+                        $strRestriction .= sprintf(
+                            'attributeValue %s (%s)',
+                            $condition,
+                            $set
+                        );
                         break;
 
                     case 'lt':
                     case 'gt':
                     case 'elt':
                     case 'egt':
-                        $arrOR = array();
-                        foreach ($restriction['values'] as $value) {
-                            $arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'elt') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
-                            $arrValues[] = $value;
+                        switch ($restriction['condition']) {
+                            case 'lt':
+                                $condition = '<';
+                                break;
+                            case 'gt':
+                                $condition = '>';
+                                break;
+                            case 'elt':
+                                $condition = '<=';
+                                break;
+                            case 'egt':
+                                $condition = '>=';
+                                break;
+                            default:
+                                throw new \RuntimeException(
+                                    sprintf(
+                                        'Invalid condition "%s"',
+                                        $restriction['condition']
+                                    )
+                                );
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+
+                        $part = sprintf(
+                            'attributeValue %s ?',
+                            $condition
+                        );
+                        $or   = array_fill(0, count($restriction['values']), $part);
+
+                        $strRestriction .= '(' . implode(' OR ', $or) . ')';
                         break;
 
                     case 'starts':
                     case 'ends':
                     case 'contains':
-                        $arrOR = array();
-                        foreach ($restriction['values'] as $value) {
-                            $arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
-                            $arrValues[] = $value;
+                        switch ($restriction['condition']) {
+                            case 'starts':
+                                $prefix = '';
+                                $suffix = '%';
+                                break;
+                            case 'ends':
+                                $prefix = '%';
+                                $suffix = '';
+                                break;
+                            case 'contains':
+                                $prefix = '%';
+                                $suffix = '%';
+                                break;
+                            default:
+                                throw new \RuntimeException(
+                                    sprintf(
+                                        'Invalid condition "%s"',
+                                        $restriction['condition']
+                                    )
+                                );
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+
+                        $part = 'attributeValue LIKE ?';
+                        $or   = array_fill(0, count($restriction['values']), $part);
+
+                        $strRestriction .= '(' . implode(' OR ', $or) . ')';
+
+                        foreach ($restriction['values'] as $key => $value) {
+                            $restriction['values'][$key] = $prefix . $value . $suffix;
+                        }
                         break;
 
                     default:
-                        throw new \InvalidArgumentException('Unknown rule condition "' . $restriction['condition'] . '"');
+                        throw new \InvalidArgumentException(
+                            'Unknown rule condition "' . $restriction['condition'] . '"'
+                        );
                 }
 
-                $arrRestrictions[] = $strRestriction . ')';
+                $parameters = array_merge($parameters, $restriction['values']);
+
+                $restrictionParts[] = $strRestriction . ')';
             }
 
-            $arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
+            $whereParts[] = '(' . implode(' OR ', $restrictionParts) . ')';
         }
 
-        $objResult = \Database::getInstance()->prepare("SELECT * FROM " . static::$strTable . " r WHERE " . implode(' AND ', $arrProcedures))->execute($arrValues);
+        $resultSet = \Database::getInstance()
+            ->prepare(
+                sprintf(
+                    "SELECT * FROM %s r WHERE %s",
+                    static::$strTable,
+                    implode(' AND ', $whereParts)
+                )
+            )
+            ->execute($parameters);
 
-        if ($objResult->numRows) {
-            return \Model\Collection::createFromDbResult($objResult, static::$strTable);
+        if ($resultSet->numRows) {
+            return \Model\Collection::createFromDbResult($resultSet, static::$strTable);
         }
 
         return null;

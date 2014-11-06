@@ -167,9 +167,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['discount'],
             'exclude'                       => true,
             'search'                        => true,
-            'inputType'                     => 'text',
-            'eval'                          => array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'clr w50'),
-            'sql'                           => "varchar(16) NOT NULL default ''",
+            'inputType'                     => 'inputUnit',
+            'options'                       => array('', '%', 'unit'),
+            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits'],
+            'eval'                          => array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+            'sql'                           => "varchar(255) NOT NULL default ''",
         ),
         'tax_class' => array
         (

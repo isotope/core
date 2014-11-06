@@ -264,11 +264,11 @@ class ProductCollectionItem extends \Model
     /**
      * Get product price multiplied by the requested product quantity
      *
-     * @return string
+     * @return float
      */
     public function getTotalPrice()
     {
-        return (string) ($this->getPrice() * (int) $this->quantity);
+        return (float) ($this->getPrice() * (int) $this->quantity);
     }
 
     /**
