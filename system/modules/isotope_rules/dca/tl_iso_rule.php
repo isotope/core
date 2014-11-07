@@ -168,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'exclude'                       => true,
             'search'                        => true,
             'inputType'                     => 'inputUnit',
-            'options'                       => array('', '%', 'unit'),
+            'options'                       => array('', '%', 'quantity'),
             'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['discountUnits'],
             'eval'                          => array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
             'sql'                           => "varchar(255) NOT NULL default ''",

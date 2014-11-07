@@ -132,7 +132,7 @@ class Rule extends \Model
     /**
      * Return the discount unit.
      *
-     * @return string Return "%", "unit" or "".
+     * @return string Return "%", "quantity" or "".
      */
     public function getDiscountUnit()
     {
@@ -171,13 +171,13 @@ class Rule extends \Model
     }
 
     /**
-     * Return true if the rule is item unit based.
+     * Return true if the rule is item quantity based.
      *
      * @return bool
      */
-    public function isItemUnit()
+    public function isItemQuantity()
     {
-        return 'unit' === $this->getDiscountUnit();
+        return 'quantity' === $this->getDiscountUnit();
     }
 
     /**
@@ -191,7 +191,7 @@ class Rule extends \Model
     }
 
     /**
-     * Return percentage unit (if applicable).
+     * Return percentage value (if applicable).
      *
      * @return float
      * @deprecated Use Rule::getDiscountValue() instead.
@@ -230,7 +230,7 @@ class Rule extends \Model
             $fltDiscount = $fltDiscount > 0
                 ? (floor($fltDiscount * 100) / 100)
                 : (ceil($fltDiscount * 100) / 100);
-        } elseif ($this->isItemUnit()) {
+        } elseif ($this->isItemQuantity()) {
             $fltItemPrice = $fltPrice / $quantity;
             $fltDiscount  = $fltItemPrice * $this->getDiscountValue();
         } elseif ($this->isFixedValue()) {
