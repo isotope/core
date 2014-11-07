@@ -163,6 +163,16 @@ abstract class PSP extends Payment
     }
 
     /**
+     * Gets the available payment methods
+     *
+     * @return  array
+     */
+    public function getPaymentMethods()
+    {
+        return array();
+    }
+
+    /**
      * Prepare PSP params
      * @param   Order
      * @param   Module
