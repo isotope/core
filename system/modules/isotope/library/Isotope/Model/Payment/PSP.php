@@ -106,6 +106,8 @@ abstract class PSP extends Payment
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
+        
+        $objOrder->payment_data = json_encode($this->getRawRequestData());
 
         $objOrder->updateOrderStatus($intStatus);
         $objOrder->save();
@@ -209,6 +211,20 @@ abstract class PSP extends Payment
         }
 
         return \Input::post($strKey);
+    }
+
+    /**
+     * Gets the raw request data based on the chosen HTTP method
+     *
+     * @return  array
+     */
+    private function getRawRequestData()
+    {
+        if ($this->psp_http_method == 'GET') {
+            return $_GET;
+        }
+
+        return $_POST;
     }
 
 
