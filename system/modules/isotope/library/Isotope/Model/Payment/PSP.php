@@ -48,8 +48,10 @@ abstract class PSP extends Payment
 
 
     /**
-     * Process post-sale requestion from the PSP payment server.
+     * Process post-sale request from the PSP payment server.
+     *
      * @param   IsotopeProductCollection
+     * @return  boolean Not needed when called by postsale.php but when called internally by processPayment
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
