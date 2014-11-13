@@ -53,10 +53,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     public function review()
     {
-        $blnRequiresPayment  = Isotope::getCart()->requiresPayment();
-        $blnRequiresShipping = Isotope::getCart()->requiresShipping();
-        $objBillingAddress   = Isotope::getCart()->getBillingAddress();
-        $objShippingAddress  = Isotope::getCart()->getShippingAddress();
+        $draftOrder = Isotope::getCart()->getDraftOrder();
+        $blnRequiresPayment  = $draftOrder->requiresPayment();
+        $blnRequiresShipping = $draftOrder->requiresShipping();
+        $objBillingAddress   = $draftOrder->getBillingAddress();
+        $objShippingAddress  = $draftOrder->getShippingAddress();
 
         $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
