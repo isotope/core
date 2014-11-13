@@ -123,7 +123,7 @@ abstract class Address extends CheckoutStep
 
         if (null === $objAddress || !\Model\Registry::getInstance()->isRegistered($objAddress)) {
             $this->blnError = true;
-        } elseif ($blnValidate) {
+        } else {
             $this->setAddress($objAddress);
         }
 

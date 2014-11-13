@@ -13,6 +13,7 @@ Version 2.1.9-stable (2014-??-??)
 - Order total was not shown in the backend order list (#1282)
 - Always load language files in postsale script (#1281)
 - Correctly format shipping addresses in checkout step (#1278)
+- Shipping address was not available when billing address was automatically chosen (#1267)
 
 
 Version 2.1.8-stable (2014-10-01)
