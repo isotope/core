@@ -7,6 +7,7 @@ Version 2.1.9-stable (2014-??-??)
 ### Improved
 - Show error instead of confirm message if order status notification could not be sent
 - Delete a member's cart when the member is deleted (#1296)
+- Correctly select "use billing address" when shipping and billing address are the same
 
 ### Fixed
 - Order total was not shown in the backend order list (#1282)
