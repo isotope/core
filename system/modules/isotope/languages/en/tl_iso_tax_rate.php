@@ -22,6 +22,7 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['postalCodes']       = array('Postal code
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount']            = array('Subtotal amount restriction', 'Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['rate']              = array('Tax rate', 'A rate in percent this tax is set at.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['config']            = array('Store configuration', 'Select the store configuration that the tax rate applies to.');
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['exemptOnValidVAT']  = array('Exempt on valid VAT number', 'Do not apply tax if the VAT number is valid.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop']              = array('Stop calculations on trigger?', 'Stop other calculations if this tax rate is triggered.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['groups']            = array('Member groups', 'Restrict this tax rate to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['protected']         = array('Protect tax rate', 'Apply the tax rate to certain member groups only.');

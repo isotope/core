@@ -14,6 +14,7 @@ namespace Isotope\VatNoValidator;
 
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Model\Address;
+use Isotope\Model\TaxRate;
 
 
 /**
@@ -76,6 +77,23 @@ class EuViesValidator implements IsotopeVatNoValidator
         }
 
         return $this->checkVat($vatCountry, $vatId);
+    }
+
+    /**
+     * Check if tax should be exempted because of a valid tax number
+     *
+     * @param Address $address
+     * @param TaxRate $tax
+     *
+     * @return bool
+     */
+    public function exemptTax(Address $address, TaxRate $tax)
+    {
+        try {
+            return !in_array($address->country, trimsplit(',', $tax->countries)) && $this->validate($address);
+        } catch (\RuntimeException $e) {
+            return false;
+        }
     }
 
     /**

@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 use Isotope\Translation;
 
@@ -126,6 +127,21 @@ class TaxRate extends \Model
                     } else {
                         if ($arrPrice[0] != $fltPrice) {
                             continue;
+                        }
+                    }
+                }
+
+                if ($this->exemptOnValidVAT) {
+                    $validators = deserialize(Isotope::getConfig()->vatNoValidators);
+                    if (!empty($validators) && is_array($validators)) {
+                        foreach ($validators as $class) {
+
+                            /** @type IsotopeVatNoValidator $service */
+                            $service = new $class();
+
+                            if ($service->exemptTax($objAddress, $this)) {
+                                continue(2);
+                            }
                         }
                     }
                 }

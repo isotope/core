@@ -13,6 +13,7 @@
 namespace Isotope\Interfaces;
 
 use Isotope\Model\Address;
+use Isotope\Model\TaxRate;
 
 interface IsotopeVatNoValidator
 {
@@ -24,4 +25,14 @@ interface IsotopeVatNoValidator
      * @throws \RuntimeException to add a custom error message (e.g. to the form field)
      */
     public function validate(Address $objAddress);
+
+    /**
+     * Check if tax should be exempted because of a valid tax number
+     *
+     * @param Address $address
+     * @param TaxRate $tax
+     *
+     * @return bool
+     */
+    public function exemptTax(Address $address, TaxRate $tax);
 }

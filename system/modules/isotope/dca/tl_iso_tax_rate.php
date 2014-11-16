@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
     'palettes' => array
     (
         '__selector__'              => array('protected'),
-        'default'                   => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,stop,guests,protected',
+        'default'                   => '{name_legend},name,label;{rate_legend},rate;{location_legend},address,countries,subdivisions,postalCodes;{condition_legend},amount;{config_legend:hide},config,exemptOnValidVAT,stop,guests,protected',
     ),
 
     // Subpalettes
@@ -225,12 +225,20 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy')
         ),
+        'exemptOnValidVAT' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['exemptOnValidVAT'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
         'stop' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_rate']['stop'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50 m12'),
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'guests' => array
