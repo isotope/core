@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['shipping_country']            = array('Def
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']           = array('Available billing countries', 'Select the countries you want to allow for checkout billing address. Select none to allow all countries.');
 $GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries']          = array('Available shipping countries', 'Select the countries you want to allow for checkout shipping address. Select none to allow all countries.');
 $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']        = array('Limit member countries', 'Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.');
+$GLOBALS['TL_LANG']['tl_iso_config']['vatNoValidators']             = array('VAT No. validation', 'If you enable one or multiple services, the VAT No. address field will be validated.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision']         = array('Rounding precision', 'How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement']         = array('Rounding increment', 'Some currencies (e.g. swiss francs) do not support 0.01 precision.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currency']                    = array('Currency', 'Please select a currency for this store.');

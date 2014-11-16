@@ -41,6 +41,7 @@ use Isotope\Translation;
  * @property array  billing_countries
  * @property array  shipping_countries
  * @property bool   limitMemberCountries
+ * @property array  vatNoValidators
  * @property int    priceRoundPrecision
  * @property string priceRoundIncrement
  * @property float  cartMinSubtotal
