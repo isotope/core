@@ -23,9 +23,7 @@ use Isotope\Model\Address;
  */
 class EuViesValidator implements IsotopeVatNoValidator
 {
-
-    public $response;
-    protected $soap;
+    private $soap;
 
     /**
      * WSDL VIES Url Service
@@ -50,18 +48,20 @@ class EuViesValidator implements IsotopeVatNoValidator
     /**
      * Return true if vat number could be validated, false if not
      *
+     * @param Address $address
+     *
      * @return bool
-     * @throws \RuntimeException to add a custom error message (e.g. to the form field)
+     * @throws \RuntimeException if address country does not match VAT country
      */
-    public function validate(Address $objAddress)
+    public function validate(Address $address)
     {
-        $vatNo = (string) $objAddress->vat_no;
+        $vatNo = (string) $address->vat_no;
 
         if ($vatNo === '') {
             return false;
         }
 
-        $addressCountry = strtoupper($objAddress->country);
+        $addressCountry = strtoupper($address->country);
         $vatCountry = strtoupper(substr($vatNo, 0, 2));
         $vatId = substr($vatNo, 2);
 
