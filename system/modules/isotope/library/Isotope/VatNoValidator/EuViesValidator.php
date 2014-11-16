@@ -24,6 +24,7 @@ use Isotope\Model\Address;
 class EuViesValidator implements IsotopeVatNoValidator
 {
     private $soap;
+    private $cache = array();
 
     /**
      * WSDL VIES Url Service
@@ -87,11 +88,17 @@ class EuViesValidator implements IsotopeVatNoValidator
      */
     private function checkVat($country, $number)
     {
-        $vat = array(
-            'vatNumber'   => $number,
-            'countryCode' => $country,
-        );
+        $key = strtoupper($country . $number);
 
-        return (bool) $this->soap->checkVat($vat)->valid;
+        if (!isset($this->cache[$key])) {
+            $vat = array(
+                'vatNumber'   => $number,
+                'countryCode' => $country,
+            );
+
+             $this->cache[$key] = (bool) $this->soap->checkVat($vat)->valid;
+        }
+
+        return $this->cache[$key];
     }
 }
