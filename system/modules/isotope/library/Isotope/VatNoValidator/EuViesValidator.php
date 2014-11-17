@@ -64,8 +64,8 @@ class EuViesValidator implements IsotopeVatNoValidator
         }
 
         $addressCountry = strtoupper($address->country);
-        $vatCountry = strtoupper(substr($vatNo, 0, 2));
-        $vatId = substr($vatNo, 2);
+        $vatCountry = $this->prepareVatCountry($vatNo);
+        $vatId = $this->prepareVatId($vatNo);
 
         if (!in_array($addressCountry, static::$european_countries)) {
             return false;
@@ -90,7 +90,7 @@ class EuViesValidator implements IsotopeVatNoValidator
     public function exemptTax(Address $address, TaxRate $tax)
     {
         try {
-            return !in_array($address->country, trimsplit(',', $tax->countries)) && $this->validate($address);
+            return $this->validate($address);
         } catch (\RuntimeException $e) {
             return false;
         }
@@ -106,7 +106,7 @@ class EuViesValidator implements IsotopeVatNoValidator
      */
     private function checkVat($country, $number)
     {
-        $key = strtoupper($country . $number);
+        $key = $country . $number;
 
         if (!isset($this->cache[$key])) {
             $vat = array(
@@ -114,9 +114,50 @@ class EuViesValidator implements IsotopeVatNoValidator
                 'countryCode' => $country,
             );
 
-             $this->cache[$key] = (bool) $this->soap->checkVat($vat)->valid;
+            try {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $this->cache[$key] = $this->soap->checkVat($vat);
+            } catch (\SoapFault $e) {
+                $this->cache[$key] = (object) array_merge(
+                    $vat,
+                    array(
+                        'requestDate' => date('Y-m-d').'+01:00',
+                        'valid'       => false,
+                        'name'        => '---',
+                        'address'     => '---',
+                    )
+                );
+            }
         }
 
-        return $this->cache[$key];
+        return $this->cache[$key]->valid;
+    }
+
+    /**
+     * Get normalized VAT country out of VAT number
+     *
+     * @param $vatNo
+     *
+     * @return string
+     */
+    private function prepareVatCountry($vatNo)
+    {
+        return strtoupper(substr($vatNo, 0, 2));
+    }
+
+    /**
+     * Get normalized VAT ID out of VAT number
+     *
+     * @param $vatNo
+     *
+     * @return string
+     */
+    private function prepareVatId($vatNo)
+    {
+        $vatId = substr($vatNo, 2);
+        $vatId = str_replace(array(' ', '.'), '', $vatId);
+        $vatId = strtoupper($vatId);
+
+        return $vatId;
     }
 }
