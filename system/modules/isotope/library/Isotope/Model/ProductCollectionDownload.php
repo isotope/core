@@ -49,15 +49,23 @@ class ProductCollectionDownload extends \Model
     /**
      * Send a file to browser and increase download counter
      *
-     * @param string $strFile
+     * @param \FilesModel $objFileModel
+     * @param Download    $objDownload
      */
-    protected function download($strFile)
+    protected function download(\FilesModel $objFileModel, Download $objDownload)
     {
         if (TL_MODE == 'FE' && $this->downloads_remaining !== '') {
             \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
-        \Controller::sendFileToBrowser($strFile);
+        if (isset($GLOBALS['ISO_HOOKS']['downloadFile']) && is_array($GLOBALS['ISO_HOOKS']['downloadFile'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['downloadFile'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($objFileModel, $objDownload, $this);
+            }
+        }
+
+        \Controller::sendFileToBrowser($objFileModel->path);
     }
 
     /**
@@ -94,7 +102,7 @@ class ProductCollectionDownload extends \Model
                 \Input::get('download') == $objDownload->id &&
                 \Input::get('file') == $objFileModel->path
             ) {
-                $this->download($objFileModel->path);
+                $this->download($objFileModel, $objDownload);
             }
 
 
