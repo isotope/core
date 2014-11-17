@@ -134,10 +134,10 @@ class TaxRate extends \Model
                 if ($this->exemptOnValidVAT) {
                     $validators = deserialize(Isotope::getConfig()->vatNoValidators);
                     if (!empty($validators) && is_array($validators)) {
-                        foreach ($validators as $class) {
+                        foreach ($validators as $type) {
 
                             /** @type IsotopeVatNoValidator $service */
-                            $service = new $class();
+                            $service = new $GLOBALS['ISO_VAT'][$type]();
 
                             if ($service->exemptTax($objAddress, $this)) {
                                 continue(2);
