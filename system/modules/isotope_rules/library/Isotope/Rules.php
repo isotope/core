@@ -236,6 +236,8 @@ class Rules extends \Controller
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['couponHeadline'];
         $objTemplate->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $objTemplate->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
+        $objTemplate->usedCoupons = $arrCoupons;
+        $objTemplate->rules = $objRules;
 
         if ($_SESSION['COUPON_FAILED'][$objModule->id] != '') {
             $objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];
