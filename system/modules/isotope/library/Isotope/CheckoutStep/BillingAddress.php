@@ -85,11 +85,14 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get available address options
+     *
+     * @param array $arrFields
+     *
      * @return  array
      */
-    protected function getAddressOptions()
+    protected function getAddressOptions($arrFields = null)
     {
-        $arrOptions = parent::getAddressOptions();
+        $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getBillingFieldsConfig());
 
         if (!empty($arrOptions)) {
             $arrOptions[] = array(

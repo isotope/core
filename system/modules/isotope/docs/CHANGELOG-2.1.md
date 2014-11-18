@@ -1,6 +1,23 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.9-stable (2014-11-18)
+---------------------------------
+
+### Improved
+- Show error instead of confirm message if order status notification could not be sent
+- Delete a member's cart when the member is deleted (#1296)
+- Correctly select "use billing address" when shipping and billing address are the same
+- Added log messages when toggling visibility of product and download (#1310)
+
+### Fixed
+- Order total was not shown in the backend order list (#1282)
+- Always load language files in postsale script (#1281)
+- Correctly format shipping addresses in checkout step (#1278)
+- Shipping address was not available when billing address was automatically chosen (#1267)
+- Reports daily summary showed incorrect number of orders (#1268)
+
+
 Version 2.1.8-stable (2014-10-01)
 ---------------------------------
 

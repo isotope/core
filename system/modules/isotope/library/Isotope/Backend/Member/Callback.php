@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Member;
 
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection\Cart;
 
 
 class Callback extends \Backend
@@ -45,6 +46,22 @@ class Callback extends \Backend
         if (count($arrCountries) == 1) {
             $arrCountryCodes = array_keys($arrCountries);
             $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $arrCountryCodes[0];
+        }
+    }
+
+    /**
+     * Delete the cart when a member is deleted
+     *
+     * @param object $dc
+     */
+    public function deleteMemberCart($dc)
+    {
+        $carts = Cart::findBy('member', $dc->id);
+
+        if (null !== $carts) {
+            foreach ($carts as $cart) {
+                $cart->delete();
+            }
         }
     }
 }
