@@ -1,0 +1,22 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<form id="paybyway<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
+<input type="hidden" name="MERCHANT_ID" value="<?php echo $this->merchant_id; ?>">
+<input type="hidden" name="AMOUNT" value="<?php echo $this->amount; ?>">
+<input type="hidden" name="CURRENCY" value="<?php echo $this->currency; ?>">
+<input type="hidden" name="ORDER_NUMBER" value="<?php echo $this->order_number; ?>">
+<input type="hidden" name="LANG" value="<?php echo $this->lang; ?>">
+<input type="hidden" name="RETURN_ADDRESS" value="<?php echo $this->return_address; ?>">
+<input type="hidden" name="CANCEL_ADDRESS" value="<?php echo $this->cancel_address; ?>">
+<input type="hidden" name="AUTHCODE" value="<?php echo $this->authcode; ?>">
+
+<noscript>
+<p><?php echo $this->noscript; ?></p>
+<input type="submit" value="<?php echo $this->slabel; ?>">
+</noscript>
+</form>
+<script>
+window.addEvent('domready' , function() {
+  document.id('paybyway<?php echo $this->id; ?>').submit();
+});
+</script>

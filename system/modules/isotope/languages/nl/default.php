@@ -108,7 +108,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z - A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'oud - nieuw';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'nieuw - oud';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Betaling wordt verwerkt';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'U wordt nu naar de website van de betalingsaanbieder doorgestuurd. Indien u niet automatisch wordt doorgestuurd, druk dan op de "Nu betalen" knop.';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Nu betalen';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] = 'Klik hier om deze PayPal transactie online te bekijken';
 $GLOBALS['TL_LANG']['MSC']['productSingle'] = '1 Product';

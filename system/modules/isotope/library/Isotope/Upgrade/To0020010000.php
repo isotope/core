@@ -21,12 +21,7 @@ class To0020010000 extends Assistant
     public function run($blnInstalled)
     {
         if ($blnInstalled && \Database::getInstance()->tableExists('tl_iso_gallery')) {
-            if (!\Database::getInstance()->fieldExists('lightbox_template', 'tl_iso_gallery')) {
-                \Database::getInstance()->query("
-                    ALTER TABLE tl_iso_gallery
-                    ADD COLUMN `lightbox_template` blob NULL
-                ");
-            }
+            $this->createDatabaseField('lightbox_template', 'tl_iso_gallery');
 
             $t = \Isotope\Model\Gallery::getTable();
             $this->objGaleries = \Isotope\Model\Gallery::findBy(

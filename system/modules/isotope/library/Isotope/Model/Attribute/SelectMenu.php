@@ -13,7 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Model\Attribute;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
 
 
 /**
@@ -22,16 +22,33 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class SelectMenu extends Attribute implements IsotopeAttribute
+class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
 {
 
+    /**
+     * Adjust the options wizard for this attribute
+     * @return  array
+     */
+    public function prepareOptionsWizard($objWidget, $arrColumns)
+    {
+        if ($this->isVariantOption()) {
+            unset($arrColumns['default']);
+            unset($arrColumns['group']);
+        }
+
+        return $arrColumns;
+    }
+
+    /**
+     * Adjust DCA field for this attribute
+     * @param   arary
+     */
     public function saveToDCA(array &$arrData)
     {
         // Varian select menu cannot have multiple option
         if ($this->isVariantOption()) {
             $this->multiple           = false;
             $this->size               = 1;
-            $this->includeBlankOption = true;
         }
 
         parent::saveToDCA($arrData);

@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -58,7 +57,7 @@ abstract class Shipping extends TypeAgent
 
     /**
      * Return true or false depending on if shipping method is available
-     * @return bool
+     * @return  bool
      * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
      */
     public function isAvailable()
@@ -93,6 +92,11 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+            return false;
+        }
+
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
@@ -114,14 +118,46 @@ abstract class Shipping extends TypeAgent
             }
         }
 
-        $arrTypes = deserialize($this->product_types);
+        if ($this->product_types_condition != 'calculation') {
+            $arrConfigTypes = deserialize($this->product_types);
 
-        if (is_array($arrTypes) && !empty($arrTypes)) {
-            $arrItems = Isotope::getCart()->getItems();
+            if (is_array($arrConfigTypes) && !empty($arrConfigTypes)) {
+                $arrItems = Isotope::getCart()->getItems();
+                $arrItemTypes = array();
 
-            foreach ($arrItems as $objItem) {
-                if (!$objItem->hasProduct() || !in_array($objItem->getProduct()->type, $arrTypes)) {
-                    return false;
+                foreach ($arrItems as $objItem) {
+                    if ($objItem->hasProduct()) {
+                        $arrItemTypes[] = $objItem->getProduct()->type;
+
+                    } elseif ($this->product_types_condition == 'onlyAvailable') {
+                        // If one product in cart is not of given type, shipping method is not available
+                        return false;
+                    }
+                }
+
+                $arrItemTypes = array_unique($arrItemTypes);
+
+                switch ($this->product_types_condition) {
+                    case 'onlyAvailable':
+                        if (count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
+                            return false;
+                        }
+                        break;
+
+                    case 'oneAvailable':
+                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
+                            return false;
+                        }
+                        break;
+
+                    case 'allAvailable':
+                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) != count($arrConfigTypes)) {
+                            return false;
+                        }
+                        break;
+
+                    default:
+                        throw new \UnexpectedValueException('Unknown product type condition "' . $this->product_types_condition . '"');
                 }
             }
         }

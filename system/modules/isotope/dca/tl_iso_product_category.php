@@ -26,6 +26,14 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         'notEditable'               => true,
         'notCopyable'               => true,
         'notDeletable'              => true,
+        'onload_callback' => array
+        (
+            function() {
+                if (\Input::get('act') == '' && \BackendUser::getInstance()->hasAccess('modules', 'themes')) {
+                    \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint']);
+                }
+            }
+        ),
         'oncut_callback' => array
         (
             array('Isotope\Backend', 'truncateProductCache'),

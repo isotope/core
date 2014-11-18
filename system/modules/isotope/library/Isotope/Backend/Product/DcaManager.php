@@ -13,6 +13,11 @@
 namespace Isotope\Backend\Product;
 
 use Haste\Util\Format;
+use Isotope\Backend\Group\Breadcrumb;
+use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeForVariants;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
@@ -25,7 +30,8 @@ class DcaManager extends \Backend
 
     /**
      * Initialize the tl_iso_product DCA
-     * @return void
+     *
+     * @param string $strTable
      */
     public function initialize($strTable)
     {
@@ -49,12 +55,12 @@ class DcaManager extends \Backend
 
     /**
      * Store initial values when creating a product
-     * @param   string
-     * @param   int
-     * @param   array
-     * @param   DataContainer
+     *
+     * @param   string $strTable
+     * @param   int    $insertID
+     * @param   array  $arrSet
      */
-    public function updateNewRecord($strTable, $insertID, $arrSet, $dc)
+    public function updateNewRecord($strTable, $insertID, $arrSet)
     {
         if ($arrSet['pid'] > 0) {
             return;
@@ -79,11 +85,12 @@ class DcaManager extends \Backend
 
     /**
      * Update dateAdded on copy
-     * @param integer
-     * @param object
+     *
+     * @param int $insertId
+     *
      * @link http://www.contao.org/callbacks.html#oncopy_callback
      */
-    public function updateDateAdded($insertId, $dc)
+    public function updateDateAdded($insertId)
     {
         $strTable = Product::getTable();
         \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
@@ -120,6 +127,8 @@ class DcaManager extends \Backend
                 }
 
                 if ($strClass != '') {
+
+                    /** @type Attribute $objAttribute */
                     $objAttribute = new $strClass();
                     $objAttribute->loadFromDCA($arrData, $strName);
                     $arrData['attributes'][$strName] = $objAttribute;
@@ -216,7 +225,7 @@ class DcaManager extends \Backend
      */
     public function addBreadcrumb()
     {
-        $strBreadcrumb = \Isotope\Backend\Group\Breadcrumb::generate($this->Session->get('iso_products_gid'));
+        $strBreadcrumb = Breadcrumb::generate(\Session::getInstance()->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['breadcrumb'] = $strBreadcrumb;
@@ -235,6 +244,7 @@ class DcaManager extends \Backend
 
         $arrTypes      = array();
         $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        /** @var IsotopeAttribute[] $arrAttributes */
         $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
         $blnVariants     = false;
@@ -242,6 +252,8 @@ class DcaManager extends \Backend
         $blnSingleRecord = $act === 'edit' || $act === 'show';
 
         if (\Input::get('id') > 0) {
+
+            /** @type object $objProduct */
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_product p1 LEFT JOIN tl_iso_product p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
@@ -276,6 +288,7 @@ class DcaManager extends \Backend
             $arrPalette = array();
             $arrLegends = array();
             $arrLegendOrder = array();
+            $arrCanInherit = array();
 
             if ($blnVariants) {
                 $arrConfig     = deserialize($objType->variant_attributes, true);
@@ -290,13 +303,16 @@ class DcaManager extends \Backend
             foreach ($arrFields as $name => $arrField) {
                 if (in_array($name, $arrEnabled)) {
 
-                    // Do not show customer defined fields
-                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isCustomerDefined()) {
+                    if ($arrField['inputType'] == '') {
                         continue;
                     }
 
                     // Variant fields can only be edited in variant mode
-                    if (null !== $arrAttributes[$name] && $arrAttributes[$name]->isVariantOption() && !$blnVariants) {
+                    if (null !== $arrAttributes[$name]
+                        && !$blnVariants
+                        && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
+                        && */$arrAttributes[$name]->isVariantOption()
+                    ) {
                         continue;
                     }
 
@@ -317,7 +333,13 @@ class DcaManager extends \Backend
                         $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
                     }
 
-                    if ($blnVariants && in_array($name, $arrCanInherit) && null !== $arrAttributes[$name] && !$arrAttributes[$name]->isVariantOption() && !in_array($name, array('price', 'published', 'start', 'stop'))) {
+                    if ($blnVariants
+                        && in_array($name, $arrCanInherit)
+                        && null !== $arrAttributes[$name]
+                        && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
+                        && */!$arrAttributes[$name]->isVariantOption()
+                        && !in_array($name, array('price', 'published', 'start', 'stop'))
+                    ) {
                         $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
 
@@ -374,7 +396,11 @@ class DcaManager extends \Backend
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['fields']['alias']['sorting']   = false;
 
         $arrFields         = array();
-        $arrVariantFields  = $objProduct->getRelated('type')->getVariantAttributes();
+
+        /** @type ProductType $objType */
+        $objType           = $objProduct->getRelated('type');
+
+        $arrVariantFields  = $objType->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
         if (in_array('images', $arrVariantFields)) {
@@ -382,12 +408,12 @@ class DcaManager extends \Backend
         }
 
         if (in_array('name', $arrVariantFields)) {
-            $arrFields[]                                                             = 'name';
+            $arrFields[] = 'name';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
         }
 
         if (in_array('sku', $arrVariantFields)) {
-            $arrFields[]                                                             = 'sku';
+            $arrFields[] = 'sku';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
         }
 
@@ -397,10 +423,20 @@ class DcaManager extends \Backend
 
         // Limit the number of columns if there are more than 2
         if (count($arrVariantOptions) > 2) {
-            $arrFields[]                                                                  = 'variantFields';
+            $arrFields[] = 'variantFields';
             $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
-            $arrFields = array_merge($arrFields, $arrVariantOptions);
+            foreach (array_merge($arrVariantOptions) as $name) {
+
+                /** @type Attribute $objAttribute */
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+
+                if ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->optionsSource == 'table') {
+                    $name .= ':tl_iso_attribute_option.label';
+                }
+
+                $arrFields[] = $name;
+            }
         }
 
         $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
@@ -417,9 +453,64 @@ class DcaManager extends \Backend
 
 
     /**
+     * Add options from attribute to DCA
+     *
+     * @param array  $arrData
+     * @param object $objDca
+     *
+     * @return array
+     */
+    public function addOptionsFromAttribute($arrData, $objDca)
+    {
+        if ($arrData['strTable'] == Product::getTable()
+            && $arrData['optionsSource'] != ''
+            && $arrData['optionsSource'] != 'foreignKey'
+        ) {
+
+            /** @var IsotopeAttributeWithOptions|Attribute $objAttribute */
+            $objAttribute = Attribute::findByFieldName($arrData['strField']);
+
+            if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
+                $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
+
+                if (!empty($arrOptions)) {
+                    if ($arrData['includeBlankOption']) {
+                        array_unshift($arrOptions, array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
+                    }
+
+                    $arrData['options'] = $arrOptions;
+
+                    if (null !== $arrData['default']) {
+                        $arrDefault = array_filter(
+                            $arrOptions,
+                            function (&$option) {
+                                return (bool) $option['default'];
+                            }
+                        );
+
+                        if (!empty($arrDefault)) {
+                            array_walk(
+                                $arrDefault,
+                                function (&$value) {
+                                    $value = $value['value'];
+                                }
+                            );
+
+                            $arrData['value'] = ($objAttribute->multiple ? $arrDefault : $arrDefault[0]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $arrData;
+    }
+
+
+    /**
      * Add a breadcrumb menu to the page tree
      *
-     * @param string
+     * @return string
      */
     protected static function getPagesBreadcrumb()
     {

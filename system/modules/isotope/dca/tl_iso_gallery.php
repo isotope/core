@@ -42,7 +42,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'sorting' => array
         (
             'mode'                  => 1,
-            'flag'					=> 1,
+            'flag'                  => 1,
             'fields'                => array('name'),
             'panelLayout'           => 'filter;search,limit',
         ),
@@ -110,9 +110,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
     (
         '__selector__'              => array('type', 'anchor'),
         'default'                   => '{name_legend},name,type',
-        'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
-        'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position',
-        'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position',
+        'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
+        'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position;{template_legend:hide},customTpl',
+        'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
     ),
 
     // Fields
@@ -192,6 +192,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function() {
+                // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
                 return array_merge(
                     \Controller::getTemplateGroup('moo_'),
                     \Controller::getTemplateGroup('j_')
@@ -263,6 +264,17 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'reference'             => $GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
+        ),
+        'customTpl' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options_callback'      => function() {
+                return \Isotope\Backend::getTemplates('iso_gallery_');
+            },
+            'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
         ),
     )
 );

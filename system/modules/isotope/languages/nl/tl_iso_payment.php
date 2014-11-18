@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][0] = 'Verzendmethoden'
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][1] = 'U kunt deze betaalmethode beperken tot enkele verzendmethodes (bijv. alleen contant betalen bij afhalen).';
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Productsoorten';
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][1] = 'U kan deze betaalmethode beperken tot bepaalde product soorten. Als de winkelwagen een product soort bevat die niet geselecteerd is, is deze betaalmethode niet beschikbaar.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['config_ids'][0] = 'Winkel configuraties';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][0] = 'Prijs';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][1] = 'Vul een prijs of percentage in (bijv. "10" of "10%").';
 $GLOBALS['TL_LANG']['tl_iso_payment']['tax_class'][0] = 'Belastingklasse';

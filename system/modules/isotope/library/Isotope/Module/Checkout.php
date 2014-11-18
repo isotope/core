@@ -24,11 +24,6 @@ use Isotope\Model\Shipping;
 /**
  * Class ModuleIsotopeCheckout
  * Front end module Isotope "checkout".
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Checkout extends Module
 {
@@ -66,6 +61,7 @@ class Checkout extends Module
 
     /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -93,6 +89,7 @@ class Checkout extends Module
 
     /**
      * Returns the current form ID
+     *
      * @return string
      */
     public function getFormId()
@@ -126,8 +123,14 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
-                    static::redirectToStep('failed');
+                if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
+                    if (Isotope::getCart()->isEmpty()) {
+                        /** @type \PageError404 $objHandler */
+                        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                        $objHandler->generate((int) $GLOBALS['objPage']->id);
+                    } else {
+                        static::redirectToStep('failed');
+                    }
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -163,6 +166,7 @@ class Checkout extends Module
 
                 // Make sure all steps have passed successfully
                 foreach ($arrSteps as $step => $arrModules) {
+                    /** @type IsotopeCheckoutStep $objModule */
                     foreach ($arrModules as $objModule) {
                         $objModule->generate();
 
@@ -172,16 +176,28 @@ class Checkout extends Module
                     }
                 }
 
-                $objOrder = Order::createFromCollection(Isotope::getCart());
-
+                $objOrder = Isotope::getCart()->getDraftOrder();
                 $objOrder->checkout_info        = $this->getCheckoutInfo($arrSteps);
                 $objOrder->nc_notification      = $this->nc_notification;
                 $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
-                $objOrder->save();
+                // !HOOK: pre-process checkout
+                if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
 
-                $strBuffer = Isotope::getCart()->hasPayment() ? Isotope::getCart()->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
+                        if ($objCallback->$callback[1]($objOrder) === false) {
+                            \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+
+                            static::redirectToStep('failed');
+                        }
+                    }
+                }
+
+                $objOrder->lock();
+
+                $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 
                 if ($strBuffer === false) {
                     static::redirectToStep('complete', $objOrder);
@@ -193,6 +209,7 @@ class Checkout extends Module
                 break;
 
             // Checkout/payment has failed, show the review page again with an error message
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'failed':
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
@@ -217,11 +234,14 @@ class Checkout extends Module
 
     /**
      * Run through all steps until we find the current one or one reports failure
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrSteps
+     *
+     * @return array
      */
     protected function generateSteps(array $arrSteps)
     {
+        $arrBuffer = array();
         $intCurrentStep = 0;
         $intTotalSteps  = count($arrSteps);
 
@@ -229,7 +249,11 @@ class Checkout extends Module
             $this->redirectToNextStep();
         }
 
-        // Run trough all steps until we find the current one or one reports failure
+        /**
+         * Run trough all steps until we find the current one or one reports failure
+         * @type string                $step
+         * @type IsotopeCheckoutStep[] $arrModules
+         */
         foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
             $this->Template->formId     = $this->strFormId;
@@ -326,8 +350,10 @@ class Checkout extends Module
 
     /**
      * Return the checkout information as array
-     * @param   array|null
-     * @return  array
+     *
+     * @param array $arrSteps
+     *
+     * @return array
      */
     public function getCheckoutInfo(array $arrSteps = null)
     {
@@ -338,6 +364,7 @@ class Checkout extends Module
         $arrCheckoutInfo = array();
 
         // Run trough all steps to collect checkout information
+        /** @type IsotopeCheckoutStep[] $arrModules */
         foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
 
@@ -356,9 +383,11 @@ class Checkout extends Module
 
     /**
      * Retrieve the array of notification data for parsing simple tokens
-     * @param   array
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param array                    $arrSteps
+     * @param IsotopeProductCollection $objOrder
+     *
+     * @return array
      */
     protected function getNotificationTokensFromSteps(array $arrSteps, IsotopeProductCollection $objOrder)
     {
@@ -366,6 +395,8 @@ class Checkout extends Module
 
         // Run trough all steps to collect checkout information
         foreach ($arrSteps as $arrModules) {
+
+            /** @type IsotopeCheckoutStep $objModule */
             foreach ($arrModules as $objModule) {
                 $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }
@@ -376,7 +407,8 @@ class Checkout extends Module
 
     /**
      * Check if the checkout can be executed
-     * @return  bool
+     *
+     * @return bool
      */
     protected function canCheckout()
     {
@@ -433,7 +465,8 @@ class Checkout extends Module
 
     /**
      * Return array of instantiated checkout step modules
-     * @return  array
+     *
+     * @return array
      */
     protected function getSteps()
     {
@@ -459,8 +492,10 @@ class Checkout extends Module
 
     /**
      * Generate checkout step navigation
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrStepKeys
+     *
+     * @return array
      */
     protected function generateStepNavigation(array $arrStepKeys)
     {
@@ -500,8 +535,9 @@ class Checkout extends Module
 
     /**
      * Redirect to given checkout step
-     * @param   string
-     * @param   IsotopeProductCollection
+     *
+     * @param string                   $strStep
+     * @param IsotopeProductCollection $objCollection
      */
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
@@ -510,10 +546,12 @@ class Checkout extends Module
 
     /**
      * Generate frontend URL for current page including the given checkout step
-     * @param   string
-     * @param   IsotopeProductCollection
-     * @param   \PageModel $objPage
-     * @return  string
+     *
+     * @param string                   $strStep
+     * @param IsotopeProductCollection $objCollection
+     * @param \PageModel               $objTarget
+     *
+     * @return string
      */
     public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, \PageModel $objTarget = null)
     {

@@ -1,0 +1,38 @@
+
+<!-- indexer::stop -->
+<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<?php if ($this->headline): ?>
+
+<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
+<?php endif; ?>
+
+<?php if (!$this->showResults): ?>
+
+    <p class="info no_shipping_address"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingAddress']; ?></p>
+
+<?php elseif (!$this->requiresShipping): ?>
+
+    <p class="info no_shipping_required"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']; ?></p>
+
+<?php elseif (count($this->shippingMethods) == 0): ?>
+
+    <p class="info no_shipping_methods"><?php echo $GLOBALS['TL_LANG']['MSC']['noShippingModules']; ?></p>
+
+<?php else: ?>
+
+    <p class="info available_shipping_methods"><?php echo $GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']; ?></p>
+    <table>
+        <tbody>
+        <?php foreach ($this->shippingMethods as $method): $i=0; ?>
+        <tr class="<?php echo $method['rowClass']; ?>">
+            <td class="col_<?php echo $i++; ?> col_first label"><?php echo $method['label']; ?></td>
+            <td class="col_<?php echo $i++; ?> col_last price"><?php echo $method['formatted_price']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+
+<?php endif; ?>
+
+</div>
+<!-- indexer::continue -->

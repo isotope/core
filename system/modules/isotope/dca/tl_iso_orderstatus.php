@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                   => '{name_legend},name,color,paid,welcomescreen;{email_legend},notification',
+        'default'                   => '{name_legend},name,color,paid,welcomescreen;{email_legend},notification;{payment_legend:hide},saferpay_status',
     ),
 
     // Fields
@@ -182,5 +182,15 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),
+        'saferpay_status' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('capture', 'cancel'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status'],
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(8) NOT NULL default ''"
+        )
     )
 );

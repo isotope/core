@@ -12,12 +12,16 @@
 
 namespace Isotope;
 
-use Haste\Haste;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\Attribute;
+use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
+use Isotope\Model\Product\Standard;
+use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
-
 
 /**
  * Class Isotope\Frontend
@@ -46,6 +50,12 @@ class Frontend extends \Frontend
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        // Do not add shipping and payment surcharge to cart,
+        // they should only appear in the order review
+        if ($objCollection instanceof Cart) {
+            return array();
+        }
+
         $arrSurcharges = array();
 
         if (($objSurcharge = $objCollection->getShippingSurcharge()) !== null) {
@@ -183,7 +193,7 @@ class Frontend extends \Frontend
     }
 
     /**
-     * Replaces Isotope-specific InsertTags in Frontend
+     * Replaces Isotope specific InsertTags in Frontend
      * @param string
      * @return mixed
      */
@@ -191,6 +201,7 @@ class Frontend extends \Frontend
     {
         $arrTag = trimsplit('::', $strTag);
 
+        // {{isotope::*}} and {{cache_isotope::*}} insert tags
         if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
             switch ($arrTag[1]) {
                 case 'cart_items';
@@ -306,14 +317,14 @@ window.addEvent('domready', function() {
 </script>";
         }
 
-        $strMessages = \Isotope\Frontend::getIsotopeMessages();
+        $strMessages = Message::generate();
 
         if ($strMessages != '') {
             $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function()
 {
-    Isotope.displayBox('" . $strMessages . "', true);
+    Isotope.displayBox('" . str_replace(array("\n", "'"), array('', "\'"), $strMessages) . "', true);
 });
 </script>";
         }
@@ -321,40 +332,15 @@ window.addEvent('domready', function()
 
     /**
      * Return all error, confirmation and info messages as HTML string
+     *
      * @return string
+     *
+     * @deprecated use Isotope\Message::generate
      */
     public static function getIsotopeMessages()
     {
-        $strMessages = '';
-        $arrGroups   = array('ISO_ERROR', 'ISO_CONFIRM', 'ISO_INFO');
-
-        foreach ($arrGroups as $strGroup) {
-            if (!is_array($_SESSION[$strGroup])) {
-                continue;
-            }
-
-            $strClass = strtolower($strGroup);
-
-            foreach ($_SESSION[$strGroup] as $strMessage) {
-                $strMessages .= sprintf('<p class="%s">%s</p>', $strClass, $strMessage);
-            }
-
-            $_SESSION[$strGroup] = array();
-        }
-
-        $strMessages = trim($strMessages);
-
-        if ($strMessages) {
-            // Automatically disable caching if a message is available
-            global $objPage;
-            $objPage->cache = 0;
-
-            $strMessages = '<div class="iso_message">' . $strMessages . '</div>';
-        }
-
-        return $strMessages;
+        return Message::generate();
     }
-
 
     /**
      * Format surcharge prices
@@ -526,7 +512,7 @@ window.addEvent('domready', function()
     {
         global $objPage;
 
-        // $objPage not available, we dont know if the page is allowed
+        // $objPage not available, we don't know if the page is allowed
         if (null === $objPage || $objPage == 0) {
             return $arrPages;
         }
@@ -537,11 +523,7 @@ window.addEvent('domready', function()
         $intMember = 0;
         if (null !== $objMember) {
             $intMember = $objMember->id;
-            $arrGroups = deserialize($objMember->groups);
-
-            if (!is_array($arrGroups)) {
-                $arrGroups = array();
-            }
+            $arrGroups = deserialize($objMember->groups, true);
         }
 
         foreach (array_diff($arrPages, $arrAvailable, $arrUnavailable) as $intPage) {
@@ -631,6 +613,38 @@ window.addEvent('domready', function()
     }
 
     /**
+     * Initialize environment (language, objPage) for a given order
+     *
+     * @param Order  $objOrder
+     * @param string $strLanguage
+     */
+    public static function loadOrderEnvironment(Order $objOrder, $strLanguage = null)
+    {
+        global $objPage;
+
+        $strLanguage ?: $objOrder->language;
+
+        // Load page configuration
+        if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
+            $objPage = \PageModel::findWithDetails($objOrder->pageId);
+            $objPage = static::loadPageConfig($objPage);
+        }
+
+        // Set the current system to the language when the user placed the order.
+        // This will result in correct e-mails and payment description.
+        if ($GLOBALS['TL_LANGUAGE'] != $strLanguage) {
+            $GLOBALS['TL_LANGUAGE'] = $strLanguage;
+            \System::loadLanguageFile('default', $strLanguage, true);
+        }
+
+        Isotope::setConfig($objOrder->getRelated('config_id'));
+
+        if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
+            Isotope::setCart($objCart);
+        }
+    }
+
+    /**
      * Load system configuration into page object
      * @param \Database\Result
      */
@@ -695,5 +709,52 @@ window.addEvent('domready', function()
             $objPostsale->setModule('pay');
             $objPostsale->setModuleId($intId);
         }
+    }
+
+    /**
+     * Calculate price surcharge for attribute options
+     *
+     * @param float  $fltPrice
+     * @param object $objSource
+     * @param string $strField
+     * @param int    $intTaxClass
+     * @param array  $arrOptions
+     *
+     * @return float
+     * @throws \Exception
+     */
+    public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
+    {
+        if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
+            /** @type IsotopeProduct|Standard $objProduct */
+
+            $arrAttributes = array_intersect(
+                Attribute::getPricedFields(),
+                array_merge(
+                    $objProduct->getAttributes(),
+                    $objProduct->getVariantAttributes()
+                )
+            );
+
+            foreach ($arrAttributes as $field) {
+                $value = isset($arrOptions[$field]) ? $arrOptions[$field] : $objProduct->$field;
+
+                if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null
+                    && $objAttribute instanceof IsotopeAttributeWithOptions
+                    && $objAttribute->canHavePrices()
+                    && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
+                ) {
+                    /** @type AttributeOption $objOption */
+                    foreach ($objOptions as $objOption) {
+                        if ($objOption->id == $value) {
+                            $fltPrice += $objOption->getPrice($objProduct);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $fltPrice;
     }
 }

@@ -23,7 +23,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Returns true to enable the module
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAvailable()
     {
@@ -32,7 +33,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Generate the checkout step
-     * @return  string
+     *
+     * @return string
      */
     public function generate()
     {
@@ -46,14 +48,16 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Return review information for last page of checkout
-     * @return  string
+     *
+     * @return string
      */
     public function review()
     {
-        $blnRequiresPayment  = Isotope::getCart()->requiresPayment();
-        $blnRequiresShipping = Isotope::getCart()->requiresShipping();
-        $objBillingAddress   = Isotope::getCart()->getBillingAddress();
-        $objShippingAddress  = Isotope::getCart()->getShippingAddress();
+        $draftOrder = Isotope::getCart()->getDraftOrder();
+        $blnRequiresPayment  = $draftOrder->requiresPayment();
+        $blnRequiresShipping = $draftOrder->requiresShipping();
+        $objBillingAddress   = $draftOrder->getBillingAddress();
+        $objShippingAddress  = $draftOrder->getShippingAddress();
 
         $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
@@ -75,8 +79,10 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return array
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
@@ -85,7 +91,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get available address options
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressOptions()
     {
@@ -104,9 +111,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get address object for a selected option
-     * @param   string
-     * @param   bool
-     * @return  \Isotope\Model\Address
+     *
+     * @param string $varValue
+     * @param bool   $blnValidate
+     *
+     * @return AddressModel
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -130,29 +139,19 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get default address for this collection and address type
-     * @return  \Isotope\Model\Address
+     *
+     * @return Address
      */
     protected function getDefaultAddress()
     {
-        $objAddress = AddressModel::findOneBy(array('ptable=?', 'pid=?', 'isDefaultBilling=?'), array('tl_iso_product_collection', Isotope::getCart()->id, '1'));
+        $objAddress = AddressModel::findDefaultBillingForProductCollection(Isotope::getCart()->id);
 
         if (null === $objAddress) {
-            $objBillingAddress = Isotope::getCart()->getBillingAddress();
-
-            if (null === $objBillingAddress) {
-                $objAddress = new AddressModel();
-            } else {
-                $objAddress = clone $objBillingAddress;
-            }
-
-            $objAddress->ptable            = 'tl_iso_product_collection';
-            $objAddress->pid               = Isotope::getCart()->id;
-            $objAddress->isDefaultBilling  = '1';
-            $objAddress->isDefaultShipping = '';
-
-            if ($objAddress->country == '') {
-                $objAddress->country = Isotope::getConfig()->billing_country;
-            }
+            $objAddress = AddressModel::createForProductCollection(
+                Isotope::getCart(),
+                Isotope::getConfig()->getBillingFields(),
+                true
+            );
         }
 
         return $objAddress;
@@ -160,7 +159,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get field configuration for this address type
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressFields()
     {
@@ -169,7 +169,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get allowed countries for this address type
-     * @return  array
+     *
+     * @return array
      */
     protected function getAddressCountries()
     {
@@ -178,7 +179,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Get the current address (from Cart) for this address type
-     * @return  \Isotope\Model\Address
+     *
+     * @return Address
      */
     protected function getAddress()
     {
@@ -187,7 +189,8 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
 
     /**
      * Set new address in cart
-     * @param   Isotope\Model\Address
+     *
+     * @param AddressModel $objAddress
      */
     protected function setAddress(AddressModel $objAddress)
     {

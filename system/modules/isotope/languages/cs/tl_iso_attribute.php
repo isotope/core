@@ -17,6 +17,7 @@
 $GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'Jméno';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description'][0] = 'Popis';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options'][0] = 'Možnosti';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'][0] = 'Možnosti';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['copy'][0] = 'Kopírovat atribut';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['copy'][1] = 'Kopírovat ID atributu %s.';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['delete'][0] = 'Smazat atribut';

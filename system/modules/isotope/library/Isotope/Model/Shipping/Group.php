@@ -44,7 +44,7 @@ class Group extends Shipping implements IsotopeShipping
 
     /**
      * Is available if at least one shipping method was available
-     * @return bool
+     * @return  bool
      */
     public function isAvailable()
     {

@@ -44,6 +44,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][0] = 'Maximaal gewicht'
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][1] = 'Vul een maximum gewicht in om beschikbaarheid te bepalen, gebaseerd op de producten in de winkelwagen. ';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Productsoorten';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'U kan deze verzendmethode beperken tot bepaalde product soorten. Als de winkelwagen een product soort bevat die niet geselecteerd is, is deze verzendmethode niet beschikbaar.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Winkel configuraties';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Verzendmethoden';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][1] = 'Kies de verzendmethodes om te groeperen in deze methode.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'][0] = 'Groepsberekening';

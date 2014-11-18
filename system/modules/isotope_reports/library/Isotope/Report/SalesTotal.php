@@ -15,7 +15,9 @@ namespace Isotope\Report;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
-use Haste\Util\Format;
+use Isotope\Model\OrderStatus;
+use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionItem;
 
 
 class SalesTotal extends Sales
@@ -55,10 +57,10 @@ class SalesTotal extends Sales
                 SUM(i.quantity) AS total_items,
                 SUM(i.tax_free_price * i.quantity) AS total_sales,
                 DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
-            FROM " . \Isotope\Model\ProductCollection::getTable() . " o
-            LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
-            LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " os ON os.id=o.order_status
-            LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
+            FROM " . ProductCollection::getTable() . " o
+            LEFT JOIN " . ProductCollectionItem::getTable() . " i ON o.id=i.pid
+            LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
+            LEFT OUTER JOIN " . Config::getTable() . " c ON o.config_id=c.id
             WHERE o.type='order' AND o.order_status>0 AND o.locked!=''
             " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
             " . $this->getProductProcedure('i', 'product_id') . "
@@ -175,7 +177,7 @@ class SalesTotal extends Sales
                 (
                     array
                     (
-                        'value'         => $this->parseDate($publicDate, $intStart),
+                        'value'         => \Date::parse($publicDate, $intStart),
                     ),
                     array
                     (
@@ -213,11 +215,11 @@ class SalesTotal extends Sales
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
         $intConfig = (int) $arrSession[$this->name]['iso_config'];
-
+        $configTable = Config::getTable();
 
         $arrData = array();
         $arrCurrencies = \Database::getInstance()->execute("
-            SELECT DISTINCT currency FROM " . \Isotope\Model\Config::getTable() . " WHERE currency!=''
+            SELECT DISTINCT currency FROM $configTable WHERE currency!=''
             " . $this->getConfigProcedure() . "
             " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
         ")->fetchEach('currency');
@@ -232,7 +234,7 @@ class SalesTotal extends Sales
         {
             foreach ($arrCurrencies as $currency)
             {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = ($strPeriod == 'day' ? $intStart : $this->parseDate($publicDate, $intStart));
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = ($strPeriod == 'day' ? $intStart : \Date::parse($publicDate, $intStart));
                 $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
             }
 
@@ -252,7 +254,9 @@ class SalesTotal extends Sales
             {
                 foreach ($arrRow['columns'][4]['value'] as $currency => $varValue)
                 {
-                    Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
+                    /** @type Config $objConfig */
+                    $objConfig = Config::findByPk($arrCurrencies[$currency]);
+                    Isotope::setConfig($objConfig);
 
                     $arrData['rows'][$dateGroup]['columns'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
                 }
@@ -262,7 +266,9 @@ class SalesTotal extends Sales
         // Format footer totals
         foreach ($arrData['footer'][4]['value'] as $currency => $varValue)
         {
-            Isotope::setConfig(Config::findByPk($arrCurrencies[$currency]));
+            /** @type Config $objConfig */
+            $objConfig = Config::findByPk($arrCurrencies[$currency]);
+            Isotope::setConfig($objConfig);
 
             $arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }

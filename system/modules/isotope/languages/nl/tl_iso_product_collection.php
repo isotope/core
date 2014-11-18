@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number'][0] = 'Bestel nr.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number'][0] = 'Bestelnr.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid'][0] = 'Uniek nr.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status'][0] = 'Bestelstatus';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status'][1] = 'Kies de status van deze bestelling';

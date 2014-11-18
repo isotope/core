@@ -50,7 +50,7 @@ window.addEvent("domready", function() {
     toggle:$$("#toggle_<?php echo $subpanel['name']; ?>"),
     format:"<?php echo Date::formatToJs($subpanel['format']); ?>",
     positionOffset:{x:-197,y:-182},
-    pickerClass:"<?php echo (version_compare(VERSION, '3.3', '<')) ? 'datepicker_dashboard' : 'datepicker_bootstrap'; ?>",
+    pickerClass:"datepicker_bootstrap",
     useFadeInOut:!Browser.ie,
     startDay:<?php echo $GLOBALS['TL_LANG']['MSC']['weekOffset']; ?>,
     titleFormat:"<?php echo $GLOBALS['TL_LANG']['MSC']['titleFormat']; ?>"

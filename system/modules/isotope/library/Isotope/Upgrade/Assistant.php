@@ -13,12 +13,12 @@
 namespace Isotope\Upgrade;
 
 
-abstract class Assistant extends \System
+abstract class Assistant extends Base
 {
 
     /**
      * Template
-     * @var BackendTemplate
+     * @var \BackendTemplate
      */
     protected $Template;
 

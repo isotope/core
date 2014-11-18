@@ -41,6 +41,12 @@ class Cart extends ProductCollection implements IsotopeProductCollection
      */
     protected static $strCookie = 'ISOTOPE_TEMP_CART';
 
+    /**
+     * Draft of Order for this cart
+     * @type Order
+     */
+    protected $objDraftOrder;
+
 
     /**
      * Get billing address or create if none exists
@@ -50,17 +56,23 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     {
         $objAddress = parent::getBillingAddress();
 
+        // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
             $objAddress = Address::findDefaultBillingForMember(\FrontendUser::getInstance()->id);
-
-            if (null === $objAddress) {
-                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getBillingFields());
-            }
         }
 
+        // Try to load the default collection address
         if (null === $objAddress) {
-            $objAddress          = new Address();
-            $objAddress->country = (Isotope::getConfig()->billing_country ? : Isotope::getConfig()->country);
+            $objAddress = Address::findDefaultBillingForProductCollection($this->id);
+        }
+
+        // Last option: create a new address, including member data if available
+        if (null === $objAddress) {
+            $objAddress = Address::createForProductCollection(
+                $this,
+                Isotope::getConfig()->getBillingFields(),
+                true
+            );
         }
 
         return $objAddress;
@@ -74,17 +86,24 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     {
         $objAddress = parent::getShippingAddress();
 
+        // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
             $objAddress = Address::findDefaultShippingForMember(\FrontendUser::getInstance()->id);
-
-            if (null === $objAddress) {
-                $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, Isotope::getConfig()->getShippingFields());
-            }
         }
 
+        // Try to load the default collection address
         if (null === $objAddress) {
-            $objAddress          = new Address();
-            $objAddress->country = Isotope::getConfig()->shipping_country;
+            $objAddress = Address::findDefaultShippingForProductCollection($this->id);
+        }
+
+        // Last option: create a new address, including member data if available
+        if (null === $objAddress) {
+            $objAddress = Address::createForProductCollection(
+                $this,
+                Isotope::getConfig()->getShippingFields(),
+                false,
+                true
+            );
         }
 
         return $objAddress;
@@ -117,6 +136,59 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             \System::setCookie(static::$strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
             \System::reload();
         }
+    }
+
+    /**
+     * Get and update order draft for current cart or create one if it does not yet exist
+     *
+     * @return Order
+     */
+    public function getDraftOrder()
+    {
+        if ($this->objDraftOrder === null) {
+
+            $t = Order::getTable();
+
+            $objOrder = Order::findOneBy(
+                array(
+                    "$t.source_collection_id=?",
+                    "$t.locked=''"
+                ),
+                array($this->id)
+            );
+
+            if ($objOrder === null) {
+                $objOrder = Order::createFromCollection($this);
+            } else {
+
+                $objOrder->config_id = (int) $this->config_id;
+                $objOrder->store_id  = (int) $this->store_id;
+                $objOrder->member    = (int) $this->member;
+
+                $objOrder->setShippingMethod($this->getShippingMethod());
+                $objOrder->setPaymentMethod($this->getPaymentMethod());
+
+                $objOrder->setShippingAddress($this->getShippingAddress());
+                $objOrder->setBillingAddress($this->getBillingAddress());
+
+                $objOrder->purge();
+                $arrItemIds = $objOrder->copyItemsFrom($this);
+
+                $objOrder->updateDatabase();
+
+                // HOOK: order status has been updated
+                if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder']) && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
+                        $objCallback->$callback[1]($objOrder, $this, $arrItemIds);
+                    }
+                }
+            }
+
+            $this->objDraftOrder = $objOrder;
+        }
+
+        return $this->objDraftOrder;
     }
 
     /**
@@ -154,6 +226,16 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     protected function getMessageIfErrorsInItems()
     {
         return $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'];
+    }
+
+    /**
+     * Clear all cache properties
+     */
+    protected function clearCache()
+    {
+        parent::clearCache();
+
+        $this->objDraftOrder = null;
     }
 
     /**

@@ -171,26 +171,7 @@ class PostSale extends \Frontend
                 $objResponse->send();
             }
 
-            global $objPage;
-
-            // Load page configuration
-            if (!is_object($objPage) && $objOrder->pageId > 0) {
-                $objPage = \PageModel::findWithDetails($objOrder->pageId);
-                $objPage = \Isotope\Frontend::loadPageConfig($objPage);
-            }
-
-            // Set the current system to the language when the user placed the order.
-            // This will result in correct e-mails and payment description.
-            if ($GLOBALS['TL_LANGUAGE'] != $objOrder->language) {
-                $GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-                \System::loadLanguageFile('default', $objOrder->language, true);
-            }
-
-            Isotope::setConfig($objOrder->getRelated('config_id'));
-
-            if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
-                Isotope::setCart($objCart);
-            }
+            Frontend::loadOrderEnvironment($objOrder);
 
             $objMethod->processPostsale($objOrder);
 
@@ -199,11 +180,22 @@ class PostSale extends \Frontend
 
         } catch (\Exception $e) {
             \System::log(
-                sprintf('Exception in post-sale request in file "%s" on line "%s" with message "%s".',
+                sprintf('Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                     $e->getFile(),
                     $e->getLine(),
                     $e->getMessage()
-                ), __METHOD__, TL_ERROR);
+                ),
+                __METHOD__,
+                TL_ERROR
+            );
+
+            log_message(
+                sprintf(
+                    "Exception in post-sale request\n%s\n\n",
+                    $e->getTraceAsString()
+                ),
+                'isotope_postsale.log'
+            );
 
             $objResponse = new Response('Internal Server Error', 500);
             $objResponse->send();

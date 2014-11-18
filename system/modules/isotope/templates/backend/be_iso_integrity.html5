@@ -1,0 +1,39 @@
+<div id="tl_buttons">
+  <a href="<?php echo $this->back; ?>" class="header_back" title=""><?php echo $GLOBALS['TL_LANG']['MSC']['backBT']; ?></a>
+</div>
+<div id="tl_maintenance_cache">
+  <h2 class="sub_headline"><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['headline']; ?></h2>
+  <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+    <div class="tl_formbody_edit">
+      <input type="hidden" name="FORM_SUBMIT" value="tl_iso_integrity">
+      <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+      <div class="tl_tbox">
+        <fieldset class="tl_checkbox_container">
+          <table style="width:100%">
+          <thead>
+            <tr>
+              <th><?php if ($this->hasFixes): ?><input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this, 'integrity')"><?php endif; ?></th>
+              <th><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][0]; ?></th>
+              <th><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][1]; ?></th>
+            </tr>
+          </thead>
+          <tbody>
+              <?php foreach ($this->checks as $check): ?>
+                <tr>
+                  <td><?php if ($check['repair']): ?><input type="checkbox" name="tasks[]" id="integrity_<?php echo $check['id']; ?>" class="tl_checkbox" value="<?php echo $check['id']; ?>"><?php endif; ?></td>
+                  <td><label for="integrity_<?php echo $check['id']; ?>"><?php echo $check['name']; ?></label></td>
+                  <td style="color:#<?php echo $check['error'] ? 'c33' : '77ac45'; ?>"><?php echo $check['description']; ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </fieldset>
+        <p class="tl_help tl_tip" title=""><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['description']; ?></p>
+      </div>
+    </div>
+    <div class="tl_submit_container">
+      <input type="submit" name="clear" class="tl_submit" value="<?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['action']; ?>"<?php if (!$this->hasFixes): ?> disabled<?php endif; ?>>
+    </div>
+  </form>
+
+</div>

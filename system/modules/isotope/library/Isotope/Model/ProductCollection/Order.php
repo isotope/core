@@ -15,6 +15,7 @@ namespace Isotope\Model\ProductCollection;
 use Haste\Generator\RowClass;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -32,9 +33,18 @@ use NotificationCenter\Model\Notification;
  * Class Order
  *
  * Provide methods to handle Isotope orders.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ *
+ * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
+ *
+ * @property int    locked
+ * @property array  checkout_info
+ * @property array  payment_data
+ * @property array  shipping_data
+ * @property string document_number
+ * @property int    order_status
+ * @property int    date_paid
+ * @property int    date_shipped
+ * @property string notes
  */
 class Order extends ProductCollection implements IsotopeProductCollection
 {
@@ -42,7 +52,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
     /**
      * Return true if order has been paid.
      * This is the case if either payment date is set or order status has the paid flag
-     * @return  bool
+     *
+     * @return bool
      */
     public function isPaid()
     {
@@ -61,8 +72,19 @@ class Order extends ProductCollection implements IsotopeProductCollection
     }
 
     /**
+     * Returns true if checkout has been completed
+     *
+     * @return bool
+     */
+    public function isCheckoutComplete()
+    {
+        return (bool) $this->checkout_complete;
+    }
+
+    /**
      * Get label for current order status
-     * @return  string
+     *
+     * @return string
      */
     public function getStatusLabel()
     {
@@ -74,7 +96,8 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get the alias for current order status
-     * @return  string
+     *
+     * @return string
      */
     public function getStatusAlias()
     {
@@ -84,101 +107,26 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
     }
 
-
-    /**
-     * Remove downloads when deleting an item
-     * @param   int
-     * @return  boolean
-     */
-    public function deleteItemById($intId)
-    {
-        $this->ensureNotLocked();
-
-        if (parent::deleteItemById($intId) && $intId > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Delete downloads when deleting this order
-     * @return integer
-     */
-    public function delete()
-    {
-        $this->ensureNotLocked();
-
-        $intPid = $this->id;
-
-        if (parent::delete() && $intPid > 0) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=$intPid)");
-
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Find surcharges for the current collection
-     * @return  array
-     */
-    public function getSurcharges()
-    {
-        if (null === $this->arrSurcharges) {
-            $this->arrSurcharges = array();
-
-            if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
-                $this->arrSurcharges = $objSurcharges->getModels();
-            }
-        }
-
-        return $this->arrSurcharges;
-    }
-
-
     /**
      * Process the order checkout
-     * @return boolean
+     *
+     * @return bool
      */
     public function checkout()
     {
-        if ($this->checkout_complete) {
+        if ($this->isCheckoutComplete()) {
             return true;
         }
-
-        // !HOOK: pre-process checkout
-        if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-
-                if ($objCallback->$callback[1]($this) === false) {
-                    \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
-
-                    return false;
-                }
-            }
-        }
-
-        $this->createPrivateAddresses();
 
         // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
-        $this->lock();
-        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
-        // Add downloads from products to the collection
-        /** @var ProductCollectionDownload[] $arrDownloads */
-        $arrDownloads = ProductCollectionDownload::createForProductsInCollection($this);
-        foreach ($arrDownloads as $objDownload) {
-            $objDownload->save();
+        if (!$this->isLocked()) {
+            $this->lock();
         }
+
+        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
@@ -188,10 +136,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         // Delete all other orders that relate to the current cart
         if (($objOrders = static::findSiblingsBy('source_collection_id', $this)) !== null) {
 
-            /** @var Order $objOrder */
+            /** @var static $objOrder */
             foreach ($objOrders as $objOrder) {
-                if (!$objOrder->isLocked()) {
-                    $objOrder->delete();
+                if (!$objOrder->isCheckoutComplete()) {
+                    $objOrder->delete(true);
                 }
             }
         }
@@ -203,6 +151,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
         if ($this->nc_notification) {
             $blnNotificationError = true;
 
+            /** @type Notification $objNotification */
             if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
@@ -234,14 +183,14 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return true;
     }
 
-
     /**
      * Complete order if the checkout has been made. This will cleanup session data
-     * @return  bool
+     *
+     * @return bool
      */
     public function complete()
     {
-        if ($this->checkout_complete) {
+        if ($this->isCheckoutComplete()) {
             unset($_SESSION['FORM_DATA']);
             unset($_SESSION['FILES']);
 
@@ -258,7 +207,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Update the status of this order and trigger actions (email & hook)
+     *
      * @param int $intNewStatus
+     *
      * @return bool
      */
     public function updateOrderStatus($intNewStatus)
@@ -346,17 +297,29 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
+        // Trigger payment and shipping methods that implement the interface
+        if (($objPayment = $this->getPaymentMethod()) !== null && $objPayment instanceof IsotopeOrderStatusAware) {
+            $objPayment->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+        }
+        if (($objShipping = $this->getShippingMethod()) !== null && $objShipping instanceof IsotopeOrderStatusAware) {
+            $objShipping->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+        }
+
         return true;
     }
 
-
     /**
      * Retrieve the array of notification data for parsing simple tokens
-     * @param   int
-     * @return  array
+     *
+     * @param int $intNotification
+     *
+     * @return array
      */
     public function getNotificationTokens($intNotification)
     {
+        /** @type \Isotope\Model\Config $objConfig */
+        $objConfig = $this->getRelated('config_id');
+
         $arrTokens                    = deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
@@ -372,6 +335,10 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrTokens['cart_text']       = '';
         $arrTokens['document']        = '';
 
+        // Add all the collection fields
+        foreach ($this->row() as $k => $v) {
+            $arrTokens['collection_' . $k] = $v;
+        }
 
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
@@ -382,7 +349,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
             }
 
-            $arrTokens['billing_address'] = $objAddress->generate($this->getRelated('config_id')->getBillingFieldsConfig());
+            $arrTokens['billing_address'] = $objAddress->generate($objConfig->getBillingFieldsConfig());
 
             // @deprecated (use ##billing_address##)
             $arrTokens['billing_address_text'] = $arrTokens['billing_address'];
@@ -397,7 +364,7 @@ class Order extends ProductCollection implements IsotopeProductCollection
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
             }
 
-            $arrTokens['shipping_address'] = $objAddress->generate($this->getRelated('config_id')->getShippingFieldsConfig());
+            $arrTokens['shipping_address'] = $objAddress->generate($objConfig->getShippingFieldsConfig());
 
             // Shipping address equals billing address
             // @deprecated (use ##shipping_address##)
@@ -460,7 +427,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
             }
         }
 
-
         // !HOOK: add custom email tokens
         if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
@@ -474,9 +440,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Include downloads when adding items to template
-     * @param   Isotope\Template
-     * @param   Callable
-     * @return  array
+     *
+     * @param \Isotope\Template $objTemplate
+     * @param Callable          $varCallable
+     *
+     * @return array
      */
     protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
     {
@@ -506,104 +474,23 @@ class Order extends ProductCollection implements IsotopeProductCollection
         return $arrItems;
     }
 
-
     /**
-     * Make sure the addresses belong to this collection only, so they will never be modified
+     * Generate unique order ID including the order prefix
+     *
+     * @return string
      */
-    protected function createPrivateAddresses()
+    protected function generateUniqueId()
     {
-        $this->ensureNotLocked();
-
-        if (!$this->id) {
-            throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
+        if ($this->arrData['uniqid'] != '') {
+            return $this->arrData['uniqid'];
         }
 
-        $objBillingAddress  = $this->getBillingAddress();
-        $objShippingAddress = $this->getShippingAddress();
+        $objConfig = $this->getRelated('config_id');
 
-        // Store address in address book
-        if ($this->iso_addToAddressbook && $this->member > 0) {
-
-            if (null !== $objBillingAddress && $objBillingAddress->ptable != \MemberModel::getTable()) {
-                $objAddress           = clone $objBillingAddress;
-                $objAddress->pid      = $this->member;
-                $objAddress->tstamp   = time();
-                $objAddress->ptable   = \MemberModel::getTable();
-                $objAddress->store_id = $this->store_id;
-                $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
-            }
-
-            if (null !== $objBillingAddress
-                && null !== $objShippingAddress
-                && $objBillingAddress->id != $objShippingAddress->id
-                && $objShippingAddress->ptable != \MemberModel::getTable()
-            ) {
-                $objAddress           = clone $objShippingAddress;
-                $objAddress->pid      = $this->member;
-                $objAddress->tstamp   = time();
-                $objAddress->ptable   = \MemberModel::getTable();
-                $objAddress->store_id = $this->store_id;
-                $objAddress->save();
-
-                $this->updateDefaultAddress($objAddress);
-            }
+        if (null === $objConfig) {
+            $objConfig = Isotope::getConfig();
         }
 
-        if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
-
-            $objNew           = clone $objBillingAddress;
-            $objNew->pid      = $this->id;
-            $objNew->tstamp   = time();
-            $objNew->ptable   = static::$strTable;
-            $objNew->store_id = $this->store_id;
-            $objNew->save();
-
-            $this->setBillingAddress($objNew);
-
-            if (null !== $objShippingAddress && $objBillingAddress->id == $objShippingAddress->id) {
-                $this->setShippingAddress($objNew);
-
-                // Return here, we do not need to check shipping address
-                return;
-            }
-        }
-
-        if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
-
-            $objNew           = clone $objShippingAddress;
-            $objNew->pid      = $this->id;
-            $objNew->tstamp   = time();
-            $objNew->ptable   = static::$strTable;
-            $objNew->store_id = $this->store_id;
-            $objNew->save();
-
-            $this->setShippingAddress($objNew);
-        }
-    }
-
-    /**
-     * Mark existing addresses as not default if the new address is default
-     * @param   Address
-     */
-    protected function updateDefaultAddress(Address $objAddress)
-    {
-        $arrSet = array();
-
-        if ($objAddress->isDefaultBilling) {
-            $arrSet['isDefaultBilling'] = '';
-        }
-
-        if ($objAddress->isDefaultShipping) {
-            $arrSet['isDefaultShipping'] = '';
-        }
-
-        if (!empty($arrSet)) {
-            // @todo restore foratting when #6623 is fixed in Contao core
-            \Database::getInstance()->prepare("UPDATE " . $objAddress->getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?")
-                                    ->set($arrSet)
-                                    ->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
-        }
+        return uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
     }
 }

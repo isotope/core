@@ -32,6 +32,12 @@ interface IsotopeCheckoutStep
     public function hasError();
 
     /**
+     * Return short name of current class (e.g. for CSS)
+     * @return  string
+     */
+    public function getStepClass();
+
+    /**
      * Generate the checkout step
      * @return  string
      */

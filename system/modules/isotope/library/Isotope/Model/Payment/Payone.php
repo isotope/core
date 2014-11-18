@@ -105,28 +105,26 @@ class Payone extends Postsale implements IsotopePayment
                 Product::setActive($objItem->getProduct());
             }
 
-            $strOptions = '';
-            $arrOptions = Isotope::formatOptions($objItem->getOptions());
+            $strConfig = '';
+            $arrConfig = $objItem->getConfiguration();
 
-            Product::unsetActive();
-
-            if (!empty($arrOptions)) {
+            if (!empty($arrConfig)) {
 
                 array_walk(
-                    $arrOptions,
+                    $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . $option['value'];
+                        $option = $option['label'] . ': ' . (string) $option;
                     }
                 );
 
-                $strOptions = ' (' . implode(', ', $arrOptions) . ')';
+                $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
             $arrData['de[' . $i . ']']   = specialchars(
-                \String::restoreBasicEntities($objItem->getName() . $strOptions),
+                \String::restoreBasicEntities($objItem->getName() . $strConfig),
                 true
             );
         }
@@ -152,9 +150,10 @@ class Payone extends Postsale implements IsotopePayment
         $objTemplate->data            = $arrData;
         $objTemplate->hash            = $strHash;
         $objTemplate->billing_address = $objOrder->getBillingAddress()->row();
-        $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->headline        = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message         = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
         $objTemplate->slabel          = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }

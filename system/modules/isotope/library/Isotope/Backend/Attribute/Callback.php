@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Isotope\Model\Attribute;
+use Isotope\Model\AttributeOption;
 use Isotope\DatabaseUpdater;
 
 class Callback extends \Backend
@@ -19,8 +21,8 @@ class Callback extends \Backend
 
     /**
      * Disable the internal field name field if it is not empty.
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function disableFieldName($dc)
     {
@@ -37,26 +39,36 @@ class Callback extends \Backend
         }
     }
 
-
     /**
-     * Hide certain options if this is a variant option
-     * @param \DataContainer
+     * Show price column in dcaWizard if attribute is not a variant option
+     *
+     * @param \Widget $objWidget
+     *
+     * @return string
      */
-    public function prepareForVariantOptions($dc)
+    public function initializeTableOptions(\Widget $objWidget)
     {
-        $objAttribute = \Database::getInstance()->prepare("SELECT * FROM tl_iso_attribute WHERE id=?")->execute($dc->id);
+        /** @type Attribute $objAttribute */
 
-        if ($objAttribute->variant_option) {
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['default']);
-            unset($GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['options']['eval']['columnFields']['group']);
+        if (\Input::get('do') == 'iso_products') {
+            $objAttribute = Attribute::findByFieldName($objWidget->name);
+        } else {
+            $objAttribute = Attribute::findByPk(\Input::get('id'));
         }
-    }
 
+        if (null !== $objAttribute && !$objAttribute->isVariantOption()) {
+            $objWidget->fields = array_merge($objWidget->fields, array('price'));
+        }
+
+        return AttributeOption::getTable();
+    }
 
     /**
      * Make sure the system columns are not added as attribute
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -73,11 +85,10 @@ class Callback extends \Backend
         return $varValue;
     }
 
-
     /**
      * Alter attribtue columns in tl_iso_product table
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function updateDatabase($dc)
     {
@@ -92,7 +103,6 @@ class Callback extends \Backend
         $objUpdater = new DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_product'));
     }
-
 
     /**
      * Return an array of select-attributes
@@ -113,13 +123,12 @@ class Callback extends \Backend
         return $arrFields;
     }
 
-
     /**
      * Return a list of available rte config files
-     * @param object
+     *
      * @return array
      */
-    public function getRTE($dc)
+    public function getRTE()
     {
         $arrOptions = array();
 
@@ -132,11 +141,12 @@ class Callback extends \Backend
         return $arrOptions;
     }
 
-
     /**
      * Validate table and field of foreignKey
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      */
     public function validateForeignKey($varValue, $dc)
@@ -161,11 +171,12 @@ class Callback extends \Backend
         return $varValue;
     }
 
-
     /**
      * To enable date picker, the rgxp must be date, time or datim
-     * @param mixed
-     * @param object
+     *
+     * @param mixed  $varValue
+     * @param object $dc
+     *
      * @return mixed
      */
     public function validateDatepicker($varValue, $dc)

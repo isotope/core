@@ -910,11 +910,6 @@ window.addEvent(\'domready\', function() {
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
 
-            // @deprecated Has been removed in Contao 3.3 with TinyMCE 4
-            if (version_compare(VERSION, '3.3', '<')) {
-                $this->checkForTinyMce();
-            }
-
             // Walk through each record
             foreach ($ids as $id) {
                 $this->intId = $id;
@@ -1179,11 +1174,6 @@ window.addEvent(\'domready\', function() {
         if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
             $class = 'tl_tbox block';
             $formFields = array();
-
-            // @deprecated Has been removed in Contao 3.3 with TinyMCE 4
-            if (version_compare(VERSION, '3.3', '<')) {
-                $this->checkForTinyMce();
-            }
 
             // Save record
             if (\Input::post('FORM_SUBMIT') == $this->strTable) {
@@ -1922,8 +1912,24 @@ window.addEvent(\'domready\', function() {
 <table class="tl_listing' . ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ? ' showColumns' : '') . '">';
 
             // Automatically add the "order by" field as last column if we do not have group headers
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] && !in_array($firstOrderBy, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'])) {
-                $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][] = $firstOrderBy;
+            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
+                $blnFound = false;
+
+                // Extract the real key and compare it to $firstOrderBy
+                foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f) {
+                    if (strpos($f, ':') !== false) {
+                        list($f,) = explode(':', $f, 2);
+                    }
+
+                    if ($firstOrderBy == $f) {
+                        $blnFound = true;
+                        break;
+                    }
+                }
+
+                if (!$blnFound) {
+                    $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][] = $firstOrderBy;
+                }
             }
 
             // Generate the table header if the "show columns" option is active
@@ -1932,6 +1938,10 @@ window.addEvent(\'domready\', function() {
   <tr>';
 
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f) {
+                    if (strpos($f, ':') !== false)  {
+                        list($f,) = explode(':', $f, 2);
+                    }
+
                     $return .= '
     <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
                 }

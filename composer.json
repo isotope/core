@@ -7,24 +7,25 @@
     "authors":[
         {
             "name":"terminal42 gmbh",
-            "homepage":"http://terminal42.ch"
+            "homepage":"https://www.terminal42.ch"
         },
         {
             "name":"Isotope Workgroup",
-            "homepage":"http://isotopeecommerce.org"
+            "homepage":"https://isotopeecommerce.org"
         }
     ],
     "require":{
         "php":">=5.3.2",
-        "contao/core":">=3.2.13,<3.4",
+        "contao/core":">=3.3.4,<3.4",
         "contao-community-alliance/composer-plugin":"2.*",
-        "contao-legacy/conditionalselectmenu":"2.*",
-        "contao-legacy/namespaceclassloader":">=1.0.1,<2.0",
-        "terminal42/dcawizard":">=2.0.2,<3.0",
-        "contao-legacy/haste":"~4.2",
+        "contao-legacy/conditionalselectmenu":"~3.0",
+        "contao-legacy/namespaceclassloader":"~1.0",
+        "terminal42/dcawizard":"~2.2",
+        "contao-legacy/haste":"~4.3",
         "menatwork/contao-multicolumnwizard": "~3.2",
-        "contao-legacy/tablelookupwizard":">=2.0.1,<3.0",
-        "terminal42/notification_center":">=1.0.4,<2.0"
+        "contao-legacy/tablelookupwizard":"~2.0",
+        "terminal42/notification_center":"~1.0",
+        "terminal42/dc_multilingual":"~2.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"

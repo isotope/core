@@ -12,6 +12,8 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Interfaces\IsotopeAttributeForVariants;
+use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 
@@ -21,7 +23,6 @@ class Callback extends \Backend
 
     /**
      * Check permissions to edit table tl_iso_producttype
-     * @return void
      */
     public function checkPermission()
     {
@@ -30,24 +31,25 @@ class Callback extends \Backend
             return;
         }
 
-        $this->import('BackendUser', 'User');
+        /** @type \BackendUser $objBackendUser */
+        $objBackendUser = \BackendUser::getInstance();
 
-        if ($this->User->isAdmin) {
+        if ($objBackendUser->isAdmin) {
             return;
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_product_types) || count($this->User->iso_product_types) < 1) // Can't use empty() because its an object property (using __get)
+        if (!is_array($objBackendUser->iso_product_types) || count($objBackendUser->iso_product_types) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         } else {
-            $root = $this->User->iso_product_types;
+            $root = $objBackendUser->iso_product_types;
         }
 
         $GLOBALS['TL_DCA']['tl_iso_producttype']['list']['sorting']['root'] = $root;
 
         // Check permissions to add product types
-        if (!$this->User->hasAccess('create', 'iso_product_typep')) {
+        if (!$objBackendUser->hasAccess('create', 'iso_product_typep')) {
             $GLOBALS['TL_DCA']['tl_iso_producttype']['config']['closed'] = true;
             unset($GLOBALS['TL_DCA']['tl_iso_producttype']['list']['global_operations']['new']);
         }
@@ -59,47 +61,52 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)) {
                     $arrNew = $this->Session->get('new_records');
 
                     if (is_array($arrNew['tl_iso_producttype']) && in_array(\Input::get('id'), $arrNew['tl_iso_producttype'])) {
-                        // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser        = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
+
+                        if ($objBackendUser->inherit == 'custom' || !$objBackendUser->groups[0]) {
+                            // Add permissions on user level
+
+                            $objUser        = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")->limit(1)->execute($objBackendUser->id);
                             $arrPermissions = deserialize($objUser->tl_iso_producttypep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
                                 $arrAccess   = deserialize($objUser->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
+                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $objBackendUser->id);
                             }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
-                            $objGroup       = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
+
+                        } elseif ($objBackendUser->groups[0] > 0) {
+                            // Add permissions on group level
+
+                            $objGroup       = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")->limit(1)->execute($objBackendUser->groups[0]);
                             $arrPermissions = deserialize($objGroup->iso_product_typep);
 
                             if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
                                 $arrAccess   = deserialize($objGroup->iso_product_types);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
+                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $objBackendUser->groups[0]);
                             }
                         }
 
                         // Add new element to the user object
-                        $root[]                        = \Input::get('id');
-                        $this->User->iso_product_types = $root;
+                        $root[] = \Input::get('id');
+                        $objBackendUser->iso_product_types = $root;
                     }
                 }
-            // No break;
+                // No break;
 
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_product_typep'))) {
+                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -129,30 +136,35 @@ class Callback extends \Backend
 
     /**
      * Return the copy product type button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function copyProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        $this->import('BackendUser', 'User');
+        /** @type \BackendUser $objUser */
+        $objUser = \BackendUser::getInstance();
 
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
 
 
     /**
      * Return the delete product type button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
@@ -161,25 +173,33 @@ class Callback extends \Backend
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        /** @type \BackendUser $objUser */
+        $objUser = \BackendUser::getInstance();
+
+        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
 
     /**
      * Returns all allowed product types as array
+     *
      * @return array
      */
     public function getOptions()
     {
-        $arrTypes = \BackendUser::getInstance()->iso_product_types;
+        /** @type \BackendUser $objUser */
+        $objUser = \BackendUser::getInstance();
 
-        if (!\BackendUser::getInstance()->isAdmin && (!is_array($arrTypes) || empty($arrTypes))) {
+        $arrTypes = $objUser->iso_product_types;
+
+        if (!$objUser->isAdmin && (!is_array($arrTypes) || empty($arrTypes))) {
             $arrTypes = array(0);
         }
 
+        $t = ProductType::getTable();
         $arrProductTypes = array();
         $objProductTypes = \Database::getInstance()->execute("
-            SELECT id,name FROM " . ProductType::getTable() . "
-            WHERE tstamp>0" . (\BackendUser::getInstance()->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . "
+            SELECT id,name FROM $t
+            WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . "
             ORDER BY name
         ");
 
@@ -192,13 +212,15 @@ class Callback extends \Backend
 
     /**
      * Make sure at least one variant attribute is enabled
-     * @param   mixed
-     * @return  mixed
-     * @throws  UnderflowException
+     *
+     * @param mixed $varValue
+     *
+     * @return mixed
+     * @throws \UnderflowException
      */
     public function validateVariantAttributes($varValue)
     {
-        \Haste\Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
         $arrAttributes = deserialize($varValue);
@@ -206,9 +228,11 @@ class Callback extends \Backend
 
         if (!empty($arrAttributes) && is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
+
+                /** @type IsotopeAttributeForVariants|Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
-                if (null !== $objAttribute && $objAttribute->isVariantOption()) {
+                if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $arrVariantAttributeLabels[] = $objAttribute->name;
 
                     if ($arrAttribute['enabled']) {
