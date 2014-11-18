@@ -83,12 +83,12 @@ class Reports extends BackendOverview
                 c.id AS config_id,
                 c.name AS config_name,
                 c.currency,
-                COUNT(o.id) AS total_orders,
+                COUNT(DISTINCT o.id) AS total_orders,
                 SUM(i.tax_free_price * i.quantity) AS total_sales,
                 SUM(i.quantity) AS total_items
-            FROM " . \Isotope\Model\ProductCollection::getTable() . " o
-            LEFT JOIN " . \Isotope\Model\ProductCollectionItem::getTable() . " i ON o.id=i.pid
-            LEFT OUTER JOIN " . \Isotope\Model\Config::getTable() . " c ON o.config_id=c.id
+            FROM tl_iso_product_collection o
+            LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+            LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
             WHERE o.type='order' AND o.order_status>0 AND o.locked>=?
             " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
             GROUP BY config_id

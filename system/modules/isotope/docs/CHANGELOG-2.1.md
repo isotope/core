@@ -14,6 +14,7 @@ Version 2.1.9-stable (2014-??-??)
 - Always load language files in postsale script (#1281)
 - Correctly format shipping addresses in checkout step (#1278)
 - Shipping address was not available when billing address was automatically chosen (#1267)
+- Reports daily summary showed incorrect number of orders (#1268)
 
 
 Version 2.1.8-stable (2014-10-01)
