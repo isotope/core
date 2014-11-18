@@ -25,7 +25,7 @@ use Isotope\Model\TaxRate;
 class EuViesValidator implements IsotopeVatNoValidator
 {
     private $soap;
-    private $cache = array();
+    private static $cache = array();
 
     /**
      * WSDL VIES Url Service
@@ -108,7 +108,7 @@ class EuViesValidator implements IsotopeVatNoValidator
     {
         $key = $country . $number;
 
-        if (!isset($this->cache[$key])) {
+        if (!isset(static::$cache[$key])) {
             $vat = array(
                 'vatNumber'   => $number,
                 'countryCode' => $country,
@@ -116,9 +116,9 @@ class EuViesValidator implements IsotopeVatNoValidator
 
             try {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $this->cache[$key] = $this->soap->checkVat($vat);
+                static::$cache[$key] = $this->soap->checkVat($vat);
             } catch (\SoapFault $e) {
-                $this->cache[$key] = (object) array_merge(
+                static::$cache[$key] = (object) array_merge(
                     $vat,
                     array(
                         'requestDate' => date('Y-m-d').'+01:00',
@@ -130,7 +130,7 @@ class EuViesValidator implements IsotopeVatNoValidator
             }
         }
 
-        return $this->cache[$key]->valid;
+        return static::$cache[$key]->valid;
     }
 
     /**
