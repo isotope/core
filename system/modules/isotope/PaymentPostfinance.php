@@ -112,14 +112,44 @@ class PaymentPostfinance extends IsotopePayment
 			return;
 		}
 
-		if (!$objOrder->checkout())
-		{
-			$this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-			return;
-		}
+        // Validate payment status
+        switch ($this->getRequestData('STATUS')) {
+            case 9:  // Zahlung beantragt (Authorize & Capture)
+                $objOrder->date_paid = time();
+            // no break
+            
+            case 5:  // Genehmigt (Authorize ohne Capture)
+                $intStatus = $this->new_order_status;
+                break;
 
-		$objOrder->date_paid = time();
-		$objOrder->updateOrderStatus($this->new_order_status);
+            case 41: // Unbekannter Wartezustand
+            case 51: // Genehmigung im Wartezustand
+            case 91: // Zahlung im Wartezustand
+            case 52: // Genehmigung nicht bekannt
+            case 92: // Zahlung unsicher
+            $objConfig = Database::getInstance()->prepare('SELECT orderstatus_error FROM tl_iso_config WHERE id=?')->execute($objOrder->config_id);
+                if (!$objConfig->numRows) {
+                    $this->log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                    return;
+                }
+                $intStatus = $objConfig->orderstatus_error;
+                break;
+
+            case 0:  // Ungültig / Unvollständig
+            case 1:  // Zahlungsvorgang abgebrochen
+            case 2:  // Genehmigung verweigert
+            case 4:  // Gespeichert
+            case 93: // Bezahlung verweigert
+            default:
+                return;
+        }
+
+        if (!$objOrder->checkout()) {
+            $this->log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            return;
+        }
+
+		$objOrder->updateOrderStatus($intStatus);
 
 		$objOrder->save();
 	}
