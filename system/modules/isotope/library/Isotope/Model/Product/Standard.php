@@ -209,7 +209,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function isVariant()
     {
-        return ($this->hasVariants() && $this->pid > 0);
+        return ($this->pid > 0 && $this->hasVariants());
     }
 
     /**

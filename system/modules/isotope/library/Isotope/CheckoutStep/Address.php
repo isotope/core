@@ -128,7 +128,7 @@ abstract class Address extends CheckoutStep
 
         if (null === $objAddress || !$objModelRegistry->isRegistered($objAddress)) {
             $this->blnError = true;
-        } elseif ($blnValidate) {
+        } else {
             $this->setAddress($objAddress);
         }
 
@@ -261,13 +261,17 @@ abstract class Address extends CheckoutStep
     /**
      * Get options for all addresses in the user's address book
      *
+     * @param array $arrFields
+     *
      * @return array
      */
-    protected function getAddressOptions()
+    protected function getAddressOptions($arrFields = null)
     {
         $arrOptions = array();
 
         if (FE_USER_LOGGED_IN === true) {
+
+            /** @type AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
@@ -282,7 +286,7 @@ abstract class Address extends CheckoutStep
 
                     $arrOptions[] = array(
                         'value'   => $objAddress->id,
-                        'label'   => $objAddress->generateHtml(),
+                        'label'   => $objAddress->generate($arrFields),
                         'default' => ($objAddress->id == $objDefault->id ? '1' : ''),
                     );
                 }
