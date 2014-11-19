@@ -18,8 +18,15 @@ use Isotope\Translation;
 /**
  * TaxRate implements the tax class model.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property bool   fallback
+ * @property int    includes
+ * @property string label
+ * @property array  rates
+ * @property bool   applyRoundingIncrement
+ * @property bool   notNegative
  */
 class TaxClass extends \Model
 {
@@ -33,6 +40,7 @@ class TaxClass extends \Model
 
     /**
      * Get label
+     *
      * @return  string
      */
     public function getLabel()
@@ -65,8 +73,9 @@ class TaxClass extends \Model
 
     /**
      * Calculate a price, remove tax if included
-     * @param  float
-     * @param  array|null
+     *
+     * @param float $fltPrice
+     *
      * @return float
      */
     public function calculateNetPrice($fltPrice)
@@ -82,11 +91,13 @@ class TaxClass extends \Model
 
     /**
      * Calculate a price, add all applicable taxes
-     * @param  float
-     * @param  array|null
+     *
+     * @param float $fltPrice
+     * @param array $arrAddresses
+     *
      * @return float
      */
-    public function calculateGrossPrice($fltPrice, $arrAddresses = null)
+    public function calculateGrossPrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
@@ -116,8 +127,10 @@ class TaxClass extends \Model
 
     /**
      * Find fallback product type
-     * @param   array
-     * @return  TaxClass|null
+     *
+     * @param array $arrOptions
+     *
+     * @return TaxClass|null
      */
     public static function findFallback(array $arrOptions = array())
     {
@@ -127,7 +140,7 @@ class TaxClass extends \Model
 
     /**
      * Get all tax classes suitable for DCA options, including a "split amonst products" option
-     * @param DataContainer
+     *
      * @return array
      */
     public static function getOptionsWithSplit()

@@ -90,6 +90,7 @@ class Config extends \Model
 
     /**
      * Get billing address fields
+     *
      * @return  array
      */
     public function getBillingFields()
@@ -136,7 +137,8 @@ class Config extends \Model
 
     /**
      * Get shipping address fields
-     * @return  array
+     *
+     * @return array
      */
     public function getShippingFields()
     {
@@ -155,7 +157,8 @@ class Config extends \Model
 
     /**
      * Return raw shipping field data
-     * @return  array
+     *
+     * @return array
      */
     public function getShippingFieldsConfig()
     {
@@ -181,7 +184,8 @@ class Config extends \Model
 
     /**
      * Get enabled billing countries
-     * @return  array
+     *
+     * @return array
      */
     public function getBillingCountries()
     {
@@ -201,7 +205,8 @@ class Config extends \Model
 
     /**
      * Get enabled shipping countries
-     * @return  array
+     *
+     * @return array
      */
     public function getShippingCountries()
     {
@@ -221,6 +226,7 @@ class Config extends \Model
 
     /**
      * Get the limit to mark products as new
+     *
      * @return int
      */
     public function getNewProductLimit()
@@ -241,7 +247,10 @@ class Config extends \Model
 
     /**
      * Find config set in root page or the fallback
-     * @param  int
+     *
+     * @param int   $intRoot
+     * @param array $arrOptions
+     *
      * @return object|null
      */
     public static function findByRootPageOrFallback($intRoot, array $arrOptions = array())
@@ -263,6 +272,9 @@ class Config extends \Model
 
     /**
      * Find the fallback config
+     *
+     * @param array $arrOptions
+     *
      * @return object|null
      */
     public static function findByFallback(array $arrOptions = array())

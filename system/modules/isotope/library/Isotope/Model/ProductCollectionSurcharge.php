@@ -220,7 +220,14 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
 
     /**
-     * Generate surhcharges for a collection
+     * Generate surcharges for a collection
+     *
+     * Process:
+     * 1. Collect surcharges (e.g. shipping and billing) from Isotope core and submodules using hook
+     * 2. Split surcharges by "with or without tax"
+     *    => surcharges without tax are placed after tax surcharges and ignored in the complex compilation step
+     * 3. Run through all product collection items and calculate their tax amount
+     * 4. Run through all surcharges with tax and calculate their tax amount
      *
      * @param IsotopeProductCollection $objCollection
      *
@@ -258,6 +265,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
 
         foreach ($objCollection->getItems() as $objItem) {
+
             // This should never happen, but we can't calculate it
             if (!$objItem->hasProduct()) {
                 continue;
@@ -288,7 +296,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
                     if (!isset($arrTaxes[$objTaxClass->id . '_' . $objIncludes->id])) {
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]              = new Tax();
-                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ? : $objIncludes->getLabel();
+                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ?: $objIncludes->getLabel();
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->price       = $objIncludes->getAmount() . ($objIncludes->isPercentage() ? '%' : '');
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price = Isotope::roundPrice($fltTax, $objTaxClass->applyRoundingIncrement);
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->addToTotal  = false;
@@ -374,7 +382,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
                     if (!isset($arrTaxes[$objTaxClass->id . '_' . $objIncludes->id])) {
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]              = new Tax();
-                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ? : $objIncludes->getLabel();
+                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ?: $objIncludes->getLabel();
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->price       = $objIncludes->getAmount() . ($objIncludes->isPercentage() ? '%' : '');
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price = Isotope::roundPrice($fltTax, $objTaxClass->applyRoundingIncrement);
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->addToTotal  = false;
