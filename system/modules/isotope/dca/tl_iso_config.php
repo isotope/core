@@ -122,7 +122,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
             {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
-            {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
+            {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
+            {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
             {config_legend},templateGroup,cartMinSubtotal;
@@ -411,6 +412,26 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
             'sql'                   => "blob NULL",
         ),
+        'priceDisplay' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['priceDisplay'],
+            'exclude'               => true,
+            'default'               => 'gross',
+            'inputType'             => 'select',
+            'options'               => array('net', 'gross', 'fixed', 'legacy'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config'],
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(9) NOT NULL default ''",
+        ),
+        'currencyFormat' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array_keys($GLOBALS['ISO_NUM']),
+            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(20) NOT NULL default ''",
+        ),
         'priceRoundPrecision' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision'],
@@ -473,15 +494,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(5) NOT NULL default ''",
-        ),
-        'currencyFormat' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat'],
-            'exclude'               => true,
-            'inputType'             => 'select',
-            'options'               => array_keys($GLOBALS['ISO_NUM']),
-            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(20) NOT NULL default ''",
         ),
         'priceCalculateFactor' => array
         (

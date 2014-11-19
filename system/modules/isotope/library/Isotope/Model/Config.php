@@ -42,6 +42,8 @@ use Isotope\Translation;
  * @property array  shipping_countries
  * @property bool   limitMemberCountries
  * @property array  vatNoValidators
+ * @property string priceDisplay
+ * @property string currencyFormat
  * @property int    priceRoundPrecision
  * @property string priceRoundIncrement
  * @property float  cartMinSubtotal
@@ -49,7 +51,6 @@ use Isotope\Translation;
  * @property string currencySymbol
  * @property bool   currencySpace
  * @property string currencyPosition
- * @property string currencyFormat
  * @property string priceCalculateFactor
  * @property string priceCalculateMode
  * @property bool   currencyAutomator
@@ -223,6 +224,25 @@ class Config extends \Model
         }
 
         return $this->arrCache['shippingCountries'];
+    }
+
+    /**
+     * Get the price display configuration
+     *
+     * @return string
+     */
+    public function getPriceDisplay()
+    {
+        $format = $this->priceDisplay;
+
+        // !HOOK: calculate price
+        if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['priceDisplay'] as $callback) {
+                $format = \System::importStatic($callback[0])->$callback[1]($format, $this);
+            }
+        }
+
+        return $format;
     }
 
     /**
