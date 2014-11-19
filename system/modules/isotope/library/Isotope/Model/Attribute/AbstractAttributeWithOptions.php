@@ -235,6 +235,10 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
                 $arrField['attributes']['dynamic'] = true;
 
+                if (\Input::get('do') == 'iso_products') {
+                    $arrField['eval']['whereCondition'] = "field_name='{$this->field_name}'";
+                }
+
                 $arrData['fields'][$this->field_name] = $arrField;
             }
         }
