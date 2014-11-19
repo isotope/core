@@ -12,8 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
-use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 
@@ -26,7 +24,7 @@ use Isotope\Model\Payment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
+class Postfinance extends PSP
 {
 
     /**

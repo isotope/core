@@ -12,8 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
-use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Model\Payment;
 
 
@@ -24,7 +22,7 @@ use Isotope\Model\Payment;
  * @copyright  Isotope eCommerce Workgroup 2009-2013
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Viveum extends PSP implements IsotopePayment, IsotopePostsale
+class Viveum extends PSP
 {
 
     /**

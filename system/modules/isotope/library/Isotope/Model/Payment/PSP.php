@@ -12,6 +12,8 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -29,7 +31,7 @@ use Isotope\Model\ProductCollection\Order;
  * @property string psp_hash_out
  * @property string psp_dynamic_template
  */
-abstract class PSP extends Payment
+abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 {
 
     /**
