@@ -14,6 +14,7 @@ Version 2.2.0-stable (2014-??-??)
 - PSP payment was completed without successful postsale request (#1308)
 - Incorrect labels in product type when having multiple customer defined fields with options source "product" (#1291)
 - Options of multiple products where shown in all attributes (#1291)
+- Labels for attribute options were not visible in backend and documents (#1297)
 
 
 Version 2.2.0-rc1 (2014-10-07)
