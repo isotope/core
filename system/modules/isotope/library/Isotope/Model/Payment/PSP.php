@@ -45,7 +45,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // If the order has already been placed through postsale
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             return true;
         }
 
@@ -98,7 +98,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 
                 /** @type \Isotope\Model\Config $objConfig */
                 if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    $this->log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
                     return false;
                 }
 
