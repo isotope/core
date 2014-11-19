@@ -22,10 +22,28 @@ use Isotope\Translation;
 /**
  * Class Shipping
  *
- * Parent class for all shipping gateway modules
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string label
+ * @property string type
+ * @property string note
+ * @property array  countries
+ * @property array  subdivisions
+ * @property string postalCodes
+ * @property float  minimum_total
+ * @property float  maximum_total
+ * @property float  minimum_weight
+ * @property float  maximum_weight
+ * @property array  product_types
+ * @property string product_types_condition
+ * @property array  config_ids
+ * @property string price
+ * @property int    tax_class
+ * @property bool   guests
+ * @property bool   protected
+ * @property array  groups
+ * @property bool   enabled
  */
 abstract class Shipping extends TypeAgent
 {
