@@ -68,6 +68,10 @@ use Isotope\Translation;
  */
 class Config extends \Model
 {
+    const PRICE_DISPLAY_NET = 'net';
+    const PRICE_DISPLAY_GROSS = 'gross';
+    const PRICE_DISPLAY_FIXED = 'fixed';
+    const PRICE_DISPLAY_LEGACY = 'legacy';
 
     /**
      * Name of the current table
