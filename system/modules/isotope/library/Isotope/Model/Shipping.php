@@ -118,13 +118,15 @@ abstract class Shipping extends TypeAgent
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries)) {
-            return false;
-        }
+        if (is_array($arrCountries) && !empty($arrCountries)) {
+            if (!in_array($objAddress->country, $arrCountries)) {
+                return false;
+            }
 
-        $arrSubdivisions = deserialize($this->subdivisions);
-        if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
-            return false;
+            $arrSubdivisions = deserialize($this->subdivisions);
+            if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
+                return false;
+            }
         }
 
         // Check if address has a valid postal code
