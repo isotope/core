@@ -67,20 +67,20 @@ class TaxClass extends \Model
      */
     public function calculatePrice($fltPrice, array $arrAddresses = null)
     {
-        if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+        switch (Isotope::getConfig()->getPriceDisplay()) {
+            case Config::PRICE_DISPLAY_NET:
+                return $this->calculateNetPrice($fltPrice);
 
-            if (Isotope::getCart()->requiresShipping()) {
-                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
-            }
+            case Config::PRICE_DISPLAY_GROSS:
+                return $this->calculateGrossPrice($fltPrice, $arrAddresses);
+
+            case Config::PRICE_DISPLAY_FIXED:
+                return $fltPrice;
+
+            case Config::PRICE_DISPLAY_LEGACY:
+            default:
+                return $this->calculateLegacyPrice($fltPrice, $arrAddresses);
         }
-
-        /** @var \Isotope\Model\TaxRate $objIncludes */
-        if (($objIncludes = $this->getRelated('includes')) !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
-            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
-        }
-
-        return $fltPrice;
     }
 
 
@@ -137,6 +137,34 @@ class TaxClass extends \Model
                     }
                 }
             }
+        }
+
+        return $fltPrice;
+    }
+
+    /**
+     * Calculate a price like it was in Isotope < 2.3
+     *
+     * @param float $fltPrice
+     * @param array $arrAddresses
+     *
+     * @return float
+     */
+    public function calculateLegacyPrice($fltPrice, array $arrAddresses = null)
+    {
+        if (!is_array($arrAddresses)) {
+            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+
+            if (Isotope::getCart()->requiresShipping()) {
+                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
+            }
+        }
+
+        /** @var \Isotope\Model\TaxRate $objIncludes */
+        $objIncludes = $this->getRelated('includes');
+
+        if ($objIncludes !== null && !$objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+            $fltPrice -= $objIncludes->calculateAmountIncludedInPrice($fltPrice);
         }
 
         return $fltPrice;
