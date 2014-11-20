@@ -247,7 +247,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'],
             'exclude'               => true,
-            'inputType'             => 'dcaWizard',
+            'inputType'             => 'dcaWizardMultilingual',
             'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (
