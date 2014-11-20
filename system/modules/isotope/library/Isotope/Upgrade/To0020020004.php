@@ -39,8 +39,6 @@ class To0020020004 extends Base
                     }
                 }
             }
-            $this->createDatabaseField('product_types_condition', 'tl_iso_shipping');
-            $this->createDatabaseField('product_types_condition', 'tl_iso_payment');
         }
     }
 }
