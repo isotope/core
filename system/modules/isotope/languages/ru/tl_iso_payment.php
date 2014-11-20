@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules'][0] = 'Методы д�
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types'][0] = 'Типы товаров';
 $GLOBALS['TL_LANG']['tl_iso_payment']['config_ids'][0] = 'Конфигурации магазинов';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price'][0] = 'Цена';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Методы оплаты';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Описание';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Счет';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Цена';

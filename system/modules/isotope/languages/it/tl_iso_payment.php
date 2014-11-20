@@ -46,6 +46,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV'][1] = 'Scelga questa opzione 
 $GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types'][0] = 'Tipi Carte di Credito Ammesse';
 $GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types'][1] = 'Selezioni quele modulo pagamento carta di credito è accettato.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod'][0] = 'Metodo di pagamento';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Metodi di pagamento';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_secretkey'][0] = 'Chiave segreta';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_clearingtype'][0] = 'Tipo liquidazione';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_clearingtype'][1] = 'Per cortesia scelga un tipo di liquidazione.';

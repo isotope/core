@@ -67,6 +67,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword'][0] = 'Contraseña
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword'][1] = 'Introducir su SSL-Password.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_merchantref'][0] = 'Referencia';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_merchantref'][1] = 'Una referencia que se mostrará en la página de detalles del vendedor en lugar del ID de la cesta.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Formas de pago';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][0] = 'ExperCash Popup-ID';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][1] = 'Introducir el Popup ID de tu portal ExperCash.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_profile'][0] = 'Perfil ExperCash';

@@ -55,6 +55,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod'][0] = 'Betaalmet
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['creditcard'] = 'Creditcard';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['maestro'] = 'Debitcard';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword'][0] = 'Wachtwoord';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Betaalmethoden';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Omschrijving';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Ledengroepen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Beperk deze betaalmethode tot bepaalde ledengroepen.';
