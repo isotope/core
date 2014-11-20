@@ -241,7 +241,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * 3. Run through all product collection items and calculate their tax amount
      * 4. Run through all surcharges with tax and calculate their tax amount
      *
-     * @param IsotopeProductCollection $objCollection
+     * @param IsotopeProductCollection|\Isotope\Model\ProductCollection\Order $objCollection
      *
      * @return array
      */
@@ -271,15 +271,105 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
         }
 
-        /** @var \Isotope\Model\ProductCollection\Order $objCollection */
-        /** @var Tax[] $arrTaxes */
         $arrTaxes     = array();
         $arrAddresses = array('billing' => $objCollection->getBillingAddress());
 
-        if ($objCollection->requiresShipping()) {
-            $arrAddresses['shipping'] = $objCollection->getShippingAddress();
-        }
+        static::addTaxesForItems($arrTaxes, $objCollection, $arrPreTax, $arrAddresses);
+        static::addTaxesForSurcharges($arrTaxes, $arrPreTax, $arrAddresses);
 
+        return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
+    }
+
+
+    /**
+     * Create a payment surcharge
+     *
+     * @param IsotopePayment           $objPayment
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Payment
+     */
+    public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
+    {
+        return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
+    }
+
+    /**
+     * Create a shipping surcharge
+     *
+     * @param IsotopeShipping          $objShipping
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping
+     */
+    public static function createForShippingInCollection(IsotopeShipping $objShipping, IsotopeProductCollection $objCollection)
+    {
+        return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Shipping', $GLOBALS['TL_LANG']['MSC']['shippingLabel'], $objShipping, $objCollection);
+    }
+
+
+    /**
+     * Build a product collection surcharge for given class type
+     *
+     * @param string                         $strClass
+     * @param string                         $strLabel
+     * @param IsotopePayment|IsotopeShipping $objSource
+     * @param IsotopeProductCollection       $objCollection
+     *
+     * @return ProductCollectionSurcharge
+     */
+    protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
+    {
+        $intTaxClass = $objSource->tax_class;
+
+        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
+        $objSurcharge = new $strClass();
+        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
+        $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
+        $objSurcharge->total_price = $objSource->getPrice();
+        $objSurcharge->tax_free_total_price = $objSource->total_price;
+        $objSurcharge->tax_class = $intTaxClass;
+        $objSurcharge->before_tax = ($intTaxClass ? true : false);
+        $objSurcharge->addToTotal = true;
+
+        if ($intTaxClass == -1) {
+            $objSurcharge->applySplittedTax($objCollection, $objSource);
+        } elseif ($objSurcharge->tax_class > 0) {
+
+            /** @var \Isotope\Model\TaxClass $objTaxClass */
+            if (($objTaxClass = TaxClass::findByPk($objSurcharge->tax_class)) !== null) {
+
+                /** @var \Isotope\Model\TaxRate $objIncludes */
+                if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
+
+                    $fltPrice = $objSurcharge->total_price;
+                    $arrAddresses = array('billing' => $objCollection->getBillingAddress());
+
+                    if ($objCollection->requiresShipping()) {
+                        $arrAddresses['shipping'] = $objCollection->getShippingAddress();
+                    }
+
+                    if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+                        $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+                        $objSurcharge->tax_free_total_price = $fltPrice - $fltTax;
+                    }
+                }
+            }
+        }
+        return $objSurcharge;
+
+    }
+
+    /**
+     * Create or add taxes for each collection item
+     *
+     * @param Tax[]                        $arrTaxes
+     * @param IsotopeProductCollection     $objCollection
+     * @param ProductCollectionSurcharge[] $arrSurcharges
+     * @param Address[]                    $arrAddresses
+     */
+    private function addTaxesForItems(array &$arrTaxes, IsotopeProductCollection $objCollection, array $arrSurcharges, array $arrAddresses)
+    {
         foreach ($objCollection->getItems() as $objItem) {
 
             // This should never happen, but we can't calculate it
@@ -301,7 +391,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $fltPrice  = $objItem->getTotalPrice();
 
             /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
-            foreach ($arrPreTax as $objSurcharge) {
+            foreach ($arrSurcharges as $objSurcharge) {
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
@@ -355,7 +445,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $objCollection->updateItem($objItem, array('tax_id' => $strTaxId));
             }
 
-            foreach ($arrPreTax as $objSurcharge) {
+            foreach ($arrSurcharges as $objSurcharge) {
                 if ($objSurcharge->getAmountForCollectionItem($objItem) > 0) {
                     foreach ($arrTaxIds as $taxId) {
                         $objSurcharge->addTaxNumber($taxId);
@@ -363,9 +453,18 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
         }
+    }
 
-        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
-        foreach ($arrPreTax as $objSurcharge) {
+    /**
+     * Create or add taxes for pre-tax collection surcharges
+     *
+     * @param Tax[]                        $arrTaxes
+     * @param ProductCollectionSurcharge[] $arrSurcharges
+     * @param Address[]                    $arrAddresses
+     */
+    private static function addTaxesForSurcharges(array &$arrTaxes, array $arrSurcharges, array $arrAddresses)
+    {
+        foreach ($arrSurcharges as $objSurcharge) {
 
             /** @var \Isotope\Model\TaxClass $objTaxClass */
             $objTaxClass = TaxClass::findByPk($objSurcharge->tax_class);
@@ -425,22 +524,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
         }
-
-        return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
-    }
-
-
-    /**
-     * Create a payment surcharge
-     *
-     * @param IsotopePayment           $objPayment
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return Payment
-     */
-    public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
-    {
-        return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
     }
 
     /**
@@ -524,7 +607,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      *
      * @return int
      */
-    private static function addTax(&$arrTaxes, $id, $label, $price, $isPercentage, $total, $applyRoundingIncrement, $addToTotal, $notNegative)
+    private static function addTax(array &$arrTaxes, $id, $label, $price, $isPercentage, $total, $applyRoundingIncrement, $addToTotal, $notNegative)
     {
         if (!isset($arrTaxes[$id])) {
             $arrTaxes[$id]              = new Tax();
