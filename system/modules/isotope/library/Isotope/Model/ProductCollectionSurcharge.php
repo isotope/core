@@ -23,8 +23,23 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  * Class Surcharge
  *
  * Provide methods to handle Isotope product collection surcharges.
+ *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $sorting
+ * @property int    $tstamp
+ * @property string $type
+ * @property string $label
+ * @property string $price
+ * @property float  $total_price
+ * @property float  $tax_free_total_price
+ * @property int    $tax_id
+ * @property bool   $before_tax
+ * @property bool   $addToTotal
+ * @property string $products
  */
 abstract class ProductCollectionSurcharge extends TypeAgent
 {
