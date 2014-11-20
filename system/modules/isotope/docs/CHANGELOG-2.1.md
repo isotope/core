@@ -9,6 +9,7 @@ Version 2.1.10-stable (2014-??-??)
 
 ### Fixed
 - Postsale requests did not work when using Composer (#1136)
+- Default template setting for product collection was missing
 
 
 Version 2.1.9-stable (2014-11-18)
