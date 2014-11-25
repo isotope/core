@@ -6,6 +6,7 @@ Version 2.1.10-stable (2014-??-??)
 
 ### Improved
 - Disabled chosen menu for store country selection (did not work with subdivision selection)
+- Payment method correctly return an invalid order if not found instead of throwing exceptions
 
 ### Fixed
 - Postsale requests did not work when using Composer (#1136)
