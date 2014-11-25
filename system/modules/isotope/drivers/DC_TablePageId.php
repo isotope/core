@@ -245,7 +245,7 @@ class DC_TablePageId extends \DC_Table
                 if ($insertInto)
                 {
                     $newpage_id = $page_id;
-                    $objSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM " . $this->strTable . " WHERE page_id=?")
+                    $objSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM {$this->strTable} WHERE page_id=?")
                                                  ->executeUncached($page_id);
 
                     // Select sorting value of the first record
@@ -256,7 +256,7 @@ class DC_TablePageId extends \DC_Table
                         // Resort if the new sorting value is not an integer or smaller than 1
                         if (($curSorting % 2) != 0 || $curSorting < 1)
                         {
-                            $objNewSorting = $this->Database->prepare("SELECT id, sorting FROM " . $this->strTable . " WHERE page_id=? ORDER BY sorting" )
+                            $objNewSorting = $this->Database->prepare("SELECT id, sorting FROM {$this->strTable} WHERE page_id=? ORDER BY sorting" )
                                                             ->executeUncached($page_id);
 
                             $count = 2;
@@ -264,7 +264,7 @@ class DC_TablePageId extends \DC_Table
 
                             while ($objNewSorting->next())
                             {
-                                $this->Database->prepare("UPDATE " . $this->strTable . " SET sorting=? WHERE id=?")
+                                $this->Database->prepare("UPDATE {$this->strTable} SET sorting=? WHERE id=?")
                                                ->limit(1)
                                                ->execute(($count++*128), $objNewSorting->id);
                             }
@@ -281,7 +281,7 @@ class DC_TablePageId extends \DC_Table
                 // Else insert the current record after the parent record
                 elseif ($page_id > 0)
                 {
-                    $objSorting = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                    $objSorting = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
                                                  ->limit(1)
                                                  ->executeUncached($page_id);
 
@@ -294,7 +294,7 @@ class DC_TablePageId extends \DC_Table
                         // Do not proceed without a parent ID
                         if (is_numeric($newpage_id))
                         {
-                            $objNextSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM " . $this->strTable . " WHERE page_id=? AND sorting>?")
+                            $objNextSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM {$this->strTable} WHERE page_id=? AND sorting>?")
                                                                ->executeUncached($newpage_id, $curSorting);
 
                             // Select sorting value of the next record
@@ -307,12 +307,12 @@ class DC_TablePageId extends \DC_Table
                                 {
                                     $count = 1;
 
-                                    $objNewSorting = $this->Database->prepare("SELECT id, sorting FROM " . $this->strTable . " WHERE page_id=? ORDER BY sorting")
+                                    $objNewSorting = $this->Database->prepare("SELECT id, sorting FROM {$this->strTable} WHERE page_id=? ORDER BY sorting")
                                                                     ->executeUncached($newpage_id);
 
                                     while ($objNewSorting->next())
                                     {
-                                        $this->Database->prepare("UPDATE " . $this->strTable . " SET sorting=? WHERE id=?")
+                                        $this->Database->prepare("UPDATE {$this->strTable} SET sorting=? WHERE id=?")
                                                        ->execute(($count++*128), $objNewSorting->id);
 
                                         if ($objNewSorting->sorting == $curSorting)
@@ -366,7 +366,7 @@ class DC_TablePageId extends \DC_Table
                 // Else insert the current record after the parent record
                 elseif ($page_id > 0)
                 {
-                    $objParentRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                    $objParentRecord = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
                                                       ->limit(1)
                                                       ->executeUncached($page_id);
 
@@ -384,7 +384,7 @@ class DC_TablePageId extends \DC_Table
             // ID is set (insert after the current record)
             if ($this->intId)
             {
-                $objCurrentRecord = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objCurrentRecord = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
                                                    ->limit(1)
                                                     ->executeUncached($this->intId);
 
@@ -393,7 +393,7 @@ class DC_TablePageId extends \DC_Table
                 {
                     $curSorting = $objCurrentRecord->sorting;
 
-                    $objNextSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM " . $this->strTable . " WHERE sorting>?")
+                    $objNextSorting = $this->Database->prepare("SELECT MIN(sorting) AS sorting FROM {$this->strTable} WHERE sorting>?")
                                                      ->executeUncached($curSorting);
 
                     // Select sorting value of the next record
@@ -406,7 +406,7 @@ class DC_TablePageId extends \DC_Table
                         {
                             $count = 1;
 
-                            $objNewSorting = $this->Database->executeUncached("SELECT id, sorting FROM " . $this->strTable . " ORDER BY sorting");
+                            $objNewSorting = $this->Database->executeUncached("SELECT id, sorting FROM {$this->strTable} ORDER BY sorting");
 
                             while ($objNewSorting->next())
                             {
@@ -434,7 +434,7 @@ class DC_TablePageId extends \DC_Table
                 // ID is not set (insert at the end)
                 else
                 {
-                    $objNextSorting = $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM " . $this->strTable);
+                    $objNextSorting = $this->Database->executeUncached("SELECT MAX(sorting) AS sorting FROM {$this->strTable}");
 
                     if ($objNextSorting->numRows)
                     {
@@ -454,7 +454,7 @@ class DC_TablePageId extends \DC_Table
         // Proceed only if all mandatory variables are set
         if ($this->intId && \Input::get('sid') && (!$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['root'] || !in_array($this->intId, $this->root)))
         {
-            $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=? OR id=?")
+            $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=? OR id=?")
                                      ->limit(2)
                                      ->execute($this->intId, \Input::get('sid'));
 
@@ -503,7 +503,7 @@ class DC_TablePageId extends \DC_Table
         // Delete all new but incomplete records (tstamp=0)
         if (is_array($new_records[$this->strTable]) && !empty($new_records[$this->strTable]))
         {
-            $objStmt = $this->Database->execute("DELETE FROM " . $this->strTable . " WHERE id IN(" . implode(',', array_map('intval', $new_records[$this->strTable])) . ") AND tstamp=0");
+            $objStmt = $this->Database->execute("DELETE FROM {$this->strTable} WHERE id IN(" . implode(',', array_map('intval', $new_records[$this->strTable])) . ") AND tstamp=0");
 
             if ($objStmt->affectedRows > 0)
             {
@@ -514,7 +514,7 @@ class DC_TablePageId extends \DC_Table
         // Delete all records of the current table that are not related to the parent table
         if (strlen($ptable))
         {
-            $objStmt = $this->Database->execute("DELETE FROM " . $this->strTable . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $this->strTable . ".page_id = " . $ptable . ".id)");
+            $objStmt = $this->Database->execute("DELETE FROM " . $this->strTable . " WHERE NOT EXISTS (SELECT * FROM $ptable WHERE {$this->strTable}.page_id = " . $ptable . ".id)");
 
             if ($objStmt->affectedRows > 0)
             {
@@ -529,7 +529,7 @@ class DC_TablePageId extends \DC_Table
             {
                 if (strlen($v))
                 {
-                    $objStmt = $this->Database->execute("DELETE FROM " . $v . " WHERE NOT EXISTS (SELECT * FROM " . $this->strTable . " WHERE " . $v . ".page_id = " . $this->strTable . ".id)");
+                    $objStmt = $this->Database->execute("DELETE FROM $v WHERE NOT EXISTS (SELECT * FROM {$this->strTable} WHERE " . $v . ".page_id = " . $this->strTable . ".id)");
 
                     if ($objStmt->affectedRows > 0)
                     {
@@ -582,7 +582,7 @@ class DC_TablePageId extends \DC_Table
 </div>' . $this->getMessages(true);
 
         // Get all details of the parent record
-        $objParent = $this->Database->prepare("SELECT * FROM " . $this->ptable . " WHERE id=?")
+        $objParent = $this->Database->prepare("SELECT * FROM {$this->ptable} WHERE id=?")
                                     ->limit(1)
                                     ->execute(CURRENT_ID);
 
@@ -646,7 +646,7 @@ class DC_TablePageId extends \DC_Table
                 }
                 elseif ($v == 'tstamp')
                 {
-                    $objMaxTstamp = $this->Database->prepare("SELECT MAX(tstamp) AS tstamp FROM " . $this->strTable . " WHERE page_id=?")
+                    $objMaxTstamp = $this->Database->prepare("SELECT MAX(tstamp) AS tstamp FROM {$this->strTable} WHERE page_id=?")
                                                    ->execute($objParent->id);
 
                     if (!$objMaxTstamp->tstamp)
@@ -717,7 +717,7 @@ class DC_TablePageId extends \DC_Table
             $firstOrderBy = array();
 
             // Add all records of the current table
-            $query = "SELECT * FROM " . $this->strTable;
+            $query = "SELECT * FROM {$this->strTable}";
 
             if (is_array($this->orderBy) && strlen($this->orderBy[0]))
             {
@@ -949,7 +949,7 @@ Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
             }
         }
 
-        $query = "SELECT * FROM " . $this->strTable;
+        $query = "SELECT * FROM {$this->strTable}";
 
         if (count($this->procedure))
         {
