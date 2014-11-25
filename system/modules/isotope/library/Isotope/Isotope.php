@@ -12,9 +12,13 @@
 
 namespace Isotope;
 
+use Haste\Data\Plain;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
+use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -36,7 +40,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.1.9';
+    const VERSION = '2.2.0';
 
     /**
      * True if the system has been initialized
@@ -70,7 +74,7 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            Haste::getInstance()->call('loadDataContainer', 'tl_iso_product');
+            \Controller::loadDataContainer('tl_iso_product');
             \System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
@@ -90,12 +94,11 @@ class Isotope extends \Controller
                     }
 
                     $strQuery = http_build_query($_GET);
-                    \System::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
+                    \Controller::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
                 }
             }
         }
     }
-
 
     /**
      * Get the currently active Isotope cart
@@ -114,7 +117,6 @@ class Isotope extends \Controller
         return static::$objCart;
     }
 
-
     /**
      * Set the currently active Isotope cart
      *
@@ -124,7 +126,6 @@ class Isotope extends \Controller
     {
         static::$objCart = $objCart;
     }
-
 
     /**
      * Get the currently active Isotope configuration
@@ -157,7 +158,6 @@ class Isotope extends \Controller
         return static::$objConfig;
     }
 
-
     /**
      * Set the currently active Isotope configuration
      *
@@ -187,7 +187,6 @@ class Isotope extends \Controller
         return static::$objRequestCache;
     }
 
-
     /**
      * Calculate price trough hook and foreign prices
      *
@@ -196,10 +195,11 @@ class Isotope extends \Controller
      * @param string $strField
      * @param int    $intTaxClass
      * @param array  $arrAddresses
+     * @param array  $arrOptions
      *
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrAddresses = null)
+    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrAddresses = null, array $arrOptions = array())
     {
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
@@ -209,7 +209,7 @@ class Isotope extends \Controller
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $fltPrice    = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass);
+                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
             }
         }
 
@@ -229,14 +229,13 @@ class Isotope extends \Controller
 
         // Possibly add/subtract tax
         /** @var TaxClass $objTaxClass */
-        if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
+        if ($intTaxClass > 0 && ($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
         return static::roundPrice($fltPrice);
     }
-
-
+    
     /**
      * Rounds a price according to store config settings
      *
@@ -255,7 +254,6 @@ class Isotope extends \Controller
 
         return round($fltValue, $objConfig->priceRoundPrecision);
     }
-
 
     /**
      * Format given price according to store config settings
@@ -279,7 +277,6 @@ class Isotope extends \Controller
 
         return number_format($fltPrice, $arrFormat[0], $arrFormat[1], $arrFormat[2]);
     }
-
 
     /**
      * Format given price according to store config settings, including currency representation
@@ -314,7 +311,6 @@ class Isotope extends \Controller
         return $strCurrency . $strPrice;
     }
 
-
     /**
      * Format the number of items and return the items string
      *
@@ -337,7 +333,6 @@ class Isotope extends \Controller
         }
     }
 
-
     /**
      * Callback for isoButton Hook
      *
@@ -352,7 +347,6 @@ class Isotope extends \Controller
 
         return $arrButtons;
     }
-
 
     /**
      * Validate a custom regular expression
@@ -375,7 +369,7 @@ class Isotope extends \Controller
                 break;
 
             case 'discount':
-                if (!preg_match('/^[-+]\d+(\.\d{1,2})?%?$/', $varValue)) {
+                if (!preg_match('/^[-+]\d+(\.\d+)?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['discount'], $objWidget->label));
                 }
 
@@ -383,7 +377,7 @@ class Isotope extends \Controller
                 break;
 
             case 'surcharge':
-                if (!preg_match('/^-?\d+(\.\d{1,2})?%?$/', $varValue)) {
+                if (!preg_match('/^-?\d+(\.\d+)?%?$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['surcharge'], $objWidget->label));
                 }
 
@@ -393,7 +387,6 @@ class Isotope extends \Controller
 
         return false;
     }
-
 
     /**
      * Format options label and value
@@ -420,5 +413,84 @@ class Isotope extends \Controller
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Format product configuration using \Haste\Data
+     *
+     * @param array          $arrConfig
+     * @param IsotopeProduct $objProduct
+     *
+     * @return array
+     */
+    public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
+    {
+        Product::setActive($objProduct);
+
+        $strTable = $objProduct->getTable();
+
+        foreach ($arrConfig as $k => $v) {
+
+            /** @type \Isotope\Model\Attribute $objAttribute */
+            if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
+                && $objAttribute instanceof IsotopeAttributeWithOptions
+            ) {
+
+                /** @type \Widget $strClass */
+                $strClass = $objAttribute->getFrontendWidget();
+                $arrField = $strClass::getAttributesFromDca(
+                    $GLOBALS['TL_DCA'][$strTable]['fields'][$k],
+                    $k,
+                    $v,
+                    $k,
+                    $strTable,
+                    $objProduct
+                );
+
+                $arrOptions = array();
+
+                if (!empty($arrField['options']) && is_array($arrField['options'])) {
+
+                    if (!is_array($v)) {
+                        $v = array($v);
+                    }
+
+                    $arrOptions = array_filter(
+                        $arrField['options'],
+                        function(&$option) use (&$v) {
+                            if (($pos = array_search($option['value'], $v)) !== false) {
+                                $option = $option['label'];
+                                unset($v[$pos]);
+
+                                return true;
+                            }
+
+                            return false;
+                        }
+                    );
+
+                    if (!empty($v)) {
+                        $arrOptions = array_merge($arrOptions, $v);
+                    }
+                }
+
+                $formatted = implode(', ', $arrOptions);
+
+            } else {
+                $formatted = Format::dcaValue($strTable, $k, $v);
+            }
+
+            $arrConfig[$k] = new Plain(
+                $v,
+                Format::dcaLabel($strTable, $k),
+                array (
+                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array($formatted))
+                )
+            );
+        }
+
+        Product::unsetActive();
+
+        return $arrConfig;
     }
 }

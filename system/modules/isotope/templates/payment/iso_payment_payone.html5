@@ -16,6 +16,7 @@
 <input type="hidden" name="telephonenumber" value="<?php echo $this->billing_address['phone']; ?>">
 <input type="hidden" name="language" value="<?php echo strtoupper($GLOBALS['TL_LANGUAGE']); ?>">
 <noscript>
+<p><?php echo $this->noscript; ?></p>
 <input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
 </form>

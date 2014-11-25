@@ -18,8 +18,13 @@ use Isotope\Interfaces\IsotopeProductCollection;
 /**
  * ProductCollectionDownload model represents a download in a collection (usually an order)
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @method \Isotope\Model\Download getRelated()
+ *
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property int    $download_id
+ * @property string $downloads_remaining
+ * @property string $expires
  */
 class ProductCollectionDownload extends \Model
 {
@@ -33,7 +38,8 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Check if downloads are remaining and is not expired
-     * @return  bool
+     *
+     * @return bool
      */
     public function canDownload()
     {
@@ -42,7 +48,8 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Send a file to browser and increase download counter
-     * @param   string
+     *
+     * @param string $strFile
      */
     protected function download($strFile)
     {
@@ -55,7 +62,10 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Generate array representation for download
-     * @return  array
+     *
+     * @param bool $blnOrderPaid
+     *
+     * @return array
      */
     public function getForTemplate($blnOrderPaid = false)
     {
@@ -124,9 +134,11 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Find all downloads that belong to items of a given collection
-     * @param   IsotopeProductCollection
-     * @param   array
-     * @return  \Collection|null
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
@@ -144,8 +156,10 @@ class ProductCollectionDownload extends \Model
 
     /**
      * Create ProductCollectionDownload for all product downloads in the given collection
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return static[]
      */
     public static function createForProductsInCollection(IsotopeProductCollection $objCollection)
     {
@@ -158,18 +172,20 @@ class ProductCollectionDownload extends \Model
                 $objDownloads = Download::findBy(array("($t.pid=? OR $t.pid=?)", "$t.published='1'"), array($objItem->getProduct()->id, $objItem->getProduct()->pid));
 
                 if (null !== $objDownloads) {
-                    while ($objDownloads->next()) {
 
-                        $objItemDownload              = new ProductCollectionDownload();
+                    /** @var Download $objDownload */
+                    foreach ($objDownloads as $objDownload) {
+
+                        $objItemDownload              = new static();
                         $objItemDownload->pid         = $objItem->id;
                         $objItemDownload->tstamp      = $time;
-                        $objItemDownload->download_id = $objDownloads->id;
+                        $objItemDownload->download_id = $objDownload->id;
 
-                        if ($objDownloads->downloads_allowed > 0) {
-                            $objItemDownload->downloads_remaining = ($objDownloads->downloads_allowed * $objItem->quantity);
+                        if ($objDownload->downloads_allowed > 0) {
+                            $objItemDownload->downloads_remaining = ($objDownload->downloads_allowed * $objItem->quantity);
                         }
 
-                        $expires = $objDownloads->current()->getExpirationTimestamp($time);
+                        $expires = $objDownload->getExpirationTimestamp($time);
                         if (null !== $expires) {
                             $objItemDownload->expires = $expires;
                         }

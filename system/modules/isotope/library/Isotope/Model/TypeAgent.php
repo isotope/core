@@ -56,11 +56,11 @@ abstract class TypeAgent extends \Model
         }
     }
 
-
     /**
      * Register a model type
-     * @param   string
-     * @param   string
+     *
+     * @param   string $strName
+     * @param   string $strClass
      */
     public static function registerModelType($strName, $strClass)
     {
@@ -73,7 +73,8 @@ abstract class TypeAgent extends \Model
 
     /**
      * Unregister a model type
-     * @param   string
+     *
+     * @param   string $strName
      */
     public static function unregisterModelType($strName)
     {
@@ -95,7 +96,9 @@ abstract class TypeAgent extends \Model
 
     /**
      * Get class name for given model type
-     * @param   string
+     *
+     * @param   string $strName
+     *
      * @return  string
      */
     public static function getClassForModelType($strName)
@@ -105,6 +108,7 @@ abstract class TypeAgent extends \Model
 
     /**
      * Return options list of model types
+     *
      * @return  array
      */
     public static function getModelTypeOptions()
@@ -118,12 +122,14 @@ abstract class TypeAgent extends \Model
         return $arrOptions;
     }
 
-
     /**
      * Find sibling records by a column value
+     *
      * @param   string
      * @param   \Model
      * @param   array
+     *
+     * @return \Model|\Model\Collection|null
      */
     public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
     {
@@ -151,6 +157,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Return a model or collection based on the database result type
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model|\Model\Collection|null
      */
     protected static function find(array $arrOptions)
     {
@@ -183,15 +193,6 @@ abstract class TypeAgent extends \Model
             } elseif (isset($arrFields['type'])) {
                 $arrOptions['having'] = (empty($arrOptions['having']) ? '' : ' AND ') . 'type=?';
                 $arrOptions['value'][]  = $strType;
-            }
-
-            // @deprecated remove when we drop support for Contao 3.2
-            if (version_compare(VERSION, '3.3', '<')) {
-                if ($arrOptions['group'] !== null) {
-                    $arrOptions['group'] .= ' HAVING ' . $arrOptions['having'];
-                } else {
-                    $arrOptions['column'][] = '1=1 HAVING ' . $arrOptions['having'];
-                }
             }
         }
 
@@ -235,7 +236,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build model based on database result
-     * @param   Database_Result
+     *
+     * @param \Database\Result $objResult
+     *
+     * @return \Model
      */
     public static function createModelFromDbResult(\Database\Result $objResult)
     {
@@ -260,6 +264,11 @@ abstract class TypeAgent extends \Model
         // Try to use the current class as fallback
         if ($strClass == '') {
             $strClass = get_called_class();
+
+            $objReflection = new \ReflectionClass($strClass);
+            if ($objReflection ->isAbstract()) {
+                return null;
+            }
         }
 
         $objModel = new $strClass($objResult);
@@ -273,13 +282,15 @@ abstract class TypeAgent extends \Model
 
     /**
      * Create array of models and return a collection of them
-     * @param   Database\Result
-     * @param   string
+     *
+     * @param   \Database\Result $objResult
+     * @param   string           $strTable
+     *
      * @return  \Model\Collection
      */
     protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
-        // @deprecated only for backward compatibility with Contao 3.2/Isotope < 2.1.2
+        // @deprecated Remove in Isotope 3.0 (only for backward compatibility Isotope < 2.1.2)
         if (null === $strTable) {
             $strTable = static::$strTable;
         }
@@ -301,7 +312,10 @@ abstract class TypeAgent extends \Model
 
     /**
      * Build model based on database result
-     * @param   \Database\Result
+     *
+     * @param \Database\Result $objResult
+     *
+     * @return \Model
      * @deprecated  use createModelFromDbResult in Contao 3.3
      */
     public static function buildModelType(\Database\Result $objResult = null)
@@ -326,23 +340,10 @@ abstract class TypeAgent extends \Model
     }
 
     /**
-     * Build a query based on the given options
-     * @param array $arrOptions The options array
-     * @return string The query string
-     * @deprecated this is only for BC with Contao 3.2
-     */
-    protected static function buildFindQuery(array $arrOptions)
-    {
-        if (version_compare(VERSION, '3.3', '<')) {
-            return \Model\QueryBuilder::find($arrOptions);
-        }
-
-        return parent::buildFindQuery($arrOptions);
-    }
-
-    /**
      * Allow to override the query builder
+     *
      * @param       array
+     *
      * @return      string
      * @deprecated  use buildFindQuery introduced in Contao 3.3
      */

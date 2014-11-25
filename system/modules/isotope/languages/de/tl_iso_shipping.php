@@ -44,6 +44,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][0] = 'Höchstgewicht';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][1] = 'Geben Sie ein Maximalgewicht für die Verfügbarkeit dieser Versandart ein.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Produkttypen';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Sie können diese Versandart auf bestimmte Produkttypen einschränken. Wenn der Warenkorb einen Produkttyp enthält, den Sie hier nicht ausgewählt haben, steht das Versandmodul nicht zur Verfügung.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Konfigurationen';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Versandarten';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][1] = 'Wählen Sie die Versandarten aus, die gruppiert werden sollen.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'][0] = 'Gruppen-Berechnung';

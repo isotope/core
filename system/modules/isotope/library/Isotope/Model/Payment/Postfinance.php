@@ -12,8 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
-use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 
@@ -26,7 +24,7 @@ use Isotope\Model\Payment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
+class Postfinance extends PSP
 {
 
     /**
@@ -145,6 +143,7 @@ class Postfinance extends PSP implements IsotopePayment, IsotopePostsale
         $i = 1;
 
         // Need to take the items from the cart as they're not transferred to the order here yet
+        // @todo this is no longer true, and the price should probably be taken from the collection item ($objItem->getPrice())
         foreach (Isotope::getCart()->getItems() as $objItem) {
 
             $objPrice = $objItem->getProduct()->getPrice();

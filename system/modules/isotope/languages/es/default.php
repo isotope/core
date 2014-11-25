@@ -95,7 +95,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z a A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'anterior a posterior';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'posterior a anterior';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Procesando el pago';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Será redirigido a la página web de pasarela de pago. Si no es redirigido automáticamente, por favor haga clic en el botón "Pagar ahora".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Pagar ahora';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] = 'Haz clic aquí para ver este transacciones PayPal en línea';
 $GLOBALS['TL_LANG']['MSC']['productSingle'] = '1 Producto';

@@ -12,6 +12,8 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -21,22 +23,29 @@ use Isotope\Model\ProductCollection\Order;
  * Class PSP
  *
  * Handle PSP payments
- * @copyright  Isotope eCommerce Workgroup 2009-2013
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ *
+ * @property string psp_pspid
+ * @property string psp_http_method
+ * @property string psp_hash_method
+ * @property string psp_hash_in
+ * @property string psp_hash_out
+ * @property string psp_dynamic_template
  */
-abstract class PSP extends Payment
+abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 {
 
     /**
      * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  mixed
+     *
+     * @param IsotopeProductCollection|Order $objOrder  The order being places
+     * @param \Module                        $objModule The checkout module instance
+     *
+     * @return bool
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         // If the order has already been placed through postsale
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             return true;
         }
 
@@ -48,11 +57,16 @@ abstract class PSP extends Payment
 
 
     /**
-     * Process post-sale requestion from the PSP payment server.
-     * @param   IsotopeProductCollection
+     * Process post-sale request from the PSP payment server.
+     *
+     * @param IsotopeProductCollection $objOrder
+     *
+     * @return bool
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        /** @type Order $objOrder */
+
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
             return false;
@@ -67,6 +81,7 @@ abstract class PSP extends Payment
         // Validate payment status
         switch ($this->getRequestData('STATUS')) {
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 9:  // Zahlung beantragt (Authorize & Capture)
                 $objOrder->date_paid = time();
                 // no break
@@ -80,8 +95,10 @@ abstract class PSP extends Payment
             case 91: // Zahlung im Wartezustand
             case 52: // Genehmigung nicht bekannt
             case 92: // Zahlung unsicher
+
+                /** @type \Isotope\Model\Config $objConfig */
                 if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    $this->log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
                     return false;
                 }
 
@@ -124,9 +141,11 @@ abstract class PSP extends Payment
 
     /**
      * Return the payment form
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     *
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
+     *
+     * @return string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -151,18 +170,21 @@ abstract class PSP extends Payment
         $objTemplate->setData($this->arrData);
 
         $objTemplate->params   = $arrParams;
-        $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->slabel   = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
+        $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel   = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }
 
     /**
      * Prepare PSP params
-     * @param   Order
-     * @param   Module
-     * @return  array
+     *
+     * @param Order  $objOrder
+     * @param \Isotope\Module\Checkout $objModule
+     *
+     * @return array
      */
     protected function preparePSPParams($objOrder, $objModule)
     {
@@ -193,7 +215,9 @@ abstract class PSP extends Payment
 
     /**
      * Gets the request data based on the chosen HTTP method
-     * @param   string Key
+     *
+     * @param string $strKey
+     *
      * @return  mixed
      */
     private function getRequestData($strKey)
@@ -208,7 +232,8 @@ abstract class PSP extends Payment
 
     /**
      * Validate SHA-OUT signature
-     * @return  boolean
+     *
+     * @return bool
      */
     private function validateSHASign()
     {

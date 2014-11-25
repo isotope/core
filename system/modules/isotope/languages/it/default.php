@@ -92,7 +92,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'dalla Z alla A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'dal meno recente all\'ultimo';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'dall\'ultimo al meno recente';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Il pagamento viene processato';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Sarà automaticamente deviato/a sul sito del prestatore di servizi di pagamento. Se la deviazione non avviene automaticamente, si prega di cliccare sul bottone "Paga ora".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Paga ora';
 $GLOBALS['TL_LANG']['MSC']['productSingle'] = '1 prodotto';
 $GLOBALS['TL_LANG']['MSC']['productMultiple'] = '%s prodotti';

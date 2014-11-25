@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'dataContainer'             => 'ProductData',
         'enableVersioning'          => true,
         'switchToEdit'              => true,
-        'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable()),
+        'ctable'                    => array(\Isotope\Model\Download::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\ProductPrice::getTable(), \Isotope\Model\AttributeOption::getTable()),
         'onload_callback' => array
         (
             array('Isotope\Backend\Product\DcaManager', 'load'),
@@ -246,7 +246,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         (
             'foreignKey'            => \Isotope\Model\Group::getTable().'.name',
             'eval'                  => array('doNotShow'=>true),
-            'attributes'            => array('systemColumn'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -258,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'language' => array
         (
             'eval'                  => array('doNotShow'=>true),
-            'attributes'            => array('systemColumn'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "varchar(5) NOT NULL default ''",
         ),
         'dateAdded' => array
@@ -303,6 +303,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         'orderPages' => array
         (
             'eval'                  => array('doNotShow'=>true),
+            'attributes'            => array('systemColumn'=>true, 'inherit'=>true),
             'sql'                   => "text NULL"
         ),
         'inherit' => array
@@ -428,13 +429,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'listCallback'      => array('Isotope\Backend\ProductPrice\Callback', 'generateWizardList'),
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
-                'tl_class'          =>'clr'
+                'tl_class'          =>'clr',
             ),
         ),
         'price_tiers' => array
         (
             // This is only for automated table generation in the frontend
-            'eval'                  => array('dynamic'=>true),
             'attributes'            => array('type'=>'\Isotope\Model\Attribute\PriceTiers'),
             'tableformat' => array
             (

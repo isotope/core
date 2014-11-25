@@ -127,6 +127,7 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
                 $varValue = $option['value'];
 
                 // skip zero values (includeBlankOption)
+                // @deprecated drop "-" when we only have the database table as options source
                 if ($varValue === '' || $varValue === '-') {
                     continue;
                 }

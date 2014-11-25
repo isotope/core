@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['customer_defined'][0] = 'Определ
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description'][0] = 'Описание';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options'][0] = 'Опции';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'][0] = 'Метка';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'][0] = 'Опции';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['mandatory'][0] = 'Обязательное поле';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multiple'][0] = 'Множественный выбор';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rte'][0] = 'Использовать редактор HTML';

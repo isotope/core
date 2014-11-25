@@ -12,7 +12,6 @@
 
 namespace Isotope\Model;
 
-use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -23,10 +22,28 @@ use Isotope\Translation;
 /**
  * Class Shipping
  *
- * Parent class for all shipping gateway modules
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string label
+ * @property string type
+ * @property string note
+ * @property array  countries
+ * @property array  subdivisions
+ * @property string postalCodes
+ * @property float  minimum_total
+ * @property float  maximum_total
+ * @property float  minimum_weight
+ * @property float  maximum_weight
+ * @property array  product_types
+ * @property string product_types_condition
+ * @property array  config_ids
+ * @property string price
+ * @property int    tax_class
+ * @property bool   guests
+ * @property bool   protected
+ * @property array  groups
+ * @property bool   enabled
  */
 abstract class Shipping extends TypeAgent
 {
@@ -58,7 +75,7 @@ abstract class Shipping extends TypeAgent
 
     /**
      * Return true or false depending on if shipping method is available
-     * @return bool
+     * @return  bool
      * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
      */
     public function isAvailable()
@@ -93,16 +110,23 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        $objAddress = Isotope::getCart()->getShippingAddress();
-
-        $arrCountries = deserialize($this->countries);
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array($objAddress->country, $arrCountries)) {
+        $arrConfigs = deserialize($this->config_ids);
+        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
-        $arrSubdivisions = deserialize($this->subdivisions);
-        if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
-            return false;
+        $objAddress = Isotope::getCart()->getShippingAddress();
+
+        $arrCountries = deserialize($this->countries);
+        if (is_array($arrCountries) && !empty($arrCountries)) {
+            if (!in_array($objAddress->country, $arrCountries)) {
+                return false;
+            }
+
+            $arrSubdivisions = deserialize($this->subdivisions);
+            if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
+                return false;
+            }
         }
 
         // Check if address has a valid postal code
@@ -114,14 +138,46 @@ abstract class Shipping extends TypeAgent
             }
         }
 
-        $arrTypes = deserialize($this->product_types);
+        if ($this->product_types_condition != 'calculation') {
+            $arrConfigTypes = deserialize($this->product_types);
 
-        if (is_array($arrTypes) && !empty($arrTypes)) {
-            $arrItems = Isotope::getCart()->getItems();
+            if (is_array($arrConfigTypes) && !empty($arrConfigTypes)) {
+                $arrItems = Isotope::getCart()->getItems();
+                $arrItemTypes = array();
 
-            foreach ($arrItems as $objItem) {
-                if (!$objItem->hasProduct() || !in_array($objItem->getProduct()->type, $arrTypes)) {
-                    return false;
+                foreach ($arrItems as $objItem) {
+                    if ($objItem->hasProduct()) {
+                        $arrItemTypes[] = $objItem->getProduct()->type;
+
+                    } elseif ($this->product_types_condition == 'onlyAvailable') {
+                        // If one product in cart is not of given type, shipping method is not available
+                        return false;
+                    }
+                }
+
+                $arrItemTypes = array_unique($arrItemTypes);
+
+                switch ($this->product_types_condition) {
+                    case 'onlyAvailable':
+                        if (count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
+                            return false;
+                        }
+                        break;
+
+                    case 'oneAvailable':
+                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
+                            return false;
+                        }
+                        break;
+
+                    case 'allAvailable':
+                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) != count($arrConfigTypes)) {
+                            return false;
+                        }
+                        break;
+
+                    default:
+                        throw new \UnexpectedValueException('Unknown product type condition "' . $this->product_types_condition . '"');
                 }
             }
         }

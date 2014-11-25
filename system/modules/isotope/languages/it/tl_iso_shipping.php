@@ -31,6 +31,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total'][0] = 'Subtotale minimo '
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total'][0] = 'Subtotale massimo ';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Tipi prodotto';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Può limitare questo metodo di spedizione a certi prodotti. Se il carrello contiene un prodotto non selezionat, il modulo di spedizione non sarà disponibile.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Configurazioni negozio';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Metodi di spedizione';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][0] = 'Gruppi membri';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['groups'][1] = 'Limiti quest\'opzione di spedizione a certi gruppi di membri';

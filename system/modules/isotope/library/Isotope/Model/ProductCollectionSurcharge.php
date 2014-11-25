@@ -23,8 +23,20 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  * Class Surcharge
  *
  * Provide methods to handle Isotope product collection surcharges.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    id
+ * @property int    pid
+ * @property int    sorting
+ * @property int    tstamp
+ * @property string type
+ * @property string label
+ * @property string price
+ * @property float  total_price
+ * @property float  tax_free_total_price
+ * @property string tax_id
+ * @property bool   before_tax
+ * @property bool   addToTotal
+ * @property array  products
  */
 abstract class ProductCollectionSurcharge extends TypeAgent
 {
@@ -62,6 +74,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Return if the surcharge has tax
+     *
      * @return bool
      */
     public function hasTax()
@@ -71,7 +84,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Get tax amount for an individual collection item
-     * @param IsotopeProduct
+     *
+     * @param ProductCollectionItem $objItem
+     *
+     * @return float
      */
     public function getAmountForCollectionItem(ProductCollectionItem $objItem)
     {
@@ -85,8 +101,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Set tax amount for a collection item
-     * @param  float
-     * @param  IsotopeProduct
+     *
+     * @param float                 $fltAmount
+     * @param ProductCollectionItem $objItem
      */
     public function setAmountForCollectionItem($fltAmount, ProductCollectionItem $objItem)
     {
@@ -99,7 +116,11 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Update IDs of tax per product config
-     * @param   array
+     *
+     * @param array $arrIdMap
+     *
+     * @deprecated Deprecated since version 2.2, to be removed in 3.0.
+     *             Surcharges are generated on the fly, so it does not make sense to convert item IDs
      */
     public function convertCollectionItemIds($arrIdMap)
     {
@@ -117,9 +138,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Split tax amount amongst collection products
-     * @param   IsotopeProductCollection
-     * @param   \Model
-     * @param   bool
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param \Model                   $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
     {
@@ -150,7 +171,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Add a tax number
-     * @param int
+     *
+     * @param int $intId
      */
     public function addTaxNumber($intId)
     {
@@ -161,6 +183,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Get comma separated list of tax ids
+     *
      * @return string
      */
     public function getTaxNumbers()
@@ -209,8 +232,17 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
 
     /**
-     * Generate surhcharges for a collection
-     * @param  IsotopeProductCollection
+     * Generate surcharges for a collection
+     *
+     * Process:
+     * 1. Collect surcharges (e.g. shipping and billing) from Isotope core and submodules using hook
+     * 2. Split surcharges by "with or without tax"
+     *    => surcharges without tax are placed after tax surcharges and ignored in the complex compilation step
+     * 3. Run through all product collection items and calculate their tax amount
+     * 4. Run through all surcharges with tax and calculate their tax amount
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
      * @return array
      */
     public static function findForCollection(IsotopeProductCollection $objCollection)
@@ -245,6 +277,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
 
         foreach ($objCollection->getItems() as $objItem) {
+
             // This should never happen, but we can't calculate it
             if (!$objItem->hasProduct()) {
                 continue;
@@ -275,7 +308,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
                     if (!isset($arrTaxes[$objTaxClass->id . '_' . $objIncludes->id])) {
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]              = new Tax();
-                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ? : $objIncludes->getLabel();
+                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ?: $objIncludes->getLabel();
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->price       = $objIncludes->getAmount() . ($objIncludes->isPercentage() ? '%' : '');
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price = Isotope::roundPrice($fltTax, $objTaxClass->applyRoundingIncrement);
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->addToTotal  = false;
@@ -361,7 +394,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
                     if (!isset($arrTaxes[$objTaxClass->id . '_' . $objIncludes->id])) {
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]              = new Tax();
-                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ? : $objIncludes->getLabel();
+                        $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->label       = $objTaxClass->getLabel() ?: $objIncludes->getLabel();
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->price       = $objIncludes->getAmount() . ($objIncludes->isPercentage() ? '%' : '');
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->total_price = Isotope::roundPrice($fltTax, $objTaxClass->applyRoundingIncrement);
                         $arrTaxes[$objTaxClass->id . '_' . $objIncludes->id]->addToTotal  = false;
@@ -427,19 +460,41 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Create a payment surcharge
+     *
+     * @param IsotopePayment           $objPayment
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Payment
      */
     public static function createForPaymentInCollection(IsotopePayment $objPayment, IsotopeProductCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Payment', $GLOBALS['TL_LANG']['MSC']['paymentLabel'], $objPayment, $objCollection);
     }
 
-
+    /**
+     * Create a shipping surcharge
+     *
+     * @param IsotopeShipping          $objShipping
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping
+     */
     public static function createForShippingInCollection(IsotopeShipping $objShipping, IsotopeProductCollection $objCollection)
     {
         return static::buildSurcharge('Isotope\Model\ProductCollectionSurcharge\Shipping', $GLOBALS['TL_LANG']['MSC']['shippingLabel'], $objShipping, $objCollection);
     }
 
 
+    /**
+     * Build a product collection surcharge for given class type
+     *
+     * @param string                         $strClass
+     * @param string                         $strLabel
+     * @param IsotopePayment|IsotopeShipping $objSource
+     * @param IsotopeProductCollection       $objCollection
+     *
+     * @return ProductCollectionSurcharge
+     */
     protected static function buildSurcharge($strClass, $strLabel, $objSource, IsotopeProductCollection $objCollection)
     {
         $intTaxClass = $objSource->tax_class;

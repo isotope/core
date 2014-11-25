@@ -25,3 +25,4 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['iso_document']           = array('Doc
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['isotope']                    = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_order_status_change']    = array('Order status change', 'This notification type can be sent when the order status changes.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['iso_memberaddress_change']   = array('Addressbook change', 'This notification type can be sent when the customer makes changes in his addressbook.');

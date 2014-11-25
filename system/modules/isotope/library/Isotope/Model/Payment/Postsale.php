@@ -27,9 +27,11 @@ abstract class Postsale extends Payment implements IsotopePostsale
 
     /**
      * Show message while we are waiting for server-to-server order confirmation
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  boolean
+     *
+     * @param   IsotopeProductCollection $objOrder    The order being places
+     * @param   \Module                  $objModule   The checkout module instance
+     *
+     * @return  bool
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {

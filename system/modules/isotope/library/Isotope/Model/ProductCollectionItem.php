@@ -12,13 +12,27 @@
 
 namespace Isotope\Model;
 
+use Haste\Data\Plain;
+use Isotope\Isotope;
+
 
 /**
  * ProductCollectionItem represents an item in a product collection.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
+ * @property int    id
+ * @property int    pid
+ * @property int    tstamp
+ * @property int    product_id
+ * @property string type
+ * @property string sku
+ * @property string name
+ * @property mixed  configuration
+ * @property int    quantity
+ * @property float  price
+ * @property float  tax_free_price
+ * @property string tax_id
+ * @property int    jumpTo
+*/
 class ProductCollectionItem extends \Model
 {
 
@@ -55,7 +69,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Check if collection item is available
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAvailable()
     {
@@ -67,9 +82,10 @@ class ProductCollectionItem extends \Model
             return false;
         }
 
-        $arrOptions = $this->getOptions();
+        // @todo change to ->getConfiguration() in Isotope 3.0
+        $arrConfig = $this->getOptions();
         foreach ($this->getProduct()->getOptions() as $k => $v) {
-            if ($arrOptions[$k] !== $v) {
+            if ($arrConfig[$k] !== $v) {
                 return false;
             }
         }
@@ -85,7 +101,6 @@ class ProductCollectionItem extends \Model
         return $this->blnLocked;
     }
 
-
     /**
      * Lock item, necessary if product collection is locked
      */
@@ -94,10 +109,29 @@ class ProductCollectionItem extends \Model
         $this->blnLocked = true;
     }
 
+    /**
+     * Delete downloads when deleting product collection item
+     *
+     * @return int
+     */
+    public function delete()
+    {
+        $intId = $this->id;
+        $intAffected = parent::delete();
+
+        if ($intAffected) {
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
+        }
+
+        return $intAffected;
+    }
 
     /**
      * Get the product related to this item
-     * @return  \Isotope\Interfaces\IsotopeProduct|null
+     *
+     * @param bool $blnNoCache
+     *
+     * @return \Isotope\Interfaces\IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {
@@ -105,6 +139,7 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
+            /** @var \Isotope\Model\Product $strClass */
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
@@ -119,52 +154,77 @@ class ProductCollectionItem extends \Model
         return $this->objProduct;
     }
 
-
     /**
      * Return boolean flag if product could be loaded
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasProduct()
     {
         return (null !== $this->getProduct());
     }
 
-
     /**
      * Get product SKU. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getSku()
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->sku;
     }
 
-
     /**
      * Get product name. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getName()
     {
         return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->name;
     }
 
-
     /**
-     * Get product options. Automatically falls back to the collection item table if product is not found.
+     * Get product options
      * @return  array
+     * @deprecated use getConfiguration
      */
     public function getOptions()
     {
-        $arrOptions = deserialize($this->options);
+        $arrConfig = deserialize($this->configuration);
 
-        return is_array($arrOptions) ? $arrOptions : array();
+        return is_array($arrConfig) ? $arrConfig : array();
     }
 
+    /**
+     * Get product configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        $arrConfig = deserialize($this->configuration);
+
+        if (empty($arrConfig) || !is_array($arrConfig)) {
+            return array();
+        }
+
+        if ($this->hasProduct()) {
+            return Isotope::formatProductConfiguration($arrConfig, $this->getProduct());
+
+        } else {
+            foreach ($arrConfig as $k => $v) {
+                $arrConfig[$k] = new Plain($v, $k);
+            }
+
+            return $arrConfig;
+        }
+    }
 
     /**
      * Get product price. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getPrice()
     {
@@ -178,13 +238,13 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getAmount((int) $this->quantity);
+        return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
     }
-
 
     /**
      * Get tax free product price. Automatically falls back to the collection item table if product is not found.
-     * @return  string
+     *
+     * @return string
      */
     public function getTaxFreePrice()
     {
@@ -198,12 +258,13 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getNetAmount((int) $this->quantity);
+        return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
     }
 
     /**
      * Get product price multiplied by the requested product quantity
-     * @return  string
+     *
+     * @return string
      */
     public function getTotalPrice()
     {
@@ -212,17 +273,18 @@ class ProductCollectionItem extends \Model
 
     /**
      * Get tax free product price multiplied by the requested product quantity
-     * @return  string
+     *
+     * @return string
      */
     public function getTaxFreeTotalPrice()
     {
         return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
     }
 
-
     /**
      * Return downloads associated with this product collection item
-     * @return  ProductCollectionDownload[]
+     *
+     * @return ProductCollectionDownload[]
      */
     public function getDownloads()
     {
@@ -241,11 +303,12 @@ class ProductCollectionItem extends \Model
         return $this->arrDownloads;
     }
 
-
     /**
      * Increase quantity of product collection item
-     * @param   int
-     * @return  bool
+     *
+     * @param int $intQuantity
+     *
+     * @return bool
      */
     public function increaseQuantityBy($intQuantity)
     {
@@ -261,8 +324,10 @@ class ProductCollectionItem extends \Model
 
     /**
      * Decrease quantity of product collection item
-     * @param   int
-     * @return  bool
+     *
+     * @param int $intQuantity
+     *
+     * @return bool
      */
     public function decreaseQuantityBy($intQuantity)
     {
@@ -282,10 +347,12 @@ class ProductCollectionItem extends \Model
 
     /**
      * Calculate the sum of a database column
-     * @param   string
-     * @param   mixed
-     * @param   mixed
-     * @return  int
+     *
+     * @param string $strField
+     * @param mixed  $strColumn
+     * @param mixed  $varValue
+     *
+     * @return int
      */
     public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
@@ -304,7 +371,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Add an error message
-     * @param   string
+     *
+     * @param string $strError
      */
     public function addError($strError)
     {
@@ -313,7 +381,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return true if the collection item has errors
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasErrors()
     {
@@ -322,7 +391,8 @@ class ProductCollectionItem extends \Model
 
     /**
      * Return the errors array
-     * @return  array
+     *
+     * @return array
      */
     public function getErrors()
     {

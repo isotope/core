@@ -77,10 +77,6 @@ class Standard extends Document implements IsotopeDocument
         // Include TCPDF config
         require_once TL_ROOT . '/system/config/tcpdf.php';
 
-        if (version_compare(VERSION, '3.3', '<')) {
-            require_once TL_ROOT . '/system/modules/core/vendor/tcpdf/tcpdf.php';
-        }
-
         // Create new PDF document
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);
 
@@ -140,12 +136,19 @@ class Standard extends Document implements IsotopeDocument
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
-                 'gallery' => $this->gallery,
-                 'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                'gallery' => $this->gallery,
+                'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
         $objTemplate->products = $objCollectionTemplate->parse();
+
+        // !HOOK: customize the document template
+        if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'] as $callback) {
+                \System::importStatic($callback[0])->$callback[1]($objTemplate, $objCollection, $this);
+            }
+        }
 
         // Generate template and fix PDF issues, see Contao's ModuleArticle
         $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));

@@ -101,6 +101,7 @@ abstract class BackendOverview extends \BackendModule
     protected function getModule($module)
     {
         $arrModule = array();
+        $dc = null;
 
         foreach ($this->arrModules as $arrGroup) {
             if (!empty($arrGroup['modules']) && in_array($module, array_keys($arrGroup['modules']))) {
@@ -170,12 +171,18 @@ abstract class BackendOverview extends \BackendModule
         // AJAX request
         if ($_POST && \Environment::get('isAjaxRequest')) {
             $this->objAjax->executePostActions($dc);
-        } // Call module callback
+        }
+
+        // Call module callback
         elseif (class_exists($arrModule['callback'])) {
-            $objCallback = new $arrModule['callback']($arrModule);
+
+            /** @type \BackendModule $objCallback */
+            $objCallback = new $arrModule['callback']($dc, $arrModule);
 
             return $objCallback->generate();
-        } // Custom action (if key is not defined in config.php the default action will be called)
+        }
+
+        // Custom action (if key is not defined in config.php the default action will be called)
         elseif (\Input::get('key') && isset($arrModule[\Input::get('key')])) {
             $objCallback = new $arrModule[\Input::get('key')][0]();
 

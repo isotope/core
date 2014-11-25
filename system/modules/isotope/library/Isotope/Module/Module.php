@@ -12,7 +12,10 @@
 
 namespace Isotope\Module;
 
+use Haste\Util\Debug;
+use Isotope\Frontend;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\Product;
 use Module as Contao_Module;
 use PageModel;
@@ -45,9 +48,9 @@ abstract class Module extends Contao_Module
 
     /**
      * Load libraries and scripts
-     * @param object
-     * @param string
-     * @return void
+     *
+     * @param object $objModule
+     * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
     {
@@ -57,8 +60,8 @@ abstract class Module extends Contao_Module
 
         if (TL_MODE == 'FE') {
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
+            $GLOBALS['TL_CSS'][]        = Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
@@ -74,6 +77,7 @@ abstract class Module extends Contao_Module
 
     /**
      * Include messages if enabled
+     *
      * @return string
      */
     public function generate()
@@ -82,7 +86,7 @@ abstract class Module extends Contao_Module
 
         // Prepend any messages to the module output
         if ($this->iso_includeMessages) {
-            $strBuffer = \Isotope\Frontend::getIsotopeMessages() . $strBuffer;
+            $strBuffer = Message::generate() . $strBuffer;
         }
 
         return $strBuffer;
@@ -91,6 +95,7 @@ abstract class Module extends Contao_Module
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
+     *
      * @return array
      */
     protected function findCategories()
@@ -175,8 +180,10 @@ abstract class Module extends Contao_Module
 
     /**
      * Find jumpTo page for current category scope
-     * @param   Product
-     * @return  PageModel
+     *
+     * @param $objProduct \Isotope\Interfaces\IsotopeProduct
+     *
+     * @return \PageModel
      */
     protected function findJumpToPage($objProduct)
     {
@@ -185,23 +192,39 @@ abstract class Module extends Contao_Module
 
         $arrCategories = array();
 
-        if ($this->iso_category_scope != 'current_category' && $this->iso_category_scope != '' && $objPage->alias != 'index') {
-            $arrCategories = array_intersect($objProduct->getCategories(), $this->findCategories());
+        if ($this->iso_category_scope != 'current_category'
+            && $this->iso_category_scope != ''
+            && $objPage->alias != 'index'
+        ) {
+            $arrCategories = array_intersect(
+                $objProduct->getCategories(true),
+                $this->findCategories()
+            );
         }
 
-        // If our current category scope does not match with any product category, use the first product category in the current root page
+        // If our current category scope does not match with any product category,
+        // use the first allowed product category in the current root page
         if (empty($arrCategories)) {
-            $arrCategories = array_intersect($objProduct->getCategories(), \Database::getInstance()->getChildRecords($objPage->rootId, $objPage->getTable()));
+            $arrCategories = Frontend::getPagesInCurrentRoot(
+                $objProduct->getCategories(true),
+                \FrontendUser::getInstance()
+            );
         }
 
-        foreach ($arrCategories as $intCategory) {
-            $objCategory = \PageModel::findByPk($intCategory);
+        if (!empty($arrCategories)
+         && ($objCategories = \PageModel::findMultipleByIds($arrCategories)) !== null
+        ) {
+            $blnMoreThanOne = $objCategories->count() > 1;
+            foreach ($objCategories as $objCategory) {
 
-            if ($objCategory->alias == 'index' && count($arrCategories) > 1) {
-                continue;
+                if ($objCategory->alias == 'index'
+                    && $blnMoreThanOne
+                ) {
+                    continue;
+                }
+
+                return $objCategory;
             }
-
-            return $objCategory;
         }
 
         return $objIsotopeListPage ? : $objPage;
@@ -211,8 +234,9 @@ abstract class Module extends Contao_Module
     /**
      * Generate the URL from existing $_GET parameters.
      * Use \Input::setGet('var', null) to remove a parameter from the final URL.
-     * @return      string
-     * @deprecated  use \Haste\Util\Url::addQueryString instead
+     *
+     * @return string
+     * @deprecated use \Haste\Util\Url::addQueryString instead
      */
     protected function generateRequestUrl()
     {
@@ -261,6 +285,7 @@ abstract class Module extends Contao_Module
             }
         }
 
+        /** @type PageModel $objPage */
         global $objPage;
 
         return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');

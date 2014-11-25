@@ -1,7 +1,7 @@
 <?php if ($this->textOnly): ?>
 <?php ### THIS IS FOR TEXT ONLY EMAILS ### ?>
 <?php foreach ($this->items as $item ): ?>
-<?php echo $item['name']; ?><?php if (!empty($item['options'])): ?> (<?php $i=0; foreach ($item['options'] as $option): ?><?php echo ($i++==0 ? '' : ', ').$option['label']; ?>: <?php echo $option['value']; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
+<?php echo $item['name']; ?><?php if (!empty($item['configuration'])): ?> (<?php $i=0; foreach ($item['configuration'] as $value): ?><?php echo ($i++==0 ? '' : ', ').$value['label']; ?>: <?php echo (string) $value; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
 
 <?php endforeach; ?>
 --------------------
@@ -32,10 +32,10 @@
         <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
         <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
             <?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
-            <?php if(!empty($item['options'])): ?>
+            <?php if(!empty($item['configuration'])): ?>
             <ul>
-                <?php foreach($item['options'] as $option): ?>
-                <li><strong><?php echo $option['label']; ?>:</strong> <?php echo $option['value']; ?></li>
+                <?php foreach($item['configuration'] as $value): ?>
+                <li><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>

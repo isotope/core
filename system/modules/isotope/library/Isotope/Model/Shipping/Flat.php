@@ -19,11 +19,9 @@ use Isotope\Model\Shipping;
 
 
 /**
- * Class ShippingFlat
+ * Class Flat
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property string flatCalculation
  */
 class Flat extends Shipping implements IsotopeShipping
 {
@@ -46,10 +44,14 @@ class Flat extends Shipping implements IsotopeShipping
 
         if ($this->flatCalculation == 'perProduct' || $this->flatCalculation == 'perItem') {
             $arrItems = $objCollection->getItems();
+            $arrProductTypes = deserialize($this->product_types);
             $intMultiplier = 0;
 
             foreach ($arrItems as $objItem) {
-                if (!$objItem->hasProduct() || $objItem->getProduct()->isExemptFromShipping()) {
+                if (!$objItem->hasProduct()
+                    || $objItem->getProduct()->isExemptFromShipping()
+                    || ($this->product_types_condition == 'calculation' && !in_array($objItem->getProduct()->type, $arrProductTypes))
+                ) {
                     continue;
                 }
 

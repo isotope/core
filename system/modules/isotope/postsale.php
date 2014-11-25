@@ -15,7 +15,7 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
-use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\Shipping;
 use Haste\Http\Response\Response;
 
@@ -30,17 +30,18 @@ define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 define('TL_MODE', 'FE');
 define('BYPASS_TOKEN_CHECK', true);
 
-require '../../initialize.php';
+// Include the Contao initialization script
+if (file_exists('../../initialize.php')) {
+    // Regular way
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../initialize.php');
+} else {
+    // Try composer location (see #1136)
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../../../../../../system/initialize.php');
+}
 
 
-/**
- * Class PostSale
- *
- * Handle postsale (server-to-server) communication
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class PostSale extends \Frontend
 {
     /**
@@ -57,9 +58,6 @@ class PostSale extends \Frontend
 
     /**
      * Must be defined cause parent is protected.
-     *
-     * @access public
-     * @return void
      */
     public function __construct()
     {
@@ -69,6 +67,7 @@ class PostSale extends \Frontend
         unset($GLOBALS['TL_HOOKS']);
 
         // Need to load our own Hooks (e.g. loadDataContainer)
+        /** @noinspection PhpIncludeInspection */
         include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 
         // Default parameters
@@ -162,6 +161,7 @@ class PostSale extends \Frontend
                 $objResponse->send();
             }
 
+            /** @type Order $objOrder */
             $objOrder = $objMethod->getPostsaleOrder();
 
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {
@@ -171,24 +171,7 @@ class PostSale extends \Frontend
                 $objResponse->send();
             }
 
-            global $objPage;
-
-            // Load page configuration
-            if (!is_object($objPage) && $objOrder->pageId > 0) {
-                $objPage = \PageModel::findWithDetails($objOrder->pageId);
-                $objPage = \Isotope\Frontend::loadPageConfig($objPage);
-            }
-
-            // Set the current system to the language when the user placed the order.
-            // This will result in correct e-mails and payment description.
-            $GLOBALS['TL_LANGUAGE'] = $objOrder->language;
-            \System::loadLanguageFile('default', $objOrder->language, true);
-
-            Isotope::setConfig($objOrder->getRelated('config_id'));
-
-            if (($objCart = $objOrder->getRelated('source_collection_id')) !== null && $objCart instanceof Cart) {
-                Isotope::setCart($objCart);
-            }
+            Frontend::loadOrderEnvironment($objOrder);
 
             $objMethod->processPostsale($objOrder);
 
@@ -197,11 +180,22 @@ class PostSale extends \Frontend
 
         } catch (\Exception $e) {
             \System::log(
-                sprintf('Exception in post-sale request in file "%s" on line "%s" with message "%s".',
+                sprintf('Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                     $e->getFile(),
                     $e->getLine(),
                     $e->getMessage()
-                ), __METHOD__, TL_ERROR);
+                ),
+                __METHOD__,
+                TL_ERROR
+            );
+
+            log_message(
+                sprintf(
+                    "Exception in post-sale request\n%s\n\n",
+                    $e->getTraceAsString()
+                ),
+                'isotope_postsale.log'
+            );
 
             $objResponse = new Response('Internal Server Error', 500);
             $objResponse->send();

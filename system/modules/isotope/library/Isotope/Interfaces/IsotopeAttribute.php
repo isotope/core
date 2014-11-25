@@ -23,12 +23,6 @@ interface IsotopeAttribute
 {
 
     /**
-     * Return true if attribute is a variant option
-     * @return    bool
-     */
-    public function isVariantOption();
-
-    /**
      * Return true if attribute is customer defined
      * @return    bool
      */
@@ -65,4 +59,5 @@ interface IsotopeAttribute
      * @return  string
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array());
+
 }

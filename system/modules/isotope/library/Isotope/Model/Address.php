@@ -12,8 +12,9 @@
 
 namespace Isotope\Model;
 
-use Haste\Haste;
+use Database\Result;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 
 
@@ -53,18 +54,24 @@ class Address extends \Model
      */
     protected static $strTable = 'tl_iso_address';
 
-
-    public function __construct(\Database\Result $objResult = null)
+    /**
+     * Construct the model
+     *
+     * @param Result $objResult
+     */
+    public function __construct(Result $objResult = null)
     {
         parent::__construct($objResult);
 
         if (!is_array($GLOBALS['ISO_ADR'])) {
-            Haste::getInstance()->call('loadDataContainer', static::$strTable);
+            \Controller::loadDataContainer(static::$strTable);
             \System::loadLanguageFile('addresses');
         }
     }
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->generate();
@@ -72,7 +79,9 @@ class Address extends \Model
 
     /**
      * Return formatted address (hCard)
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
      */
     public function generate($arrFields = null)
@@ -91,9 +100,11 @@ class Address extends \Model
 
     /**
      * Return this address formatted as text
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
-     * @deprecated
+     * @deprecated use Address::generate() and strip_tags
      */
     public function generateText($arrFields = null)
     {
@@ -102,9 +113,11 @@ class Address extends \Model
 
     /**
      * Return an address formatted with HTML (hCard)
-     * @param array
+     *
+     * @param array $arrFields
+     *
      * @return string
-     * @deprecated
+     * @deprecated use Address::generate()
      */
     public function generateHtml($arrFields = null)
     {
@@ -113,8 +126,10 @@ class Address extends \Model
 
     /**
      * Compile the list of hCard tokens for this address
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrFields
+     *
+     * @return array
      */
     public function getTokens($arrFields = null)
     {
@@ -190,43 +205,59 @@ class Address extends \Model
 
     /**
      * Find address for member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   array
-     * @return  Collection|null
+     *
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {
-        return static::findBy(array('pid=?', 'ptable=?', 'store_id=?'), array($intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
+        return static::findBy(
+            array('pid=?', 'ptable=?', 'store_id=?'),
+            array($intMember, 'tl_member', Isotope::getCart()->store_id),
+            $arrOptions
+        );
     }
 
     /**
      * Find address by ID and member, automatically checking the current store ID and tl_member parent table
-     * @param   int
-     * @param   int
-     * @param   array
-     * @return  Address|null
+     *
+     * @param int   $intId
+     * @param int   $intMember
+     * @param array $arrOptions
+     *
+     * @return static|null
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {
-        return static::findOneBy(array('id=?', 'pid=?', 'ptable=?', 'store_id=?'), array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id), $arrOptions);
+        return static::findOneBy(
+            array('id=?', 'pid=?', 'ptable=?', 'store_id=?'),
+            array($intId, $intMember, 'tl_member', Isotope::getCart()->store_id),
+            $arrOptions
+        );
     }
 
     /**
      * Find default billing adddress for a member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Address|null
+     * @return  static|null
      */
     public static function findDefaultBillingForMember($intMember, array $arrOptions = array())
     {
-        return static::findOneBy(array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'), array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'), $arrOptions);
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'store_id=?', 'isDefaultBilling=?'),
+            array($intMember, 'tl_member', Isotope::getCart()->store_id, '1'),
+            $arrOptions
+        );
     }
 
     /**
      * Find default shipping adddress for a member, automatically checking the current store ID and tl_member parent table
      * @param   int
      * @param   array
-     * @return  Address|null
+     * @return  static|null
      */
     public static function findDefaultShippingForMember($intMember, array $arrOptions = array())
     {
@@ -234,28 +265,64 @@ class Address extends \Model
     }
 
     /**
+     * Find default billing address for a product collection
+     *
+     * @param int   $intCollection
+     * @param array $arrOptions
+     *
+     * @return static|null
+     */
+    public static function findDefaultBillingForProductCollection($intCollection, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'isDefaultBilling=?'),
+            array($intCollection, 'tl_iso_product_collection', '1'),
+            $arrOptions
+        );
+    }
+
+    /**
+     * Find default shipping address for a product collection
+     *
+     * @param int   $intCollection
+     * @param array $arrOptions
+     *
+     * @return static|null
+     */
+    public static function findDefaultShippingForProductCollection($intCollection, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array('pid=?', 'ptable=?', 'isDefaultShipping=?'),
+            array($intCollection, 'tl_iso_product_collection', '1'),
+            $arrOptions
+        );
+    }
+
+    /**
      * Create a new address for a member and automatically set default properties
-     * @param   int
-     * @param   array|null
-     * @return  Address
+     *
+     * @param int        $intMember
+     * @param array|null $arrFill
+     *
+     * @return static
      */
     public static function createForMember($intMember, $arrFill = null)
     {
-        $objAddress = new Address();
+        $objAddress = new static();
 
         $arrData = array(
             'pid'      => $intMember,
             'ptable'   => 'tl_member',
             'tstamp'   => time(),
-            'store_id' => Isotope::getCart()->store_id,
+            'store_id' => (int) Isotope::getCart()->store_id,
         );
 
         if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
 
-            $arrData = array_intersect_key(
+            // Generate address data from tl_member, limit to fields enabled in the shop configuration
+            $arrMember = array_intersect_key(
                 array_merge(
                     $objMember->row(),
-                    $arrData,
                     array(
                          'street_1'    => $objMember->street,
 
@@ -265,6 +332,70 @@ class Address extends \Model
                 ),
                 array_flip($arrFill)
             );
+
+            $arrData = array_merge($arrMember, $arrData);
+        }
+
+        $objAddress->setRow($arrData);
+
+        return $objAddress;
+    }
+
+    /**
+     * Create a new address for a product collection
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array|null               $arrFill an array of member fields to inherit
+     * @param bool                     $blnDefaultBilling
+     * @param bool                     $blnDefaultShipping
+     *
+     * @return static
+     */
+    public static function createForProductCollection(
+        IsotopeProductCollection $objCollection,
+        $arrFill = null,
+        $blnDefaultBilling = false,
+        $blnDefaultShipping = false
+    ) {
+        $objAddress = new static();
+
+        $arrData = array(
+            'pid'               => (int) $objCollection->id,
+            'ptable'            => 'tl_iso_product_collection',
+            'tstamp'            => time(),
+            'store_id'          => (int) $objCollection->store_id,
+            'isDefaultBilling'  => ($blnDefaultBilling ? '1' : ''),
+            'isDefaultShipping' => ($blnDefaultShipping ? '1' : ''),
+        );
+
+        if ($objCollection->member > 0
+            && !empty($arrFill)
+            && is_array($arrFill)
+            && ($objMember = \MemberModel::findByPk($objCollection->member)) !== null
+        ) {
+            // Generate address data from tl_member, limit to fields enabled in the shop configuration
+            $arrMember = array_intersect_key(
+                array_merge(
+                    $objMember->row(),
+                    array(
+                        'street_1'    => $objMember->street,
+
+                        // Trying to guess subdivision by country and state
+                        'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
+                    )
+                ),
+                array_flip($arrFill)
+            );
+
+            $arrData = array_merge($arrMember, $arrData);
+        }
+
+        if ($objAddress->country == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
+            if ($blnDefaultBilling) {
+                $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
+            } elseif ($blnDefaultShipping) {
+                $arrData['country'] = $objConfig->shipping_country ?: $objConfig->country;
+            }
         }
 
         $objAddress->setRow($arrData);

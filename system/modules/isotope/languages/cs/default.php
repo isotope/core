@@ -92,7 +92,6 @@ $GLOBALS['TL_LANG']['MSC']['iso_order_document_number'] = 'Číslo objednávky';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'od A do Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'od Z k A';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Zpracování platby';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Budete automaticky přesměrování na portál pro platbu. Pokud nebudete automaticky přesměrování, prosím klikněte na tlačítko "Platit nyní"';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Platit nyní';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline'] = 'Klikněte zde pro zobrazení této PayPal transakce on-line';
 $GLOBALS['TL_LANG']['MSC']['productSingle'] = '1 produkt';

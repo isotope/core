@@ -71,7 +71,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         (
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
-        'options' => array
+        'configuration' => array
         (
            'sql'                    => "blob NULL",
         ),

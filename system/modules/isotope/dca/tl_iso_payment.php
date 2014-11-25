@@ -121,17 +121,20 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{type_legend},name,label,type',
-        'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
-        'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
-        'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'paybyway'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paybyway_merchant_id,paybyway_private_key;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+        'billpay_saferpay'          => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled',
+        'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'epay'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,epay_windowstate,epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
+        'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
 
     // Subpalettes
@@ -220,6 +223,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'sql'                   => "int(10) NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
+        // @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own field instead.
         'allowed_cc_types' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types'],
@@ -287,6 +291,42 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
+        ),
+        'product_types_condition' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['product_types_condition'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('onlyAvailable', 'allAvailable', 'oneAvailable'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment'],
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
+        ),
+        'config_ids' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['config_ids'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'clr w50 w50h', 'chosen'=>true),
+            'sql'                   => "blob NULL",
+            'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
+        ),
+        'paybyway_merchant_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_merchant_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) NOT NULL default '0'",
+        ),
+        'paybyway_private_key' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paybyway_private_key'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'paypal_account' => array
         (
@@ -431,7 +471,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'],
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'saferpay_vtconfig' => array
@@ -440,6 +480,37 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'saferpay_paymentmethods' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'],
+            'inputType'             => 'select',
+            'options'               => array(
+                1   => 'MasterCard',
+                2   => 'Visa',
+                3   => 'American Express',
+                4   => 'Diners Club',
+                5   => 'JCB',
+                6   => 'Saferpay Testkarte',
+                7   => 'Laser Card',
+                8   => 'Bonus Card',
+                9   => 'PostFinance E-Finance',
+                10  => 'PostFinance Card',
+                11  => 'Maestro International',
+                12  => 'MyOne',
+                13  => 'Lastschrift',
+                14  => 'Rechnung',
+                15  => 'Sofortüberweisung',
+                16  => 'PayPal',
+                17  => 'giropay',
+                18  => 'iDEAL',
+                19  => 'ClickandBuy',
+                20  => 'Homebanking AT (eps)',
+                21  => 'Mpass',
+                22  => 'ePrzelewy',
+            ),
+            'eval'                  => array('multiple'=>true, 'size'=>5, 'chosen'=>true, 'csv'=>',', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'expercash_popupId' => array
         (
@@ -482,6 +553,33 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>'css', 'tl_class'=>'clr'),
             'sql'                   => "binary(16) NULL"
+        ),
+        'epay_windowstate' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate'],
+            'exclude'               => true,
+            'default'               => '3',
+            'inputType'             => 'select',
+            'options'               => array('3', '4'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'],
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''"
+        ),
+        'epay_merchantnumber' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_merchantnumber'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'epay_secretkey' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['epay_secretkey'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'payone_clearingtype' => array
         (

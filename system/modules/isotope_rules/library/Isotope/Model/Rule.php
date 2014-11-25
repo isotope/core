@@ -20,8 +20,38 @@ use Isotope\Translation;
  * Class Payment
  *
  * Implements payment surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    id
+ * @property int    tstamp
+ * @property string type
+ * @property string name
+ * @property string label
+ * @property string discount
+ * @property int    tax_class
+ * @property string applyTo
+ * @property bool   enableCode
+ * @property string code
+ * @property int    limitPerMember
+ * @property int    limitPerConfig
+ * @property int    minSubtotal
+ * @property int    maxSubtotal
+ * @property int    minItemQuantity
+ * @property int    maxItemQuantity
+ * @property string quantityMode
+ * @property int    startDate
+ * @property int    endDate
+ * @property int    startTime
+ * @property int    endTime
+ * @property string configRestrictions
+ * @property bool   configCondition
+ * @property string memberRestrictions
+ * @property bool   memberCondition
+ * @property string productRestrictions
+ * @property bool   productCondition
+ * @property string attributeName
+ * @property string attributeCondition
+ * @property string attributeValue
+ * @property bool   enabled
  */
 class Rule extends \Model
 {

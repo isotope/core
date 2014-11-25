@@ -116,8 +116,9 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a']                            = 'Z to A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new']                        = 'earlier to later';
 $GLOBALS['TL_LANG']['MSC']['new_to_old']                        = 'later to earlier';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]              = 'Processing payment';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]              = 'You will be redirected to the payment gateway website. If you are not automatically redirected, please click on the "Pay now" button.';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]              = 'You will be redirected to the payment gateway website.';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]              = 'Pay now';
+$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]              = 'Please click on the "Pay now" button to continue.';
 $GLOBALS['TL_LANG']['MSC']['paypalTransactionOnline']           = 'Click here to view this PayPal transaction online';
 $GLOBALS['TL_LANG']['MSC']['productSingle']                     = '1 Product';
 $GLOBALS['TL_LANG']['MSC']['productMultiple']                   = '%s Products';
@@ -187,6 +188,14 @@ $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_name']    = 'by produc
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['asc_price']    = 'by price (ascending)';
 $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy']['desc_price']   = 'by price (descending)';
 
+$GLOBALS['TL_LANG']['MSC']['noShippingAddress']                 = 'Please fill in the shipping address.';
+$GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg']             = 'None of the products in your shopping cart require shipping!';
+$GLOBALS['TL_LANG']['MSC']['availableShippingMethodsMsg']       = 'The following shipping methods are available for your current shopping cart and the shipping address details you provided:';
+$GLOBALS['TL_LANG']['MSC']['saveAddressButton']                 = 'Save address';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_de'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_ch'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-ch#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+$GLOBALS['TL_LANG']['MSC']['billpay_agb_at'] = 'Mit der &Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die <a href="https://billpay.de/endkunden" target="_blank">Billpay GmbH</a> bin ich einverstanden. Es gelten die <a href="https://www.billpay.de/kunden/agb-at#datenschutz" target="_blank">Datenschutzbestimmungen</a> von Billpay.';
+
 
 /**
  * Content elements
@@ -203,14 +212,17 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.group']   = array('Shipping group'
  * Payment methods
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.cash']                 = array('Cash', 'Use this for all offline processed payment.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paybyway']             = array('Paybyway', 'Implements payment provider <a href="https://www.paybyway.com/en/" target="_blank">Paybyway</a>.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('PayPal Standard Checkout', 'This PayPal module supports IPN (Instant Payment Notifications).');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('PostFinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.billpay_saferpay']     = array('BillPay (using Saferpay)');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sofortueberweisung']   = array('sofortüberweisung.de');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('ExperCash');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.epay']                 = array('ePay', 'Implements payment provider <a href="http://www.epay.eu" target="_blank">ePay</a>.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('WorldPay');
 
@@ -268,6 +280,7 @@ $GLOBALS['TL_LANG']['ATTR']['conditionalselect']    = array('Conditional Select-
 $GLOBALS['TL_LANG']['ATTR']['fileTree']             = array('File tree', 'A file tree for single or multiple files and folders.');
 $GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['TL_LANG']['ATTR']['upload']               = array('File upload', 'A single-line input field to upload a local file to the server.');
+$GLOBALS['TL_LANG']['ATTR']['media']                = array('Video/Audio', 'Generates a video or audio player.');
 
 /**
  * Currencies

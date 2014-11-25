@@ -93,7 +93,6 @@ $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z til A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'tidligere til senere';
 $GLOBALS['TL_LANG']['MSC']['new_to_old'] = 'senere til tidligere';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] = 'Bearbejder betaling';
-$GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] = 'Du vil blive viderestillet til betalingssiden. Hvis du ikke automatisk bliver viderestillet kan du klikke på knappen "Betal nu".';
 $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] = 'Betal nu';
 $GLOBALS['TL_LANG']['MSC']['checkout_shipping'] = 'Levering';
 $GLOBALS['TL_LANG']['MSC']['checkout_payment'] = 'Betaling';

@@ -21,7 +21,6 @@ class Callback extends \Backend
 
     /**
      * Check permissions to edit table tl_iso_payment
-     * @return void
      */
     public function checkPermission()
     {
@@ -139,13 +138,17 @@ class Callback extends \Backend
 
     /**
      * Get allowed CC types and return them as array
-     * @param DataContainer
+     *
+     * @param \DataContainer $dc
+     *
      * @return array
+     * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
      */
     public function getAllowedCCTypes(\DataContainer $dc)
     {
         $arrCCTypes = array();
 
+        /** @type Payment $objPayment */
         if (($objPayment = Payment::findByPk($dc->id)) !== null) {
 
             try {
@@ -165,8 +168,8 @@ class Callback extends \Backend
 
     /**
      * Load shipping modules into the DCA (options_callback would not work due to numeric array keys)
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function loadShippingModules($dc)
     {
@@ -186,12 +189,14 @@ class Callback extends \Backend
 
     /**
      * Return the copy payment module button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function copyPaymentModule($row, $href, $label, $title, $icon, $attributes)
@@ -202,12 +207,14 @@ class Callback extends \Backend
 
     /**
      * Return the delete payment module button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function deletePaymentModule($row, $href, $label, $title, $icon, $attributes)
@@ -218,12 +225,14 @@ class Callback extends \Backend
 
     /**
      * Return the "toggle visibility" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
@@ -249,8 +258,9 @@ class Callback extends \Backend
 
     /**
      * Disable/enable a user group
-     * @param integer
-     * @param boolean
+     * 
+     * @param int $intId
+     * @param bool $blnVisible
      */
     public function toggleVisibility($intId, $blnVisible)
     {

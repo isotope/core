@@ -44,6 +44,7 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][0] = 'Poids maximum';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'][1] = 'Entrez un poids maximum pour contrôler la disponibilité basée sur les produits dans le panier.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][0] = 'Types de produits';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'][1] = 'Limiter le mode de livraison pour certains types de produits. Si le panier contient un type de produit non sélectionné, le module d\'expédition n\'est pas disponible.';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'][0] = 'Configurations de boutique';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][0] = 'Modes de livraison';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'][1] = 'Sélectionnez la méthode d\'expédition à grouper dans cette méthode.';
 $GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'][0] = 'Calcul du groupe';

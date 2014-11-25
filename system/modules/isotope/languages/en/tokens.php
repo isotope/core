@@ -28,6 +28,7 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['doc
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_text']             = 'Order/Cart as text.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_html']             = 'Order/Cart as HTML.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['document']              = 'The document that should be attached (e.g. an invoice).';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['collection_*']          = 'All the collection/order column fields as stored in the database';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address']       = 'Formatted billing address.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address_*']     = 'All the billing address model fields.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address']      = 'Formatted shipping address.';

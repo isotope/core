@@ -96,7 +96,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
     'palettes' => array
     (
         'default'                   => '{price_legend},price_tiers,tax_class;{limit_legend},config_id,member_group,start,stop',
-        'dcawizard'                 => 'price_tiers,tax_class,config_id,member_group,start,stop',
     ),
 
     // Fields

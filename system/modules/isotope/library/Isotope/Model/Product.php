@@ -19,8 +19,13 @@ use Isotope\Model\Attribute;
 /**
  * The basic Isotope product model
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    id
+ * @property int    pid
+ * @property int    gid
+ * @property int    tstamp
+ * @property string language
+ * @proeprty int    dateAdded
+ * @property int    type
  */
 abstract class Product extends TypeAgent
 {
@@ -44,27 +49,27 @@ abstract class Product extends TypeAgent
     protected static $arrModelTypes = array();
 
     /**
-     * Currently active product
-     * @var IsotopeProduct
+     * Currently active product (LIFO queue)
+     * @var array
      */
-    protected static $objActive = null;
+    protected static $arrActive = array();
 
     /**
      * Get product that is currently active (needed e.g. for insert tag replacement)
-     * @return   IsotopeProduct
+     * @return   IsotopeProduct|null
      */
     public static function getActive()
     {
-        return static::$objActive;
+        return empty(static::$arrActive) ? null : end(static::$arrActive);
     }
 
     /**
      * Set product that is currently active (needed e.g. for insert tag replacement)
-     * @param   IsotopeProduct
+     * @param   IsotopeProduct|null
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
-        static::$objActive = $objProduct;
+        array_push(static::$arrActive, $objProduct);
     }
 
     /**
@@ -73,7 +78,7 @@ abstract class Product extends TypeAgent
      */
     public static function unsetActive()
     {
-        static::$objActive = null;
+        array_pop(static::$arrActive);
     }
 
     /**
