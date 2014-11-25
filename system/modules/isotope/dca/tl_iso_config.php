@@ -283,7 +283,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'options_callback'      => function() {
                 return \System::getCountries();
             },
-            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(2) NOT NULL default ''",
         ),
         'phone' => array
