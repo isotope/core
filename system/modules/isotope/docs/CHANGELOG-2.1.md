@@ -11,6 +11,7 @@ Version 2.1.10-stable (2014-??-??)
 - Postsale requests did not work when using Composer (#1136)
 - Default template setting for product collection was missing
 - Products not inside a group could not always be edited by regular users
+- Cached InsertTags in order prefix were not replaced
 
 
 Version 2.1.9-stable (2014-11-18)
