@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
         'closed'                    => true,
+        'ctable'                    => array(\Isotope\Model\AttributeOption::getTable()),
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
@@ -246,7 +247,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable'],
             'exclude'               => true,
-            'inputType'             => 'dcaWizard',
+            'inputType'             => 'dcaWizardMultilingual',
             'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (

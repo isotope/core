@@ -15,6 +15,7 @@
  * Add a child table to tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['ctable'][] = \Isotope\Model\Address::getTable();
+$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('\Isotope\Backend\Member\Callback', 'deleteMemberCart');
 
 
 /**

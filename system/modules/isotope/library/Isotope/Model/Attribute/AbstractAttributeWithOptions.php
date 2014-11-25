@@ -100,7 +100,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    return $objOptions->getArrayForFrontendWidget($objProduct);
+                    return $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
 
                 } else {
                     return $objOptions->getArrayForBackendWidget();
@@ -118,7 +118,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } else {
-                    return $objOptions->getArrayForFrontendWidget($objProduct);
+                    return $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
                 }
 
                 break;
@@ -225,13 +225,20 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 
+                $fieldTemplate = $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable'];
+                unset($fieldTemplate['label']);
+
                 $arrField = array_merge(
                     $arrData['fields'][$this->field_name],
-                    $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable']
+                    $fieldTemplate
                 );
 
-                $arrField['label']                 = $arrData['fields'][$this->field_name]['label'];
                 $arrField['attributes']['dynamic'] = true;
+                $arrField['foreignKey'] = 'tl_iso_attribute_option.label';
+
+                if (\Input::get('do') == 'iso_products') {
+                    $arrField['eval']['whereCondition'] = "field_name='{$this->field_name}'";
+                }
 
                 $arrData['fields'][$this->field_name] = $arrField;
             }

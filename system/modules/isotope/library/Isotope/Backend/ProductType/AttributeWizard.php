@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
@@ -22,12 +23,14 @@ class AttributeWizard extends \Backend
 
     /**
      * Return list of MultiColumnWizard columns
-     * @param   MultiColumnWizard
-     * @return  array
+     *
+     * @param \MultiColumnWizard|object $objWidget
+     *
+     * @return array
      */
-    public function getColumns($objWidget)
+    public function getColumns(\MultiColumnWizard $objWidget)
     {
-        $this->loadDataContainer(\Isotope\Model\Product::getTable());
+        $this->loadDataContainer(Product::getTable());
 
         $arrValues   = $objWidget->value;
         $blnVariants = ($objWidget->name != 'attributes');
@@ -41,6 +44,7 @@ class AttributeWizard extends \Backend
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
+                /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
@@ -86,11 +90,12 @@ class AttributeWizard extends \Backend
 
     /**
      * For each call, return the name of the next attribute in the wizard (for input_field_callback)
-     * @param   Widget
-     * @param   string
-     * @return  string
+     *
+     * @param \Widget|object $objWidget
+     *
+     * @return string
      */
-    public function getNextName($objWidget, $xlabel)
+    public function getNextName($objWidget)
     {
         static $arrValues;
         static $strWidget;
@@ -106,7 +111,9 @@ class AttributeWizard extends \Backend
         $strName  = $arrField['name'];
         $style = '';
 
+        /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+
         if (null !== $objAttribute && $objAttribute->isVariantOption()) {
             $style = ';font-style:italic';
         }
@@ -126,16 +133,18 @@ class AttributeWizard extends \Backend
 
     /**
      * Return list of default and widget legends
-     * @param   Widget
-     * @return  array
+     *
+     * @param object $objWidget The widget object
+     *
+     * @return array
      */
     public function getLegends($objWidget)
     {
-        $this->loadDataContainer(\Isotope\Model\Attribute::getTable());
-        \System::loadLanguageFile(\Isotope\Model\Product::getTable());
+        $this->loadDataContainer(Attribute::getTable());
+        \System::loadLanguageFile(Product::getTable());
 
-        $arrLegends = $GLOBALS['TL_DCA'][\Isotope\Model\Attribute::getTable()]['fields']['legend']['options'];
-        $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][\Isotope\Model\Product::getTable()], array_flip($arrLegends));
+        $arrLegends = $GLOBALS['TL_DCA'][Attribute::getTable()]['fields']['legend']['options'];
+        $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][Product::getTable()], array_flip($arrLegends));
 
         $varValue = $objWidget->value;
 
@@ -152,8 +161,10 @@ class AttributeWizard extends \Backend
 
     /**
      * Generate list of fields and add missing ones from DCA
-     * @param   mixed
-     * @param   DataContainer
+     *
+     * @param mixed  $varValue The widget value
+     * @param object $dc       The DataContainer object
+     *
      * @return array
      */
     public function load($varValue, $dc)
@@ -202,9 +213,11 @@ class AttributeWizard extends \Backend
 
     /**
      * save_callback to sort attribute wizard fields by legend
-     * @param   mixed
-     * @param   DataContainer
-     * @return  string
+     *
+     * @param mixed  $varValue The widget value
+     * @param object $dc       The DataContainer object
+     *
+     * @return string
      */
     public function save($varValue, $dc)
     {

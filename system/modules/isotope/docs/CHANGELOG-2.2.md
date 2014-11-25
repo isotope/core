@@ -1,6 +1,22 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.0-stable (2014-11-24)
+---------------------------------
+
+### Improved
+- Added post-action hooks to product collection (#1292)
+
+### Fixed
+- Checkout step "address" could not be completed when a member was logged in (#1271)
+- Duplicating attribute did not copy the attribute options (#1265)
+- Rules were not applied to orders (#1290)
+- PSP payment was completed without successful postsale request (#1308)
+- Incorrect labels in product type when having multiple customer defined fields with options source "product" (#1291)
+- Options of multiple products where shown in all attributes (#1291)
+- Labels for attribute options were not visible in backend and documents (#1297)
+
+
 Version 2.2.0-rc1 (2014-10-07)
 --------------------------------
 

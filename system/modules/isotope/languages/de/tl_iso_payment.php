@@ -98,6 +98,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'][0] = 'Checkout-Bes
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'][1] = 'Der Kunde wird diese Beschreibung auf der Saferpay Checkout-Seite sehen.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig'][0] = 'Konfiguration Zahlungsseite (VTCONFIG)';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig'][1] = 'Sie können verschiedene Zahlseiten-Konfigurationen erstellen. Wenn Sie eine spezielle verwenden möchten, geben Sie den Wert des "Request"-Parameter hier ein.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Zahlungsarten';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][0] = 'ExperCash Popup-ID';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][1] = 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_profile'][0] = 'ExperCash Profil';

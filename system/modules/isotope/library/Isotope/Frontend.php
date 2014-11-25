@@ -632,10 +632,8 @@ window.addEvent('domready', function()
 
         // Set the current system to the language when the user placed the order.
         // This will result in correct e-mails and payment description.
-        if ($GLOBALS['TL_LANGUAGE'] != $strLanguage) {
-            $GLOBALS['TL_LANGUAGE'] = $strLanguage;
-            \System::loadLanguageFile('default', $strLanguage, true);
-        }
+        $GLOBALS['TL_LANGUAGE'] = $strLanguage;
+        \System::loadLanguageFile('default', $strLanguage, true);
 
         Isotope::setConfig($objOrder->getRelated('config_id'));
 

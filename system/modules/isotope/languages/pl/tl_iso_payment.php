@@ -98,6 +98,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'][0] = 'Opis zamówi
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'][1] = 'Klient zobaczy ten opis na stronie zamówienia Saferpay.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig'][0] = 'Konfiguracja strony płatności (VTCONFIG)';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig'][1] = 'Możesz utworzyć różne konfiguracje strony płatności. Jeśli chcesz użyć konkretnej z nich, wprowadź jej "Parametr dla zapytania" tutaj.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Metody płatności';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][0] = 'ExperCash Popup-ID';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_popupId'][1] = 'Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_profile'][0] = 'ExperCash Profile';

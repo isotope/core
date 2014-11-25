@@ -34,7 +34,10 @@ class Automator extends \Controller
     public function deleteOldCarts()
     {
         $t = Cart::getTable();
-        $objCarts = Cart::findBy(array("$t.member=0", "$t.tstamp<?"), array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']));
+        $objCarts = Cart::findBy(
+            array("($t.member=0 AND $t.tstamp<?) OR $t.member NOT IN (SELECT id FROM tl_member)"),
+            array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout'])
+        );
 
         if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
             \System::log('Deleted ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);

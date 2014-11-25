@@ -414,9 +414,11 @@ class Checkout extends Module
     {
         // Redirect to login page if not logged in
         if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true) {
-            $objPage = \Database::getInstance()->prepare("SELECT id,alias FROM tl_page WHERE id=?")->limit(1)->execute($this->iso_login_jumpTo);
 
-            if (!$objPage->numRows) {
+            /** @type \PageModel $objJump */
+            $objJump = \PageModel::findPublishedById($this->iso_login_jumpTo);
+
+            if (null === $objJump) {
                 $this->Template          = new \Isotope\Template('mod_message');
                 $this->Template->type    = 'error';
                 $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
@@ -424,7 +426,8 @@ class Checkout extends Module
                 return false;
             }
 
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+            $objJump->loadDetails();
+            \Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
 
         } elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true) {
             $this->Template          = new \Isotope\Template('mod_message');
@@ -446,10 +449,13 @@ class Checkout extends Module
         // Insufficient cart subtotal
         if (Isotope::getCart()->hasErrors()) {
             if ($this->iso_cart_jumpTo > 0) {
-                $objJump = \PageModel::findWithDetails($this->iso_cart_jumpTo);
+
+                /** @type \PageModel $objJump */
+                $objJump = \PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
-                    \Controller::redirect(\Controller::generateFrontendUrl($objJump->row(), null, $objJump->language));
+                    $objJump->loadDetails();
+                    \Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
                 }
             }
 

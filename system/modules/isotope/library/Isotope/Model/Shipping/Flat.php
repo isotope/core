@@ -19,11 +19,9 @@ use Isotope\Model\Shipping;
 
 
 /**
- * Class ShippingFlat
+ * Class Flat
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property string flatCalculation
  */
 class Flat extends Shipping implements IsotopeShipping
 {

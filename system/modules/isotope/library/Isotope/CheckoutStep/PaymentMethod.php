@@ -149,8 +149,8 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         return array(
             'payment_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'     => Isotope::getCart()->getPaymentMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getPaymentMethod()->note,
+                'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
+                'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->note,
                 'edit'     => \Isotope\Module\Checkout::generateUrlForStep('payment'),
             ),
         );

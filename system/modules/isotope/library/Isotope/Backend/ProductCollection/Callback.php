@@ -55,7 +55,7 @@ class Callback extends \Backend
             $args[2]   = $arrTokens['hcard_fn'];
         }
 
-        $args[3] = Isotope::formatPriceWithCurrency($row['grandTotal']);
+        $args[3] = Isotope::formatPriceWithCurrency($row['total']);
 
         /** @var \Isotope\Model\OrderStatus $objStatus */
         if (($objStatus = $objOrder->getRelated('order_status')) !== null) {

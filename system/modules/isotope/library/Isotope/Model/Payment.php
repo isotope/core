@@ -20,11 +20,30 @@ use Isotope\Translation;
 
 /**
  * Class Payment
- *
  * Parent class for all payment gateway modules.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ *
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string label
+ * @property string type
+ * @property string note
+ * @property int    new_order_status
+ * @property string price
+ * @property int    tax_class
+ * @property string trans_type
+ * @property float  minimum_total
+ * @property float  maximum_total
+ * @property array  countries
+ * @property array  shipping_modules
+ * @property array  product_types
+ * @property string product_types_condition
+ * @property array  config_ids
+ * @property bool   guests
+ * @property bool   protected
+ * @property array  groups
+ * @property bool   debug
+ * @property bool   enabled
  */
 abstract class Payment extends TypeAgent
 {
@@ -114,10 +133,6 @@ abstract class Payment extends TypeAgent
         if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)))) {
             return false;
         }
-
-
-
-
 
         $arrConfigTypes = deserialize($this->product_types);
 

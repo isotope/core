@@ -15,7 +15,7 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
-use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\Shipping;
 use Haste\Http\Response\Response;
 
@@ -30,17 +30,18 @@ define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 define('TL_MODE', 'FE');
 define('BYPASS_TOKEN_CHECK', true);
 
-require '../../initialize.php';
+// Include the Contao initialization script
+if (file_exists('../../initialize.php')) {
+    // Regular way
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../initialize.php');
+} else {
+    // Try composer location (see #1136)
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../../../../../../system/initialize.php');
+}
 
 
-/**
- * Class PostSale
- *
- * Handle postsale (server-to-server) communication
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class PostSale extends \Frontend
 {
     /**
@@ -57,9 +58,6 @@ class PostSale extends \Frontend
 
     /**
      * Must be defined cause parent is protected.
-     *
-     * @access public
-     * @return void
      */
     public function __construct()
     {
@@ -69,6 +67,7 @@ class PostSale extends \Frontend
         unset($GLOBALS['TL_HOOKS']);
 
         // Need to load our own Hooks (e.g. loadDataContainer)
+        /** @noinspection PhpIncludeInspection */
         include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 
         // Default parameters
@@ -162,6 +161,7 @@ class PostSale extends \Frontend
                 $objResponse->send();
             }
 
+            /** @type Order $objOrder */
             $objOrder = $objMethod->getPostsaleOrder();
 
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {

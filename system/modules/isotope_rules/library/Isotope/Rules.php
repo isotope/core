@@ -15,6 +15,7 @@ namespace Isotope;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
 use Isotope\Model\Rule;
 
@@ -130,6 +131,12 @@ class Rules extends \Controller
      */
     public function findSurcharges(IsotopeProductCollection $objCollection)
     {
+        // The checkout review pages shows an order, but we need the cart
+        // Only the cart contains coupons etc.
+        if ($objCollection instanceof Order) {
+            $objCollection = $objCollection->getRelated('source_collection_id');
+        }
+
         // Rules should only be applied to Cart, not any other product collection
         if (!($objCollection instanceof Cart)) {
             return array();
@@ -223,7 +230,7 @@ class Rules extends \Controller
 
         $objRules = Rule::findForCartWithCoupons();
 
-        if (null === $objRules || !count(array_diff($objRules->fetchEach('code'), $arrCoupons))) {
+        if (null === $objRules) {
             return '';
         }
 
@@ -236,6 +243,8 @@ class Rules extends \Controller
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['couponHeadline'];
         $objTemplate->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $objTemplate->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
+        $objTemplate->usedCoupons = $arrCoupons;
+        $objTemplate->rules = $objRules;
 
         if ($_SESSION['COUPON_FAILED'][$objModule->id] != '') {
             $objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];

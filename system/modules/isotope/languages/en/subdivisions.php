@@ -1146,16 +1146,6 @@ $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-38'] = 'Isère';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-42'] = 'Loire';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-69'] = 'Rhône';
 $GLOBALS['TL_LANG']['DIV']['fr']['FR-V']['FR-73'] = 'Savoie';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-GP'][''] = 'Guadeloupe';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-GF'][''] = 'Guyane (francaise)';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-MQ'][''] = 'Martinique';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-RE'][''] = 'Réunion';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-YT'][''] = 'Mayotte';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-PM'][''] = 'Saint-Pierre-et-Miquelon';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-NC'][''] = 'Nouvelle-Calédonie';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-PF'][''] = 'Polynésie française';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-TF'][''] = 'Terres Australes';
-$GLOBALS['TL_LANG']['DIV']['fr']['FR-WF'][''] = 'Wallis et Futuna';
 
 $GLOBALS['TL_LANG']['DIV']['gf']['GF-GF'] = 'French Guiana';
 

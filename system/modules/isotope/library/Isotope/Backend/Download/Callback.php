@@ -175,7 +175,8 @@ class Callback extends \Backend
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $this->createInitialVersion('tl_iso_download', $intId);
+        $objVersions = new \Versions('tl_iso_download', $intId);
+        $objVersions->initialize();
 
         // Trigger the save_callback
         if (is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'])) {
@@ -188,6 +189,7 @@ class Callback extends \Backend
         // Update the database
         \Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
-        $this->createNewVersion('tl_iso_download', $intId);
+        $objVersions->create();
+        $this->log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
     }
 }

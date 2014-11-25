@@ -57,8 +57,9 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['print']                   = 'P
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']               = 'The status of your order has been updated.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']  = 'Notifications (e.g. email to client) have been sent.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']    = 'Notifications (e.g. email to client) clould not be sent. Check the system log.';
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']           = 'Saferpay status was successfully updated.';
-$GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']             = 'Saferpay status could not be updated! Please check the Saferpay web interface.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']           = 'Saferpay payment was sucessfully captured.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']             = 'Saferpay payment could not be captured! Please check <a href="https://www.saferpay.com/BO/Login/" target="_blank">the Saferpay web interface</a>.';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']            = 'Saferpay payment cannot be canceled automatically. Use <a href="https://www.saferpay.com/BO/Login/" target="_blank">the Saferpay web interface</a> to issue a refund.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData']                     = 'No additional email data available.';
 
 /**

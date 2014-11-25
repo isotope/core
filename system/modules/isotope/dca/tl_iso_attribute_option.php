@@ -218,6 +218,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
 // Using onload_callback is too late
 if (\Input::get('do') == 'iso_products') {
     $GLOBALS['TL_DCA']['tl_iso_attribute_option']['config']['ptable'] = 'tl_iso_product';
-    //$GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = array(array('field_name'=>\Input::get('field')));
+    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = array(array('field_name=?', \Input::get('field')));
     $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['headerFields'] = array('name', 'type', 'alias', 'published');
 }

@@ -319,10 +319,10 @@ class Address extends \Model
 
         if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
 
-            $arrData = array_intersect_key(
+            // Generate address data from tl_member, limit to fields enabled in the shop configuration
+            $arrMember = array_intersect_key(
                 array_merge(
                     $objMember->row(),
-                    $arrData,
                     array(
                          'street_1'    => $objMember->street,
 
@@ -332,6 +332,8 @@ class Address extends \Model
                 ),
                 array_flip($arrFill)
             );
+
+            $arrData = array_merge($arrMember, $arrData);
         }
 
         $objAddress->setRow($arrData);
@@ -371,10 +373,10 @@ class Address extends \Model
             && is_array($arrFill)
             && ($objMember = \MemberModel::findByPk($objCollection->member)) !== null
         ) {
-            $arrData = array_intersect_key(
+            // Generate address data from tl_member, limit to fields enabled in the shop configuration
+            $arrMember = array_intersect_key(
                 array_merge(
                     $objMember->row(),
-                    $arrData,
                     array(
                         'street_1'    => $objMember->street,
 
@@ -384,6 +386,8 @@ class Address extends \Model
                 ),
                 array_flip($arrFill)
             );
+
+            $arrData = array_merge($arrMember, $arrData);
         }
 
         if ($objAddress->country == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {

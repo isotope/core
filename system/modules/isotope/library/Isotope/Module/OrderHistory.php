@@ -90,20 +90,21 @@ class OrderHistory extends Module
             return;
         }
 
-        while ($objOrders->next()) {
-            Isotope::setConfig($objOrders->current()->getRelated('config_id'));
+        /** @type Order $objOrder */
+        foreach ($objOrders as $objOrder) {
+            Isotope::setConfig($objOrder->getRelated('config_id'));
 
             $arrOrders[] = array
             (
-                'collection' => $objOrders->current(),
-                'raw'        => $objOrders->current()->row(),
-                'date'       => Format::date($objOrders->current()->locked),
-                'time'       => Format::time($objOrders->current()->locked),
-                'datime'     => Format::datim($objOrders->current()->locked),
-                'grandTotal' => Isotope::formatPriceWithCurrency($objOrders->current()->getTotal()),
-                'status'     => $objOrders->current()->getStatusLabel(),
-                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrders->current()->uniqid, $this->jumpTo)) : ''),
-                'class'      => $objOrders->current()->getStatusAlias(),
+                'collection' => $objOrder,
+                'raw'        => $objOrder->row(),
+                'date'       => Format::date($objOrder->locked),
+                'time'       => Format::time($objOrder->locked),
+                'datime'     => Format::datim($objOrder->locked),
+                'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
+                'status'     => $objOrder->getStatusLabel(),
+                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
+                'class'      => $objOrder->getStatusAlias(),
             );
         }
 
