@@ -75,16 +75,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
         ),
-        'operations' => array
-        (
-            'cut' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_category']['cut'],
-                'href'              => 'act=paste&amp;mode=cut',
-                'icon'              => 'cut.gif',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"'
-            ),
-        )
     ),
 
     'fields' => array
