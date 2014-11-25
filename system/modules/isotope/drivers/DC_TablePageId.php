@@ -452,34 +452,6 @@ class DC_TablePageId extends \DC_Table
 
 
     /**
-     * Change the order of two neighbour database records
-     */
-    public function move()
-    {
-        // Proceed only if all mandatory variables are set
-        if ($this->intId && \Input::get('sid') && (!$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['root'] || !in_array($this->intId, $this->root)))
-        {
-            $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=? OR id=?")
-                                     ->limit(2)
-                                     ->execute($this->intId, \Input::get('sid'));
-
-            $row = $objRow->fetchAllAssoc();
-
-            if ($row[0]['page_id'] == $row[1]['page_id'])
-            {
-                $this->Database->prepare("UPDATE " . $this->strTable . " SET sorting=? WHERE id=?")
-                               ->execute($row[0]['sorting'], $row[1]['id']);
-
-                $this->Database->prepare("UPDATE " . $this->strTable . " SET sorting=? WHERE id=?")
-                               ->execute($row[1]['sorting'], $row[0]['id']);
-            }
-        }
-
-        $this->redirect($this->getReferer());
-    }
-
-
-    /**
      * Delete all incomplete and unrelated records
      */
     protected function reviseTable()
