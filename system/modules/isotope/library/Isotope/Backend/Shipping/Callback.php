@@ -13,7 +13,9 @@
 namespace Isotope\Backend\Shipping;
 
 
-class Callback extends \Backend
+use Isotope\Backend\Permission;
+
+class Callback extends Permission
 {
 
     /**
@@ -54,44 +56,18 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
-            case 'toggle':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)) {
-                    $arrNew = $this->Session->get('new_records');
-
-                    if (is_array($arrNew['tl_iso_shipping']) && in_array(\Input::get('id'), $arrNew['tl_iso_shipping'])) {
-                        // Add permissions on user level
-                        if (\BackendUser::getInstance()->inherit == 'custom' || !\BackendUser::getInstance()->groups[0]) {
-                            $objUser        = \Database::getInstance()->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user WHERE id=?")->limit(1)->execute(\BackendUser::getInstance()->id);
-                            $arrPermissions = deserialize($objUser->iso_shipping_modulep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objUser->iso_shipping_modules);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_shipping_modules=? WHERE id=?")->execute(serialize($arrAccess), \BackendUser::getInstance()->id);
-                            }
-                        } // Add permissions on group level
-                        elseif (\BackendUser::getInstance()->groups[0] > 0) {
-                            $objGroup       = \Database::getInstance()->prepare("SELECT iso_shipping_modules, iso_shipping_modulep FROM tl_user_group WHERE id=?")->limit(1)->execute(\BackendUser::getInstance()->groups[0]);
-                            $arrPermissions = deserialize($objGroup->iso_shipping_modulep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objGroup->iso_shipping_modules);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_shipping_modules=? WHERE id=?")->execute(serialize($arrAccess), \BackendUser::getInstance()->groups[0]);
-                            }
-                        }
-
-                        // Add new element to the user object
-                        $root[] = \Input::get('id');
-                        \BackendUser::getInstance()->iso_shipping_modules = $root;
-                    }
+                if (!in_array(\Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_shipping_modules', 'iso_shipping_modulep')
+                ) {
+                    $root[] = \Input::get('id');
+                    \BackendUser::getInstance()->iso_shipping_modules = $root;
                 }
             // No break;
 
+            case 'toggle':
             case 'copy':
             case 'delete':
             case 'show':

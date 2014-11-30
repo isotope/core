@@ -13,6 +13,7 @@ Version 2.1.10-stable (2014-??-??)
 - Default template setting for product collection was missing
 - Products not inside a group could not always be edited by regular users
 - Cached InsertTags in order prefix were not replaced
+- Permission for new records was not correctly added to group if it was not the first in the list
 
 
 Version 2.1.9-stable (2014-11-18)

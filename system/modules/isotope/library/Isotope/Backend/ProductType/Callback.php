@@ -12,11 +12,12 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Isotope\Backend\Permission;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 
 
-class Callback extends \Backend
+class Callback extends Permission
 {
 
     /**
@@ -59,40 +60,14 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)) {
-                    $arrNew = $this->Session->get('new_records');
-
-                    if (is_array($arrNew['tl_iso_producttype']) && in_array(\Input::get('id'), $arrNew['tl_iso_producttype'])) {
-                        // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser        = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
-                            $arrPermissions = deserialize($objUser->tl_iso_producttypep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objUser->iso_product_types);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
-                            }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
-                            $objGroup       = \Database::getInstance()->prepare("SELECT iso_product_types, iso_product_typep FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
-                            $arrPermissions = deserialize($objGroup->iso_product_typep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objGroup->iso_product_types);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_product_types=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
-                            }
-                        }
-
-                        // Add new element to the user object
-                        $root[]                        = \Input::get('id');
-                        $this->User->iso_product_types = $root;
-                    }
+                if (!in_array(\Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_product_types', 'iso_product_typep')
+                ) {
+                    $root[]                        = \Input::get('id');
+                    $this->User->iso_product_types = $root;
                 }
             // No break;
 
