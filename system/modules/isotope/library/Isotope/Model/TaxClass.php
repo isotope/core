@@ -30,6 +30,15 @@ class TaxClass extends \Model
      */
     protected static $strTable = 'tl_iso_tax_class';
 
+    /**
+     * Get translated name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return Translation::get($this->name);
+    }
 
     /**
      * Get label
@@ -37,7 +46,7 @@ class TaxClass extends \Model
      */
     public function getLabel()
     {
-        return Translation::get($this->label ? : $this->name);
+        return $this->label ? Translation::get($this->label) : '';
     }
 
     /**
