@@ -7,6 +7,7 @@ Version 2.1.10-stable (2014-??-??)
 ### Improved
 - Disabled chosen menu for store country selection (did not work with subdivision selection)
 - Payment method correctly return an invalid order if not found instead of throwing exceptions
+- Do not allow to add parent of variant product to the collection (#1303)
 
 ### Fixed
 - Postsale requests did not work when using Composer (#1136)
