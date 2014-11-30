@@ -67,17 +67,20 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
+
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)) {
                     $arrNew = $this->Session->get('new_records');
 
                     if (is_array($arrNew['tl_iso_config']) && in_array(\Input::get('id'), $arrNew['tl_iso_config'])) {
-                        // Add permissions on user level
                         if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user WHERE id=?")
-                                ->limit(1)
-                                ->execute($this->User->id);
+                            // Add permissions on user level
+
+                            $objUser = \Database::getInstance()->prepare(
+                                "SELECT iso_configs, iso_configp FROM tl_user WHERE id=?"
+                            )->limit(1)->execute($this->User->id);
 
                             $arrPermissions = deserialize($objUser->iso_configp);
 
@@ -88,8 +91,9 @@ class Callback extends \Backend
                                 \Database::getInstance()->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
                                                         ->execute(serialize($arrAccess), $this->User->id);
                             }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
+                        } elseif ($this->User->groups[0] > 0) {
+                            // Add permissions on group level
+
                             $objGroup = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user_group WHERE id=?")
                                                                 ->limit(1)
                                                                 ->execute($this->User->groups[0]);

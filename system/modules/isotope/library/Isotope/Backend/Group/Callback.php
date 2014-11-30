@@ -21,22 +21,27 @@ class Callback extends \Backend
     public function __construct()
     {
         parent::__construct();
-        $this->import('BackendUser', 'User');
     }
-
 
     /**
      * Check access permissions
+     *
+     * @param object $dc
      */
     public function checkPermission($dc)
     {
-        if ($this->User->isAdmin) {
+        /** @type \BackendUser $user */
+        $user    = \BackendUser::getInstance();
+        $session = \Session::getInstance();
+        $db      = \Database::getInstance();
+
+        if ($user->isAdmin) {
             return;
         }
 
         // Load permissions in tl_iso_product
         if ($dc->table == 'tl_iso_product' || stripos(\Environment::get('request'), 'group.php') !== false) {
-            $arrGroups = $this->User->iso_groups;
+            $arrGroups = $user->iso_groups;
 
             if (!is_array($arrGroups) || empty($arrGroups)) {
                 $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['filter'][] = array('id=?', 0);
@@ -47,17 +52,17 @@ class Callback extends \Backend
             return;
         }
 
-        if (!is_array($this->User->iso_groupp) || empty($this->User->iso_groupp)) {
+        if (!is_array($user->iso_groupp) || empty($user->iso_groupp)) {
             \System::log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_groups) || empty($this->User->iso_groups)) {
+        if (!is_array($user->iso_groups) || empty($user->iso_groups)) {
             $root = array();
         } else {
             try {
-                $root = $this->eliminateNestedPages($this->User->iso_groups, 'tl_iso_group');
+                $root = $this->eliminateNestedPages($user->iso_groups, 'tl_iso_group');
             } catch (\Exception $e) {
                 $root = array();
             }
@@ -65,12 +70,12 @@ class Callback extends \Backend
 
         $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = (empty($root) ? true : $root);
 
-        if (in_array('rootPaste', $this->User->iso_groupp)) {
+        if (in_array('rootPaste', $user->iso_groupp)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
         // Check permissions to add product group
-        if (!in_array('create', $this->User->iso_groupp)) {
+        if (!in_array('create', $user->iso_groupp)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
@@ -82,17 +87,22 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
+
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)) {
-                    $arrNew = $this->Session->get('new_records');
+                    $arrNew = $session->get('new_records');
 
                     if (is_array($arrNew['tl_iso_group']) && in_array(\Input::get('id'), $arrNew['tl_iso_group'])) {
                         // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?")
-                                ->limit(1)
-                                ->execute($this->User->id);
+
+                        if ($user->inherit == 'custom'
+                            || !$user->groups[0]
+                        ) {
+                            $objUser = $db->prepare("
+                                SELECT iso_groups, iso_groupp FROM tl_user WHERE id=?
+                            ")->limit(1)->execute($user->id);
 
                             $arrPermissions = deserialize($objUser->iso_groupp);
 
@@ -100,14 +110,17 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objUser->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_groups=? WHERE id=?")
-                                    ->execute(serialize($arrAccess), $this->User->id);
+                                $db->prepare(
+                                    "UPDATE tl_user SET iso_groups=? WHERE id=?"
+                                )->execute(serialize($arrAccess), $user->id);
                             }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
-                            $objGroup = \Database::getInstance()->prepare("SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?")
-                                ->limit(1)
-                                ->execute($this->User->groups[0]);
+
+                        } elseif ($user->groups[0] > 0) {
+                            // Add permissions on group level
+
+                            $objGroup = $db->prepare("
+                                SELECT iso_groups, iso_groupp FROM tl_user_group WHERE id=?
+                            ")->limit(1)->execute($user->groups[0]);
 
                             $arrPermissions = deserialize($objGroup->iso_groupp);
 
@@ -115,14 +128,15 @@ class Callback extends \Backend
                                 $arrAccess   = deserialize($objGroup->iso_groups);
                                 $arrAccess[] = \Input::get('id');
 
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_groups=? WHERE id=?")
-                                    ->execute(serialize($arrAccess), $this->User->groups[0]);
+                                $db->prepare("
+                                    UPDATE tl_user_group SET iso_groups=? WHERE id=?
+                                ")->execute(serialize($arrAccess), $user->groups[0]);
                             }
                         }
 
                         // Add new element to the user object
-                        $root[]                 = \Input::get('id');
-                        $this->User->iso_groups = $root;
+                        $root[]           = \Input::get('id');
+                        $user->iso_groups = $root;
                     }
                 }
             // No break;
@@ -130,7 +144,12 @@ class Callback extends \Backend
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_groupp'))) {
+                if (!in_array(\Input::get('id'), $root)
+                    || (
+                        \Input::get('act') == 'delete'
+                        && !$user->hasAccess('delete', 'iso_groupp')
+                    )
+                ) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' group ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -139,13 +158,13 @@ class Callback extends \Backend
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $session = $this->Session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_groupp')) {
-                    $session['CURRENT']['IDS'] = array();
+                $sessionData = $session->getData();
+                if (\Input::get('act') == 'deleteAll' && !$user->hasAccess('delete', 'iso_groupp')) {
+                    $sessionData['CURRENT']['IDS'] = array();
                 } else {
-                    $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
+                    $sessionData['CURRENT']['IDS'] = array_intersect($sessionData['CURRENT']['IDS'], $root);
                 }
-                $this->Session->setData($session);
+                $session->setData($sessionData);
                 break;
 
             default:
@@ -157,17 +176,17 @@ class Callback extends \Backend
         }
     }
 
-
     /**
      * Add an image to each group in the tree
-     * @param array
-     * @param string
-     * @param DataContainer
-     * @param string
-     * @param boolean
+     *
+     * @param array          $row
+     * @param string         $label
+     * @param \DataContainer $dc
+     * @param string         $imageAttribute
+     *
      * @return string
      */
-    public function addIcon($row, $label, \DataContainer $dc = null, $imageAttribute = '', $blnReturnImage = false)
+    public function addIcon($row, $label, \DataContainer $dc = null, $imageAttribute = '')
     {
         $image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
 
@@ -184,11 +203,10 @@ class Callback extends \Backend
         }
     }
 
-
     /**
      * Reassign products to no group when group is deleted
-     * @param object
-     * @return void
+     *
+     * @param object $dc
      */
     public function deleteGroup($dc)
     {
@@ -198,40 +216,52 @@ class Callback extends \Backend
         \Database::getInstance()->query("UPDATE tl_iso_product SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
     }
 
-
     /**
      * Disable copy button if user has no permission to create groups
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function copyButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('create', $this->User->iso_groupp))) {
+        if (!\BackendUser::getInstance()->isAdmin
+            && (
+                !is_array(\BackendUser::getInstance()->iso_groupp)
+                || !in_array('create', \BackendUser::getInstance()->iso_groupp)
+            )
+        ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
         return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
-
     /**
      * Disable delete button if user has no permission to delete groups
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!$this->User->isAdmin && (!is_array($this->User->iso_groupp) || !in_array('delete', $this->User->iso_groupp))) {
+        if (!\BackendUser::getInstance()->isAdmin
+            && (
+                !is_array(\BackendUser::getInstance()->iso_groupp)
+                || !in_array('delete', \BackendUser::getInstance()->iso_groupp)
+            )
+        ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
