@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.2.1-stable (2014-??-??)
 ---------------------------------
 
+### Fixed
+- Custom template for gallery was not correctly set (#1321)
 
 
 Version 2.2.0-stable (2014-11-24)

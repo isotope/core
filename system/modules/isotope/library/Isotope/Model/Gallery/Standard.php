@@ -57,9 +57,8 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && TL_MODE == 'FE')
-        {
-            $this->strTemplate = $this->customTpl;
+        if ($arrData['customTpl'] != '' && TL_MODE == 'FE') {
+            $this->strTemplate = $arrData['customTpl'];
         }
 
         return parent::setRow($arrData);
