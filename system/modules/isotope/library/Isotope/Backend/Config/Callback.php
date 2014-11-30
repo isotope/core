@@ -186,7 +186,9 @@ class Callback extends Permission
                 $image = 'money';
         }
 
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/assets/images/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
+        $style = 'background-image:url(\'system/modules/isotope/assets/images/' . $image . '.png\');line-height:16px';
+
+        return sprintf('<div class="list_icon" style="%s" title="%s">%s</div>', $style, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
     }
 
 

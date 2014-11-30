@@ -28,6 +28,11 @@ use Isotope\Model\ProductCollection\Order;
 class Automator extends \Controller
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Remove carts that have not been accessed for a given number of days
      */
