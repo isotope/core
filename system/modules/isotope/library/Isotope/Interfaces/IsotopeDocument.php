@@ -20,15 +20,18 @@ interface IsotopeDocument
 
     /**
      * Generate the document and send it to browser
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection $objCollection
      */
     public function outputToBrowser(IsotopeProductCollection $objCollection);
 
     /**
      * Generate the document and store it to a given path
-     * @param   IsotopeProductCollection
-     * @param   string Absolute path to the directory the file should be stored in
-     * @return  string Absolute path to the file
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param string                   $strDirectoryPath Absolute path to the directory the file should be stored in
+     *
+     * @return string Absolute path to the file
      */
     public function outputToFile(IsotopeProductCollection $objCollection, $strDirectoryPath);
 }
