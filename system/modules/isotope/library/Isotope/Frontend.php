@@ -622,7 +622,7 @@ window.addEvent('domready', function()
     {
         global $objPage;
 
-        $strLanguage ?: $objOrder->language;
+        $strLanguage = $strLanguage ?: $objOrder->language;
 
         // Load page configuration
         if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
