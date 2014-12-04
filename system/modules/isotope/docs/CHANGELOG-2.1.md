@@ -18,6 +18,7 @@ Version 2.1.10-stable (2014-??-??)
 - Tax class name should not be used as label (#1317)
 - Empty related products prevented page indexing (#1316)
 - strlen() call on postsale parameters that are potentially arrays (#1331)
+- Payone language parameter should not be uppercase (#1333)
 
 
 Version 2.1.9-stable (2014-11-18)

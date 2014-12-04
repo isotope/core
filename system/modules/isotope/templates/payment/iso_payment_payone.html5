@@ -14,7 +14,7 @@
 <input type="hidden" name="country" value="<?php echo strtoupper($this->billing_address['country']); ?>">
 <input type="hidden" name="email" value="<?php echo $this->billing_address['email']; ?>">
 <input type="hidden" name="telephonenumber" value="<?php echo $this->billing_address['phone']; ?>">
-<input type="hidden" name="language" value="<?php echo strtoupper($GLOBALS['TL_LANGUAGE']); ?>">
+<input type="hidden" name="language" value="<?php echo $GLOBALS['TL_LANGUAGE']; ?>">
 <noscript>
 <input type="submit" value="<?php echo $this->slabel; ?>">
 </noscript>
