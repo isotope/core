@@ -17,6 +17,7 @@ Version 2.1.10-stable (2014-??-??)
 - Permission for new records was not correctly added to group if it was not the first in the list
 - Tax class name should not be used as label (#1317)
 - Empty related products prevented page indexing (#1316)
+- strlen() call on postsale parameters that are potentially arrays (#1331)
 
 
 Version 2.1.9-stable (2014-11-18)
