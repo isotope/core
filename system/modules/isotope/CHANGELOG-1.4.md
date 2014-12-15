@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+SUPPORT BRANCH ONLY
+-------------------
+
+- Removed the backend category filter
+- Fixed from-price calculation for product variants
+- Added login for invalid postsale requests
+- Added status handling for PSP payment methods
+- Added more parameters to the calculateTax hook
+- Added hook to modify fields in the address checkout process
+
+
 Version 1.4.8 (2013-12-19)
 --------------------------
 
