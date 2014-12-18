@@ -19,6 +19,7 @@ Version 2.1.10-stable (2014-??-??)
 - Empty related products prevented page indexing (#1316)
 - strlen() call on postsale parameters that are potentially arrays (#1331)
 - Payone language parameter should not be uppercase (#1333)
+- Shipping tax was applied even if no products were shipped
 
 
 Version 2.1.9-stable (2014-11-18)
