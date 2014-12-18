@@ -359,6 +359,8 @@ window.addEvent('domready', function()
             $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price);
             $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
             $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
+            $arrReturn[$k]['raw']         = $objSurcharge->row();
+            $arrReturn[$k]['surcharge']   = $objSurcharge;
         }
 
         return $arrReturn;
