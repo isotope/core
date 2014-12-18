@@ -388,7 +388,7 @@ class Isotope extends Controller
 			foreach ($GLOBALS['ISO_HOOKS']['calculateTax'] as $callback)
 			{
 				$this->import($callback[0]);
-				$varValue = $this->$callback[0]->$callback[1]($objTaxClass, $fltPrice, $blnAdd, $arrAddresses);
+				$varValue = $this->$callback[0]->$callback[1]($objTaxClass, $fltPrice, $blnAdd, $arrAddresses, $blnSubtract);
 
 				if ($varValue !== false)
 				{
