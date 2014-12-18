@@ -252,14 +252,17 @@ class Frontend extends \Frontend
             }
 
             return '';
+
         } elseif ($arrTag[0] == 'isolabel') {
             return Translation::get($arrTag[1], $arrTag[2]);
+
         } elseif ($arrTag[0] == 'order') {
             if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
                 return $objOrder->{$arrTag[1]};
             }
 
             return '';
+
         } elseif ($arrTag[0] == 'product') {
             // 2 possible use cases:
             // {{product::attribute}}                - gets the data of the current product (Product::getActive() or GET parameter "product")
@@ -274,6 +277,23 @@ class Frontend extends \Frontend
             }
 
             return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
+        } elseif ($arrTag[0] == 'billing_address') {
+            if (($address = Isotope::getCart()->getBillingAddress()) !== null) {
+                $tokens = $address->getTokens();
+
+                return $tokens[$arrTag[1]];
+            }
+
+            return '';
+
+        } elseif ($arrTag[0] == 'shipping_address') {
+            if (Isotope::getCart()->hasShipping() && ($address = Isotope::getCart()->getShippingAddress()) !== null) {
+                $tokens = $address->getTokens();
+
+                return $tokens[$arrTag[1]];
+            }
+
+            return '';
         }
 
         return false;
