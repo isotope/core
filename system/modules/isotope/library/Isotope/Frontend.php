@@ -81,7 +81,7 @@ class Frontend extends \Frontend
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
 
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
-            if (!\Environment::isAjaxRequest) {
+            if (!\Environment::get('isAjaxRequest')) {
                 $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
             }
 
