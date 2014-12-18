@@ -242,7 +242,11 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         /** @var \Isotope\Model\ProductCollection\Order $objCollection */
         /** @var Tax[] $arrTaxes */
         $arrTaxes     = array();
-        $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
+        $arrAddresses = array('billing' => $objCollection->getBillingAddress());
+
+        if ($objCollection->hasShipping()) {
+            $arrAddresses['shipping'] = $objCollection->getShippingAddress();
+        }
 
         foreach ($objCollection->getItems() as $objItem) {
             // This should never happen, but we can't calculate it
@@ -465,7 +469,11 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
 
                     $fltPrice = $objSurcharge->total_price;
-                    $arrAddresses = array('billing' => $objCollection->getBillingAddress(), 'shipping' => $objCollection->getShippingAddress());
+                    $arrAddresses = array('billing' => $objCollection->getBillingAddress());
+
+                    if ($objCollection->hasShipping()) {
+                        $arrAddresses['shipping'] = $objCollection->getShippingAddress();
+                    }
 
                     if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);

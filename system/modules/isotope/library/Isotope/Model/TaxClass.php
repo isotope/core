@@ -60,7 +60,11 @@ class TaxClass extends \Model
     public function calculatePrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
+            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+
+            if (Isotope::getCart()->hasShipping()) {
+                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
+            }
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */
@@ -98,7 +102,11 @@ class TaxClass extends \Model
     public function calculateGrossPrice($fltPrice, $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
+            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+
+            if (Isotope::getCart()->hasShipping()) {
+                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
+            }
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */
