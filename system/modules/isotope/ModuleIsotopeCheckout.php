@@ -1249,6 +1249,16 @@ class ModuleIsotopeCheckout extends ModuleIsotope
 		$arrFields = ($strAddressType == 'billing_address' ? $this->Isotope->Config->billing_fields : $this->Isotope->Config->shipping_fields);
 		$arrDefault = $this->Isotope->Cart->$strAddressType;
 
+        // !HOOK: modify address fields in checkout process
+        if (isset($GLOBALS['ISO_HOOKS']['modifyAddressFields']) && is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields']))
+        {
+            foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback)
+            {
+                $this->import($callback[0]);
+                $arrFields = $this->$callback[0]->$callback[1]($arrFields, $strAddressType, $arrDefault);
+            }
+        }
+
 		if ($arrDefault['id'] == -1)
 		{
 			$arrDefault = array();
