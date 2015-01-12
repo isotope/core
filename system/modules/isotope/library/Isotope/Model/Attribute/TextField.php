@@ -29,6 +29,8 @@ class TextField extends Attribute implements IsotopeAttribute
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        $maxlength = (int) $this->maxlength ?: 255;
+
+        $arrData['fields'][$this->field_name]['sql'] = "varchar($maxlength) NOT NULL default ''";
     }
 }
