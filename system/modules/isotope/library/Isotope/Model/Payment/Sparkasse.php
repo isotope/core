@@ -91,7 +91,7 @@ class Sparkasse extends Postsale implements IsotopePayment
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('orderid'));
+        return Order::findByPk((int) \Input::post('orderid'));
     }
 
     /**

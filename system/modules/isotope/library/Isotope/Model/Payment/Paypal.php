@@ -119,7 +119,7 @@ class Paypal extends Postsale implements IsotopePayment
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('invoice'));
+        return Order::findByPk((int) \Input::post('invoice'));
     }
 
     /**

@@ -101,4 +101,12 @@ class RelatedProducts extends ProductList
         
         return (null === $objProducts) ? array() : $objProducts->getModels();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function compileEmptyMessage($disableSearchIndex = true)
+    {
+        parent::compileEmptyMessage(false);
+    }
 }

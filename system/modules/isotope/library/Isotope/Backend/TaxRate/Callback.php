@@ -12,12 +12,13 @@
 
 namespace Isotope\Backend\TaxRate;
 
+use Isotope\Backend\Permission;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Model\TaxRate;
 
 
-class Callback extends \Backend
+class Callback extends Permission
 {
 
     /**
@@ -60,40 +61,14 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)) {
-                    $arrNew = $this->Session->get('new_records');
-
-                    if (is_array($arrNew['tl_iso_tax_rate']) && in_array(\Input::get('id'), $arrNew['tl_iso_tax_rate'])) {
-                        // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser        = \Database::getInstance()->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user WHERE id=?")->limit(1)->execute($this->User->id);
-                            $arrPermissions = deserialize($objUser->iso_tax_ratep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objUser->iso_tax_rates);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_tax_rates=? WHERE id=?")->execute(serialize($arrAccess), $this->User->id);
-                            }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
-                            $objGroup       = \Database::getInstance()->prepare("SELECT iso_tax_rates, iso_tax_ratep FROM tl_user_group WHERE id=?")->limit(1)->execute($this->User->groups[0]);
-                            $arrPermissions = deserialize($objGroup->iso_tax_ratep);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objGroup->iso_tax_rates);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_tax_rates=? WHERE id=?")->execute(serialize($arrAccess), $this->User->groups[0]);
-                            }
-                        }
-
-                        // Add new element to the user object
-                        $root[] = \Input::get('id');
-                        $this->User->iso_tax_rates = $root;
-                    }
+                if (!in_array(\Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_tax_rates', 'iso_tax_ratep')
+                ) {
+                    $root[] = \Input::get('id');
+                    $this->User->iso_tax_rates = $root;
                 }
             // No break;
 
