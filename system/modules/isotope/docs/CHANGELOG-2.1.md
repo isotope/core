@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.1.10-stable (2014-??-??)
+Version 2.1.10-stable (2015-??-??)
 ----------------------------------
 
 ### Improved
@@ -9,6 +9,7 @@ Version 2.1.10-stable (2014-??-??)
 - Payment method correctly return an invalid order if not found instead of throwing exceptions
 - Do not allow to add parent of variant product to the collection (#1303)
 - Text attributes were always 255 chars in database (#1329)
+- Add class "active" to first inline gallery image by default (#1342)
 
 ### Fixed
 - Postsale requests did not work when using Composer (#1136)
