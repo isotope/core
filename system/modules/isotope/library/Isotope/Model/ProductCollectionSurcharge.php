@@ -453,7 +453,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
         $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_free_total_price = $objSource->total_price;
+        $objSurcharge->tax_free_total_price = $objSurcharge->total_price;
         $objSurcharge->tax_class = $intTaxClass;
         $objSurcharge->before_tax = ($intTaxClass ? true : false);
         $objSurcharge->addToTotal = true;
