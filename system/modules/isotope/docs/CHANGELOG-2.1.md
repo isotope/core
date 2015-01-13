@@ -25,6 +25,7 @@ Version 2.1.10-stable (2015-??-??)
 - Shipping tax was applied even if no products were shipped
 - Shipping address could not be changed in checkout process (#1322)
 - Product filter on dynamic attributes could lead to error message (#1318)
+- Rules were not applied to net and gross prices (#1294)
 
 
 Version 2.1.9-stable (2014-11-18)
