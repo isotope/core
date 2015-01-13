@@ -553,7 +553,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
-            $objNew           = clone $objBillingAddress;
+            $arrData = array_intersect_key(
+                $objBillingAddress->row(),
+                array_flip(Isotope::getConfig()->getBillingFields())
+            );
+
+            $objNew           = new Address();
+            $objNew->setRow($arrData);
             $objNew->pid      = $this->id;
             $objNew->tstamp   = time();
             $objNew->ptable   = static::$strTable;
@@ -572,7 +578,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
         if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
 
-            $objNew           = clone $objShippingAddress;
+            $arrData = array_intersect_key(
+                $objShippingAddress->row(),
+                array_flip(Isotope::getConfig()->getShippingFields())
+            );
+
+            $objNew           = new Address();
+            $objNew->setRow($arrData);
             $objNew->pid      = $this->id;
             $objNew->tstamp   = time();
             $objNew->ptable   = static::$strTable;

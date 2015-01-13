@@ -10,6 +10,7 @@ Version 2.1.10-stable (2015-??-??)
 - Do not allow to add parent of variant product to the collection (#1303)
 - Text attributes were always 255 chars in database (#1329)
 - Add class "active" to first inline gallery image by default (#1342)
+- Remove disabled fields from member addresses on checkout (#1279)
 
 ### Fixed
 - Postsale requests did not work when using Composer (#1136)
