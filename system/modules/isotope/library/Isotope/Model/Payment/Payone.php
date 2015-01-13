@@ -65,7 +65,7 @@ class Payone extends Postsale implements IsotopePayment
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('reference'));
+        return Order::findByPk((int) \Input::post('reference'));
     }
 
     /**

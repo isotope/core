@@ -184,8 +184,22 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddress()
     {
-        $billingAddress = Isotope::getCart()->getShippingAddress();
+        $billingAddress = Isotope::getCart()->getBillingAddress();
         $shippingAddress = Isotope::getCart()->getShippingAddress();
+
+        if (null !== $shippingAddress
+            && null !== $billingAddress
+            && ($shippingAddress === $billingAddress
+                || $shippingAddress->id < 1
+            )
+            && Isotope::getCart()->shipping_address_id != $billingAddress->id
+        ) {
+            Isotope::getCart()->setShippingAddress($billingAddress);
+        } elseif (null !== $shippingAddress
+            && Isotope::getCart()->shipping_address_id != $shippingAddress->id
+        ) {
+            Isotope::getCart()->setShippingAddress($shippingAddress);
+        }
 
         return ($shippingAddress === $billingAddress) ? null : $shippingAddress;
     }

@@ -14,9 +14,10 @@ namespace Isotope\Backend\Config;
 
 
 use Isotope\Automator;
+use Isotope\Backend\Permission;
 use Isotope\Model\Config;
 
-class Callback extends \Backend
+class Callback extends Permission
 {
 
     /**
@@ -67,48 +68,15 @@ class Callback extends \Backend
                 // Allow
                 break;
 
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
+
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)) {
-                    $arrNew = $this->Session->get('new_records');
-
-                    if (is_array($arrNew['tl_iso_config']) && in_array(\Input::get('id'), $arrNew['tl_iso_config'])) {
-                        // Add permissions on user level
-                        if ($this->User->inherit == 'custom' || !$this->User->groups[0]) {
-                            $objUser = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user WHERE id=?")
-                                ->limit(1)
-                                ->execute($this->User->id);
-
-                            $arrPermissions = deserialize($objUser->iso_configp);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objUser->iso_configs);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user SET iso_configs=? WHERE id=?")
-                                                        ->execute(serialize($arrAccess), $this->User->id);
-                            }
-                        } // Add permissions on group level
-                        elseif ($this->User->groups[0] > 0) {
-                            $objGroup = \Database::getInstance()->prepare("SELECT iso_configs, iso_configp FROM tl_user_group WHERE id=?")
-                                                                ->limit(1)
-                                                                ->execute($this->User->groups[0]);
-
-                            $arrPermissions = deserialize($objGroup->iso_configp);
-
-                            if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
-                                $arrAccess   = deserialize($objGroup->iso_configs);
-                                $arrAccess[] = \Input::get('id');
-
-                                \Database::getInstance()->prepare("UPDATE tl_user_group SET iso_configs=? WHERE id=?")
-                                                        ->execute(serialize($arrAccess), $this->User->groups[0]);
-                            }
-                        }
-
-                        // Add new element to the user object
-                        $root[] = \Input::get('id');
-                        $this->User->iso_configs = $root;
-                    }
+                if (!in_array(\Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_configs', 'iso_configp')
+                ) {
+                    $root[] = \Input::get('id');
+                    $this->User->iso_configs = $root;
                 }
             // No break;
 
@@ -218,7 +186,9 @@ class Callback extends \Backend
                 $image = 'money';
         }
 
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/modules/isotope/assets/images/%s.png\');line-height:16px" title="%s">%s</div>', $image, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
+        $style = 'background-image:url(\'system/modules/isotope/assets/images/' . $image . '.png\');line-height:16px';
+
+        return sprintf('<div class="list_icon" style="%s" title="%s">%s</div>', $style, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
     }
 
 

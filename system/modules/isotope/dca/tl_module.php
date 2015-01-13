@@ -85,6 +85,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = array
 (
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_collectionTpl'],
     'exclude'                   => true,
+    'default'                   => 'iso_collection_default',
     'inputType'                 => 'select',
     'options_callback'          => function(\DataContainer $dc) {
         return \Isotope\Backend::getTemplates('iso_collection_');

@@ -30,7 +30,16 @@ define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 define('TL_MODE', 'FE');
 define('BYPASS_TOKEN_CHECK', true);
 
-require '../../initialize.php';
+// Include the Contao initialization script
+if (file_exists('../../initialize.php')) {
+    // Regular way
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../initialize.php');
+} else {
+    // Try composer location (see #1136)
+    /** @noinspection PhpIncludeInspection */
+    require_once('../../../../../../../system/initialize.php');
+}
 
 
 /**
@@ -72,8 +81,8 @@ class PostSale extends \Frontend
         include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 
         // Default parameters
-        $this->setModule(strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod'));
-        $this->setModuleId(strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id'));
+        $this->setModule((string) (\Input::post('mod') ?: \Input::get('mod')));
+        $this->setModuleId((int) (\Input::post('id') ?: \Input::get('id')));
 
         // HOOK: allow to add custom hooks for postsale script
         if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))

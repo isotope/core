@@ -1,6 +1,35 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.10-stable (2015-01-13)
+----------------------------------
+
+### Improved
+- Disabled chosen menu for store country selection (did not work with subdivision selection)
+- Payment method correctly return an invalid order if not found instead of throwing exceptions
+- Do not allow to add parent of variant product to the collection (#1303)
+- Text attributes were always 255 chars in database (#1329)
+- Add class "active" to first inline gallery image by default (#1342)
+- Remove disabled fields from member addresses on checkout (#1279)
+
+### Fixed
+- Postsale requests did not work when using Composer (#1136)
+- Default template setting for product collection was missing
+- Products not inside a group could not always be edited by regular users
+- Cached InsertTags in order prefix were not replaced
+- Permission for new records was not correctly added to group if it was not the first in the list
+- Tax class name should not be used as label (#1317)
+- Empty related products prevented page indexing (#1316)
+- strlen() call on postsale parameters that are potentially arrays (#1331)
+- Payone language parameter should not be uppercase (#1333)
+- Shipping tax was applied even if no products were shipped
+- Shipping address could not be changed in checkout process (#1322)
+- Product filter on dynamic attributes could lead to error message (#1318)
+- Rules were not applied to net and gross prices (#1294)
+- Tax free total for surcharges was incorrectly calculated (#1294)
+- Rule with member restrictions blocked postsale checkout (#1314)
+
+
 Version 2.1.9-stable (2014-11-18)
 ---------------------------------
 

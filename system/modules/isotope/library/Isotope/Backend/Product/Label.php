@@ -75,7 +75,7 @@ class Label extends \Backend
                     if (null !== $objPrice) {
                         /** @var \Isotope\Model\TaxClass $objTax */
                         $objTax = $objPrice->getRelated('tax_class');
-                        $strTax = (null === $objTax ? '' : ' (' . $objTax->getLabel() . ')');
+                        $strTax = (null === $objTax ? '' : ' (' . $objTax->getName() . ')');
 
                         $args[$i] = $objPrice->getValueForTier(1) . $strTax;
                     }

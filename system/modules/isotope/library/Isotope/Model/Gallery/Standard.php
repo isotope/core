@@ -205,6 +205,7 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->size       = $arrFile[$strType . '_size'];
         $objTemplate->alt        = $arrFile['alt'];
         $objTemplate->title      = $arrFile['desc'];
+        $objTemplate->class      = trim($this->arrData['class'] . ' ' . $arrFile['class']);
 
         switch ($this->anchor) {
             case 'reader':

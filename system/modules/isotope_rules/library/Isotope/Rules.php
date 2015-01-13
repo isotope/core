@@ -80,7 +80,7 @@ class Rules extends \Controller
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
     {
-        if ($objSource instanceof IsotopePrice && ($strField == 'price' || $strField == 'low_price')) {
+        if ($objSource instanceof IsotopePrice && ($strField == 'price' || $strField == 'low_price' || $strField == 'net_price' || $strField == 'gross_price')) {
 
             // @todo try not to use getRelated() because it loads variants
             $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);

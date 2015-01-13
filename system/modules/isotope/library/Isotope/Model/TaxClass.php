@@ -30,6 +30,15 @@ class TaxClass extends \Model
      */
     protected static $strTable = 'tl_iso_tax_class';
 
+    /**
+     * Get translated name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return Translation::get($this->name);
+    }
 
     /**
      * Get label
@@ -37,7 +46,7 @@ class TaxClass extends \Model
      */
     public function getLabel()
     {
-        return Translation::get($this->label ? : $this->name);
+        return $this->label ? Translation::get($this->label) : '';
     }
 
     /**
@@ -51,7 +60,11 @@ class TaxClass extends \Model
     public function calculatePrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
+            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+
+            if (Isotope::getCart()->hasShipping()) {
+                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
+            }
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */
@@ -89,7 +102,11 @@ class TaxClass extends \Model
     public function calculateGrossPrice($fltPrice, $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress(), 'shipping' => Isotope::getCart()->getShippingAddress());
+            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
+
+            if (Isotope::getCart()->hasShipping()) {
+                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
+            }
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */
