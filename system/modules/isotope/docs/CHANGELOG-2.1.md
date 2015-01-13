@@ -27,6 +27,7 @@ Version 2.1.10-stable (2015-??-??)
 - Product filter on dynamic attributes could lead to error message (#1318)
 - Rules were not applied to net and gross prices (#1294)
 - Tax free total for surcharges was incorrectly calculated (#1294)
+- Rule with member restrictions blocked postsale checkout (#1314)
 
 
 Version 2.1.9-stable (2014-11-18)
