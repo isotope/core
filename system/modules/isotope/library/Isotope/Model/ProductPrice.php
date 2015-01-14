@@ -244,6 +244,8 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public static function findByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
+        $t = static::$strTable;
+
         $arrOptions['column'] = array();
         $arrOptions['value'] = array();
 
@@ -252,26 +254,26 @@ class ProductPrice extends \Model implements IsotopePrice
             $time = $objCollection->getLastModification();
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
-            $arrOptions['column'][] = "config_id IN (" . (int) $objCollection->config_id . ",0)";
-            $arrOptions['column'][] = "member_group IN(" . implode(',', $arrGroups) . ")";
-            $arrOptions['column'][] = "(start='' OR start<$time)";
-            $arrOptions['column'][] = "(stop='' OR stop>$time)";
+            $arrOptions['column'][] = "$t.config_id IN (" . (int) $objCollection->config_id . ",0)";
+            $arrOptions['column'][] = "$t.member_group IN(" . implode(',', $arrGroups) . ")";
+            $arrOptions['column'][] = "($t.start='' OR $t.start<$time)";
+            $arrOptions['column'][] = "($t.stop='' OR $t.stop>$time)";
 
-            $arrOptions['order'] = "config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC";
+            $arrOptions['order'] = "$t.config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", $t.start DESC, $t.stop DESC";
 
         } else {
 
-            $arrOptions['column'][] = "config_id=0";
-            $arrOptions['column'][] = "member_group=0";
-            $arrOptions['column'][] = "start=''";
-            $arrOptions['column'][] = "stop=''";
+            $arrOptions['column'][] = "$t.config_id=0";
+            $arrOptions['column'][] = "$t.member_group=0";
+            $arrOptions['column'][] = "$t.start=''";
+            $arrOptions['column'][] = "$t.stop=''";
         }
 
         if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds = $objProduct->getVariantIds() ?: array(0);
-            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
+            $arrOptions['column'][] = "$t.pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
+            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
         }
 
         $objResult = static::find($arrOptions);
@@ -301,14 +303,16 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public static function findPrimaryByProductId($intProduct, array $arrOptions = array())
     {
+        $t = static::$strTable;
+
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "config_id=0",
-                    "member_group=0",
-                    "start=''",
-                    "stop=''",
-                    "pid=" . $intProduct
+                    "$t.config_id=0",
+                    "$t.member_group=0",
+                    "$t.start=''",
+                    "$t.stop=''",
+                    "$t.pid=" . $intProduct
                 ),
                 'limit'  => 1,
                 'return' => 'Model'
