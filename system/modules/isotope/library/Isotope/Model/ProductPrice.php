@@ -12,10 +12,12 @@
 
 namespace Isotope\Model;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Product\Standard;
 
 
 /**
@@ -26,14 +28,12 @@ class ProductPrice extends \Model implements IsotopePrice
 
     /**
      * Name of the current table
-     *
      * @var string
      */
     protected static $strTable = 'tl_iso_product_price';
 
     /**
      * Tiers for this price
-     *
      * @var array
      */
     protected $arrTiers = array();
@@ -41,9 +41,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Construct the object
      *
-     * @param   array
-     * @param   array
-     * @param   boolean
+     * @param \Database\Result $objResult
      */
     public function __construct(\Database\Result $objResult = null)
     {
@@ -59,7 +57,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return true if more than one price is available
      *
-     * @return  bool
+     * @return bool
      */
     public function hasTiers()
     {
@@ -69,10 +67,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return price
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -82,10 +80,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return original price
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getOriginalAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -95,10 +93,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return net price (without taxes)
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getNetAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -115,10 +113,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return gross price (with all taxes)
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getGrossAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -135,9 +133,9 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Get lowest amount of all tiers
      *
-     * @param   array $arrOptions
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getLowestAmount(array $arrOptions = array())
     {
@@ -151,7 +149,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return price tiers array
      *
-     * @return  array
+     * @return array
      */
     public function getTiers()
     {
@@ -161,7 +159,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return lowest tier (= minimum quantity)
      *
-     * @return  int
+     * @return int
      */
     public function getLowestTier()
     {
@@ -171,11 +169,11 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
-     * Return value for a price tier, finding clostest match
+     * Return value for a price tier, finding closest match
      *
-     * @param   int
+     * @param int $intTier
      *
-     * @return  float
+     * @return float
      */
     public function getValueForTier($intTier)
     {
@@ -194,11 +192,11 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Generate price for HTML rendering
      *
-     * @param   bool  $blnShowTiers
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param bool  $blnShowTiers
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  string
+     * @return string
      */
     public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array())
     {
@@ -236,9 +234,9 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find prices for a given product and collection
      *
-     * @param IsotopeProduct           $objProduct
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrOptions
+     * @param IsotopeProduct|Standard                    $objProduct
+     * @param IsotopeProductCollection|ProductCollection $objCollection
+     * @param array                                      $arrOptions
      *
      * @return IsotopePrice
      */
@@ -280,7 +278,7 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
-     * @param       $intProduct
+     * @param int   $intProduct
      * @param array $arrOptions
      *
      * @return ProductPrice|null
@@ -294,9 +292,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find primary price for a product
      *
-     * @param   int
+     * @param int   $intProduct
+     * @param array $arrOptions
      *
-     * @return  ProductPrice|null
+     * @return ProductPrice|null
      */
     public static function findPrimaryByProductId($intProduct, array $arrOptions = array())
     {
@@ -321,10 +320,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find primary price for multiple product/variant IDs
      *
-     * @param   array
-     * @param   array
+     * @param array $arrIds
+     * @param array $arrOptions
      *
-     * @return  \Model\Collection|null
+     * @return \Model\Collection|null
      */
     public static function findPrimaryByProductIds(array $arrIds, array $arrOptions = array())
     {
@@ -352,10 +351,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find advanced price for multiple product/variant IDs
      *
-     * @param   array
-     * @param   IsotopeProductCollection
+     * @param array                                      $arrIds
+     * @param IsotopeProductCollection|ProductCollection $objCollection
      *
-     * @return  \Model\Collection|null
+     * @return \Model\Collection|null
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
     {
@@ -365,7 +364,7 @@ class ProductPrice extends \Model implements IsotopePrice
         $objResult = \Database::getInstance()->query("
             SELECT * FROM (
                 SELECT *
-                FROM " . static::$strTable . "
+                FROM tl_iso_product_price
                 WHERE
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
@@ -378,7 +377,7 @@ class ProductPrice extends \Model implements IsotopePrice
         ");
 
         if ($objResult->numRows) {
-            return \Isotope\Collection\ProductPrice::createFromDbResult($objResult, static::$strTable);
+            return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
         }
 
         return null;
@@ -398,7 +397,7 @@ class ProductPrice extends \Model implements IsotopePrice
      *
      * @param array $arrOptions The options array
      *
-     * @return \Model|\Model\Collection|null A model, model collection or null if the result is empty
+     * @return static|ProductPriceCollection|null A model, model collection or null if the result is empty
      */
     protected static function find(array $arrOptions)
     {
@@ -438,7 +437,9 @@ class ProductPrice extends \Model implements IsotopePrice
             $intPk = $objResult->$strPk;
 
             // Try to load from the registry
-            $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+            /** @type \Model\Registry $registry */
+            $registry = \Model\Registry::getInstance();
+            $objModel = $registry->fetch(static::$strTable, $intPk);
 
             if ($objModel !== null) {
                 return $objModel->mergeRow($objResult->row());
@@ -446,14 +447,16 @@ class ProductPrice extends \Model implements IsotopePrice
 
             return new static($objResult);
         } else {
-            return \Isotope\Collection\ProductPrice::createFromDbResult($objResult, static::$strTable);
+            return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
         }
     }
 
     /**
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
      *
-     * @return  array
+     * @param object $objMember
+     *
+     * @return array
      */
     protected static function getMemberGroups($objMember)
     {
@@ -461,7 +464,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrGroups = deserialize($objMember->groups);
         }
 
-        if (!is_array($arrGroups)) {
+        if (!isset($arrGroups) || !is_array($arrGroups)) {
             $arrGroups = array();
         }
 
