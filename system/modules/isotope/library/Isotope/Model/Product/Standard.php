@@ -884,6 +884,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             if ((
                     !in_array($attribute, $this->getAttributes())
                     && !in_array($attribute, $this->getVariantAttributes())
+                    && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
                 || in_array($attribute, Attribute::getVariantOptionFields())
