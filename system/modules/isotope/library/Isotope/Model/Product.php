@@ -399,7 +399,12 @@ abstract class Product extends TypeAgent
      */
     protected static function buildFindQuery(array $arrOptions)
     {
-        $objBase = new \DcaExtractor($arrOptions['table']);
+        // Improve performance for Contao >= 3.4
+        if (version_compare(VERSION, '3.4', '>=')) {
+            $objBase = \DcaExtractor::getInstance($arrOptions['table']);
+        } else {
+            $objBase = new \DcaExtractor($arrOptions['table']);
+        }
 
         $arrJoins  = array();
         $arrFields = array(
@@ -440,7 +445,12 @@ abstract class Product extends TypeAgent
                             $strJoinAlias = 'j' . $intCount;
                         }
 
-                        $objRelated = new \DcaExtractor($arrConfig['table']);
+                        // Improve performance for Contao >= 3.4
+                        if (version_compare(VERSION, '3.4', '>=')) {
+                            $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
+                        } else {
+                            $objRelated = new \DcaExtractor($arrConfig['table']);
+                        }
 
                         foreach (array_keys($objRelated->getFields()) as $strField) {
                             $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;

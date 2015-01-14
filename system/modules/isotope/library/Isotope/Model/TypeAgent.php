@@ -178,7 +178,13 @@ abstract class TypeAgent extends \Model
                 $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
-            $objRelations = new \DcaExtractor(static::$strTable);
+            // Improve performance for Contao >= 3.4
+            if (version_compare(VERSION, '3.4', '>=')) {
+                $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            } else {
+                $objRelations = new \DcaExtractor(static::$strTable);
+            }
+
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
@@ -246,7 +252,13 @@ abstract class TypeAgent extends \Model
         $strClass = '';
 
         if (is_numeric($objResult->type)) {
-            $objRelations = new \DcaExtractor(static::$strTable);
+            // Improve performance for Contao >= 3.4
+            if (version_compare(VERSION, '3.4', '>=')) {
+                $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            } else {
+                $objRelations = new \DcaExtractor(static::$strTable);
+            }
+
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
