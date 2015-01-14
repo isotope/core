@@ -49,11 +49,12 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         parent::__construct($objResult);
 
-        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_pricetier WHERE pid=? ORDER BY min")->execute($objResult->id);
+        $this->arrTiers = array_combine(
+            explode(',', $this->arrData['tier_keys']),
+            explode(',', $this->arrData['tier_values'])
+        );
 
-        while ($objTiers->next()) {
-            $this->arrTiers[$objTiers->min] = $objTiers->price;
-        }
+        ksort($this->arrTiers);
     }
 
     /**
@@ -368,18 +369,24 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
         $objResult = \Database::getInstance()->query("
-            SELECT * FROM (
-                SELECT *
+            SELECT *
+            FROM (
+                SELECT
+                    tl_iso_product_price.*,
+                    GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys,
+                    GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values
                 FROM tl_iso_product_price
+                LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
                 WHERE
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<$time) AND
                     (stop='' OR stop>$time) AND
-                    pid IN (" . implode(',', $arrIds) . ")
+                    tl_iso_product_price.pid IN (" . implode(',', $arrIds) . ")
+                GROUP BY tl_iso_product_price.id
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
             ) AS prices
-            GROUP BY pid
+            GROUP BY prices.pid
         ");
 
         if ($objResult->numRows) {
@@ -409,6 +416,26 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrGroups[] = 0;
 
         return $arrGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function buildFindQuery(array $arrOptions)
+    {
+        $arrOptions['group'] = ($arrOptions['group'] ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
+
+        $query = \Model\QueryBuilder::find($arrOptions);
+        $from  = substr($query, strpos($query, '*')+1);
+        $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
+
+        $query = str_replace(
+            'FROM tl_iso_product_price',
+            'FROM tl_iso_product_price LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id',
+            $query
+        );
+
+        return $query;
     }
 
     /**
