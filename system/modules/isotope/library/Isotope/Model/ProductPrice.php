@@ -22,6 +22,8 @@ use Isotope\Model\Product\Standard;
 
 /**
  * ProductPrice defines an advanced price of a product
+ *
+ * @method static|ProductPriceCollection find()
  */
 class ProductPrice extends \Model implements IsotopePrice
 {
@@ -384,74 +386,6 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
-     * Find records and return the model or model collection
-     *
-     * Supported options:
-     *
-     * * column: the field name
-     * * value:  the field value
-     * * limit:  the maximum number of rows
-     * * offset: the number of rows to skip
-     * * order:  the sorting order
-     * * eager:  load all related records eagerly
-     *
-     * @param array $arrOptions The options array
-     *
-     * @return static|ProductPriceCollection|null A model, model collection or null if the result is empty
-     */
-    protected static function find(array $arrOptions)
-    {
-        if (static::$strTable == '') {
-            return null;
-        }
-
-        $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
-
-        $objStatement = \Database::getInstance()->prepare($strQuery);
-
-        // Defaults for limit and offset
-        if (!isset($arrOptions['limit'])) {
-            $arrOptions['limit'] = 0;
-        }
-        if (!isset($arrOptions['offset'])) {
-            $arrOptions['offset'] = 0;
-        }
-
-        // Limit
-        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0) {
-            $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
-        }
-
-        $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute($arrOptions['value']);
-
-        if ($objResult->numRows < 1) {
-            return null;
-        }
-
-        $objResult = static::postFind($objResult);
-
-        if ($arrOptions['return'] == 'Model') {
-            $strPk = static::$strPk;
-            $intPk = $objResult->$strPk;
-
-            // Try to load from the registry
-            /** @type \Model\Registry $registry */
-            $registry = \Model\Registry::getInstance();
-            $objModel = $registry->fetch(static::$strTable, $intPk);
-
-            if ($objModel !== null) {
-                return $objModel->mergeRow($objResult->row());
-            }
-
-            return new static($objResult);
-        } else {
-            return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
-        }
-    }
-
-    /**
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
      *
      * @param object $objMember
@@ -471,5 +405,21 @@ class ProductPrice extends \Model implements IsotopePrice
         $arrGroups[] = 0;
 
         return $arrGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createCollection(array $arrModels, $strTable)
+    {
+        return new ProductPriceCollection($arrModels, $strTable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    {
+        return ProductPriceCollection::createFromDbResult($objResult, $strTable);
     }
 }
