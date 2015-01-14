@@ -539,6 +539,11 @@ class RequestCache extends \Model
             foreach ($arrGroups as $arrGroup) {
                 $arrGroupWhere = array();
 
+                // Skip dynamic attributes
+                if (false === $arrGroup) {
+                    continue;
+                }
+
                 foreach ($arrGroup as $k) {
                     $objFilter = $arrFilters[$k];
 

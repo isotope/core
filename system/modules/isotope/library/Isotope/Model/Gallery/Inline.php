@@ -46,6 +46,9 @@ class Inline extends Standard
             return '';
         }
 
+        // Add class "active" to the first file
+        $this->arrFiles[0]['class'] = trim($this->arrFiles[0]['class'] . ' active');
+
         return parent::generateGallery($intSkip);
     }
 

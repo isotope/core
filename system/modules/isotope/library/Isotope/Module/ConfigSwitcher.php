@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 
@@ -79,21 +80,23 @@ class ConfigSwitcher extends Module
     protected function compile()
     {
         $arrConfigs = array();
+
+        /** @type Config[] $objConfigs */
         $objConfigs = Config::findMultipleByIds($this->iso_config_ids);
 
         if (null !== $objConfigs) {
-            while ($objConfigs->next()) {
+            foreach ($objConfigs as $objConfig) {
 
                 $arrConfigs[] = array (
-                    'config'    => $objConfigs->current(),
-                    'label'     => $objConfigs->current()->getLabel(),
-                    'active'    => (Isotope::getConfig()->id == $objConfigs->id ? true : false),
-                    'href'      => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfigs->id),
+                    'config'    => $objConfig,
+                    'label'     => $objConfig->getLabel(),
+                    'active'    => (Isotope::getConfig()->id == $objConfig->id ? true : false),
+                    'href'      => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id),
                 );
             }
         }
 
-        \Haste\Generator\RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
 
         $this->Template->configs    = $arrConfigs;
     }

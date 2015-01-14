@@ -11,6 +11,8 @@
 
 # Isotope ignoring rules
 !isotope/
+isotope/*
+!isotope/index.html
 !system/
 system/*
 !system/drivers/

@@ -80,7 +80,7 @@ class Worldpay extends Postsale implements IsotopePayment
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('cartId'));
+        return Order::findByPk((int) \Input::post('cartId'));
     }
 
     /**
