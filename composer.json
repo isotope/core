@@ -19,7 +19,7 @@
         "contao/core":">=3.2.13,<3.4",
         "contao-community-alliance/composer-plugin":"2.*",
         "contao-legacy/conditionalselectmenu":"2.*",
-        "terminal42/namespace-class-loader":">=1.0.1,<2.0",
+        "terminal42/contao-namespace-class-loader":">=1.0.1,<2.0",
         "terminal42/dcawizard":">=2.0.2,<3.0",
         "codefog/contao-haste":"~4.2",
         "menatwork/contao-multicolumnwizard": "~3.2",
