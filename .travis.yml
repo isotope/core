@@ -5,8 +5,8 @@ php:
   - 5.5
 
 env:
-  - CONTAO_VERSION="3.2.*"
-  - CONTAO_VERSION="3.3.*"
+  - CONTAO_VERSION="~3.3.4"
+  - CONTAO_VERSION="3.4.*"
 
 sudo: false
 
