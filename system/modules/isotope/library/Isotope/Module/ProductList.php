@@ -203,6 +203,7 @@ class ProductList extends Module
 
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
+        /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
             $arrConfig = array(
                 'module'        => $this,
@@ -354,6 +355,7 @@ class ProductList extends Module
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
                 global $objPage;
 
+                /** @var \PageError404 $objHandler */
                 $objHandler = new $GLOBALS['TL_PTY']['error_404']();
                 $objHandler->generate($objPage->id);
                 exit;

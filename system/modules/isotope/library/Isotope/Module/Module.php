@@ -139,6 +139,7 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'product':
+                    /** @var \Isotope\Model\Product\Standard $objProduct */
                     $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
                     if ($objProduct !== null) {
@@ -181,7 +182,7 @@ abstract class Module extends Contao_Module
     /**
      * Find jumpTo page for current category scope
      *
-     * @param $objProduct \Isotope\Interfaces\IsotopeProduct
+     * @param \Isotope\Model\Product\Standard $objProduct
      *
      * @return \PageModel
      */
