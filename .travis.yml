@@ -12,7 +12,6 @@ sudo: false
 
 install:
     - mysql -e 'CREATE DATABASE isotope_core_testsuite;'
-    - composer config repositories.contao composer  "https://legacy-packages-via.contao-community-alliance.org/"
     - sed '$d' composer.json | sed '$d' > composer.new
     - 'echo ''},"prefer-stable": true,"minimum-stability": "dev"}'' >> composer.new'
     - mv composer.new composer.json
