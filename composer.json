@@ -43,6 +43,11 @@
         ]
     },
     "extra":{
+        "branch-alias": {
+            "dev-master": "2.2.x-dev",
+            "dev-develop": "2.3.x-dev",
+            "dev-support/2.1": "2.1.x-dev"
+        },
         "contao": {
             "sources":{
                 "system/modules/isotope": "system/modules/isotope",
