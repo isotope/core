@@ -1,0 +1,11 @@
+tools:
+    php_sim: true
+    php_pdepend: true
+    php_analyzer: true
+
+    external_code_coverage:
+        runs: 3
+
+filter:
+    excluded_paths:
+        - 'system/modules/isotope/library/UnitedPrototype/*'

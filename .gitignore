@@ -8,6 +8,7 @@
 .tx/source/*
 !README.md
 !composer.json
+!.scrutinizer.yml
 !.travis.yml
 
 # Isotope ignoring rules
