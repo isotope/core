@@ -16,6 +16,8 @@ use Backend as Contao_Backend;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
+use Isotope\Model\ProductCache;
+use Isotope\Model\RequestCache;
 
 
 /**
@@ -34,12 +36,14 @@ class Backend extends Contao_Backend
     /**
      * Truncate the product cache table if a product is changed
      * Second parameter and return value is to use the method as save_callback
-     * @param mixed
+     *
+     * @param mixed $varValue
+     *
      * @return mixed
      */
     public static function truncateProductCache($varValue = null)
     {
-        \Isotope\Model\ProductCache::purge();
+        ProductCache::purge();
 
         return $varValue;
     }
@@ -50,13 +54,13 @@ class Backend extends Contao_Backend
      */
     public static function truncateRequestCache()
     {
-        \Isotope\Model\RequestCache::purge();
+        RequestCache::purge();
     }
 
 
     /**
      * Get array of subdivisions, delay loading of file if not necessary
-     * @param object
+     *
      * @return array
      */
     public static function getSubdivisions()
@@ -89,7 +93,8 @@ class Backend extends Contao_Backend
 
     /**
      * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
-     * @param object
+     *
+     * @param object $dc
      */
     public function initializeSetupModule($dc)
     {
@@ -101,6 +106,7 @@ class Backend extends Contao_Backend
 
     /**
      * Return all Isotope modules
+     *
      * @return array
      */
     public function getIsotopeModules()
@@ -117,8 +123,9 @@ class Backend extends Contao_Backend
 
     /**
      * List template from all themes, show theme name
-     * @param string
-     * @param int
+     *
+     * @param string $strPrefix
+     *
      * @return array
      */
     public static function getTemplates($strPrefix)
@@ -160,11 +167,13 @@ class Backend extends Contao_Backend
 
     /**
      * Get order status and return it as array
+     *
      * @return array
      */
     public static function getOrderStatus()
     {
         $arrStatus = array();
+
         if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
 
             /** @type OrderStatus $status */
@@ -179,6 +188,7 @@ class Backend extends Contao_Backend
 
     /**
      * Show messages for new order status
+     *
      * @return string
      */
     public function getOrderMessages()
@@ -215,6 +225,7 @@ class Backend extends Contao_Backend
 
     /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
+     *
      * @return array|bool
      * @deprecated will be removed in Isotope 3.0
      */
@@ -226,8 +237,9 @@ class Backend extends Contao_Backend
 
     /**
      * Check the Ajax pre actions
-     * @param string
-     * @param object
+     *
+     * @param string $action
+     *
      * @return string
      */
     public function executePreActions($action)
@@ -272,17 +284,21 @@ class Backend extends Contao_Backend
 
     /**
      * Check the Ajax post actions
-     * @param string
-     * @param object
+     *
+     * @param string $action
+     * @param object $dc
+     *
      * @return string
      */
     public function executePostActions($action, $dc)
     {
         switch ($action) {
             case 'uploadMediaManager':
-                $arrData['strTable'] = $dc->table;
-                $arrData['id']       = strlen($this->strAjaxName) ? $this->strAjaxName : $dc->id;
-                $arrData['name']     = \Input::post('name');
+                $arrData = array(
+                    'strTable' => $dc->table,
+                    'id'       => ($this->strAjaxName ?: $dc->id),
+                    'name'     => \Input::post('name'),
+                );
 
                 /** @type \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
@@ -307,13 +323,8 @@ class Backend extends Contao_Backend
                     die('Bad Request');
                 }
 
-                $objRow   = null;
-                $varValue = null;
-
                 // Load the value
-                if ($GLOBALS['TL_DCA'][$dc->table]['config']['dataContainer'] == 'File') {
-                    $varValue = $GLOBALS['TL_CONFIG'][$strField];
-                } elseif ($intId > 0 && $this->Database->tableExists($dc->table)) {
+                if ($intId > 0 && $this->Database->tableExists($dc->table)) {
                     $objRow = $this->Database->prepare("SELECT * FROM {$dc->table} WHERE id=?")
                                              ->execute($intId);
 
@@ -323,9 +334,6 @@ class Backend extends Contao_Backend
                         header('HTTP/1.1 400 Bad Request');
                         die('Bad Request');
                     }
-
-                    $varValue         = $objRow->$strField;
-                    $dc->activeRecord = $objRow;
                 }
 
                 $varValue = \Input::post('value', true);
@@ -354,7 +362,8 @@ class Backend extends Contao_Backend
 
     /**
      * Load type agent model help
-     * @param   string
+     *
+     * @param string $strTable
      */
     public function loadTypeAgentHelp($strTable)
     {
@@ -381,6 +390,7 @@ class Backend extends Contao_Backend
         $arrField = &$GLOBALS['TL_DCA'][$strTable]['fields'][$strField];
 
         // Get the field type
+        /** @var \Widget $strClass */
         $strClass = $GLOBALS['BE_FFL'][$arrField['inputType']];
 
         // Abort if the class is not defined
@@ -413,7 +423,8 @@ class Backend extends Contao_Backend
 
     /**
      * Adjust the product groups manager view
-     * @param object
+     *
+     * @param \Template $objTemplate
      */
     public function adjustGroupsManager($objTemplate)
     {

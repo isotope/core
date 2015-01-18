@@ -21,8 +21,12 @@ class Analytics extends Frontend
 
     /**
      * Process checkout
+     *
+     * @param Order $objOrder
+     *
+     * @return bool
      */
-    public function trackOrder(Order $objOrder, $arrTokens)
+    public function trackOrder(Order $objOrder)
     {
         $objConfig = Config::findByPk($objOrder->config_id);
 

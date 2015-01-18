@@ -36,10 +36,11 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
         $arrCollectionItems = $objCollection->getItems();
 
-        $blnMatch = false;
+        $blnMatch      = false;
         $blnPercentage = $objRule->isPercentage();
-        $fltDiscount = $blnPercentage ? $objRule->getPercentage() : 0;
-        $fltTotal = 0;
+        $fltDiscount   = $blnPercentage ? $objRule->getPercentage() : 0;
+        $fltTotal      = 0;
+        $arrSubtract   = array();
 
         $objSurcharge = new static();
         $objSurcharge->label = $objRule->getLabel();

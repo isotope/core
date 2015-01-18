@@ -16,9 +16,7 @@ use Haste\Generator\RowClass;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\Shipping;
 
 
 /**

@@ -110,7 +110,8 @@ class Permission extends \Backend
     /**
      * Check if a product can be deleted by the current backend user
      * Deleting is prohibited if a product has been ordered
-     * @return  bool
+     *
+     * @return array
      */
     public static function getUndeletableIds()
     {

@@ -29,7 +29,8 @@ class Worldpay extends Postsale implements IsotopePayment
 
     /**
      * Process Instant Payment Notifications (IPN)
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection $objOrder
      */
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
@@ -76,7 +77,8 @@ class Worldpay extends Postsale implements IsotopePayment
 
     /**
      * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     *
+     * @return IsotopeProductCollection
      */
     public function getPostsaleOrder()
     {
@@ -94,6 +96,7 @@ class Worldpay extends Postsale implements IsotopePayment
         global $objPage;
         $objAddress = $objOrder->getBillingAddress();
 
+        $arrData                = array();
         $arrData['instId']      = $this->worldpay_instId;
         $arrData['cartId']      = $objOrder->id;
         $arrData['amount']      = number_format($objOrder->getTotal(), 2);
@@ -163,7 +166,8 @@ Redirecting back to shop...
 
     /**
      * Redirect client on WorldPay site to the confirmation page
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection $objOrder
      */
     protected function postsaleSuccess($objOrder)
     {

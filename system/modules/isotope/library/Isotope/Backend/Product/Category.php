@@ -22,11 +22,12 @@ class Category extends \Backend
 
     /**
      * Update sorting of product in categories when duplicating, move new product to the bottom
-     * @param integer
-     * @param object
+     *
+     * @param int $insertId
+     *
      * @link http://www.contao.org/callbacks.html#oncopy_callback
      */
-    public function updateSorting($insertId, $dc)
+    public function updateSorting($insertId)
     {
         $table = ProductCategory::getTable();
 
@@ -39,11 +40,10 @@ class Category extends \Backend
 
     /**
      * Save categories history when creating new version of a product
-     * @param   string
-     * @param   int
-     * @param   \DataContainer
+     * @param string $strTable
+     * @param int    $intId
      */
-    public function createVersion($strTable, $intId, $dc)
+    public function createVersion($strTable, $intId)
     {
         if ($strTable != Product::getTable()) {
             return;
@@ -57,10 +57,11 @@ class Category extends \Backend
 
     /**
      * Restore categories when restoring a product
-     * @param   int
-     * @param   string
-     * @param   array
-     * @param   int
+     *
+     * @param int    $intId
+     * @param string $strTable
+     * @param array  $arrData
+     * @param int    $intVersion
      */
     public function restoreVersion($intId, $strTable, $arrData, $intVersion)
     {
@@ -81,9 +82,11 @@ class Category extends \Backend
 
     /**
      * Load page IDs from product categories table
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
+     *
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
+     *
+     * @return mixed
      */
     public function load($varValue, \DataContainer $dc)
     {
@@ -96,9 +99,11 @@ class Category extends \Backend
 
     /**
      * Save page ids to product category table. This allows to retrieve all products associated to a page.
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
+     *
+     * @param mixed $varValue
+     * @param \DataContainer $dc
+     *
+     * @return mixed
      */
     public function save($varValue, \DataContainer $dc)
     {

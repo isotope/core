@@ -65,11 +65,8 @@ abstract class Module extends Contao_Module
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
-                try {
-                    global $objPage;
-                    $objPage->cache = 0;
-                } catch (\Exception $e) {
-                }
+                global $objPage;
+                $objPage->cache = 0;
             }
         }
     }

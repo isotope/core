@@ -184,15 +184,9 @@ class Callback extends \Backend
      * @param DataContainer
      * @return array
      */
-    public function getFilterTemplates(\DataContainer $dc)
+    public function getFilterTemplates()
     {
-        $intPid = $dc->activeRecord->pid;
-
-        if (\Input::get('act') == 'overrideAll') {
-            $intPid = \Input::get('id');
-        }
-
-        return \Isotope\Backend::getTemplates('iso_filter_', $intPid);
+        return \Isotope\Backend::getTemplates('iso_filter_');
     }
 
 

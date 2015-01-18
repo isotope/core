@@ -18,11 +18,12 @@ class AddressFieldsWizard extends \Backend
 
     /**
      * For each call, return the name of the next address field in the wizard (for input_field_callback)
-     * @param   Widget
-     * @param   string
-     * @return  string
+     *
+     * @param \Widget $objWidget
+     *
+     * @return string
      */
-    public function getNextName($objWidget, $xlabel)
+    public function getNextName($objWidget)
     {
         static $arrValues;
         static $i = 0;
@@ -50,11 +51,12 @@ class AddressFieldsWizard extends \Backend
 
     /**
      * Generate list of fields and add missing ones from DCA
-     * @param   mixed
-     * @param   DataContainer
+     *
+     * @param mixed $varValue
+     *
      * @return array
      */
-    public function load($varValue, $dc)
+    public function load($varValue)
     {
         $this->loadDataContainer(\Isotope\Model\Address::getTable());
 
@@ -95,11 +97,12 @@ class AddressFieldsWizard extends \Backend
 
     /**
      * save_callback to sort attribute wizard fields by legend
-     * @param   mixed
-     * @param   DataContainer
-     * @return  string
+     *
+     * @param mixed $varValue
+     *
+     * @return string
      */
-    public function save($varValue, $dc)
+    public function save($varValue)
     {
         $this->loadDataContainer(\Isotope\Model\Address::getTable());
 

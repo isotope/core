@@ -690,9 +690,9 @@ window.addEvent('domready', function()
 
         // Set the admin e-mail address
         if ($objPage->adminEmail != '') {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($objPage->adminEmail);
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \String::splitFriendlyEmail($objPage->adminEmail);
         } else {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \String::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
         // Define the static URL constants
