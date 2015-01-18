@@ -304,12 +304,14 @@ abstract class Report extends \Backend
 
     /**
      * Return string to filter database query by user allowed products
-     * @param   string  Table name or alias (optional)
-     * @param   string  Table field or alias (optional)
-     * @param   string  Prefix for query (e.g. AND)
-     * @return  string
+     *
+     * @param string $strTable  Table name or alias (optional)
+     * @param string $strField  Table field or alias (optional)
+     * @param string $strPrefix Prefix for query (e.g. AND)
+     *
+     * @return string
      */
-    protected function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
+    protected function getProductProcedure($strTable = 'tl_iso_product', $strField = 'id', $strPrefix = ' AND ')
     {
         $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
@@ -326,12 +328,14 @@ abstract class Report extends \Backend
 
     /**
      * Return string to filter database query by user allowed shop configs
-     * @param   string  Table name or alias (optional)
-     * @param   string  Table field or alias (optional)
-     * @param   string  Prefix for query (e.g. AND)
-     * @return  string
+     *
+     * @param string $strTable  Table name or alias (optional)
+     * @param string $strField  Table field or alias (optional)
+     * @param string $strPrefix Prefix for query (e.g. AND)
+     *
+     * @return string
      */
-    protected function getConfigProcedure($strTable='tl_iso_config', $strField='id', $strPrefix=' AND ')
+    protected function getConfigProcedure($strTable = 'tl_iso_config', $strField = 'id', $strPrefix = ' AND ')
     {
         if (\BackendUser::getInstance()->isAdmin) {
             return '';
