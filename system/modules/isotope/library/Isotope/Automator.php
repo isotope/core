@@ -55,7 +55,15 @@ class Automator extends \Controller
     public function deleteOldOrders()
     {
         $t = Order::getTable();
-        $objOrders = Order::findBy(array("$t.order_status=0", "$t.tstamp<?"), array(time() - $GLOBALS['TL_CONFIG']['iso_orderTimeout']));
+        $objOrders = Order::findBy(
+            array(
+                "$t.order_status=0",
+                "$t.tstamp<?"
+            ),
+            array(
+                time() - $GLOBALS['TL_CONFIG']['iso_orderTimeout']
+            )
+        );
 
         if (($intPurged = $this->deleteOldCollections($objOrders)) > 0) {
             \System::log('Deleted ' . $intPurged . ' incomplete orders', __METHOD__, TL_CRON);
@@ -104,7 +112,9 @@ class Automator extends \Controller
                             $fltCourse = (float) $currency['rate'];
                         }
 
-                        if (!$fltCourseOrigin && strtolower($currency['currency']) == strtolower($objConfigs->currencyOrigin)) {
+                        if (!$fltCourseOrigin
+                            && strtolower($currency['currency']) == strtolower($objConfigs->currencyOrigin)
+                        ) {
                             $fltCourseOrigin = (float) $currency['rate'];
                         }
                     }
@@ -158,7 +168,9 @@ class Automator extends \Controller
 
                 default:
                     // !HOOK: other currency providers
-                    if (isset($GLOBALS['ISO_HOOKS']['convertCurrency']) && is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])) {
+                    if (isset($GLOBALS['ISO_HOOKS']['convertCurrency'])
+                        && is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
+                    ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
                             $objCallback = \System::importStatic($callback[0]);
                             $objCallback->$callback[1]($objConfigs->current());

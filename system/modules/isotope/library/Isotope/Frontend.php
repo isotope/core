@@ -92,7 +92,12 @@ class Frontend extends \Frontend
                 $this->reload();
             }
 
-            \Controller::redirect(\Haste\Util\Url::addQueryString('continue=' . base64_encode(\Environment::get('request')), $objModule->iso_addProductJumpTo));
+            \Controller::redirect(
+                \Haste\Util\Url::addQueryString(
+                    'continue=' . base64_encode(\Environment::get('request')),
+                    $objModule->iso_addProductJumpTo
+                )
+            );
         }
     }
 
@@ -209,51 +214,49 @@ class Frontend extends \Frontend
         // {{isotope::*}} and {{cache_isotope::*}} insert tags
         if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
             switch ($arrTag[1]) {
-                case 'cart_items';
-
+                case 'cart_items':
                     return Isotope::getCart()->countItems();
-                    break;
 
-                case 'cart_quantity';
-
+                case 'cart_quantity':
                     return Isotope::getCart()->sumItemsQuantity();
-                    break;
 
-                case 'cart_items_label';
+                case 'cart_items_label':
                     $intCount = Isotope::getCart()->countItems();
 
                     if (!$intCount) {
                         return '';
                     }
 
-                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    break;
+                    if ($intCount == 1) {
+                        return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
+                    } else {
+                        return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
+                    }
 
-                case 'cart_quantity_label';
+                case 'cart_quantity_label':
                     $intCount = Isotope::getCart()->sumItemsQuantity();
 
                     if (!$intCount) {
                         return '';
                     }
 
-                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    break;
+                    if ($intCount == 1) {
+                        return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
+                    } else {
+                        return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
+                    }
 
                 case 'cart_subtotal':
                     return Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
-                    break;
 
                 case 'cart_taxfree_subtotal':
                     return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeSubtotal());
-                    break;
 
                 case 'cart_total':
                     return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
-                    break;
 
                 case 'cart_taxfree_total':
                     return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeTotal());
-                    break;
             }
 
             return '';
@@ -262,7 +265,7 @@ class Frontend extends \Frontend
             return Translation::get($arrTag[1], $arrTag[2]);
 
         } elseif ($arrTag[0] == 'order') {
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
+            if (($objOrder = Order::findOneBy('uniqid', \Input::get('uid'))) !== null) {
                 return $objOrder->{$arrTag[1]};
             }
 
@@ -332,7 +335,6 @@ class Frontend extends \Frontend
     public function injectScripts()
     {
         if (!empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS'])) {
-
             $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function() {
@@ -404,8 +406,13 @@ window.addEvent('domready', function()
     {
         $t         = \PageModel::getTable();
         $time      = time();
-        $arrColumn = array("$t.type='root'", "$t.published='1'", "($t.start='' OR $t.start<$time)", "($t.stop='' OR $t.stop>$time)");
         $arrValue  = array();
+        $arrColumn = array(
+            "$t.type='root'",
+            "$t.published='1'",
+            "($t.start='' OR $t.start<$time)",
+            "($t.stop='' OR $t.stop>$time)"
+        );
 
         if ($intRoot > 0) {
             $arrColumn[] = "$t.id=?";
@@ -439,7 +446,10 @@ window.addEvent('domready', function()
                             }
 
                             // The target page has not been published
-                            if (!$objPage->published || ($objPage->start != '' && $objPage->start > $time) || ($objPage->stop != '' && $objPage->stop < $time)) {
+                            if (!$objPage->published
+                                || ($objPage->start != '' && $objPage->start > $time)
+                                || ($objPage->stop != '' && $objPage->stop < $time)
+                            ) {
                                 continue;
                             }
 
@@ -454,7 +464,8 @@ window.addEvent('domready', function()
                             }
 
                             // Generate the domain
-                            $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
+                            $strDomain  = ($objRoot->useSSL ? 'https://' : 'http://');
+                            $strDomain .= ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
 
                             // Pass root language to page object
                             $objPage->language = $objRoot->language;
@@ -481,7 +492,10 @@ window.addEvent('domready', function()
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
-        if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0) {
+        if (is_array($_SESSION['FILES'][$objWidget->name])
+            && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
+            && $_SESSION['FILES'][$objWidget->name]['error'] == 0
+        ) {
             return $_SESSION['FILES'][$objWidget->name]['name'];
         }
 
@@ -700,9 +714,13 @@ window.addEvent('domready', function()
         define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
         define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
-        $objLayout = \Database::getInstance()->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? ORDER BY l.id=? DESC")
-            ->limit(1)
-            ->execute($objPage->layout, $objPage->layout);
+        $objLayout = \Database::getInstance()->prepare("
+            SELECT l.*, t.templates
+            FROM tl_layout l
+            LEFT JOIN tl_theme t ON l.pid=t.id
+            WHERE l.id=?
+            ORDER BY l.id=? DESC
+        ")->limit(1)->execute($objPage->layout, $objPage->layout);
 
         if ($objLayout->numRows) {
             // Get the page layout

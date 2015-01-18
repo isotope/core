@@ -196,7 +196,9 @@ class Backend extends Contao_Backend
         /** @type \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
-        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable()) || !$objUser->hasAccess('iso_orders', 'modules')) {
+        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable())
+            || !$objUser->hasAccess('iso_orders', 'modules')
+        ) {
             return '';
         }
 
@@ -213,7 +215,13 @@ class Backend extends Contao_Backend
         }
 
         $arrMessages = array();
-        $objOrders   = \Database::getInstance()->query("SELECT COUNT(*) AS total, s.name FROM " . \Isotope\Model\ProductCollection::getTable() . " c LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id WHERE c.type='order' AND s.welcomescreen='1' $strConfig GROUP BY s.id");
+        $objOrders   = \Database::getInstance()->query("
+            SELECT COUNT(*) AS total, s.name
+            FROM " . \Isotope\Model\ProductCollection::getTable() . " c
+            LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id
+            WHERE c.type='order' AND s.welcomescreen='1' $strConfig
+            GROUP BY s.id"
+        );
 
         while ($objOrders->next()) {
             $arrMessages[] = '<p class="tl_new">' . sprintf($GLOBALS['TL_LANG']['MSC']['newOrders'], $objOrders->total, $objOrders->name) . '</p>';
@@ -318,7 +326,7 @@ class Backend extends Contao_Backend
 
                 // The field does not exist
                 if (!isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$strField])) {
-                    $this->log('Field "' . $strField . '" does not exist in DCA "' . $dc->table . '"', __METHOD__, TL_ERROR);
+                    \System::log('Field "' . $strField . '" does not exist in DCA "' . $dc->table . '"', __METHOD__, TL_ERROR);
                     header('HTTP/1.1 400 Bad Request');
                     die('Bad Request');
                 }
@@ -330,7 +338,7 @@ class Backend extends Contao_Backend
 
                     // The record does not exist
                     if ($objRow->numRows < 1) {
-                        $this->log('A record with the ID "' . $intId . '" does not exist in table "' . $dc->table . '"', __METHOD__, TL_ERROR);
+                        \System::log('A record with the ID "' . $intId . '" does not exist in table "' . $dc->table . '"', __METHOD__, TL_ERROR);
                         header('HTTP/1.1 400 Bad Request');
                         die('Bad Request');
                     }
@@ -428,7 +436,11 @@ class Backend extends Contao_Backend
      */
     public function adjustGroupsManager($objTemplate)
     {
-        if (\Input::get('popup') && \Input::get('do') == 'iso_products' && \Input::get('table') == Group::getTable() && $objTemplate->getName() == 'be_main') {
+        if (\Input::get('popup')
+            && \Input::get('do') == 'iso_products'
+            && \Input::get('table') == Group::getTable()
+            && $objTemplate->getName() == 'be_main'
+        ) {
             $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }

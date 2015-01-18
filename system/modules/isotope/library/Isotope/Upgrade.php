@@ -71,7 +71,7 @@ class Upgrade extends \Controller
     }
 
 
-    private function handleException($step, $e)
+    private function handleException($step, \Exception $e)
     {
 echo '
 <!DOCTYPE html>
@@ -104,7 +104,14 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
     private function verifySystemIntegrity()
     {
         // Just make sure no variant or translation has any categories assigned
-        \Database::getInstance()->query("DELETE FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (SELECT id FROM " . \Isotope\Model\Product::getTable() . " WHERE pid>0)");
+        \Database::getInstance()->query("
+            DELETE FROM tl_iso_product_category
+            WHERE pid IN (
+                SELECT id
+                FROM tl_iso_product
+                WHERE pid>0
+            )
+        ");
     }
 
 

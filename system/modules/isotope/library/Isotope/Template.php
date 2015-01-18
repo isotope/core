@@ -12,7 +12,6 @@
 
 namespace Isotope;
 
-
 /**
  * Class Isotope\Template
  *
@@ -26,9 +25,11 @@ class Template extends \FrontendTemplate
 
     /**
      * Check the Isotope config directory for a particular template
-     * @param string
+     *
+     * @param string $strTemplate
+     * @param string $strFormat
+     *
      * @return string
-     * @throws Exception
      */
     public static function getTemplate($strTemplate, $strFormat = 'html5')
     {

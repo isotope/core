@@ -14,7 +14,6 @@ namespace Isotope;
 
 use Isotope\Model\Label;
 
-
 /**
  * Translates labels
  *
@@ -65,8 +64,9 @@ class Translation
         static::initialize($strLanguage);
 
         if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
-
-            static::$arrLabels[$strLanguage][$varLabel] = \String::decodeEntities(static::$arrLabels[$strLanguage][$varLabel]);
+            static::$arrLabels[$strLanguage][$varLabel] = \String::decodeEntities(
+                static::$arrLabels[$strLanguage][$varLabel]
+            );
 
             return static::$arrLabels[$strLanguage][$varLabel];
         }
@@ -76,9 +76,10 @@ class Translation
 
     /**
      * Add a translation that is not stored in translation table
-     * @param   string The label
-     * @param   string The replacement
-     * @param   string The language
+     *
+     * @param string $strLabel       The label
+     * @param string $strReplacement The replacement
+     * @param string $strLanguage    The language
      */
     public static function add($strLabel, $strReplacement, $strLanguage = null)
     {
@@ -94,7 +95,8 @@ class Translation
 
     /**
      * Initialize the data in translation table
-     * @param string The language
+     *
+     * @param string $strLanguage The language
      */
     protected static function initialize($strLanguage = null)
     {
@@ -103,7 +105,6 @@ class Translation
         }
 
         if (!isset(static::$arrLoaded[$strLanguage])) {
-
             $objLabels = Label::findBy('language', $strLanguage);
 
             if (null !== $objLabels) {
