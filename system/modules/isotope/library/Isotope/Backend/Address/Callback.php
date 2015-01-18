@@ -26,7 +26,7 @@ class Callback extends \Backend
     {
         $objAddress = new \Isotope\Model\Address();
         $objAddress->setRow($arrAddress);
-        $strBuffer = $objAddress->generateHtml();
+        $strBuffer = $objAddress->generate();
 
         $strBuffer .= '<div style="color:#b3b3b3;margin-top:8px">' . $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] . ' ' . $arrAddress['store_id'];
 

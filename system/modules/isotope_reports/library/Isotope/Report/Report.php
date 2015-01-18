@@ -281,7 +281,7 @@ abstract class Report extends \Backend
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
-            'value'     => $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
+            'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
             'class'     => 'tl_start',
         );
     }
@@ -297,7 +297,7 @@ abstract class Report extends \Backend
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['to'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
-            'value'     => $this->parseDate($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
+            'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
             'class'     => 'tl_stop',
         );
     }

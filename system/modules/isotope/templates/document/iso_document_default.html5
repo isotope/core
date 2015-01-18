@@ -5,7 +5,7 @@
                 <h2><?php echo $this->title; ?></h2>
             </td>
             <td>
-                <?php if ($this->collection->getBillingAddress()) echo $this->collection->getBillingAddress()->generateHtml(); ?>
+                <?php if ($this->collection->getBillingAddress()) echo $this->collection->getBillingAddress()->generate(); ?>
             </td>
         </tr>
         <tr>

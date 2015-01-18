@@ -658,7 +658,7 @@ class DC_ProductData extends \DC_Table
 
                 while ($objVersion->next()) {
                     $versions .= '
-  <option value="' . $objVersion->version . '"' . ($objVersion->active ? ' selected="selected"' : '') . '>' . $GLOBALS['TL_LANG']['MSC']['version'] . ' ' . $objVersion->version . ' (' . \System::parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp) . ') ' . $objVersion->username . '</option>';
+  <option value="' . $objVersion->version . '"' . ($objVersion->active ? ' selected="selected"' : '') . '>' . $GLOBALS['TL_LANG']['MSC']['version'] . ' ' . $objVersion->version . ' (' . \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $objVersion->tstamp) . ') ' . $objVersion->username . '</option>';
                 }
 
                 $version = '<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_version" class="tl_form" method="post" style="float:right;">

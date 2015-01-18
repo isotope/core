@@ -276,7 +276,7 @@ class Callback extends \Backend
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['payment_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . $this->generateImage($icon, $label) . '</a> ' : '';
+        return $row['payment_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -317,7 +317,7 @@ class Callback extends \Backend
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['shipping_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . $this->generateImage($icon, $label) . '</a> ' : '';
+        return $row['shipping_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**

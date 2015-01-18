@@ -32,7 +32,7 @@ class Callback extends \Backend
             $image = 'un' . $image;
         }
 
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', $this->getTheme(), $image, $label);
+        return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', \Backend::getTheme(), $image, $label);
     }
 
 

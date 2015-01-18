@@ -127,7 +127,7 @@ class MediaManager extends \Widget implements \uploadable
                 $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
             }
 
-            \Haste\Haste::mkdirr($uploadFolder);
+            new \Folder($uploadFolder);
             $arrFallback = $this->getFallbackData();
 
             // Check that image is not assigned in fallback language
@@ -212,7 +212,8 @@ class MediaManager extends \Widget implements \uploadable
                     );
                 }
 
-                \Haste\Haste::mkdirr(dirname($strFile));
+                // Make sure the parent folder exists
+                new \Folder(dirname($strFile));
 
                 if (\Files::getInstance()->rename($v['src'], $strFile)) {
                     $this->varValue[$k]['src'] = basename($strFile);
@@ -379,7 +380,7 @@ class MediaManager extends \Widget implements \uploadable
             if ($objFile->isGdImage) {
                 $strPreview = \Image::get($strFile, 50, 50, 'box');
             } else {
-                $strPreview = 'system/themes/' . $this->getTheme() . '/images/' . $objFile->icon;
+                $strPreview = 'system/themes/' . \Backend::getTheme() . '/images/' . $objFile->icon;
             }
 
             $strTranslateText = ($blnLanguage && $this->varValue[$i]['translate'] != 'all') ? ' disabled="disabled"' : '';
