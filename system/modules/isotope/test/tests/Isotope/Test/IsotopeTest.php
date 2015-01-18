@@ -14,13 +14,6 @@ namespace Isotope\Test;
 
 class IsotopeTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConvertWeight()
-    {
-        $this->assertEquals(\Isotope\Isotope::convertWeight(2, 'kg', 'g'), 2000);
-        $this->assertEquals(\Isotope\Isotope::convertWeight(2, 'g', 'mg'), 2000);
-        $this->assertEquals(\Isotope\Isotope::convertWeight(2, 'kg', 'mg'), 2000000);
-    }
-
     public function testRegexpPrice()
     {
         \Input::setPost('test_rgxp_price', 'foobar');
@@ -60,7 +53,7 @@ class IsotopeTest extends \PHPUnit_Framework_TestCase
         $objWidget->rgxp = 'price';
         $objWidget->validate();
 
-        $this->assertTrue($objWidget->hasErrors());
+        $this->assertFalse($objWidget->hasErrors());
         unset($objWidget);
     }
 }
