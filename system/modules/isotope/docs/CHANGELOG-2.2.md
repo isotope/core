@@ -1,12 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.2.1-stable (2014-??-??)
+Version 2.2.1-stable (2015-01-20)
 ---------------------------------
 
 ### Fixed
 - Custom template for gallery was not correctly set (#1321)
 - Labels were not correctly translated in order PDF and backend notifications (#1325)
+- Attributes with options from products can't be filtered in frontend or backend (#1319)
 
 
 Version 2.2.0-stable (2014-11-24)
