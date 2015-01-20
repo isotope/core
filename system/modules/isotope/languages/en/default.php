@@ -217,6 +217,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('Pay
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('PostFinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.innopay']              = array('Innopay', 'A payment module for the swiss payment gateway "Innocard".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.billpay_saferpay']     = array('BillPay (using Saferpay)');
