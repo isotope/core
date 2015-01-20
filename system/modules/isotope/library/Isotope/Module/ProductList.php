@@ -194,15 +194,7 @@ class ProductList extends Module
 
         // No products found
         if (!is_array($arrProducts) || empty($arrProducts)) {
-
-            // Do not index or cache the page
-            $objPage->noSearch = 1;
-            $objPage->cache    = 0;
-
-            $this->Template->empty    = true;
-            $this->Template->type     = 'empty';
-            $this->Template->message  = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
-            $this->Template->products = array();
+            $this->compileEmptyMessage();
 
             return;
         }
@@ -211,6 +203,7 @@ class ProductList extends Module
 
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
+        /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
             $arrConfig = array(
                 'module'        => $this,
@@ -307,6 +300,27 @@ class ProductList extends Module
         return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 
+    /**
+     * Compile template to show a message if there are no products
+     *
+     * @param bool $disableSearchIndex
+     */
+    protected function compileEmptyMessage($disableSearchIndex = true)
+    {
+        global $objPage;
+
+        // Do not index or cache the page
+        if ($disableSearchIndex) {
+            $objPage->noSearch = 1;
+            $objPage->cache    = 0;
+        }
+
+        $this->Template->empty    = true;
+        $this->Template->type     = 'empty';
+        $this->Template->message  = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noProducts'];
+        $this->Template->products = array();
+    }
+
 
     /**
      * Generate the pagination
@@ -341,6 +355,7 @@ class ProductList extends Module
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
                 global $objPage;
 
+                /** @var \PageError404 $objHandler */
                 $objHandler = new $GLOBALS['TL_PTY']['error_404']();
                 $objHandler->generate($objPage->id);
                 exit;

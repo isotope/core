@@ -68,10 +68,6 @@ class Upgrade extends \Controller
                 $this->handleException('Finalization', $e);
             }
         }
-
-        if ($strStep != '') {
-            \System::log('Upgraded Isotope eCommerce to ' . $strStep, TL_INFO, __METHOD__);
-        }
     }
 
 

@@ -24,6 +24,7 @@ $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][0] = 'Auf der Willkom
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'][1] = 'Zeigt die Anzahl von Bestellungen mit diesem Status auf der Willkommensseite im Backend an.';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][0] = 'Benachrichtigung';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'][1] = 'Bitte wählen Sie eine Benachrichtigung.';
+$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status'][0] = 'Saferpay-Abwicklung';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][0] = 'Neuer Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['new'][1] = 'Einen neuen Bestellstatus erstellen';
 $GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'][0] = 'Bestellstatus bearbeiten';

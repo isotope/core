@@ -128,7 +128,7 @@ abstract class Address extends CheckoutStep
 
         if (null === $objAddress || !$objModelRegistry->isRegistered($objAddress)) {
             $this->blnError = true;
-        } else {
+        }  elseif ($blnValidate) {
             $this->setAddress($objAddress);
         }
 

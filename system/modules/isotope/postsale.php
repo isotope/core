@@ -71,8 +71,8 @@ class PostSale extends \Frontend
         include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
 
         // Default parameters
-        $this->setModule(strlen(\Input::post('mod')) ? \Input::post('mod') : \Input::get('mod'));
-        $this->setModuleId(strlen(\Input::post('id')) ? \Input::post('id') : \Input::get('id'));
+        $this->setModule((string) (\Input::post('mod') ?: \Input::get('mod')));
+        $this->setModuleId((int) (\Input::post('id') ?: \Input::get('id')));
 
         // HOOK: allow to add custom hooks for postsale script
         if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))

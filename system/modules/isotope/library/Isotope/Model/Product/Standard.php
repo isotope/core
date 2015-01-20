@@ -62,7 +62,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Available variant IDs
-     * @var array
+     * @var int[]
      */
     protected $arrVariantIds;
 
@@ -86,13 +86,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * For option widgets, helps determine the encoding type for a form
-     * @var boolean
+     * @var bool
      */
     protected $hasUpload = false;
 
     /**
      * For option widgets, don't submit if certain validation(s) fail
-     * @var boolean
+     * @var bool
      */
     protected $doNotSubmit = false;
 
@@ -100,7 +100,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if the product is published, otherwise returns false
      *
-     * @return  bool
+     * @return bool
      */
     public function isPublished()
     {
@@ -120,7 +120,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if the product is available to show on the website
      *
-     * @return  bool
+     * @return bool
      */
     public function isAvailableInFrontend()
     {
@@ -138,7 +138,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      *
      * @param IsotopeProductCollection|\Isotope\Model\ProductCollection $objCollection
      *
-     * @return  bool
+     * @return bool
      */
     public function isAvailableForCollection(IsotopeProductCollection $objCollection)
     {
@@ -185,7 +185,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Checks whether a product is new according to the current store config
      *
-     * @return  boolean
+     * @return bool
      */
     public function isNew()
     {
@@ -195,7 +195,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return true if the product or product type has shipping exempt activated
      *
-     * @return  bool
+     * @return bool
      */
     public function isExemptFromShipping()
     {
@@ -205,7 +205,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if a variant is loaded
      *
-     * @return  bool
+     * @return bool
      */
     public function isVariant()
     {
@@ -215,7 +215,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if variants are enabled in the product type, otherwise returns false
      *
-     * @return  bool
+     * @return bool
      */
     public function hasVariants()
     {
@@ -228,7 +228,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if product has variants, and the price is a variant attribute
      *
-     * @return  bool
+     * @return bool
      */
     public function hasVariantPrices()
     {
@@ -242,7 +242,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Returns true if advanced prices are enabled in the product type, otherwise returns false
      *
-     * @return  bool
+     * @return bool
      */
     public function hasAdvancedPrices()
     {
@@ -255,7 +255,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return true if the user should see lowest price tier as lowest price
      *
-     * @return  bool
+     * @return bool
      */
     public function canSeePriceTiers()
     {
@@ -265,7 +265,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return the unique form ID for the product
      *
-     * @return  string
+     * @return string
      */
     public function getFormId()
     {
@@ -275,7 +275,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Get the product id (NOT variant id)
      *
-     * @return  int
+     * @return int
      */
     public function getProductId()
     {
@@ -287,7 +287,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      *
      * @param IsotopeProductCollection $objCollection
      *
-     * @return  \Isotope\Interfaces\IsotopePrice|ProductPrice
+     * @return \Isotope\Interfaces\IsotopePrice|ProductPrice
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -307,7 +307,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return minimum quantity for the product (from advanced price tiers)
-     * @return  int
+     *
+     * @return int
      */
     public function getMinimumQuantity()
     {
@@ -328,7 +329,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return the product attributes
-     * @return  array
+     *
+     * @return array
      */
     public function getAttributes()
     {
@@ -346,7 +348,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return the product variant attributes
-     * @return  array
+     *
+     * @return array
      */
     public function getVariantAttributes()
     {
@@ -363,7 +366,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return all available variant IDs of this product
-     * @return  array|false
+     *
+     * @return int[]|false
      */
     public function getVariantIds()
     {
@@ -434,7 +438,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      *
      * @param bool $blnPublished Only return published categories (pages)
      *
-     * @return  array
+     * @return \PageModel[]
      */
     public function getCategories($blnPublished = false)
     {
@@ -452,7 +456,15 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
             if (!empty($arrOrder) && is_array($arrOrder)) {
-                $this->arrCategories[$key] = array_unique(array_merge(array_intersect($arrOrder, $this->arrCategories[$key]), $this->arrCategories[$key]));
+                $this->arrCategories[$key] = array_unique(
+                    array_merge(
+                        array_intersect(
+                            $arrOrder,
+                            $this->arrCategories[$key]
+                        ),
+                        $this->arrCategories[$key]
+                    )
+                );
             }
         }
 
@@ -461,7 +473,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Get the weight of the product (as object)
-     * @return  Weight
+     *
+     * @return Weight
      */
     public function getWeight()
     {
@@ -474,7 +487,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return all product options
-     * @return  array
+     *
+     * @return array
      * @deprecated use getConfiguration
      */
     public function getOptions()
@@ -528,8 +542,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Generate a product template
-     * @param   array
-     * @return  string
+     *
+     * @param array $arrConfig
+     *
+     * @return string
      */
     public function generate(array $arrConfig)
     {
@@ -668,9 +684,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Return a widget object based on a product attribute's properties
-     * @param   string
-     * @param   boolean
-     * @return  string
+     *
+     * @param string $strField
+     * @param array  $arrVariantOptions
+     * @param array  $arrAjaxOptions
+     *
+     * @return string
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions, &$arrAjaxOptions)
     {
@@ -883,7 +902,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Load data of a product variant if the options match one
-     * @return  IsotopeProduct|$this
+     *
+     * @return IsotopeProduct|$this
      */
     protected function validateVariant()
     {
@@ -922,8 +942,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
     /**
      * Validate data and remove non-available attributes
-     * @param   array
-     * @return  Standard
+     *
+     * @param array $arrData
+     *
+     * @return $this
      */
     public function setRow(array $arrData)
     {
@@ -989,6 +1011,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             if ((
                     !in_array($attribute, $this->getAttributes())
                     && !in_array($attribute, $this->getVariantAttributes())
+                    && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
                 || in_array($attribute, Attribute::getVariantOptionFields())
@@ -1004,9 +1027,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * Prevent reload of the database record
      * We would need to fetch parent data etc. again, pretty useless
      *
-     * @param   array
+     * @param array $arrData
      *
-     * @return  $this
+     * @return $this
      */
     public function mergeRow(array $arrData)
     {
@@ -1021,7 +1044,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * In a variant, only variant and non-inherited fields can be marked as modified
      *
-     * @param   string $strKey
+     * @param string $strKey
      */
     public function markModified($strKey)
     {
@@ -1041,9 +1064,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Generate url
      *
-     * @param   \PageModel|object $objJumpTo A PageModel instance
+     * @param \PageModel $objJumpTo A PageModel instance
      *
-     * @return  array
+     * @return string
      */
     public function generateUrl(\PageModel $objJumpTo = null)
     {
@@ -1073,7 +1096,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return array of inherited attributes
      *
-     * @return  array
+     * @return array
      */
     protected function getInheritedFields()
     {

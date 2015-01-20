@@ -186,7 +186,13 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     protected function getAddress()
     {
-        return Isotope::getCart()->getBillingAddress();
+        $address = Isotope::getCart()->getBillingAddress();
+
+        if (null !== $address && Isotope::getCart()->billing_address_id != $address->id) {
+            Isotope::getCart()->setBillingAddress($address);
+        }
+
+        return $address;
     }
 
     /**

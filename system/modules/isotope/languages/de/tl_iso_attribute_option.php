@@ -15,8 +15,16 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Typ';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][1] = 'Wähle einen Typ für diese Beschriftung.';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['option'] = 'Option';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type']['group'] = 'Gruppe';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'][0] = 'Standard';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'][1] = 'Klicken Sie hier, wenn das die Standard-Option ist.';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Bezeichnung';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price'][0] = 'Preisaufschläge oder -abschläge';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Preis';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['published'][0] = 'Veröffentlicht';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['new'][0] = 'Neue Option';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label_legend'] = 'Typ und Beschriftung';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_legend'] = 'Preisänderung';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['publish_legend'] = 'Veröffentlichung';

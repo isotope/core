@@ -169,7 +169,7 @@ class Rule extends \Model
         $arrProcedures[] = "(limitPerConfig=0 OR limitPerConfig>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND config_id=" . (int) Isotope::getConfig()->id . " AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")))";
 
         if (Isotope::getCart()->member > 0) {
-            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=" . (int) \FrontendUser::getInstance()->id . " AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")))";
+            $arrProcedures[] = "(limitPerMember=0 OR limitPerMember>(SELECT COUNT(*) FROM tl_iso_rule_usage WHERE pid=r.id AND member_id=" . (int) Isotope::getCart()->member . " AND order_id NOT IN (SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")))";
         }
 
         // Store config restrictions
@@ -181,12 +181,13 @@ class Rule extends \Model
         // Member restrictions
         if (Isotope::getCart()->member > 0) {
 
-            $arrGroups = array_map('intval', deserialize(\FrontendUser::getInstance()->groups, true));
+            $objMember = \MemberModel::findByPk(Isotope::getCart()->member);
+            $arrGroups = (null === $objMember) ? array() : array_map('intval', deserialize($objMember->groups, true));
 
             $arrProcedures[] = "(memberRestrictions='none'
                                 OR (memberRestrictions='guests' AND memberCondition='0')
-                                OR (memberRestrictions='members' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) \FrontendUser::getInstance()->id . ")>0)
-                                OR (memberRestrictions='members' AND memberCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) \FrontendUser::getInstance()->id . ")=0)
+                                OR (memberRestrictions='members' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) Isotope::getCart()->member . ")>0)
+                                OR (memberRestrictions='members' AND memberCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='members' AND object_id=" . (int) Isotope::getCart()->member . ")=0)
                                 " . (!empty($arrGroups) ? "
                                 OR (memberRestrictions='groups' AND memberCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))>0)
                                 OR (memberRestrictions='groups' AND memberCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='groups' AND object_id IN (" . implode(',', $arrGroups) . "))=0)" : '') . ")";

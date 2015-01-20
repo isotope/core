@@ -75,10 +75,15 @@ class Frontend extends \Frontend
      * @param object
      * @param array
      */
-    public function addToCart($objProduct, array $arrConfig = array())
+    public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
         $objModule   = $arrConfig['module'];
         $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
+
+        // Do not add parent of variant product to the cart
+        if ($objProduct->hasVariants() && !$objProduct->isVariant()) {
+            return;
+        }
 
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
             $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
@@ -622,7 +627,7 @@ window.addEvent('domready', function()
     {
         global $objPage;
 
-        $strLanguage ?: $objOrder->language;
+        $strLanguage = $strLanguage ?: $objOrder->language;
 
         // Load page configuration
         if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {

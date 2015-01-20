@@ -17,14 +17,6 @@ use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
 
-/**
- * Class Standard
- *
- * Provide methods to handle Isotope galleries.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
 class Standard extends Document implements IsotopeDocument
 {
 
@@ -61,9 +53,11 @@ class Standard extends Document implements IsotopeDocument
 
     /**
      * Generate the pdf document
-     * @param   IsotopeProductCollection
-     * @param   array
-     * @return  \TCPDF
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrTokens
+     *
+     * @return \TCPDF
      */
     protected function generatePDF(IsotopeProductCollection $objCollection, array $arrTokens)
     {
@@ -120,7 +114,11 @@ class Standard extends Document implements IsotopeDocument
 
     /**
      * Generate and return document template
-     * @return  string
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param array                    $arrTokens
+     *
+     * @return string
      */
     protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {

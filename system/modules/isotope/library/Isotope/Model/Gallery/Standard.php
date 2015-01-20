@@ -57,9 +57,8 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && TL_MODE == 'FE')
-        {
-            $this->strTemplate = $this->customTpl;
+        if ($arrData['customTpl'] != '' && TL_MODE == 'FE') {
+            $this->strTemplate = $arrData['customTpl'];
         }
 
         return parent::setRow($arrData);
@@ -223,6 +222,7 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->size       = $arrFile[$strType . '_size'];
         $objTemplate->alt        = $arrFile['alt'];
         $objTemplate->title      = $arrFile['desc'];
+        $objTemplate->class      = trim($this->arrData['class'] . ' ' . $arrFile['class']);
 
         switch ($this->anchor) {
             case 'reader':

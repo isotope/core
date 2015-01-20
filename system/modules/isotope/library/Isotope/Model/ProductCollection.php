@@ -1474,7 +1474,7 @@ abstract class ProductCollection extends TypeAgent
         }
 
         if ($this->arrData['document_number'] == '') {
-            $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, true));
+            $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, false));
             $intPrefix = utf8_strlen($strPrefix);
 
             // Lock tables so no other order can get the same ID
@@ -1578,12 +1578,24 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
+        /** @type Config $config */
+        $config         = $this->getRelated('config_id');
+        $billingFields  = (null === $config) ? array() : $config->getBillingFields();
+        $shippingFields = (null === $config) ? array() : $config->getShippingFields();
+
         if (null !== $objBillingAddress && ($objBillingAddress->ptable != static::$strTable || $objBillingAddress->pid != $this->id)) {
 
-            $objNew         = clone $objBillingAddress;
-            $objNew->pid    = $this->id;
-            $objNew->tstamp = time();
-            $objNew->ptable = static::$strTable;
+            $arrData = array_intersect_key(
+                $objBillingAddress->row(),
+                array_flip($billingFields)
+            );
+
+            $objNew = new Address();
+            $objNew->setRow($arrData);
+
+            $objNew->pid      = $this->id;
+            $objNew->tstamp   = time();
+            $objNew->ptable   = static::$strTable;
             $objNew->store_id = $this->store_id;
             $objNew->save();
 
@@ -1599,10 +1611,17 @@ abstract class ProductCollection extends TypeAgent
 
         if (null !== $objShippingAddress && ($objShippingAddress->ptable != static::$strTable || $objShippingAddress->pid != $this->id)) {
 
-            $objNew         = clone $objShippingAddress;
-            $objNew->pid    = $this->id;
-            $objNew->tstamp = time();
-            $objNew->ptable = static::$strTable;
+            $arrData = array_intersect_key(
+                $objShippingAddress->row(),
+                array_flip($shippingFields)
+            );
+
+            $objNew = new Address();
+            $objNew->setRow($arrData);
+
+            $objNew->pid      = $this->id;
+            $objNew->tstamp   = time();
+            $objNew->ptable   = static::$strTable;
             $objNew->store_id = $this->store_id;
             $objNew->save();
 

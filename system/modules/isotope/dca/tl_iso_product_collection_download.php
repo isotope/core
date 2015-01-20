@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_download'] = array
         ),
         'downloads_remaining' => array
         (
-            'sql'               => "varchar(255) NOT NULL default ''",
+            'sql'               => "varchar(10) NOT NULL default ''",
         ),
         'expires' => array
         (
