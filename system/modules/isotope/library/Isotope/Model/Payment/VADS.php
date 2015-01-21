@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Haste\DateTime\DateTime;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -124,6 +125,8 @@ abstract class VADS extends Postsale implements IsotopePayment
         $objAddress = $objOrder->getBillingAddress();
         $successUrl = '';
         $failureUrl = '';
+        $transDate  = new DateTime();
+        $transDate->setTimezone(new \DateTimeZone('UTC'));
 
         if (null !== $objModule) {
             $successUrl = ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder));
@@ -151,7 +154,7 @@ abstract class VADS extends Postsale implements IsotopePayment
             'vads_payment_config' => 'SINGLE',
             'vads_return_mode'    => 'NONE',
             'vads_site_id'        => $this->vads_site_id,
-            'vads_trans_date'     => '',
+            'vads_trans_date'     => $transDate->format('YmdHis'),
             'vads_trans_id'       => str_pad($objOrder->id, 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
             'vads_url_error'      => $failureUrl,
