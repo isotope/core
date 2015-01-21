@@ -187,7 +187,7 @@ abstract class VADS extends Postsale implements IsotopePayment
 
         $values = implode('+', $parameters);
 
-        return hash('sha1', $values . $certificate);
+        return hash('sha1', $values . '+' . $certificate);
     }
 
     /**
