@@ -71,7 +71,7 @@ abstract class Attribute extends TypeAgent
      * Options for variants cache
      * @var array
      */
-    protected $arrOptionsForVariantsCache = array();
+    private $arrOptionsForVariants = array();
 
     /**
      * Return true if attribute is a variant option
@@ -264,10 +264,12 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Get available variant options for a product
-     * @param   array
-     * @param   array
-     * @return  array
-     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
+     *
+     * @param int[] $arrIds
+     * @param array $arrOptions
+     *
+     * @return array
+     * @deprecated will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
@@ -275,24 +277,24 @@ abstract class Attribute extends TypeAgent
             return array();
         }
 
-        $strKey = md5(implode('', $arrIds) . json_encode($arrOptions));
+        sort($arrIds);
+        ksort($arrOptions);
+        $strKey = md5(implode('-', $arrIds) . '_' . json_encode($arrOptions));
 
-        if (isset($this->arrOptionsForVariantsCache[$strKey])) {
-            return $this->arrOptionsForVariantsCache[$strKey];
+        if (!isset($this->arrOptionsForVariants[$strKey])) {
+            $strWhere = '';
+
+            foreach ($arrOptions as $field => $value) {
+                $strWhere .= " AND $field=?";
+            }
+
+            $this->arrOptionsForVariants[$strKey] = \Database::getInstance()->prepare("
+                SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
+                " . $strWhere
+            )->execute($arrOptions)->fetchEach($this->field_name);
         }
 
-        $strWhere = '';
-
-        foreach ($arrOptions as $field => $value) {
-            $strWhere .= " AND $field=?";
-        }
-
-        $this->arrOptionsForVariantsCache[$strKey] = \Database::getInstance()->prepare("
-            SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
-            " . $strWhere . "
-        ")->execute($arrOptions)->fetchEach($this->field_name);
-
-        return $this->arrOptionsForVariantsCache[$strKey];
+        return $this->arrOptionsForVariants[$strKey];
     }
 
     /**
