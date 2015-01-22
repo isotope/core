@@ -68,6 +68,12 @@ abstract class Attribute extends TypeAgent
     protected static $arrFieldNameMap = array();
 
     /**
+     * Options for variants cache
+     * @var array
+     */
+    protected $arrOptionsForVariantsCache = array();
+
+    /**
      * Return true if attribute is a variant option
      * @return      bool
      * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
@@ -269,16 +275,24 @@ abstract class Attribute extends TypeAgent
             return array();
         }
 
+        $strKey = md5(implode('', $arrIds) . json_encode($arrOptions));
+
+        if (isset($this->arrOptionsForVariantsCache[$strKey])) {
+            return $this->arrOptionsForVariantsCache[$strKey];
+        }
+
         $strWhere = '';
 
         foreach ($arrOptions as $field => $value) {
             $strWhere .= " AND $field=?";
         }
 
-        return \Database::getInstance()->prepare("
+        $this->arrOptionsForVariantsCache[$strKey] = \Database::getInstance()->prepare("
             SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
             " . $strWhere . "
         ")->execute($arrOptions)->fetchEach($this->field_name);
+
+        return $this->arrOptionsForVariantsCache[$strKey];
     }
 
     /**
