@@ -187,8 +187,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     {
         $t = static::$strTable;
 
-        $arrColumns = array("($t.id=? OR $t.alias=?)");
-        $arrValues  = array(is_numeric($varId) ? $varId : 0, $varId);
+        $arrColumns = array("($t.id=? OR $t.alias=? OR ($t.pid=0 AND $t.id IN (SELECT pid FROM $t WHERE pid!=0 AND alias=?)))");
+        $arrValues  = array(is_numeric($varId) ? $varId : 0, $varId, $varId);
 
         $arrOptions = array_merge(
             array(

@@ -344,7 +344,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'sorting'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'alnum', 'doNotCopy'=>true, 'spaceToUnderscore'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true),
+            'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'multilingual'=>true),
             'sql'                   => "varchar(128) NOT NULL default ''",
             'save_callback' => array
             (
