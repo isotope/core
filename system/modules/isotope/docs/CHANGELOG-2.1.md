@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.11-stable (2015-??-??)
+----------------------------------
+
+### Fixed
+- Composer installer could not find namespace class loader dependency
+
+
 Version 2.1.10-stable (2015-01-13)
 ----------------------------------
 
