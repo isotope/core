@@ -62,7 +62,7 @@ class TaxClass extends \Model
         if (!is_array($arrAddresses)) {
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
 
-            if (Isotope::getCart()->hasShipping()) {
+            if (Isotope::getCart()->requiresShipping()) {
                 $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
             }
         }
@@ -104,7 +104,7 @@ class TaxClass extends \Model
         if (!is_array($arrAddresses)) {
             $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
 
-            if (Isotope::getCart()->hasShipping()) {
+            if (Isotope::getCart()->requiresShipping()) {
                 $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
             }
         }

@@ -244,7 +244,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $arrTaxes     = array();
         $arrAddresses = array('billing' => $objCollection->getBillingAddress());
 
-        if ($objCollection->hasShipping()) {
+        if ($objCollection->requiresShipping()) {
             $arrAddresses['shipping'] = $objCollection->getShippingAddress();
         }
 
@@ -471,7 +471,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                     $fltPrice = $objSurcharge->total_price;
                     $arrAddresses = array('billing' => $objCollection->getBillingAddress());
 
-                    if ($objCollection->hasShipping()) {
+                    if ($objCollection->requiresShipping()) {
                         $arrAddresses['shipping'] = $objCollection->getShippingAddress();
                     }
 
