@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.2.2-stable (2015-??-??)
 ---------------------------------
 
+### Improved
+- Backend product images are resized proportionally instead of cropped
 
 
 Version 2.2.1-stable (2015-01-20)
