@@ -129,8 +129,8 @@ abstract class VADS extends Postsale implements IsotopePayment
         $transDate->setTimezone(new \DateTimeZone('UTC'));
 
         if (null !== $objModule) {
-            $successUrl = ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder));
-            $failureUrl = ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed'));
+            $successUrl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
+            $failureUrl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
         }
 
         return array(
@@ -157,12 +157,12 @@ abstract class VADS extends Postsale implements IsotopePayment
             'vads_trans_date'     => $transDate->format('YmdHis'),
             'vads_trans_id'       => str_pad($objOrder->id, 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
+            'vads_url_check'      => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'vads_url_error'      => $failureUrl,
             'vads_url_referral'   => $failureUrl,
             'vads_url_refused'    => $failureUrl,
             'vads_url_success'    => $successUrl,
             'vads_url_return'     => $failureUrl,
-            'vads_url_check'      => ampersand(\Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id),
             'vads_version'        => 'V2',
         );
     }
