@@ -162,6 +162,7 @@ abstract class VADS extends Postsale implements IsotopePayment
             'vads_url_refused'    => $failureUrl,
             'vads_url_success'    => $successUrl,
             'vads_url_return'     => $failureUrl,
+            'vads_url_check'      => ampersand(\Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id),
             'vads_version'        => 'V2',
         );
     }
