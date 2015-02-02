@@ -285,13 +285,6 @@ class ProductFilter extends Module implements IsotopeFilterModule
 
                     $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
-                    if (is_array($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback']) && !empty($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'])) {
-                        foreach ($GLOBALS['ISO_ATTR'][$arrData['inputType']]['callback'] as $callback) {
-                            $objCallback = \System::importStatic($callback[0]);
-                            $arrData     = $objCallback->{$callback[1]}($strField, $arrData, $this);
-                        }
-                    }
-
                     // Use the default routine to initialize options data
                     $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
                     $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
