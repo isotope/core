@@ -14,3 +14,4 @@ Version 2.3.0-beta1 (2015-??-??)
 - Product versions can now be compared in the backend (#1283)
 - Selecting a language in the backend is now auto-submitted
 - Cumulative filter can now have a jumpTo page
+- Cumulative filter can now be hidden on a reader page

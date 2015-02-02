@@ -55,6 +55,11 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
             return $objTemplate->parse();
         }
 
+        // Hide product list in reader mode if the respective setting is enabled
+        if ($this->iso_hide_list && \Haste\Input\Input::getAutoItem('product', false, true) != '') {
+            return '';
+        }
+
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
         $this->navigationTpl = $this->navigationTpl ? $this->navigationTpl : 'nav_default';
