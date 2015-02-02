@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.11-stable (2015-??-??)
 ----------------------------------
 
+### Improved
+- Setting for "reference page" was not visible in the product filter module
+
 ### Fixed
 - Composer installer could not find namespace class loader dependency
 - Taxes for shipping address were not applied before checkout
