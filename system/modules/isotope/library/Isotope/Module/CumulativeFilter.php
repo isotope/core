@@ -97,7 +97,7 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
                 \Environment::get('base') .
                 Url::addQueryString(
                     'isorc='.$objCache->id,
-                    Url::removeQueryString(array('cumulativefilter'))
+                    ($this->jumpTo > 0 ? $this->jumpTo : Url::removeQueryString(array('cumulativefilter')))
                 )
             );
 
