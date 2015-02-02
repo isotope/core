@@ -8,6 +8,7 @@ Version 2.1.11-stable (2015-??-??)
 - Composer installer could not find namespace class loader dependency
 - Taxes for shipping address were not applied before checkout
 - Gallery only included the last JavaScript template on AJAX request (#1357)
+- Possible message when product has no price attribute (#1353)
 
 
 Version 2.1.10-stable (2015-01-13)
