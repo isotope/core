@@ -67,7 +67,8 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Set gallery attribute name
-     * @param   string
+     *
+     * @param   string $strName
      */
     public function setName($strName)
     {
@@ -76,6 +77,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Get gallery attribute name
+     *
      * @return  string
      */
     public function getName()
@@ -85,6 +87,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Set image files
+     *
      * @param   array
      */
     public function setFiles($varValue)
@@ -110,6 +113,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Get image files
+     *
      * @return  array
      */
     public function getFiles()
@@ -120,6 +124,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Get the number of images
+     *
      * @return int
      */
     public function size()
@@ -130,6 +135,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Returns whether the gallery object has an image do display or not
+     *
      * @return boolean
      */
     public function hasImages()
@@ -137,18 +143,9 @@ class Standard extends Gallery implements IsotopeGallery
         return !empty($this->arrFiles);
     }
 
-
-    /**
-     * If the class is echoed, return the main image
-     */
-    public function __toString()
-    {
-        return $this->generateMainImage();
-    }
-
-
     /**
      * Generate main image and return it as HTML string
+     *
      * @return  string
      */
     public function generateMainImage()
@@ -183,7 +180,8 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Generate gallery and return it as HTML string
-     * @param   integer
+     *
+     * @param   integer $intSkip
      * @return  string
      */
     public function generateGallery($intSkip = 1)
@@ -206,10 +204,21 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
+     * If the class is echoed, return the main image
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->generateMainImage();
+    }
+
+    /**
      * Generate template with given file
-     * @param   object
-     * @param   string
-     * @param   array
+     *
+     * @param   \Isotope\Template $objTemplate
+     * @param   string $strType
+     * @param   array $arrFile
      * @return  string
      */
     protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
