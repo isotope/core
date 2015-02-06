@@ -12,7 +12,6 @@
 
 namespace Isotope\Module;
 
-use Haste\Haste;
 use Haste\Generator\RowClass;
 use Haste\Http\Response\HtmlResponse;
 use Isotope\Isotope;
@@ -280,7 +279,7 @@ class ProductList extends Module
         }
 
         if ($this->iso_list_where != '') {
-            $arrColumns[] = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+            $arrColumns[] = $this->iso_list_where;
         }
 
         if ($strWhere != '') {

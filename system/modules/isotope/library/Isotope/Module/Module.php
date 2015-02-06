@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Haste;
 use Haste\Util\Debug;
 use Isotope\Frontend;
 use Isotope\Isotope;
@@ -59,6 +60,10 @@ abstract class Module extends Contao_Module
     public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
+
+        if ($this->iso_list_where != '') {
+            $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+        }
 
         Isotope::initialize();
 
