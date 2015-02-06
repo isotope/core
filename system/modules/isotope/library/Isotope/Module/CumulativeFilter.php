@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
@@ -112,20 +113,41 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     protected function generateFilter()
     {
-        $blnShowClear = false;
-        $arrFilters   = array();
+        $blnShowClear  = false;
+        $arrFilters    = array();
+        $arrCategories = $this->findCategories();
 
         foreach ($this->iso_filterFields as $strField) {
+            $arrValues = $this->getUsedValuesForAttribute($strField, $arrCategories, $this->iso_list_where);
+
+            if (empty($arrValues)) {
+                continue;
+            }
+
             $blnTrail  = false;
             $arrItems  = array();
-            $arrWidget = \Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField], $strField); // Use the default routine to initialize options data
+            $arrData   = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
+
+            // Use the default routine to initialize options data
+            $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
+
+            if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
+                && $objAttribute instanceof IsotopeAttributeWithOptions
+            ) {
+                $arrWidget['options'] = $objAttribute->getOptionsForProductFilter(array_keys($arrValues));
+            }
+
+            // Must have options to apply the filter
+            if (!is_array($arrWidget['options'])) {
+                continue;
+            }
 
             foreach ($arrWidget['options'] as $option) {
                 $varValue = $option['value'];
 
                 // skip zero values (includeBlankOption)
                 // @deprecated drop "-" when we only have the database table as options source
-                if ($varValue === '' || $varValue === '-') {
+                if (!isset($arrValues[$option['value']]) || $varValue === '' || $varValue === '-') {
                     continue;
                 }
 
@@ -137,32 +159,37 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                     'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
                     'class' => ($blnActive ? 'active' : ''),
                     'title' => specialchars($option['label']),
-                    'link'  => $option['label'],
+                    'link'  => sprintf('%s (%s)', $option['label'], $arrValues[$option['value']]),
+                    'label' => $option['label'],
+                    'count' => $arrValues[$option['value']],
                 );
             }
 
-            if (!empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
-                $objClass = RowClass::withKey('class')->addFirstLast();
-
-                if ($blnTrail) {
-                    $objClass->addCustom('sibling');
-                }
-
-                $objClass->applyTo($arrItems);
-
-                $objTemplate = new \Isotope\Template($this->navigationTpl);
-
-                $objTemplate->level = 'level_2';
-                $objTemplate->items = $arrItems;
-
-                $arrFilters[$strField] = array(
-                    'label'    => $arrWidget['label'],
-                    'subitems' => $objTemplate->parse(),
-                    'isActive' => $blnTrail,
-                );
-
-                $blnShowClear = $blnTrail ? true : $blnShowClear;
+            // Hide fields with just one option (if enabled)
+            if (empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
+                continue;
             }
+
+            $objClass = RowClass::withKey('class')->addFirstLast();
+
+            if ($blnTrail) {
+                $objClass->addCustom('sibling');
+            }
+
+            $objClass->applyTo($arrItems);
+
+            $objTemplate = new \Isotope\Template($this->navigationTpl);
+
+            $objTemplate->level = 'level_2';
+            $objTemplate->items = $arrItems;
+
+            $arrFilters[$strField] = array(
+                'label'    => $arrWidget['label'],
+                'subitems' => $objTemplate->parse(),
+                'isActive' => $blnTrail,
+            );
+
+            $blnShowClear = $blnTrail ? true : $blnShowClear;
         }
 
         $this->Template->filters   = $arrFilters;
