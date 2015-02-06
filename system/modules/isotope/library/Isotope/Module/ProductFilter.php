@@ -12,7 +12,6 @@
 
 namespace Isotope\Module;
 
-use Haste\Haste;
 use Haste\Http\Response\JsonResponse;
 use Haste\Input\Input;
 use Haste\Util\Format;
@@ -138,27 +137,30 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     protected function compile()
     {
-        $this->blnUpdateCache = \Input::post('FORM_SUBMIT') == 'iso_filter_' . $this->id ? true : false;
+        $this->blnUpdateCache = (\Input::post('FORM_SUBMIT') == 'iso_filter_' . $this->id);
 
         $this->generateFilters();
         $this->generateSorting();
         $this->generateLimit();
 
-        if (!$this->blnUpdateCache) {
-            // Search does not affect request cache
-            $this->generateSearch();
-
-            $arrParams = array_filter(array_keys($_GET), function($key) {
-                return (strpos($key, 'page_iso') === 0);
-            });
-
-            $this->Template->id          = $this->id;
-            $this->Template->formId      = 'iso_filter_' . $this->id;
-            $this->Template->action      = ampersand(Url::removeQueryString($arrParams));
-            $this->Template->actionClear = ampersand(strtok(\Environment::get('request'), '?'));
-            $this->Template->clearLabel  = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
-            $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        // If we update the cache and reload the page, we don't need to build the template
+        if ($this->blnUpdateCache) {
+            return;
         }
+
+        // Search does not affect request cache
+        $this->generateSearch();
+
+        $arrParams = array_filter(array_keys($_GET), function($key) {
+            return (strpos($key, 'page_iso') === 0);
+        });
+
+        $this->Template->id          = $this->id;
+        $this->Template->formId      = 'iso_filter_' . $this->id;
+        $this->Template->action      = ampersand(Url::removeQueryString($arrParams));
+        $this->Template->actionClear = ampersand(strtok(\Environment::get('request'), '?'));
+        $this->Template->clearLabel  = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+        $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
 
     /**
