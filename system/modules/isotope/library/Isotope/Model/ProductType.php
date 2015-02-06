@@ -28,9 +28,9 @@ namespace Isotope\Model;
  * @property string reader_template
  * @property int    list_gallery
  * @property int    reader_gallery
- * @property mixed  attributes
+ * @property array  attributes
  * @property bool   variants
- * @property mixed  variant_attributes
+ * @property array  variant_attributes
  * @property bool   force_variant_options
  * @property bool   shipping_exempt
  * @property bool   downloads
@@ -56,6 +56,30 @@ class ProductType extends \Model
      */
     protected $arrVariantAttributes;
 
+    /**
+     * Initialize serialized values
+     *
+     * @param array $arrData
+     *
+     * @return $this
+     */
+    public function setRow(array $arrData)
+    {
+        parent::setRow($arrData);
+
+        $this->attributes = deserialize($this->attributes);
+        $this->variant_attributes = deserialize($this->variant_attributes);
+
+        if (!is_array($this->attributes)) {
+            $this->attributes = array();
+        }
+
+        if (!is_array($this->variant_attributes)) {
+            $this->variant_attributes = array();
+        }
+
+        return $this;
+    }
 
     /**
      * Returns true if variants are enabled in the product type, otherwise returns false

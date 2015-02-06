@@ -291,11 +291,11 @@ class DcaManager extends \Backend
             $arrCanInherit = array();
 
             if ($blnVariants) {
-                $arrConfig     = deserialize($objType->variant_attributes, true);
+                $arrConfig     = $objType->variant_attributes;
                 $arrEnabled    = $objType->getVariantAttributes();
                 $arrCanInherit = $objType->getAttributes();
             } else {
-                $arrConfig  = deserialize($objType->attributes, true);
+                $arrConfig  = $objType->attributes;
                 $arrEnabled = $objType->getAttributes();
             }
 
