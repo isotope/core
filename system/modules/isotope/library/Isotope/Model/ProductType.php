@@ -59,7 +59,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if variants are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasVariants()
     {
@@ -68,7 +69,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasAdvancedPrices()
     {
@@ -77,7 +79,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if show price tiers is enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function showPriceTiers()
     {
@@ -86,7 +89,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if downloads are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasDownloads()
     {
@@ -95,7 +99,8 @@ class ProductType extends \Model
 
     /**
      * Get enabled attributes by sorting
-     * @return  array
+     *
+     * @return array
      */
     public function getAttributes()
     {
@@ -108,12 +113,12 @@ class ProductType extends \Model
 
     /**
      * Get enabled variant attributes by sorting
-     * @return  array
+     *
+     * @return array
      */
     public function getVariantAttributes()
     {
         if (null === $this->arrVariantAttributes) {
-
             if (!$this->hasVariants()) {
                 $this->arrVariantAttributes = array();
             } else {
@@ -126,8 +131,10 @@ class ProductType extends \Model
 
     /**
      * Sort the attributes based on their position (from wizard) and return their names only
-     * @param   mixed
-     * @return  array
+     *
+     * @param mixed $varValue
+     *
+     * @return array
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
@@ -135,7 +142,10 @@ class ProductType extends \Model
         $arrAttributes = deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
-            if ($a['enabled'] && is_array($arrFields[$a['name']]) && $arrFields[$a['name']]['attributes']['legend'] != '') {
+            if ($a['enabled']
+                && is_array($arrFields[$a['name']])
+                && $arrFields[$a['name']]['attributes']['legend'] != ''
+            ) {
                 return true;
             }
 
@@ -151,8 +161,10 @@ class ProductType extends \Model
 
     /**
      * Get all product types that are in use
-     * @param   array
-     * @return  Collection|null
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findAllUsed(array $arrOptions = array())
     {
@@ -163,8 +175,10 @@ class ProductType extends \Model
 
     /**
      * Find fallback product type
-     * @param   array
-     * @return  ProductType|null
+     *
+     * @param array $arrOptions
+     *
+     * @return static|null
      */
     public static function findFallback(array $arrOptions = array())
     {
@@ -173,9 +187,11 @@ class ProductType extends \Model
 
     /**
      * Find product type for product data (as array)
-     * @param   array
-     * @param   array
-     * @return  ProductType|null
+     *
+     * @param array $row
+     * @param array $arrOptions
+     *
+     * @return static|null
      */
     public static function findByProductData(array $row, array $arrOptions = array())
     {
