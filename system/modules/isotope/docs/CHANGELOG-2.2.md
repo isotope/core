@@ -7,6 +7,9 @@ Version 2.2.2-stable (2015-??-??)
 ### Improved
 - Backend product images are resized proportionally instead of cropped
 
+### Fixed
+- Product filter did not support attribute options from foreignKey
+
 
 Version 2.2.1-stable (2015-01-20)
 ---------------------------------
