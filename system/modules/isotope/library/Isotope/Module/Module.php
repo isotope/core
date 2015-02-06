@@ -22,12 +22,16 @@ use PageModel;
 
 
 /**
- * Class ModuleIsotope
+ * Module implements a parent class for Isotope modules
  *
- * Parent class for Isotope modules.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property string iso_category_scope
+ * @property string iso_list_where
+ * @property string iso_includeMessages
+ * @property bool   iso_hide_list
+ * @property string customTpl
+ * @property int    jumpTo
+ * @property bool   defineRoot
+ * @property int    rootPage
  */
 abstract class Module extends Contao_Module
 {

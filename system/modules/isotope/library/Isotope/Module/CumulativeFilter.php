@@ -19,14 +19,7 @@ use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
 
 
-/**
- * Class ModuleIsotopeCumulativeFilter
- *
- * Provides a cumulative filter module.
- * @copyright  Isotope eCommerce Workgroup 2009-2011
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- */
-class CumulativeFilter extends Module implements IsotopeFilterModule
+class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
 
     /**
@@ -62,10 +55,9 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
 
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
-        $this->navigationTpl = $this->navigationTpl ? $this->navigationTpl : 'nav_default';
-        $this->iso_filterFields  = deserialize($this->iso_filterFields);
+        $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
 
-        if (!is_array($this->iso_filterFields) || count($this->iso_filterFields) == 0) { // Can't use empty() because its an object property (using __get)
+        if (empty($this->iso_filterFields)) {
             return '';
         }
 
@@ -141,8 +133,7 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
                 $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
                 $blnTrail     = $blnActive ? true : $blnTrail;
 
-                $arrItems[] = array
-                (
+                $arrItems[] = array(
                     'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
                     'class' => ($blnActive ? 'active' : ''),
                     'title' => specialchars($option['label']),
@@ -164,8 +155,7 @@ class CumulativeFilter extends Module implements IsotopeFilterModule
                 $objTemplate->level = 'level_2';
                 $objTemplate->items = $arrItems;
 
-                $arrFilters[$strField] = array
-                (
+                $arrFilters[$strField] = array(
                     'label'    => $arrWidget['label'],
                     'subitems' => $objTemplate->parse(),
                     'isActive' => $blnTrail,

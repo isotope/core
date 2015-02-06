@@ -26,7 +26,7 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 
-class ProductFilter extends Module implements IsotopeFilterModule
+class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
 
     /**
@@ -118,14 +118,10 @@ class ProductFilter extends Module implements IsotopeFilterModule
      */
     protected function initializeFilters()
     {
-        $this->iso_filterFields  = deserialize($this->iso_filterFields);
-        $this->iso_sortingFields = deserialize($this->iso_sortingFields);
-        $this->iso_searchFields  = deserialize($this->iso_searchFields);
-
         if (!$this->iso_enableLimit
-            && !is_array($this->iso_filterFields)
-            && !is_array($this->iso_sortingFields)
-            && !is_array($this->iso_searchFields)
+            && empty($this->iso_filterFields)
+            && empty($this->iso_sortingFields)
+            && empty($this->iso_searchFields)
         ) {
             return false;
         }
@@ -175,7 +171,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
         $this->Template->hasSearch       = false;
         $this->Template->hasAutocomplete = ($this->iso_searchAutocomplete) ? true : false;
 
-        if (!empty($this->iso_searchFields) && is_array($this->iso_searchFields)) {
+        if (!empty($this->iso_searchFields)) {
             if (\Input::get('keywords') != ''
                 && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText']
             ) {
@@ -223,7 +219,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
     {
         $this->Template->hasFilters = false;
 
-        if (!empty($this->iso_filterFields) && is_array($this->iso_filterFields)) {
+        if (!empty($this->iso_filterFields)) {
             $time          = time();
             $arrFilters    = array();
             $arrInput      = \Input::post('filter');
@@ -345,7 +341,7 @@ class ProductFilter extends Module implements IsotopeFilterModule
     {
         $this->Template->hasSorting = false;
 
-        if (!empty($this->iso_sortingFields) && is_array($this->iso_sortingFields)) {
+        if (!empty($this->iso_sortingFields)) {
             $arrOptions = array();
 
             // Cache new request value
@@ -444,30 +440,5 @@ class ProductFilter extends Module implements IsotopeFilterModule
                 $this->Template->limitOptions = $arrOptions;
             }
         }
-    }
-
-    /**
-     * Get the sorting labels (asc/desc) for an attribute
-     *
-     * @param string
-     *
-     * @return array
-     */
-    protected function getSortingLabels($field)
-    {
-        $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
-
-        switch ($arrData['eval']['rgxp']) {
-            case 'price':
-            case 'digit':
-                return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
-
-            case 'date':
-            case 'time':
-            case 'datim':
-                return array($GLOBALS['TL_LANG']['MSC']['old_to_new'], $GLOBALS['TL_LANG']['MSC']['new_to_old']);
-        }
-
-        return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
     }
 }
