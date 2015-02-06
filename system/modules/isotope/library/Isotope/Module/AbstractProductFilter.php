@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Isotope\Model\ProductType;
+
 /**
  * AbstractProductFilter provides basic methods to handle product filtering
  *
@@ -66,29 +68,47 @@ abstract class AbstractProductFilter extends Module
      */
     protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
     {
-        $values     = array();
-        $published1 = '';
-        $published2 = '';
+        $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
+        $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
+
+        if (empty($attributeTypes) && empty($variantTypes)) {
+            return array();
+        }
+
+        $values         = array();
+        $products       = array();
+        $typeConditions = array();
+        $published      = '';
 
         if ('' != $sqlWhere) {
             $sqlWhere = " AND " . $sqlWhere;
         }
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time       = time();
-            $published1 = "AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)";
-            $published2 = "AND (p1.pid=0 OR (
-                p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)
-            ))";
+            $time      = time();
+            $published = <<<SQL
+AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)
+AND (p1.pid=0 OR (
+    p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)
+))
+SQL;
+        }
+
+        if (!empty($attributeTypes)) {
+            $typeConditions[] = "p1.type IN (" . implode(',', $attributeTypes) . ")";
+        }
+
+        if (!empty($variantTypes)) {
+            $typeConditions[] = "p2.type IN (" . implode(',', $variantTypes) . ")";
         }
 
         $result = \Database::getInstance()->execute(
-            "SELECT p1.$attribute AS options FROM tl_iso_product p1
+            "SELECT p1.id, p1.pid, p1.$attribute AS options FROM tl_iso_product p1
                     LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
                     WHERE
                         p1.language=''
                         AND p1.$attribute!=''
-                        " . $published1 . "
+                        " . $published . "
                         AND (
                             p1.id IN (
                                 SELECT pid
@@ -101,15 +121,21 @@ abstract class AbstractProductFilter extends Module
                                 WHERE page_id IN (" . implode(',', $categories) . ")
                             )
                         )
-                        " . $published2 . "
+                        AND (
+                            " . implode(' OR ', $typeConditions) . "
+                        )
                         " . $sqlWhere
         );
 
         while ($result->next()) {
-            $options = deserialize($result->options, true);
+            $productId = $result->pid ?: $result->id;
+            $options   = deserialize($result->options, true);
 
             foreach ($options as $option) {
-                $values[$option] = ((int) $values[$option]) + 1;
+                if (!isset($values[$option]) || !in_array($productId, $products[$option])) {
+                    $values[$option]     = ((int) $values[$option]) + 1;
+                    $products[$option][]  = $productId;
+                }
             }
         }
 
@@ -139,5 +165,54 @@ abstract class AbstractProductFilter extends Module
         }
 
         return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
+    }
+
+    /**
+     * Get product type IDs with given attribute enabled
+     *
+     * @param string $attributeName
+     * @param bool   $forVariants
+     *
+     * @return array
+     */
+    private function getProductTypeIdsByAttribute($attributeName, $forVariants = false)
+    {
+        static $cache;
+
+        if (null === $cache) {
+            /** @type ProductType[] $productTypes */
+            $productTypes = ProductType::findAll();
+            $cache        = array();
+
+            if (null !== $productTypes) {
+                foreach ($productTypes as $type) {
+                    foreach ($type->attributes as $attribute => $config) {
+                        if ($config['enabled']) {
+                            $cache['attributes'][$attribute][] = $type->id;
+                        }
+                    }
+
+                    if ($type->variants) {
+                        foreach ($type->variant_attributes as $attribute => $config) {
+                            if ($config['enabled']) {
+                                $cache['variant_attributes'][$attribute][] = $type->id;
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach ($cache as $property => $attributes) {
+                foreach ($attributes as $attribute => $values) {
+                    $cache[$property][$attribute] = array_unique($values);
+                }
+            }
+        }
+
+        if ($forVariants) {
+            return (array) $cache['variant_attributes'][$attributeName];
+        } else {
+            return (array) $cache['attributes'][$attributeName];
+        }
     }
 }
