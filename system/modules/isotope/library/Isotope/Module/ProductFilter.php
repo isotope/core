@@ -227,7 +227,13 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrCategories = $this->findCategories();
 
             foreach ($this->iso_filterFields as $strField) {
-                $arrValues = $this->getUsedValuesForAttribute($strField, $arrCategories, $this->iso_list_where);
+                $arrValues = array_keys(
+                    $this->getUsedValuesForAttribute(
+                        $strField,
+                        $arrCategories,
+                        $this->iso_list_where
+                    )
+                );
 
                 if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
                     Isotope::getRequestCache()->setFilterForModule(

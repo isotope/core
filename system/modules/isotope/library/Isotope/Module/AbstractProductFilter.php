@@ -62,7 +62,7 @@ abstract class AbstractProductFilter extends Module
      * @param array  $categories
      * @param string $sqlWhere
      *
-     * @return array
+     * @return array List of options where array key is option and value is number of appearances
      */
     protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
     {
@@ -83,7 +83,7 @@ abstract class AbstractProductFilter extends Module
         }
 
         $result = \Database::getInstance()->execute(
-            "SELECT DISTINCT p1.$attribute AS options FROM tl_iso_product p1
+            "SELECT p1.$attribute AS options FROM tl_iso_product p1
                     LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
                     WHERE
                         p1.language=''
@@ -106,7 +106,11 @@ abstract class AbstractProductFilter extends Module
         );
 
         while ($result->next()) {
-            $values = array_merge($values, deserialize($result->options, true));
+            $options = deserialize($result->options, true);
+
+            foreach ($options as $option) {
+                $values[$option] = ((int) $values[$option]) + 1;
+            }
         }
 
         return $values;
