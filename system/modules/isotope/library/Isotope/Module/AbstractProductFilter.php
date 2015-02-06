@@ -56,6 +56,63 @@ abstract class AbstractProductFilter extends Module
     }
 
     /**
+     * Returns an array of attribute values found in the product table
+     *
+     * @param string $attribute
+     * @param array  $categories
+     * @param string $sqlWhere
+     *
+     * @return array
+     */
+    protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
+    {
+        $values     = array();
+        $published1 = '';
+        $published2 = '';
+
+        if ('' != $sqlWhere) {
+            $sqlWhere = " AND " . $sqlWhere;
+        }
+
+        if (BE_USER_LOGGED_IN !== true) {
+            $time       = time();
+            $published1 = "AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)";
+            $published2 = "AND (p1.pid=0 OR (
+                p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)
+            ))";
+        }
+
+        $result = \Database::getInstance()->execute(
+            "SELECT DISTINCT p1.$attribute AS options FROM tl_iso_product p1
+                    LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
+                    WHERE
+                        p1.language=''
+                        AND p1.$attribute!=''
+                        " . $published1 . "
+                        AND (
+                            p1.id IN (
+                                SELECT pid
+                                FROM tl_iso_product_category
+                                WHERE page_id IN (" . implode(',', $categories) . ")
+                            )
+                            OR p1.pid IN (
+                                SELECT pid
+                                FROM tl_iso_product_category
+                                WHERE page_id IN (" . implode(',', $categories) . ")
+                            )
+                        )
+                        " . $published2 . "
+                        " . $sqlWhere
+        );
+
+        while ($result->next()) {
+            $values = array_merge($values, deserialize($result->options, true));
+        }
+
+        return $values;
+    }
+
+    /**
      * Get the sorting labels (asc/desc) for an attribute
      *
      * @param string

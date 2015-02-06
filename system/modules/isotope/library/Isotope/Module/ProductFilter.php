@@ -222,35 +222,12 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->hasFilters = false;
 
         if (!empty($this->iso_filterFields)) {
-            $time          = time();
             $arrFilters    = array();
             $arrInput      = \Input::post('filter');
             $arrCategories = $this->findCategories();
 
             foreach ($this->iso_filterFields as $strField) {
-                $arrValues = array();
-                $objValues = \Database::getInstance()->execute(
-                    "SELECT DISTINCT p1.$strField FROM tl_iso_product p1
-                    LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
-                    WHERE
-                        p1.language=''
-                        AND p1.$strField!=''
-                        " . (BE_USER_LOGGED_IN === true ? '' : "AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time) ") . "
-                        AND (
-                            p1.id IN (
-                                SELECT pid FROM tl_iso_product_category WHERE page_id IN (" . implode(',', $arrCategories) . ")
-                            )
-                            OR p1.pid IN (
-                                SELECT pid FROM tl_iso_product_category WHERE page_id IN (" . implode(',', $arrCategories) . ")
-                            )
-                        )
-                        " . (BE_USER_LOGGED_IN === true ? '' : " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))") . "
-                        " . ($this->iso_list_where == '' ? '' : " AND " . Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where))
-                );
-
-                while ($objValues->next()) {
-                    $arrValues = array_merge($arrValues, deserialize($objValues->$strField, true));
-                }
+                $arrValues = $this->getUsedValuesForAttribute($strField, $arrCategories, $this->iso_list_where);
 
                 if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
                     Isotope::getRequestCache()->setFilterForModule(
