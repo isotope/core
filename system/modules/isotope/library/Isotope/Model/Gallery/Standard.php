@@ -12,19 +12,18 @@
 
 namespace Isotope\Model\Gallery;
 
+use Haste\Image\Image;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
-
+use Isotope\Template;
 
 /**
- * Class Standard
+ * Standard implements a lightbox gallery
  *
- * Provide methods to handle Isotope galleries.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @property string lightbox_size
+ * @property string lightbox_watermark_image
+ * @property string lightbox_watermark_position
+ * @property string lightbox_template
  */
 class Standard extends Gallery implements IsotopeGallery
 {
@@ -68,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Set gallery attribute name
      *
-     * @param   string $strName
+     * @param string $strName
      */
     public function setName($strName)
     {
@@ -78,7 +77,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Get gallery attribute name
      *
-     * @return  string
+     * @return string
      */
     public function getName()
     {
@@ -88,7 +87,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Set image files
      *
-     * @param   array
+     * @param array $varValue
      */
     public function setFiles($varValue)
     {
@@ -114,7 +113,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Get image files
      *
-     * @return  array
+     * @return array
      */
     public function getFiles()
     {
@@ -136,7 +135,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Returns whether the gallery object has an image do display or not
      *
-     * @return boolean
+     * @return bool
      */
     public function hasImages()
     {
@@ -146,7 +145,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Generate main image and return it as HTML string
      *
-     * @return  string
+     * @return string
      */
     public function generateMainImage()
     {
@@ -156,7 +155,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $arrFile = reset($this->arrFiles);
 
-        $objTemplate = new \Isotope\Template($this->strTemplate);
+        $objTemplate = new Template($this->strTemplate);
 
         $this->addImageToTemplate($objTemplate, 'main', $arrFile);
         $objTemplate->javascript = '';
@@ -167,7 +166,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             if (!empty($arrTemplates) && is_array($arrTemplates)) {
                 foreach ($arrTemplates as $strTemplate) {
-                    $objScript = new \Isotope\Template($strTemplate);
+                    $objScript = new Template($strTemplate);
                     $strScripts = $objScript->parse();
                 }
             }
@@ -181,8 +180,9 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Generate gallery and return it as HTML string
      *
-     * @param   integer $intSkip
-     * @return  string
+     * @param int $intSkip
+     *
+     * @return string
      */
     public function generateGallery($intSkip = 1)
     {
@@ -193,7 +193,7 @@ class Standard extends Gallery implements IsotopeGallery
                 continue;
             }
 
-            $objTemplate = new \Isotope\Template($this->strTemplate);
+            $objTemplate = new Template($this->strTemplate);
 
             $this->addImageToTemplate($objTemplate, 'gallery', $arrFile);
 
@@ -216,12 +216,13 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Generate template with given file
      *
-     * @param   \Isotope\Template $objTemplate
-     * @param   string $strType
-     * @param   array $arrFile
-     * @return  string
+     * @param Template $objTemplate
+     * @param string   $strType
+     * @param array    $arrFile
+     *
+     * @return string
      */
-    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
+    protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile)
     {
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
@@ -255,9 +256,11 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Add an image to the gallery
-     * @param array
-     * @param bool
-     * @param bool
+     *
+     * @param array $file
+     * @param bool  $blnWatermark
+     * @param bool  $blnMain
+     *
      * @return bool
      */
     private function addImage(array $file, $blnWatermark = true, $blnMain = false)
@@ -271,7 +274,6 @@ class Standard extends Gallery implements IsotopeGallery
 
         if (is_file(TL_ROOT . '/' . $strFile)) {
             foreach (array('main', 'gallery', 'lightbox') as $name) {
-
                 $size     = deserialize($this->{$name . '_size'});
                 $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
@@ -279,7 +281,7 @@ class Standard extends Gallery implements IsotopeGallery
                     && $blnWatermark
                     && ($objWatermark = \FilesModel::findByUuid($this->{$name . '_watermark_image'})) !== null
                 ) {
-                    $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
+                    $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
                 }
 
                 $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);

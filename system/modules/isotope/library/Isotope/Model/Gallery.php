@@ -14,13 +14,16 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 
-
 /**
- * Class Shipping
+ * Gallery is the parent class for all gallery types
  *
- * Parent class for all gallery types
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property string main_size
+ * @property string main_watermark_image
+ * @property string main_watermark_position
+ * @property string gallery_size
+ * @property string gallery_watermark_image
+ * @property string gallery_watermark_position
+ * @property string placeholder
  */
 abstract class Gallery extends TypeAgent
 {
@@ -46,11 +49,11 @@ abstract class Gallery extends TypeAgent
     /**
      * Create a gallery for product, falls back to standard gallery if none is defined
      *
-     * @param   IsotopeProduct $objProduct
-     * @param   string $strAttribute
-     * @param   array
+     * @param IsotopeProduct $objProduct
+     * @param string         $strAttribute
+     * @param array          $arrConfig
      *
-     * @return  Gallery
+     * @return static
      */
     public static function createForProductAttribute(IsotopeProduct $objProduct, $strAttribute, $arrConfig)
     {
@@ -74,10 +77,10 @@ abstract class Gallery extends TypeAgent
     /**
      * Merge media manager data from fallback and translated product data
      *
-     * @param   array $arrCurrent
-     * @param   array $arrParent
+     * @param array $arrCurrent
+     * @param array $arrParent
      *
-     * @return  array
+     * @return array
      */
     public static function mergeMediaData($arrCurrent, $arrParent)
     {
