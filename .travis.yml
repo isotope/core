@@ -1,0 +1,33 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+env:
+  - CONTAO_VERSION="3.2.*"
+  - CONTAO_VERSION="3.3.*"
+
+sudo: false
+
+install:
+    - mysql -e 'CREATE DATABASE isotope_core_testsuite;'
+    - composer config repositories.contao composer  "https://legacy-packages-via.contao-community-alliance.org/"
+    - sed '$d' composer.json | sed '$d' > composer.new
+    - 'echo ''},"prefer-stable": true,"minimum-stability": "dev"}'' >> composer.new'
+    - mv composer.new composer.json
+    - composer require contao/core:${CONTAO_VERSION} --no-update
+    - composer update
+    - cp -R system/modules/isotope vendor/contao/core/system/modules/isotope
+    - cp -R system/modules/isotope_reports vendor/contao/core/system/modules/isotope_reports
+    - cp -R system/modules/isotope_rules vendor/contao/core/system/modules/isotope_rules
+    - cd vendor/contao/core
+    - rm -rf vendor
+    - ln -s ../../ ./vendor
+    - cd system/modules/isotope
+    - cp test/fixtures/travis/initconfig.php ../../config/initconfig.php
+    - cp test/fixtures/travis/langconfig.php ../../config/langconfig.php
+    - cp test/fixtures/travis/localconfig.php ../../config/localconfig.php
+    - cp test/fixtures/travis/pathconfig.php ../../config/pathconfig.php
+
+script: phpunit --configuration test/phpunit.xml --bootstrap test/bootstrap.php ./test

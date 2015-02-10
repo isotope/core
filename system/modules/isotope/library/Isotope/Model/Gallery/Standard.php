@@ -154,7 +154,7 @@ class Standard extends Gallery implements IsotopeGallery
             if (!empty($arrTemplates) && is_array($arrTemplates)) {
                 foreach ($arrTemplates as $strTemplate) {
                     $objScript = new \Isotope\Template($strTemplate);
-                    $strScripts = $objScript->parse();
+                    $strScripts .= $objScript->parse();
                 }
             }
 
