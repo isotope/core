@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.2-stable (2015-02-10)
+---------------------------------
+
+### Improved
+- Backend product images are resized proportionally instead of cropped
+
+### Fixed
+- Product filter did not support attribute options from foreignKey
+- Product links did not always point to pages in the current root (#1346)
+
+
 Version 2.2.1-stable (2015-01-20)
 ---------------------------------
 
