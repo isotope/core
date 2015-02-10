@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid'][0] = 'Eindeutige ID';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status'][0] = 'Bestellstatus';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status'][1] = 'Wählen Sie den Status der Bestellung.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'][0] = 'Platziert';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['source_collection_id'][0] = 'Quelle (Warenkorb ID)';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'][0] = 'Bezahldatum';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'][1] = 'Geben Sie an wann (Datum) diese Bestellung bezahlt wurde.';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'][0] = 'Versanddatum';
