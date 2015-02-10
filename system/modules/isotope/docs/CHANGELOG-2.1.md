@@ -6,6 +6,7 @@ Version 2.1.11-stable (2015-??-??)
 
 ### Improved
 - Setting for "reference page" was not visible in the product filter module
+- Product group popup does no longer apply the active group filter
 
 ### Fixed
 - Composer installer could not find namespace class loader dependency
