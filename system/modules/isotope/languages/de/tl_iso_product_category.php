@@ -18,3 +18,4 @@ $GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][0] = 'Produkt verschieben'
 $GLOBALS['TL_LANG']['tl_iso_product_category']['cut'][1] = 'Produkt ID %s verschieben';
 $GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][0] = 'Oben hinzufügen';
 $GLOBALS['TL_LANG']['tl_iso_product_category']['pasteafter'][1] = 'Füge es nach dem Produkt ID %s ein';
+$GLOBALS['TL_LANG']['tl_iso_product_category']['hint'] = 'Im Frontend-Modul darf kein Sortierungsfeld für die manuelle Sortierung vorhanden sein.';

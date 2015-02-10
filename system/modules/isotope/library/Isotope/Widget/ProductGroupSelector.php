@@ -194,16 +194,15 @@ class ProductGroupSelector extends \Widget
                 $tree .= $this->renderGrouptree($id, -20, true);
             }
         } else {
-            // Breadcrumb menu
-            if ($this->Session->get('iso_products_gid')) {
-                $tree .= $this->renderGrouptree($this->Session->get('iso_products_gid'), -20);
-            } // Predefined node set (see #3563)
-            elseif (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
+            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
+                // Predefined node set (see contao/core#3563)
+
                 foreach ($this->eliminateNestedPages($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], $this->strTable) as $node) {
                     $tree .= $this->renderGrouptree($node, -20);
                 }
-            } // Show all groups to admins
-            elseif ($this->User->isAdmin) {
+            } elseif ($this->User->isAdmin) {
+                // Show all groups to admins
+
                 $objGroup = \Database::getInstance()->execute("SELECT id FROM tl_iso_group WHERE pid=0 ORDER BY sorting");
 
                 while ($objGroup->next()) {

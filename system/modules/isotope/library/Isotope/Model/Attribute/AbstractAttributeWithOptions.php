@@ -192,6 +192,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $arrOptions;
                 break;
 
+            case 'foreignKey':
+                list($table, $field) = explode('.', $this->foreignKey, 2);
+                $result = \Database::getInstance()->execute("SELECT id AS value, $field AS label FROM $table");
+
+                return $result->fetchAllAssoc();
+                break;
+
             case 'table':
             case 'product':
                 /** @type \Isotope\Collection\AttributeOption $objOptions */

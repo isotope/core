@@ -313,7 +313,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     public function getMinimumQuantity()
     {
         // Minimum quantity is only available for advanced pricing
-        if (!$this->hasAdvancedPrices()) {
+        if (!$this->hasAdvancedPrices() || null === $this->getPrice()) {
             return 1;
         }
 

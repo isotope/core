@@ -29,4 +29,4 @@ install:
     - cp test/fixtures/travis/localconfig.php ../../config/localconfig.php
     - cp test/fixtures/travis/pathconfig.php ../../config/pathconfig.php
 
-script: phpunit --configuration test/phpunit.xml
+script: phpunit --configuration test/phpunit.xml --bootstrap test/bootstrap.php ./test

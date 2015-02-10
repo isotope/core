@@ -197,14 +197,15 @@ abstract class Module extends Contao_Module
         global $objPage;
         global $objIsotopeListPage;
 
-        $arrCategories = array();
+        $productCategories = $objProduct->getCategories(true);
+        $arrCategories     = array();
 
         if ($this->iso_category_scope != 'current_category'
             && $this->iso_category_scope != ''
             && $objPage->alias != 'index'
         ) {
             $arrCategories = array_intersect(
-                $objProduct->getCategories(true),
+                $productCategories,
                 $this->findCategories()
             );
         }
@@ -212,11 +213,13 @@ abstract class Module extends Contao_Module
         // If our current category scope does not match with any product category,
         // use the first allowed product category in the current root page
         if (empty($arrCategories)) {
-            $arrCategories = Frontend::getPagesInCurrentRoot(
-                $objProduct->getCategories(true),
-                \FrontendUser::getInstance()
-            );
+            $arrCategories = $productCategories;
         }
+
+        $arrCategories = Frontend::getPagesInCurrentRoot(
+            $arrCategories,
+            \FrontendUser::getInstance()
+        );
 
         if (!empty($arrCategories)
          && ($objCategories = \PageModel::findMultipleByIds($arrCategories)) !== null
