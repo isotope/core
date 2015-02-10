@@ -183,6 +183,6 @@ class ProductType extends \Model
             return $objProduct->getRelated('type');
         }
 
-        return static::findByPk($row['type']);
+        return static::findByPk($row['type'], $arrOptions);
     }
 }
