@@ -1338,30 +1338,38 @@ abstract class ProductCollection extends TypeAgent
             // Lock tables so no other order can get the same ID
             \Database::getInstance()->lockTables(array(static::$strTable => 'WRITE'));
 
-            // Retrieve the highest available order ID
-            $objMax = \Database::getInstance()->prepare("
-                SELECT document_number
-                FROM " . static::$strTable . "
-                WHERE
-                    type=?
-                    " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%'" : '') . "
-                    AND store_id=?
-                ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix+1) . ")" : 'document_number') . " AS UNSIGNED) DESC
-            ")->limit(1)->execute(
-                array_search(get_called_class(), static::getModelTypes()),
-                Isotope::getCart()->store_id
-            );
+            try {
+                // Retrieve the highest available order ID
+                $objMax = \Database::getInstance()->prepare("
+                    SELECT document_number
+                    FROM " . static::$strTable . "
+                    WHERE
+                        type=?
+                        " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%'" : '') . "
+                        AND store_id=?
+                    ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix + 1) . ")" : 'document_number') . " AS UNSIGNED) DESC
+                ")->limit(1)->execute(
+                    array_search(get_called_class(), static::getModelTypes()),
+                    Isotope::getCart()->store_id
+                );
 
-            $intMax = (int) substr($objMax->document_number, $intPrefix);
+                $intMax = (int) substr($objMax->document_number, $intPrefix);
 
-            $this->arrData['document_number'] = $strPrefix . str_pad($intMax + 1, $intDigits, '0', STR_PAD_LEFT);
+                $this->arrData['document_number'] = $strPrefix . str_pad($intMax + 1, $intDigits, '0', STR_PAD_LEFT);
+
+                \Database::getInstance()->prepare("
+                    UPDATE " . static::$strTable . " SET document_number=? WHERE id=?
+                ")->execute($this->arrData['document_number'], $this->id);
+
+                \Database::getInstance()->unlockTables();
+
+            } catch (\Exception $e) {
+                // Make sure tables are always unlocked
+                \Database::getInstance()->unlockTables();
+
+                throw $e;
+            }
         }
-
-        \Database::getInstance()->prepare("
-            UPDATE " . static::$strTable . " SET document_number=? WHERE id=?
-        ")->execute($this->arrData['document_number'], $this->id);
-
-        \Database::getInstance()->unlockTables();
 
         return $this->arrData['document_number'];
     }
