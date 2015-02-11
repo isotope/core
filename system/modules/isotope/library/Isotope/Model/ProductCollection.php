@@ -1350,7 +1350,7 @@ abstract class ProductCollection extends TypeAgent
                     ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix + 1) . ")" : 'document_number') . " AS UNSIGNED) DESC
                 ")->limit(1)->execute(
                     array_search(get_called_class(), static::getModelTypes()),
-                    Isotope::getCart()->store_id
+                    $this->store_id
                 );
 
                 $intMax = (int) substr($objMax->document_number, $intPrefix);
