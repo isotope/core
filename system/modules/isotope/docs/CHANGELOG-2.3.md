@@ -19,4 +19,5 @@ Version 2.3.0-beta1 (2015-??-??)
 - Cumulative filter can now be hidden on a reader page
 - Cumulative filter now supports product category scope
 - Cumulative filter now shows only actually used product options
+- Filter template now uses placeholder instead of javascript for search field default text
  
