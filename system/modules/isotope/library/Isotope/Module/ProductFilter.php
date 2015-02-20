@@ -81,7 +81,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             // Include \Environment::base or the URL would not work on the index page
             \Controller::redirect(
                 \Environment::get('base') .
-                Url::addQueryString('isorc='.$objCache->id, ($this->jumpTo > 0 ? $this->jumpTo : null))
+                Url::addQueryString('isorc='.$objCache->id, ($this->jumpTo ?: null))
             );
         }
 

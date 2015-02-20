@@ -102,7 +102,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                 \Environment::get('base') .
                 Url::addQueryString(
                     'isorc='.$objCache->id,
-                    ($this->jumpTo > 0 ? $this->jumpTo : Url::removeQueryString(array('cumulativefilter')))
+                    Url::removeQueryString(array('cumulativefilter'), ($this->jumpTo ?: null))
                 )
             );
 
