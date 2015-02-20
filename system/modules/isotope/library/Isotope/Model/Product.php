@@ -332,7 +332,6 @@ abstract class Product extends TypeAgent
         $arrSorting = $arrOptions['sorting'];
 
         if (!empty($arrFilters) || !empty($arrSorting)) {
-
             $arrProducts = $objProducts->getModels();
 
             if (!empty($arrFilters)) {
@@ -365,8 +364,9 @@ abstract class Product extends TypeAgent
                 foreach ($arrSorting as $strField => $arrConfig) {
                     foreach ($arrProducts as $objProduct) {
 
-                        // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter will come before strings starting with a lowercase letter.
-                        // To perform a case insensitive search, force the sorting order to be determined by a lowercase copy of the original value.
+                        // Both SORT_STRING and SORT_REGULAR are case sensitive, strings starting with a capital letter
+                        // will come before strings starting with a lowercase letter. To perform a case insensitive
+                        // search, force the sorting order to be determined by a lowercase copy of the original value.
 
                         // Temporary fix for price attribute (see #945)
                         if ($strField == 'price') {
