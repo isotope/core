@@ -79,9 +79,16 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $strFilterKey = $arrFilter[2] . '=' . $arrFilter[3];
 
             if ($arrFilter[1] == 'add') {
+                $filter   = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
+                $multiple = (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$arrFilter[2]]['eval']['multiple'];
+
+                if (!$multiple) {
+                    $filter->groupBy('cumulative_' . $arrFilter[2]);
+                }
+
                 Isotope::getRequestCache()->setFilterForModule(
                     $strFilterKey,
-                    Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]),
+                    $filter,
                     $this->id
                 );
             } else {

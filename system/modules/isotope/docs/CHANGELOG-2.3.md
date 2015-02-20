@@ -10,6 +10,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Added InsertTags {{billing_address::?}} and {{shipping_address::?}} of the current cart
 - Surcharge details (raw data and object) are now available in templates
 - Cumulative filter now shows number of products/variants per option
+- Cumulative filter automatically uses OR-condition if attribute can't have multiple options (e.g. not a checkbox)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)
