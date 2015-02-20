@@ -316,6 +316,25 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Gets the number of translation records in the product table.
+     * Mostly useful to see if there are any translations at all to optimize queries.
+     *
+     * @return int
+     */
+    public static function countTranslatedProducts()
+    {
+        static $result;
+
+        if (null === $result) {
+            $result = \Database::getInstance()->query(
+                "SELECT COUNT(*) FROM tl_iso_product WHERE language!=''"
+            )->total;
+        }
+
+        return $result;
+    }
+
+    /**
      * Return a model or collection based on the database result type
      */
     protected static function find(array $arrOptions)
@@ -406,15 +425,23 @@ abstract class Product extends TypeAgent
             $objBase = new \DcaExtractor($arrOptions['table']);
         }
 
+        $hasTranslations = (static::countTranslatedProducts() > 0);
+        $hasVariants     = (ProductType::countByVariants() > 0);
+
         $arrJoins  = array();
         $arrFields = array(
             $arrOptions['table'] . ".*",
-            "IF(" . $arrOptions['table'] . ".pid>0, parent.type, " . $arrOptions['table'] . ".type) AS type",
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
-        foreach (Attribute::getMultilingualFields() as $attribute) {
-            $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
+        if ($hasVariants) {
+            $arrFields[] = "IF(" . $arrOptions['table'] . ".pid>0, parent.type, " . $arrOptions['table'] . ".type) AS type";
+        }
+
+        if ($hasTranslations) {
+            foreach (Attribute::getMultilingualFields() as $attribute) {
+                $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
+            }
         }
 
         foreach (Attribute::getFetchFallbackFields() as $attribute) {
@@ -424,8 +451,14 @@ abstract class Product extends TypeAgent
         $arrFields[] = "c.sorting";
 
         $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
-        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
-        $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " parent ON " . $arrOptions['table'] . ".pid=parent.id";
+
+        if ($hasTranslations) {
+            $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
+        }
+
+        if ($hasVariants) {
+            $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " parent ON " . $arrOptions['table'] . ".pid=parent.id";
+        }
 
 
         if ($objBase->hasRelations()) {

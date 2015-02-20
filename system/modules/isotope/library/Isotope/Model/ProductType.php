@@ -225,4 +225,20 @@ class ProductType extends \Model
 
         return static::findByPk($row['type'], $arrOptions);
     }
+
+    /**
+     * Gets the number of product types with attributes.
+     *
+     * @return int
+     */
+    public static function countByVariants()
+    {
+        static $result;
+
+        if (null === $result) {
+            $result = static::countBy('variants', '1');
+        }
+
+        return $result;
+    }
 }
