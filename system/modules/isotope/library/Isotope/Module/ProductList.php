@@ -16,6 +16,7 @@ use Haste\Haste;
 use Haste\Generator\RowClass;
 use Haste\Http\Response\HtmlResponse;
 use Isotope\Isotope;
+use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
@@ -199,8 +200,7 @@ class ProductList extends Module
             return;
         }
 
-        $arrBuffer = array();
-
+        $arrBuffer         = array();
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
         foreach ($arrProducts as $objProduct) {
@@ -410,11 +410,19 @@ class ProductList extends Module
      */
     protected function getDefaultProductOptions()
     {
+        $arrFields  = array_merge(Attribute::getVariantOptionFields(), Attribute::getCustomerDefinedFields());
+
+        if (empty($arrFields)) {
+            return array();
+        }
+
         $arrOptions = array();
         $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
 
         foreach ($arrFilters as $arrConfig) {
-            if ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq') {
+            if (in_array($arrConfig['attribute'], $arrFields)
+                && ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+            ) {
                 $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
         }
