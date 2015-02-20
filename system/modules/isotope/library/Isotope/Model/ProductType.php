@@ -236,7 +236,9 @@ class ProductType extends \Model
         static $result;
 
         if (null === $result) {
-            $result = static::countBy('variants', '1');
+            $result = \Database::getInstance()->query(
+                "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'"
+            )->total;
         }
 
         return $result;

@@ -327,7 +327,7 @@ abstract class Product extends TypeAgent
 
         if (null === $result) {
             $result = \Database::getInstance()->query(
-                "SELECT COUNT(*) FROM tl_iso_product WHERE language!=''"
+                "SELECT COUNT(*) AS total FROM tl_iso_product WHERE language!=''"
             )->total;
         }
 
