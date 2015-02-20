@@ -279,7 +279,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'explanation'           => 'tl_iso_product.type',
         ),
         'pages' => array
