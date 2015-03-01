@@ -431,15 +431,16 @@ class DC_ProductData extends \DC_Table
         $this->objActiveRecord = $objRow;
 
         // Load and/or change language
+        $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
+        $arrPageLanguages = array_map(function ($strLang) {
+            return str_replace('-', '_', $strLang);
+        }, $arrPageLanguages);
 
-        // Add support for i18nl10n extension
-        if (in_array('i18nl10n', \Config::getInstance()->getActiveModules())) {
-            $arrPageLanguages = array_filter(array_unique(deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
-        } else {
-            $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
-            $arrPageLanguages = array_map(function ($strLang) {
-                return str_replace('-', '_', $strLang);
-            }, $arrPageLanguages);
+        // !HOOK: modify page languages
+        if (isset($GLOBALS['ISO_HOOKS']['pageLanguages']) && is_array($GLOBALS['ISO_HOOKS']['pageLanguages'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['pageLanguages'] as $callback) {
+                \System::importStatic($callback[0])->$callback[1]($arrPageLanguages);
+            }
         }
 
         if (count($arrPageLanguages) > 1) {
