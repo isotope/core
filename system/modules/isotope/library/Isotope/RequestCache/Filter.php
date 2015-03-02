@@ -296,7 +296,7 @@ class Filter implements \ArrayAccess
      */
     public function sqlWhere()
     {
-        if ($this->isMultilingualAttribute()) {
+        if ($this->isMultilingualAttribute() && Product::countTranslatedProducts()) {
             $strWhere = 'IFNULL(translation.' . $this->arrConfig['attribute'] . ', ' . Product::getTable() . '.' . $this->arrConfig['attribute'] . ')';
         } else {
             $strWhere = Product::getTable() . '.' . $this->arrConfig['attribute'];
