@@ -76,14 +76,27 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields)) {
 
             // Unique filter key is necessary to unset the filter
-            $strFilterKey = $arrFilter[2] . '=' . $arrFilter[3];
+            $strFilterKey = $this->generateFilterKey($arrFilter[2], $arrFilter[3]);
 
             if ($arrFilter[1] == 'add') {
                 $filter   = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
                 $multiple = (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$arrFilter[2]]['eval']['multiple'];
 
                 if (!$multiple) {
-                    $filter->groupBy('cumulative_' . $arrFilter[2]);
+                    $group = 'cumulative_' . $arrFilter[2];
+                    $filter->groupBy($group);
+
+                    if ($this->queryType == 'and') {
+                        /** @var Filter $oldFilter */
+                        foreach (Isotope::getRequestCache()->getFiltersForModules(array($this->id)) as $oldFilter) {
+                            if ($oldFilter->getGroup() == $group) {
+                                Isotope::getRequestCache()->removeFilterForModule(
+                                    $this->generateFilterKey($oldFilter['attribute'], $oldFilter['value']),
+                                    $this->id
+                                );
+                            }
+                        }
+                    }
                 }
 
                 Isotope::getRequestCache()->setFilterForModule(
@@ -158,7 +171,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                     continue;
                 }
 
-                $strFilterKey = $strField . '=' . $varValue;
+                $strFilterKey = $this->generateFilterKey($strField, $varValue);
                 $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
                 $blnTrail     = $blnActive ? true : $blnTrail;
 
@@ -201,5 +214,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
+    }
+
+
+    private function generateFilterKey($field, $value)
+    {
+        return $field . '=' . $value;
     }
 }
