@@ -263,7 +263,7 @@ class Checkout extends Module
             foreach ($arrModules as $objModule) {
 
                 $arrBuffer[] = array(
-                    'class' => standardize($step) . ' ' . standardize($objModule->getStepClass()),
+                    'class' => standardize($step) . ' ' . $objModule->getStepClass(),
                     'html'  => $objModule->generate()
                 );
 

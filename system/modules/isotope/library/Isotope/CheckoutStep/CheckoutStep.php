@@ -52,7 +52,8 @@ abstract class CheckoutStep extends \Controller
     public function getStepClass()
     {
         $strClass = get_class($this);
+        $strClass = substr($strClass, strrpos($strClass, '\\') + 1);
 
-        return substr($strClass, strrpos($strClass, '\\') + 1);
+        return standardize($strClass);
     }
 }
