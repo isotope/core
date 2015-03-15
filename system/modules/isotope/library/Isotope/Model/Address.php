@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Database\Result;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 
 
@@ -75,6 +76,45 @@ class Address extends \Model
     public function __toString()
     {
         return $this->generate();
+    }
+
+    /**
+     * Check if the address has a valid VAT number
+     *
+     * @param Config $config
+     *
+     * @return bool
+     * @throws \LogicException if a validator does not implement the correct interface
+     * @throws \RuntimeException if a validators reports an error about the VAT number
+     */
+    public function hasValidVatNo(Config $config = null)
+    {
+        if (null === $config) {
+            $config = Isotope::getConfig();
+        }
+
+        $validators = deserialize($config->vatNoValidators);
+
+        // if no validators are enabled, the VAT No is always valid
+        if (empty($validators) || !is_array($validators)) {
+            return true;
+        }
+
+        foreach ($validators as $class) {
+            $service = new $class();
+
+            if (!($service instanceof IsotopeVatNoValidator)) {
+                throw new \LogicException($class . ' does not implement IsotopeVatNoValidator interface');
+            }
+
+            $result = $service->validate($this);
+
+            if (true === $result) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

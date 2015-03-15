@@ -244,6 +244,11 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']   = array('Inline gallery'
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_product.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
 
 /**
+ * Vat No Validators
+ */
+$GLOBALS['TL_LANG']['ISO_VAT']['eu_vies'] = 'European VAT Number (<a href="http://ec.europa.eu/taxation_customs/vies/vieshome.do" target="_blank">VIES</a>)';
+
+/**
  * Credit card types
  */
 $GLOBALS['TL_LANG']['CCT']['mc']                    = 'MasterCard';

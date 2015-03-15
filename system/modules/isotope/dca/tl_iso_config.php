@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
-            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries;
+            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
             {currency_legend},priceRoundPrecision,priceRoundIncrement,currency,currencyFormat,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
             {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
@@ -400,6 +400,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'vatNoValidators' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['vatNoValidators'],
+            'exclude'               => true,
+            'inputType'             => 'checkboxWizard',
+            'options'               => array_keys($GLOBALS['ISO_VAT']),
+            'reference'             => $GLOBALS['TL_LANG']['ISO_VAT'],
+            'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "blob NULL",
         ),
         'priceRoundPrecision' => array
         (
