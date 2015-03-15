@@ -84,6 +84,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = array
         (
             'sql'                 =>  "char(1) NOT NULL default ''",
         ),
+        'applyRoundingIncrement' => array
+        (
+            'sql'                 => "char(1) NOT NULL default '1'",
+        ),
         'products' => array
         (
             'sql'                 =>  "blob NULL",

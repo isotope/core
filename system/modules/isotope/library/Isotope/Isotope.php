@@ -192,7 +192,7 @@ class Isotope extends \Controller
     }
 
     /**
-     * Calculate price trough hook and foreign prices
+     * Calculate price through hooks and foreign prices
      *
      * @param float  $fltPrice
      * @param object $objSource
@@ -243,7 +243,7 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return static::roundPrice($fltPrice);
+        return $fltPrice;
     }
     
     /**
@@ -269,16 +269,18 @@ class Isotope extends \Controller
      * Format given price according to store config settings
      *
      * @param float $fltPrice
+     * @param bool  $blnApplyRoundingIncrement
      *
      * @return float
      */
-    public static function formatPrice($fltPrice)
+    public static function formatPrice($fltPrice, $blnApplyRoundingIncrement = true)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
+        $fltPrice  = static::roundPrice($fltPrice, $blnApplyRoundingIncrement);
         $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
         if (!is_array($arrFormat)) {
@@ -294,10 +296,11 @@ class Isotope extends \Controller
      * @param float  $fltPrice
      * @param bool   $blnHtml
      * @param string $strCurrencyCode
+     * @param bool   $blnApplyRoundingIncrement
      *
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
@@ -306,7 +309,7 @@ class Isotope extends \Controller
 
         $objConfig   = static::getConfig();
         $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $objConfig->currency);
-        $strPrice    = static::formatPrice($fltPrice);
+        $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
             $strCurrency = (($objConfig->currencyPosition == 'right' && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($objConfig->currencyPosition == 'left' && $objConfig->currencySpace) ? ' ' : '');
