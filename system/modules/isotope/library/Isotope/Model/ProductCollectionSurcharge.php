@@ -36,6 +36,7 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  * @property string tax_id
  * @property bool   before_tax
  * @property bool   addToTotal
+ * @property bool   applyRoundingIncrement
  * @property array  products
  */
 abstract class ProductCollectionSurcharge extends TypeAgent
@@ -559,6 +560,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $objTax->price                  = $price . ($isPercentage ? '%' : '');
             $objTax->total_price            = $total;
             $objTax->addToTotal             = $addToTotal;
+            $objTax->applyRoundingIncrement = $applyRoundingIncrement;
 
             $arrTaxes[$id]       = $objTax;
         } else {
