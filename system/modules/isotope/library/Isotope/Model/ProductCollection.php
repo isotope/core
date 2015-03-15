@@ -1133,6 +1133,7 @@ abstract class ProductCollection extends TypeAgent
         $arrGalleries = array();
         $arrItems     = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
 
+        $objTemplate->id         = $this->id;
         $objTemplate->collection = $this;
         $objTemplate->config     = ($this->getRelated('config_id') || Isotope::getConfig());
         $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());

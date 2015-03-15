@@ -9,6 +9,7 @@ Version 2.1.12-stable (2015-??-??)
 
 ### Fixed
 - Filter fields could overwrite product properties if property was not customer defined/variant option
+- Added missing collection ID to template (#1394)
 
 
 Version 2.1.11-stable (2015-02-10)
