@@ -6,6 +6,7 @@ Version 2.2.3-stable (2015-??-??)
 
 ### Fixed
 - Gallery watermark positions were not available in Contao 3.4 (#1365)
+- Labels for foreignKey fields were not shown in product attribute view (#1389)
 
 
 Version 2.2.2-stable (2015-02-10)
