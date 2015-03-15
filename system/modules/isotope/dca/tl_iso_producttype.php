@@ -50,8 +50,9 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'label' => array
         (
-            'fields'                => array('name', 'fallback'),
-            'format'                => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
+            'fields'                => array('name', 'variants', 'downloads', 'shipping_exempt'),
+            'showColumns'           => true,
+            'label_callback'          => array('\Isotope\Backend\ProductType\Label', 'generate')
         ),
         'global_operations' => array
         (

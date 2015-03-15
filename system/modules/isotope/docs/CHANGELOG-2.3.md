@@ -6,6 +6,7 @@ Version 2.3.0-beta1 (2015-??-??)
 
 ### New
 - Added payment method for www.innocard.ch
+- Added column view to product type backend
 - PSP payment methods now support predefining a payment method (implemented in PostFinance only for now)
 - Added InsertTags {{billing_address::?}} and {{shipping_address::?}} of the current cart
 - Surcharge details (raw data and object) are now available in templates
