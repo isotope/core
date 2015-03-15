@@ -17,13 +17,20 @@ use Isotope\Interfaces\IsotopeProduct;
 /**
  * Gallery is the parent class for all gallery types
  *
+ *
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string type
+ * @property string anchor
+ * @property string placeholder
  * @property string main_size
  * @property string main_watermark_image
  * @property string main_watermark_position
  * @property string gallery_size
  * @property string gallery_watermark_image
  * @property string gallery_watermark_position
- * @property string placeholder
+ * @property string customTpl
  */
 abstract class Gallery extends TypeAgent
 {
