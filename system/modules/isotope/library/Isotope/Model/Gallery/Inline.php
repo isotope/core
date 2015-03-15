@@ -40,7 +40,7 @@ class Inline extends Standard
     public function generateGallery($intSkip = 0, $blnForce = false)
     {
         // Do not render gallery if there are no additional image
-        $total = $this->size();
+        $total = count($this->arrFiles);
 
         if (($total == 1 || $total <= $intSkip) && !$blnForce) {
             return '';
