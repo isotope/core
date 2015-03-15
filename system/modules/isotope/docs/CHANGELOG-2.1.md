@@ -6,6 +6,7 @@ Version 2.1.12-stable (2015-??-??)
 
 ### Improved
 - Better Postfinance postsale handling
+- Only filter by groups if one is set (fixes #1373)
 
 ### Fixed
 - Filter fields could overwrite product properties if property was not customer defined/variant option
