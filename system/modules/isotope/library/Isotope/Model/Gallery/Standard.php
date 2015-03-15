@@ -135,9 +135,9 @@ class Standard extends Gallery implements IsotopeGallery
                 return '';
             }
 
-            $arrFile = $this->getPlaceholderImageForGallery('main');
+            $arrFile = $this->getPlaceholderImageForType('main');
         } else {
-            $arrFile = $this->getImageForGallery(
+            $arrFile = $this->getImageForType(
                 'main',
                 reset($this->arrFiles)
             );
@@ -186,7 +186,7 @@ class Standard extends Gallery implements IsotopeGallery
             }
 
             // Otherwise we get the placeholder for the gallery
-            $arrImages[] = $this->getPlaceholderImageForGallery('gallery');
+            $arrImages[] = $this->getPlaceholderImageForType('gallery');
 
         } else {
             foreach ($this->arrFiles as $i => $arrFile) {
@@ -194,7 +194,7 @@ class Standard extends Gallery implements IsotopeGallery
                     continue;
                 }
 
-                $arrImages[] = $this->getImageForGallery(
+                $arrImages[] = $this->getImageForType(
                     'gallery',
                     $arrFile
                 );
@@ -264,20 +264,20 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
-     * Gets the image for a given file and given gallery and optionally adds a
+     * Gets the image for a given file and given type and optionally adds a
      * watermark to it
      *
-     * @param   string $strGallery
+     * @param   string $strType
      * @param   array $arrFile
      * @param   bool  $blnWatermark
      *
      * @return  array
      * @throws  \InvalidArgumentException
      */
-    protected function getImageForGallery($strGallery, array $arrFile, $blnWatermark = true)
+    protected function getImageForType($strType, array $arrFile, $blnWatermark = true)
     {
         // Check cache
-        $strCacheKey = md5($strGallery . '-' . json_encode($arrFile) . '-' . (int) $blnWatermark);
+        $strCacheKey = md5($strType . '-' . json_encode($arrFile) . '-' . (int) $blnWatermark);
 
         if (isset($this->arrImages[$strCacheKey])) {
             return $this->arrImages[$strCacheKey];
@@ -294,28 +294,28 @@ class Standard extends Gallery implements IsotopeGallery
             throw new \InvalidArgumentException('Apparently the file "' . $strFile . '" does not exist!');
         }
 
-        $size     = deserialize($this->{$strGallery . '_size'}, true);
+        $size     = deserialize($this->{$strType . '_size'}, true);
         $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
 
         // Watermark
         if ($blnWatermark
-            && $this->{$strGallery . '_watermark_image'} != ''
-            && ($objWatermark = \FilesModel::findByUuid($this->{$strGallery . '_watermark_image'})) !== null
+            && $this->{$strType . '_watermark_image'} != ''
+            && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
         ) {
-            $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strGallery . '_watermark_position'});
+            $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
         }
 
         $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
 
         if (is_array($arrSize) && $arrSize[3] !== '') {
-            $arrFile[$strGallery . '_size']      = $arrSize[3];
-            $arrFile[$strGallery . '_imageSize'] = $arrSize;
+            $arrFile[$strType . '_size']      = $arrSize[3];
+            $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
         $arrFile['alt']  = specialchars($arrFile['alt'], true);
         $arrFile['desc'] = specialchars($arrFile['desc'], true);
 
-        $arrFile[$strGallery] = $strImage;
+        $arrFile[$strType] = $strImage;
 
         $this->arrImages[$strCacheKey] = $arrFile;
 
@@ -335,10 +335,11 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Gets the placeholder image
      *
-     * @param $strGallery
+     * @param $strType
+     *
      * @return array|null
      */
-    protected function getPlaceholderImageForGallery($strGallery)
+    protected function getPlaceholderImageForType($strType)
     {
         $objPlaceholder = \FilesModel::findByPk($this->placeholder);
 
@@ -346,8 +347,8 @@ class Standard extends Gallery implements IsotopeGallery
             throw new \RuntimeException('Placeholder image requested but not defined!');
         }
 
-        return $this->getImageForGallery(
-            $strGallery,
+        return $this->getImageForType(
+            $strType,
             array('src' => $objPlaceholder->path),
             false
         );
