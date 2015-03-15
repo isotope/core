@@ -50,7 +50,7 @@ class Standard extends Gallery implements IsotopeGallery
      * Images cache
      * @var array
      */
-    protected $arrImages = array();
+    private $arrImages = array();
 
     /**
      * Override template if available in record
@@ -96,7 +96,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setFiles(array $arrFiles)
     {
-        $this->arrFiles = $arrFiles;
+        $this->arrFiles = array_values($arrFiles);
     }
 
     /**
@@ -123,29 +123,38 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
+     * Checks if a placeholder image is defined
+     *
+     * @return bool
+     */
+    protected function hasPlaceholderImage()
+    {
+        return ($this->placeholder && null !== \FilesModel::findByPk($this->placeholder));
+    }
+
+    /**
      * Generate main image and return it as HTML string
      *
      * @return string
      */
     public function generateMainImage()
     {
-        if (!$this->hasImages()) {
-            // Check for the placeholder image
-            if (!$this->hasPlaceholderImage()) {
-                return '';
-            }
+        $hasImages = $this->hasImages();
 
-            $arrFile = $this->getPlaceholderImageForType('main');
-        } else {
-            $arrFile = $this->getImageForType(
-                'main',
-                reset($this->arrFiles)
-            );
+        if (!$hasImages && !$this->hasPlaceholderImage()) {
+            return '';
         }
 
+        /** @var Template|object $objTemplate */
         $objTemplate = new Template($this->strTemplate);
 
-        $this->addImageToTemplate($objTemplate, 'main', $arrFile);
+        $this->addImageToTemplate(
+            $objTemplate,
+            ($hasImages ? $this->arrFiles[0] : $this->getPlaceholderImage()),
+            'main',
+            $hasImages
+        );
+
         $objTemplate->javascript = '';
 
         if (\Environment::get('isAjaxRequest')) {
@@ -174,37 +183,25 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function generateGallery($intSkip = 1)
     {
-        $strGallery = '';
-
-        $arrImages = array();
-
-        if (!$this->hasImages()) {
-            // If we skip one or more images or no placeholder image is available
-            // there's no gallery
-            if ($intSkip >= 1 || !$this->hasPlaceholderImage()) {
-                return '';
-            }
-
-            // Otherwise we get the placeholder for the gallery
-            $arrImages[] = $this->getPlaceholderImageForType('gallery');
-
-        } else {
-            foreach ($this->arrFiles as $i => $arrFile) {
-                if ($i < $intSkip) {
-                    continue;
-                }
-
-                $arrImages[] = $this->getImageForType(
-                    'gallery',
-                    $arrFile
-                );
-            }
+        // If we skip one or more images or no placeholder image is available there's no gallery
+        if (!$this->hasImages() && ($intSkip >= 1 || !$this->hasPlaceholderImage())) {
+            return '';
         }
 
-        foreach ($arrImages as $arrFile) {
+        $strGallery = '';
+        $watermark  = true;
+        $arrFiles   = array_slice($this->arrFiles, $intSkip);
+
+        // Add placeholder for the gallery
+        if (empty($arrFiles) && $intSkip < 1) {
+            $arrFiles[] = $this->getPlaceholderImage();
+            $watermark  = false;
+        }
+
+        foreach ($arrFiles as $arrFile) {
             $objTemplate = new Template($this->strTemplate);
 
-            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile);
+            $this->addImageToTemplate($objTemplate, $arrFile, 'gallery', $watermark);
 
             $strGallery .= $objTemplate->parse();
         }
@@ -225,14 +222,17 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Generate template with given file
      *
-     * @param Template $objTemplate
-     * @param string   $strType
-     * @param array    $arrFile
+     * @param Template|object $objTemplate
+     * @param array           $arrFile
+     * @param string          $strType
+     * @param bool            $blnWatermark
      *
      * @return string
      */
-    protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile)
+    protected function addImageToTemplate(Template $objTemplate, array $arrFile, $strType, $blnWatermark = true)
     {
+        $arrFile = $this->getImageForType($strType, $arrFile, $blnWatermark);
+
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
         $objTemplate->product_id = $this->product_id;
@@ -251,16 +251,35 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 list($link, $rel) = explode('|', $arrFile['link'], 2);
+                $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
-                $objTemplate->link       = $link ? : $arrFile['lightbox'];
-                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"') : ' data-lightbox="product' . $this->product_id . '"');
+                $objTemplate->link       = $link ?: $arrFile['lightbox'];
+                $objTemplate->attributes = ($link ? $attributes : ' data-lightbox="product' . $this->product_id . '"');
                 break;
 
             default:
                 $objTemplate->hasLink = false;
                 break;
         }
+    }
+
+    /**
+     * Gets the placeholder image
+     *
+     * @return array
+     *
+     * @throws \UnderflowException If no placeholder image is found
+     */
+    protected function getPlaceholderImage()
+    {
+        $objPlaceholder = \FilesModel::findByPk($this->placeholder);
+
+        if (null === $objPlaceholder) {
+            throw new \UnderflowException('Placeholder image requested but not defined!');
+        }
+
+        return array('src' => $objPlaceholder->path);
     }
 
     /**
@@ -274,7 +293,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @return  array
      * @throws  \InvalidArgumentException
      */
-    protected function getImageForType($strType, array $arrFile, $blnWatermark = true)
+    private function getImageForType($strType, array $arrFile, $blnWatermark = true)
     {
         // Check cache
         $strCacheKey = md5($strType . '-' . json_encode($arrFile) . '-' . (int) $blnWatermark);
@@ -320,37 +339,5 @@ class Standard extends Gallery implements IsotopeGallery
         $this->arrImages[$strCacheKey] = $arrFile;
 
         return $arrFile;
-    }
-
-    /**
-     * Checks if a placeholder image is defined
-     *
-     * @return bool
-     */
-    protected function hasPlaceholderImage()
-    {
-        return \FilesModel::findByPk($this->placeholder) !== null;
-    }
-
-    /**
-     * Gets the placeholder image
-     *
-     * @param $strType
-     *
-     * @return array|null
-     */
-    protected function getPlaceholderImageForType($strType)
-    {
-        $objPlaceholder = \FilesModel::findByPk($this->placeholder);
-
-        if (null === $objPlaceholder) {
-            throw new \RuntimeException('Placeholder image requested but not defined!');
-        }
-
-        return $this->getImageForType(
-            $strType,
-            array('src' => $objPlaceholder->path),
-            false
-        );
     }
 }
