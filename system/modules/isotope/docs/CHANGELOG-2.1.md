@@ -12,6 +12,7 @@ Version 2.1.12-stable (2015-??-??)
 - Filter fields could overwrite product properties if property was not customer defined/variant option
 - Added missing collection ID to template (#1394)
 - Default value for tl_iso_config.cartMinSubtotal was empty instead of decimal (#1367)
+- Month and week reports were not correctly sorted across years (#1359)
 
 
 Version 2.1.11-stable (2015-02-10)
