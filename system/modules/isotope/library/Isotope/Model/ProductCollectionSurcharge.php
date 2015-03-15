@@ -554,15 +554,15 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objTax = $arrTaxes[$id];
 
         if (null === $objTax || !($objTax instanceof Tax)) {
-            $objTax              = new Tax();
-            $objTax->label       = $label;
-            $objTax->price       = $price . ($isPercentage ? '%' : '');
-            $objTax->total_price = Isotope::roundPrice($total, $applyRoundingIncrement);
-            $objTax->addToTotal  = $addToTotal;
+            $objTax                         = new Tax();
+            $objTax->label                  = $label;
+            $objTax->price                  = $price . ($isPercentage ? '%' : '');
+            $objTax->total_price            = $total;
+            $objTax->addToTotal             = $addToTotal;
 
             $arrTaxes[$id]       = $objTax;
         } else {
-            $objTax->total_price = Isotope::roundPrice(($objTax->total_price + $total), $applyRoundingIncrement);
+            $objTax->total_price = ($objTax->total_price + $total);
 
             if (is_numeric($objTax->price) && is_numeric($price)) {
                 $objTax->price += $price;

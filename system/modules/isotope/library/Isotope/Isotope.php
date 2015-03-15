@@ -243,7 +243,7 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return static::roundPrice($fltPrice);
+        return $fltPrice;
     }
     
     /**

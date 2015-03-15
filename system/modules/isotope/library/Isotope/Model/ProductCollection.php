@@ -692,7 +692,7 @@ abstract class ProductCollection extends TypeAgent
                 }
             }
 
-            $this->arrCache['total'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
+            $this->arrCache['total'] = $fltAmount > 0 ? $fltAmount : 0;
         }
 
         return $this->arrCache['total'];
@@ -720,7 +720,7 @@ abstract class ProductCollection extends TypeAgent
                 }
             }
 
-            $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
+            $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? $fltAmount : 0;
         }
 
         return $this->arrCache['taxFreeTotal'];
