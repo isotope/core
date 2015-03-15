@@ -92,7 +92,7 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Set image files
      *
-     * @param array $varValue
+     * @param array $arrFiles
      */
     public function setFiles(array $arrFiles)
     {
@@ -313,7 +313,7 @@ class Standard extends Gallery implements IsotopeGallery
             && $this->{$strGallery . '_watermark_image'} != ''
             && ($objWatermark = \FilesModel::findByUuid($this->{$strGallery . '_watermark_image'})) !== null
         ) {
-            $strImage = \Haste\Image\Image::addWatermark($strImage, $objWatermark->path, $this->{$strGallery . '_watermark_position'});
+            $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strGallery . '_watermark_position'});
         }
 
         $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
