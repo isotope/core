@@ -37,10 +37,15 @@ class Payone extends Postsale implements IsotopePayment
             die('TSOK');
         }
 
-        if (\Input::post('txaction') != 'paid'
-            && \Input::post('currency') != $objOrder->currency
-            && \Input::post('balance') > 0
+        // Ignore  all except these actions
+        if (\Input::post('txaction') != 'appointed'
+            && \Input::post('txaction') != 'capture'
+            && \Input::post('txaction') != 'paid'
         ) {
+            die('TSOK');
+        }
+
+        if (\Input::post('currency') != $objOrder->currency || \Input::post('balance') > 0) {
             \System::log('PayOne order data mismatch for Order ID "' . \Input::post('invoice') . '"', __METHOD__, TL_ERROR);
             die('TSOK');
         }
@@ -50,7 +55,10 @@ class Payone extends Postsale implements IsotopePayment
             die('TSOK');
         }
 
-        $objOrder->date_paid = time();
+        if (\Input::post('txaction') == 'paid') {
+            $objOrder->date_paid = time();
+        }
+
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
