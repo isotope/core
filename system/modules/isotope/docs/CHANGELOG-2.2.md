@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.2.3-stable (2015-??-??)
 ---------------------------------
 
+### Fixed
+- Gallery watermark positions were not available in Contao 3.4 (#1365)
+
 
 Version 2.2.2-stable (2015-02-10)
 ---------------------------------
