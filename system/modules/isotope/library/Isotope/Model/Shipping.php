@@ -100,7 +100,7 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        $objScale = Isotope::getCart()->addToScale();
+        $objScale = Isotope::getCart()->addToScale(null, true);
 
         if (($minWeight = Weight::createFromTimePeriod($this->minimum_weight)) !== null && $objScale->isLessThan($minWeight)) {
             return false;

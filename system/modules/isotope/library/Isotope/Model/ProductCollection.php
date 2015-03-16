@@ -1222,7 +1222,7 @@ abstract class ProductCollection extends TypeAgent
      *
      * @return Scale
      */
-    public function addToScale(Scale $objScale = null)
+    public function addToScale(Scale $objScale = null, $blnForShipping = false)
     {
         if (null === $objScale) {
             $objScale = new Scale();
@@ -1234,6 +1234,10 @@ abstract class ProductCollection extends TypeAgent
             }
 
             $objProduct = $objItem->getProduct();
+
+            if ($blnForShipping && $objProduct->shipping_exempt) {
+                continue;
+            }
 
             if ($objProduct instanceof WeightAggregate) {
                 $objWeight = $objProduct->getWeight();
