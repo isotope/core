@@ -109,7 +109,7 @@ abstract class Payment extends TypeAgent
             return false;
         }
 
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -131,7 +131,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByEnabledRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -157,7 +157,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByGuestRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -183,7 +183,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByGroupRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -218,7 +218,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByTotalRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -247,7 +247,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByShopConfigurationRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -275,7 +275,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByCountriesRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -306,7 +306,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByShippingRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
@@ -334,7 +334,7 @@ abstract class Payment extends TypeAgent
      */
     private function excludeByProductTypeRestriction()
     {
-        // !HOOK: determine email recipient for collection
+        // !HOOK: custom logic
         if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction'])) {
             foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction'] as $callback) {
                 $objCallback    = \System::importStatic($callback[0]);
