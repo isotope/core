@@ -92,8 +92,21 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        if (($this->minimum_quantity > 0 && $this->minimum_quantity > Isotope::getCart()->sumItemsQuantity()) || ($this->maximum_quantity > 0 && $this->maximum_quantity < Isotope::getCart()->sumItemsQuantity())) {
-            return false;
+        if (0 > $this->minimum_quantity || 0 > $this->maximum_quantity) {
+            $quantity = 0;
+    
+            foreach (Isotope::getCart()->getItems() as $item) {
+                if (!$item->getProduct()->shipping_exempt) {
+                    $quantity += $item->quantity;
+                }
+            }
+    
+            if (
+                ($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
+                || ($this->maximum_quantity > 0 && $this->maximum_quantity < $quantity)
+            ) {
+                return false;
+            }
         }
 
         $arrConfigs = deserialize($this->config_ids);
