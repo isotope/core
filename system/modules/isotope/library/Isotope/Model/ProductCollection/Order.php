@@ -313,13 +313,12 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 if (in_array(false, $arrResult)) {
                     $blnNotificationError = true;
+                    \System::log('Error sending status update notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
                 } elseif (!empty($arrResult)) {
                     $blnNotificationError = false;
                 }
-            }
-
-            if ($blnNotificationError === true) {
-                \System::log('Error sending status update notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+            } else {
+                \System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
             }
         }
 

@@ -12,6 +12,8 @@
 
 namespace Isotope\Module;
 
+use Haste\Input\Input;
+use Haste\Util\Debug;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Module as Contao_Module;
@@ -57,8 +59,8 @@ abstract class Module extends Contao_Module
 
         if (TL_MODE == 'FE') {
             // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
+            $GLOBALS['TL_CSS'][]        = Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
@@ -134,7 +136,7 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'product':
-                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories(true);

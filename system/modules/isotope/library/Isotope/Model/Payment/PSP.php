@@ -119,7 +119,7 @@ abstract class PSP extends Payment
             return null;
         }
 
-        return Order::findByPk($this->getRequestData('orderID'));
+        return Order::findByPk((int) $this->getRequestData('orderID'));
     }
 
     /**
@@ -199,10 +199,10 @@ abstract class PSP extends Payment
     private function getRequestData($strKey)
     {
         if ($this->psp_http_method == 'GET') {
-            return \Input::get($strKey);
+            return $_GET[$strKey];
         }
 
-        return \Input::post($strKey);
+        return $_POST[$strKey];
     }
 
 

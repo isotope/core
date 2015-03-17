@@ -104,25 +104,25 @@ abstract class Sales extends Report
         switch ($strPeriod)
         {
             case 'day':
-                $publicDate = 'd.m.y';
+                $publicDate = '%d.%m.%y';
                 $privateDate = 'Ymd';
                 $sqlDate = '%Y%m%d';
                 break;
 
             case 'week':
-                $publicDate = '\K\W W/y';
+                $publicDate = 'KW %U/%y';
                 $privateDate = 'YW';
                 $sqlDate = '%Y%u';
                 break;
 
             case 'month':
-                $publicDate = 'm/Y';
+                $publicDate = '%m/%Y';
                 $privateDate = 'Ym';
                 $sqlDate = '%Y%m';
                 break;
 
             case 'year':
-                $publicDate = 'Y';
+                $publicDate = '%Y';
                 $privateDate = 'Y';
                 $sqlDate = '%Y';
                 break;
