@@ -8,6 +8,7 @@ Version 2.1.12-stable (2015-??-??)
 - Better Postfinance postsale handling
 - Only filter by groups if one is set (fixes #1373)
 - Check transaction status for PayOne payments (#1392)
+- Better logging when notification for order status was not found (#1391)
 
 ### Fixed
 - Filter fields could overwrite product properties if property was not customer defined/variant option
