@@ -111,6 +111,17 @@ class Standard extends Gallery implements IsotopeGallery
 
 
     /**
+     * Get the number of images
+     *
+     * @return int
+     */
+    public function size()
+    {
+        return count($this->arrFiles);
+    }
+
+
+    /**
      * Returns whether the gallery object has an image do display or not
      *
      * @return bool
