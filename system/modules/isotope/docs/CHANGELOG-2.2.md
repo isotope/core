@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.3-stable (2015-03-17)
+---------------------------------
+
+### Improved
+- Only generate messages module if necessary (fixes #1374)
+
+### Fixed
+- Gallery watermark positions were not available in Contao 3.4 (#1365)
+- Labels for foreignKey fields were not shown in product attribute view (#1389)
+- Manual product sorting (drag&drop) was broken in 2.2.1 (#1388)
+
+
 Version 2.2.2-stable (2015-02-10)
 ---------------------------------
 

@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Input\Input;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedProduct;
 
@@ -51,7 +52,7 @@ class RelatedProducts extends ProductList
             return $objTemplate->parse();
         }
 
-        if (!\Haste\Input\Input::getAutoItem('product', false, true)) {
+        if (!Input::getAutoItem('product', false, true)) {
             return '';
         }
 
@@ -77,7 +78,7 @@ class RelatedProducts extends ProductList
     {
         $arrIds = array(0);
 
-        $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
             return array();

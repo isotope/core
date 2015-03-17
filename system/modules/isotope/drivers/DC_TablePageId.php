@@ -964,7 +964,7 @@ class DC_TablePageId extends \DC_Table
 </ul>
 
 <script>
-Isotope.makePageViewSortable("ul_' . CURRENT_ID . '");
+Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 </script>';
         }
 
