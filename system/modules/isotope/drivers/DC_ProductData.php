@@ -236,24 +236,6 @@ class DC_ProductData extends \DC_Table
 
 
     /**
-     * Move all selected records
-     */
-    public function cutAll()
-    {
-        $arrClipboard = $this->Session->get('CLIPBOARD');
-
-        if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id'])) {
-            foreach ($arrClipboard[$this->strTable]['id'] as $id) {
-                $this->intId = $id;
-                $this->cut(true);
-            }
-        }
-
-        \Controller::redirect(\System::getReferer());
-    }
-
-
-    /**
      * Duplicate all child records of a duplicated record
      * @param string
      * @param int
@@ -388,38 +370,6 @@ class DC_ProductData extends \DC_Table
         }
 
         \Controller::redirect(\System::getReferer());
-    }
-
-
-    /**
-     * Calculate the new position of a moved or inserted record
-     * @param string
-     * @param integer
-     * @param boolean
-     */
-    protected function getNewPosition($mode, $pid = null, $insertInto = false)
-    {
-        // PID is not set - only valid for duplicated records, as they get the same parent ID as the original record!
-        if (is_null($pid) && $this->intId && $mode == 'copy') {
-            $pid = $this->intId;
-        }
-
-        // PID is set (insert after or into the parent record)
-        if (is_numeric($pid)) {
-            // Insert the current record into the parent record
-            if ($insertInto) {
-                $this->set['pid'] = $pid;
-            } // Else insert the current record after the parent record
-            elseif ($pid > 0) {
-                $objParentRecord = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
-                    ->limit(1)
-                    ->execute($pid);
-
-                if ($objParentRecord->numRows) {
-                    $this->set['pid'] = $objParentRecord->pid;
-                }
-            }
-        }
     }
 
 
