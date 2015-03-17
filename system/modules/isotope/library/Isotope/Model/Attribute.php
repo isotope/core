@@ -198,16 +198,20 @@ abstract class Attribute extends TypeAgent
         }
 
         // Prepare options
-        if ($this->optionsSource == 'foreignKey') {
+        if ($this->optionsSource == 'foreignKey' && !$this->isVariantOption()) {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options']);
             unset($arrField['reference']);
-
         }
 
         // @deprecated remove in Isotope 3.0
-        elseif ($this->optionsSource == 'attribute') {
-            $arrOptions = deserialize($this->options);
+        elseif ($this->optionsSource == 'attribute' || ($this->optionsSource == 'foreignKey' && $this->isVariantOption())) {
+            if ($this->optionsSource == 'foreignKey') {
+                $arrKey     = explode('.', $this->foreignKey, 2);
+                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
+            } else {
+                $arrOptions = deserialize($this->options);
+            }
 
             if (!empty($arrOptions) && is_array($arrOptions)) {
                 $arrField['default'] = array();

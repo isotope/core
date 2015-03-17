@@ -551,6 +551,10 @@ window.addEvent('domready', function()
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
+        if (empty($arrPages)) {
+            return $arrPages;
+        }
+
         global $objPage;
 
         // $objPage not available, we don't know if the page is allowed
@@ -567,7 +571,15 @@ window.addEvent('domready', function()
             $arrGroups = deserialize($objMember->groups, true);
         }
 
-        foreach (array_diff($arrPages, $arrAvailable, $arrUnavailable) as $intPage) {
+        if (!isset($arrAvailable[$intMember])) {
+            $arrAvailable[$intMember] = array();
+        }
+
+        if (!isset($arrUnavailable[$intMember])) {
+            $arrUnavailable[$intMember] = array();
+        }
+
+        foreach (array_diff($arrPages, $arrUnavailable[$intMember], $arrUnavailable[$intMember]) as $intPage) {
             $objPageDetails = \PageModel::findWithDetails($intPage);
 
             // Page is not in the current root

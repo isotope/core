@@ -136,7 +136,7 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        if (!$this->intId) {
+        if (!$this->intId && $this->intGroupId > 0) {
             $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
         }
 

@@ -71,8 +71,8 @@ class SalesTotal extends Sales
         ")->execute($sqlDate);
 
         $arrCurrencies = array();
-        $arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
-        $arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
+        $arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate);
+        $arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate);
 
         while ($objData->next())
         {
@@ -105,10 +105,12 @@ class SalesTotal extends Sales
 
         $this->Template->data = $arrData;
         $this->Template->chart = $arrChart;
+        $this->Template->period = $strPeriod;
+        $this->Template->dateFormat = $publicDate;
     }
 
 
-    protected function initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
+    protected function initializeData($strPeriod, $intStart, $intStop, $privateDate)
     {
         $arrData = array('rows'=>array());
 
@@ -177,7 +179,7 @@ class SalesTotal extends Sales
                 (
                     array
                     (
-                        'value'         => \Date::parse($publicDate, $intStart),
+                        'value'         => $intStart,
                     ),
                     array
                     (
@@ -211,7 +213,7 @@ class SalesTotal extends Sales
     }
 
 
-    protected function initializeChart($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
+    protected function initializeChart($strPeriod, $intStart, $intStop, $privateDate)
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
         $intConfig = (int) $arrSession[$this->name]['iso_config'];
@@ -234,7 +236,7 @@ class SalesTotal extends Sales
         {
             foreach ($arrCurrencies as $currency)
             {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = ($strPeriod == 'day' ? $intStart : \Date::parse($publicDate, $intStart));
+                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $intStart;
                 $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
             }
 

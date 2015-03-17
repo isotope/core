@@ -96,6 +96,10 @@ class Message
      */
     public static function generate()
     {
+        if (static::isEmpty()) {
+            return '';
+        }
+
         $objModule = new Messages(new \ModuleModel());
         $objModule->type = 'iso_message';
 
@@ -158,6 +162,21 @@ class Message
         }
     }
 
+    /**
+     * Returns true if there are no messages defined
+     *
+     * @return bool
+     */
+    public static function isEmpty()
+    {
+        foreach (static::getTypes() as $strType) {
+            if (!empty($_SESSION[$strType])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Return all available message types
