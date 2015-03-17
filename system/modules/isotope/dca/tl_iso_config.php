@@ -423,7 +423,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal'],
             'exclude'               => true,
-            'default'               => '',
+            'default'               => '0.00',
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgpx'=>'price', 'tl_class'=>'w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",

@@ -12,6 +12,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Input\Input;
 use Haste\Util\Debug;
 use Isotope\Frontend;
 use Isotope\Isotope;
@@ -140,7 +141,7 @@ abstract class Module extends Contao_Module
 
                 case 'product':
                     /** @var \Isotope\Model\Product\Standard $objProduct */
-                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+                    $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories(true);
