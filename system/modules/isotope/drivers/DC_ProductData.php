@@ -267,68 +267,101 @@ class DC_ProductData extends \DC_Table
         $cctable = array();
         $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
 
-        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && \Input::get('childs') != '' && $this->Database->fieldExists('pid', $table)) {
+        /** PATCH: removed check for sorting field */
+        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && strlen(\Input::get('childs')) && $this->Database->fieldExists('pid', $table))
+        {
             $ctable[] = $table;
         }
 
-        if (!is_array($ctable)) {
+        if (!is_array($ctable))
+        {
             return;
         }
 
         // Walk through each child table
-        foreach ($ctable as $v) {
+        foreach ($ctable as $v)
+        {
             $this->loadDataContainer($v);
             $cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'];
 
-            if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && strlen($v)) {
-                $objCTable = $this->Database->prepare("SELECT * FROM " . $v . " WHERE pid=?" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
-                    ->execute($id);
+            if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && strlen($v))
+            {
+                // Consider the dynamic parent table (see #4867)
+                if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'])
+                {
+                    $ptable = $GLOBALS['TL_DCA'][$v]['config']['ptable'];
+                    $cond = ($ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?"; // backwards compatibility
 
-                foreach ($objCTable->fetchAllAssoc() as $row) {
+                    $objCTable = $this->Database->prepare("SELECT * FROM $v WHERE pid=? AND $cond" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
+                                                ->execute($id, $ptable);
+                }
+                else
+                {
+                    $objCTable = $this->Database->prepare("SELECT * FROM $v WHERE pid=?" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
+                                                ->execute($id);
+                }
+
+                while ($objCTable->next())
+                {
                     // Exclude the duplicated record itself
-                    if ($v == $table && $row['id'] == $parentId) {
+                    if ($v == $table && $objCTable->id == $parentId)
+                    {
                         continue;
                     }
 
-                    foreach ($row as $kk => $vv) {
-                        if ($kk == 'id') {
+                    foreach ($objCTable->row() as $kk=>$vv)
+                    {
+                        if ($kk == 'id')
+                        {
                             continue;
                         }
 
                         // Reset all unique, doNotCopy and fallback fields to their default value
-                        if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback']) {
+                        if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
+                        {
                             $vv = '';
 
                             // Use array_key_exists to allow NULL (see #5252)
-                            if (array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk])) {
+                            if (array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))
+                            {
                                 $vv = is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
                             }
 
                             // Encrypt the default value (see #3740)
-                            if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt']) {
+                            if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt'])
+                            {
                                 $vv = \Encryption::encrypt($vv);
                             }
                         }
 
-                        $copy[$v][$row['id']][$kk] = $vv;
+                        $copy[$v][$objCTable->id][$kk] = $vv;
                     }
 
-                    $copy[$v][$row['id']]['pid'] = $insertID;
-                    $copy[$v][$row['id']]['tstamp'] = $time;
+                    $copy[$v][$objCTable->id]['pid'] = $insertID;
+                    $copy[$v][$objCTable->id]['tstamp'] = $time;
                 }
             }
         }
 
         // Duplicate the child records
-        foreach ($copy as $k => $v) {
-            if (!empty($v)) {
-                foreach ($v as $kk => $vv) {
+        foreach ($copy as $k=>$v)
+        {
+            if (!empty($v))
+            {
+                foreach ($v as $kk=>$vv)
+                {
                     $objInsertStmt = $this->Database->prepare("INSERT INTO " . $k . " %s")
-                        ->set($vv)
-                        ->execute();
+                                                    ->set($vv)
+                                                    ->execute();
 
-                    if ($objInsertStmt->affectedRows && (!empty($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5) && $kk != $parentId) {
-                        $this->copyChilds($k, $objInsertStmt->insertId, $kk, $parentId);
+                    if ($objInsertStmt->affectedRows)
+                    {
+                        $insertID = $objInsertStmt->insertId;
+
+                        if ((!empty($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5) && $kk != $parentId)
+                        {
+                            $this->copyChilds($k, $insertID, $kk, $parentId);
+                        }
                     }
                 }
             }
