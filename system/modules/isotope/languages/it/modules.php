@@ -78,6 +78,6 @@ $GLOBALS['TL_LANG']['IMD']['notifications'][0] = 'Notifiche';
 $GLOBALS['TL_LANG']['IMD']['notifications'][1] = 'Usa il Centro Notifiche per gestire le email etc. per Isotope eCommerce.';
 $GLOBALS['TL_LANG']['IMD']['documents'][0] = 'Documenti';
 $GLOBALS['TL_LANG']['IMD']['documents'][1] = 'Definire i documenti.';
-$GLOBALS['TL_LANG']['IMD']['miscellaneous'] = 'Eterogeneo';
+$GLOBALS['TL_LANG']['IMD']['miscellaneous'] = 'Varie';
 $GLOBALS['TL_LANG']['IMD']['labels'][0] = 'Traduzioni';
 $GLOBALS['TL_LANG']['IMD']['labels'][1] = 'Sostituire etichette fornite per alcune lingue.';
