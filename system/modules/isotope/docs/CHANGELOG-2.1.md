@@ -16,6 +16,7 @@ Version 2.1.12-stable (2015-??-??)
 - Default value for tl_iso_config.cartMinSubtotal was empty instead of decimal (#1367)
 - Month and week reports were not correctly sorted across years (#1359)
 - Category scope "product" in product list module should not be cached (#1383)
+- Warning if products are not assigned to any category (#1398)
 
 
 Version 2.1.11-stable (2015-02-10)
