@@ -75,7 +75,7 @@ class ProductList extends Module
         $this->iso_productcache  = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
+        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode'] || $this->iso_category_scope == 'product') {
             $this->blnCacheProducts = false;
         }
 
