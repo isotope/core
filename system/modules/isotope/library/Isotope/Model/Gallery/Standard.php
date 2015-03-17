@@ -294,8 +294,7 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
-     * Gets the image for a given file and given type and optionally adds a
-     * watermark to it
+     * Gets the image for a given file and given type and optionally adds a watermark to it
      *
      * @param   string $strType
      * @param   array $arrFile
@@ -304,7 +303,7 @@ class Standard extends Gallery implements IsotopeGallery
      * @return  array
      * @throws  \InvalidArgumentException
      */
-    private function getImageForType($strType, array $arrFile, $blnWatermark = true)
+    protected function getImageForType($strType, array $arrFile, $blnWatermark = true)
     {
         // Check cache
         $strCacheKey = md5($strType . '-' . json_encode($arrFile) . '-' . (int) $blnWatermark);
