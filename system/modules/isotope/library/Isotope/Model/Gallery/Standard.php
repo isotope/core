@@ -46,6 +46,11 @@ class Standard extends Gallery implements IsotopeGallery
      */
     protected $arrFiles = array();
 
+    /**
+     * Images cache
+     * @var array
+     */
+    private $arrImages = array();
 
     /**
      * Override template if available in record
@@ -87,27 +92,11 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Set image files
      *
-     * @param array $varValue
+     * @param array $arrFiles
      */
-    public function setFiles($varValue)
+    public function setFiles(array $arrFiles)
     {
-        $this->arrFiles = array();
-        $varValue       = deserialize($varValue);
-
-        if (is_array($varValue) && !empty($varValue)) {
-            foreach ($varValue as $file) {
-                $this->addImage($file);
-            }
-        }
-
-        // No image available, add placeholder from store configuration
-        if (empty($this->arrFiles)) {
-            $objPlaceholder = \FilesModel::findByPk($this->placeholder);
-
-            if (null !== $objPlaceholder && is_file(TL_ROOT . '/' . $objPlaceholder->path)) {
-                $this->addImage(array('src' => $objPlaceholder->path), false);
-            }
-        }
+        $this->arrFiles = array_values($arrFiles);
     }
 
     /**
@@ -139,7 +128,19 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function hasImages()
     {
+        // Check files array here because we don't need to generate an image
+        // just to know if there are images
         return !empty($this->arrFiles);
+    }
+
+    /**
+     * Checks if a placeholder image is defined
+     *
+     * @return bool
+     */
+    protected function hasPlaceholderImage()
+    {
+        return ($this->placeholder && null !== \FilesModel::findByPk($this->placeholder));
     }
 
     /**
@@ -149,22 +150,29 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function generateMainImage()
     {
-        if (!count($this->arrFiles)) {
+        $hasImages = $this->hasImages();
+
+        if (!$hasImages && !$this->hasPlaceholderImage()) {
             return '';
         }
 
-        $arrFile = reset($this->arrFiles);
-
+        /** @var Template|object $objTemplate */
         $objTemplate = new Template($this->strTemplate);
 
-        $this->addImageToTemplate($objTemplate, 'main', $arrFile);
+        $this->addImageToTemplate(
+            $objTemplate,
+            ($hasImages ? $this->arrFiles[0] : $this->getPlaceholderImage()),
+            'main',
+            $hasImages
+        );
+
         $objTemplate->javascript = '';
 
         if (\Environment::get('isAjaxRequest')) {
             $strScripts = '';
-            $arrTemplates = deserialize($this->lightbox_template);
+            $arrTemplates = deserialize($this->lightbox_template, true);
 
-            if (!empty($arrTemplates) && is_array($arrTemplates)) {
+            if (!empty($arrTemplates)) {
                 foreach ($arrTemplates as $strTemplate) {
                     $objScript = new Template($strTemplate);
                     $strScripts .= $objScript->parse();
@@ -186,16 +194,25 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function generateGallery($intSkip = 1)
     {
+        // If we skip one or more images or no placeholder image is available there's no gallery
+        if (!$this->hasImages() && ($intSkip >= 1 || !$this->hasPlaceholderImage())) {
+            return '';
+        }
+
         $strGallery = '';
+        $watermark  = true;
+        $arrFiles   = array_slice($this->arrFiles, $intSkip);
 
-        foreach ($this->arrFiles as $i => $arrFile) {
-            if ($i < $intSkip) {
-                continue;
-            }
+        // Add placeholder for the gallery
+        if (empty($arrFiles) && $intSkip < 1) {
+            $arrFiles[] = $this->getPlaceholderImage();
+            $watermark  = false;
+        }
 
+        foreach ($arrFiles as $arrFile) {
             $objTemplate = new Template($this->strTemplate);
 
-            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile);
+            $this->addImageToTemplate($objTemplate, $arrFile, 'gallery', $watermark);
 
             $strGallery .= $objTemplate->parse();
         }
@@ -216,14 +233,17 @@ class Standard extends Gallery implements IsotopeGallery
     /**
      * Generate template with given file
      *
-     * @param Template $objTemplate
-     * @param string   $strType
-     * @param array    $arrFile
+     * @param Template|object $objTemplate
+     * @param array           $arrFile
+     * @param string          $strType
+     * @param bool            $blnWatermark
      *
      * @return string
      */
-    protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile)
+    protected function addImageToTemplate(Template $objTemplate, array $arrFile, $strType, $blnWatermark = true)
     {
+        $arrFile = $this->getImageForType($strType, $arrFile, $blnWatermark);
+
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
         $objTemplate->product_id = $this->product_id;
@@ -242,10 +262,11 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 list($link, $rel) = explode('|', $arrFile['link'], 2);
+                $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
-                $objTemplate->link       = $link ? : $arrFile['lightbox'];
-                $objTemplate->attributes = ($link ? ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"') : ' data-lightbox="product' . $this->product_id . '"');
+                $objTemplate->link       = $link ?: $arrFile['lightbox'];
+                $objTemplate->attributes = ($link ? $attributes : ' data-lightbox="product' . $this->product_id . '"');
                 break;
 
             default:
@@ -255,58 +276,78 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
-     * Add an image to the gallery
+     * Gets the placeholder image
      *
-     * @param array $file
-     * @param bool  $blnWatermark
-     * @param bool  $blnMain
+     * @return array
      *
-     * @return bool
+     * @throws \UnderflowException If no placeholder image is found
      */
-    private function addImage(array $file, $blnWatermark = true, $blnMain = false)
+    protected function getPlaceholderImage()
     {
-        $strFile = $file['src'];
+        $objPlaceholder = \FilesModel::findByPk($this->placeholder);
+
+        if (null === $objPlaceholder) {
+            throw new \UnderflowException('Placeholder image requested but not defined!');
+        }
+
+        return array('src' => $objPlaceholder->path);
+    }
+
+    /**
+     * Gets the image for a given file and given type and optionally adds a watermark to it
+     *
+     * @param   string $strType
+     * @param   array $arrFile
+     * @param   bool  $blnWatermark
+     *
+     * @return  array
+     * @throws  \InvalidArgumentException
+     */
+    protected function getImageForType($strType, array $arrFile, $blnWatermark = true)
+    {
+        // Check cache
+        $strCacheKey = md5($strType . '-' . json_encode($arrFile) . '-' . (int) $blnWatermark);
+
+        if (isset($this->arrImages[$strCacheKey])) {
+            return $this->arrImages[$strCacheKey];
+        }
+
+        $strFile = $arrFile['src'];
 
         // File without path must be located in the isotope root folder
         if (strpos($strFile, '/') === false) {
             $strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
         }
 
-        if (is_file(TL_ROOT . '/' . $strFile)) {
-            foreach (array('main', 'gallery', 'lightbox') as $name) {
-                $size     = deserialize($this->{$name . '_size'});
-                $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
-
-                if ($this->{$name . '_watermark_image'} != ''
-                    && $blnWatermark
-                    && ($objWatermark = \FilesModel::findByUuid($this->{$name . '_watermark_image'})) !== null
-                ) {
-                    $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$name . '_watermark_position'});
-                }
-
-                $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
-
-                if (is_array($arrSize) && strlen($arrSize[3])) {
-                    $file[$name . '_size']      = $arrSize[3];
-                    $file[$name . '_imageSize'] = $arrSize;
-                }
-
-                $file['alt']  = specialchars($file['alt'], true);
-                $file['desc'] = specialchars($file['desc'], true);
-
-                $file[$name] = $strImage;
-            }
-
-            // Main image is first in the array
-            if ($blnMain) {
-                array_unshift($this->arrFiles, $file);
-            } else {
-                $this->arrFiles[] = $file;
-            }
-
-            return true;
+        if (!is_file(TL_ROOT . '/' . $strFile)) {
+            throw new \InvalidArgumentException('Apparently the file "' . $strFile . '" does not exist!');
         }
 
-        return false;
+        $size     = deserialize($this->{$strType . '_size'}, true);
+        $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
+
+        // Watermark
+        if ($blnWatermark
+            && $this->{$strType . '_watermark_image'} != ''
+            && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
+        ) {
+            $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
+        }
+
+        $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+
+        if (is_array($arrSize) && $arrSize[3] !== '') {
+            $arrFile[$strType . '_size']      = $arrSize[3];
+            $arrFile[$strType . '_imageSize'] = $arrSize;
+        }
+
+        $arrFile['alt']  = specialchars($arrFile['alt'], true);
+        $arrFile['desc'] = specialchars($arrFile['desc'], true);
+
+        $arrFile[$strType] = $strImage;
+
+        $this->arrImages[$strCacheKey] = $arrFile;
+
+        return $arrFile;
     }
 }
