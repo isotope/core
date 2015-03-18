@@ -138,7 +138,8 @@ abstract class OrderConditions extends CheckoutStep
 
         foreach (array_keys($this->objForm->getFormFields()) as $strField) {
             if (isset($_SESSION['FORM_DATA'][$strField])) {
-                $arrTokens['form_' . $strField] = $_SESSION['FORM_DATA'][$strField];
+                    $arrTokens['form_' . $strField] = is_array($_SESSION['FORM_DATA'][$strField])?implode(', ', $_SESSION['FORM_DATA'][$strField]):$_SESSION['FORM_DATA'][$strField];
+       
             }
         }
 
