@@ -29,25 +29,25 @@ use Isotope\Model\Shipping;
 /**
  * Class ProductCollection
  *
- * @property int    id
- * @property int    tstamp
- * @property string type
- * @property int    member
- * @property int    store_id
- * @property mixed  settings
- * @property int    source_collection_id
- * @property string uniqid
- * @property int    config_id
- * @property int    payment_id
- * @property int    shipping_id
- * @property int    billing_address_id
- * @property int    shipping_address_id
- * @property float  subtotal
- * @property float  tax_free_subtotal
- * @property float  total
- * @property float  tax_free_total
- * @property string currency
- * @property string language
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $type
+ * @property int    $member
+ * @property int    $store_id
+ * @property mixed  $settings
+ * @property int    $source_collection_id
+ * @property string $uniqid
+ * @property int    $config_id
+ * @property int    $payment_id
+ * @property int    $shipping_id
+ * @property int    $billing_address_id
+ * @property int    $shipping_address_id
+ * @property float  $subtotal
+ * @property float  $tax_free_subtotal
+ * @property float  $total
+ * @property float  $tax_free_total
+ * @property string $currency
+ * @property string $language
  */
 abstract class ProductCollection extends TypeAgent
 {
@@ -726,7 +726,6 @@ abstract class ProductCollection extends TypeAgent
         return $this->arrCache['taxFreeTotal'];
     }
 
-
     /**
      * Return the item with the latest timestamp (e.g. the latest added item)
      *
@@ -807,7 +806,6 @@ abstract class ProductCollection extends TypeAgent
         return call_user_func($varCallable, $arrItems);
     }
 
-
     /**
      * Search item for a specific product
      *
@@ -823,7 +821,6 @@ abstract class ProductCollection extends TypeAgent
 
         return $objItem;
     }
-
 
     /**
      * Check if a given product is already in the collection
@@ -855,7 +852,6 @@ abstract class ProductCollection extends TypeAgent
             return false;
         }
     }
-
 
     /**
      * Add a product to the collection
@@ -937,7 +933,6 @@ abstract class ProductCollection extends TypeAgent
 
         return $objItem;
     }
-
 
     /**
      * Update a product collection item
@@ -1021,7 +1016,6 @@ abstract class ProductCollection extends TypeAgent
 
         return true;
     }
-
 
     /**
      * Remove item from collection
@@ -1171,7 +1165,6 @@ abstract class ProductCollection extends TypeAgent
         return $arrIds;
     }
 
-
     /**
      * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
      *
@@ -1214,7 +1207,6 @@ abstract class ProductCollection extends TypeAgent
         return $arrIds;
     }
 
-
     /**
      * Add all products in the collection to the given scale
      *
@@ -1253,7 +1245,6 @@ abstract class ProductCollection extends TypeAgent
 
         return $objScale;
     }
-
 
     /**
      * Add the collection to a template
@@ -1717,7 +1708,6 @@ abstract class ProductCollection extends TypeAgent
 
         return $objCollection;
     }
-
 
     /**
      * Method that returns a closure to sort product collection items

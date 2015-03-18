@@ -13,6 +13,7 @@
 namespace Isotope\Interfaces;
 
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Model\ProductCollectionSurcharge;
 
 
 /**
@@ -23,25 +24,29 @@ interface IsotopeProductCollection
 
     /**
      * Return true if collection is locked
+     *
      * @return bool
      */
     public function isLocked();
 
     /**
      * Return true if collection has no items
+     *
      * @return bool
      */
     public function isEmpty();
 
     /**
      * Return number of items in the collection
-     * @return  int
+     *
+     * @return int
      */
     public function countItems();
 
     /**
      * Return summary of item quantity in collection
-     * @return  int
+     *
+     * @return int
      */
     public function sumItemsQuantity();
 
@@ -57,99 +62,121 @@ interface IsotopeProductCollection
 
     /**
      * Sum price of all items in the collection
-     * @return  float
+     *
+     * @return float
      */
     public function getSubtotal();
 
     /**
      * Sum total tax free price of all items in the collection
-     * @return  float
+     *
+     * @return float
      */
     public function getTaxFreeSubtotal();
 
     /**
      * Sum total price of items and surcharges
-     * @return  float
+     *
+     * @return float
      */
     public function getTotal();
 
     /**
      * Sum tax free total of items and surcharges
-     * @return  float
+     *
+     * @return float
      */
     public function getTaxFreeTotal();
 
     /**
      * Return the item with the latest timestamp (e.g. the latest added item)
+     *
      * @return ProductCollectionItem|null
      */
     public function getLatestItem();
 
     /**
      * Return all items in the collection
-     * @param  callable
-     * @param  bool
+     *
+     * @param callable
+     * @param bool
+     *
      * @return \Isotope\Model\ProductCollectionItem[]
      */
     public function getItems($varCallable = null, $blnNoCache = false);
 
     /**
      * Search item for a specific product
-     * @param  IsotopeProduct
+     *
+     * @param IsotopeProduct $objProduct
+     *
      * @return ProductCollectionItem|null
      */
     public function getItemForProduct(IsotopeProduct $objProduct);
 
     /**
      * Check if a given product is already in the collection
-     * @param  IsotopeProduct
-     * @param  bool
+     *
+     * @param IsotopeProduct $objProduct
+     * @param bool           $blnIdentical
+     *
      * @return bool
      */
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true);
 
     /**
      * Add a product to the collection
-     * @param   object
-     * @param   integer
-     * @param   array
-     * @return  ProductCollectionItem
+     *
+     * @param IsotopeProduct $objProduct
+     * @param integer        $intQuantity
+     * @param array          $arrConfig
+     *
+     * @return ProductCollectionItem
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array());
 
     /**
      * Update a product collection item
-     * @param   object  $objItem The product object
-     * @param   array   $arrSet The property(ies) to adjust
-     * @return  bool
+     *
+     * @param ProductCollectionItem $objItem The product object
+     * @param array                 $arrSet  The property(ies) to adjust
+     *
+     * @return bool
      */
     public function updateItem(ProductCollectionItem $objItem, $arrSet);
 
     /**
      * Update product collection item with given ID
-     * @param   int
-     * @param   array
-     * @return  bool
+     *
+     * @param int   $intId
+     * @param array $arrSet
+     *
+     * @return bool
      */
     public function updateItemById($intId, $arrSet);
 
     /**
      * Remove item from collection
-     * @param   ProductCollectionItem
-     * @return  bool
+     *
+     * @param ProductCollectionItem $objItem
+     *
+     * @return bool
      */
     public function deleteItem(ProductCollectionItem $objItem);
 
     /**
      * Remove item with given ID from collection
-     * @param   int
-     * @return  bool
+     *
+     * @param int $intId
+     *
+     * @return bool
      */
     public function deleteItemById($intId);
 
     /**
      * Find surcharges for the current collection
-     * @return  \Isotope\Model\ProductCollectionSurcharge[]
+     *
+     * @return ProductCollectionSurcharge[]
      */
     public function getSurcharges();
 }

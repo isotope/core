@@ -15,8 +15,10 @@ namespace Isotope\Model\ProductCollection;
 use Haste\Generator\RowClass;
 use Haste\Haste;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
@@ -36,17 +38,20 @@ use NotificationCenter\Model\Notification;
  *
  * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
  *
- * @property int    locked
- * @property array  checkout_info
- * @property array  payment_data
- * @property array  shipping_data
- * @property string document_number
- * @property int    order_status
- * @property int    date_paid
- * @property int    date_shipped
- * @property string notes
+ * @property int    $locked
+ * @property array  $checkout_info
+ * @property array  $payment_data
+ * @property array  $shipping_data
+ * @property string $document_number
+ * @property int    $order_status
+ * @property int    $date_paid
+ * @property int    $date_shipped
+ * @property string $notes
  */
-class Order extends ProductCollection implements IsotopeProductCollection
+class Order extends ProductCollection implements
+    IsotopeProductCollection,
+    IsotopeOrderableCollection,
+    IsotopePurchasableCollection
 {
 
     /**
@@ -118,9 +123,13 @@ class Order extends ProductCollection implements IsotopeProductCollection
             return true;
         }
 
-        // Finish and lock the order (do this now, because otherwise surcharges etc. will not be loaded form the database)
+        // Finish and lock the order
+        // (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
-        $this->generateDocumentNumber($this->getRelated('config_id')->orderPrefix, (int) $this->getRelated('config_id')->orderDigits);
+        $this->generateDocumentNumber(
+            $this->getRelated('config_id')->orderPrefix,
+            (int) $this->getRelated('config_id')->orderDigits
+        );
 
         if (!$this->isLocked()) {
             $this->lock();
@@ -227,7 +236,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         }
 
         // !HOOK: allow to cancel a status update
-        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
+            && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
 
                 $objCallback = \System::importStatic($callback[0]);
@@ -264,7 +275,11 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
                 if (in_array(false, $arrResult)) {
                     $blnNotificationError = true;
-                    \System::log('Error sending status update notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                    \System::log(
+                        'Error sending status update notification for order ID ' . $this->id,
+                        __METHOD__,
+                        TL_ERROR
+                    );
                 } elseif (!empty($arrResult)) {
                     $blnNotificationError = false;
                 }
@@ -289,7 +304,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $this->save();
 
         // !HOOK: order status has been updated
-        if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate']) && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
+            && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
@@ -420,14 +437,18 @@ class Order extends ProductCollection implements IsotopeProductCollection
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
-            if ($objNotification->iso_document > 0 && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)) {
+            if ($objNotification->iso_document > 0
+                && (($objDocument = Document::findByPk($objNotification->iso_document)) !== null)
+            ) {
                 $strFilePath           = $objDocument->outputToFile($this, TL_ROOT . '/system/tmp');
                 $arrTokens['document'] = str_replace(TL_ROOT . '/', '', $strFilePath);
             }
         }
 
         // !HOOK: add custom email tokens
-        if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens']) && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
+            && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrTokens   = $objCallback->$callback[1]($this, $arrTokens);
@@ -451,7 +472,6 @@ class Order extends ProductCollection implements IsotopeProductCollection
         $arrAllDownloads = array();
 
         foreach ($this->getItems($varCallable) as $objItem) {
-
             $arrDownloads = array();
             $arrItem      = $this->generateItem($objItem);
 
@@ -490,6 +510,9 @@ class Order extends ProductCollection implements IsotopeProductCollection
             $objConfig = Isotope::getConfig();
         }
 
-        return uniqid(Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)), true);
+        return uniqid(
+            Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)),
+            true
+        );
     }
 }

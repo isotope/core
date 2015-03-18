@@ -14,18 +14,19 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\ProductCategory;
 
 
 /**
  * The basic Isotope product model
  *
- * @property int    id
- * @property int    pid
- * @property int    gid
- * @property int    tstamp
- * @property string language
- * @proeprty int    dateAdded
- * @property int    type
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $gid
+ * @property int    $tstamp
+ * @property string $language
+ * @proeprty int    $dateAdded
+ * @property int    $type
  */
 abstract class Product extends TypeAgent
 {
@@ -56,7 +57,8 @@ abstract class Product extends TypeAgent
 
     /**
      * Get product that is currently active (needed e.g. for insert tag replacement)
-     * @return   IsotopeProduct|null
+     *
+     * @return IsotopeProduct|null
      */
     public static function getActive()
     {
@@ -65,7 +67,8 @@ abstract class Product extends TypeAgent
 
     /**
      * Set product that is currently active (needed e.g. for insert tag replacement)
-     * @param   IsotopeProduct|null
+     *
+     * @param IsotopeProduct
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
@@ -74,7 +77,6 @@ abstract class Product extends TypeAgent
 
     /**
      * Unset product that is currently active (prevent later use of it)
-     * @param   IsotopeProduct
      */
     public static function unsetActive()
     {
@@ -83,8 +85,10 @@ abstract class Product extends TypeAgent
 
     /**
      * Find all published products
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findPublished(array $arrOptions = array())
     {
@@ -93,10 +97,12 @@ abstract class Product extends TypeAgent
 
     /**
      * Find published products by condition
-     * @param   mixed
-     * @param   mixed
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param mixed $arrColumns
+     * @param mixed $arrValues
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -111,7 +117,10 @@ abstract class Product extends TypeAgent
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
             $time = time();
-            array_unshift($arrColumns, "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)");
+            array_unshift(
+                $arrColumns,
+                "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)"
+            );
         }
 
         return static::findBy($arrColumns, $arrValues, $arrOptions);
@@ -119,9 +128,11 @@ abstract class Product extends TypeAgent
 
     /**
      * Find a single product by primary key
-     * @param   int
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param int   $intId
+     * @param array $arrOptions
+     *
+     * @return \Model
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
@@ -137,9 +148,11 @@ abstract class Product extends TypeAgent
 
     /**
      * Find a single product by its ID or alias
-     * @param mixed $varId The ID or alias
+     *
+     * @param mixed $varId      The ID or alias
      * @param array $arrOptions An optional options array
-     * @return \Model|null The model or null if the result is empty
+     *
+     * @return \Model|null      The model or null if the result is empty
      */
     public static function findPublishedByIdOrAlias($varId, array $arrOptions = array())
     {
@@ -161,9 +174,11 @@ abstract class Product extends TypeAgent
 
     /**
      * Find products by IDs
-     * @param   array
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param array $arrIds
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
     {
@@ -171,14 +186,20 @@ abstract class Product extends TypeAgent
             return null;
         }
 
-        return static::findPublishedBy(array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'), null, $arrOptions);
+        return static::findPublishedBy(
+            array(static::$strTable . '.id IN (' . implode(',', array_map('intval', $arrIds)) . ')'),
+            null,
+            $arrOptions
+        );
     }
 
     /**
      * Return collection of published product variants by product PID
-     * @param   int
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param int   $intPid
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
@@ -187,20 +208,28 @@ abstract class Product extends TypeAgent
 
     /**
      * Return collection of published products by categories
-     * @param   array
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param array $arrCategories
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
-        return static::findPublishedBy(array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"), null, $arrOptions);
+        return static::findPublishedBy(
+            array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"),
+            null,
+            $arrOptions
+        );
     }
 
     /**
      * Find a single frontend-available product by primary key
-     * @param   int
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param int   $intId
+     * @param array $arrOptions
+     *
+     * @return \Model
      */
     public static function findAvailableByPk($intId, array $arrOptions = array())
     {
@@ -215,9 +244,11 @@ abstract class Product extends TypeAgent
 
     /**
      * Find a single frontend-available product by its ID or alias
-     * @param   mixed       The ID or alias
-     * @param   array       An optional options array
-     * @return Product|null  The model or null if the result is empty
+     *
+     * @param mixed $varId      The ID or alias
+     * @param array $arrOptions An optional options array
+     *
+     * @return Product|null     The model or null if the result is empty
      */
     public static function findAvailableByIdOrAlias($varId, array $arrOptions = array())
     {
@@ -232,9 +263,11 @@ abstract class Product extends TypeAgent
 
     /**
      * Find frontend-available products by IDs
-     * @param   array
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param array $arrIds
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findAvailableByIds(array $arrIds, array $arrOptions = array())
     {
@@ -260,10 +293,12 @@ abstract class Product extends TypeAgent
 
     /**
      * Find frontend-available products by condition
-     * @param   mixed
-     * @param   mixed
-     * @param   array
-     * @return  \Model\Collection
+     *
+     * @param mixed $arrColumns
+     * @param mixed $arrValues
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection
      */
     public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -289,12 +324,18 @@ abstract class Product extends TypeAgent
 
     /**
      * Find variant of a product
-     * @param   IsotopeProduct
-     * @param   array
-     * @param   array
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrVariant
+     * @param array          $arrOptions
+     *
+     * @return \Model|null
      */
-    public static function findVariantOfProduct(IsotopeProduct $objProduct, array $arrVariant, array $arrOptions = array())
-    {
+    public static function findVariantOfProduct(
+        IsotopeProduct $objProduct,
+        array $arrVariant,
+        array $arrOptions = array()
+    ) {
         $t = static::$strTable;
 
         $arrColumns = array(
@@ -336,6 +377,10 @@ abstract class Product extends TypeAgent
 
     /**
      * Return a model or collection based on the database result type
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model|\Model\Collection|null
      */
     protected static function find(array $arrOptions)
     {
@@ -391,7 +436,9 @@ abstract class Product extends TypeAgent
                         if ($strField == 'price') {
                             $arrData[$strField][$objProduct->id] = ($objProduct->getPrice() !==  null) ? $objProduct->getPrice()->getAmount() : 0;
                         } else {
-                            $arrData[$strField][$objProduct->id] = strtolower(str_replace('"', '', $objProduct->$strField));
+                            $arrData[$strField][$objProduct->id] = strtolower(
+                                str_replace('"', '', $objProduct->$strField)
+                            );
                         }
                     }
 
@@ -400,7 +447,8 @@ abstract class Product extends TypeAgent
                     $arrParam[] = $arrConfig[1];
                 }
 
-                // Add product array as the last item. This will sort the products array based on the sorting of the passed in arguments.
+                // Add product array as the last item.
+                // This will sort the products array based on the sorting of the passed in arguments.
                 $arrParam[] = &$arrProducts;
                 call_user_func_array('array_multisort', $arrParam);
             }
@@ -413,7 +461,9 @@ abstract class Product extends TypeAgent
 
     /**
      * Return select statement to load product data including multilingual fields
-     * @param array an array of columns
+     *
+     * @param array $arrOptions an array of columns
+     *
      * @return string
      */
     protected static function buildFindQuery(array $arrOptions)
@@ -435,7 +485,11 @@ abstract class Product extends TypeAgent
         );
 
         if ($hasVariants) {
-            $arrFields[] = "IF(" . $arrOptions['table'] . ".pid>0, parent.type, " . $arrOptions['table'] . ".type) AS type";
+            $arrFields[] = sprintf(
+                "IF(%s.pid>0, parent.type, %s.type) AS type",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
         }
 
         if ($hasTranslations) {
@@ -450,47 +504,67 @@ abstract class Product extends TypeAgent
 
         $arrFields[] = "c.sorting";
 
-        $arrJoins[] = " LEFT OUTER JOIN " . \Isotope\Model\ProductCategory::getTable() . " c ON {$arrOptions['table']}.id=c.pid";
+        $arrJoins[] = sprintf(
+            " LEFT OUTER JOIN %s c ON %s.id=c.pid",
+            ProductCategory::getTable(),
+            $arrOptions['table']
+        );
 
         if ($hasTranslations) {
-            $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " translation ON " . $arrOptions['table'] . ".id=translation.pid AND translation.language='" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "'";
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
+                $arrOptions['table'],
+                $arrOptions['table'],
+                str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
+            );
         }
 
         if ($hasVariants) {
-            $arrJoins[] = " LEFT OUTER JOIN " . $arrOptions['table'] . " parent ON " . $arrOptions['table'] . ".pid=parent.id";
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s parent ON %s.pid=parent.id",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
         }
 
 
         if ($objBase->hasRelations()) {
-
             $intCount = 0;
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if ($arrConfig['load'] == 'eager' || $arrOptions['eager']) {
-                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo') {
-
-                        if (is_array($arrOptions['joinAliases']) && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false) {
-                            $strJoinAlias = $key;
-                            unset($arrOptions['joinAliases'][$key]);
-                        } else {
-                            ++$intCount;
-                            $strJoinAlias = 'j' . $intCount;
-                        }
-
-                        // Improve performance for Contao >= 3.4
-                        if (version_compare(VERSION, '3.4', '>=')) {
-                            $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
-                        } else {
-                            $objRelated = new \DcaExtractor($arrConfig['table']);
-                        }
-
-                        foreach (array_keys($objRelated->getFields()) as $strField) {
-                            $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
-                        }
-
-                        $arrJoins[] = " LEFT JOIN " . $arrConfig['table'] . " $strJoinAlias ON " . $arrOptions['table'] . "." . $strKey . "=$strJoinAlias.id";
+                if (($arrConfig['load'] == 'eager' || $arrOptions['eager'])
+                    && ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
+                ) {
+                    if (is_array($arrOptions['joinAliases'])
+                        && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false
+                    ) {
+                        $strJoinAlias = $key;
+                        unset($arrOptions['joinAliases'][$key]);
+                    } else {
+                        ++$intCount;
+                        $strJoinAlias = 'j' . $intCount;
                     }
+
+                    // Improve performance for Contao >= 3.4
+                    if (version_compare(VERSION, '3.4', '>=')) {
+                        $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
+                    } else {
+                        $objRelated = new \DcaExtractor($arrConfig['table']);
+                    }
+
+                    foreach (array_keys($objRelated->getFields()) as $strField) {
+                        $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
+                    }
+
+                    $arrJoins[] = sprintf(
+                        " LEFT JOIN %s %s ON %s.%s=%s.id",
+                        $arrConfig['table'],
+                        $strJoinAlias,
+                        $arrOptions['table'],
+                        $strKey,
+                        $strJoinAlias
+                    );
                 }
             }
         }
@@ -521,9 +595,12 @@ abstract class Product extends TypeAgent
 
     /**
      * Return select statement to load product data including multilingual fields
-     * @param   array   an array of columns
-     * @param   array   an array of table join aliases
-     * @return  string
+     *
+     * @param array $arrOptions     an array of columns
+     * @param array $arrJoinAliases an array of table join aliases
+     *
+     * @return string
+     *
      * @deprecated  use buildFindQuery introduced in Contao 3.3
      */
     protected static function buildQueryString($arrOptions, $arrJoinAliases = array('t' => 'tl_iso_producttype'))
