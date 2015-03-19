@@ -206,105 +206,14 @@ class Frontend extends \Frontend
      * Replaces Isotope specific InsertTags in Frontend
      * @param string
      * @return mixed
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
      */
     public function replaceIsotopeTags($strTag)
     {
-        $arrTag = trimsplit('::', $strTag);
+        $callback = new InsertTag();
 
-        // {{isotope::*}} and {{cache_isotope::*}} insert tags
-        if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
-            switch ($arrTag[1]) {
-                case 'cart_items':
-                    return Isotope::getCart()->countItems();
-
-                case 'cart_quantity':
-                    return Isotope::getCart()->sumItemsQuantity();
-
-                case 'cart_items_label':
-                    $intCount = Isotope::getCart()->countItems();
-
-                    if (!$intCount) {
-                        return '';
-                    }
-
-                    if ($intCount == 1) {
-                        return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
-                    } else {
-                        return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    }
-
-                case 'cart_quantity_label':
-                    $intCount = Isotope::getCart()->sumItemsQuantity();
-
-                    if (!$intCount) {
-                        return '';
-                    }
-
-                    if ($intCount == 1) {
-                        return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
-                    } else {
-                        return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    }
-
-                case 'cart_subtotal':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
-
-                case 'cart_taxfree_subtotal':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeSubtotal());
-
-                case 'cart_total':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
-
-                case 'cart_taxfree_total':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeTotal());
-            }
-
-            return '';
-
-        } elseif ($arrTag[0] == 'isolabel') {
-            return Translation::get($arrTag[1], $arrTag[2]);
-
-        } elseif ($arrTag[0] == 'order') {
-            if (($objOrder = Order::findOneBy('uniqid', \Input::get('uid'))) !== null) {
-                return $objOrder->{$arrTag[1]};
-            }
-
-            return '';
-
-        } elseif ($arrTag[0] == 'product') {
-            // 2 possible use cases:
-            // {{product::attribute}}                - gets the data of the current product (Product::getActive() or GET parameter "product")
-            // {{product::attribute::product_id}}    - gets the data of the specified product ID
-
-            if (count($arrTag) == 3) {
-                $objProduct = Product::findAvailableByPk($arrTag[2]);
-            } else {
-                if (($objProduct = Product::getActive()) === null) {
-                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
-                }
-            }
-
-            return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
-        } elseif ($arrTag[0] == 'billing_address') {
-            if (($address = Isotope::getCart()->getBillingAddress()) !== null) {
-                $tokens = $address->getTokens();
-
-                return $tokens[$arrTag[1]];
-            }
-
-            return '';
-
-        } elseif ($arrTag[0] == 'shipping_address') {
-            if (Isotope::getCart()->hasShipping() && ($address = Isotope::getCart()->getShippingAddress()) !== null) {
-                $tokens = $address->getTokens();
-
-                return $tokens[$arrTag[1]];
-            }
-
-            return '';
-        }
-
-        return false;
+        return $callback->replace($strTag);
     }
 
 
