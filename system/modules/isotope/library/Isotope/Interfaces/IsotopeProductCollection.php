@@ -179,4 +179,18 @@ interface IsotopeProductCollection
      * @return ProductCollectionSurcharge[]
      */
     public function getSurcharges();
+
+    /**
+     * Check if minimum order amount is reached
+     *
+     * @return bool
+     */
+    public function hasErrors();
+
+    /**
+     * Get error messages for the cart
+     *
+     * @return array
+     */
+    public function getErrors();
 }
