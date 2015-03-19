@@ -5,6 +5,9 @@ Version 2.3.0-beta1 (2015-??-??)
 --------------------------------
 
 ### New
+- Net or gross price display can now be configured per shop configuration
+- Added interface to validate tax ID and influence tax calculation
+- Added validation for EU taxes using [VIES](http://en.wikipedia.org/wiki/VAT_Information_Exchange_System) 
 - Added payment method for www.innocard.ch
 - Added column view to product type backend
 - PSP payment methods now support predefining a payment method (implemented in PostFinance only for now)
@@ -23,3 +26,5 @@ Version 2.3.0-beta1 (2015-??-??)
 - Cumulative filter now shows only actually used product options
 - Filter template now uses placeholder instead of javascript for search field default text
 - Moved coupon form from collection to cart template to prevent nested form (#1366)
+- Images in galleries are no lazy-loaded (should improve product list performance)
+- Prices are now only rounded before being displayed (should improve decimal place calculation)
