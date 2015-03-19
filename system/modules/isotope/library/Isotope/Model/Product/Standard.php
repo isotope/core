@@ -565,6 +565,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->product = $this;
         $objTemplate->config  = $arrConfig;
 
+        $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
+            return in_array($strAttribute, $objProduct->getAttributes())
+                || in_array($strAttribute, $objProduct->getVariantAttributes());
+        };
+
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strAttribute];
