@@ -78,6 +78,8 @@ abstract class AbstractProductFilter extends Module
         $values         = array();
         $products       = array();
         $typeConditions = array();
+        $join           = '';
+        $categoryWhere  = '';
         $published      = '';
 
         if ('' != $sqlWhere) {
@@ -86,12 +88,7 @@ abstract class AbstractProductFilter extends Module
 
         if (BE_USER_LOGGED_IN !== true) {
             $time      = time();
-            $published = <<<SQL
-AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)
-AND (p1.pid=0 OR (
-    p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)
-))
-SQL;
+            $published = "AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)";
         }
 
         if (!empty($attributeTypes)) {
@@ -100,32 +97,39 @@ SQL;
 
         if (!empty($variantTypes)) {
             $typeConditions[] = "p2.type IN (" . implode(',', $variantTypes) . ")";
+            $join             = "LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id";
+            $categoryWhere    = "OR p1.pid IN (
+                                    SELECT pid
+                                    FROM tl_iso_product_category
+                                    WHERE page_id IN (" . implode(',', $categories) . ")
+                                )";
+
+            if (BE_USER_LOGGED_IN !== true) {
+                $published .= " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))";
+            }
         }
 
-        $result = \Database::getInstance()->execute(
-            "SELECT p1.id, p1.pid, p1.$attribute AS options FROM tl_iso_product p1
-                    LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
-                    WHERE
-                        p1.language=''
-                        AND p1.$attribute!=''
-                        " . $published . "
-                        AND (
-                            p1.id IN (
-                                SELECT pid
-                                FROM tl_iso_product_category
-                                WHERE page_id IN (" . implode(',', $categories) . ")
-                            )
-                            OR p1.pid IN (
-                                SELECT pid
-                                FROM tl_iso_product_category
-                                WHERE page_id IN (" . implode(',', $categories) . ")
-                            )
-                        )
-                        AND (
-                            " . implode(' OR ', $typeConditions) . "
-                        )
-                        " . $sqlWhere
-        );
+        $result = \Database::getInstance()->execute("
+            SELECT p1.id, p1.pid, p1.$attribute AS options
+            FROM tl_iso_product p1
+            $join
+            WHERE
+                p1.language=''
+                AND p1.$attribute!=''
+                " . $published . "
+                AND (
+                    p1.id IN (
+                        SELECT pid
+                        FROM tl_iso_product_category
+                        WHERE page_id IN (" . implode(',', $categories) . ")
+                    )
+                    $categoryWhere
+                )
+                AND (
+                    " . implode(' OR ', $typeConditions) . "
+                )
+                $sqlWhere
+        ");
 
         while ($result->next()) {
             $productId = $result->pid ?: $result->id;
@@ -134,7 +138,7 @@ SQL;
             foreach ($options as $option) {
                 if (!isset($values[$option]) || !in_array($productId, $products[$option])) {
                     $values[$option]     = ((int) $values[$option]) + 1;
-                    $products[$option][]  = $productId;
+                    $products[$option][] = $productId;
                 }
             }
         }
