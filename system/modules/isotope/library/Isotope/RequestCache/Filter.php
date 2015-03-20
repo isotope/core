@@ -45,7 +45,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -53,7 +53,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -61,7 +61,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -69,7 +69,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -78,8 +78,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Verify if filter value is a valid option
-     * @param   array
-     * @return  bool
+     *
+     * @param array $arrValues
+     *
+     * @return bool
      */
     public function valueNotIn(array $arrValues)
     {
@@ -88,8 +90,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter value equals given value
-     * @param   mixed
-     * @return  bool
+     *
+     * @param mixed $value
+     *
+     * @return bool
      */
     public function valueEquals($value)
     {
@@ -184,7 +188,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter has a grouping
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasGroup()
     {
@@ -193,7 +198,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Get group name for this filter
-     * @return  string
+     *
+     * @return string
      */
     public function getGroup()
     {
@@ -202,8 +208,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if product matches the filter
-     * @param   IsotopeProduct
-     * @return  bool
+     * 
+     * @param IsotopeProduct $objProduct
+     *
+     * @return bool
      */
     public function matches(IsotopeProduct $objProduct)
     {
@@ -274,7 +282,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter attribute is dynamic (can't use SQL filter then)
-     * @return  bool
+     *
+     * @return bool
      */
     public function isDynamicAttribute()
     {
@@ -283,7 +292,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter attribute is dynamic (can't use SQL filter then)
-     * @return  bool
+     *
+     * @return bool
      */
     public function isMultilingualAttribute()
     {
@@ -292,7 +302,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Get WHERE statement for SQL filter
-     * @return  string
+     *
+     * @return string
      */
     public function sqlWhere()
     {
@@ -309,7 +320,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Get value for SQL filter
-     * @return  string
+     *
+     * @return string
      */
     public function sqlValue()
     {
@@ -318,6 +330,7 @@ class Filter implements \ArrayAccess
 
     /**
      * Get filter operator suitable for SQL query
+     *
      * @return string
      */
     public function getOperatorForSQL()
@@ -355,7 +368,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Make sure filter operator or value is not modified
-     * @throws  \BadMethodCallException
+     *
+     * @throws \BadMethodCallException
      */
     protected function preventModification()
     {
@@ -366,6 +380,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Create filter
+     *
+     * @return static
      */
     public static function attribute($name)
     {
