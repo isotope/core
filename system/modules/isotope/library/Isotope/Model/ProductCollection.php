@@ -1264,6 +1264,17 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->subtotal   = Isotope::formatPriceWithCurrency($this->getSubtotal());
         $objTemplate->total      = Isotope::formatPriceWithCurrency($this->getTotal());
 
+        $objTemplate->hasAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
+            if (!$objItem->hasProduct()) {
+                return false;
+            }
+
+            $objProduct = $objItem->getProduct();
+
+            return in_array($strAttribute, $objProduct->getAttributes())
+                || in_array($strAttribute, $objProduct->getVariantAttributes());
+        };
+
         $objTemplate->generateAttribute = function ($strAttribute, ProductCollectionItem $objItem, array $arrOptions = array()) {
 
             if (!$objItem->hasProduct()) {
