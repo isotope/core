@@ -204,7 +204,7 @@ class InsertTag
     private function getValueForIsotopeTag($token)
     {
         if (strpos($token, 'cart_') === 0) {
-            return $this->getValueForCollectionTag(Isotope::getCart(), substr($token, 5));
+            return $this->getValueForCollectionTag(Isotope::getCart(), array(substr($token, 5)));
         }
 
         return '';
