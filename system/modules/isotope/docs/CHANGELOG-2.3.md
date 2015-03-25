@@ -17,6 +17,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Cumulative filter automatically uses OR-condition if attribute can't have multiple options (e.g. not a checkbox)
 - Added AND-condition to replace filter on non-multiple attributes 
 - Added $this->hasAttribute() callback to list/reader and collection templates
+- Replaced product filter autocompleter with awesomplete (#1386)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)
