@@ -268,9 +268,9 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         $strSHASign = '';
         $arrParams  = array();
 
-        foreach (array_keys(($this->psp_http_method == 'GET' ? $_GET : $_POST)) as $key) {
+        foreach ($this->getRawRequestData() as $key => $value) {
             if (in_array(strtoupper($key), static::$arrShaOut)) {
-                $arrParams[$key] = $this->getRequestData($key);
+                $arrParams[$key] = $value;
             }
         }
 
@@ -290,6 +290,16 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         if ($this->getRequestData('SHASIGN') == strtoupper(hash($this->psp_hash_method, $strSHASign))) {
             return true;
         }
+
+        log_message(
+            sprintf(
+                "Received invalid postsale data.\nInput hash: %s\nCalculated hash: %s\nParameters: %s\n",
+                $this->getRequestData('SHASIGN'),
+                strtoupper(hash($this->psp_hash_method, $strSHASign)),
+                print_r($arrParams, true)
+            ),
+            'isotope_psp.log'
+        );
 
         return false;
     }
