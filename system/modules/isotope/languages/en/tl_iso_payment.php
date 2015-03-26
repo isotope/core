@@ -80,6 +80,10 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_callbackPW']                    
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_signatureFields']               = array('SignatureFields', 'Enter the same SignatureField value as in your WorldPay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret']                     = array('MD5 Secret', 'Enter the same MD5 secret value as in your WorldPay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description']                   = array('Description', 'Enter a description for your store. It will be shown to the customer on the worldpay checkout process.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_merchantId']                    = array('Merchant ID', 'Please enter your merchant ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_agreementId']                   = array('Agreement ID', 'Please enter your agreement ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_apiKey']                        = array('API key', 'Please enter your API key.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_privateKey']                    = array('Private key', 'Please enter your private key.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups']                                 = array('Member groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected']                              = array('Protect payment method', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['guests']                                 = array('Show to guests only', 'Hide the payment method if a member is logged in.');
