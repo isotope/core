@@ -122,6 +122,8 @@ class PostSale extends \Frontend
      */
     public function run()
     {
+        $this->logRequest();
+
         $objMethod = null;
 
         try {
@@ -180,7 +182,8 @@ class PostSale extends \Frontend
 
         } catch (\Exception $e) {
             \System::log(
-                sprintf('Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
+                sprintf(
+                    'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                     $e->getFile(),
                     $e->getLine(),
                     $e->getMessage()
@@ -200,6 +203,32 @@ class PostSale extends \Frontend
             $objResponse = new Response('Internal Server Error', 500);
             $objResponse->send();
         }
+    }
+
+    /**
+     * Log every postsale request to our log file. Should be OK as the Contao automator does log-rotation.
+     */
+    private function logRequest()
+    {
+        $headers = array();
+
+        foreach ($_SERVER as $key => $value) {
+            if (0 === strpos($key, 'HTTP_')) {
+                $headers[substr($key, 5)] = $value;
+            }
+        }
+
+        log_message(
+            sprintf(
+                "New request to %s.\n\nHeaders: %s\n\n\$_GET: %s\n\n\$_POST: %s\n\nBody:\n%s\n",
+                \Environment::get('base') . \Environment::get('request'),
+                var_export($headers, true),
+                var_export($_GET, true),
+                var_export($_POST, true),
+                file_get_contents("php://input")
+            ),
+            'isotope_postsale.log'
+        );
     }
 }
 
