@@ -61,6 +61,21 @@ class Currency
     }
 
     /**
+     * Gets minor units precision given currency (e.g. 1 EUR = 100 Euro Cents)
+     *
+     * @param string $currencyCode The three character currency code according to ISO 4217
+     *
+     * @return int The number minor units (usually "2")
+     * @throws \UnderflowException if the currency is not supported
+     */
+    public static function getMinorUnits($currencyCode)
+    {
+        static::load($currencyCode);
+
+        return (int) static::$currencies[$currencyCode]['units'];
+    }
+
+    /**
      * Convert amount to minor unit (e.g. 100 EUR = 10000 Euro Cents)
      *
      * @param float  $amount       The amount as floating point value
@@ -71,9 +86,7 @@ class Currency
      */
     public static function getAmountInMinorUnits($amount, $currencyCode)
     {
-        static::load($currencyCode);
-
-        return (int) round($amount * pow(10, static::$currencies[$currencyCode]['units']));
+        return (int) round($amount * pow(10, static::getMinorUnits($currencyCode)));
     }
 
     /**
