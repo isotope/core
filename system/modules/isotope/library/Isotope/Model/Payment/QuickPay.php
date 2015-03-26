@@ -119,7 +119,7 @@ class QuickPay extends Postsale implements IsotopePayment
     {
         $checksum = hash_hmac("sha256", file_get_contents("php://input"), $this->quickpay_privateKey);
 
-        if ($checksum != \Environment::get('QuickPay-Checksum-SHA256')) {
+        if ($checksum != $_SERVER['HTTP_QUICKPAY_CHECKSUM_SHA256']) {
             \System::log(
                 'Invalid hash for QuickPay payment. See system/logs/isotope_quickpay.log for more details.',
                 __METHOD__,
@@ -128,8 +128,8 @@ class QuickPay extends Postsale implements IsotopePayment
 
             log_message(
                 sprintf(
-                    "Invalid hash for QuickPay payment:\ngot %s, expected %s\Input: %s\n\n",
-                    \Environment::get('QuickPay-Checksum-SHA256'),
+                    "Invalid hash for QuickPay payment:\ngot %s, expected %s\nInput: %s\n\n",
+                    $_SERVER['HTTP_QUICKPAY_CHECKSUM_SHA256'],
                     $checksum,
                     file_get_contents("php://input")
                 ),
@@ -191,7 +191,7 @@ class QuickPay extends Postsale implements IsotopePayment
      */
     private function getRequestResource()
     {
-        $data = json_decode(file_get_contents("php://input"));
+        $data = json_decode(file_get_contents("php://input"), true);
 
         if (null === $data) {
             \System::log(
