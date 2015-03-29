@@ -32,7 +32,6 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
     // Fields
     'fields' => array
     (
-
         'id' => array
         (
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
@@ -74,6 +73,5 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         (
             'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),
-
     ),
 );

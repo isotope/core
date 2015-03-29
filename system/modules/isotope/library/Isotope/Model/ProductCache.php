@@ -15,8 +15,14 @@ namespace Isotope\Model;
 /**
  * Isotope\Model\ProductCache represents an Isotope product cache model
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    $id
+ * @property int    $page_id
+ * @property int    $module_id
+ * @property int    $requestcache_id
+ * @property string $keywords
+ * @property array  $groups
+ * @property array  $products
+ * @property int    $expires
  */
 class ProductCache extends \Model
 {
@@ -30,7 +36,8 @@ class ProductCache extends \Model
 
     /**
      * Get array of product IDs
-     * @return  array
+     *
+     * @return array
      */
     public function getProductIds()
     {
@@ -43,8 +50,10 @@ class ProductCache extends \Model
 
     /**
      * Set array of products IDs for this cache
-     * @param   array
-     * @return  ProductCache
+     *
+     * @param array $arrIds
+     *
+     * @return $this
      */
     public function setProductIds(array $arrIds)
     {
@@ -55,9 +64,11 @@ class ProductCache extends \Model
 
     /**
      * Find cache for module on page (including current environment)
-     * @param   int
-     * @param   int
-     * @return  ProductCache|null
+     *
+     * @param int $intPage
+     * @param int $intModule
+     *
+     * @return static
      */
     public static function findForPageAndModule($intPage, $intModule, array $arrOptions = array())
     {
@@ -70,16 +81,25 @@ class ProductCache extends \Model
                  '(expires>? OR expires=0)',
                  'groups=?'
             ),
-            array($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), time(), static::getCacheableGroups()),
+            array(
+                $intPage,
+                $intModule,
+                (int) \Input::get('isorc'),
+                (string) \Input::get('keywords'),
+                time(),
+                static::getCacheableGroups()
+            ),
             $arrOptions
         );
     }
 
     /**
      * Create a cache object for module on page (including current environment
-     * @param   int
-     * @param   int
-     * @return  ProductCache
+     *
+     * @param int $intPage
+     * @param int $intModule
+     *
+     * @return static
      */
     public static function createForPageAndModule($intPage, $intModule)
     {
@@ -98,8 +118,9 @@ class ProductCache extends \Model
 
     /**
      * Delete cache for listing module, also delete expired ones while we're at it...
-     * @param   int
-     * @param   int
+     *
+     * @param int $intPage
+     * @param int $intModule
      */
     public static function deleteForPageAndModuleOrExpired($intPage, $intModule)
     {
@@ -107,8 +128,16 @@ class ProductCache extends \Model
 
         \Database::getInstance()->prepare("
             DELETE FROM " . static::$strTable . "
-            WHERE (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?) OR (expires>0 AND expires<$time)
-        ")->execute($intPage, $intModule, (int) \Input::get('isorc'), (string) \Input::get('keywords'), static::getCacheableGroups());
+            WHERE
+                (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?)
+                OR (expires>0 AND expires<$time)
+        ")->execute(
+            $intPage,
+            $intModule,
+            (int) \Input::get('isorc'),
+            (string) \Input::get('keywords'),
+            static::getCacheableGroups()
+        );
     }
 
     /**
@@ -121,7 +150,8 @@ class ProductCache extends \Model
 
     /**
      * Return sorted and serialized list of active member groups for cache lookup
-     * @return  string
+     *
+     * @return string
      */
     public static function getCacheableGroups()
     {
@@ -131,7 +161,9 @@ class ProductCache extends \Model
             $groups = '';
 
             if (FE_USER_LOGGED_IN === true) {
-                $arrGroups = \FrontendUser::getInstance()->groups;
+                /** @var \FrontendUser|object $user */
+                $user = \FrontendUser::getInstance();
+                $arrGroups = $user->groups;
 
                 if (!empty($arrGroups) && is_array($arrGroups)) {
                     // Make sure groups array always looks the same to find it in the database
@@ -147,7 +179,8 @@ class ProductCache extends \Model
 
     /**
      * Check if cache is writable (table is not locked)
-     * @return  bool
+     *
+     * @return bool
      */
     public static function isWritable()
     {
