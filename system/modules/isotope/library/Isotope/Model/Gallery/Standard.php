@@ -319,12 +319,20 @@ class Standard extends Gallery implements IsotopeGallery
             $strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
         }
 
-        if (!is_file(TL_ROOT . '/' . $strFile)) {
+        $objFile = new \File($strFile);
+
+        if (!$objFile->exists()) {
             throw new \InvalidArgumentException('Apparently the file "' . $strFile . '" does not exist!');
         }
 
         $size     = deserialize($this->{$strType . '_size'}, true);
-        $strImage = \Image::get($strFile, $size[0], $size[1], $size[2]);
+
+        $objImage = new \Image($objFile);
+        $objImage->setTargetWidth($size[0])
+            ->setTargetHeight($size[1])
+            ->setResizeMode($size[2]);
+        
+        $strImage = $objImage->executeResize()->getResizedPath();
 
         // Watermark
         if ($blnWatermark
@@ -334,7 +342,7 @@ class Standard extends Gallery implements IsotopeGallery
             $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
         }
 
-        $arrSize = @getimagesize(TL_ROOT . '/' . $strImage);
+        $arrSize = $objFile->imageSize;
 
         if (is_array($arrSize) && $arrSize[3] !== '') {
             $arrFile[$strType . '_size']      = $arrSize[3];
