@@ -23,8 +23,9 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         (
             'keys' => array
             (
-                'id'                                                    => 'primary',
-                'page_id,module_id,requestcache_id,keywords,expires'    => 'index',
+                'id'                                                 => 'primary',
+                'uniqid,requestcache_id,keywords,expires,groups'     => 'index',
+                'page_id,module_id,requestcache_id,keywords,expires' => 'index',
             )
         ),
     ),
@@ -36,17 +37,9 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         (
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
-        'page_id' => array
+        'uniqid' => array
         (
-            'foreignKey'            => 'tl_page.title',
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-        ),
-        'module_id' => array
-        (
-            'foreignKey'            => 'tl_module.name',
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+            'sql'                   =>  "varchar(32) NOT NULL default ''",
         ),
         'requestcache_id' => array
         (
@@ -72,6 +65,18 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         'expires' => array
         (
             'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'page_id' => array
+        (
+            'foreignKey'            => 'tl_page.title',
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'module_id' => array
+        (
+            'foreignKey'            => 'tl_module.name',
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
     ),
 );
