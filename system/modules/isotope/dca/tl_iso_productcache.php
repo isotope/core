@@ -41,10 +41,6 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
         (
             'sql'                   =>  "varchar(32) NOT NULL default ''",
         ),
-        'requestcache_id' => array
-        (
-            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
-        ),
         'keywords' => array
         (
             'sql'                   =>  "varchar(255) NOT NULL default ''",
@@ -63,6 +59,10 @@ $GLOBALS['TL_DCA']['tl_iso_productcache'] = array
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
         'expires' => array
+        (
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
+        ),
+        'requestcache_id' => array
         (
             'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),

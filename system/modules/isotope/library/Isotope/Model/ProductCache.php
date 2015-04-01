@@ -75,14 +75,12 @@ class ProductCache extends \Model
         return static::findOneBy(
             array(
                 'uniqid=?',
-                'requestcache_id=?',
                 "(keywords=? OR keywords='')",
                 '(expires>? OR expires=0)',
                 'groups=?'
             ),
             array(
                 $uniqid,
-                (int) \Input::get('isorc'),
                 (string) \Input::get('keywords'),
                 time(),
                 static::getCacheableGroups()
@@ -107,7 +105,6 @@ class ProductCache extends \Model
         $objCache->setRow(
             array(
                   'uniqid'          => $uniqid,
-                  'requestcache_id' => (int) \Input::get('isorc'),
                   'groups'          => static::getCacheableGroups(),
                   'keywords'        => (string) \Input::get('keywords'),
               )
@@ -128,7 +125,7 @@ class ProductCache extends \Model
         \Database::getInstance()->prepare("
             DELETE FROM " . static::$strTable . "
             WHERE
-                (uniqid=? AND requestcache_id=? AND groups=? AND (keywords='' OR keywords=?))
+                (uniqid=? AND groups=? AND (keywords='' OR keywords=?))
                 OR (expires>0 AND expires<$time)
         ")->execute(
             $uniqid,
