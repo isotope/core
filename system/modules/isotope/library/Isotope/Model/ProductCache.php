@@ -95,8 +95,6 @@ class ProductCache extends \Model
      * @param string $uniqid A 32 char unique key (usually MD5)
      *
      * @return static
-     *
-     * @deprecated
      */
     public static function createForUniqid($uniqid)
     {

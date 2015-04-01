@@ -42,6 +42,9 @@ class ProductList extends Module
     /**
      * Cache products. Can be disable in a child class, e.g. a "random products list"
      * @var boolean
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0.
+     *             Implement getCacheKey() to always cache result.
      */
     protected $blnCacheProducts = true;
 
@@ -74,7 +77,7 @@ class ProductList extends Module
         $this->iso_productcache  = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode'] || $this->iso_category_scope == 'product') {
+        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
             $this->blnCacheProducts = false;
         }
 
@@ -103,12 +106,12 @@ class ProductList extends Module
         }
 
         global $objPage;
-        $intPage     = ($this->iso_category_scope == 'article' ? $GLOBALS['ISO_CONFIG']['current_article']['pid'] : $objPage->id);
+        $cacheKey    = $this->getCacheKey();
         $arrProducts = null;
         $arrCacheIds = null;
 
         // Try to load the products from cache
-        if ($this->blnCacheProducts && ($objCache = ProductCache::findForPageAndModule($intPage, $this->id)) !== null) {
+        if ($this->blnCacheProducts && ($objCache = ProductCache::findByUniqid($cacheKey)) !== null) {
             $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
@@ -133,7 +136,7 @@ class ProductList extends Module
 
             // Display "loading products" message and add cache flag
             if ($this->blnCacheProducts) {
-                $blnCacheMessage = (bool) $this->iso_productcache[$intPage][(int) \Input::get('isorc')];
+                $blnCacheMessage = (bool) $this->iso_productcache[$cacheKey];
 
                 if ($blnCacheMessage && !\Input::get('buildCache')) {
 
@@ -159,7 +162,7 @@ class ProductList extends Module
 
                 $arrCacheMessage = $this->iso_productcache;
                 if ($blnCacheMessage != $this->blnCacheProducts) {
-                    $arrCacheMessage[$intPage][(int) \Input::get('isorc')] = $this->blnCacheProducts;
+                    $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
                     \Database::getInstance()->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")->execute(serialize($arrCacheMessage), $this->id);
                 }
 
@@ -174,9 +177,9 @@ class ProductList extends Module
                     }
 
                     // Delete existing cache if necessary
-                    ProductCache::deleteForPageAndModuleOrExpired($intPage, $this->id);
+                    ProductCache::deleteByUniqidOrExpired($cacheKey);
 
-                    $objCache          = ProductCache::createForPageAndModule($intPage, $this->id);
+                    $objCache          = ProductCache::createForUniqid($cacheKey);
                     $objCache->expires = $this->getProductCacheExpiration();
                     $objCache->setProductIds($arrIds);
                     $objCache->save();
@@ -429,6 +432,27 @@ class ProductList extends Module
         }
 
         return $arrOptions;
+    }
+
+    /**
+     * Generates a unique cache key for the product cache.
+     * Child classes should likely overwrite this, see RelatedProducts class for an example.
+     *
+     * @return string A 32 char cache key (e.g. MD5)
+     */
+    protected function getCacheKey()
+    {
+        $categories = $this->findCategories();
+
+        // Sort categories so cache key is always the same
+        sort($categories);
+
+        return md5(
+            'productlist=' . $this->id . ':'
+            . 'where=' . $this->iso_list_where . ':'
+            . 'isorc=' . (int) \Input::get('isorc') . ':'
+            . implode(',', $categories)
+        );
     }
 
     /**
