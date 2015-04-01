@@ -44,9 +44,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'keys' => array
             (
-                'id' => 'primary',
-                'member,store_id,type' => 'index',
-                'uniqid,store_id,type' => 'index',
+                'id'                        => 'primary',
+                'uniqid'                    => 'unique',
+                'member,store_id,type'      => 'index',
+                'uniqid,store_id,type'      => 'index',
                 'source_collection_id,type' => 'index',
             ),
         ),
