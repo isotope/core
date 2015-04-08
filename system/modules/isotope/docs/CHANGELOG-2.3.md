@@ -20,6 +20,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Replaced product filter autocompleter with awesomplete (#1386)
 - Added hook to customize product downloads (#1311)
 - Added minimum_quantity and maximum_quantity restrictions to payment methods (#1305)
+- Added minimum_quantity and maximum_quantity restrictions to shipping methods (#1306)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)

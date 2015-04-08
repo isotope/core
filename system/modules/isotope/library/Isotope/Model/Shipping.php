@@ -22,28 +22,31 @@ use Isotope\Translation;
 /**
  * Class Shipping
  *
- * @property int    id
- * @property int    tstamp
- * @property string name
- * @property string label
- * @property string type
- * @property string note
- * @property array  countries
- * @property array  subdivisions
- * @property string postalCodes
- * @property float  minimum_total
- * @property float  maximum_total
- * @property float  minimum_weight
- * @property float  maximum_weight
- * @property array  product_types
- * @property string product_types_condition
- * @property array  config_ids
- * @property string price
- * @property int    tax_class
- * @property bool   guests
- * @property bool   protected
- * @property array  groups
- * @property bool   enabled
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $name
+ * @property string $label
+ * @property string $type
+ * @property string $note
+ * @property array  $countries
+ * @property array  $subdivisions
+ * @property string $postalCodes
+ * @property float  $minimum_total
+ * @property float  $maximum_total
+ * @property float  $quantity_mode
+ * @property float  $minimum_quantity
+ * @property float  $maximum_quantity
+ * @property float  $minimum_weight
+ * @property float  $maximum_weight
+ * @property array  $product_types
+ * @property string $product_types_condition
+ * @property array  $config_ids
+ * @property string $price
+ * @property int    $tax_class
+ * @property bool   $guests
+ * @property bool   $protected
+ * @property array  $groups
+ * @property bool   $enabled
  */
 abstract class Shipping extends TypeAgent
 {
@@ -91,23 +94,52 @@ abstract class Shipping extends TypeAgent
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) {
+            if (!is_array($arrGroups)
+                || empty($arrGroups)
+                || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+            ) {
                 return false;
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal())
+            || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())
+        ) {
             return false;
         }
 
         $objScale = Isotope::getCart()->addToScale();
 
-        if (($minWeight = Weight::createFromTimePeriod($this->minimum_weight)) !== null && $objScale->isLessThan($minWeight)) {
+        if (($minWeight = Weight::createFromTimePeriod($this->minimum_weight)) !== null
+            && $objScale->isLessThan($minWeight)
+        ) {
             return false;
         }
 
-        if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null && $objScale->isMoreThan($maxWeight)) {
+        if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null
+            && $objScale->isMoreThan($maxWeight)
+        ) {
             return false;
+        }
+
+        if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
+            $quantity = 0;
+
+            if ('cart_items' !== $this->quantity_mode && 'cart_products' !== $this->quantity_mode) {
+                throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
+            }
+
+            foreach (Isotope::getCart()->getItems() as $item) {
+                if (!$item->hasProduct() || !$item->getProduct()->isExemptFromShipping()) {
+                    $quantity += ('cart_items' === $this->quantity_mode ? $item->quantity : 1);
+                }
+            }
+
+            if (($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
+                || ($this->maximum_quantity > 0 && $this->maximum_quantity < $quantity)
+            ) {
+                return false;
+            }
         }
 
         $arrConfigs = deserialize($this->config_ids);
@@ -124,7 +156,10 @@ abstract class Shipping extends TypeAgent
             }
 
             $arrSubdivisions = deserialize($this->subdivisions);
-            if (is_array($arrSubdivisions) && !empty($arrSubdivisions) && !in_array($objAddress->subdivision, $arrSubdivisions)) {
+            if (is_array($arrSubdivisions)
+                && !empty($arrSubdivisions)
+                && !in_array($objAddress->subdivision, $arrSubdivisions)
+            ) {
                 return false;
             }
         }
@@ -177,7 +212,9 @@ abstract class Shipping extends TypeAgent
                         break;
 
                     default:
-                        throw new \UnexpectedValueException('Unknown product type condition "' . $this->product_types_condition . '"');
+                        throw new \UnexpectedValueException(
+                            'Unknown product type condition "' . $this->product_types_condition . '"'
+                        );
                 }
             }
         }

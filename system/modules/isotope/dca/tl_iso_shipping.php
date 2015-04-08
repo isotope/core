@@ -106,13 +106,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'deleteShippingModule'),
             ),
-			'toggle' => array
-			(
-				'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
-				'icon'              => 'visible.gif',
-				'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
-			),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['show'],
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
@@ -235,10 +235,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight'],
             'exclude'               => true,
-			'default'				=> array('unit'=>'kg'),
+            'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
-			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -246,12 +246,38 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'],
             'exclude'               => true,
-			'default'				=> array('unit'=>'kg'),
+            'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
-			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'quantity_mode' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('cart_items', 'cart_products'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'minimum_quantity' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_quantity'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'maximum_quantity' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_quantity'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'product_types' => array
         (
