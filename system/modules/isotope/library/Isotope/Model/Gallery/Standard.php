@@ -322,10 +322,10 @@ class Standard extends Gallery implements IsotopeGallery
         $objFile = new \File($strFile);
 
         if (!$objFile->exists()) {
-            throw new \InvalidArgumentException('Apparently the file "' . $strFile . '" does not exist!');
+            throw new \InvalidArgumentException('The file "' . $strFile . '" does not exist!');
         }
 
-        $size     = deserialize($this->{$strType . '_size'}, true);
+        $size = deserialize($this->{$strType . '_size'}, true);
 
         $objImage = new \Image($objFile);
         $objImage->setTargetWidth($size[0])
