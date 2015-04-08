@@ -51,23 +51,15 @@ class ProductCollectionDownload extends \Model
     /**
      * Send a file to browser and increase download counter
      *
-     * @param \FilesModel $objFileModel
-     * @param Download    $objDownload
+     * @param string $strFile
      */
-    protected function download(\FilesModel $objFileModel, Download $objDownload)
+    protected function download($strFile)
     {
         if (TL_MODE == 'FE' && $this->downloads_remaining !== '') {
             \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
-        if (isset($GLOBALS['ISO_HOOKS']['downloadFile']) && is_array($GLOBALS['ISO_HOOKS']['downloadFile'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['downloadFile'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objFileModel, $objDownload, $this);
-            }
-        }
-
-        \Controller::sendFileToBrowser($objFileModel->path);
+        \Controller::sendFileToBrowser($strFile);
     }
 
     /**
@@ -104,9 +96,19 @@ class ProductCollectionDownload extends \Model
                 \Input::get('download') == $objDownload->id &&
                 \Input::get('file') == $objFileModel->path
             ) {
-                $this->download($objFileModel, $objDownload);
-            }
+                $path = $objFileModel->path;
 
+                if (isset($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
+                    && is_array($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
+                ) {
+                    foreach ($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
+                        $path = $objCallback->$callback[1]($path, $objFileModel, $objDownload, $this);
+                    }
+                }
+
+                $this->download($objFileModel->path);
+            }
 
             $arrMeta = \Frontend::getMetaData($objFileModel->meta, $objPage->language);
 
