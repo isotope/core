@@ -353,7 +353,7 @@ class Standard extends Gallery implements IsotopeGallery
         $arrFile['alt']  = specialchars($arrFile['alt'], true);
         $arrFile['desc'] = specialchars($arrFile['desc'], true);
 
-        $arrFile[$strType] = $strImage;
+        $arrFile[$strType] = TL_ASSETS_URL . $strImage;
 
         $this->arrImages[$strCacheKey] = $arrFile;
 
