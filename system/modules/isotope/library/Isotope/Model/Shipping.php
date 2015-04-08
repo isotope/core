@@ -121,11 +121,11 @@ abstract class Shipping extends TypeAgent
             return false;
         }
 
-        if (0 > $this->minimum_quantity || 0 > $this->maximum_quantity) {
+        if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
             $quantity = 0;
 
             foreach (Isotope::getCart()->getItems() as $item) {
-                if (!$item->getProduct()->shipping_exempt) {
+                if (!$item->hasProduct() || !$item->getProduct()->isExemptFromShipping()) {
                     $quantity += $item->quantity;
                 }
             }
