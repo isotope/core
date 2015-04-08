@@ -86,7 +86,9 @@ class Frontend extends \Frontend
         }
 
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
-            $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
+            if (!\Environment::get('isAjaxRequest')) {
+                $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
+            }
 
             if (!$objModule->iso_addProductJumpTo) {
                 $this->reload();
