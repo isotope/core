@@ -279,7 +279,7 @@ class Rules extends \Controller
                 $objRule = Rule::findOneByCouponCode($code, $objCart->getItems());
 
                 if (null === $objRule) {
-                    $_SESSION['ISO_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['couponCodeDropped'], $code);
+                    Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['couponCodeDropped'], $code));
                     unset($arrCoupons[$k]);
                     $blnError = true;
                 } else {

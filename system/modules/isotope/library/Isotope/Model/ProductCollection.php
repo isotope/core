@@ -23,6 +23,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 
@@ -908,14 +909,22 @@ abstract class ProductCollection extends TypeAgent
 
         if (null !== $objItem) {
             if (($objItem->quantity + $intQuantity) < $intMinimumQuantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                Message::addInfo(sprintf(
+                    $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
+                    $objProduct->name,
+                    $intMinimumQuantity
+                ));
                 $intQuantity            = $intMinimumQuantity - $objItem->quantity;
             }
 
             $objItem->increaseQuantityBy($intQuantity);
         } else {
             if ($intQuantity < $intMinimumQuantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                Message::addInfo(sprintf(
+                    $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
+                    $objProduct->name,
+                    $intMinimumQuantity
+                ));
                 $intQuantity            = $intMinimumQuantity;
             }
 
@@ -1012,7 +1021,11 @@ abstract class ProductCollection extends TypeAgent
             $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
             if ($arrSet['quantity'] < $intMinimumQuantity) {
-                $_SESSION['ISO_INFO'][] = sprintf($GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'], $objProduct->name, $intMinimumQuantity);
+                Message::addInfo(sprintf(
+                    $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
+                    $objProduct->name,
+                    $intMinimumQuantity
+                ));
                 $arrSet['quantity']     = $intMinimumQuantity;
             }
         }

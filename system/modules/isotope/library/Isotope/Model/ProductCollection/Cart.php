@@ -15,6 +15,7 @@ namespace Isotope\Model\ProductCollection;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
@@ -132,7 +133,7 @@ class Cart extends ProductCollection implements
                 $arrIds = $this->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
-                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
+                    Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['cartMerged']);
                 }
 
                 $objTemp->delete();
