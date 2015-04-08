@@ -22,6 +22,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Added minimum_quantity and maximum_quantity restrictions to payment methods (#1305)
 - Added minimum_quantity and maximum_quantity restrictions to shipping methods (#1306)
 - Add TL_ASSETS_URL/TL_FILES_URL to product images (#1407)
+- Added tax_free_subtotal and tax_free_total to product collection templates (#1345)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)

@@ -1300,12 +1300,14 @@ abstract class ProductCollection extends TypeAgent
         $arrGalleries = array();
         $arrItems     = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
 
-        $objTemplate->id         = $this->id;
-        $objTemplate->collection = $this;
-        $objTemplate->config     = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->surcharges = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->subtotal   = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->total      = Isotope::formatPriceWithCurrency($this->getTotal());
+        $objTemplate->id                = $this->id;
+        $objTemplate->collection        = $this;
+        $objTemplate->config            = ($this->getRelated('config_id') || Isotope::getConfig());
+        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
+        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal());
+        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal());
+        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal());
+        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal());
 
         $objTemplate->hasAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
             if (!$objItem->hasProduct()) {
