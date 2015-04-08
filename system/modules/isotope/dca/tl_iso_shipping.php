@@ -106,13 +106,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'deleteShippingModule'),
             ),
-			'toggle' => array
-			(
-				'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
-				'icon'              => 'visible.gif',
-				'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
-				'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
-			),
+            'toggle' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
+                'icon'              => 'visible.gif',
+                'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['show'],
@@ -235,10 +235,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight'],
             'exclude'               => true,
-			'default'				=> array('unit'=>'kg'),
+            'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
-			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -246,10 +246,10 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'],
             'exclude'               => true,
-			'default'				=> array('unit'=>'kg'),
+            'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
-			'options'				=> array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
-			'reference'				=> &$GLOBALS['TL_LANG']['WGT'],
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
