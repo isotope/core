@@ -261,6 +261,7 @@ class Standard extends Gallery implements IsotopeGallery
                 break;
 
             case 'lightbox':
+                $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
                 list($link, $rel) = explode('|', $arrFile['link'], 2);
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
