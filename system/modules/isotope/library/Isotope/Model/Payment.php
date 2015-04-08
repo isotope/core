@@ -32,6 +32,9 @@ use Isotope\Translation;
  * @property string $price
  * @property int    $tax_class
  * @property string $trans_type
+ * @property string $quantity_mode
+ * @property int    $minimum_quantity
+ * @property int    $maximum_quantity
  * @property float  $minimum_total
  * @property float  $maximum_total
  * @property array  $countries
@@ -121,10 +124,25 @@ abstract class Payment extends TypeAgent
             return false;
         }
 
-        if (($this->minimum_quantity > 0 && $this->minimum_quantity > Isotope::getCart()->sumItemsQuantity())
-            || ($this->maximum_quantity > 0 && $this->maximum_quantity < Isotope::getCart()->sumItemsQuantity())
-        ) {
-            return false;
+        if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
+            switch ($this->quantity_mode) {
+                case 'cart_items':
+                    $quantity =  Isotope::getCart()->sumItemsQuantity();
+                    break;
+
+                case 'cart_products':
+                    $quantity =  Isotope::getCart()->countItems();
+                    break;
+
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
+            }
+
+            if (($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
+                || ($this->maximum_quantity > 0 && $this->maximum_quantity < $quantity)
+            ) {
+                return false;
+            }
         }
 
         $arrConfigs = deserialize($this->config_ids);
