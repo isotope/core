@@ -63,12 +63,87 @@ class ProductCache extends \Model
     }
 
     /**
-     * Find cache for module on page (including current environment)
+     * Find cache by unique ID (including current environment)
      *
-     * @param int $intPage
-     * @param int $intModule
+     * @param string $uniqid     A 32 char unique key (usually MD5)
+     * @param array  $arrOptions
      *
      * @return static
+     */
+    public static function findByUniqid($uniqid, array $arrOptions = array())
+    {
+        return static::findOneBy(
+            array(
+                'uniqid=?',
+                "(keywords=? OR keywords='')",
+                '(expires>? OR expires=0)',
+                'groups=?'
+            ),
+            array(
+                $uniqid,
+                (string) \Input::get('keywords'),
+                time(),
+                static::getCacheableGroups()
+            ),
+            $arrOptions
+        );
+    }
+
+    /**
+     * Create a cache object for a unique ID (including current environment
+     *
+     * @param string $uniqid A 32 char unique key (usually MD5)
+     *
+     * @return static
+     */
+    public static function createForUniqid($uniqid)
+    {
+        $objCache = new static();
+
+        $objCache->setRow(
+            array(
+                  'uniqid'          => $uniqid,
+                  'groups'          => static::getCacheableGroups(),
+                  'keywords'        => (string) \Input::get('keywords'),
+              )
+        );
+
+        return $objCache;
+    }
+
+    /**
+     * Delete cache for listing module, also delete expired ones while we're at it...
+     *
+     * @param string $uniqid A 32 char unique key (usually MD5)
+     */
+    public static function deleteByUniqidOrExpired($uniqid)
+    {
+        $time = time();
+
+        \Database::getInstance()->prepare("
+            DELETE FROM " . static::$strTable . "
+            WHERE
+                (uniqid=? AND groups=? AND (keywords='' OR keywords=?))
+                OR (expires>0 AND expires<$time)
+        ")->execute(
+            $uniqid,
+            (int) \Input::get('isorc'),
+            static::getCacheableGroups(),
+            (string) \Input::get('keywords')
+        );
+    }
+
+    /**
+     * Find cache for module on page (including current environment)
+     *
+     * @param int   $intPage
+     * @param int   $intModule
+     * @param array $arrOptions
+     *
+     * @return static
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0.
+     *             Use a findByUniqid() instead.
      */
     public static function findForPageAndModule($intPage, $intModule, array $arrOptions = array())
     {
@@ -100,6 +175,9 @@ class ProductCache extends \Model
      * @param int $intModule
      *
      * @return static
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0.
+     *             Use createForUniqid() instead.
      */
     public static function createForPageAndModule($intPage, $intModule)
     {
@@ -121,6 +199,9 @@ class ProductCache extends \Model
      *
      * @param int $intPage
      * @param int $intModule
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0.
+     *             Use deleteForUniqidOrExpired() instead.
      */
     public static function deleteForPageAndModuleOrExpired($intPage, $intModule)
     {

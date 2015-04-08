@@ -19,20 +19,10 @@ use Isotope\Model\RelatedProduct;
 /**
  * Class ModuleIsotopeRelatedProducts
  *
- * List products related to the current product reader.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property array $iso_related_categories
  */
 class RelatedProducts extends ProductList
 {
-
-    /**
-     * Do not cache related products cause the list is different depending on URL parameters
-     * @var boolean
-     */
-    protected $blnCacheProducts = false;
-
 
     /**
      * Generate the module
@@ -58,7 +48,7 @@ class RelatedProducts extends ProductList
 
         $this->iso_related_categories = deserialize($this->iso_related_categories);
 
-        if (!is_array($this->iso_related_categories) || !count($this->iso_related_categories)) { // Can't use empty() because its an object property (using __get)
+        if (!is_array($this->iso_related_categories) || empty($this->iso_related_categories)) {
             return '';
         }
 
@@ -99,7 +89,7 @@ class RelatedProducts extends ProductList
         $objProducts = Product::findAvailableByIds($arrIds, array(
             'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrIds)
         ));
-        
+
         return (null === $objProducts) ? array() : $objProducts->getModels();
     }
 
@@ -109,5 +99,13 @@ class RelatedProducts extends ProductList
     protected function compileEmptyMessage($disableSearchIndex = true)
     {
         parent::compileEmptyMessage(false);
+    }
+
+    protected function getCacheKey()
+    {
+        return md5(
+            'relatedproducts=' . $this->id . ':'
+            . 'product=' . Input::getAutoItem('product', false, true)
+        );
     }
 }
