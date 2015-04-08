@@ -18,6 +18,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Added AND-condition to replace filter on non-multiple attributes 
 - Added $this->hasAttribute() callback to list/reader and collection templates
 - Replaced product filter autocompleter with awesomplete (#1386)
+- Added hook to customize product downloads (#1311)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)
