@@ -162,6 +162,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             }
 
             // Because we apply to the quantity of only this product, we override $intTotal in every foreach loop
+            // This matches tl_iso_rules.quantityMode="product_quantity"
             if ($objRule->quantityMode != 'cart_products' && $objRule->quantityMode != 'cart_items') {
                 $intTotal = $objItem->quantity;
             }
