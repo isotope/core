@@ -96,42 +96,254 @@ abstract class Payment extends TypeAgent
      */
     public function isAvailable()
     {
-        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
+        if (
+            $this->excludeByEnabledRestriction()
+            || $this->excludeByGuestRestriction()
+            || $this->excludeByGroupRestriction()
+            || $this->excludeByTotalRestriction()
+            || $this->excludeByShopConfigurationRestriction()
+            || $this->excludeByCountriesRestriction()
+            || $this->excludeByShippingRestriction()
+            || $this->excludeByProductTypeRestriction()
+        ) {
             return false;
         }
 
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByCustomRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Exclude by enabled restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByEnabledRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByEnabledRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
+        }
+
+        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by guest restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByGuestRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByGuestRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
+        }
+
         if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {
-            return false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by group restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByGroupRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByGroupRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
         }
 
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) // Can't use empty() because its an object property (using __get)
-            {
-                return false;
+            if (
+                !is_array($arrGroups)
+                || empty($arrGroups)
+                // Can't use empty() because its an object property (using __get)
+                || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+            ) {
+                return true;
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
-            return false;
+        return false;
+    }
+
+    /**
+     * Exclude by min/max total restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByTotalRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByTotalRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
+        }
+
+        if (
+            ($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal())
+            || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by shop configuration restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByShopConfigurationRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByShopConfigurationRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
         }
 
         $arrConfigs = deserialize($this->config_ids);
+
         if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
-            return false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by countries restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByCountriesRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByCountriesRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
         }
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)) {
-            return false;
+        if (
+            is_array($arrCountries) && !empty($arrCountries)
+            && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by shipping restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByShippingRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByShippingRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
         }
 
         $arrShippings = deserialize($this->shipping_modules);
 
         if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)))) {
-            return false;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Exclude by product type restrictions.
+     *
+     * @return bool
+     */
+    private function excludeByProductTypeRestriction()
+    {
+        // !HOOK: custom logic
+        if (isset($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction']) && is_array($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentExcludeByProductTypeRestriction'] as $callback) {
+                $objCallback    = \System::importStatic($callback[0]);
+                $boolIsExcluded = $objCallback->$callback[1]($this);
+
+                if (is_bool($boolIsExcluded)) {
+                    return $boolIsExcluded;
+                }
+            }
         }
 
         $arrConfigTypes = deserialize($this->product_types);
@@ -146,7 +358,7 @@ abstract class Payment extends TypeAgent
 
                 } elseif ($this->product_types_condition == 'onlyAvailable') {
                     // If one product in cart is not of given type, shipping method is not available
-                    return false;
+                    return true;
                 }
             }
 
@@ -155,19 +367,19 @@ abstract class Payment extends TypeAgent
             switch ($this->product_types_condition) {
                 case 'onlyAvailable':
                     if (count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
-                        return false;
+                        return true;
                     }
                     break;
 
                 case 'oneAvailable':
                     if (count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
-                        return false;
+                        return true;
                     }
                     break;
 
                 case 'allAvailable':
                     if (count(array_intersect($arrConfigTypes, $arrItemTypes)) != count($arrConfigTypes)) {
-                        return false;
+                        return true;
                     }
                     break;
 
@@ -176,7 +388,7 @@ abstract class Payment extends TypeAgent
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
