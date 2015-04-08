@@ -19,6 +19,7 @@ Version 2.3.0-beta1 (2015-??-??)
 - Added $this->hasAttribute() callback to list/reader and collection templates
 - Replaced product filter autocompleter with awesomplete (#1386)
 - Added hook to customize product downloads (#1311)
+- Added minimum_quantity and maximum_quantity restrictions to payment methods (#1305)
 
 ### Improved
 - Product versions can now be compared in the backend (#1283)
