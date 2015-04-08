@@ -20,6 +20,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['note']                                   
 $GLOBALS['TL_LANG']['tl_iso_payment']['new_order_status']                       = array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['minimum_total']                          = array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_total']                          = array('Maximum total', 'Enter a number greater zero to exclude this payment method for higher priced orders.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['minimum_quantity']                       = array('Minimum quantity', 'Enter a number greater zero to exclude this payment method for orders with lower quantity.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['maximum_quantity']                       = array('Maximum quantity', 'Enter a number greater zero to exclude this payment method for orders with higher quantity.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['countries']                              = array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules']                       = array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types']                          = array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.');

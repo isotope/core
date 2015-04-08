@@ -117,6 +117,10 @@ abstract class Payment extends TypeAgent
             return false;
         }
 
+        if (($this->minimum_quantity > 0 && $this->minimum_quantity > Isotope::getCart()->sumItemsQuantity()) || ($this->maximum_quantity > 0 && $this->maximum_quantity < Isotope::getCart()->sumItemsQuantity())) {
+            return false;
+        }
+
         $arrConfigs = deserialize($this->config_ids);
         if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
