@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     (
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,minimum_total,maximum_total,minimum_weight,maximum_weight,minimum_quantity,maximum_quantity,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
     ),
 
@@ -253,23 +253,31 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
+        'quantity_mode' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('cart_items', 'cart_products'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
         'minimum_quantity' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_quantity'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'default'               => 0,
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'clr w50'),
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+            'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'maximum_quantity' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_quantity'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'default'               => 0,
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
-            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
+            'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
         'product_types' => array
         (

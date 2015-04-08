@@ -33,6 +33,7 @@ use Isotope\Translation;
  * @property string $postalCodes
  * @property float  $minimum_total
  * @property float  $maximum_total
+ * @property float  $quantity_mode
  * @property float  $minimum_quantity
  * @property float  $maximum_quantity
  * @property float  $minimum_weight
@@ -124,9 +125,13 @@ abstract class Shipping extends TypeAgent
         if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
             $quantity = 0;
 
+            if ('cart_items' !== $this->quantity_mode && 'cart_products' !== $this->quantity_mode) {
+                throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
+            }
+
             foreach (Isotope::getCart()->getItems() as $item) {
                 if (!$item->hasProduct() || !$item->getProduct()->isExemptFromShipping()) {
-                    $quantity += $item->quantity;
+                    $quantity += ('cart_items' === $this->quantity_mode ? $item->quantity : 1);
                 }
             }
 
