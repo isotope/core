@@ -327,4 +327,15 @@ class Rules extends \Controller
             $objNewCollection->coupons = $objOldCollection->coupons;
         }
     }
+
+    /**
+     * Delete rule usages after an order has been deleted
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param int                      $intId
+     */
+    public function deleteRuleUsages($objCollection, $intId)
+    {
+        \Database::getInstance()->prepare("DELETE FROM tl_iso_rule_usage WHERE order_id=?")->execute($intId);
+    }
 }
