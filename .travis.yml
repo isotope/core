@@ -1,12 +1,10 @@
 language: php
 php:
-  - 5.3
   - 5.4
   - 5.5
 
 env:
-  - CONTAO_VERSION="~3.3.4"
-  - CONTAO_VERSION="3.4.*"
+  - CONTAO_VERSION="3.5.*"
 
 sudo: false
 
@@ -15,15 +13,19 @@ install:
     - sed '$d' composer.json | sed '$d' > composer.new
     - 'echo ''},"prefer-stable": true,"minimum-stability": "dev"}'' >> composer.new'
     - mv composer.new composer.json
-    - composer require contao/core:${CONTAO_VERSION} --no-update
     - composer update
-    - cp -R system/modules/isotope vendor/contao/core/system/modules/isotope
-    - cp -R system/modules/isotope_reports vendor/contao/core/system/modules/isotope_reports
-    - cp -R system/modules/isotope_rules vendor/contao/core/system/modules/isotope_rules
-    - cd vendor/contao/core
-    - rm -rf vendor
-    - ln -s ../../ ./vendor
-    - cd system/modules/isotope
+    - composer create-project contao/core:${CONTAO_VERSION} contao
+    - cp -R system/modules/isotope contao/system/modules/isotope
+    - cp -R system/modules/isotope_reports contao/system/modules/isotope_reports
+    - cp -R system/modules/isotope_rules contao/system/modules/isotope_rules
+    - cp -R vendor/terminal42/contao-conditionalselectmenu contao/system/modules/conditionalselectmenu
+    - cp -R vendor/terminal42/contao-namespace-class-loader contao/system/modules/_autoload
+    - cp -R vendor/terminal42/dcawizard contao/system/modules/dcawizard
+    - cp -R vendor/codefog/contao-haste contao/system/modules/haste
+    - cp -R vendor/menatwork/contao-multicolumnwizard contao/system/modules/multicolumnwizard
+    - cp -R vendor/terminal42/contao-tablelookupwizard contao/system/modules/tablelookupwizard
+    - cp -R vendor/terminal42/notification_center contao/system/modules/notification_center
+    - cd contao/system/modules/isotope
     - cp test/fixtures/travis/initconfig.php ../../config/initconfig.php
     - cp test/fixtures/travis/langconfig.php ../../config/langconfig.php
     - cp test/fixtures/travis/localconfig.php ../../config/localconfig.php
