@@ -35,3 +35,4 @@ Version 2.3.0-beta1 (2015-??-??)
 - Moved coupon form from collection to cart template to prevent nested form (#1366)
 - Images in galleries are no lazy-loaded (should improve product list performance)
 - Prices are now only rounded before being displayed (should improve decimal place calculation)
+- Call postDeleteCollection hook after a product collection is deleted

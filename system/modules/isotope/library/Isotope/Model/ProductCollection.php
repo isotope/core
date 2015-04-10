@@ -559,6 +559,16 @@ abstract class ProductCollection extends TypeAgent
         $this->arrItems      = null;
         $this->arrSurcharges = null;
 
+        // !HOOK: additional functionality when deleting a collection
+        if (isset($GLOBALS['ISO_HOOKS']['postDeleteCollection'])
+            && is_array($GLOBALS['ISO_HOOKS']['postDeleteCollection'])
+        ) {
+            foreach ($GLOBALS['ISO_HOOKS']['postDeleteCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->$callback[1]($this, $intPid);
+            }
+        }
+
         return $intAffectedRows;
     }
 
