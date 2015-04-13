@@ -57,9 +57,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Inv
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');
 $GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']            = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']						= array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_account']						= array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_member']						= array('Track member', 'Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you\'re allowed to do this!');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']                   = array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_account']                  = array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_member']                   = array('Track member', 'Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you\'re allowed to do this!');
 
 /**
  * Reference
@@ -82,7 +82,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping']  = array('For
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['disabled']  = 'Disabled';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['enabled']   = 'Enabled (not mandatory)';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['mandatory'] = 'Enabled (mandatory)';
-$GLOBALS['TL_LANG']['tl_iso_config']['net']                         = array('Net', 'Show net prices to all customers. Taxes included in the product price (tax class configuration) will be deducted.');
+$GLOBALS['TL_LANG']['tl_iso_config']['net']                         = array('Net', 'Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.');
 $GLOBALS['TL_LANG']['tl_iso_config']['gross']                       = array('Gross (recommended)', 'Show gross prices to all customers. Applicable taxes will be added to the product price display.');
 $GLOBALS['TL_LANG']['tl_iso_config']['fixed']                       = array('Fixed', 'The product price will always be shown as in the product setting. Taxes are always calculated as "included". This means the shop owner\'s profit varies depending on the applicable taxes.');
 $GLOBALS['TL_LANG']['tl_iso_config']['legacy']                      = array('Legacy', 'Price display as in Isotope < 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.');
