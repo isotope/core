@@ -31,7 +31,6 @@ $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable'] = 'Tento produkt již n
 $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems'] = 'Ve Vašem produktu jsou chyby.';
 $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'] = 'Prosím odstraňte chyby ve Vašem nakupním košíku před platbou.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Upravit';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Smazat';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Nouzový jazyk';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] = 'nedefinováno';
 $GLOBALS['TL_LANG']['MSC']['selectGroup'] = 'Pouze ukázat tuto skupinu';

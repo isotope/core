@@ -35,7 +35,6 @@ $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable'] = 'Este produto não es
 $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems'] = 'Existem erros nos seus produtos.';
 $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'] = 'Por favor resolva os erros no seu carrinho antes de finalizar o pedido.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Editar';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Apagar';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Idioma reservado';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage'] = 'ATENÇÃO: Você está editando dados específicos de idioma!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] = 'Você tem certeza que quer apagar este idioma? Não há como desfazer a operação!';

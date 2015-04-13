@@ -16,7 +16,7 @@
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'][0] = 'Modèle collection produit';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_collectionTpl'][1] = 'Choisir un modèle pour rendre les produits pour les notifications de contenu.';
-$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'][0] = 'Ordonnancement';
+$GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'][0] = 'Tri';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_orderCollectionBy'][1] = 'Définir dans quel ordre les éléments de l\'ensemble doivent être listés.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'][0] = 'Galerie';
 $GLOBALS['TL_LANG']['tl_nc_notification']['iso_gallery'][1] = 'Sélectionner une galerie pour rendre les images.';

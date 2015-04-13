@@ -15,7 +15,6 @@
  */
 
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'ویرایش';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'حذف';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'زبان جانشین';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] = 'تعریف نشده';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'گروه‌ها';
@@ -69,7 +68,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'نقد';
 $GLOBALS['TL_LANG']['CCT']['mc'] = 'مسترکارت';
 $GLOBALS['TL_LANG']['CCT']['visa'] = 'ویزا';
 $GLOBALS['TL_LANG']['CCT']['discover'] = 'دیسکاور';
-$GLOBALS['TL_LANG']['CCT']['delta'] = 'دلتا';
+$GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';
 $GLOBALS['TL_LANG']['CCT']['solo'] = 'سولو';
 $GLOBALS['TL_LANG']['ATTR']['downloads'][0] = 'بارگیری‌ها';
 $GLOBALS['TL_LANG']['ATTR']['upload'][0] = 'بارگذاری پرونده';

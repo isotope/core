@@ -35,7 +35,6 @@ $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable'] = 'Ce produit n\'est pl
 $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems'] = 'Il y a des erreurs dans votre produit.';
 $GLOBALS['TL_LANG']['ERR']['cartErrorInItems'] = 'Veuillez corriger les erreurs dans votre panier avant le récapitulatif.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Éditer';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Supprimer';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Langue de secours';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage'] = 'ATTENTION : vous éditez des données spécifiques à la langue !';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] = 'Êtes-vous sûr de vouloir supprimer cette langue ? Il n\'y aura pas d\'annulation possible !';

@@ -29,7 +29,6 @@ $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'] = 'Mindste ordrebeløb er %s. Køb
 $GLOBALS['TL_LANG']['ERR']['imageInFallback'] = 'Dette foto er allerede tilknyttet standardsproget.';
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'] = 'Den valgte mappe er tom.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Rediger';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Slet';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Sprogsuppleant';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage'] = 'BEMÆRK! Du redigerer i sprog-specifik data';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] = 'Er du sikker på at vil slette dette sprog. Det kan ikke fortrydes!';

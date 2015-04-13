@@ -14,6 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Ryhmät';
-$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Tuotteet';
-$GLOBALS['TL_LANG']['tl_iso_rule']['products'][0] = 'Tuotteet';
+$GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'Osoitekirja';

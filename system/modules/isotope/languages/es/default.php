@@ -30,7 +30,6 @@ $GLOBALS['TL_LANG']['ERR']['imageInFallback'] = 'Esta imagen ya ha sido asignado
 $GLOBALS['TL_LANG']['ERR']['datepickerRgxp'] = 'Seleccione un campo de validación apropiado (fecha, hora, fecha y hora) para habilitar el selector de fecha.';
 $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'] = 'La carpeta seleccionada está vacía.';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Editar';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Borrar';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'Idioma predeterminado';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage'] = 'ATENCIÓN: ¡Está editando los datos específicos del idioma!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm'] = '¿Está seguro que deseas eliminar este idioma? ¡No se puede deshacer!';

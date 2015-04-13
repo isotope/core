@@ -14,6 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Ryhmät';
-$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Tuotteet';
-$GLOBALS['TL_LANG']['tl_iso_rule']['products'][0] = 'Tuotteet';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['phone'][0] = 'Puhelinnumero';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['email'][0] = 'Sähköposti';
