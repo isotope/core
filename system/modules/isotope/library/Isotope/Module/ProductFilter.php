@@ -179,18 +179,16 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             ) {
                 // Redirect to search result page if one is set (see #1068)
                 if (!$this->blnUpdateCache
-                    && $this->jumpTo != $objPage->id
                     && null !== $this->objModel->getRelated('jumpTo')
                 ) {
                     /** @type \PageModel $objJumpTo */
                     $objJumpTo = $this->objModel->getRelated('jumpTo');
+                    $strUrl    = $objJumpTo->getFrontendUrl() . '?' . $_SERVER['QUERY_STRING'];
 
-                    // Include \Environment::base or the URL would not work on the index page
-                    \Controller::redirect(
-                        \Environment::get('base') .
-                        $objJumpTo->getFrontendUrl() .
-                        '?' . $_SERVER['QUERY_STRING']
-                    );
+                    if (\Environment::get('request') != $strUrl) {
+                        // Include \Environment::base or the URL would not work on the index page
+                        \Controller::redirect(\Environment::get('base') . $strUrl);
+                    }
                 }
 
                 $arrKeywords = trimsplit(' |-', \Input::get('keywords'));
