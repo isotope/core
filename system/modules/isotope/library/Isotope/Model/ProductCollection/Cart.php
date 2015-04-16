@@ -303,7 +303,7 @@ class Cart extends ProductCollection implements
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
                 'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),
-                'uniqid'    => (FE_USER_LOGGED_IN === true ? '' : $strHash),
+                'uniqid'    => (FE_USER_LOGGED_IN === true ? null : $strHash),
                 'config_id' => $objConfig->id,
                 'store_id'  => $intStore,
             )));
