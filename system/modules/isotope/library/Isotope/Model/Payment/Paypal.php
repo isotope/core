@@ -54,16 +54,21 @@ class Paypal extends Postsale implements IsotopePayment
             return;
 
         } else {
+            if (\Input::post('payment_status') != 'Completed') {
+                \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
+
+                return;
+            }
 
             // Validate payment data (see #2221)
             if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
-                \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+                \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
 
                 return;
             }
 
             if (!$objOrder->checkout()) {
-                \System::log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+                \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
 
                 return;
             }
@@ -74,32 +79,8 @@ class Paypal extends Postsale implements IsotopePayment
             $objOrder->payment_data = $arrPayment;
             $objOrder->save();
 
-            // @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
-            switch (\Input::post('payment_status')) {
-                case 'Completed':
-                    $objOrder->date_paid = time();
-                    $objOrder->updateOrderStatus($this->new_order_status);
-                    break;
-
-                case 'Canceled_Reversal':
-                case 'Denied':
-                case 'Expired':
-                case 'Failed':
-                case 'Voided':
-                    // PayPal will also send this notification if the order has not been placed.
-                    // What do we do here?
-//                    $objOrder->date_paid = '';
-//                    $objOrder->updateOrderStatus(Isotope::getConfig()->orderstatus_error);
-                    break;
-
-                case 'In-Progress':
-                case 'Partially_Refunded':
-                case 'Pending':
-                case 'Processed':
-                case 'Refunded':
-                case 'Reversed':
-                    break;
-            }
+            $objOrder->date_paid = time();
+            $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->payment_data = $arrPayment;
 
@@ -107,10 +88,6 @@ class Paypal extends Postsale implements IsotopePayment
 
             \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
         }
-
-        // 200 OK
-        $objResponse = new Response();
-        $objResponse->send();
     }
 
     /**
