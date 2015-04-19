@@ -77,12 +77,9 @@ class Paypal extends Postsale implements IsotopePayment
             $arrPayment = deserialize($objOrder->payment_data, true);
             $arrPayment['POSTSALE'][] = $_POST;
             $objOrder->payment_data = $arrPayment;
-            $objOrder->save();
 
             $objOrder->date_paid = time();
             $objOrder->updateOrderStatus($this->new_order_status);
-
-            $objOrder->payment_data = $arrPayment;
 
             $objOrder->save();
 
