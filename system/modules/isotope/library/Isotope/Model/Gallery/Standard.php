@@ -161,8 +161,8 @@ class Standard extends Gallery implements IsotopeGallery
 
         $this->addImageToTemplate(
             $objTemplate,
-            ($hasImages ? $this->arrFiles[0] : $this->getPlaceholderImage()),
             'main',
+            ($hasImages ? $this->arrFiles[0] : $this->getPlaceholderImage()),
             $hasImages
         );
 
@@ -212,7 +212,7 @@ class Standard extends Gallery implements IsotopeGallery
         foreach ($arrFiles as $arrFile) {
             $objTemplate = new Template($this->strTemplate);
 
-            $this->addImageToTemplate($objTemplate, $arrFile, 'gallery', $watermark);
+            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile, $watermark);
 
             $strGallery .= $objTemplate->parse();
         }
@@ -234,13 +234,13 @@ class Standard extends Gallery implements IsotopeGallery
      * Generate template with given file
      *
      * @param Template|object $objTemplate
-     * @param array           $arrFile
      * @param string          $strType
+     * @param array           $arrFile
      * @param bool            $blnWatermark
      *
      * @return string
      */
-    protected function addImageToTemplate(Template $objTemplate, array $arrFile, $strType, $blnWatermark = true)
+    protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {
         $arrFile = $this->getImageForType($strType, $arrFile, $blnWatermark);
 
@@ -332,7 +332,7 @@ class Standard extends Gallery implements IsotopeGallery
         $objImage->setTargetWidth($size[0])
             ->setTargetHeight($size[1])
             ->setResizeMode($size[2]);
-        
+
         $strImage = $objImage->executeResize()->getResizedPath();
 
         // Watermark
