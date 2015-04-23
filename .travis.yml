@@ -25,6 +25,7 @@ install:
     - cp -R vendor/menatwork/contao-multicolumnwizard contao/system/modules/multicolumnwizard
     - cp -R vendor/terminal42/contao-tablelookupwizard contao/system/modules/tablelookupwizard
     - cp -R vendor/terminal42/notification_center contao/system/modules/notification_center
+    - cp -R vendor/terminal42/dc_multilingual contao/system/modules/dc_multilingual
     - cd contao/system/modules/isotope
     - cp test/fixtures/travis/initconfig.php ../../config/initconfig.php
     - cp test/fixtures/travis/langconfig.php ../../config/langconfig.php
