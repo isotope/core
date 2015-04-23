@@ -84,6 +84,7 @@ class QuickPay extends Postsale implements IsotopePayment
         $objTemplate->setData($this->arrData);
 
         $params = array(
+            'version'      => 'v10',
             'merchant_id'  => $this->quickpay_merchantId,
             'agreement_id' => $this->quickpay_agreementId,
             'order_id'     => str_pad($objOrder->id, 4, '0', STR_PAD_LEFT),
