@@ -1,7 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.3.0-beta1 (2015-??-??)
+Version 2.3.0-rc1 (2015-04-13)
+------------------------------
+
+### Fixed
+- Duplicate key for member carts
+- Product filter did not redirect to current page without argument, if reference page is set
+- API break in Standard gallery class
+- Inline gallery did not correctly generate main image
+
+
+Version 2.3.0-beta1 (2015-04-13)
 --------------------------------
 
 ### New
