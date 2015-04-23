@@ -14,7 +14,7 @@ install:
     - 'echo ''},"prefer-stable": true,"minimum-stability": "dev"}'' >> composer.new'
     - mv composer.new composer.json
     - composer update
-    - composer create-project contao/core:${CONTAO_VERSION} contao
+    - composer create-project -s dev contao/core:${CONTAO_VERSION} contao
     - cp -R system/modules/isotope contao/system/modules/isotope
     - cp -R system/modules/isotope_reports contao/system/modules/isotope_reports
     - cp -R system/modules/isotope_rules contao/system/modules/isotope_rules
