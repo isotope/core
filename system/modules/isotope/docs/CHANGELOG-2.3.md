@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.3.0-rc1 (2015-04-13)
 ------------------------------
 
+### New
+- Added payment method for QuickPay (https://quickpay.net) / Pensopay (http://www.pensopay.com)
+
 ### Fixed
 - Duplicate key for member carts
 - Product filter did not redirect to current page without argument, if reference page is set
