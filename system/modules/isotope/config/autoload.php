@@ -59,6 +59,7 @@ TemplateLoader::addFiles(array
     'iso_payment_paypal'                => 'system/modules/isotope/templates/payment',
     'iso_payment_payone'                => 'system/modules/isotope/templates/payment',
     'iso_payment_postfinance'           => 'system/modules/isotope/templates/payment',
+    'iso_payment_quickpay'              => 'system/modules/isotope/templates/payment',
     'iso_payment_sofortueberweisung'    => 'system/modules/isotope/templates/payment',
     'iso_payment_viveum'                => 'system/modules/isotope/templates/payment',
     'iso_payment_worldpay'              => 'system/modules/isotope/templates/payment',

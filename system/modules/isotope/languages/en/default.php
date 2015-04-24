@@ -226,6 +226,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('Exp
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.epay']                 = array('ePay', 'Implements payment provider <a href="http://www.epay.eu" target="_blank">ePay</a>.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('WorldPay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.quickpay']             = array('QuickPay');
 
 /**
  * Documents
