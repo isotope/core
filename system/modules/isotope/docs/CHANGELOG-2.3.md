@@ -13,6 +13,7 @@ Version 2.3.0-rc1 (2015-04-13)
 - Product filter did not redirect to current page without argument, if reference page is set
 - API break in Standard gallery class
 - Inline gallery did not correctly generate main image
+- Removed unnecessary whitespaces in address formatting
 
 
 Version 2.3.0-beta1 (2015-04-13)
