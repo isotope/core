@@ -6,6 +6,7 @@ Version 2.3.0-rc1 (2015-04-13)
 
 ### New
 - Added payment method for QuickPay (https://quickpay.net) / Pensopay (http://www.pensopay.com)
+- Added Config::getOwnerAddress to get address model of the shop config address
 
 ### Fixed
 - Duplicate key for member carts
