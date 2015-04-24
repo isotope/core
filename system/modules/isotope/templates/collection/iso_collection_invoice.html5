@@ -1,0 +1,46 @@
+<div style="line-height:16px; font-size:12px;">
+<table cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <th width="65%">Bezeichnung</th>
+        <th width="9%" style="text-align:right">Anzahl</th>
+        <th width="13%" style="text-align:right">Preis</th>
+        <th width="13%" style="text-align:right">Total</th>
+    </tr>
+    <tr><td colspan="4" style="font-size:5px;line-height:5px; border-bottom: 2px solid #898989">&nbsp;</td></tr>
+    <?php foreach($this->items as $item):; ?>
+        <tr><td colspan="4" style="font-size:5px;line-height:5px<?php if($i!=0): ?>; border-top: 1px solid #C4C4C4<?php endif; ?>">&nbsp;</td></tr>
+        <tr>
+            <td><?php echo $item['name']; ?>
+                <?php if(!empty($item['configuration'])): ?>
+                        <?php foreach($item['configuration'] as $value): ?>
+                            <br><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?>
+                        <?php endforeach; ?>
+                <?php endif; ?>
+            </td>
+            <td style="text-align:center"><?php echo $item['quantity']; ?></td>
+            <td style="text-align:right"><?php echo $item['price']; ?></td>
+            <td style="text-align:right"><?php echo $item['total']; ?></td>
+        </tr>
+        <tr><td colspan="4" style="font-size:5px;line-height:5px">&nbsp;</td></tr>
+        <?php $i++; endforeach; ?>
+    <tr><td colspan="4">&nbsp;</td></tr>
+    <tr><td colspan="2" style="font-size:5px"></td><td colspan="2" style="font-size:5px;line-height:5px; border-top: 2px solid #898989">&nbsp;</td></tr>
+    <tr>
+        <td colspan="2" style="font-weight:bold"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
+        <td colspan="2" style="text-align:right; font-weight:bold"><?php echo $this->subtotal; ?></td>
+    </tr>
+    <?php foreach ($this->surcharges as $surcharge): $i=0; ?>
+        <tr><td colspan="4" style="font-size:5px;line-height:5px">&nbsp;</td></tr>
+        <tr class="<?php echo $surcharge['rowClass']; ?>">
+            <td colspan="2"><?php echo $surcharge['label']; ?></td>
+            <td style="text-align:right"><?php echo $surcharge['price']; ?></td>
+            <td style="text-align:right"><?php echo $surcharge['total_price']; ?></td>
+        </tr>
+    <?php endforeach; ?>
+    <tr><td colspan="4" style="font-size:5px;line-height:5px">&nbsp;</td></tr>
+    <tr>
+        <td colspan="2" style="font-size:14px; font-weight: bold"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
+        <td colspan="2" style="text-align:right; font-size:14px; font-weight: bold"><?php echo $this->total; ?></td>
+    </tr>
+</table>
+</div>

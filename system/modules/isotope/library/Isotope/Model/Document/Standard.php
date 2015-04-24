@@ -122,11 +122,18 @@ class Standard extends Document implements IsotopeDocument
      */
     protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {
+        $objPage = \PageModel::findWithDetails($objCollection->page_id);
+
         $objTemplate = new \Isotope\Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title      = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
-        $objTemplate->collection = $objCollection;
+        $objTemplate->title         = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->collection    = $objCollection;
+        $objTemplate->config        = $objCollection->getRelated('config_id');
+        $objTemplate->page          = $objPage;
+        $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
+        $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
+        $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
         $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);

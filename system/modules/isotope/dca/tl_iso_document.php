@@ -175,6 +175,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl'],
             'exclude'               => true,
+            'default'               => 'iso_collection_invoice',
             'inputType'             => 'select',
             'options_callback'      => function(\DataContainer $dc) {
                 return \Isotope\Backend::getTemplates('iso_collection_');

@@ -8,6 +8,9 @@ Version 2.3.0-rc1 (2015-04-13)
 - Added payment method for QuickPay (https://quickpay.net) / Pensopay (http://www.pensopay.com)
 - Added Config::getOwnerAddress to get address model of the shop config address
 
+### Improved
+- Default invoice template now looks way better
+
 ### Fixed
 - Duplicate key for member carts
 - Product filter did not redirect to current page without argument, if reference page is set

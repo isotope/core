@@ -1,17 +1,30 @@
+<?php
+    $config = $this->config->getBillingFieldsConfig();
+    foreach ($config as $k => $v) {
+        if ($v['value'] == 'phone' || $v['value'] == 'email') {
+            $config[$k]['enabled'] = false;
+        }
+    }
+?>
 <div style="font-size: 62.5%; font-family: Arial, Helvetica, sans-serif">
-    <table cellspacing="0" cellpadding="20" border="0">
-        <tr>
-            <td>
-                <h2><?php echo $this->title; ?></h2>
-            </td>
-            <td>
-                <?php if ($this->collection->getBillingAddress()) echo $this->collection->getBillingAddress()->generate(); ?>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <?php echo $this->products; ?>
-            </td>
-        </tr>
-    </table>
+
+    <p style="color:#3e3e3e; font-size:10px"><?php echo nl2br(strip_tags($this->config->getOwnerAddress()->generate($config))); ?></p>
+
+    <div style="font-size:14px; line-height: 18px;">
+        <table cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td colspan="2" style="width:65%;font-size:34px;margin:0;padding:0;line-height:34px"><?php echo $this->title; ?></td>
+                <td rowspan="2" style="width:40%"><?php echo nl2br(strip_tags($this->collection->getBillingAddress()->generate($config))); ?></td>
+            </tr>
+            <tr>
+                <td style="width:15%"><br><br><?php echo $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'][0]; ?><br><?php echo $GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'][0]; ?></td>
+                <td style="width:45%"><br><br><?php echo \Date::parse($this->dateFormat, $this->collection->locked); ?><br><?php echo $this->collection->currency; ?></td>
+            </tr>
+        </table>
+    </div>
+
+    <br><br>
+
+    <?php echo $this->products; ?>
+
 </div>
