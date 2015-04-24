@@ -17,54 +17,54 @@ use Isotope\Translation;
 /**
  * Isotope\Model\Config represents an Isotope config model
  *
- * @property int    id
- * @property int    tstamp
- * @property string name
- * @property string label
- * @property bool   fallback
- * @property string firstname
- * @property string lastname
- * @property string company
- * @property string vat_no
- * @property string street_1
- * @property string street_2
- * @property string street_3
- * @property string postal
- * @property string city
- * @property string subdivision
- * @property string country
- * @property string phone
- * @property string email
- * @property array  address_fields
- * @property string billing_country
- * @property string shipping_country
- * @property array  billing_countries
- * @property array  shipping_countries
- * @property bool   limitMemberCountries
- * @property array  vatNoValidators
- * @property string priceDisplay
- * @property string currencyFormat
- * @property int    priceRoundPrecision
- * @property string priceRoundIncrement
- * @property float  cartMinSubtotal
- * @property string currency
- * @property string currencySymbol
- * @property bool   currencySpace
- * @property string currencyPosition
- * @property string priceCalculateFactor
- * @property string priceCalculateMode
- * @property bool   currencyAutomator
- * @property string currencyOrigin
- * @property string currencyProvider
- * @property string orderPrefix
- * @property int    orderDigits
- * @property int    orderstatus_new
- * @property int    orderstatus_error
- * @property string templateGroup
- * @property array  newProductPeriod
- * @property bool   ga_enable
- * @property string ga_account
- * @property string ga_member
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $name
+ * @property string $label
+ * @property bool   $fallback
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $company
+ * @property string $vat_no
+ * @property string $street_1
+ * @property string $street_2
+ * @property string $street_3
+ * @property string $postal
+ * @property string $city
+ * @property string $subdivision
+ * @property string $country
+ * @property string $phone
+ * @property string $email
+ * @property array  $address_fields
+ * @property string $billing_country
+ * @property string $shipping_country
+ * @property array  $billing_countries
+ * @property array  $shipping_countries
+ * @property bool   $limitMemberCountries
+ * @property array  $vatNoValidators
+ * @property string $priceDisplay
+ * @property string $currencyFormat
+ * @property int    $priceRoundPrecision
+ * @property string $priceRoundIncrement
+ * @property float  $cartMinSubtotal
+ * @property string $currency
+ * @property string $currencySymbol
+ * @property bool   $currencySpace
+ * @property string $currencyPosition
+ * @property string $priceCalculateFactor
+ * @property string $priceCalculateMode
+ * @property bool   $currencyAutomator
+ * @property string $currencyOrigin
+ * @property string $currencyProvider
+ * @property string $orderPrefix
+ * @property int    $orderDigits
+ * @property int    $orderstatus_new
+ * @property int    $orderstatus_error
+ * @property string $templateGroup
+ * @property array  $newProductPeriod
+ * @property bool   $ga_enable
+ * @property string $ga_account
+ * @property string $ga_member
  */
 class Config extends \Model
 {
@@ -102,7 +102,6 @@ class Config extends \Model
     public function getBillingFields()
     {
         if (!isset($this->arrCache['billingFields'])) {
-
             $this->arrCache['billingFields'] = array_filter(array_map(
                 function($field) {
                     return $field['enabled'] ? $field['value'] : null;
@@ -122,13 +121,11 @@ class Config extends \Model
     public function getBillingFieldsConfig()
     {
         if (!isset($this->arrCache['billingFieldsConfig'])) {
-
             $this->arrCache['billingFieldsConfig'] = array();
             $arrFields                             = deserialize($this->address_fields);
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-
                     $this->arrCache['billingFieldsConfig'][] = array(
                         'value'     => $arrField['name'],
                         'enabled'   => ($arrField['billing'] != 'disabled'),
@@ -149,7 +146,6 @@ class Config extends \Model
     public function getShippingFields()
     {
         if (!isset($this->arrCache['shippingFields'])) {
-
             $this->arrCache['shippingFields'] = array_filter(array_map(
                 function($field) {
                     return $field['enabled'] ? $field['value'] : null;
@@ -169,13 +165,11 @@ class Config extends \Model
     public function getShippingFieldsConfig()
     {
         if (!isset($this->arrCache['shippingFieldsConfig'])) {
-
             $this->arrCache['shippingFieldsConfig'] = array();
             $arrFields                              = deserialize($this->address_fields);
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-
                     $this->arrCache['shippingFieldsConfig'][] = array(
                         'value'     => $arrField['name'],
                         'enabled'   => ($arrField['shipping'] != 'disabled'),
@@ -196,7 +190,6 @@ class Config extends \Model
     public function getBillingCountries()
     {
         if (!isset($this->arrCache['billingCountries'])) {
-
             $arrCountries = deserialize($this->billing_countries);
 
             if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -217,7 +210,6 @@ class Config extends \Model
     public function getShippingCountries()
     {
         if (!isset($this->arrCache['shippingCountries'])) {
-
             $arrCountries = deserialize($this->shipping_countries);
 
             if (empty($arrCountries) || !is_array($arrCountries)) {
@@ -257,11 +249,12 @@ class Config extends \Model
     public function getNewProductLimit()
     {
         if (!isset($this->arrCache['newProductLimit'])) {
-
             $arrPeriod = deserialize($this->newProductPeriod);
 
             if (!empty($arrPeriod) && is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
-                $this->arrCache['newProductLimit'] = strtotime('-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00');
+                $this->arrCache['newProductLimit'] = strtotime(
+                    '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
+                );
             } else {
                 $this->arrCache['newProductLimit'] = time();
             }
