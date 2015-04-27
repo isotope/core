@@ -12,6 +12,8 @@
 
 namespace Isotope\Report;
 
+use Isotope\Model\OrderStatus;
+
 abstract class Sales extends Report
 {
 
@@ -60,7 +62,7 @@ abstract class Sales extends Report
 
         if (!isset($arrSession[$this->name]['iso_status']))
         {
-            $objStatus = \Database::getInstance()->query("SELECT id FROM " . \Isotope\Model\OrderStatus::getTable() . " WHERE paid=1 ORDER BY sorting");
+            $objStatus = \Database::getInstance()->query("SELECT id FROM " . OrderStatus::getTable() . " WHERE paid=1 ORDER BY sorting");
             $arrSession[$this->name]['iso_status'] = $objStatus->id;
         }
 
@@ -138,11 +140,13 @@ abstract class Sales extends Report
     protected function getStatusPanel()
     {
         $arrStatus = array(''=>&$GLOBALS['TL_LANG']['ISO_REPORT']['all']);
-        $objStatus = \Isotope\Model\OrderStatus::findAll(array('order'=>'sorting'));
 
-        if (null !== $objStatus) {
-            while ($objStatus->next()) {
-                $arrStatus[$objStatus->id] = $objStatus->current()->getName();
+        /** @var OrderStatus[] $objResult */
+        $objResult = OrderStatus::findAll(array('order'=>'sorting'));
+
+        if (null !== $objResult) {
+            foreach ($objResult as $objStatus) {
+                $arrStatus[$objStatus->id] = $objStatus->getName();
             }
         }
 
