@@ -25,6 +25,7 @@ Version 2.1.12-stable (2015-03-17)
 - Month and week reports were not correctly sorted across years (#1359)
 - Category scope "product" in product list module should not be cached (#1383)
 - Warning if products are not assigned to any category (#1398)
+- Tax ID was not persisted for product collection surcharges (#1381)
 
 
 Version 2.1.11-stable (2015-02-10)
