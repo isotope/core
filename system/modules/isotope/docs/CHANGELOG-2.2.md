@@ -38,6 +38,7 @@ Version 2.2.0-stable (2014-11-24)
 
 ### Improved
 - Added post-action hooks to product collection (#1292)
+- PayPal IPN should be retried if there's a communication problem with PayPal servers (#1418)
 
 ### Fixed
 - Checkout step "address" could not be completed when a member was logged in (#1271)
