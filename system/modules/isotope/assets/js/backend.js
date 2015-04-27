@@ -240,7 +240,9 @@ var Isotope = {};
                         element.getFirst('input[type=checkbox]').disabled = event.target.checked;
                     } else {
                         // textarea with TinyMCE
-                        if (!element.getNext() || !element.getNext().get('id') || !element.getNext().get('id').search(/_parent$/) != -1) {
+                        if (element.getPrevious() && element.getPrevious().hasClass('mce-tinymce')) {
+                            element.getPrevious().setStyle('display', (event.target.checked ? 'none' : 'inherit'));
+                        } else {
                             element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
                         }
 

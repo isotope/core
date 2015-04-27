@@ -4,7 +4,8 @@ Isotope eCommerce Changelog
 Version 2.2.4-stable (2015-??-??)
 ---------------------------------
 
-
+### Improved
+- Correctly show/hide tinyMCE 4 when using fallback value for variant attribute (#1335)
 
 Version 2.2.3-stable (2015-03-17)
 ---------------------------------
