@@ -106,34 +106,38 @@ abstract class Sales extends Report
         switch ($strPeriod)
         {
             case 'day':
-                $publicDate = '%d.%m.%y';
+                $publicDate  = 'd.m.y';
                 $privateDate = 'Ymd';
-                $sqlDate = '%Y%m%d';
+                $sqlDate     = '%Y%m%d';
+                $jsDate      = '%d.%m.%y';
                 break;
 
             case 'week':
-                $publicDate = 'KW %U/%y';
+                $publicDate  = '\K\W W/y';
                 $privateDate = 'YW';
-                $sqlDate = '%Y%u';
+                $sqlDate     = '%Y%u';
+                $jsDate      = 'KW %U/%y';
                 break;
 
             case 'month':
-                $publicDate = '%m/%Y';
+                $publicDate  = 'm/Y';
                 $privateDate = 'Ym';
-                $sqlDate = '%Y%m';
+                $sqlDate     = '%Y%m';
+                $jsDate      = '%m/%Y';
                 break;
 
             case 'year':
-                $publicDate = '%Y';
+                $publicDate = 'Y';
                 $privateDate = 'Y';
                 $sqlDate = '%Y';
+                $jsDate = '%Y';
                 break;
 
             default:
                 throw new \Exception('Invalid period "' . $strPeriod . '". Reset your session to continue.');
         }
 
-        return array($publicDate, $privateDate, $sqlDate);
+        return array($publicDate, $privateDate, $sqlDate, $jsDate);
     }
 
 
