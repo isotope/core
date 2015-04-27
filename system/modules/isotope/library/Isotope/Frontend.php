@@ -22,6 +22,7 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * Class Isotope\Frontend
@@ -45,8 +46,10 @@ class Frontend extends \Frontend
 
     /**
      * Get shipping and payment surcharges for given collection
-     * @param IsotopeProductCollection
-     * @return array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return ProductCollectionSurcharge[]
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
@@ -72,8 +75,9 @@ class Frontend extends \Frontend
 
     /**
      * Callback for add_to_cart button
-     * @param object
-     * @param array
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
      */
     public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
@@ -103,8 +107,10 @@ class Frontend extends \Frontend
 
     /**
      * Replace the current page with a reader page if applicable
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrFragments
+     *
+     * @return array
      */
     public function loadReaderPageFromUrl($arrFragments)
     {
@@ -170,7 +176,6 @@ class Frontend extends \Frontend
             }
 
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
-
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
@@ -183,9 +188,10 @@ class Frontend extends \Frontend
 
     /**
      * Overrides the reader page
-     * @param   \PageModel
-     * @param   \LayoutModel
-     * @param   \PageRegular
+     *
+     * @param \PageModel   $objPage
+     * @param \LayoutModel $objLayout
+     * @param \PageRegular $objRegularPage
      */
     public function overrideReaderPage($objPage, $objLayout, $objRegularPage)
     {
@@ -204,7 +210,9 @@ class Frontend extends \Frontend
 
     /**
      * Replaces Isotope specific InsertTags in Frontend
-     * @param string
+     *
+     * @param string $strTag
+     *
      * @return mixed
      *
      * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
@@ -219,9 +227,11 @@ class Frontend extends \Frontend
 
     /**
      * Hook callback for changelanguage extension to support language switching on product reader page
-     * @param array
-     * @param string
-     * @param array
+     *
+     * @param array  $arrGet
+     * @param string $strLanguage
+     * @param array  $arrRootPage
+     *
      * @return array
      */
     public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
@@ -280,7 +290,9 @@ window.addEvent('domready', function()
 
     /**
      * Format surcharge prices
-     * @param array
+     *
+     * @param ProductCollectionSurcharge[] $arrSurcharges
+     *
      * @return array
      */
     public static function formatSurcharges($arrSurcharges)
@@ -304,12 +316,14 @@ window.addEvent('domready', function()
 
 
     /**
-     * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
-     * @param   array   Absolute page urls
-     * @param   int     Root page id
-     * @param   boolean True if it's a sitemap module call (= treat differently when page is protected etc.)
-     * @param   string  Language of the root page
-     * @return  array   Extended array of absolute page urls
+     * Adds the product urls to the array so they get indexed when search index is rebuilt in the maintenance module
+     *
+     * @param array  $arrPages     Absolute page urls
+     * @param int    $intRoot      Root page id
+     * @param bool   $blnIsSitemap True if it's a sitemap module call (= treat differently when page is protected etc.)
+     * @param string $strLanguage  Language of the root page
+     *
+     * @return array   Extended array of absolute page urls
      */
     public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false, $strLanguage = null)
     {
@@ -332,7 +346,6 @@ window.addEvent('domready', function()
 
         if (null !== $objRoots) {
             foreach ($objRoots as $objRoot) {
-
                 $arrPageIds   = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
                 $arrPageIds[] = $intRoot;
 
@@ -396,8 +409,12 @@ window.addEvent('domready', function()
 
     /**
      * save_callback for upload widget to store $_FILES data into the product
-     * @param mixed
-     * @param IsotopeProduct
+     *
+     * @param mixed          $varValue
+     * @param IsotopeProduct $objProduct
+     * @param \Widget        $objWidget
+     *
+     * @return mixed
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
@@ -414,7 +431,9 @@ window.addEvent('domready', function()
 
     /**
      * Get postal codes from CSV and ranges
-     * @param string
+     *
+     * @param string $strPostalCodes
+     *
      * @return array
      */
     public static function parsePostalCodes($strPostalCodes)
@@ -442,7 +461,8 @@ window.addEvent('domready', function()
 
     /**
      * Store the current article ID so we know it for the product list
-     * @param \Database\Result
+     *
+     * @param \Database\Result $objRow
      */
     public function storeCurrentArticle($objRow)
     {
@@ -454,9 +474,11 @@ window.addEvent('domready', function()
     /**
      * Return pages in the current root available to the member
      * Necessary to check if a product is allowed in the current site and cache the value
-     * @param   array
-     * @param   \MemberModel|\FrontendUser
-     * @return  array
+     *
+     * @param array                      $arrPages
+     * @param \MemberModel|\FrontendUser $objMember
+     *
+     * @return array
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
@@ -498,12 +520,10 @@ window.addEvent('domready', function()
 
             // Page is for guests only but we have a member
             if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
-
                 $arrUnavailable[$intMember][] = $intPage;
                 continue;
 
             } elseif ($objPageDetails->protected) {
-
                 // Page is protected but we have no member
                 if ($intMember == 0) {
                     $arrUnavailable[$intMember][] = $intPage;
@@ -533,8 +553,10 @@ window.addEvent('domready', function()
 
     /**
      * Show product name in breadcrumb
-     * @param  array
-     * @param  object
+     *
+     * @param array  $arrItems
+     * @param object $objModule
+     *
      * @return array
      */
     public function addProductToBreadcrumb($arrItems, $objModule)
@@ -606,7 +628,10 @@ window.addEvent('domready', function()
 
     /**
      * Load system configuration into page object
-     * @param \Database\Result
+     *
+     * @param \Database\Result $objPage
+     *
+     * @return \Database\Result
      */
     public static function loadPageConfig($objPage)
     {
@@ -661,7 +686,8 @@ window.addEvent('domready', function()
 
     /**
      * Adjust module and module id for certain payment and/or shipping modules
-     * @param \Isotope\PostSale
+     *
+     * @param \Isotope\PostSale $objPostsale
      */
     public function setPostsaleModuleSettings(PostSale $objPostsale)
     {
