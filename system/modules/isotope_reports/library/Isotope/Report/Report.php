@@ -312,7 +312,7 @@ abstract class Report extends \Backend
      *
      * @return string
      */
-    protected function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
+    public static function getProductProcedure($strTable='tl_iso_product', $strField='id', $strPrefix=' AND ')
     {
         $arrAllowedProducts = Permission::getAllowedIds();
 
@@ -336,7 +336,7 @@ abstract class Report extends \Backend
      *
      * @return string
      */
-    protected function getConfigProcedure($strTable='tl_iso_config', $strField='id', $strPrefix=' AND ')
+    public static function getConfigProcedure($strTable='tl_iso_config', $strField='id', $strPrefix=' AND ')
     {
         if (\BackendUser::getInstance()->isAdmin) {
             return '';

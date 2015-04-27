@@ -13,6 +13,7 @@
 namespace Isotope\BackendModule;
 
 use Isotope\Isotope;
+use Isotope\Report\Report;
 
 
 class Reports extends BackendOverview
@@ -90,7 +91,8 @@ class Reports extends BackendOverview
             LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
             LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
             WHERE o.type='order' AND o.order_status>0 AND o.locked>=?
-            " . ($arrAllowedProducts === true ? '' : (" AND i.product_id IN (" . (empty($arrAllowedProducts) ? '0' : implode(',', $arrAllowedProducts)) . ")")) . "
+                " . Report::getProductProcedure('i', 'product_id') . "
+                " . Report::getConfigProcedure('o', 'config_id') . "
             GROUP BY config_id
         ")->execute(strtotime('-24 hours'));
 
