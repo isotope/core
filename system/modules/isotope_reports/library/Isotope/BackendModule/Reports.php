@@ -48,7 +48,7 @@ class Reports extends BackendOverview
                         'class'         => $arrConfig['class'],
                     ));
 
-                    // @todo remove ISO_LANG in Isotope 3.0
+                    // @deprecated remove ISO_LANG in Isotope 3.0
                     $arrReturn[$strGroup]['label'] = $strLegend = ($GLOBALS['TL_LANG']['ISO_REPORT'][$strGroup] ?: ($GLOBALS['ISO_LANG']['REPORT'][$strGroup] ?: $strGroup));
                 }
             }

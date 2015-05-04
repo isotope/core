@@ -93,8 +93,7 @@ class SalesTotal extends Sales
             $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
 
             // Generate chart data
-            $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
-
+            $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] + $objData->total_sales);
         }
 
         // Apply formatting
@@ -109,6 +108,8 @@ class SalesTotal extends Sales
 
     protected function initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
     {
+        $intStart = strtotime('first day of this month', $intStart);
+
         $arrData = array('rows'=>array());
 
         $arrData['header'] = array
@@ -214,7 +215,7 @@ class SalesTotal extends Sales
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
         $intConfig = (int) $arrSession[$this->name]['iso_config'];
-
+        $intStart = strtotime('first day of this month', $intStart);
 
         $arrData = array();
         $arrCurrencies = \Database::getInstance()->execute("
