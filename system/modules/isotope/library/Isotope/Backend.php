@@ -388,7 +388,7 @@ class Backend extends Contao_Backend
         }
 
         if (
-            \Environment::get('script') !== 'contao/help.php' ||
+            TL_SCRIPT !== 'contao/help.php' ||
             !isset($GLOBALS['TL_DCA'][$strTable]['fields'][$strField]) ||
             !is_subclass_of(\Model::getClassFromTable($strKey), 'Isotope\Model\TypeAgent')
         ) {

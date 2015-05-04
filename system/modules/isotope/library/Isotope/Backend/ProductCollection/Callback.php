@@ -258,7 +258,7 @@ class Callback extends \Backend
 
         if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds)) {
             \System::log('Trying to access disallowed order ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
-            \Controller::redirect(\Environment::get('script') . '?act=error');
+            \Controller::redirect(TL_SCRIPT . '?act=error');
         }
     }
 
