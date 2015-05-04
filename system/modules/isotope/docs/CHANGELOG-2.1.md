@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.1.13-stable (2015-??-??)
+Version 2.1.13-stable (2015-05-04)
 ----------------------------------
 
 ### Improved
@@ -13,6 +13,7 @@ Version 2.1.13-stable (2015-??-??)
 - Non-admins could see daily overview of shop configs they don't have access to (#1416)
 - Missing date format in sales total statistics (#1406)
 - Months without data were sometimes not shown in the statistics (#1430)
+- Tax ID was not persisted for product collection surcharges (#1381)
 
 
 Version 2.1.12-stable (2015-03-17)
@@ -31,7 +32,6 @@ Version 2.1.12-stable (2015-03-17)
 - Month and week reports were not correctly sorted across years (#1359)
 - Category scope "product" in product list module should not be cached (#1383)
 - Warning if products are not assigned to any category (#1398)
-- Tax ID was not persisted for product collection surcharges (#1381)
 
 
 Version 2.1.11-stable (2015-02-10)
