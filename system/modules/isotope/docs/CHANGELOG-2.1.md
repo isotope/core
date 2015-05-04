@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.13-stable (2015-??-??)
 ----------------------------------
 
+### Improved
+- Line breaks were not visible when using a textarea field in order conditions (#1401)
+
 ### Fixed
 - Non-admins could see daily overview of shop configs they don't have access to (#1416)
 - Missing date format in sales total statistics (#1406)
