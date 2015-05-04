@@ -12,6 +12,8 @@
 
 namespace Isotope\Report;
 
+use Isotope\Model\OrderStatus;
+
 abstract class Sales extends Report
 {
 
@@ -60,7 +62,7 @@ abstract class Sales extends Report
 
         if (!isset($arrSession[$this->name]['iso_status']))
         {
-            $objStatus = \Database::getInstance()->query("SELECT id FROM " . \Isotope\Model\OrderStatus::getTable() . " WHERE paid=1 ORDER BY sorting");
+            $objStatus = \Database::getInstance()->query("SELECT id FROM " . OrderStatus::getTable() . " WHERE paid=1 ORDER BY sorting");
             $arrSession[$this->name]['iso_status'] = $objStatus->id;
         }
 
@@ -104,45 +106,51 @@ abstract class Sales extends Report
         switch ($strPeriod)
         {
             case 'day':
-                $publicDate = '%d.%m.%y';
+                $publicDate  = 'd.m.y';
                 $privateDate = 'Ymd';
-                $sqlDate = '%Y%m%d';
+                $sqlDate     = '%Y%m%d';
+                $jsDate      = '%d.%m.%y';
                 break;
 
             case 'week':
-                $publicDate = 'KW %U/%y';
+                $publicDate  = '\K\W W/y';
                 $privateDate = 'YW';
-                $sqlDate = '%Y%u';
+                $sqlDate     = '%Y%u';
+                $jsDate      = 'KW %U/%y';
                 break;
 
             case 'month':
-                $publicDate = '%m/%Y';
+                $publicDate  = 'm/Y';
                 $privateDate = 'Ym';
-                $sqlDate = '%Y%m';
+                $sqlDate     = '%Y%m';
+                $jsDate      = '%m/%Y';
                 break;
 
             case 'year':
-                $publicDate = '%Y';
+                $publicDate = 'Y';
                 $privateDate = 'Y';
                 $sqlDate = '%Y';
+                $jsDate = '%Y';
                 break;
 
             default:
                 throw new \Exception('Invalid period "' . $strPeriod . '". Reset your session to continue.');
         }
 
-        return array($publicDate, $privateDate, $sqlDate);
+        return array($publicDate, $privateDate, $sqlDate, $jsDate);
     }
 
 
     protected function getStatusPanel()
     {
         $arrStatus = array(''=>&$GLOBALS['TL_LANG']['ISO_REPORT']['all']);
-        $objStatus = \Isotope\Model\OrderStatus::findAll(array('order'=>'sorting'));
 
-        if (null !== $objStatus) {
-            while ($objStatus->next()) {
-                $arrStatus[$objStatus->id] = $objStatus->current()->getName();
+        /** @var OrderStatus[] $objResult */
+        $objResult = OrderStatus::findAll(array('order'=>'sorting'));
+
+        if (null !== $objResult) {
+            foreach ($objResult as $objStatus) {
+                $arrStatus[$objStatus->id] = $objStatus->getName();
             }
         }
 

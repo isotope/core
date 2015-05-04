@@ -117,9 +117,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Split tax amount amongst collection products
-     * @param   IsotopeProductCollection
-     * @param   \Model
-     * @param   bool
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param \Model                   $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
     {
@@ -150,17 +150,19 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
     /**
      * Add a tax number
-     * @param int
+     *
+     * @param int $intId
      */
     public function addTaxNumber($intId)
     {
         if (!in_array($intId, $this->arrTaxIds)) {
-            $this->arrTaxIds[] = $intId;
+            $this->arrTaxIds[] = (int) $intId;
         }
     }
 
     /**
      * Get comma separated list of tax ids
+     *
      * @return string
      */
     public function getTaxNumbers()
@@ -178,7 +180,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     public function setRow(array $arrData)
     {
         $this->arrProducts = deserialize($arrData['products']);
-        $this->arrTaxIds   = deserialize($arrData['tax_ids']);
+        $this->arrTaxIds   = explode(',', $arrData['tax_id']);
 
         if (!is_array($this->arrProducts)) {
             $this->arrProducts = array();
@@ -188,7 +190,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $this->arrTaxIds = array();
         }
 
-        unset($arrData['products'], $arrData['tax_ids']);
+        unset($arrData['products'], $arrData['tax_id']);
 
         return parent::setRow($arrData);
     }
@@ -203,6 +205,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     protected function preSave(array $arrSet)
     {
         $arrSet['products'] = serialize($this->arrProducts);
+        $arrSet['tax_id']   = implode(',', $this->arrTaxIds);
 
         return $arrSet;
     }

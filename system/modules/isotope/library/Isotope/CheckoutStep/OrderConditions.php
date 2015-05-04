@@ -114,9 +114,28 @@ abstract class OrderConditions extends CheckoutStep
     {
         $arrTokens = array();
 
-        foreach (array_keys($this->objForm->getFormFields()) as $strField) {
+        foreach ($this->objForm->getFormFields() as $strField => $arrConfig) {
+            $varValue = null;
+
             if (isset($_SESSION['FORM_DATA'][$strField])) {
-                $arrTokens['form_' . $strField] = $_SESSION['FORM_DATA'][$strField];
+                $varValue = $_SESSION['FORM_DATA'][$strField];
+
+                if ('textarea' === $arrConfig['type']) {
+                    $varValue = nl2br($varValue);
+                }
+            }
+
+            if (isset($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
+                && is_array($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
+            ) {
+                foreach ($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'] as $callback) {
+                    $objCallback = \System::importStatic($callback[0]);
+                    $varValue    = $objCallback->$callback[1]($strField, $varValue, $arrConfig, $this->objForm);
+                }
+            }
+
+            if (null !== $varValue) {
+                $arrTokens['form_' . $strField] = $varValue;
             }
         }
 
