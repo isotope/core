@@ -40,7 +40,7 @@ class SalesTotal extends Sales
         $intStop = (int) $arrSession[$this->name]['stop'];
         $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
-        list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
+        list($publicDate, $privateDate, $sqlDate, $jsDate) = $this->getPeriodConfiguration($strPeriod);
 
         $dateFrom = date($privateDate, $intStart);
         $dateTo = date($privateDate, $intStop);
@@ -71,7 +71,7 @@ class SalesTotal extends Sales
         ")->execute($sqlDate);
 
         $arrCurrencies = array();
-        $arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate);
+        $arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
         $arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate);
 
         while ($objData->next())
@@ -96,8 +96,7 @@ class SalesTotal extends Sales
             $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
 
             // Generate chart data
-            $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart['rows'][$objData->dateGroup]['columns'][$objData->currency]['value'] + $objData->total_sales);
-
+            $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] + $objData->total_sales);
         }
 
         // Apply formatting
@@ -106,12 +105,14 @@ class SalesTotal extends Sales
         $this->Template->data = $arrData;
         $this->Template->chart = $arrChart;
         $this->Template->period = $strPeriod;
-        $this->Template->dateFormat = $publicDate;
+        $this->Template->dateFormat = $jsDate;
     }
 
 
-    protected function initializeData($strPeriod, $intStart, $intStop, $privateDate)
+    protected function initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
     {
+        $intStart = strtotime('first day of this month', $intStart);
+
         $arrData = array('rows'=>array());
 
         $arrData['header'] = array
@@ -179,7 +180,7 @@ class SalesTotal extends Sales
                 (
                     array
                     (
-                        'value'         => $intStart,
+                        'value'         => \Date::parse($publicDate, $intStart),
                     ),
                     array
                     (
@@ -215,8 +216,9 @@ class SalesTotal extends Sales
 
     protected function initializeChart($strPeriod, $intStart, $intStop, $privateDate)
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
+        $arrSession  = \Session::getInstance()->get('iso_reports');
+        $intConfig   = (int) $arrSession[$this->name]['iso_config'];
+        $intStart    = strtotime('first day of this month', $intStart);
         $configTable = Config::getTable();
 
         $arrData = array();

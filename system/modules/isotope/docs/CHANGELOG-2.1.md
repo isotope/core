@@ -1,6 +1,21 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.13-stable (2015-05-04)
+----------------------------------
+
+### Improved
+- Line breaks were not visible when using a textarea field in order conditions (#1401)
+- Decode entities in attribute name (#1431)
+- Documents are now generated in the language of the order (#1434)
+
+### Fixed
+- Non-admins could see daily overview of shop configs they don't have access to (#1416)
+- Missing date format in sales total statistics (#1406)
+- Months without data were sometimes not shown in the statistics (#1430)
+- Tax ID was not persisted for product collection surcharges (#1381)
+
+
 Version 2.1.12-stable (2015-03-17)
 ----------------------------------
 
