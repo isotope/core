@@ -101,7 +101,7 @@ class Message
         }
 
         $objModule = new Messages(new \ModuleModel());
-        $objModule->type = 'iso_message';
+        $objModule->type = 'iso_messages';
 
         return $objModule->generate();
     }
