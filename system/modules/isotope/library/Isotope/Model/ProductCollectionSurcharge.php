@@ -178,7 +178,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     public function addTaxNumber($intId)
     {
         if (!in_array($intId, $this->arrTaxIds)) {
-            $this->arrTaxIds[] = $intId;
+            $this->arrTaxIds[] = (int) $intId;
         }
     }
 
@@ -202,7 +202,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     public function setRow(array $arrData)
     {
         $this->arrProducts = deserialize($arrData['products']);
-        $this->arrTaxIds   = deserialize($arrData['tax_ids']);
+        $this->arrTaxIds   = explode(',', $arrData['tax_id']);
 
         if (!is_array($this->arrProducts)) {
             $this->arrProducts = array();
@@ -212,7 +212,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $this->arrTaxIds = array();
         }
 
-        unset($arrData['products'], $arrData['tax_ids']);
+        unset($arrData['products'], $arrData['tax_id']);
 
         return parent::setRow($arrData);
     }
@@ -227,6 +227,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     protected function preSave(array $arrSet)
     {
         $arrSet['products'] = serialize($this->arrProducts);
+        $arrSet['tax_id']   = implode(',', $this->arrTaxIds);
 
         return $arrSet;
     }

@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_iso_rule']['name'][0] = 'Navn';
 $GLOBALS['TL_LANG']['tl_iso_rule']['label'][0] = 'Mærkat';
 $GLOBALS['TL_LANG']['tl_iso_rule']['tax_class'][0] = 'Moms klasse';
 $GLOBALS['TL_LANG']['tl_iso_rule']['startDate'][0] = 'Start dato';
+$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Grupper';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['producttypes'] = 'Produkttyper';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['pages'] = 'Kategorier';
 $GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Produkter';

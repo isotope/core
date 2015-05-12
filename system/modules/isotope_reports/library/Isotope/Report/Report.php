@@ -12,6 +12,7 @@
 
 namespace Isotope\Report;
 
+use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
 
 
@@ -311,9 +312,9 @@ abstract class Report extends \Backend
      *
      * @return string
      */
-    protected function getProductProcedure($strTable = 'tl_iso_product', $strField = 'id', $strPrefix = ' AND ')
+    public static function getProductProcedure($strTable = 'tl_iso_product', $strField = 'id', $strPrefix = ' AND ')
     {
-        $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
+        $arrAllowedProducts = Permission::getAllowedIds();
 
         if (true === $arrAllowedProducts) {
             return '';
@@ -335,7 +336,7 @@ abstract class Report extends \Backend
      *
      * @return string
      */
-    protected function getConfigProcedure($strTable = 'tl_iso_config', $strField = 'id', $strPrefix = ' AND ')
+    public static function getConfigProcedure($strTable = 'tl_iso_config', $strField = 'id', $strPrefix = ' AND ')
     {
         if (\BackendUser::getInstance()->isAdmin) {
             return '';

@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.4-stable (2015-05-12)
+---------------------------------
+
+### Improved
+- Correctly show/hide tinyMCE 4 when using fallback value for variant attribute (#1335)
+
+### Fixed
+- CSS class of messages module was inconsistent (mod_iso_message vs. mod_iso_messages)
+
+
 Version 2.2.3-stable (2015-03-17)
 ---------------------------------
 
@@ -38,6 +48,7 @@ Version 2.2.0-stable (2014-11-24)
 
 ### Improved
 - Added post-action hooks to product collection (#1292)
+- PayPal IPN should be retried if there's a communication problem with PayPal servers (#1418)
 
 ### Fixed
 - Checkout step "address" could not be completed when a member was logged in (#1271)
