@@ -14,6 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'Ryhmät';
-$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['products'] = 'Tuotteet';
-$GLOBALS['TL_LANG']['tl_iso_rule']['products'][0] = 'Tuotteet';
+$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'][0] = 'Liite';
+$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'][1] = 'Valitse tiedosto tai kansiosisältö jonka haluat myydä.';
+$GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'][0] = 'Salli tiedostolataukset';
+$GLOBALS['TL_LANG']['tl_iso_download']['file_legend'] = 'Liite';

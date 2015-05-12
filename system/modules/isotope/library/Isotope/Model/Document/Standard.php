@@ -25,6 +25,8 @@ class Standard extends Document implements IsotopeDocument
      */
     public function outputToBrowser(IsotopeProductCollection $objCollection)
     {
+        $this->prepareEnvironment($objCollection);
+
         $arrTokens  = $this->prepareCollectionTokens($objCollection);
         $pdf        = $this->generatePDF($objCollection, $arrTokens);
 
@@ -39,6 +41,8 @@ class Standard extends Document implements IsotopeDocument
      */
     public function outputToFile(IsotopeProductCollection $objCollection, $strDirectoryPath)
     {
+        $this->prepareEnvironment($objCollection);
+
         $arrTokens  = $this->prepareCollectionTokens($objCollection);
         $pdf        = $this->generatePDF($objCollection, $arrTokens);
         $strFile    = $this->prepareFileName($this->fileTitle, $arrTokens, $strDirectoryPath) . '.pdf';
@@ -198,5 +202,22 @@ class Standard extends Document implements IsotopeDocument
         $strBuffer = preg_replace($arrSearch, $arrReplace, $strBuffer);
 
         return $strBuffer;
+    }
+
+    /**
+     * Loads the page configuration and language before generating a PDF.
+     *
+     * @param IsotopeProductCollection $objCollection
+     */
+    protected function prepareEnvironment(IsotopeProductCollection $objCollection)
+    {
+        global $objPage;
+
+        if (!is_object($objPage) && $objCollection->pageId > 0) {
+            $objPage = \PageModel::findWithDetails($objCollection->pageId);
+            $objPage = \Isotope\Frontend::loadPageConfig($objPage);
+
+            \System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE'], true);
+        }
     }
 }

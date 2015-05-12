@@ -15,14 +15,19 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'Shop ID';
+$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][1] = 'Forskellige butiks ID\'er grupperer en butik på flere rod-sider. En kundes kurv og adresse vil blive delt på tværs af butikker med samme ID.';
 $GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'Mærkat';
 $GLOBALS['TL_LANG']['tl_iso_address']['label'][1] = 'Indtast en mærkat for denne adresse.';
+$GLOBALS['TL_LANG']['tl_iso_address']['gender'][0] = 'Køn';
+$GLOBALS['TL_LANG']['tl_iso_address']['gender'][1] = 'Vælg venligst køn.';
 $GLOBALS['TL_LANG']['tl_iso_address']['salutation'][0] = 'Tiltaleform';
 $GLOBALS['TL_LANG']['tl_iso_address']['salutation'][1] = 'Indtast en tiltaleform (Hr, Fru, Frk).';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][0] = 'Fornavn';
 $GLOBALS['TL_LANG']['tl_iso_address']['firstname'][1] = 'Indtast venligst fornavn';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][0] = 'Efternavn';
 $GLOBALS['TL_LANG']['tl_iso_address']['lastname'][1] = 'Indtast venligst efternavn';
+$GLOBALS['TL_LANG']['tl_iso_address']['dateOfBirth'][0] = 'Fødselsdato';
+$GLOBALS['TL_LANG']['tl_iso_address']['dateOfBirth'][1] = 'Indtast venligst fødselsdato';
 $GLOBALS['TL_LANG']['tl_iso_address']['company'][0] = 'Firma';
 $GLOBALS['TL_LANG']['tl_iso_address']['company'][1] = 'Indtast evt. et firmanavn';
 $GLOBALS['TL_LANG']['tl_iso_address']['vat_no'][0] = 'Momsnummer';
@@ -36,7 +41,9 @@ $GLOBALS['TL_LANG']['tl_iso_address']['street_3'][1] = 'Indtast evt. yderligere 
 $GLOBALS['TL_LANG']['tl_iso_address']['postal'][0] = 'Postnummer';
 $GLOBALS['TL_LANG']['tl_iso_address']['postal'][1] = 'Indtast postnummer.';
 $GLOBALS['TL_LANG']['tl_iso_address']['city'][0] = 'By';
+$GLOBALS['TL_LANG']['tl_iso_address']['city'][1] = 'Indtast venligst by.';
 $GLOBALS['TL_LANG']['tl_iso_address']['subdivision'][0] = 'Region';
+$GLOBALS['TL_LANG']['tl_iso_address']['subdivision'][1] = 'Indtast venligst region.';
 $GLOBALS['TL_LANG']['tl_iso_address']['country'][0] = 'Land';
 $GLOBALS['TL_LANG']['tl_iso_address']['country'][1] = 'Vælg et land.';
 $GLOBALS['TL_LANG']['tl_iso_address']['phone'][0] = 'Telefonnummer';

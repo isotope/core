@@ -43,7 +43,9 @@ class Paypal extends Postsale implements IsotopePayment
 
         if ($objRequest->hasError()) {
             \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
-            return;
+            $response = new Response('', 500);
+            $response->send();
+            exit;
 
         } elseif ($objRequest->response != 'VERIFIED') {
             \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
