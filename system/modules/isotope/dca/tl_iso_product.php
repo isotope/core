@@ -408,7 +408,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_product']['priceBlankOptionLabel'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (

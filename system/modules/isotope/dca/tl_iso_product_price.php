@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'clr'),
+            'eval'                  => array('includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'tl_class'=>'clr'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

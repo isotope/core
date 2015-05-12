@@ -10,6 +10,7 @@ Version 2.3.0-rc1 (2015-04-13)
 
 ### Improved
 - Default invoice template now looks way better
+- Added blank label "tax free" to all price fields (#1427)
 
 ### Fixed
 - Duplicate key for member carts

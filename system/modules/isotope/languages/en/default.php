@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['MSC']['mmProcessing']                      = 'Processing dr
 $GLOBALS['TL_LANG']['MSC']['undeletableRecords']                = 'Some records could not be deleted.';
 $GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']            = 'Some records could not be deleted and have been unpublished instead.';
 $GLOBALS['TL_LANG']['MSC']['quantity']                          = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['taxFree']                           = 'Tax-free';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText']                 = 'search products';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']                    = 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                   = '<span class="from">From</span> %s';
