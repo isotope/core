@@ -2,13 +2,13 @@
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
         <th width="65%">Bezeichnung</th>
-        <th width="9%" style="text-align:right">Anzahl</th>
-        <th width="13%" style="text-align:right">Preis</th>
-        <th width="13%" style="text-align:right">Total</th>
+        <th width="9%" style="text-align:right"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_quantity']; ?></th>
+        <th width="13%" style="text-align:right"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_price']; ?></th>
+        <th width="13%" style="text-align:right"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_total']; ?></th>
     </tr>
     <tr><td colspan="4" style="font-size:5px;line-height:5px; border-bottom: 2px solid #898989">&nbsp;</td></tr>
     <?php foreach($this->items as $item):; ?>
-        <tr><td colspan="4" style="font-size:5px;line-height:5px<?php if($i!=0): ?>; border-top: 1px solid #C4C4C4<?php endif; ?>">&nbsp;</td></tr>
+        <tr><td colspan="4" style="font-size:5px;line-height:5px<?php if($i!=0): ?>; border-top: 1px solid #c4c4c4<?php endif; ?>">&nbsp;</td></tr>
         <tr>
             <td><?php echo $item['name']; ?>
                 <?php if(!empty($item['configuration'])): ?>
