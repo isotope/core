@@ -70,3 +70,4 @@ $GLOBALS['TL_LANG']['tl_iso_producttype']['template_legend'] = 'Templates';
 $GLOBALS['TL_LANG']['tl_iso_producttype']['attributes_legend'] = 'Produktattribute';
 $GLOBALS['TL_LANG']['tl_iso_producttype']['variants_legend'] = 'Variantenattribute';
 $GLOBALS['TL_LANG']['tl_iso_producttype']['expert_legend'] = 'Experten-Einstellungen';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['noVariantAttributes'] = 'Sie müssen mindestens eine Varianten-Option (eine von diesen: %s) auswählen.';

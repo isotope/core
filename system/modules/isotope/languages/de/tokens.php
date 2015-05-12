@@ -29,6 +29,7 @@ $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['doc
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_text'] = 'Bestellung/Warenkorb im Text-Format.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['cart_html'] = 'Bestellung/Warenkorb in HTML.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['document'] = 'Das Dokument, welches angehängt werden soll (z. B. eine Rechnung).';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['collection_*'] = 'Alle Collection/Bestell-Spalten-Felder wie in der Datenbank gespeichert.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address'] = 'Formatierte Rechnungsanschrift';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['billing_address_*'] = 'Alle Rechnungsadresse-Model-Felder.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['iso_order_status_change']['shipping_address'] = 'Formatierte Versandanschrift';

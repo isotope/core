@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'][0] = 'Butiksindsti
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'][0] = 'Betalingsmetode';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'][0] = 'Forsendelsesmetode';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'][0] = 'Subtotal';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['total'][0] = 'Total';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'][0] = 'Valuta';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'][0] = 'Ordre notater';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'][1] = 'Hvis du vil tilføje notater til ordre kan du gøre det her. Notaterne er kun synlige i administrationen.';

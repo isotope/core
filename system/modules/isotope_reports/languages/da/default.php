@@ -14,6 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Total';
+$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Total';
 $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Butiksindstilling';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Alle';
