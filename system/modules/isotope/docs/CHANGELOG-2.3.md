@@ -17,6 +17,7 @@ Version 2.3.0-rc1 (2015-04-13)
 - API break in Standard gallery class
 - Inline gallery did not correctly generate main image
 - Removed unnecessary whitespaces in address formatting
+- Prevent potential duplicate key SQL error (#1436)
 
 
 Version 2.3.0-beta1 (2015-04-13)
