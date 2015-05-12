@@ -1449,14 +1449,13 @@ abstract class ProductCollection extends TypeAgent
         foreach ($this->getItems($varCallable) as $objItem) {
             $item = $this->generateItem($objItem);
 
-            $taxIds[] = $item['tax_id'];
-
+            $taxIds[]   = $item['tax_id'];
             $arrItems[] = $item;
         }
 
         RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
 
-        $objTemplate->items = $arrItems;
+        $objTemplate->items         = $arrItems;
         $objTemplate->total_tax_ids = count(array_unique($taxIds));
 
         return $arrItems;

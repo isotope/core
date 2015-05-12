@@ -468,6 +468,7 @@ class Order extends ProductCollection implements
      */
     protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
     {
+        $taxIds          = array();
         $arrItems        = array();
         $arrAllDownloads = array();
 
@@ -482,13 +483,15 @@ class Order extends ProductCollection implements
             $arrItem['downloads'] = $arrDownloads;
             $arrAllDownloads      = array_merge($arrAllDownloads, $arrDownloads);
 
+            $taxIds[]   = $arrItem['tax_id'];
             $arrItems[] = $arrItem;
         }
 
         RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo($arrItems);
 
-        $objTemplate->items     = $arrItems;
-        $objTemplate->downloads = $arrAllDownloads;
+        $objTemplate->items         = $arrItems;
+        $objTemplate->downloads     = $arrAllDownloads;
+        $objTemplate->total_tax_ids = count(array_unique($taxIds));
 
         return $arrItems;
     }
