@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
+use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -60,7 +61,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
     }
 
-
     /**
      * Display a wildcard in the back end
      *
@@ -81,7 +81,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
 
         // Hide product list in reader mode if the respective setting is enabled
-        if ($this->iso_hide_list && \Haste\Input\Input::getAutoItem('product', false, true) != '') {
+        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
             return '';
         }
 
@@ -154,7 +154,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
     }
 
-
     /**
      * Generates the filter
      */
@@ -204,7 +203,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                 $count        = 0;
 
                 $arrItems[] = array(
-                    'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
+                    'href'  => \Haste\Util\Url::addQueryString(
+                        'cumulativefilter=' . base64_encode(
+                            $this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue
+                        )
+                    ),
                     'class' => ($blnActive ? 'active' : ''),
                     'title' => specialchars($option['label']),
                     'link'  => sprintf('%s (%s)', $option['label'], $count),
@@ -243,7 +246,6 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
     }
-
 
     private function generateFilterKey($field, $value)
     {
