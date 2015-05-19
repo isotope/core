@@ -42,10 +42,18 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         parent::__construct($objModule, $strColumn);
 
         $this->iso_cumulativeFields = deserialize($this->iso_cumulativeFields);
+        $fields                     = array();
 
-        if (!is_array($this->iso_cumulativeFields)) {
-            $this->iso_cumulativeFields = array();
+        if (is_array($this->iso_cumulativeFields)) {
+            foreach ($this->iso_cumulativeFields as $k => $v) {
+                $attribute = $v['attribute'];
+                unset($v['attribute']);
+
+                $fields[$attribute] = $v;
+            }
         }
+
+        $this->iso_cumulativeFields = $fields;
 
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
@@ -91,10 +99,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     {
         $arrFilter = explode(';', base64_decode(\Input::get('cumulativefilter', true)), 4);
 
-        if ($arrFilter[0] == $this->id && in_array($arrFilter[2], $this->iso_filterFields)) {
+        if ($arrFilter[0] == $this->id && isset($this->iso_cumulativeFields[$arrFilter[2]])) {
 
             // Unique filter key is necessary to unset the filter
             $strFilterKey = $this->generateFilterKey($arrFilter[2], $arrFilter[3]);
+            $filterConfig = $this->iso_cumulativeFields[$arrFilter[2]];
 
             if ($arrFilter[1] == 'add') {
                 $filter   = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
@@ -104,7 +113,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                     $group = 'cumulative_' . $arrFilter[2];
                     $filter->groupBy($group);
 
-                    if ($this->queryType == 'and') {
+                    if ($filterConfig['queryType'] == 'and') {
                         /** @var Filter $oldFilter */
                         foreach (Isotope::getRequestCache()->getFiltersForModules(array($this->id)) as $oldFilter) {
                             if ($oldFilter->getGroup() == $group) {
@@ -155,7 +164,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $arrFilters    = array();
         $arrCategories = $this->findCategories();
 
-        foreach ($this->iso_filterFields as $strField) {
+        foreach ($this->iso_cumulativeFields as $strField => $config) {
             $arrValues = $this->getUsedValuesForAttribute($strField, $arrCategories, $this->iso_list_where);
 
             if (empty($arrValues)) {
