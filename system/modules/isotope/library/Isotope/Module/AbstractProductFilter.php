@@ -40,6 +40,9 @@ abstract class AbstractProductFilter extends Module
     {
         parent::__construct($objModule, $strColumn);
 
+        \Controller::loadDataContainer('tl_iso_product');
+        \System::loadLanguageFile('tl_iso_product');
+
         $this->iso_filterFields  = deserialize($this->iso_filterFields);
         $this->iso_sortingFields = deserialize($this->iso_sortingFields);
         $this->iso_searchFields  = deserialize($this->iso_searchFields);
