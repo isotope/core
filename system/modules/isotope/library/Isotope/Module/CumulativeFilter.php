@@ -217,7 +217,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             }
 
             // Hide fields with just one option (if enabled)
-            if (empty($arrItems) || ($this->iso_iso_filterHideSingle && count($arrItems) < 2)) {
+            if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
                 continue;
             }
 
