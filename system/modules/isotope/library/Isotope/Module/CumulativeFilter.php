@@ -19,6 +19,7 @@ use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
+use Isotope\Template;
 
 /**
  * @property array $iso_cumulativeFields
@@ -100,58 +101,14 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $arrFilter = explode(';', base64_decode(\Input::get('cumulativefilter', true)), 4);
 
         if ($arrFilter[0] == $this->id && isset($this->iso_cumulativeFields[$arrFilter[2]])) {
-
-            // Unique filter key is necessary to unset the filter
-            $strFilterKey = $this->generateFilterKey($arrFilter[2], $arrFilter[3]);
-            $filterConfig = $this->iso_cumulativeFields[$arrFilter[2]];
-
-            if ($arrFilter[1] == 'add') {
-                $filter   = Filter::attribute($arrFilter[2])->isEqualTo($arrFilter[3]);
-                $multiple = (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$arrFilter[2]]['eval']['multiple'];
-
-                if (!$multiple) {
-                    $group = 'cumulative_' . $arrFilter[2];
-                    $filter->groupBy($group);
-
-                    if ($filterConfig['queryType'] == 'and') {
-                        /** @var Filter $oldFilter */
-                        foreach (Isotope::getRequestCache()->getFiltersForModules(array($this->id)) as $oldFilter) {
-                            if ($oldFilter->getGroup() == $group) {
-                                Isotope::getRequestCache()->removeFilterForModule(
-                                    $this->generateFilterKey($oldFilter['attribute'], $oldFilter['value']),
-                                    $this->id
-                                );
-                            }
-                        }
-                    }
-                }
-
-                Isotope::getRequestCache()->setFilterForModule(
-                    $strFilterKey,
-                    $filter,
-                    $this->id
-                );
-            } else {
-                Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
-            }
-
-            $objCache = Isotope::getRequestCache()->saveNewConfiguration();
-
-            // Include \Environment::base or the URL would not work on the index page
-            \Controller::redirect(
-                \Environment::get('base') .
-                Url::addQueryString(
-                    'isorc='.$objCache->id,
-                    Url::removeQueryString(array('cumulativefilter'), ($this->jumpTo ?: null))
-                )
-            );
-
-        } else {
-            $this->generateFilter();
-
-            $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
-            $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+            $this->saveFilter($arrFilter[1], $arrFilter[2], $arrFilter[3]);
+            return;
         }
+
+        $this->generateFilter();
+
+        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
+        $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
     /**
@@ -161,92 +118,200 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     {
         $blnShowClear  = false;
         $arrFilters    = array();
-        $arrCategories = $this->findCategories();
 
         foreach ($this->iso_cumulativeFields as $strField => $config) {
-            $arrValues = $this->getUsedValuesForAttribute($strField, $arrCategories, $this->iso_list_where);
+            $item = $this->generateAttribute($strField, $config, $blnShowClear);
 
-            if (empty($arrValues)) {
-                continue;
+            if (null !== $item) {
+                $arrFilters[$strField] = $item;
             }
-
-            $blnTrail  = false;
-            $arrItems  = array();
-            $arrData   = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
-
-            // Use the default routine to initialize options data
-            $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
-
-            if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
-                && $objAttribute instanceof IsotopeAttributeWithOptions
-            ) {
-                $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
-            }
-
-            // Must have options to apply the filter
-            if (!is_array($arrWidget['options'])) {
-                continue;
-            }
-
-            foreach ($arrWidget['options'] as $option) {
-                $varValue = $option['value'];
-
-                // skip zero values (includeBlankOption)
-                // @deprecated drop "-" when we only have the database table as options source
-                if (!in_array($option['value'], $arrValues) || $varValue === '' || $varValue === '-') {
-                    continue;
-                }
-
-                $strFilterKey = $this->generateFilterKey($strField, $varValue);
-                $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
-                $blnTrail     = $blnActive ? true : $blnTrail;
-                $count        = 0;
-
-                $arrItems[] = array(
-                    'href'  => \Haste\Util\Url::addQueryString(
-                        'cumulativefilter=' . base64_encode(
-                            $this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue
-                        )
-                    ),
-                    'class' => ($blnActive ? 'active' : ''),
-                    'title' => specialchars($option['label']),
-                    'link'  => sprintf('%s (%s)', $option['label'], $count),
-                    'label' => $option['label'],
-                    'count' => $count,
-                );
-            }
-
-            // Hide fields with just one option (if enabled)
-            if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
-                continue;
-            }
-
-            $objClass = RowClass::withKey('class')->addFirstLast();
-
-            if ($blnTrail) {
-                $objClass->addCustom('sibling');
-            }
-
-            $objClass->applyTo($arrItems);
-
-            $objTemplate = new \Isotope\Template($this->navigationTpl);
-
-            $objTemplate->level = 'level_2';
-            $objTemplate->items = $arrItems;
-
-            $arrFilters[$strField] = array(
-                'label'    => $arrWidget['label'],
-                'subitems' => $objTemplate->parse(),
-                'isActive' => $blnTrail,
-            );
-
-            $blnShowClear = $blnTrail ? true : $blnShowClear;
         }
 
         $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
     }
 
+    /**
+     * @param string $attribute
+     * @param array  $config
+     * @param bool   $showClear
+     *
+     * @return array|null
+     */
+    protected function generateAttribute($attribute, array $config, &$showClear)
+    {
+        $arrCategories = $this->findCategories();
+        $arrValues     = $this->getUsedValuesForAttribute($attribute, $arrCategories, $this->iso_list_where);
+
+        if (empty($arrValues)) {
+            return null;
+        }
+
+        $blnTrail  = false;
+        $arrData   = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
+
+        // Use the default routine to initialize options data
+        $arrWidget = \Widget::getAttributesFromDca($arrData, $attribute);
+
+        if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
+            && $objAttribute instanceof IsotopeAttributeWithOptions
+        ) {
+            $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
+        }
+
+        // Must have options to apply the filter
+        if (!is_array($arrWidget['options'])) {
+            return null;
+        }
+
+        $arrItems = $this->generateOptions($attribute, $arrWidget['options'], $arrValues, $blnTrail);
+
+        // Hide fields with just one option (if enabled)
+        if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
+            return null;
+        }
+
+        $objClass = RowClass::withKey('class')->addFirstLast();
+
+        if ($blnTrail) {
+            $objClass->addCustom('sibling');
+            $showClear = true;
+        }
+
+        $objClass->applyTo($arrItems);
+
+        $objTemplate = new Template($this->navigationTpl);
+
+        $objTemplate->level = 'level_2';
+        $objTemplate->items = $arrItems;
+
+        return array(
+            'label'    => $arrWidget['label'],
+            'subitems' => $objTemplate->parse(),
+            'isActive' => $blnTrail,
+        );
+    }
+
+    /**
+     * @param string $attribute
+     * @param array  $options
+     * @param array  $available
+     * @param bool   $isTrail
+     *
+     * @return array
+     */
+    protected function generateOptions($attribute, array $options, array $available, &$isTrail)
+    {
+        $arrItems  = array();
+
+        foreach ($options as $option) {
+            $varValue = $option['value'];
+
+            // skip zero values (includeBlankOption)
+            // @deprecated drop "-" when we only have the database table as options source
+            if (!in_array($option['value'], $available) || $varValue === '' || $varValue === '-') {
+                continue;
+            }
+
+            $isActive     = false;
+            $strFilterKey = $this->generateFilterKey($attribute, $varValue);
+
+            if (null !== Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id)) {
+                $isActive = true;
+                $isTrail  = true;
+            }
+
+            $arrItems[] = $this->generateOptionItem($attribute, $option['label'], $varValue, $isActive);
+        }
+
+        return $arrItems;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $label
+     * @param string $value
+     * @param bool   $isActive
+     *
+     * @return array
+     */
+    protected function generateOptionItem($attribute, $label, $value, $isActive)
+    {
+        $count = 0;
+        $value = base64_encode($this->id . ';' . ($isActive ? 'del' : 'add') . ';' . $attribute . ';' . $value);
+        $href  = Url::addQueryString('cumulativefilter=' . $value);
+
+        return array(
+            'href'  => $href,
+            'class' => ($isActive ? 'active' : ''),
+            'title' => specialchars($label),
+            'link'  => sprintf('%s (%s)', $label, $count),
+            'label' => $label,
+            'count' => $count,
+        );
+    }
+
+    /**
+     * @param string $action
+     * @param string $attribute
+     * @param string $value
+     */
+    protected function saveFilter($action, $attribute, $value)
+    {
+        // Unique filter key is necessary to unset the filter
+        $strFilterKey = $this->generateFilterKey($attribute, $value);
+        $filterConfig = $this->iso_cumulativeFields[$attribute];
+
+        if ($action == 'add') {
+            $filter   = Filter::attribute($attribute)->isEqualTo($value);
+            $multiple = (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
+
+            if (!$multiple) {
+                $group = 'cumulative_' . $attribute;
+                $filter->groupBy($group);
+
+                if ($filterConfig['queryType'] == 'and') {
+                    /** @var Filter $oldFilter */
+                    foreach (Isotope::getRequestCache()->getFiltersForModules(array($this->id)) as $oldFilter) {
+                        if ($oldFilter->getGroup() == $group) {
+                            Isotope::getRequestCache()->removeFilterForModule(
+                                $this->generateFilterKey($oldFilter['attribute'], $oldFilter['value']),
+                                $this->id
+                            );
+                        }
+                    }
+                }
+            }
+
+            Isotope::getRequestCache()->setFilterForModule(
+                $strFilterKey,
+                $filter,
+                $this->id
+            );
+        } else {
+            Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
+        }
+
+        $objCache = Isotope::getRequestCache()->saveNewConfiguration();
+
+        // Include \Environment::base or the URL would not work on the index page
+        \Controller::redirect(
+            \Environment::get('base') .
+            Url::addQueryString(
+                'isorc='.$objCache->id,
+                Url::removeQueryString(array('cumulativefilter'), ($this->jumpTo ?: null))
+            )
+        );
+    }
+
+    /**
+     * Generates a filter key for the field and value.
+     *
+     * @param string $field
+     * @param string $value
+     *
+     * @return string
+     */
     private function generateFilterKey($field, $value)
     {
         return $field . '=' . $value;
