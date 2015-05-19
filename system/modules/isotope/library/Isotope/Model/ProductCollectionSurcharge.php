@@ -401,7 +401,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
                 if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                     $addToTotal = static::getTaxAddState(false);
-                    $fltPrice = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+                    $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
                     $arrTaxIds[] = static::addTax(
                         $arrTaxes,
@@ -409,7 +409,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                         ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
                         $objIncludes->getAmount(),
                         $objIncludes->isPercentage(),
-                        $fltPrice,
+                        $total,
                         $objTaxClass->applyRoundingIncrement,
                         $addToTotal,
                         false
@@ -424,7 +424,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
                         $addToTotal = static::getTaxAddState(true);
-                        $fltPrice = $addToTotal ? $objTaxRate->calculateAmountAddedToPrice($fltPrice) : $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
+                        $total = $addToTotal ? $objTaxRate->calculateAmountAddedToPrice($fltPrice) : $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
 
                         $arrTaxIds[] = static::addTax(
                             $arrTaxes,
@@ -432,7 +432,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                             $objTaxRate->getLabel(),
                             $objTaxRate->getAmount(),
                             $objTaxRate->isPercentage(),
-                            $fltPrice,
+                            $total,
                             $objTaxClass->applyRoundingIncrement,
                             $addToTotal,
                             false

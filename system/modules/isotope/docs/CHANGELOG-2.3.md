@@ -22,6 +22,7 @@ Version 2.3.0-rc1 (2015-04-13)
 - Removed unnecessary whitespaces in address formatting
 - Prevent potential duplicate key SQL error (#1436)
 - Language selector was not visible if there were no product versions (#1424)
+- Incorrect calculation with multiple tax rates on one tax class (#1428)
 
 
 Version 2.3.0-beta1 (2015-04-13)
