@@ -328,13 +328,13 @@ window.addEvent('domready', function()
     public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false, $strLanguage = null)
     {
         $t         = \PageModel::getTable();
-        $time      = time();
+        $time      = \Date::floorToMinute();
         $arrValue  = array();
         $arrColumn = array(
             "$t.type='root'",
             "$t.published='1'",
-            "($t.start='' OR $t.start<$time)",
-            "($t.stop='' OR $t.stop>$time)"
+            "($t.start='' OR $t.start<'$time')",
+            "($t.stop='' OR $t.stop>'" . ($time + 60) . "')"
         );
 
         if ($intRoot > 0) {
@@ -370,7 +370,7 @@ window.addEvent('domready', function()
                             // The target page has not been published
                             if (!$objPage->published
                                 || ($objPage->start != '' && $objPage->start > $time)
-                                || ($objPage->stop != '' && $objPage->stop < $time)
+                                || ($objPage->stop != '' && $objPage->stop < ($time + 60))
                             ) {
                                 continue;
                             }

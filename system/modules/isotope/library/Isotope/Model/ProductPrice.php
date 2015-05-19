@@ -252,13 +252,13 @@ class ProductPrice extends \Model implements IsotopePrice
 
         if ($objProduct->hasAdvancedPrices()) {
 
-            $time = $objCollection->getLastModification();
+            $time = \Date::floorToMinute($objCollection->getLastModification());
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
             $arrOptions['column'][] = "$t.config_id IN (" . (int) $objCollection->config_id . ",0)";
             $arrOptions['column'][] = "$t.member_group IN(" . implode(',', $arrGroups) . ")";
-            $arrOptions['column'][] = "($t.start='' OR $t.start<$time)";
-            $arrOptions['column'][] = "($t.stop='' OR $t.stop>$time)";
+            $arrOptions['column'][] = "($t.start='' OR $t.start<'$time')";
+            $arrOptions['column'][] = "($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
 
             $arrOptions['order'] = "$t.config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", $t.start DESC, $t.stop DESC";
 
@@ -365,7 +365,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
     {
-        $time = time();
+        $time = \Date::floorToMinute();
         $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
         $objResult = \Database::getInstance()->query("
@@ -380,8 +380,8 @@ class ProductPrice extends \Model implements IsotopePrice
                 WHERE
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
-                    (start='' OR start<$time) AND
-                    (stop='' OR stop>$time) AND
+                    (start='' OR start<'$time') AND
+                    (stop='' OR stop>'" . ($time + 60) . "') AND
                     tl_iso_product_price.pid IN (" . implode(',', $arrIds) . ")
                 GROUP BY tl_iso_product_price.id
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC

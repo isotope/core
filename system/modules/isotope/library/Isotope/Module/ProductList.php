@@ -461,10 +461,10 @@ class ProductList extends Module
      */
     protected function getProductCacheExpiration()
     {
-        $time = time();
+        $time = \Date::floorToMinute();
 
         // Find timestamp when the next product becomes available
-        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>$time")->expires;
+        $expires = (int) \Database::getInstance()->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>'$time'")->expires;
 
         // Find
         if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {

@@ -560,7 +560,7 @@ class RequestCache extends \Model
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {
-                $time = time();
+                $time = \Date::floorToMinute();
                 $t    = Product::getTable();
 
 
@@ -568,9 +568,9 @@ class RequestCache extends \Model
                     (
                         ($strWhere)
                         OR $t.id IN (SELECT $t.pid FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                    . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')") . ")
                         OR $t.pid IN (SELECT $t.id FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                    . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
+                    . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')") . ")
                     )
                 ";
 

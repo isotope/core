@@ -116,10 +116,10 @@ abstract class Product extends TypeAgent
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time = time();
+            $time = \Date::floorToMinute();
             array_unshift(
                 $arrColumns,
-                "$t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)"
+                "$t.published='1' AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')"
             );
         }
 

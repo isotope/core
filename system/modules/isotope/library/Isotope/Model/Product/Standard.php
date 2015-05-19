@@ -104,13 +104,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function isPublished()
     {
-        $time = time();
+        $time = \Date::floorToMinute();
 
         if (!$this->arrData['published']) {
             return false;
         } elseif ($this->arrData['start'] != '' && $this->arrData['start'] > $time) {
             return false;
-        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < $time) {
+        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < ($time + 60)) {
             return false;
         }
 
@@ -380,10 +380,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 return $this->arrVariantIds;
             }
 
-            $time            = time();
+            $time            = \Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGroups    = false;
-            $strQuery        = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<$time) AND (stop='' OR stop>$time)";
+            $strQuery        = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<'$time') AND (stop='' OR stop>'" . ($time + 60) . "')";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getVariantAttributes();

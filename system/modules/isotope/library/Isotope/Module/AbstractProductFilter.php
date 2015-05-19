@@ -87,8 +87,8 @@ abstract class AbstractProductFilter extends Module
         }
 
         if (BE_USER_LOGGED_IN !== true) {
-            $time      = time();
-            $published = "AND p1.published='1' AND (p1.start='' OR p1.start<$time) AND (p1.stop='' OR p1.stop>$time)";
+            $time      = \Date::floorToMinute();
+            $published = "AND p1.published='1' AND (p1.start='' OR p1.start<'$time') AND (p1.stop='' OR p1.stop>'" . ($time + 60) . "')";
         }
 
         if (!empty($attributeTypes)) {
@@ -105,7 +105,7 @@ abstract class AbstractProductFilter extends Module
                                 )";
 
             if (BE_USER_LOGGED_IN !== true) {
-                $published .= " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<$time) AND (p2.stop='' OR p2.stop>$time)))";
+                $published .= " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<'$time') AND (p2.stop='' OR p2.stop>'" . ($time + 60) . "')))";
             }
         }
 

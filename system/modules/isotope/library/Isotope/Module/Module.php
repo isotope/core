@@ -120,8 +120,8 @@ abstract class Module extends Contao_Module
             $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
             if (!BE_USER_LOGGED_IN) {
-                $time = time();
-                $strWhere .= " AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time) AND $t.published='1'";
+                $time = \Date::floorToMinute();
+                $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
             }
 
             switch ($this->iso_category_scope) {
