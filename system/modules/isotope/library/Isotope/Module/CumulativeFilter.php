@@ -181,7 +181,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
                 && $objAttribute instanceof IsotopeAttributeWithOptions
             ) {
-                $arrWidget['options'] = $objAttribute->getOptionsForProductFilter(array_keys($arrValues));
+                $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
             }
 
             // Must have options to apply the filter
@@ -194,21 +194,22 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
                 // skip zero values (includeBlankOption)
                 // @deprecated drop "-" when we only have the database table as options source
-                if (!isset($arrValues[$option['value']]) || $varValue === '' || $varValue === '-') {
+                if (!in_array($option['value'], $arrValues) || $varValue === '' || $varValue === '-') {
                     continue;
                 }
 
                 $strFilterKey = $this->generateFilterKey($strField, $varValue);
                 $blnActive    = (Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id) !== null);
                 $blnTrail     = $blnActive ? true : $blnTrail;
+                $count        = 0;
 
                 $arrItems[] = array(
                     'href'  => \Haste\Util\Url::addQueryString('cumulativefilter=' . base64_encode($this->id . ';' . ($blnActive ? 'del' : 'add') . ';' . $strField . ';' . $varValue)),
                     'class' => ($blnActive ? 'active' : ''),
                     'title' => specialchars($option['label']),
-                    'link'  => sprintf('%s (%s)', $option['label'], $arrValues[$option['value']]),
+                    'link'  => sprintf('%s (%s)', $option['label'], $count),
                     'label' => $option['label'],
-                    'count' => $arrValues[$option['value']],
+                    'count' => $count,
                 );
             }
 

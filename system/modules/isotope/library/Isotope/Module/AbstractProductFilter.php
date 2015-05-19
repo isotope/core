@@ -64,7 +64,7 @@ abstract class AbstractProductFilter extends Module
      * @param array  $categories
      * @param string $sqlWhere
      *
-     * @return array List of options where array key is option and value is number of appearances
+     * @return array
      */
     protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
     {
@@ -110,7 +110,7 @@ abstract class AbstractProductFilter extends Module
         }
 
         $result = \Database::getInstance()->execute("
-            SELECT p1.id, p1.pid, p1.$attribute AS options
+            SELECT DISTINCT p1.$attribute AS options
             FROM tl_iso_product p1
             $join
             WHERE
@@ -132,15 +132,7 @@ abstract class AbstractProductFilter extends Module
         ");
 
         while ($result->next()) {
-            $productId = $result->pid ?: $result->id;
-            $options   = deserialize($result->options, true);
-
-            foreach ($options as $option) {
-                if (!isset($values[$option]) || !in_array($productId, $products[$option])) {
-                    $values[$option]     = ((int) $values[$option]) + 1;
-                    $products[$option][] = $productId;
-                }
-            }
+            $values = array_merge($values, deserialize($result->options, true));
         }
 
         return $values;
