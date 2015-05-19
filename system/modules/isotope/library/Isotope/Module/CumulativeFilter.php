@@ -19,7 +19,9 @@ use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\RequestCache\Filter;
 
-
+/**
+ * @property array $iso_cumulativeFields
+ */
 class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
 
@@ -29,9 +31,31 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     protected $strTemplate = 'mod_iso_cumulativefilter';
 
+    /**
+     * Constructor.
+     *
+     * @param object $objModule
+     * @param string $strColumn
+     */
+    public function __construct($objModule, $strColumn = 'main')
+    {
+        parent::__construct($objModule, $strColumn);
+
+        $this->iso_cumulativeFields = deserialize($this->iso_cumulativeFields);
+
+        if (!is_array($this->iso_cumulativeFields)) {
+            $this->iso_cumulativeFields = array();
+        }
+
+        // Remove setting to prevent override of the module template
+        $this->iso_filterTpl = '';
+        $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
+    }
+
 
     /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -40,11 +64,10 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -54,17 +77,12 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             return '';
         }
 
-        // Remove setting to prevent override of the module template
-        $this->iso_filterTpl = '';
-        $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
-
-        if (empty($this->iso_filterFields)) {
+        if (empty($this->iso_cumulativeFields)) {
             return '';
         }
 
         return parent::generate();
     }
-
 
     /**
      * Compile the module
