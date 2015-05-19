@@ -600,11 +600,15 @@ class DC_ProductData extends \DC_Table
             }
         }
 
+        $version = '';
+
         // Versions overview
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning']) {
             $version = $objVersions->renderDropdown();
-        } else {
-            $version = '';
+        }
+
+        if ('' === $version) {
+            $version = '<div class="tl_version_panel"></div>';
         }
 
         // Check languages
