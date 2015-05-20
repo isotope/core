@@ -75,7 +75,7 @@ class RequestCache extends \Model
      *
      * @param array $arrIds
      *
-     * @return array
+     * @return Filter[]
      */
     public function getFiltersForModules(array $arrIds)
     {
