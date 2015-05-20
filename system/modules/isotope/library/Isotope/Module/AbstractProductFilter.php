@@ -79,7 +79,6 @@ abstract class AbstractProductFilter extends Module
         }
 
         $values         = array();
-        $products       = array();
         $typeConditions = array();
         $join           = '';
         $categoryWhere  = '';

@@ -494,7 +494,13 @@ class RequestCache extends \Model
      */
     public static function deleteById($intId)
     {
-        return (\Database::getInstance()->prepare("DELETE FROM " . static::$strTable . " WHERE id=?")->execute($intId)->affectedRows > 0);
+        $affected = \Database::getInstance()
+            ->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")
+            ->execute($intId)
+            ->affectedRows
+        ;
+
+        return ($affected > 0);
     }
 
     /**
@@ -502,7 +508,7 @@ class RequestCache extends \Model
      */
     public static function purge()
     {
-        \Database::getInstance()->query("TRUNCATE " . static::$strTable);
+        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
     }
 
     /**
