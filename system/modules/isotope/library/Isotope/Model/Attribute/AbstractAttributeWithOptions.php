@@ -194,7 +194,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case 'foreignKey':
                 list($table, $field) = explode('.', $this->foreignKey, 2);
-                $result = \Database::getInstance()->execute("SELECT id AS value, $field AS label FROM $table");
+                $result = \Database::getInstance()->execute("
+                    SELECT id AS value, $field AS label
+                    FROM $table
+                    WHERE id IN (" . implode(',', $arrValues) . ")
+                ");
 
                 return $result->fetchAllAssoc();
                 break;

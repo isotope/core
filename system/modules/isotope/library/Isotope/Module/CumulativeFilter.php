@@ -159,19 +159,20 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             && $objAttribute instanceof IsotopeAttributeWithOptions
         ) {
             $options = $objAttribute->getOptionsForProductFilter($arrValues);
+
+        } elseif (is_array($options)) {
+            $options = array_filter(
+                $options,
+                function ($option) use ($arrValues) {
+                    return in_array($option['value'], $arrValues);
+                }
+            );
         }
 
         // Must have options to apply the filter
         if (!is_array($options)) {
             return null;
         }
-
-        $options = array_filter(
-            $options,
-            function ($option) use ($arrValues) {
-                return in_array($option['value'], $arrValues);
-            }
-        );
 
         $arrItems = $this->generateOptions($attribute, $options, $isActive);
 
