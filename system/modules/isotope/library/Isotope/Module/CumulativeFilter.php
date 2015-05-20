@@ -147,24 +147,33 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             return null;
         }
 
-        $blnTrail  = false;
+        $isActive  = false;
         $arrData   = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
         // Use the default routine to initialize options data
         $arrWidget = \Widget::getAttributesFromDca($arrData, $attribute);
+        $label     = $arrWidget['label'];
+        $options   = $arrWidget['options'];
 
         if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
             && $objAttribute instanceof IsotopeAttributeWithOptions
         ) {
-            $arrWidget['options'] = $objAttribute->getOptionsForProductFilter($arrValues);
+            $options = $objAttribute->getOptionsForProductFilter($arrValues);
         }
 
         // Must have options to apply the filter
-        if (!is_array($arrWidget['options'])) {
+        if (!is_array($options)) {
             return null;
         }
 
-        $arrItems = $this->generateOptions($attribute, $arrWidget['options'], $arrValues, $blnTrail);
+        $options = array_filter(
+            $options,
+            function ($option) use ($arrValues) {
+                return in_array($option['value'], $arrValues);
+            }
+        );
+
+        $arrItems = $this->generateOptions($attribute, $options, $isActive);
 
         // Hide fields with just one option (if enabled)
         if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
@@ -173,7 +182,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $objClass = RowClass::withKey('class')->addFirstLast();
 
-        if ($blnTrail) {
+        if ($isActive) {
             $objClass->addCustom('sibling');
             $showClear = true;
         }
@@ -186,21 +195,20 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $objTemplate->items = $arrItems;
 
         return array(
-            'label'    => $arrWidget['label'],
+            'label'    => $label,
             'subitems' => $objTemplate->parse(),
-            'isActive' => $blnTrail,
+            'isActive' => $isActive,
         );
     }
 
     /**
      * @param string $attribute
      * @param array  $options
-     * @param array  $available
-     * @param bool   $isTrail
+     * @param bool   $filterActive
      *
      * @return array
      */
-    protected function generateOptions($attribute, array $options, array $available, &$isTrail)
+    protected function generateOptions($attribute, array $options, &$filterActive)
     {
         $arrItems  = array();
 
@@ -209,19 +217,19 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
             // skip zero values (includeBlankOption)
             // @deprecated drop "-" when we only have the database table as options source
-            if (!in_array($option['value'], $available) || $varValue === '' || $varValue === '-') {
+            if ($varValue === '' || $varValue === '-') {
                 continue;
             }
 
-            $isActive     = false;
+            $activeOption = false;
             $strFilterKey = $this->generateFilterKey($attribute, $varValue);
 
             if (null !== Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id)) {
-                $isActive = true;
-                $isTrail  = true;
+                $activeOption = true;
+                $filterActive = true;
             }
 
-            $arrItems[] = $this->generateOptionItem($attribute, $option['label'], $varValue, $isActive);
+            $arrItems[] = $this->generateOptionItem($attribute, $option['label'], $varValue, $activeOption);
         }
 
         return $arrItems;
@@ -264,9 +272,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         if ($action == 'add') {
             $filter   = Filter::attribute($attribute)->isEqualTo($value);
-            $multiple = (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
 
-            if (!$multiple) {
+            if (!$this->isMultiple($attribute)) {
                 $group = 'cumulative_' . $attribute;
                 $filter->groupBy($group);
 
@@ -315,5 +322,17 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     private function generateFilterKey($field, $value)
     {
         return $field . '=' . $value;
+    }
+
+    /**
+     * Returns true if the attribute is multiple choice.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    private function isMultiple($attribute)
+    {
+        return (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
     }
 }
