@@ -140,37 +140,12 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     protected function generateAttribute($attribute, array $config, &$showClear)
     {
-        $arrCategories = $this->findCategories();
-        $arrValues     = $this->getUsedValuesForAttribute($attribute, $arrCategories, $this->iso_list_where);
-
-        if (empty($arrValues)) {
-            return null;
-        }
-
         $isActive  = false;
-        $arrData   = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
-
-        // Use the default routine to initialize options data
-        $arrWidget = \Widget::getAttributesFromDca($arrData, $attribute);
-        $label     = $arrWidget['label'];
-        $options   = $arrWidget['options'];
-
-        if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
-            && $objAttribute instanceof IsotopeAttributeWithOptions
-        ) {
-            $options = $objAttribute->getOptionsForProductFilter($arrValues);
-
-        } elseif (is_array($options)) {
-            $options = array_filter(
-                $options,
-                function ($option) use ($arrValues) {
-                    return in_array($option['value'], $arrValues);
-                }
-            );
-        }
+        $label     = $attribute; // Will be updated by getOptionsForAttribute()
+        $options   = $this->getOptionsForAttribute($attribute, $label);
 
         // Must have options to apply the filter
-        if (!is_array($options)) {
+        if (empty($options)) {
             return null;
         }
 
@@ -258,6 +233,50 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             'label' => $label,
             'count' => $count,
         );
+    }
+
+    /**
+     * Gets the used and available options for given attribute
+     *
+     * @param string $attribute The attribute name
+     * @param string $label     Set to the label of the attribute
+     *
+     * @return array
+     */
+    protected function getOptionsForAttribute($attribute, &$label)
+    {
+        $usedValues = $this->getUsedValuesForAttribute($attribute, $this->findCategories(), $this->iso_list_where);
+
+        if (empty($usedValues)) {
+            return array();
+        }
+
+        // Use the default routine to initialize options data
+        $arrWidget = \Widget::getAttributesFromDca(
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute],
+            $attribute
+        );
+
+        $label     = $arrWidget['label'];
+        $options   = $arrWidget['options'];
+
+        if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
+            && $objAttribute instanceof IsotopeAttributeWithOptions
+        ) {
+            $options = $objAttribute->getOptionsForProductFilter($usedValues);
+
+        } elseif (is_array($options)) {
+            $options = array_filter(
+                $options,
+                function ($option) use ($usedValues) {
+                    return in_array($option['value'], $usedValues);
+                }
+            );
+        } else {
+            $options = array();
+        }
+
+        return $options;
     }
 
     /**
