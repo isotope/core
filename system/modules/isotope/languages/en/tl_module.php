@@ -96,3 +96,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['attribute']           
 $GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']                   = array('Query Type');
 $GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']['and']            = 'AND';
 $GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']['or']             = 'OR';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']                  = array('Number of results');
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['none']          = 'Do not show';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['all']           = 'Show total';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['new']           = 'Show difference';

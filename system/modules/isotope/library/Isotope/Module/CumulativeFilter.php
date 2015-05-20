@@ -26,6 +26,10 @@ use Isotope\Template;
  */
 class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
+    const QUERY_AND = 'and';
+    const QUERY_OR  = 'or';
+    const COUNT_ALL = 'all';
+    const COUNT_NEW = 'new';
 
     /**
      * Template
@@ -70,6 +74,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     public function generate()
     {
         if (TL_MODE == 'BE') {
+            /** @var \BackendTemplate|object $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
@@ -120,7 +125,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $arrFilters    = array();
 
         foreach ($this->iso_cumulativeFields as $strField => $config) {
-            $item = $this->generateAttribute($strField, $config, $blnShowClear);
+            $item = $this->generateAttribute($strField, $config['queryType'], $config['matchCount'], $blnShowClear);
 
             if (null !== $item) {
                 $arrFilters[$strField] = $item;
@@ -133,12 +138,13 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
     /**
      * @param string $attribute
-     * @param array  $config
+     * @param string $queryType
+     * @param string $countType
      * @param bool   $showClear
      *
      * @return array|null
      */
-    protected function generateAttribute($attribute, array $config, &$showClear)
+    protected function generateAttribute($attribute, $queryType, $countType, &$showClear)
     {
         $isActive  = false;
         $label     = $attribute; // Will be updated by getOptionsForAttribute()
@@ -149,7 +155,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             return null;
         }
 
-        $arrItems = $this->generateOptions($attribute, $options, $isActive);
+        $arrItems = $this->generateOptions($attribute, $options, $queryType, $countType, $isActive);
 
         // Hide fields with just one option (if enabled)
         if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
@@ -165,6 +171,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $objClass->applyTo($arrItems);
 
+        /** @var Template|object $objTemplate */
         $objTemplate = new Template($this->navigationTpl);
 
         $objTemplate->level = 'level_2';
@@ -180,58 +187,72 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     /**
      * @param string $attribute
      * @param array  $options
+     * @param string $queryType
+     * @param string $countType
      * @param bool   $filterActive
      *
      * @return array
      */
-    protected function generateOptions($attribute, array $options, &$filterActive)
+    protected function generateOptions($attribute, array $options, $queryType, $countType, &$filterActive)
     {
         $arrItems  = array();
 
         foreach ($options as $option) {
-            $varValue = $option['value'];
+            $value = $option['value'];
 
             // skip zero values (includeBlankOption)
             // @deprecated drop "-" when we only have the database table as options source
-            if ($varValue === '' || $varValue === '-') {
+            if ($value === '' || $value === '-') {
                 continue;
             }
 
+            $count        = false;
             $activeOption = false;
-            $strFilterKey = $this->generateFilterKey($attribute, $varValue);
+            $strFilterKey = $this->generateFilterKey($attribute, $value);
 
             if (null !== Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id)) {
                 $activeOption = true;
                 $filterActive = true;
             }
 
-            $arrItems[] = $this->generateOptionItem($attribute, $option['label'], $varValue, $activeOption);
+            $arrItems[] = $this->generateOptionItem(
+                $attribute,
+                $option['label'],
+                $value,
+                $count,
+                $activeOption
+            );
         }
 
         return $arrItems;
     }
 
     /**
-     * @param string $attribute
-     * @param string $label
-     * @param string $value
-     * @param bool   $isActive
+     * @param string   $attribute
+     * @param string   $label
+     * @param string   $value
+     * @param int|bool $matchCount
+     * @param bool     $isActive
      *
      * @return array
      */
-    protected function generateOptionItem($attribute, $label, $value, $isActive)
+    protected function generateOptionItem($attribute, $label, $value, $matchCount, $isActive)
     {
-        $count = 0;
         $value = base64_encode($this->id . ';' . ($isActive ? 'del' : 'add') . ';' . $attribute . ';' . $value);
         $href  = Url::addQueryString('cumulativefilter=' . $value);
+        $link  = $label;
+
+        if (false !== $matchCount) {
+            $link = sprintf('%s <i class="result_count">(%d)</i>', $label, $matchCount);
+        }
 
         return array(
             'href'  => $href,
             'class' => ($isActive ? 'active' : ''),
             'title' => specialchars($label),
-            'link'  => sprintf('%s (%s)', $label, $count),
+            'link'  => $link,
             'label' => $label,
-            'count' => $count,
+            'count' => $matchCount,
         );
     }
 

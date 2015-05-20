@@ -41,7 +41,15 @@ class CumulativeFields extends \Backend
                 'inputType' => 'select',
                 'options'   => array('and', 'or'),
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType'],
-                'eval'      => array('style' => 'width:100px')
+                'eval'      => array('style' => 'width:100px'),
+            ),
+            'matchCount' => array(
+                'label'     => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount'],
+                'default'   => 'and',
+                'inputType' => 'select',
+                'options'   => array('none', 'all', 'new'),
+                'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount'],
+                'eval'      => array('style' => 'width:100px'),
             ),
         );
     }
