@@ -367,6 +367,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             }
         }
 
+        $filters[$this->generateFilterKey($attribute, $value)] = $filter;
+
         return $filters;
     }
 
