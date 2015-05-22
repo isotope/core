@@ -357,6 +357,53 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Returns the number of published products.
+     *
+     * @param array $arrOptions
+     *
+     * @return int
+     */
+    public static function countPublished(array $arrOptions = array())
+    {
+        return static::countPublishedBy(array(), array(), $arrOptions);
+    }
+
+    /**
+     * Return the number of products matching certain criteria
+     *
+     * @param mixed $arrColumns
+     * @param mixed $arrValues
+     * @param array $arrOptions
+     *
+     * @return int
+     */
+    public static function countPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
+    {
+        $t = static::$strTable;
+
+        $arrValues = (array) $arrValues;
+
+        if (!is_array($arrColumns)) {
+            $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
+        }
+
+        // Add publish check to $arrColumns as the first item to enable SQL keys
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = \Date::floorToMinute();
+            array_unshift(
+                $arrColumns,
+                "
+                    $t.published='1'
+                    AND ($t.start='' OR $t.start<'$time')
+                    AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')
+                "
+            );
+        }
+
+        return static::countBy($arrColumns, $arrValues, $arrOptions);
+    }
+
+    /**
      * Gets the number of translation records in the product table.
      * Mostly useful to see if there are any translations at all to optimize queries.
      *
