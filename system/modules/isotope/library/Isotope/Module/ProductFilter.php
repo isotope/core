@@ -228,6 +228,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 $arrValues = $this->getUsedValuesForAttribute(
                     $strField,
                     $arrCategories,
+                    $this->iso_newFilter,
                     $this->iso_list_where
                 );
 

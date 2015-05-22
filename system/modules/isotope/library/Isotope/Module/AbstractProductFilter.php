@@ -12,23 +12,27 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\ProductType;
 
 /**
  * AbstractProductFilter provides basic methods to handle product filtering
  *
- * @property array  iso_searchFields
- * @property string iso_searchAutocomplete
- * @property array  iso_filterFields
- * @property bool   iso_filterHideSingle
- * @property array  iso_sortingFields
- * @property string iso_listingSortField
- * @property string iso_listingSortDirection
- * @property bool   iso_enableLimit
- * @property string iso_filterTpl
+ * @property array  $iso_searchFields
+ * @property string $iso_searchAutocomplete
+ * @property array  $iso_filterFields
+ * @property bool   $iso_filterHideSingle
+ * @property string $iso_newFilter
+ * @property array  $iso_sortingFields
+ * @property string $iso_listingSortField
+ * @property string $iso_listingSortDirection
+ * @property bool   $iso_enableLimit
+ * @property string $iso_filterTpl
  */
 abstract class AbstractProductFilter extends Module
 {
+    const FILTER_NEW = 'show_new';
+    const FILTER_OLD = 'show_old';
 
     /**
      * Constructor.
@@ -65,11 +69,12 @@ abstract class AbstractProductFilter extends Module
      *
      * @param string $attribute
      * @param array  $categories
+     * @param string $newFilter
      * @param string $sqlWhere
      *
      * @return array
      */
-    protected function getUsedValuesForAttribute($attribute, array $categories, $sqlWhere = '')
+    protected function getUsedValuesForAttribute($attribute, array $categories, $newFilter = '', $sqlWhere = '')
     {
         $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
         $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
@@ -83,14 +88,25 @@ abstract class AbstractProductFilter extends Module
         $join           = '';
         $categoryWhere  = '';
         $published      = '';
+        $time           = \Date::floorToMinute();
 
         if ('' != $sqlWhere) {
             $sqlWhere = " AND " . $sqlWhere;
         }
 
+        // Apply new/old product filter
+        if ($newFilter == self::FILTER_NEW) {
+            $sqlWhere .= " AND p1.dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($newFilter == self::FILTER_OLD) {
+            $sqlWhere .= " AND p1.dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
+
         if (BE_USER_LOGGED_IN !== true) {
-            $time      = \Date::floorToMinute();
-            $published = "AND p1.published='1' AND (p1.start='' OR p1.start<'$time') AND (p1.stop='' OR p1.stop>'" . ($time + 60) . "')";
+            $published = "
+                AND p1.published='1'
+                AND (p1.start='' OR p1.start<'$time')
+                AND (p1.stop='' OR p1.stop>'" . ($time + 60) . "')
+            ";
         }
 
         if (!empty($attributeTypes)) {
@@ -107,7 +123,13 @@ abstract class AbstractProductFilter extends Module
                                 )";
 
             if (BE_USER_LOGGED_IN !== true) {
-                $published .= " AND (p1.pid=0 OR (p2.published='1' AND (p2.start='' OR p2.start<'$time') AND (p2.stop='' OR p2.stop>'" . ($time + 60) . "')))";
+                $published .= " AND (
+                    p1.pid=0 OR (
+                        p2.published='1'
+                        AND (p2.start='' OR p2.start<'$time')
+                        AND (p2.stop='' OR p2.stop>'" . ($time + 60) . "')
+                    )
+                )";
             }
         }
 

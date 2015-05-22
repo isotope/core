@@ -266,7 +266,12 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     protected function getOptionsForAttribute($attribute, &$label)
     {
-        $usedValues = $this->getUsedValuesForAttribute($attribute, $this->findCategories(), $this->iso_list_where);
+        $usedValues = $this->getUsedValuesForAttribute(
+            $attribute,
+            $this->findCategories(),
+            $this->iso_newFilter,
+            $this->iso_list_where
+        );
 
         if (empty($usedValues)) {
             return array();
