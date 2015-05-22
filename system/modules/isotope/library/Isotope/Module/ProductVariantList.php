@@ -14,23 +14,14 @@ namespace Isotope\Module;
 
 use Isotope\Isotope;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCategory;
-use Isotope\Model\ProductType;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 
-
 /**
- * Class ProductVariantList
- *
- * Front end module Isotope "product variant list".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * Frontend module to show a list of product variants.
  */
 class ProductVariantList extends ProductList
 {
-
     /**
      * Display a wildcard in the back end
      * @return string
@@ -38,6 +29,7 @@ class ProductVariantList extends ProductList
     public function generate()
     {
         if (TL_MODE == 'BE') {
+            /** @var \BackendTemplate|object $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT VARIANT LIST ###';
@@ -53,19 +45,32 @@ class ProductVariantList extends ProductList
         return parent::generate();
     }
 
-
     /**
      * Fill the object's arrProducts array
-     * @param   array|null
-     * @return  array
+     *
+     * @param array|null $arrCacheIds
+     *
+     * @return array
      */
     protected function findProducts($arrCacheIds = null)
     {
         $t             = Product::getTable();
         $arrColumns    = array();
         $arrCategories = $this->findCategories();
-        $arrProductIds = \Database::getInstance()->query("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")")->fetchEach('pid');
-        $arrTypes = \Database::getInstance()->query("SELECT id FROM " . ProductType::getTable() . " WHERE variants='1'")->fetchEach('id');
+
+        $arrProductIds = \Database::getInstance()
+            ->query("
+                SELECT pid
+                FROM tl_iso_product_category
+                WHERE page_id IN (" . implode(',', $arrCategories) . ")
+            ")
+            ->fetchEach('pid')
+        ;
+
+        $arrTypes = \Database::getInstance()
+            ->query("SELECT id FROM tl_iso_producttype WHERE variants='1'")
+            ->fetchEach('id')
+        ;
 
         if (empty($arrProductIds)) {
             return array();
