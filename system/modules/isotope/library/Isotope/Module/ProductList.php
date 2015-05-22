@@ -19,7 +19,7 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
-use Isotope\Model\RequestCache;
+use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 
 
@@ -298,14 +298,9 @@ class ProductList extends Module
     {
         $arrColumns    = array();
         $arrCategories = $this->findCategories();
+        $queryBuilder  = new FilterQueryBuilder(Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules));
 
-        list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-
-        if (!is_array($arrValues)) {
-            $arrValues = array();
-        }
-
-        $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+        $arrColumns[]  = "c.page_id IN (" . implode(',', $arrCategories) . ")";
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
@@ -322,16 +317,23 @@ class ProductList extends Module
             $arrColumns[] = $this->iso_list_where;
         }
 
-        if ($strWhere != '') {
-            $arrColumns[] = $strWhere;
+        if ($queryBuilder->hasSqlCondition()) {
+            $arrColumns[] = $queryBuilder->getSqlWhere();
+        }
+
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
+
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
+            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
         $objProducts = Product::findAvailableBy(
             $arrColumns,
-            $arrValues,
+            $queryBuilder->getSqlValues(),
             array(
                  'order'   => 'c.sorting',
-                 'filters' => $arrFilters,
+                 'filters' => $queryBuilder->getFilters(),
                  'sorting' => $arrSorting,
             )
         );
@@ -410,7 +412,7 @@ class ProductList extends Module
             }
 
             // Add the pagination menu
-            $objPagination              = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
+            $objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
@@ -428,6 +430,9 @@ class ProductList extends Module
      * @param boolean
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.3, to be removed in 3.0.
+     *             Use Isotope\RequestCache\FilterQueryBuilder instead.
      */
     protected function getFiltersAndSorting($blnNativeSQL = true)
     {
@@ -435,16 +440,22 @@ class ProductList extends Module
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $arrSorting[$this->iso_listingSortField] = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
-        if ($blnNativeSQL) {
-            list($arrFilters, $strWhere, $arrValues) = RequestCache::buildSqlFilters($arrFilters);
-
-            return array($arrFilters, $arrSorting, $strWhere, $arrValues);
+        if (!$blnNativeSQL) {
+            return array($arrFilters, $arrSorting);
         }
 
-        return array($arrFilters, $arrSorting);
+        $queryBuilder = new FilterQueryBuilder($arrFilters);
+
+        return array(
+            $queryBuilder->getFilters(),
+            $arrSorting,
+            $queryBuilder->getSqlWhere(),
+            $queryBuilder->getSqlValues()
+        );
     }
 
     /**

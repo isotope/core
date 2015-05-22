@@ -12,9 +12,12 @@
 
 namespace Isotope\Module;
 
+use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductType;
+use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Sort;
 
 
 /**
@@ -68,11 +71,9 @@ class ProductVariantList extends ProductList
             return array();
         }
 
-        list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-
-        if (!is_array($arrValues)) {
-            $arrValues = array();
-        }
+        $queryBuilder = new FilterQueryBuilder(
+            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
+        );
 
         $arrColumns[] = "(
             ($t.id IN (" . implode(',', $arrProductIds) . ") AND $t.type NOT IN (" . implode(',', $arrTypes) . "))
@@ -94,16 +95,23 @@ class ProductVariantList extends ProductList
             $arrColumns[] = $this->iso_list_where;
         }
 
-        if ($strWhere != '') {
-            $arrColumns[] = $strWhere;
+        if ($queryBuilder->hasSqlCondition()) {
+            $arrColumns[] = $queryBuilder->getSqlWhere();
+        }
+
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
+
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
+            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
         $objProducts = Product::findAvailableBy(
             $arrColumns,
-            $arrValues,
+            $queryBuilder->getSqlValues(),
             array(
                  'order'   => 'c.sorting',
-                 'filters' => $arrFilters,
+                 'filters' => $queryBuilder->getFilters(),
                  'sorting' => $arrSorting,
             )
         );
