@@ -630,6 +630,84 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Build a query based on the given options to count the number of products.
+     *
+     * @param array $arrOptions The options array
+     *
+     * @return string
+     */
+    protected static function buildCountQuery(array $arrOptions)
+    {
+        $hasTranslations = (static::countTranslatedProducts() > 0);
+        $hasVariants     = (ProductType::countByVariants() > 0);
+
+        $arrJoins  = array();
+        $arrFields = array(
+            $arrOptions['table'] . ".*",
+            "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
+        );
+
+        if ($hasVariants) {
+            $arrFields[] = sprintf(
+                "IF(%s.pid>0, parent.type, %s.type) AS type",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
+        }
+
+        if ($hasTranslations) {
+            foreach (Attribute::getMultilingualFields() as $attribute) {
+                $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
+            }
+        }
+
+        $arrJoins[] = sprintf(
+            " LEFT OUTER JOIN %s c ON %s.id=c.pid",
+            ProductCategory::getTable(),
+            $arrOptions['table']
+        );
+
+        if ($hasTranslations) {
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
+                $arrOptions['table'],
+                $arrOptions['table'],
+                str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
+            );
+        }
+
+        if ($hasVariants) {
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s parent ON %s.pid=parent.id",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
+        }
+
+        // Generate the query
+        $strQuery  = "
+            SELECT
+                " . implode(', ', $arrFields) . ",
+                COUNT(DISTINCT " . $arrOptions['table'] . ".id) AS count
+            FROM " . $arrOptions['table'] . implode("", $arrJoins);
+
+        // Where condition
+        if (!is_array($arrOptions['column'])) {
+            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
+        }
+
+        // The model must never find a language record
+        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
+
+        // Group by
+        if ($arrOptions['group'] !== null) {
+            $strQuery .= " GROUP BY " . $arrOptions['group'];
+        }
+
+        return $strQuery;
+    }
+
+    /**
      * Return select statement to load product data including multilingual fields
      *
      * @param array $arrOptions     an array of columns
