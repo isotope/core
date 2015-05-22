@@ -28,15 +28,11 @@ use Isotope\RequestCache\Sort;
  * @property int    $iso_cols
  * @property bool   $iso_use_quantity
  * @property int    $iso_gallery
- * @property array  $iso_buttons
  * @property array  $iso_filterModules
  * @property array  $iso_productcache
- * @property string $iso_newFilter
  * @property string $iso_listingSortField
  * @property string $iso_listingSortDirection
  * @property bool   $iso_jump_first
- * @property bool   $iso_emptyMessage
- * @property string $iso_noProducts
  */
 class ProductList extends Module
 {
@@ -67,7 +63,6 @@ class ProductList extends Module
 
         $this->iso_filterModules = deserialize($this->iso_filterModules);
         $this->iso_productcache  = deserialize($this->iso_productcache);
-        $this->is_buttons        = deserialize($this->iso_buttons);
 
         if (!is_array($this->iso_filterModules)) {
             $this->iso_filterModules = array();
@@ -75,10 +70,6 @@ class ProductList extends Module
 
         if (!is_array($this->iso_productcache)) {
             $this->iso_productcache = array();
-        }
-
-        if (!is_array($this->is_buttons)) {
-            $this->is_buttons = array();
         }
     }
 

@@ -30,8 +30,12 @@ use PageModel;
  * @property string $iso_list_where
  * @property string $iso_includeMessages
  * @property bool   $iso_hide_list
+ * @property bool   $iso_emptyMessage
+ * @property string $iso_noProducts
  * @property bool   $iso_emptyFilter
+ * @property string $iso_newFilter
  * @property string $iso_noFilter
+ * @property array  $iso_buttons
  * @property string $customTpl
  * @property int    $jumpTo
  * @property bool   $defineRoot
@@ -66,6 +70,12 @@ abstract class Module extends Contao_Module
 
         if ($this->iso_list_where != '') {
             $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+        }
+
+        $this->iso_buttons = deserialize($this->iso_buttons);
+
+        if (!is_array($this->is_buttons)) {
+            $this->iso_buttons = array();
         }
 
         Isotope::initialize();
