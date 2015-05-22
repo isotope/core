@@ -140,9 +140,9 @@ class FilterQueryBuilder
 
                 if (BE_USER_LOGGED_IN === true) {
                     $protected = "
-                    AND $t.published='1'
-                    AND ($t.start='' OR $t.start<'$time')
-                    AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
+                        AND $t.published='1'
+                        AND ($t.start='' OR $t.start<'$time')
+                        AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
                 }
 
                 $strWhere = "

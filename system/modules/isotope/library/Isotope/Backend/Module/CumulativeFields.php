@@ -49,7 +49,7 @@ class CumulativeFields extends \Backend
                 'inputType' => 'select',
                 'options'   => array('none', 'all', 'new'),
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount'],
-                'eval'      => array('style' => 'width:100px'),
+                'eval'      => array('style' => 'width:150px'),
             ),
         );
     }
