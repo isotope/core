@@ -38,6 +38,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     protected $strTemplate = 'mod_iso_cumulativefilter';
 
     /**
+     * @var Filter[]
+     */
+    private $activeFilters;
+
+    /**
      * Constructor.
      *
      * @param object $objModule
@@ -64,6 +69,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
         $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
+
+        $this->activeFilters = Isotope::getRequestCache()->getFiltersForModules(array($this->id));
     }
 
     /**
@@ -283,8 +290,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $attribute
         );
 
-        $label     = $arrWidget['label'];
-        $options   = $arrWidget['options'];
+        $label   = $arrWidget['label'];
+        $options = $arrWidget['options'];
 
         if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
             && $objAttribute instanceof IsotopeAttributeWithOptions
@@ -310,39 +317,18 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      * @param string $attribute
      * @param string $value
      */
-    protected function saveFilter($action, $attribute, $value)
+    private function saveFilter($action, $attribute, $value)
     {
-        // Unique filter key is necessary to unset the filter
-        $strFilterKey = $this->generateFilterKey($attribute, $value);
-        $filterConfig = $this->iso_cumulativeFields[$attribute];
-
         if ($action == 'add') {
-            $filter   = Filter::attribute($attribute)->isEqualTo($value);
-
-            if (!$this->isMultiple($attribute)) {
-                $group = 'cumulative_' . $attribute;
-                $filter->groupBy($group);
-
-                if ($filterConfig['queryType'] == 'and') {
-                    /** @var Filter $oldFilter */
-                    foreach (Isotope::getRequestCache()->getFiltersForModules(array($this->id)) as $oldFilter) {
-                        if ($oldFilter->getGroup() == $group) {
-                            Isotope::getRequestCache()->removeFilterForModule(
-                                $this->generateFilterKey($oldFilter['attribute'], $oldFilter['value']),
-                                $this->id
-                            );
-                        }
-                    }
-                }
-            }
-
-            Isotope::getRequestCache()->setFilterForModule(
-                $strFilterKey,
-                $filter,
+            Isotope::getRequestCache()->setFiltersForModule(
+                $this->addFilter($this->activeFilters, $attribute, $value),
                 $this->id
             );
         } else {
-            Isotope::getRequestCache()->removeFilterForModule($strFilterKey, $this->id);
+            Isotope::getRequestCache()->removeFilterForModule(
+                $this->generateFilterKey($attribute, $value),
+                $this->id
+            );
         }
 
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
@@ -355,6 +341,33 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                 Url::removeQueryString(array('cumulativefilter'), ($this->jumpTo ?: null))
             )
         );
+    }
+
+    /**
+     * @param Filter[] $filters
+     * @param string   $attribute
+     * @param string   $value
+     *
+     * @return Filter[]
+     */
+    private function addFilter(array $filters, $attribute, $value)
+    {
+        $filter = Filter::attribute($attribute)->isEqualTo($value);
+
+        if (!$this->isMultiple($attribute)) {
+            $group = 'cumulative_' . $attribute;
+            $filter->groupBy($group);
+
+            if (self::QUERY_AND === $this->iso_cumulativeFields[$attribute]['queryType']) {
+                foreach ($filters as $k => $oldFilter) {
+                    if ($oldFilter->getGroup() == $group) {
+                        unset($filters[$k]);
+                    }
+                }
+            }
+        }
+
+        return $filters;
     }
 
     /**
