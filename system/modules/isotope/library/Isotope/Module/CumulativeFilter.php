@@ -18,7 +18,10 @@ use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
+use Isotope\Model\Attribute;
+use Isotope\Model\Product;
 use Isotope\RequestCache\Filter;
+use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\Template;
 
 /**
@@ -41,6 +44,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      * @var Filter[]
      */
     private $activeFilters;
+
+    /**
+     * @var bool
+     */
+    private $canShowMatches;
 
     /**
      * Constructor.
@@ -71,6 +79,10 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
 
         $this->activeFilters = Isotope::getRequestCache()->getFiltersForModules(array($this->id));
+
+        // We cannot show matches if some of our filters are not applicable in SQL
+        $dynamicFields        = array_intersect($this->iso_cumulativeFields, Attribute::getDynamicAttributeFields());
+        $this->canShowMatches = empty($dynamicFields);
     }
 
     /**
@@ -220,6 +232,19 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             if (null !== Isotope::getRequestCache()->getFilterForModule($strFilterKey, $this->id)) {
                 $activeOption = true;
                 $filterActive = true;
+
+            } elseif ($this->canShowMatches && self::COUNT_NEW === $countType) {
+                $count = $this->countNewMatches(
+                    $attribute,
+                    $value,
+                    $this->getExistingFiltersForQueryType($attribute, $queryType)
+                );
+            } elseif ($this->canShowMatches && self::COUNT_ALL === $countType) {
+                $count = $this->countAllMatches(
+                    $attribute,
+                    $value,
+                    $this->getExistingFiltersForQueryType($attribute, $queryType)
+                );
             }
 
             $arrItems[] = $this->generateOptionItem(
@@ -310,6 +335,90 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
 
         return $options;
+    }
+
+    private function countNewMatches($attribute, $value, array $filters)
+    {
+        $old = $this->countCurrentMatches();
+        $new = $this->countProductsForFilter(
+            $this->addFilter($filters, $attribute, $value)
+        );
+
+        if (false === $old) {
+            return $new;
+        }
+
+        return $new - $old;
+    }
+
+    private function countAllMatches($attribute, $value, array $filters)
+    {
+        return $this->countProductsForFilter(
+            $this->addFilter($filters, $attribute, $value)
+        );
+    }
+
+    private function getExistingFiltersForQueryType($attribute, $queryType)
+    {
+        $filters = $this->activeFilters;
+
+        if (self::QUERY_AND === $queryType && !$this->isMultiple($attribute)) {
+            $filters = array_filter(
+                $filters,
+                function ($filter) use ($attribute) {
+                    if ($filter['attribute'] == $attribute) {
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
+        }
+
+        return $filters;
+    }
+
+    private function countCurrentMatches()
+    {
+        static $matches;
+
+        if (null === $matches) {
+            $matches = empty($this->activeFilters) ? false : $this->countProductsForFilter($this->activeFilters);
+        }
+
+        return $matches;
+    }
+
+    private function countProductsForFilter(array $filters)
+    {
+        $arrColumns    = array();
+        $arrCategories = $this->findCategories();
+        $queryBuilder  = new FilterQueryBuilder($filters);
+
+        $arrColumns[]  = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+
+        // Apply new/old product filter
+        if ($this->iso_newFilter == self::FILTER_NEW) {
+            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ($this->iso_newFilter == self::FILTER_OLD) {
+            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
+
+        if ($this->iso_list_where != '') {
+            $arrColumns[] = $this->iso_list_where;
+        }
+
+        if ($queryBuilder->hasSqlCondition()) {
+            $arrColumns[] = $queryBuilder->getSqlWhere();
+        }
+
+        return Product::countPublishedBy(
+            $arrColumns,
+            $queryBuilder->getSqlValues(),
+            array(
+                'join' => ''
+            )
+        );
     }
 
     /**
