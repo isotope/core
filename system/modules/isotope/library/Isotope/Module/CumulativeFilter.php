@@ -81,7 +81,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $this->activeFilters = Isotope::getRequestCache()->getFiltersForModules(array($this->id));
 
         // We cannot show matches if some of our filters are not applicable in SQL
-        $dynamicFields        = array_intersect($this->iso_cumulativeFields, Attribute::getDynamicAttributeFields());
+        $dynamicFields = array_intersect(
+            array_keys($this->iso_cumulativeFields),
+            Attribute::getDynamicAttributeFields()
+        );
+
         $this->canShowMatches = empty($dynamicFields);
     }
 
