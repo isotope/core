@@ -287,18 +287,7 @@ class Filter implements \ArrayAccess
      */
     public function sqlWhere()
     {
-        if ($this->isMultilingualAttribute() && Product::countTranslatedProducts()) {
-            $field = sprintf(
-                'IFNULL(translation.%s, %s.%s)',
-                $this->arrConfig['attribute'],
-                Product::getTable(),
-                $this->arrConfig['attribute']
-            );
-        } else {
-            $field = Product::getTable() . '.' . $this->arrConfig['attribute'];
-        }
-
-        return $field . ' ' . $this->getOperatorForSQL() . ' ?';
+        return $this->getFieldForSQL() . ' ' . $this->getOperatorForSQL() . ' ?';
     }
 
     /**
@@ -377,6 +366,27 @@ class Filter implements \ArrayAccess
         if (isset($this->arrConfig['operator']) || isset($this->arrConfig['value'])) {
             throw new \BadMethodCallException('Filter is already configured.');
         }
+    }
+
+    /**
+     * Returns the compiled name of the SQL field (depending on multilingual attributes).
+     *
+     * @return string
+     */
+    protected function getFieldForSQL()
+    {
+        if ($this->isMultilingualAttribute() && Product::countTranslatedProducts()) {
+            $field = sprintf(
+                'IFNULL(translation.%s, %s.%s)',
+                $this->arrConfig['attribute'],
+                Product::getTable(),
+                $this->arrConfig['attribute']
+            );
+        } else {
+            $field = Product::getTable() . '.' . $this->arrConfig['attribute'];
+        }
+
+        return $field;
     }
 
     /**
