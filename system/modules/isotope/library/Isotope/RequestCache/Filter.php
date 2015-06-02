@@ -19,20 +19,19 @@ use Isotope\Model\Product;
 /**
  * Build filter configuration for request cache
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Filter implements \ArrayAccess
 {
-
     /**
      * Filter config
      */
     protected $arrConfig = array();
 
-
     /**
      * Prevent direct instantiation
+     *
+     * @param string $attribute
      */
     protected function __construct($attribute)
     {
@@ -273,7 +272,9 @@ class Filter implements \ArrayAccess
                     break;
 
                 default:
-                    throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
+                    throw new \UnexpectedValueException(
+                        'Unknown filter operator "' . $this->arrConfig['operator'] . '"'
+                    );
             }
         }
 
@@ -308,14 +309,17 @@ class Filter implements \ArrayAccess
     public function sqlWhere()
     {
         if ($this->isMultilingualAttribute() && Product::countTranslatedProducts()) {
-            $strWhere = 'IFNULL(translation.' . $this->arrConfig['attribute'] . ', ' . Product::getTable() . '.' . $this->arrConfig['attribute'] . ')';
+            $field = sprintf(
+                'IFNULL(translation.%s, %s.%s)',
+                $this->arrConfig['attribute'],
+                Product::getTable(),
+                $this->arrConfig['attribute']
+            );
         } else {
-            $strWhere = Product::getTable() . '.' . $this->arrConfig['attribute'];
+            $field = Product::getTable() . '.' . $this->arrConfig['attribute'];
         }
 
-        $strWhere .= ' ' . $this->getOperatorForSQL() . ' ?';
-
-        return $strWhere;
+        return $field . ' ' . $this->getOperatorForSQL() . ' ?';
     }
 
     /**
@@ -325,7 +329,11 @@ class Filter implements \ArrayAccess
      */
     public function sqlValue()
     {
-        return ($this->arrConfig['operator'] == 'like' ? ('%' . $this->arrConfig['value'] . '%') : $this->arrConfig['value']);
+        if ($this->arrConfig['operator'] == 'like') {
+            return (('%' . $this->arrConfig['value'] . '%'));
+        }
+
+        return ($this->arrConfig['value']);
     }
 
     /**
@@ -380,6 +388,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Create filter
+     *
+     * @param string $name
      *
      * @return static
      */
