@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
+use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\Template;
@@ -465,7 +466,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     private function addFilter(array $filters, $attribute, $value)
     {
-        $filter = Filter::attribute($attribute)->isEqualTo($value);
+        if ($this->isCsv($attribute)) {
+            $filter = CsvFilter::attribute($attribute)->contains($value);
+        } else {
+            $filter = Filter::attribute($attribute)->isEqualTo($value);
+        }
 
         if (!$this->isMultiple($attribute)) {
             $group = 'cumulative_' . $attribute;
@@ -508,5 +513,18 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     private function isMultiple($attribute)
     {
         return (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
+    }
+
+    /**
+     * Returns true if the attribute contains CSV values.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    private function isCsv($attribute)
+    {
+        return $this->isMultiple($attribute)
+            && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['csv'];
     }
 }

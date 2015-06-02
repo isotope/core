@@ -636,7 +636,9 @@ abstract class Attribute extends TypeAgent
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['dynamic'] || $config['eval']['multiple']) {
+                if ($config['attributes']['dynamic']
+                    || ($config['eval']['multiple'] && !$config['eval']['csv'])
+                ) {
                     $arrFields[] = $field;
                 }
             }

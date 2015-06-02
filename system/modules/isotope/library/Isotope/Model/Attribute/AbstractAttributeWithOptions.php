@@ -242,6 +242,10 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             $this->fe_filter = false;
         }
 
+        if ($this->multiple && $this->optionsSource == 'table') {
+            $this->csv = ',';
+        }
+
         parent::saveToDCA($arrData);
 
         if (TL_MODE == 'BE') {
