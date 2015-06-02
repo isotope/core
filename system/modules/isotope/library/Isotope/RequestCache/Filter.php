@@ -102,70 +102,49 @@ class Filter implements \ArrayAccess
 
     public function contains($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'like';
-        $this->arrConfig['value']    = $value;
+        $this->filter('like', $value);
 
         return $this;
     }
 
     public function isEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'eq';
-        $this->arrConfig['value']    = $value;
+        $this->filter('eq', $value);
 
         return $this;
     }
 
     public function isNotEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'neq';
-        $this->arrConfig['value']    = $value;
+        $this->filter('neq', $value);
 
         return $this;
     }
 
     public function isSmallerThan($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'lt';
-        $this->arrConfig['value']    = $value;
+        $this->filter('lt', $value);
 
         return $this;
     }
 
     public function isSmallerOrEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'lte';
-        $this->arrConfig['value']    = $value;
+        $this->filter('lte', $value);
 
         return $this;
     }
 
     public function isGreaterThan($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'gt';
-        $this->arrConfig['value']    = $value;
+        $this->filter('gt', $value);
 
         return $this;
     }
 
     public function isGreaterOrEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'gte';
-        $this->arrConfig['value']    = $value;
+        $this->filter('gte', $value);
 
         return $this;
     }
@@ -207,7 +186,7 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if product matches the filter
-     * 
+     *
      * @param IsotopeProduct $objProduct
      *
      * @return bool
@@ -372,6 +351,20 @@ class Filter implements \ArrayAccess
             default:
                 throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
         }
+    }
+
+    /**
+     * Sets operator and value of the filter.
+     *
+     * @param string $operator
+     * @param string $value
+     */
+    protected function filter($operator, $value)
+    {
+        $this->preventModification();
+
+        $this->arrConfig['operator'] = $operator;
+        $this->arrConfig['value']    = $value;
     }
 
     /**
