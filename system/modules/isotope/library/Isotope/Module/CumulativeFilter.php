@@ -472,7 +472,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $filter = Filter::attribute($attribute)->isEqualTo($value);
         }
 
-        if (!$this->isMultiple($attribute)) {
+        if (!$this->isMultiple($attribute) || self::QUERY_OR === $this->iso_cumulativeFields[$attribute]['queryType']) {
             $group = 'cumulative_' . $attribute;
             $filter->groupBy($group);
 
