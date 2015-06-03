@@ -502,29 +502,4 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     {
         return $field . '=' . $value;
     }
-
-    /**
-     * Returns true if the attribute is multiple choice.
-     *
-     * @param string $attribute
-     *
-     * @return bool
-     */
-    private function isMultiple($attribute)
-    {
-        return (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
-    }
-
-    /**
-     * Returns true if the attribute contains CSV values.
-     *
-     * @param string $attribute
-     *
-     * @return bool
-     */
-    private function isCsv($attribute)
-    {
-        return $this->isMultiple($attribute)
-            && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['csv'];
-    }
 }

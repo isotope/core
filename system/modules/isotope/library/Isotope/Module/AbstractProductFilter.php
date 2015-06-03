@@ -156,7 +156,11 @@ abstract class AbstractProductFilter extends Module
         ");
 
         while ($result->next()) {
-            $values = array_merge($values, deserialize($result->options, true));
+            if ($this->isCsv($attribute)) {
+                $values = array_merge($values, explode(',', $result->options));
+            } else {
+                $values = array_merge($values, deserialize($result->options, true));
+            }
         }
 
         return $values;
@@ -185,6 +189,31 @@ abstract class AbstractProductFilter extends Module
         }
 
         return array($GLOBALS['TL_LANG']['MSC']['a_to_z'], $GLOBALS['TL_LANG']['MSC']['z_to_a']);
+    }
+
+    /**
+     * Returns true if the attribute is multiple choice.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    protected function isMultiple($attribute)
+    {
+        return (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
+    }
+
+    /**
+     * Returns true if the attribute contains CSV values.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    protected function isCsv($attribute)
+    {
+        return $this->isMultiple($attribute)
+        && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['csv'];
     }
 
     /**
