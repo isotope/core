@@ -285,7 +285,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         return array(
             'href'  => $href,
-            'class' => ($isActive ? 'active' : ''),
+            'class' => trim(($isActive ? 'active' : '') . ($matchCount === 0 ? ' empty' : '')),
             'title' => specialchars($label),
             'link'  => $link,
             'label' => $label,
