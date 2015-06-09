@@ -168,6 +168,11 @@ class Checkout extends Module
             // Process order and initiate payment method if necessary
             case 'process':
 
+                // canCheckout will override the template and show a message
+                if (!$this->canCheckout()) {
+                    return;
+                }
+
                 $arrSteps = $this->getSteps();
 
                 // Make sure all steps have passed successfully
@@ -202,6 +207,7 @@ class Checkout extends Module
                 break;
 
             // Checkout/payment has failed, show the review page again with an error message
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'failed':
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
