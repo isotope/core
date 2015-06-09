@@ -126,8 +126,17 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
+                /** @var Order $objOrder */
+                if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     static::redirectToStep('failed');
+                }
+
+                // Order already completed (see #1441)
+                if ($objOrder->checkout_complete) {
+                    global $objPage;
+                    $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                    $objHandler->generate($objPage->id);
+                    exit;
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;

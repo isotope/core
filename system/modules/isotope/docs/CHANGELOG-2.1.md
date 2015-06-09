@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.14-stable (2015-??-??)
 ----------------------------------
 
+### Fixed
+- Order could be completed multiple times (#1441)
 
 
 Version 2.1.13-stable (2015-05-04)
