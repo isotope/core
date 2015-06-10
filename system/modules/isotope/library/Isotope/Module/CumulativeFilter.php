@@ -156,6 +156,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             }
         }
 
+        RowClass::withKey('class')->addFirstLast()->applyTo($arrFilters);
+
         $this->Template->filters   = $arrFilters;
         $this->Template->showClear = $blnShowClear;
     }
@@ -201,10 +203,13 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $objTemplate->level = 'level_2';
         $objTemplate->items = $arrItems;
 
+        $class = $attribute . ' query_' . strtolower($queryType) . ' count_' . $countType . ($isActive ? ' trail' : '');
+
         return array(
             'label'    => $label,
             'subitems' => $objTemplate->parse(),
             'isActive' => $isActive,
+            'class'    => $class
         );
     }
 
