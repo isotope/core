@@ -203,7 +203,15 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $objTemplate->level = 'level_2';
         $objTemplate->items = $arrItems;
 
-        $class = $attribute . ' query_' . strtolower($queryType) . ' count_' . $countType . ($isActive ? ' trail' : '');
+        $class = $attribute . ' query_' . strtolower($queryType) . ' count_' . $countType;
+
+        if ($this->isMultiple($attribute)) {
+            $class .= ' multiple';
+        }
+
+        if ($isActive) {
+            $class .= ' trail';
+        }
 
         return array(
             'label'    => $label,
