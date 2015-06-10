@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.2.5-stable (2015-??-??)
 ---------------------------------
 
+### Fixed
+- Options from table were not sorted in cumulative filter
 
 
 Version 2.2.4-stable (2015-05-12)

@@ -295,14 +295,18 @@ class AttributeOption extends \MultilingualModel
     {
         $t = static::getTable();
 
-        return static::findBy(
+        $arrOptions = array_merge(
+            $arrOptions,
             array(
-                "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")",
-                "$t.published='1'"
-            ),
-            null,
-            $arrOptions
+                'column' => array(
+                    "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")",
+                    "$t.published='1'"
+                ),
+                'order' => "$t.sorting"
+            )
         );
+
+        return static::find($arrOptions);
     }
 
     /**
