@@ -121,9 +121,9 @@ class MediaManager extends \Widget implements \uploadable
             $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
 
             if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
-                && md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
+                && md5_file($_FILES[$this->strName]['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
             ) {
-                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $uploadFolder . '/' . $_FILES[$this->strName]['name']), 0, 8) . '.' . $pathinfo['extension'];
+                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($_FILES[$this->strName]['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
                 $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
             }
 
@@ -158,7 +158,7 @@ class MediaManager extends \Widget implements \uploadable
             }
         }
 
-		\Message::reset();
+        \Message::reset();
 
         if (!is_array($varInput) || empty($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
@@ -214,7 +214,7 @@ class MediaManager extends \Widget implements \uploadable
 
                 \Haste\Haste::mkdirr(dirname($strFile));
 
-                if (\Files::getInstance()->rename($v['src'], $strFile)) {
+                if (\Files::getInstance()->copy($v['src'], $strFile)) {
                     $this->varValue[$k]['src'] = basename($strFile);
                 } else {
                     unset($this->varValue[$k]);
@@ -299,7 +299,7 @@ class MediaManager extends \Widget implements \uploadable
             }
 
             \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
-                                    ->execute(serialize($this->varValue), $this->currentRecord);
+                     ->execute(serialize($this->varValue), $this->currentRecord);
 
             \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
         }
