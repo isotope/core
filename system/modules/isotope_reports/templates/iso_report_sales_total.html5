@@ -92,7 +92,7 @@ window.addEvent('domready', function() {
         'main': <?php echo json_encode(array_values($this->chart)); ?>
     }, '#report-data', {
         tickFormatX: function(x) {
-            return new Date(x*1000).format('<?php echo $this->dateFormat; ?>');
+            return new Date(x*1000<?php echo ($this->period == 'week') ? '-1' : ''; ?>).format('<?php echo $this->dateFormat; ?>');
         }
     });
 });

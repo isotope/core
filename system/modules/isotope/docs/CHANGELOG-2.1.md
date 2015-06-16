@@ -9,6 +9,7 @@ Version 2.1.14-stable (2015-??-??)
 - Checkout could be processed with errors in Cart (#1403)
 - Couldn't upload same product image multiple times in edit-all mode (#1453)
 - Description for attribute types was not shown (#1447)
+- Missing labels for week calculation in sales reports (#1454)
 
 
 Version 2.1.13-stable (2015-05-04)
