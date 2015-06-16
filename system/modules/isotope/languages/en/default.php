@@ -33,6 +33,7 @@ $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']                = 'User checkout
 $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']        = 'This product is no longer available.';
 $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']            = 'There are errors in your products.';
 $GLOBALS['TL_LANG']['ERR']['cartErrorInItems']                  = 'Please resolve the errors in your cart before checking out.';
+$GLOBALS['TL_LANG']['ERR']['cumulativeDuplicateAttribute']      = 'You cannot configure the same attribute multiple times.';
 
 /**
  * Miscellaneous

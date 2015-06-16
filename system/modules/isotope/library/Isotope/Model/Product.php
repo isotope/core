@@ -357,6 +357,53 @@ abstract class Product extends TypeAgent
     }
 
     /**
+     * Returns the number of published products.
+     *
+     * @param array $arrOptions
+     *
+     * @return int
+     */
+    public static function countPublished(array $arrOptions = array())
+    {
+        return static::countPublishedBy(array(), array(), $arrOptions);
+    }
+
+    /**
+     * Return the number of products matching certain criteria
+     *
+     * @param mixed $arrColumns
+     * @param mixed $arrValues
+     * @param array $arrOptions
+     *
+     * @return int
+     */
+    public static function countPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
+    {
+        $t = static::$strTable;
+
+        $arrValues = (array) $arrValues;
+
+        if (!is_array($arrColumns)) {
+            $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
+        }
+
+        // Add publish check to $arrColumns as the first item to enable SQL keys
+        if (BE_USER_LOGGED_IN !== true) {
+            $time = \Date::floorToMinute();
+            array_unshift(
+                $arrColumns,
+                "
+                    $t.published='1'
+                    AND ($t.start='' OR $t.start<'$time')
+                    AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')
+                "
+            );
+        }
+
+        return static::countBy($arrColumns, $arrValues, $arrOptions);
+    }
+
+    /**
      * Gets the number of translation records in the product table.
      * Mostly useful to see if there are any translations at all to optimize queries.
      *
@@ -577,6 +624,84 @@ abstract class Product extends TypeAgent
         // Order by
         if ($arrOptions['order'] !== null) {
             $strQuery .= " ORDER BY " . $arrOptions['order'];
+        }
+
+        return $strQuery;
+    }
+
+    /**
+     * Build a query based on the given options to count the number of products.
+     *
+     * @param array $arrOptions The options array
+     *
+     * @return string
+     */
+    protected static function buildCountQuery(array $arrOptions)
+    {
+        $hasTranslations = (static::countTranslatedProducts() > 0);
+        $hasVariants     = (ProductType::countByVariants() > 0);
+
+        $arrJoins  = array();
+        $arrFields = array(
+            $arrOptions['table'] . ".*",
+            "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
+        );
+
+        if ($hasVariants) {
+            $arrFields[] = sprintf(
+                "IF(%s.pid>0, parent.type, %s.type) AS type",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
+        }
+
+        if ($hasTranslations) {
+            foreach (Attribute::getMultilingualFields() as $attribute) {
+                $arrFields[] = "IFNULL(translation.$attribute, " . $arrOptions['table'] . ".$attribute) AS $attribute";
+            }
+        }
+
+        $arrJoins[] = sprintf(
+            " LEFT OUTER JOIN %s c ON %s.id=c.pid",
+            ProductCategory::getTable(),
+            $arrOptions['table']
+        );
+
+        if ($hasTranslations) {
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
+                $arrOptions['table'],
+                $arrOptions['table'],
+                str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
+            );
+        }
+
+        if ($hasVariants) {
+            $arrJoins[] = sprintf(
+                " LEFT OUTER JOIN %s parent ON %s.pid=parent.id",
+                $arrOptions['table'],
+                $arrOptions['table']
+            );
+        }
+
+        // Generate the query
+        $strQuery  = "
+            SELECT
+                " . implode(', ', $arrFields) . ",
+                COUNT(DISTINCT " . $arrOptions['table'] . ".id) AS count
+            FROM " . $arrOptions['table'] . implode("", $arrJoins);
+
+        // Where condition
+        if (!is_array($arrOptions['column'])) {
+            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
+        }
+
+        // The model must never find a language record
+        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
+
+        // Group by
+        if ($arrOptions['group'] !== null) {
+            $strQuery .= " GROUP BY " . $arrOptions['group'];
         }
 
         return $strQuery;

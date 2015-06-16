@@ -13,6 +13,8 @@ Version 2.3.0-rc1 (2015-04-13)
 - Added blank label "tax free" to all price fields (#1427)
 - Show tax ID column only if there are multiple tax rates (#1425)
 - Using minute rounding for DB queries (#1411)
+- Product filter should also check for new/old product configuration
+- The product count in cumulative filter is now updated to match the existing filters
 
 ### Fixed
 - Duplicate key for member carts

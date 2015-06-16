@@ -26,14 +26,20 @@ use PageModel;
 /**
  * Module implements a parent class for Isotope modules
  *
- * @property string iso_category_scope
- * @property string iso_list_where
- * @property string iso_includeMessages
- * @property bool   iso_hide_list
- * @property string customTpl
- * @property int    jumpTo
- * @property bool   defineRoot
- * @property int    rootPage
+ * @property string $iso_category_scope
+ * @property string $iso_list_where
+ * @property string $iso_includeMessages
+ * @property bool   $iso_hide_list
+ * @property bool   $iso_emptyMessage
+ * @property string $iso_noProducts
+ * @property bool   $iso_emptyFilter
+ * @property string $iso_newFilter
+ * @property string $iso_noFilter
+ * @property array  $iso_buttons
+ * @property string $customTpl
+ * @property int    $jumpTo
+ * @property bool   $defineRoot
+ * @property int    $rootPage
  */
 abstract class Module extends Contao_Module
 {
@@ -64,6 +70,12 @@ abstract class Module extends Contao_Module
 
         if ($this->iso_list_where != '') {
             $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+        }
+
+        $this->iso_buttons = deserialize($this->iso_buttons);
+
+        if (!is_array($this->is_buttons)) {
+            $this->iso_buttons = array();
         }
 
         Isotope::initialize();

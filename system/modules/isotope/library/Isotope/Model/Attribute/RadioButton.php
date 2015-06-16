@@ -46,6 +46,8 @@ class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttribu
      */
     public function saveToDCA(array &$arrData)
     {
+        $this->multiple = false;
+
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";

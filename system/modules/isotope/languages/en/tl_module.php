@@ -45,6 +45,7 @@ $GLOBALS['TL_LANG']['tl_module']['iso_category_scope']              = array('Cat
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where']                  = array('Condition', 'Here you can enter a SQL condition to filter the products. You must prefix the fields with "tl_iso_product." (e.g. <em>tl_iso_product.featured=1</em> or <em>tl_iso_product.color!=\'red\'</em>)!');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterModules']               = array('Filter modules', 'Select the filter modules you want to consider for this product list.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields']                = array('Enabled filters', 'Please select filters to enable.');
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']            = array('Filter configuration', 'Please configure the cumulative filter fields.');
 $GLOBALS['TL_LANG']['tl_module']['iso_filterHideSingle']            = array('Hide single options', 'Hide filter field if there is just one option.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchFields']                = array('Enabled search fields', 'Please select search fields to enable.');
 $GLOBALS['TL_LANG']['tl_module']['iso_searchAutocomplete']          = array('Autocomplete search field', 'If you select a field here, the search will be autocompleted by the values of that field.');
@@ -91,3 +92,11 @@ $GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_new']                   
 $GLOBALS['TL_LANG']['tl_module']['iso_newFilter']['show_old']                           = 'Only show old products';
 $GLOBALS['TL_LANG']['tl_module']['iso_address']['billing']                              = 'Billing address';
 $GLOBALS['TL_LANG']['tl_module']['iso_address']['shipping']                             = 'Shipping address';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['attribute']                   = array('Attribute');
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']                   = array('Query Type');
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']['and']            = 'AND';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType']['or']             = 'OR';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']                  = array('Number of results');
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['none']          = 'Do not show';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['all']           = 'Show total';
+$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount']['new']           = 'Show difference';
