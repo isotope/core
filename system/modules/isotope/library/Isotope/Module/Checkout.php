@@ -126,8 +126,17 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
-                if (($objOrder = Order::findOneByUniqid((string) \Input::get('uid'))) === null) {
+                /** @var Order $objOrder */
+                if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     static::redirectToStep('failed');
+                }
+
+                // Order already completed (see #1441)
+                if ($objOrder->checkout_complete) {
+                    global $objPage;
+                    $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+                    $objHandler->generate($objPage->id);
+                    exit;
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -158,6 +167,11 @@ class Checkout extends Module
 
             // Process order and initiate payment method if necessary
             case 'process':
+
+                // canCheckout will override the template and show a message
+                if (!$this->canCheckout()) {
+                    return;
+                }
 
                 $arrSteps = $this->getSteps();
 
@@ -193,6 +207,7 @@ class Checkout extends Module
                 break;
 
             // Checkout/payment has failed, show the review page again with an error message
+            /** @noinspection PhpMissingBreakStatementInspection */
             case 'failed':
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
