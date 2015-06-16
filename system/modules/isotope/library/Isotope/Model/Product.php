@@ -685,19 +685,21 @@ abstract class Product extends TypeAgent
         }
 
         // Generate the query
-        $strQuery  = "
+        $strWhere = '';
+        $strQuery = "
             SELECT
                 " . implode(', ', $arrFields) . ",
                 COUNT(DISTINCT " . $arrOptions['table'] . ".id) AS count
             FROM " . $arrOptions['table'] . implode("", $arrJoins);
 
         // Where condition
-        if (!is_array($arrOptions['column'])) {
+        if (!empty($arrOptions['column']) && !is_array($arrOptions['column'])) {
             $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
+            $strWhere             = " AND " . implode(" AND ", $arrOptions['column']);
         }
 
         // The model must never find a language record
-        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language=''" . $strWhere;
 
         // Group by
         if ($arrOptions['group'] !== null) {
