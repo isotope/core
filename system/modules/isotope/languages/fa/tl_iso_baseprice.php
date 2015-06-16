@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'][0] = 'نام';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'][0] = 'مقدار پایه';
+$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'][0] = 'برچسب';

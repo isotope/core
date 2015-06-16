@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name'][0] = 'نام';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['name'][1] = 'نامی برای این گالری وارد کنید.';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['type'][0] = 'نوع';

@@ -14,3 +14,4 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_maintenance_jobs']['iso_productcache'][0] = 'پاک کردن نهانگاه کالا ایزوتوپ';

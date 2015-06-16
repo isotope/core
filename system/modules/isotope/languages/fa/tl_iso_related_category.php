@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_related_category']['name'][0] = 'نام دسته‌بندی';
+$GLOBALS['TL_LANG']['tl_iso_related_category']['name_legend'] = 'نام';
