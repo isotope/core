@@ -639,7 +639,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
             foreach ($arrButtons as $button => $data) {
-                if (\Input::post($button) != '') {
+                if (isset($_POST[$button])) {
                     if (isset($data['callback'])) {
                         $objCallback = \System::importStatic($data['callback'][0]);
                         $objCallback->{$data['callback'][1]}($this, $arrConfig);
