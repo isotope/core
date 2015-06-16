@@ -14,7 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-use Isotope\Model\ProductCategory;
+use Isotope\RequestCache\Filter;
 
 
 /**
@@ -68,7 +68,7 @@ abstract class Product extends TypeAgent
     /**
      * Set product that is currently active (needed e.g. for insert tag replacement)
      *
-     * @param IsotopeProduct
+     * @param IsotopeProduct $objProduct
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
@@ -439,10 +439,13 @@ abstract class Product extends TypeAgent
             return null;
         }
 
+        /** @var Filter[] $arrFilters */
         $arrFilters = $arrOptions['filters'];
         $arrSorting = $arrOptions['sorting'];
 
         if (!empty($arrFilters) || !empty($arrSorting)) {
+
+            /** @var IsotopeProduct[]|Product[] $arrProducts */
             $arrProducts = $objProducts->getModels();
 
             if (!empty($arrFilters)) {
@@ -481,7 +484,11 @@ abstract class Product extends TypeAgent
 
                         // Temporary fix for price attribute (see #945)
                         if ($strField == 'price') {
-                            $arrData[$strField][$objProduct->id] = ($objProduct->getPrice() !==  null) ? $objProduct->getPrice()->getAmount() : 0;
+                            if (($objProduct->getPrice() !== null)) {
+                                $arrData[$strField][$objProduct->id] = $objProduct->getPrice()->getAmount();
+                            } else {
+                                $arrData[$strField][$objProduct->id] = 0;
+                            }
                         } else {
                             $arrData[$strField][$objProduct->id] = strtolower(
                                 str_replace('"', '', $objProduct->$strField)
