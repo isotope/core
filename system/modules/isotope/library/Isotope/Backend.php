@@ -411,16 +411,15 @@ class Backend extends Contao_Backend
      */
     public function loadTypeAgentHelp($strTable)
     {
-        switch ($strTable) {
-            case 'tl_iso_producttype':
-                $strField = 'class';
-                $strKey = 'tl_iso_product';
-                break;
+        $strKey = \Input::get('table');
+        $strField = \Input::get('field');
 
-            default:
-                $strField = 'type';
-                $strKey = $strTable;
-                break;
+        if ($strKey !== $strTable) {
+            return;
+        }
+
+        if ($strKey == 'tl_iso_producttype') {
+            $strKey = 'tl_iso_product';
         }
 
         if (
@@ -450,6 +449,7 @@ class Backend extends Contao_Backend
             $arrField['explanation'] != '' ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {
+
             return;
         }
 
