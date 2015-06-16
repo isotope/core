@@ -14,4 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_payment']['name'][0] = 'نام روش پرداخت';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'صورت‌حساب';

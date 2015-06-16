@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_document']['name'][0] = 'نام سند';
+$GLOBALS['TL_LANG']['tl_iso_document']['type'][0] = 'نوع سند';

@@ -14,5 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_user']['iso_modules'][0] = 'ماژول‌های ایزوتوپ';
-$GLOBALS['TL_LANG']['tl_user']['isotope_legend'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['tl_iso_integrity']['headline'] = 'بررسی درستی';
+$GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][0] = 'مشکل';

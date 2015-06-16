@@ -14,4 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_page']['iso_config'][0] = 'تنظیمات فروشگاه';
+$GLOBALS['TL_LANG']['tl_page']['iso_store_id'][0] = 'نشاسه فروشگاه';
 $GLOBALS['TL_LANG']['tl_page']['isotope_legend'] = 'Isotope eCommerce';

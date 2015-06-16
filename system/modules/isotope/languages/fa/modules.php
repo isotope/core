@@ -15,5 +15,8 @@
  */
 
 $GLOBALS['TL_LANG']['MOD']['isotope'] = 'Isotope eCommerce';
+$GLOBALS['TL_LANG']['MOD']['iso_products'][0] = 'مدیریت کالا';
 $GLOBALS['TL_LANG']['FMD']['isotope'] = 'Isotope eCommerce';
 $GLOBALS['TL_LANG']['FMD']['iso_cart'][0] = 'سبد خرید';
+$GLOBALS['TL_LANG']['FMD']['iso_addressbook'][0] = 'دفتر نشانی';
+$GLOBALS['TL_LANG']['IMD']['integrity'][0] = 'بررسی درستی';
