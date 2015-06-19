@@ -18,6 +18,8 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
+use Isotope\Report\Period\PeriodFactory;
+use Isotope\Report\Period\PeriodInterface;
 
 
 class SalesProduct extends Sales
@@ -36,11 +38,13 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $strPeriod = (string) $arrSession[$this->name]['period'];
-        $intColumns = (int) $arrSession[$this->name]['columns'];
+        $periodFactory = new PeriodFactory();
+        $arrSession    = \Session::getInstance()->get('iso_reports');
+
+        $strPeriod   = (string) $arrSession[$this->name]['period'];
+        $intColumns  = (int) $arrSession[$this->name]['columns'];
         $blnVariants = (bool) $arrSession[$this->name]['variants'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intStatus   = (int) $arrSession[$this->name]['iso_status'];
 
         if ($arrSession[$this->name]['from'] == '') {
             $intStart = strtotime('-' . ($intColumns-1) . ' ' . $strPeriod);
@@ -48,13 +52,14 @@ class SalesProduct extends Sales
             $intStart = (int) $arrSession[$this->name]['from'];
         }
 
-        list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
+        $period   = $periodFactory->create($strPeriod);
+        $intStart = $period->getPeriodStart($intStart);
+        $dateFrom = $period->getKey($intStart);
+        $dateTo   = $period->getKey(strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 
         $arrData = array('rows'=>array());
-        $arrData['header'] = $this->getHeader($strPeriod, $publicDate, $intStart, $intColumns);
+        $arrData['header'] = $this->getHeader($period, $intStart, $intColumns);
 
-        $dateFrom = date($privateDate, $intStart);
-        $dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
         $groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 
         $objProducts = \Database::getInstance()->query("
@@ -68,7 +73,7 @@ class SalesProduct extends Sales
                 i.configuration AS product_configuration,
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
-                DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
+                " . $period->getSqlField($this->strDateField) . " AS dateGroup
             FROM " . ProductCollectionItem::getTable() . " i
             LEFT JOIN " . ProductCollection::getTable() . " o ON i.pid=o.id
             LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
@@ -141,8 +146,8 @@ class SalesProduct extends Sales
         // Prepare columns
         $arrColumns = array();
         for ($i=0; $i<$intColumns; $i++) {
-            $arrColumns[] = date($privateDate, $intStart);
-            $intStart = strtotime('+1 ' . $strPeriod, $intStart);
+            $arrColumns[] = $period->getKey($intStart);
+            $intStart = $period->getNext($intStart);
         }
 
         $arrFooter = array();
@@ -247,17 +252,17 @@ class SalesProduct extends Sales
     }
 
 
-    protected function getHeader($strPeriod, $strFormat, $intStart, $intColumns)
+    protected function getHeader(PeriodInterface $period, $intStart, $intColumns)
     {
         $arrHeader = array();
         $arrHeader[] = array('value'=>'Produkt');
 
         for ($i=0; $i<$intColumns; $i++) {
             $arrHeader[] = array(
-                'value' => \Date::parse($strFormat, $intStart),
+                'value' => $period->format($intStart),
             );
 
-            $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
+            $intStart = $period->getNext($intStart);
         }
 
         $arrHeader[] = array(
