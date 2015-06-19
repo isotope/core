@@ -42,12 +42,9 @@ class SalesProduct extends Sales
         $blnVariants = (bool) $arrSession[$this->name]['variants'];
         $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
-        if ($arrSession[$this->name]['from'] == '')
-        {
+        if ($arrSession[$this->name]['from'] == '') {
             $intStart = strtotime('-' . ($intColumns-1) . ' ' . $strPeriod);
-        }
-        else
-        {
+        } else {
             $intStart = (int) $arrSession[$this->name]['from'];
         }
 
@@ -92,8 +89,7 @@ class SalesProduct extends Sales
         $objProducts->reset();
 
         // Prepare product data
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             $arrAttributes = array();
             $arrVariantAttributes = array();
             $blnHasVariants = false;
@@ -153,64 +149,52 @@ class SalesProduct extends Sales
 
         // Sort the data
         if ($arrSession[$this->name]['tl_sort'] == 'product_name') {
-
             usort($arrRaw, function ($a, $b) {
                 return strcasecmp($a['name'], $b['name']);
             });
 
         } else {
-
             usort($arrRaw, function ($a, $b) {
                 return ($a['total'] == $b['total'] ? 0 : ($a['total'] < $b['total'] ? 1 : -1));
             });
         }
 
         // Generate data
-        foreach ($arrRaw as $arrProduct)
-        {
-            $arrRow = array(array
-            (
+        foreach ($arrRaw as $arrProduct) {
+            $arrRow = array(array(
                 'value'      => $arrProduct['name'],
             ));
 
-            $arrFooter[0] = array
-            (
+            $arrFooter[0] = array(
                 'value'      => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             );
 
-            foreach ($arrColumns as $i=>$column)
-            {
-                $arrRow[$i+1] = array
-                (
+            foreach ($arrColumns as $i => $column) {
+                $arrRow[$i+1] = array(
                     'value'         => Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
                 );
 
-                $arrFooter[$i+1] = array
-                (
+                $arrFooter[$i+1] = array(
                     'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
                     'quantity'      => $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
                 );
             }
 
-            $arrRow[$i+2] = array
-            (
+            $arrRow[$i+2] = array(
                 'value'         => Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
             );
 
-            $arrFooter[$i+2] = array
-            (
+            $arrFooter[$i+2] = array(
                 'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
                 'quantity'      => $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
             );
 
-            $arrData['rows'][] = array
-            (
+            $arrData['rows'][] = array(
                 'columns' => $arrRow,
             );
         }
 
-        for ($i=1; $i<count($arrFooter); $i++)
-        {
+        for ($i=1; $i<count($arrFooter); $i++) {
             $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']) . '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
             unset($arrFooter[$i]['total'], $arrFooter[$i]['quantity']);
         }
@@ -241,13 +225,11 @@ class SalesProduct extends Sales
 
     protected function initializeDefaultValues()
     {
-        $this->arrSearchOptions = array
-        (
+        $this->arrSearchOptions = array(
             'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
         );
 
-        $this->arrSortingOptions = array
-        (
+        $this->arrSortingOptions = array(
             'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
             'total' => &$GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'],
         );
@@ -255,8 +237,7 @@ class SalesProduct extends Sales
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['tl_sort'] == '')
-        {
+        if ($arrSession[$this->name]['tl_sort'] == '') {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
@@ -271,18 +252,15 @@ class SalesProduct extends Sales
         $arrHeader = array();
         $arrHeader[] = array('value'=>'Produkt');
 
-        for ($i=0; $i<$intColumns; $i++)
-        {
-            $arrHeader[] = array
-            (
+        for ($i=0; $i<$intColumns; $i++) {
+            $arrHeader[] = array(
                 'value' => \Date::parse($strFormat, $intStart),
             );
 
             $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
         }
 
-        $arrHeader[] = array
-        (
+        $arrHeader[] = array(
             'value' => 'Total',
         );
 
