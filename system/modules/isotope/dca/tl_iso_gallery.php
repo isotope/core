@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
         'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position;{template_legend:hide},customTpl',
         'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
-        'elevatezoom'               => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size,zoom_size;{config_legend},zoom_windowSize,zoom_windowOffset,zoom_windowFade;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,zoom_watermark_image,zoom_watermark_position;{template_legend:hide},customTpl',
+        'elevatezoom'               => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size,zoom_size;{config_legend},zoom_windowSize,zoom_position,zoom_windowFade,zoom_border;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,zoom_watermark_image,zoom_watermark_position;{template_legend:hide},customTpl',
     ),
 
     // Fields
@@ -231,13 +231,33 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
-        'zoom_windowOffset' => array
+        'zoom_position' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowOffset'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
             'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
+            'inputType'             => 'imageSize',
+            'options' => array(
+                'pos1'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos1'],
+                'pos2'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos2'],
+                'pos3'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos3'],
+                'pos4'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos4'],
+                'pos5'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos5'],
+                'pos6'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos6'],
+                'pos7'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos7'],
+                'pos8'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos8'],
+                'pos9'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos9'],
+                'pos10' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos10'],
+                'pos11' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos11'],
+                'pos12' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos12'],
+                'pos13' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos13'],
+                'pos14' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos14'],
+                'pos15' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos15'],
+                'pos16' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos16'],
+            ),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
+            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+            'explanation'           => 'elevatezoom_position',
         ),
         'zoom_windowFade' => array
         (
@@ -245,6 +265,14 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
+        'zoom_border' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_border'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>6, 'multiple'=>true, 'size'=>2, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'main_watermark_image' => array

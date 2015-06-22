@@ -44,8 +44,9 @@ class ElevateZoom extends Inline
 
             $objTemplate->zoom              = $this->getImageForType('zoom', $arrFile, $blnWatermark);
             $objTemplate->zoom_windowSize   = deserialize($this->zoom_windowSize);
-            $objTemplate->zoom_windowOffset = deserialize($this->zoom_windowOffset);
+            $objTemplate->zoom_position     = deserialize($this->zoom_position);
             $objTemplate->zoom_windowFade   = deserialize($this->zoom_windowFade);
+            $objTemplate->zoom_border       = deserialize($this->zoom_border);
         }
     }
 }

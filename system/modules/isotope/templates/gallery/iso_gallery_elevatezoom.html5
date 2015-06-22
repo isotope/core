@@ -16,11 +16,14 @@
         $('#g<?php echo $this->uid; ?>').elevateZoom({
             zoomEnabled: true<?php if ($this->zoom_windowSize[0]): ?>,
             zoomWindowWidth: <?php echo $this->zoom_windowSize[0]; endif; if ($this->zoom_windowSize[1]): ?>,
-            zoomWindowHeight: <?php echo $this->zoom_windowSize[1]; endif; if ($this->zoom_windowOffset[0]): ?>,
-            zoomWindowOffetx: <?php echo $this->zoom_windowOffset[0]; endif; if ($this->zoom_windowOffset[1]): ?>,
-            zoomWindowOffety: <?php echo $this->zoom_windowOffset[1]; endif; if ($this->zoom_windowFade[0]): ?>,
+            zoomWindowHeight: <?php echo $this->zoom_windowSize[1]; endif; if ($this->zoom_position[0]): ?>,
+            zoomWindowOffetx: <?php echo $this->zoom_position[0]; endif; if ($this->zoom_position[1]): ?>,
+            zoomWindowOffety: <?php echo $this->zoom_position[1]; endif; if ($this->zoom_position[2]): ?>,
+            zoomWindowPosition: <?php echo substr($this->zoom_position[2], 3); endif; if ($this->zoom_windowFade[0]): ?>,
             zoomWindowFadeIn: <?php echo $this->zoom_windowFade[0]; endif; if ($this->zoom_windowFade[1]): ?>,
-            zoomWindowFadeOut: <?php echo $this->zoom_windowFade[1]; endif; ?>
+            zoomWindowFadeOut: <?php echo $this->zoom_windowFade[1]; endif; if ($this->zoom_border[0]): ?>,
+            borderColour: "#<?php echo $this->zoom_border[0]; ?>"<?php endif; if ($this->zoom_border[1]): ?>,
+            borderSize: <?php echo $this->zoom_border[1]; endif; ?>
         });
     });
 })(jQuery);
