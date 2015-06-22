@@ -22,12 +22,18 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['main_size']                      = array(
 $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_size']                   = array('Gallery image size', 'Please enter a width and height for the additional images.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_template']              = array('Lightbox template', 'Please select the lightbox template from your page-layout to reload the image gallery after an AJAX request.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_size']                  = array('Lightbox image size', 'Please enter a width and height for lightbox images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_size']                      = array('Zoom image size', 'Please enter a width and height for zoom images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowSize']                = array('Zoom window size', 'Optionally enter a width and height for the zoom window (defaults to 400x400).');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowOffset']              = array('Zoom window offset', 'Optionally enter a horizontal and vertocal offset for the zoom window.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowFade']                = array('Zoom window fade effect', 'Optionally enter miliseconds to fade in and fade out the zoom window.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image']           = array('Main watermark image', 'Select an image if you want to add a watermark to the main product image.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position']        = array('Main watermark position', 'Select the position where to apply the watermark to.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image']        = array('Gallery watermark image', 'Select an image if you want to add a watermark to the gallery images.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position']     = array('Gallery watermark position', 'Select the position where to apply the watermark to.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image']       = array('Lightbox watermark image', 'Select an image if you want to add a watermark to the lightbox images.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position']    = array('Lightbox watermark position', 'Select the position where to apply the watermark to.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_image']           = array('Zoom watermark image', 'Select an image if you want to add a watermark to the zoom images.');
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_position']        = array('Zoom watermark position', 'Select the position where to apply the watermark to.');
 $GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl']                      = array('Custom gallery template', 'Here you can overwrite the default gallery template.');
 
 
@@ -46,6 +52,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['show']           = array('Gallery details
  */
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend']        = 'Name &amp; Type';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['size_legend']        = 'Image sizes';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['config_legend']      = 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['watermark_legend']   = 'Watermark';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_legend']    = 'Lightbox/Mediabox';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['template_legend']    = 'Template settings';
@@ -54,6 +61,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['template_legend']    = 'Template settings
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_iso_gallery']['none']       = 'No link action';
-$GLOBALS['TL_LANG']['tl_iso_gallery']['reader']     = 'Link to the product reader';
-$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox']   = 'Open lightbox/mediabox';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['none']          = 'No link action';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['reader']        = 'Link to the product reader';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox']      = 'Open lightbox/mediabox';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['includeJQuery'] = 'Make sure to include jQuery in your page layout for this gallery to work correctly.';
