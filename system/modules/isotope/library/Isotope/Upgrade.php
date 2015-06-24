@@ -90,7 +90,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
 <h1>Isotope eCommerce Upgrade step "' . $step . '" was not run successfully!</h1>
 
-<pre style="white-space:normal">' . $e->getMessage() . '</pre>
+<pre style="white-space:normal">' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine() . '</pre>
 
 </div>
 
