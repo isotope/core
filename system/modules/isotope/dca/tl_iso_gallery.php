@@ -150,7 +150,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'anchor' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'],
             'exclude'               => true,
             'inputType'             => 'radio',
             'options'               => array('none', 'reader', 'lightbox'),
@@ -213,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -221,7 +221,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -231,7 +231,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -239,7 +239,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -249,7 +249,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -257,7 +257,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
