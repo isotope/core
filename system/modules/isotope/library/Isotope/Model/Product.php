@@ -700,9 +700,12 @@ abstract class Product extends TypeAgent
             FROM " . $arrOptions['table'] . implode("", $arrJoins);
 
         // Where condition
-        if (!empty($arrOptions['column']) && !is_array($arrOptions['column'])) {
-            $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
-            $strWhere             = " AND " . implode(" AND ", $arrOptions['column']);
+        if (!empty($arrOptions['column'])) {
+            if (!is_array($arrOptions['column'])) {
+                $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
+            }
+
+            $strWhere = " AND " . implode(" AND ", $arrOptions['column']);
         }
 
         // The model must never find a language record

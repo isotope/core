@@ -432,10 +432,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         return Product::countPublishedBy(
             $arrColumns,
-            $queryBuilder->getSqlValues(),
-            array(
-                'join' => ''
-            )
+            $queryBuilder->getSqlValues()
         );
     }
 
