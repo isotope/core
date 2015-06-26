@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_member']['address_book'][0] = 'دفتر نشانی';
+$GLOBALS['TL_LANG']['tl_member']['address_book'][1] = 'مدیریت دفتر نشانی برای عضو شناسه‌ی %s';

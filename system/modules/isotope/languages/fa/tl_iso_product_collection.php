@@ -14,4 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number'][0] = 'شناسه سفارش';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid'][0] = 'شناسه‌ی یکتا';
 $GLOBALS['TL_LANG']['tl_iso_product_collection']['total'][0] = 'کل';
+$GLOBALS['TL_LANG']['tl_iso_product_collection']['language'][0] = 'زبان';

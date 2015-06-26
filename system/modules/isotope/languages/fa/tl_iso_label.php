@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_label']['language'][0] = 'زبان';
+$GLOBALS['TL_LANG']['tl_iso_label']['language'][1] = 'لطفا یک زبان انتخاب کنید.';
+$GLOBALS['TL_LANG']['tl_iso_label']['label'][0] = 'برچسب';

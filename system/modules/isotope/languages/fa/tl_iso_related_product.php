@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] = 'دسته‌بندی';
+$GLOBALS['TL_LANG']['tl_iso_related_product']['category'][1] = 'یک دسته‌بندی انتخاب کنید.';
+$GLOBALS['TL_LANG']['tl_iso_related_product']['category_legend'] = 'دسته‌بندی';

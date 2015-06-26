@@ -137,6 +137,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret'][0] = 'Sekretny MD5';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret'][1] = 'Proszę wprowadzić taką samą wartość sekretnego MD5 jak w konfiguracji WorldPay.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][1] = 'Proszę wprowadzić opis dla sklepu. Zostanie on pokazany klientowi podczas procesu zamówienia WorldPay.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_merchantId'][1] = 'Proszę wprowadzić ID kupca.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Grupy użytkowników';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Zastrzeż tę metodę płatności do konkretnych grup użytkowników.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected'][0] = 'Chroń moduł';

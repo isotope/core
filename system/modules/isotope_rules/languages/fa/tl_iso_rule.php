@@ -14,4 +14,10 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_rule']['type'][0] = 'نوع';
+$GLOBALS['TL_LANG']['tl_iso_rule']['type'][1] = 'لطفا نوع نقش را انتخاب کنید.';
+$GLOBALS['TL_LANG']['tl_iso_rule']['name'][0] = 'نام';
+$GLOBALS['TL_LANG']['tl_iso_rule']['label'][0] = 'برچسب';
 $GLOBALS['TL_LANG']['tl_iso_rule']['groups'][0] = 'گروه‌ها';
+$GLOBALS['TL_LANG']['tl_iso_rule']['productRestrictions']['pages'] = 'دسته‌بندی‌ها';
+$GLOBALS['TL_LANG']['tl_iso_rule']['pages'][0] = 'دسته‌بندی‌ها';

@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'Shop ID';
+$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'Butiks-ID';
 $GLOBALS['TL_LANG']['tl_iso_address']['store_id'][1] = 'Forskellige butiks ID\'er grupperer en butik på flere rod-sider. En kundes kurv og adresse vil blive delt på tværs af butikker med samme ID.';
 $GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'Mærkat';
 $GLOBALS['TL_LANG']['tl_iso_address']['label'][1] = 'Indtast en mærkat for denne adresse.';

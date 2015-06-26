@@ -14,3 +14,8 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'نام';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['name'][1] = 'لطفا نامی برای این خصوصیت وارد کنید.';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['type'][0] = 'نوع';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'][0] = 'برچسب';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['default'][0] = 'پیش‌فرض';

@@ -14,6 +14,9 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['ISO_REPORT']['sales'] = 'آمار فروش';
+$GLOBALS['TL_LANG']['ISO_REPORT']['member'] = 'آمار اعضاء';
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'کل';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'کل';
+$GLOBALS['TL_LANG']['ISO_REPORT']['search'] = 'جستجو';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'وضعیت';

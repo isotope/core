@@ -14,3 +14,7 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][0] = 'نام';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'نامی برای این نرخ مالیات وارد کنید.';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'برچسب';
+$GLOBALS['TL_LANG']['tl_iso_tax_rate']['name_legend'] = 'نام';

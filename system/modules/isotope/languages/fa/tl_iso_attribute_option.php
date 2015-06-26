@@ -14,3 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'نوع';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'][0] = 'پیش‌فرض';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'برچسب';

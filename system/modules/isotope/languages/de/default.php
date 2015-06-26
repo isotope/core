@@ -57,6 +57,7 @@ $GLOBALS['TL_LANG']['MSC']['mmProcessing'] = 'Die Dateien werden hochgeladen...'
 $GLOBALS['TL_LANG']['MSC']['undeletableRecords'] = 'Einige Datensätze konnten nicht gelöscht werden.';
 $GLOBALS['TL_LANG']['MSC']['undeletableUnpublished'] = 'Einige Datensätze konnten nicht gelöscht werden, und wurden stattdessen unveröffentlicht.';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Anzahl';
+$GLOBALS['TL_LANG']['MSC']['taxFree'] = 'Steuerfrei';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'Produkte suchen';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] = 'Ihre Produkte zum Herunterladen';
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel'] = '<span class="from">Ab</span> %s';
@@ -104,8 +105,8 @@ $GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Möchten Sie diese Adresse
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Rechnung';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Bestelldatum';
-$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'Gesamt';
 $GLOBALS['TL_LANG']['MSC']['iso_order_document_number'] = 'Bestellnummer';
+$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'Gesamt';
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'niedrig - hoch';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'hoch - niedrig';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A - Z';

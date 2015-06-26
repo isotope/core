@@ -153,6 +153,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret'][0] = 'MD5 Geheim';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret'][1] = 'Geben Sie den selben MD5 Geheimwert ein, den Sie bei Ihrer WorldPay-Konfiguration eingegeben haben.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Beschreibung';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][1] = 'Geben Sie eine Beschreibung für Ihren Shop ein. Diese wird den Kunden während dem Worldpay Checkout gezeigt.';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_merchantId'][0] = 'Händler-ID';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Mitgliedergruppen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Diese Bezahlmethode auf bestimmte Mitgliedergruppen beschränken.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected'][0] = 'Modul schützen';

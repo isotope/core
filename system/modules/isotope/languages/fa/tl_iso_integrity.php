@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_integrity']['headline'] = 'بررسی درستی';
+$GLOBALS['TL_LANG']['tl_iso_integrity']['columns'][0] = 'مشکل';
