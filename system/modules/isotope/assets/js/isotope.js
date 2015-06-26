@@ -119,8 +119,6 @@ var Isotope = {};
 
     /**
      * Initialize the inline gallery
-     * @param object
-     * @param string
      */
     Isotope.inlineGallery = function(el, elementId) {
         var i;
@@ -138,6 +136,17 @@ var Isotope = {};
 
         parent.setAttribute('class', parent.getAttribute('class') + ' active');
         document.getElementById(elementId).src = el.href;
+
+        return false;
+    };
+
+    /**
+     * Swap images in elevateZoom gallery
+     */
+    Isotope.elevateZoom = function(el, elementId) {
+        Isotope.inlineGallery(el, elementId);
+
+        jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
 
         return false;
     };
