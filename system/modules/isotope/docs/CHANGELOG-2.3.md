@@ -16,6 +16,7 @@ Version 2.3.0-rc1 (2015-04-13)
 - Product filter should also check for new/old product configuration
 - The product count in cumulative filter is now updated to match the existing filters
 - Moved methods to allow overriding of meta tags in product template (#1446)
+- Better performance when having translated products (#1460)
 
 ### Fixed
 - Duplicate key for member carts
