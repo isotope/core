@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.3.0-rc2 (2015-??-??)
+------------------------------
+
+### Fixed
+- Buttons in product list and reader were not shown
+
+
 Version 2.3.0-rc1 (2015-06-26)
 ------------------------------
 

@@ -96,7 +96,7 @@ class ProductReader extends Module
             'module'      => $this,
             'template'    => ($this->iso_reader_layout ? : $objProduct->getRelated('type')->reader_template),
             'gallery'     => ($this->iso_gallery ? : $objProduct->getRelated('type')->reader_gallery),
-            'buttons'     => deserialize($this->iso_buttons, true),
+            'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
             'jumpTo'      => ($objIsotopeListPage ? : $objPage),
         );

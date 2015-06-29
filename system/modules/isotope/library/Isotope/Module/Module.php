@@ -61,7 +61,7 @@ abstract class Module extends Contao_Module
     /**
      * Load libraries and scripts
      *
-     * @param object $objModule
+     * @param \ModuleModel $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
@@ -74,7 +74,7 @@ abstract class Module extends Contao_Module
 
         $this->iso_buttons = deserialize($this->iso_buttons);
 
-        if (!is_array($this->is_buttons)) {
+        if (!is_array($this->iso_buttons)) {
             $this->iso_buttons = array();
         }
 
