@@ -179,7 +179,7 @@ class Frontend extends \Frontend
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
-                $arrFragments[0] = $objReader->id;
+                $arrFragments[0] = ($objReader->alias ?: $objReader->id);
             }
         }
 
