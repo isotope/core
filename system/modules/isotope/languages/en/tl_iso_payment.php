@@ -84,6 +84,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_merchantId']                    
 $GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_agreementId']                   = array('Agreement ID', 'Please enter your agreement ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_apiKey']                        = array('API key', 'Please enter your API key.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_privateKey']                    = array('Private key', 'Please enter your private key.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods']                = array('Payment methods', 'Enter a configuration string to limit the payment methods. <a href="http://tech.quickpay.net/appendixes/payment-methods/" target="_blank">More Information</a>.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups']                                 = array('Member groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected']                              = array('Protect payment method', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['guests']                                 = array('Show to guests only', 'Hide the payment method if a member is logged in.');

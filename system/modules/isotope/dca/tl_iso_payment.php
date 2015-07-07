@@ -136,7 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'epay'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,epay_windowstate,epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
 
     // Subpalettes
@@ -425,7 +425,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'options_callback'      => function($dc) {
                 $payment = \Isotope\Model\Payment::findByPk($dc->id);
 
-                if ($payment === null) {
+                if ($payment === null || !$payment instanceof \Isotope\Model\Payment\PSP) {
                     return array();
                 }
 
@@ -748,6 +748,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'quickpay_paymentMethods' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('decodeEntities'=>true, 'tl_class'=>'clr long'),
+            'sql'                   => "text NULL",
         ),
         'requireCCV' => array
         (

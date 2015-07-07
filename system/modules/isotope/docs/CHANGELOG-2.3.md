@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.3.0-rc2 (2015-??-??)
 ------------------------------
 
+### Improved
+- Payment methods can now be configured in QuickPay module
+
 ### Fixed
 - Buttons in product list and reader were not shown
 - Overriding the product reader page resulted in 404 error (#1463)

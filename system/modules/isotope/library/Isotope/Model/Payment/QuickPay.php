@@ -26,6 +26,7 @@ use Isotope\Model\ProductCollection\Order;
  * @property int    $quickpay_agreementId
  * @property string $quickpay_apiKey
  * @property string $quickpay_privateKey
+ * @property string $quickpay_paymentMethods
  */
 class QuickPay extends Postsale implements IsotopePayment
 {
@@ -96,6 +97,10 @@ class QuickPay extends Postsale implements IsotopePayment
             'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'autocapture'  => ($this->trans_type == 'capture' ? '1' : '0'),
         );
+
+        if ('' !== $this->quickpay_paymentMethods) {
+            $params['payment_methods'] = $this->quickpay_paymentMethods;
+        }
 
         $apiKey = $this->quickpay_apiKey;
 
