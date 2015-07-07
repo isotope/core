@@ -707,7 +707,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'worldpay_description' => array
         (
@@ -739,7 +739,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'quickpay_privateKey' => array
         (
@@ -747,7 +747,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'requireCCV' => array
         (
