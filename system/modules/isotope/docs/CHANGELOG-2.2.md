@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.6-stable (2015-??-??)
+---------------------------------
+
+### Fixed
+- The product group and page modal pickers were not working in Contao 3.5 (see #1488)
+
+
 Version 2.2.5-stable (2015-06-16)
 ---------------------------------
 
