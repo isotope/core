@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.1.15-stable (2015-??-??)
 ----------------------------------
 
+### Fixed
+- Missing notification_center tokens for file export (#1475)
 
 
 Version 2.1.14-stable (2015-06-16)
