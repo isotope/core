@@ -11,6 +11,7 @@ Version 2.3.0-rc2 (2015-??-??)
 - Buttons in product list and reader were not shown
 - Overriding the product reader page resulted in 404 error (#1463)
 - Serialized values were not converted to CSV
+- The language selector in products table was not accessible (#1476)
 
 
 Version 2.3.0-rc1 (2015-06-26)
