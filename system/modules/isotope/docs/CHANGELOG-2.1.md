@@ -10,6 +10,7 @@ Version 2.1.15-stable (2015-??-??)
 ### Fixed
 - Missing notification_center tokens for file export (#1475)
 - Order document number was not stored when generated from hook (#1485)
+- Order ID was not transmitted to Google Analytics (#1459)
 
 
 Version 2.1.14-stable (2015-06-16)
