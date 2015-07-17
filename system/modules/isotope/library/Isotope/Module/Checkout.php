@@ -133,10 +133,7 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    global $objPage;
-                    $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                    $objHandler->generate($objPage->id);
-                    exit;
+                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;

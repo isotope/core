@@ -6,6 +6,7 @@ Version 2.1.15-stable (2015-??-??)
 
 ### Improved
 - New database index to improve translation performance (#1460)
+- Redirect to confirmation page instead of 404 error on duplicate order (#1441)
 
 ### Fixed
 - Missing notification_center tokens for file export (#1475)
