@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.1.15-stable (2015-??-??)
 ----------------------------------
 
+### Improved
+- New database index to improve translation performance (#1460)
+
 ### Fixed
 - Missing notification_center tokens for file export (#1475)
 - Order document number was not stored when generated from hook (#1485)
