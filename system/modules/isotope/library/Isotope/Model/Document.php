@@ -46,8 +46,10 @@ abstract class Document extends TypeAgent
 
     /**
      * Prepares the collection tokens
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection|\Model $objCollection
+     *
+     * @return array
      */
     protected function prepareCollectionTokens(IsotopeProductCollection $objCollection)
     {
@@ -62,10 +64,12 @@ abstract class Document extends TypeAgent
 
     /**
      * Prepare file name
-     * @param   string File name
-     * @param   array Simple tokens (optional)
-     * @param   string Path (optional)
-     * @return  string Sanitized file name
+     *
+     * @param string $strName   File name
+     * @param array  $arrTokens Simple tokens (optional)
+     * @param string $strPath   Path (optional)
+     *
+     * @return string Sanitized file name
      */
     protected function prepareFileName($strName, $arrTokens = array(), $strPath = '')
     {
@@ -85,9 +89,11 @@ abstract class Document extends TypeAgent
 
     /**
      * Sanitize file name
-     * @param   string File name
-     * @param   boolean Preserve uppercase (true by default)
-     * @return  string Sanitized file name
+     *
+     * @param string $strName              File name
+     * @param bool   $blnPreserveUppercase Preserve uppercase (true by default)
+     *
+     * @return string Sanitized file name
      */
     protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {

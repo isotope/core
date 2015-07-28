@@ -14,9 +14,9 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 
 class Payone extends Postsale implements IsotopePayment
@@ -24,7 +24,8 @@ class Payone extends Postsale implements IsotopePayment
 
     /**
      * Process Transaction URL notification
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection|Order $objOrder
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -78,8 +79,10 @@ class Payone extends Postsale implements IsotopePayment
 
     /**
      * HTML form for checkout
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     *
+     * @param IsotopeProductCollection|Order $objOrder  The order being places
+     * @param \Module|Checkout               $objModule The checkout module instance
+     *
      * @return  mixed
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)

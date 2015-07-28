@@ -66,7 +66,7 @@ class DC_ProductData extends \DC_Table
                 }
                 elseif (!\BackendUser::getInstance()->isAdmin) {
                     $this->intGroupId = (int) \Database::getInstance()->prepare(
-                        "SELECT id FROM " . \Isotope\Model\Group::getTable() . " WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
+                        "SELECT id FROM tl_iso_group WHERE id IN ('" . implode("','", \BackendUser::getInstance()->iso_groups) . "') ORDER BY " . \Database::getInstance()->findInSet('id', \BackendUser::getInstance()->iso_groups)
                     )->limit(1)->execute()->id;
                 }
             }
@@ -74,7 +74,7 @@ class DC_ProductData extends \DC_Table
 
         // Redirect if the product was not found
         if (isset($_GET['id'])) {
-            $objProduct = \Database::getInstance()->prepare("SELECT id FROM " . $strTable . " WHERE id=?")
+            $objProduct = \Database::getInstance()->prepare("SELECT id FROM $strTable WHERE id=?")
                 ->limit(1)
                 ->execute(\Input::get('id', true));
 
@@ -332,7 +332,7 @@ class DC_ProductData extends \DC_Table
             {
                 foreach ($v as $kk=>$vv)
                 {
-                    $objInsertStmt = $this->Database->prepare("INSERT INTO " . $k . " %s")
+                    $objInsertStmt = $this->Database->prepare("INSERT INTO $k %s")
                                                     ->set($vv)
                                                     ->execute();
 
@@ -391,7 +391,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Get the current record
-        $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+        $objRow = \Database::getInstance()->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
             ->limit(1)
             ->execute($this->intId);
 
@@ -456,7 +456,7 @@ class DC_ProductData extends \DC_Table
 
                 $blnLanguageUpdated = true;
             } elseif (\Input::post('FORM_SUBMIT') == $this->strTable && isset($_POST['deleteLanguage'])) {
-                $this->Database->prepare("DELETE FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $session['language'][$this->strTable][$this->intId]);
+                $this->Database->prepare("DELETE FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $session['language'][$this->strTable][$this->intId]);
                 unset($session['language'][$this->strTable][$this->intId]);
                 $blnLanguageUpdated = true;
             }
@@ -468,12 +468,12 @@ class DC_ProductData extends \DC_Table
             }
 
             if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations)) {
-                $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
+                $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
-                    $intId = $this->Database->prepare("INSERT INTO " . $this->strTable . " (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
+                    $intId = $this->Database->prepare("INSERT INTO {$this->strTable} (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
 
-                    $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")->execute($intId);
+                    $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")->execute($intId);
                 }
 
                 $this->objActiveRecord = $objRow;
@@ -613,7 +613,7 @@ class DC_ProductData extends \DC_Table
 
         // Check languages
         if (is_array($this->arrTranslations) && !empty($this->arrTranslations)) {
-            $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM " . $this->strTable . " WHERE pid=?")->execute($this->intId)->fetchEach('language');
+            $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM {$this->strTable} WHERE pid=?")->execute($this->intId)->fetchEach('language');
             $available = '';
             $undefined = '';
 
@@ -886,7 +886,7 @@ class DC_ProductData extends \DC_Table
                 $formFields = array();
 
                 // Get the field values
-                $objRow = \Database::getInstance()->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                $objRow = \Database::getInstance()->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
                     ->limit(1)
                     ->execute($this->intId);
 
@@ -1353,7 +1353,7 @@ window.addEvent(\'domready\', function() {
             $firstOrderBy = $this->firstOrderBy;
         }
 
-        $query = "SELECT * FROM " . $this->strTable;
+        $query = "SELECT * FROM {$this->strTable}";
 
         // Show only main products
         $this->procedure[] = "pid=0";
@@ -1689,7 +1689,7 @@ window.addEvent(\'domready\', function() {
 </div>' . \Message::generate(true);
 
         // Get all details of the parent record
-        $objParent = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+        $objParent = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
             ->limit(1)
             ->execute(CURRENT_ID);
 
@@ -1742,7 +1742,7 @@ window.addEvent(\'domready\', function() {
                 } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'datim') {
                     $_v = $_v ? \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $_v) : '-';
                 } elseif ($v == 'tstamp') {
-                    $objMaxTstamp = $this->Database->prepare("SELECT MAX(tstamp) AS tstamp FROM " . $this->strTable . " WHERE pid=?")
+                    $objMaxTstamp = $this->Database->prepare("SELECT MAX(tstamp) AS tstamp FROM {$this->strTable} WHERE pid=?")
                         ->execute($objParent->id);
 
                     if (!$objMaxTstamp->tstamp) {
@@ -1811,7 +1811,7 @@ window.addEvent(\'domready\', function() {
             $firstOrderBy = array();
 
             // Add all records of the current table
-            $query = "SELECT * FROM " . $this->strTable;
+            $query = "SELECT * FROM {$this->strTable}";
 
             if (is_array($this->orderBy) && strlen($this->orderBy[0])) {
                 $orderBy = $this->orderBy;
@@ -2144,7 +2144,7 @@ window.addEvent(\'domready\', function() {
         } // Set limit from table configuration
         else {
             $this->limit = ($session['filter'][$filter]['limit'] != '') ? (($session['filter'][$filter]['limit'] == 'all') ? null : $session['filter'][$filter]['limit']) : '0,' . $GLOBALS['TL_CONFIG']['resultsPerPage'];
-            $query = "SELECT COUNT(*) AS count FROM " . $this->strTable;
+            $query = "SELECT COUNT(*) AS count FROM {$this->strTable}";
 
             if (\Input::get('id')) {
                 $this->procedure[] = "pid=?";

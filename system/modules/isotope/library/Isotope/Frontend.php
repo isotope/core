@@ -47,7 +47,7 @@ class Frontend extends \Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection $objCollection
+     * @param IsotopeProductCollection|Order $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
@@ -140,8 +140,9 @@ class Frontend extends \Frontend
                 $arrPages   = array();
 
                 // Order by domain and language
-                while ($objPage->next()) {
-                    $objCurrentPage = $objPage->current()->loadDetails();
+                /** @var \PageModel $objCurrentPage */
+                foreach ($objPage as $objCurrentPage) {
+                    $objCurrentPage->loadDetails();
 
                     $domain                                           = $objCurrentPage->domain ? : '*';
                     $arrPages[$domain][$objCurrentPage->rootLanguage] = $objCurrentPage;
@@ -176,6 +177,7 @@ class Frontend extends \Frontend
             }
 
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
+                /** @var \PageModel $objIsotopeListPage */
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
@@ -189,11 +191,9 @@ class Frontend extends \Frontend
     /**
      * Overrides the reader page
      *
-     * @param \PageModel   $objPage
-     * @param \LayoutModel $objLayout
-     * @param \PageRegular $objRegularPage
+     * @param \PageModel $objPage
      */
-    public function overrideReaderPage($objPage, $objLayout, $objRegularPage)
+    public function overrideReaderPage($objPage)
     {
         global $objPage;
         global $objIsotopeListPage;
@@ -228,13 +228,11 @@ class Frontend extends \Frontend
     /**
      * Hook callback for changelanguage extension to support language switching on product reader page
      *
-     * @param array  $arrGet
-     * @param string $strLanguage
-     * @param array  $arrRootPage
+     * @param array $arrGet
      *
      * @return array
      */
-    public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
+    public function translateProductUrls($arrGet)
     {
         if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
             $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
@@ -321,11 +319,10 @@ window.addEvent('domready', function()
      * @param array  $arrPages     Absolute page urls
      * @param int    $intRoot      Root page id
      * @param bool   $blnIsSitemap True if it's a sitemap module call (= treat differently when page is protected etc.)
-     * @param string $strLanguage  Language of the root page
      *
      * @return array   Extended array of absolute page urls
      */
-    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false, $strLanguage = null)
+    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false)
     {
         $t         = \PageModel::getTable();
         $time      = \Date::floorToMinute();
@@ -629,7 +626,7 @@ window.addEvent('domready', function()
     /**
      * Load system configuration into page object
      *
-     * @param \Database\Result $objPage
+     * @param \Database\Result|\PageModel $objPage
      *
      * @return \Database\Result
      */

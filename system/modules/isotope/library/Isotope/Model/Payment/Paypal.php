@@ -15,9 +15,9 @@ namespace Isotope\Model\Payment;
 use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 
 /**
@@ -34,7 +34,8 @@ class Paypal extends Postsale implements IsotopePayment
 
     /**
      * Process PayPal Instant Payment Notifications (IPN)
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection|Order $objOrder
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -126,8 +127,10 @@ class Paypal extends Postsale implements IsotopePayment
 
     /**
      * Return the PayPal form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     *
+     * @param IsotopeProductCollection|Order $objOrder  The order being places
+     * @param \Module|Checkout               $objModule The checkout module instance
+     *
      * @return  string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
