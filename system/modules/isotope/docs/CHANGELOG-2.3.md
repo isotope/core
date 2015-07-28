@@ -7,6 +7,7 @@ Version 2.3.0-rc2 (2015-??-??)
 ### Improved
 - Payment methods can now be configured in QuickPay module
 - Combine CSS and JS with core files to reduce server requests (#1490) 
+- Enable PHP 7 compatiblity (requires Contao 3.5.2 now)
 
 ### Fixed
 - Buttons in product list and reader were not shown

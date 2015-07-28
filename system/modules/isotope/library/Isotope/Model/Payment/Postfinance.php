@@ -190,7 +190,7 @@ class Postfinance extends PSP
             $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
 
             $arrOrder['ITEMID' . $i]        = $objItem->id;
-            $arrOrder['ITEMNAME' . $i]      = substr(\String::restoreBasicEntities(
+            $arrOrder['ITEMNAME' . $i]      = substr(\StringUtil::restoreBasicEntities(
                 $objItem->getName()
             ), 40);
             $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();

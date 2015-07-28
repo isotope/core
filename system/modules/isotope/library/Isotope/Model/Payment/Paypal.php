@@ -159,7 +159,7 @@ class Paypal extends Postsale implements IsotopePayment
             }
 
             $arrData['item_number_' . ++$i] = $objItem->getSku();
-            $arrData['item_name_' . $i]     = \String::restoreBasicEntities(
+            $arrData['item_name_' . $i]     = \StringUtil::restoreBasicEntities(
                 $objItem->getName() . $strConfig
             );
             $arrData['amount_' . $i]        = $objItem->getPrice();

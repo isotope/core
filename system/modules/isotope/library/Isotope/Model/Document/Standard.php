@@ -81,7 +81,7 @@ class Standard extends Document implements IsotopeDocument
         // Set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(PDF_AUTHOR);
-        $pdf->SetTitle(\String::parseSimpleTokens($this->documentTitle, $arrTokens));
+        $pdf->SetTitle(\StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens));
 
         // Prevent font subsetting (huge speed improvement)
         $pdf->setFontSubsetting(false);
@@ -131,7 +131,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate = new \Isotope\Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title         = \String::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
         $objTemplate->config        = $objCollection->getRelated('config_id');
         $objTemplate->page          = $objPage;

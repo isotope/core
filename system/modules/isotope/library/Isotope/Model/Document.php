@@ -70,7 +70,7 @@ abstract class Document extends TypeAgent
     protected function prepareFileName($strName, $arrTokens = array(), $strPath = '')
     {
         // Replace simple tokens
-        $strName = \String::parseSimpleTokens($strName, $arrTokens);
+        $strName = \StringUtil::parseSimpleTokens($strName, $arrTokens);
         $strName = $this->sanitizeFileName($strName);
 
         if ($strPath) {

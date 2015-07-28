@@ -28,7 +28,7 @@ class AssetImport extends \Backend
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '') {
 
-            $objFolder = \FilesModel::findByUuid(\String::uuidToBin(\Input::post('source')));
+            $objFolder = \FilesModel::findByUuid(\StringUtil::uuidToBin(\Input::post('source')));
 
             if (null !== $objFolder) {
                 $this->importFromPath($objFolder->path);

@@ -132,7 +132,7 @@ class Payone extends Postsale implements IsotopePayment
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
             $arrData['de[' . $i . ']']   = specialchars(
-                \String::restoreBasicEntities($objItem->getName() . $strConfig),
+                \StringUtil::restoreBasicEntities($objItem->getName() . $strConfig),
                 true
             );
         }

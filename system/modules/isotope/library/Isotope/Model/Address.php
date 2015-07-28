@@ -133,7 +133,7 @@ class Address extends \Model
         $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?: $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens  = $this->getTokens($arrFields);
-        $strAddress = \String::parseSimpleTokens($strFormat, $arrTokens);
+        $strAddress = \StringUtil::parseSimpleTokens($strFormat, $arrTokens);
 
         return $strAddress;
     }
