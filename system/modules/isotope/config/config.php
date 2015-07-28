@@ -51,7 +51,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css');
+    $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css|static');
 }
 
 

@@ -12,15 +12,11 @@
 
 namespace Isotope;
 
+use Haste\Util\RepositoryVersion;
+use Isotope\Model\Config;
+use Isotope\Model\ProductCache;
+use Isotope\Model\RequestCache;
 
-/**
- * Class Upgrade
- *
- * Perform automatic migration of Isotope database and content
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Upgrade extends \Controller
 {
 
@@ -41,15 +37,14 @@ class Upgrade extends \Controller
     public function run()
     {
         // Check if shop has been installed
-        $blnInstalled = \Database::getInstance()->tableExists(\Isotope\Model\Config::getTable());
-        $strStep = '';
+        $blnInstalled = \Database::getInstance()->tableExists(Config::getTable());
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
 
             if (preg_match('/To[0-9]{10}/', $strVersion)) {
                 $strClass   = 'Isotope\Upgrade\\' . $strVersion;
-                $strStep    = 'Version ' . \Haste\Util\Format::repositoryVersion(substr($strVersion, 2));
+                $strStep    = 'Version ' . RepositoryVersion::format(substr($strVersion, 2));
 
                 try {
                     $objUpgrade = new $strClass();
@@ -117,7 +112,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 
     private function purgeCaches()
     {
-        \Isotope\Model\ProductCache::purge();
-        \Isotope\Model\RequestCache::purge();
+        ProductCache::purge();
+        RequestCache::purge();
     }
 }

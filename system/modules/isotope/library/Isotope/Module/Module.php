@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Haste\Haste;
 use Haste\Input\Input;
 use Haste\Util\Debug;
+use Haste\Util\RepositoryVersion;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -80,10 +81,17 @@ abstract class Module extends Contao_Module
 
         Isotope::initialize();
 
+        // Load Isotope JavaScript and style sheet
         if (TL_MODE == 'FE') {
-            // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $version = RepositoryVersion::encode(Isotope::VERSION);
+
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/js/isotope.min.js|static|'.$version
+            );
+
+            $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.$version
+            );
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
