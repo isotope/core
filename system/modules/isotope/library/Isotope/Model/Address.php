@@ -390,7 +390,7 @@ class Address extends \Model
             $arrData = array_merge($arrMember, $arrData);
         }
 
-        if ($objAddress->country == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
+        if ($arrData['country'] == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
             if ($blnDefaultBilling) {
                 $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
             } elseif ($blnDefaultShipping) {
