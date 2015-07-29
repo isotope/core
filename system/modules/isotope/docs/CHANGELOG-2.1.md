@@ -14,6 +14,7 @@ Version 2.1.15-stable (2015-??-??)
 - Order document number was not stored when generated from hook (#1485)
 - Order ID was not transmitted to Google Analytics (#1459)
 - Translation only worked with two-character languages (#1456)
+- Template modification could result in empty content on ajax product load (#1452)
 
 
 Version 2.1.14-stable (2015-06-16)
