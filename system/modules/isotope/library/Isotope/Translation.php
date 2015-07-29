@@ -53,6 +53,9 @@ class Translation
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
 
+        // Convert Language Tag to Locale ID
+        $strLanguage = str_replace('-', '_', $strLanguage);
+
         // Recursively translate label array
         if (is_array($varLabel)) {
             foreach ($varLabel as $k => $v) {
