@@ -39,7 +39,7 @@ class ElevateZoom extends Inline
 
         if ($blnWatermark) {
             if ('main' === $strType) {
-                $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/plugins/elevatezoom/jquery.elevatezoom-3.0.8.min.js';
+                $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js';
             }
 
             $objTemplate->zoom              = $this->getImageForType('zoom', $arrFile, $blnWatermark);
