@@ -18,8 +18,7 @@ use Isotope\Model\Label;
 /**
  * Translates labels
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @author Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Translation
 {
@@ -37,10 +36,12 @@ class Translation
     protected static $arrLoaded = array();
 
     /**
-     * Get a translation of a value using the translation tabel
-     * @param   mixed
-     * @param   boolean
-     * @return  mixed
+     * Get a translation of a value using the translation label
+     *
+     * @param mixed  $varLabel
+     * @param string $strLanguage
+     *
+     * @return mixed
      */
     public static function get($varLabel, $strLanguage = null)
     {
@@ -76,9 +77,10 @@ class Translation
 
     /**
      * Add a translation that is not stored in translation table
-     * @param   string The label
-     * @param   string The replacement
-     * @param   string The language
+     *
+     * @param string $strLabel       The label
+     * @param string $strReplacement The replacement
+     * @param string $strLanguage    The language
      */
     public static function add($strLabel, $strReplacement, $strLanguage = null)
     {
@@ -91,10 +93,10 @@ class Translation
         static::$arrLabels[$strLanguage][$strLabel] = $strReplacement;
     }
 
-
     /**
      * Initialize the data in translation table
-     * @param string The language
+     *
+     * @param string $strLanguage The language
      */
     protected static function initialize($strLanguage = null)
     {
@@ -104,6 +106,7 @@ class Translation
 
         if (!isset(static::$arrLoaded[$strLanguage])) {
 
+            /** @var Label[]|\Model\Collection $objLabels */
             $objLabels = Label::findBy('language', $strLanguage);
 
             if (null !== $objLabels) {
