@@ -225,7 +225,6 @@ class AttributeOption extends \MultilingualModel
         if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
 
             $strLabel .= ' (';
-            $strPrice = '';
 
             if (!$this->isPercentage() || null !== $objProduct) {
                 $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
