@@ -62,6 +62,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['maestro'] = 'D
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword'][0] = 'Wachtwoord';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Betaalmethoden';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Omschrijving';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods'][0] = 'Betaalmethoden';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Ledengroepen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Beperk deze betaalmethode tot bepaalde ledengroepen.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['guests'][0] = 'Alleen zichtbaar voor gasten';

@@ -23,5 +23,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['psp_payment_method'][0] = 'Betalingsmetod
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod'][0] = 'Betalingsmetode';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Betalingsmetoder';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Beskrivelse';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods'][0] = 'Betalingsmetoder';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Faktura';
 $GLOBALS['TL_LANG']['tl_iso_payment']['price_legend'] = 'Pris';

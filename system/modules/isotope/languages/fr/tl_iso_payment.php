@@ -104,6 +104,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'][1] = 'Le client ve
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_vtconfig'][0] = 'Configuration page de paiement (VTCONFIG)';
 $GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'][0] = 'Modes de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Description';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods'][0] = 'Modes de paiement';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Groupes de membres';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Restreindre ce mode de paiement pour certains groupes de membres.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected'][0] = 'Protéger le module';

@@ -91,6 +91,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['payone_portalid'][1] = 'Introducir su ID 
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_key'][0] = 'Clave secreta';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone_key'][1] = 'Ingrese la clave secreta que ha especificado para este portal.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description'][0] = 'Descripción';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods'][0] = 'Formas de pago';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][0] = 'Grupos de miembros';
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups'][1] = 'Restringir esta forma de pago a determinados grupos de miembros.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected'][0] = 'Proteger el método de pago';
