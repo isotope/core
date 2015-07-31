@@ -1,6 +1,22 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.1.15-stable (2015-??-??)
+----------------------------------
+
+### Improved
+- New database index to improve translation performance (#1460)
+- Redirect to confirmation page instead of 404 error on duplicate order (#1441)
+- Do not inherit backend product filter settings for variant view (#1457)
+
+### Fixed
+- Missing notification_center tokens for file export (#1475)
+- Order document number was not stored when generated from hook (#1485)
+- Order ID was not transmitted to Google Analytics (#1459)
+- Translation only worked with two-character languages (#1456)
+- Template modification could result in empty content on ajax product load (#1452)
+
+
 Version 2.1.14-stable (2015-06-16)
 ----------------------------------
 
