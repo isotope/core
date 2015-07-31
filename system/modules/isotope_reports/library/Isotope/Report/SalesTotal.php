@@ -207,39 +207,6 @@ class SalesTotal extends Sales
             $intStart = $period->getNext($intStart);
         }
 
-        if ($strPeriod == 'week') {
-            $arrData['rows'][date($privateDate, $intStart)] = array
-            (
-                'columns' => array
-                (
-                    array
-                    (
-                        'value' => \Date::parse($publicDate, $intStart),
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                ),
-            );
-        }
-
         RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
 
         return $arrData;
@@ -274,13 +241,6 @@ class SalesTotal extends Sales
             }
 
             $intStart = $period->getNext($intStart);
-        }
-
-        if ($strPeriod == 'week') {
-            foreach ($arrCurrencies as $currency) {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $intStart;
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
-            }
         }
 
         return $arrData;
