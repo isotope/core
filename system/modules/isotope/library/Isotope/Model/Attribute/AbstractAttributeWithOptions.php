@@ -276,4 +276,4 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             }
         }
     }
-} 
+}

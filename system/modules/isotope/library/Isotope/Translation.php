@@ -17,8 +17,7 @@ use Isotope\Model\Label;
 /**
  * Translates labels
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
+ * @author Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Translation
 {
@@ -36,10 +35,12 @@ class Translation
     protected static $arrLoaded = array();
 
     /**
-     * Get a translation of a value using the translation tabel
-     * @param   mixed
-     * @param   boolean
-     * @return  mixed
+     * Get a translation of a value using the translation label
+     *
+     * @param mixed  $varLabel
+     * @param string $strLanguage
+     *
+     * @return mixed
      */
     public static function get($varLabel, $strLanguage = null)
     {
@@ -50,6 +51,9 @@ class Translation
         if (null === $strLanguage) {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
+
+        // Convert Language Tag to Locale ID
+        $strLanguage = str_replace('-', '_', $strLanguage);
 
         // Recursively translate label array
         if (is_array($varLabel)) {
@@ -92,7 +96,6 @@ class Translation
         static::$arrLabels[$strLanguage][$strLabel] = $strReplacement;
     }
 
-
     /**
      * Initialize the data in translation table
      *
@@ -105,6 +108,8 @@ class Translation
         }
 
         if (!isset(static::$arrLoaded[$strLanguage])) {
+
+            /** @var Label[]|\Model\Collection $objLabels */
             $objLabels = Label::findBy('language', $strLanguage);
 
             if (null !== $objLabels) {

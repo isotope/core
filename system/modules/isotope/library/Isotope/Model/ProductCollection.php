@@ -1549,14 +1549,14 @@ abstract class ProductCollection extends TypeAgent
             }
         }
 
-        if ($this->arrData['document_number'] == '') {
-            $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, false));
-            $intPrefix = utf8_strlen($strPrefix);
+        try {
+            if ($this->arrData['document_number'] == '') {
+                $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, false));
+                $intPrefix = utf8_strlen($strPrefix);
 
-            // Lock tables so no other order can get the same ID
-            \Database::getInstance()->lockTables(array(static::$strTable => 'WRITE'));
+                // Lock tables so no other order can get the same ID
+                \Database::getInstance()->lockTables(array(static::$strTable => 'WRITE'));
 
-            try {
                 // Retrieve the highest available order ID
                 $objMax = \Database::getInstance()->prepare("
                         SELECT document_number
@@ -1576,19 +1576,19 @@ abstract class ProductCollection extends TypeAgent
                 $intMax = (int) substr($objMax->document_number, $intPrefix);
 
                 $this->arrData['document_number'] = $strPrefix . str_pad($intMax + 1, $intDigits, '0', STR_PAD_LEFT);
+            }
 
-                \Database::getInstance()->prepare("
+            \Database::getInstance()->prepare("
                     UPDATE " . static::$strTable . " SET document_number=? WHERE id=?
                 ")->execute($this->arrData['document_number'], $this->id);
 
-                \Database::getInstance()->unlockTables();
+            \Database::getInstance()->unlockTables();
 
-            } catch (\Exception $e) {
-                // Make sure tables are always unlocked
-                \Database::getInstance()->unlockTables();
+        } catch (\Exception $e) {
+            // Make sure tables are always unlocked
+            \Database::getInstance()->unlockTables();
 
-                throw $e;
-            }
+            throw $e;
         }
 
         return $this->arrData['document_number'];

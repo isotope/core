@@ -139,6 +139,9 @@ class AttributeOption extends \MultilingualModel
      * @param IsotopeProduct $objProduct
      *
      * @return float
+     *
+     * @deprecated Deprecated since Isotope 2.2.6, to be removed in 3.0.
+     *             This method can result in an endless loop, use getAmount() instead.
      */
     public function getPrice(IsotopeProduct $objProduct = null)
     {
@@ -179,6 +182,23 @@ class AttributeOption extends \MultilingualModel
     }
 
     /**
+     * Return calculated price for this attribute option
+     *
+     * @param float $fltPrice    The product base price
+     * @param int   $intTaxClass Tax ID of the product
+     *
+     * @return float
+     */
+    public function getAmount($fltPrice, $intTaxClass)
+    {
+        if ($this->isPercentage()) {
+            return $fltPrice / 100 * $this->getPercentage();
+        }
+
+        return Isotope::calculatePrice($this->price, $this, 'price', $intTaxClass);
+    }
+
+    /**
      * Get formatted label for the attribute option
      *
      * @param IsotopeProduct $objProduct
@@ -205,7 +225,6 @@ class AttributeOption extends \MultilingualModel
         if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
 
             $strLabel .= ' (';
-            $strPrice = '';
 
             if (!$this->isPercentage() || null !== $objProduct) {
                 $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
@@ -295,14 +314,18 @@ class AttributeOption extends \MultilingualModel
     {
         $t = static::getTable();
 
-        return static::findBy(
+        $arrOptions = array_merge(
+            $arrOptions,
             array(
-                "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")",
-                "$t.published='1'"
-            ),
-            null,
-            $arrOptions
+                'column' => array(
+                    "$t.id IN (" . implode(',', array_map('intval', $arrIds)) . ")",
+                    "$t.published='1'"
+                ),
+                'order' => "$t.sorting"
+            )
         );
+
+        return static::find($arrOptions);
     }
 
     /**

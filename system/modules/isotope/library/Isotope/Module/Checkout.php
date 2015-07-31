@@ -121,14 +121,21 @@ class Checkout extends Module
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case 'complete':
+                /** @var Order $objOrder */
                 if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
                         /** @type \PageError404 $objHandler */
                         $objHandler = new $GLOBALS['TL_PTY']['error_404']();
                         $objHandler->generate((int) $GLOBALS['objPage']->id);
+                        exit;
                     } else {
                         static::redirectToStep('failed');
                     }
+                }
+
+                // Order already completed (see #1441)
+                if ($objOrder->checkout_complete) {
+                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -159,6 +166,11 @@ class Checkout extends Module
 
             // Process order and initiate payment method if necessary
             case 'process':
+
+                // canCheckout will override the template and show a message
+                if (!$this->canCheckout()) {
+                    return;
+                }
 
                 $arrSteps = $this->getSteps();
 

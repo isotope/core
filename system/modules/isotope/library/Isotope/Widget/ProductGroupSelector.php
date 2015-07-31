@@ -326,7 +326,12 @@ class ProductGroupSelector extends \Widget
             }
         }
 
-        $return .= "\n    " . '<li class="tl_file" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);" onclick="Theme.toggleSelect(this)"><div class="tl_left" style="padding-left:' . ($intMargin + $intSpacing) . 'px;">';
+        // Fix the toggler for Contao 3.5 (see #1488)
+        if (version_compare(VERSION, '3.5', '<')) {
+            $return .= "\n    " . '<li class="tl_file" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);" onclick="Theme.toggleSelect(this)"><div class="tl_left" style="padding-left:' . ($intMargin + $intSpacing) . 'px;">';
+        } else {
+            $return .= "\n    " . '<li class="tl_file toggle_select" onmouseover="Theme.hoverDiv(this, 1);" onmouseout="Theme.hoverDiv(this, 0);"><div class="tl_left" style="padding-left:' . ($intMargin + $intSpacing) . 'px;">';
+        }
 
         $folderAttribute     = 'style="margin-left:20px;"';
         $session[$node][$id] = is_numeric($session[$node][$id]) ? $session[$node][$id] : 0;

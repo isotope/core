@@ -62,7 +62,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'label' => array
         (
             'fields'                => array('name', 'field_name', 'type'),
-            'format'                => '<div style="float:left; width:200px">%s</div><div style="float:left; width:200px; color:#b3b3b3;">%s</div><div style="color:#b3b3b3">[%s]</div>'
+            'format'                => '<div style="float:left; width:200px">%s</div><div style="float:left; width:200px; color:#b3b3b3;">%s</div><div style="color:#b3b3b3">%s</div>'
         ),
         'global_operations' => array
         (

@@ -712,6 +712,8 @@ window.addEvent('domready', function()
      */
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
+        $fltAmount = $fltPrice;
+
         if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
             /** @type IsotopeProduct|Standard $objProduct */
 
@@ -724,24 +726,24 @@ window.addEvent('domready', function()
             );
 
             foreach ($arrAttributes as $field) {
-                $value = isset($arrOptions[$field]) ? $arrOptions[$field] : $objProduct->$field;
-
                 if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field]) !== null
                     && $objAttribute instanceof IsotopeAttributeWithOptions
                     && $objAttribute->canHavePrices()
                     && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
                 ) {
+                    $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
+                    $value = deserialize($value, true);
+
                     /** @type AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
-                        if ($objOption->id == $value) {
-                            $fltPrice += $objOption->getPrice($objProduct);
-                            break;
+                        if (in_array($objOption->id, $value)) {
+                            $fltAmount += $objOption->getAmount($fltPrice, $objSource->tax_class);
                         }
                     }
                 }
             }
         }
 
-        return $fltPrice;
+        return $fltAmount;
     }
 }
