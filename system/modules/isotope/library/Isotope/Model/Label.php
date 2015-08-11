@@ -16,8 +16,11 @@ namespace Isotope\Model;
 /**
  * Label defines a translation
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $language
+ * @property string $label
+ * @property string $replacement
  */
 class Label extends \Model
 {

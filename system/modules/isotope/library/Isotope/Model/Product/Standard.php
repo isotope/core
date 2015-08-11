@@ -678,7 +678,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-        return $objTemplate->parse();
+        return trim($objTemplate->parse());
     }
 
 

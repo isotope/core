@@ -54,7 +54,7 @@ class Analytics extends Frontend
 
         $transaction = new \UnitedPrototype\GoogleAnalytics\Transaction();
 
-        $transaction->setOrderId($objOrder->order_id);
+        $transaction->setOrderId($objOrder->document_number);
         $transaction->setAffiliation($objConfig->name);
         $transaction->setTotal($objOrder->getTotal());
         $transaction->setTax(($objOrder->getTotal() - $objOrder->getTaxFreeTotal()));

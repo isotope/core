@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.2.6-stable (2015-08-11)
+---------------------------------
+
+### Fixed
+- The product group and page modal pickers were not working in Contao 3.5 (#1488)
+- Missing notification_center tokens for file export (#1475)
+- Shop config country was default for new members instead of member country (#1466)
+- Attribute option prices were not applied for checkbox attributes (#1420)
+
+
 Version 2.2.5-stable (2015-06-16)
 ---------------------------------
 
