@@ -146,6 +146,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return true;
         }
 
+        if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $available   = $objCallback->$callback[1]($this, $objCollection);
+
+                // If return value is boolean then we accept it as result
+                if (true === $available || false === $available) {
+                    return $available;
+                }
+            }
+        }
+
         if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
             return false;
         }
