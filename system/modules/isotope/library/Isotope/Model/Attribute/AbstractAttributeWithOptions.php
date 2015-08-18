@@ -242,7 +242,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             $this->fe_filter = false;
         }
 
-        if ($this->multiple && $this->optionsSource == 'table') {
+        if ($this->multiple && ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey')) {
             $this->csv = ',';
         }
 

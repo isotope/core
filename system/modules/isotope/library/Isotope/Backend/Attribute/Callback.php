@@ -42,7 +42,7 @@ class Callback extends \Backend
     /**
      * Show price column in dcaWizard if attribute is not a variant option
      *
-     * @param \Widget $objWidget
+     * @param \Widget|object $objWidget
      *
      * @return string
      */
@@ -85,7 +85,7 @@ class Callback extends \Backend
     }
 
     /**
-     * Alter attribtue columns in tl_iso_product table
+     * Alter attribute columns in tl_iso_product table
      *
      * @param object $dc
      */

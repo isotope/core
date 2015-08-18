@@ -37,7 +37,7 @@ abstract class AbstractProductFilter extends Module
     /**
      * Constructor.
      *
-     * @param object $objModule
+     * @param \ModuleModel|object $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
@@ -213,7 +213,7 @@ abstract class AbstractProductFilter extends Module
     protected function isCsv($attribute)
     {
         return $this->isMultiple($attribute)
-        && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['csv'];
+            && ',' === $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['csv'];
     }
 
     /**
