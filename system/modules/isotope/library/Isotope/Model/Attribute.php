@@ -23,22 +23,46 @@ use Isotope\Translation;
 /**
  * Attribute represents a product attribute in Isotope eCommerce
  *
- * @property int           id
- * @property int           tstamp
- * @property string        name
- * @property string        field_name
- * @property string        type
- * @property string        description
- * @property bool          variant_option
- * @property bool          customer_defined
- * @property string        optionsSource
- * @property string|array  options
- * @property string        foreignKey
- * @property bool          be_search
- * @property bool          be_filter
- * @property bool          multiple
- * @property int           size
- * @property bool          includeBlankOption
+ * @property int           $id
+ * @property int           $tstamp
+ * @property string        $name
+ * @property string        $field_name
+ * @property string        $type
+ * @property string        $legend
+ * @property string        $description
+ * @property string        $optionsSource
+ * @property string|array  $options
+ * @property string        $foreignKey
+ * @property bool          $includeBlankOption
+ * @property string        $blankOptionLabel
+ * @property bool          $variant_option
+ * @property bool          $customer_defined
+ * @property bool          $be_search
+ * @property bool          $be_filter
+ * @property bool          $mandatory
+ * @property bool          $fe_filter
+ * @property bool          $fe_search
+ * @property bool          $fe_sorting
+ * @property bool          $multiple
+ * @property int           $size
+ * @property string        $extensions
+ * @property string        $rte
+ * @property bool          $multilingual
+ * @property bool          $rgxp
+ * @property bool          $placeholder
+ * @property int           $minlength
+ * @property int           $maxlength
+ * @property string        $conditionField
+ * @property string        $fieldType
+ * @property bool          $files
+ * @property bool          $filesOnly
+ * @property string        $sortBy
+ * @property string        $path
+ * @property bool          $storeFile
+ * @property string        $uploadFolder
+ * @property bool          $useHomeDir
+ * @property bool          $doNotOverwrite
+ * @property bool          $datepicker
  */
 abstract class Attribute extends TypeAgent
 {

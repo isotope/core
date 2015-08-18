@@ -7,6 +7,7 @@ Version 2.3.0-stable (2015-08-??)
 ### Improved
 - Store options manager attributes as integer database fields (#1507)
 - foreignKey attribute values can also be stored as CSV
+- Select/Radio/Checkbox fields are not searchable in the frontend (#1508)
 
 
 Version 2.3.0-rc2 (2015-07-31)

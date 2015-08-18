@@ -237,6 +237,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      */
     public function saveToDCA(array &$arrData)
     {
+        $this->fe_search = false;
+
         if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
             $this->be_filter = false;
             $this->fe_filter = false;
