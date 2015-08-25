@@ -55,7 +55,7 @@ class To0020030007 extends Base
             $products = $this->db->execute("
                 SELECT id, " . implode(', ', $fields) . "
                 FROM tl_iso_product
-                WHERE " . implode(" IS NOT NULL, ", $fields) . " IS NOT NULL
+                WHERE " . implode(" IS NOT NULL OR ", $fields) . " IS NOT NULL
             ");
 
             while ($products->next()) {
