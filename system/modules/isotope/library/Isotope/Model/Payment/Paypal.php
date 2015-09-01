@@ -28,6 +28,8 @@ use Isotope\Module\Checkout;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  * @author     Christian de la Haye <service@delahaye.de>
+ *
+ * @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
  */
 class Paypal extends Postsale implements IsotopePayment
 {
@@ -39,81 +41,52 @@ class Paypal extends Postsale implements IsotopePayment
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (\Input::post('payment_status') != 'Completed') {
+            \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
+            return;
+        }
+
         $objRequest = new \Request();
         $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
 
         if ($objRequest->hasError()) {
-            \System::log('Request Error: ' . $objRequest->error, __METHOD__, TL_ERROR);
+            \System::log('PayPal IPN: Request Error (' . $objRequest->error . ')', __METHOD__, TL_ERROR);
             $response = new Response('', 500);
             $response->send();
-            exit;
-
-        } elseif ($objRequest->response != 'VERIFIED') {
-            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
-            return;
-
-        } elseif ((\Input::post('receiver_email', true) != $this->paypal_account && !$this->debug)) {
-            \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
-            return;
-
-        } else {
-
-            // Validate payment data (see #2221)
-            if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
-                \System::log('IPN manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
-
-                return;
-            }
-
-            if (!$objOrder->checkout()) {
-                \System::log('IPN checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-
-                return;
-            }
-
-            // Store request data in order for future references
-            $arrPayment = deserialize($objOrder->payment_data, true);
-            $arrPayment['POSTSALE'][] = $_POST;
-            $objOrder->payment_data = $arrPayment;
-            $objOrder->save();
-
-            // @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
-            switch (\Input::post('payment_status')) {
-                case 'Completed':
-                    $objOrder->date_paid = time();
-                    $objOrder->updateOrderStatus($this->new_order_status);
-                    break;
-
-                case 'Canceled_Reversal':
-                case 'Denied':
-                case 'Expired':
-                case 'Failed':
-                case 'Voided':
-                    // PayPal will also send this notification if the order has not been placed.
-                    // What do we do here?
-//                    $objOrder->date_paid = '';
-//                    $objOrder->updateOrderStatus(Isotope::getConfig()->orderstatus_error);
-                    break;
-
-                case 'In-Progress':
-                case 'Partially_Refunded':
-                case 'Pending':
-                case 'Processed':
-                case 'Refunded':
-                case 'Reversed':
-                    break;
-            }
-
-            $objOrder->payment_data = $arrPayment;
-
-            $objOrder->save();
-
-            \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
         }
 
-        // 200 OK
-        $objResponse = new Response();
-        $objResponse->send();
+        if ($objRequest->response != 'VERIFIED') {
+            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        if ((\Input::post('receiver_email', true) != $this->paypal_account && !$this->debug)) {
+            \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        // Validate payment data (see #2221)
+        if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
+            \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        if (!$objOrder->checkout()) {
+            \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        // Store request data in order for future references
+        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment['POSTSALE'][] = $_POST;
+        $objOrder->payment_data = $arrPayment;
+
+        $objOrder->date_paid = time();
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
+
+        \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
     }
 
     /**
