@@ -40,7 +40,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.3.0-rc2';
+    const VERSION = '2.3.0';
 
     /**
      * True if the system has been initialized
@@ -437,8 +437,8 @@ class Isotope extends \Controller
     /**
      * Format product configuration using \Haste\Data
      *
-     * @param array          $arrConfig
-     * @param IsotopeProduct $objProduct
+     * @param array                  $arrConfig
+     * @param IsotopeProduct|Product $objProduct
      *
      * @return array
      */

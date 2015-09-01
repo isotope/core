@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.3.0-stable (2015-08-??)
-------------------------------
+Version 2.3.0-stable (2015-09-01)
+---------------------------------
 
 ### Improved
 - Store options manager attributes as integer database fields (#1507)
