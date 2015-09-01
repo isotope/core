@@ -10,6 +10,7 @@ sudo: false
 
 install:
     - mysql -e 'CREATE DATABASE isotope_core_testsuite;'
+    - composer self-update
     - composer update
     - composer create-project -s dev contao/core:${CONTAO_VERSION} contao
     - cp -R system/modules/isotope contao/system/modules/isotope
