@@ -226,15 +226,52 @@ abstract class Attribute extends TypeAgent
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options']);
             unset($arrField['reference']);
-        }
 
-        // @deprecated remove in Isotope 3.0
-        elseif ($this->optionsSource == 'attribute' || ($this->optionsSource == 'foreignKey' && $this->isVariantOption())) {
-            if ($this->optionsSource == 'foreignKey') {
-                $arrKey     = explode('.', $this->foreignKey, 2);
-                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
-            } else {
-                $arrOptions = deserialize($this->options);
+        } else {
+            $arrOptions = null;
+
+            switch ($this->optionsSource) {
+                case 'attribute':
+                    $arrOptions = deserialize($this->options);
+                    break;
+
+                case 'foreignKey':
+                    $arrKey     = explode('.', $this->foreignKey, 2);
+                    $arrOptions = \Database::getInstance()
+                        ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                case 'table':
+                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
+                    $arrOptions = $query
+                        ->addField('t1.id AS value')
+                        ->addOrder('t1.label')
+                        ->addWhere('t1.pid = ?')
+                        ->getStatement()
+                        ->execute($this->id)
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                case 'product':
+                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
+                    $arrOptions = $query
+                        ->addField('t1.id AS value')
+                        ->addOrder('t1.label')
+                        ->addWhere('t1.field_name = ?')
+                        ->getStatement()
+                        ->execute($this->field_name)
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                default:
+                    if ($this instanceof IsotopeAttributeWithOptions) {
+                        unset($arrField['options']);
+                        unset($arrField['reference']);
+                    }
             }
 
             if (!empty($arrOptions) && is_array($arrOptions)) {
@@ -261,10 +298,6 @@ abstract class Attribute extends TypeAgent
                     }
                 }
             }
-
-        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
-            unset($arrField['options']);
-            unset($arrField['reference']);
         }
 
         unset($arrField['eval']['foreignKey']);
