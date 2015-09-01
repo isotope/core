@@ -30,6 +30,7 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_total'][0] = 'Höchstbestellwert'
 $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_total'][1] = 'Geben Sie ein Zahl grösser als 0 ein, wenn diese Zahlungsart nur bis zu einem bestimmten Höchstbestellwert zur Verfügung steht.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['minimum_quantity'][0] = 'Mindestmenge';
 $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_quantity'][0] = 'Höchstmenge';
+$GLOBALS['TL_LANG']['tl_iso_payment']['maximum_quantity'][1] = 'Geben Sie eine Zahl größer als 0 ein, um diese Zahlungsart bei Bestellungen mit höherer Menge auszuschließen.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'][0] = 'Mengen-Berechnungsmodus';
 $GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'][1] = 'Wählen Sie einen Berechnungsmodus für die minimale/maximale Menge.';
 $GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode']['cart_items'] = 'Gesamtmenge im Warenkorb';
