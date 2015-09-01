@@ -8,6 +8,10 @@ Version 2.3.0-stable (2015-08-??)
 - Store options manager attributes as integer database fields (#1507)
 - foreignKey attribute values can also be stored as CSV
 - Select/Radio/Checkbox fields are not searchable in the frontend (#1508)
+- Allow to override the product languages to support i18ln10n extension (#1385)
+
+### Fixed
+- Correctly generate label for attribute options from Options Manager or Products
 
 
 Version 2.3.0-rc2 (2015-07-31)

@@ -91,6 +91,25 @@ class DC_ProductData extends \DC_Table
         }
 
         parent::__construct($strTable);
+
+        // Allow to customize languages via the onload_callback
+        if (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['languages'])) {
+            $arrPageLanguages = $GLOBALS['TL_DCA'][$this->strTable]['config']['languages'];
+        } else {
+            $arrPageLanguages = array_map(
+                function ($strLang) {
+                    return str_replace('-', '_', $strLang);
+                },
+                $this->Database
+                    ->execute("SELECT DISTINCT language FROM tl_page WHERE type='root' AND language!=''")
+                    ->fetchEach('language')
+            );
+        }
+
+        if (count($arrPageLanguages) > 1) {
+            $this->arrTranslationLabels = \System::getLanguages();
+            $this->arrTranslations      = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
+        }
     }
 
 
@@ -430,20 +449,7 @@ class DC_ProductData extends \DC_Table
         // Load and/or change language
         $this->blnEditLanguage = false;
 
-        // Add support for i18nl10n extension
-        if (in_array('i18nl10n', \Config::getInstance()->getActiveModules())) {
-            $arrPageLanguages = array_filter(array_unique(deserialize($GLOBALS['TL_CONFIG']['i18nl10n_languages'], true)));
-        } else {
-            $arrPageLanguages = $this->Database->execute("SELECT DISTINCT language FROM tl_page WHERE type='root'")->fetchEach('language');
-            $arrPageLanguages = array_map(function ($strLang) {
-                return str_replace('-', '_', $strLang);
-            }, $arrPageLanguages);
-        }
-
-        if (count($arrPageLanguages) > 1) {
-            $this->arrTranslationLabels = \System::getLanguages();
-            $this->arrTranslations = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
-
+        if (!empty($this->arrTranslations)) {
             $blnLanguageUpdated = false;
             $session   = $this->Session->getData();
 
@@ -612,7 +618,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Check languages
-        if (is_array($this->arrTranslations) && !empty($this->arrTranslations)) {
+        if (!empty($this->arrTranslations)) {
             $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM {$this->strTable} WHERE pid=?")->execute($this->intId)->fetchEach('language');
             $available = '';
             $undefined = '';
