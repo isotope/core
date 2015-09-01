@@ -16,7 +16,6 @@
 
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'هیچ تنظیم فروشگاهی وجود ندارد';
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'ویرایش';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'حذف';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'زبان جانشین';
 $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] = 'تعریف نشده';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'گروه‌ها';
@@ -42,8 +41,8 @@ $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'حذف';
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'صورت‌حساب';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'وضعیت';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'تاریخ سفارش';
-$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'کل';
 $GLOBALS['TL_LANG']['MSC']['iso_order_document_number'] = 'شماره سفارش';
+$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'کل';
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'کم به زیاد';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'زیاد به کم';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'الف تا ی';
@@ -70,7 +69,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['cash'][0] = 'نقد';
 $GLOBALS['TL_LANG']['CCT']['mc'] = 'مسترکارت';
 $GLOBALS['TL_LANG']['CCT']['visa'] = 'ویزا';
 $GLOBALS['TL_LANG']['CCT']['discover'] = 'دیسکاور';
-$GLOBALS['TL_LANG']['CCT']['delta'] = 'دلتا';
+$GLOBALS['TL_LANG']['CCT']['delta'] = 'Delta';
 $GLOBALS['TL_LANG']['CCT']['solo'] = 'سولو';
 $GLOBALS['TL_LANG']['ATTR']['fileTree'][0] = 'درخت پرونده';
 $GLOBALS['TL_LANG']['ATTR']['downloads'][0] = 'بارگیری‌ها';

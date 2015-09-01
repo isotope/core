@@ -29,7 +29,8 @@ class Datatrans extends Postsale implements IsotopePayment
 
     /**
      * Perform server to server data check
-     * @param   IsotopeProductCollection
+     *
+     * @param IsotopeProductCollection|Order $objOrder
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -37,14 +38,20 @@ class Datatrans extends Postsale implements IsotopePayment
         if (\Input::post('status') != 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
 
-            return false;
+            return;
         }
 
         // Validate HMAC sign
-        if (\Input::post('sign2') != hash_hmac('md5', $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'), $this->datatrans_sign)) {
+        $hash = hash_hmac(
+            'md5',
+            $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
+            $this->datatrans_sign
+        );
+
+        if (\Input::post('sign2') != $hash) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
 
-            return false;
+            return;
         }
 
         // For maximum security, also validate individual parameters
@@ -53,15 +60,14 @@ class Datatrans extends Postsale implements IsotopePayment
             'currency'      => $objOrder->currency,
             'amount'        => round($objOrder->getTotal() * 100),
             'reqtype'       => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
-        )))
-        {
-            return false;
+        ))) {
+            return;
         }
 
         if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . \Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
 
-            return false;
+            return;
         }
 
         $objOrder->date_paid = time();
@@ -81,8 +87,10 @@ class Datatrans extends Postsale implements IsotopePayment
 
     /**
      * Generate the submit form for datatrans and if javascript is enabled redirect automaticly
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     *
+     * @param   IsotopeProductCollection|Order   $objOrder  The order being places
+     * @param   \Module|\Isotope\Module\Checkout $objModule The checkout module instance
+     *
      * @return  string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
@@ -140,7 +148,11 @@ class Datatrans extends Postsale implements IsotopePayment
     {
         foreach ($arrData as $key => $value) {
             if (\Input::post($key) != $value) {
-                \System::log('Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').', __METHOD__, TL_ERROR);
+                \System::log(
+                    'Wrong data for parameter "' . $key . '" (Order ID "' . \Input::post('refno') . ').',
+                    __METHOD__,
+                    TL_ERROR
+                );
 
                 return false;
             }

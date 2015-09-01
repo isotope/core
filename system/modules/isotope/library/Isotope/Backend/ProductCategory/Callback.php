@@ -27,7 +27,13 @@ class Callback extends \Backend
     {
         $objProduct = Product::findByPk($row['pid']);
 
-        return $objProduct->name;
+        $label = $objProduct->name;
+
+        if ($objProduct->sku != '') {
+            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProduct->sku . ']</span>';
+        }
+
+        return $label;
     }
 
 

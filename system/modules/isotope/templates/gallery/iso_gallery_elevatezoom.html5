@@ -1,0 +1,32 @@
+<?php if ($this->type == 'gallery'): ?>
+<figure data-type="gallery" data-uid="g<?php echo $this->uid; ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
+<a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>"<?php if($this->zoom): ?> data-zoom-image="<?php echo $this->zoom['zoom']; ?>" onclick="return Isotope.elevateZoom(this, 'g<?php echo $this->uid; ?>');"<?php endif; ?>>
+<img src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?><?php if ($this->class) echo ' class="'.$this->class.'"'; ?>>
+</a>
+</figure>
+<?php else: ?>
+<figure class="image_container"><img id="g<?php echo $this->uid; ?>" src="<?php echo $this->src; ?>"<?php if($this->zoom): ?> data-zoom-image="<?php echo $this->zoom['zoom']; ?>"<?php endif; ?> itemprop="image" alt="<?php echo $this->alt; ?>"></figure>
+
+<?php if ($this->zoom): ?>
+<script>
+(function($) {
+    "use strict";
+
+    $(document).ready(function() {
+        $('#g<?php echo $this->uid; ?>').elevateZoom({
+            zoomEnabled: true<?php if ($this->zoom_windowSize[0]): ?>,
+            zoomWindowWidth: <?php echo $this->zoom_windowSize[0]; endif; if ($this->zoom_windowSize[1]): ?>,
+            zoomWindowHeight: <?php echo $this->zoom_windowSize[1]; endif; if ($this->zoom_position[0]): ?>,
+            zoomWindowOffetx: <?php echo $this->zoom_position[0]; endif; if ($this->zoom_position[1]): ?>,
+            zoomWindowOffety: <?php echo $this->zoom_position[1]; endif; if ($this->zoom_position[2]): ?>,
+            zoomWindowPosition: <?php echo substr($this->zoom_position[2], 3); endif; if ($this->zoom_windowFade[0]): ?>,
+            zoomWindowFadeIn: <?php echo $this->zoom_windowFade[0]; endif; if ($this->zoom_windowFade[1]): ?>,
+            zoomWindowFadeOut: <?php echo $this->zoom_windowFade[1]; endif; if ($this->zoom_border[0]): ?>,
+            borderColour: "#<?php echo $this->zoom_border[0]; ?>"<?php endif; if ($this->zoom_border[1]): ?>,
+            borderSize: <?php echo $this->zoom_border[1]; endif; ?>
+        });
+    });
+})(jQuery);
+</script>
+<?php endif; ?>
+<?php endif; ?>

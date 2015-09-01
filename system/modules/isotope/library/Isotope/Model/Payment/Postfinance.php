@@ -101,6 +101,24 @@ class Postfinance extends PSP
         'VC'
     );
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentMethods()
+    {
+        return array(
+            'CreditCard__American_Express'          => 'CreditCard - American Express',
+            'CreditCard__Billy'                     => 'CreditCard - Billy',
+            'CreditCard__CB'                        => 'CreditCard - CB',
+            'CreditCard__Diners_Club'               => 'CreditCard - Diners Club',
+            'CreditCard__JCB'                       => 'CreditCard - JCB',
+            'CreditCard__MaestroUK'                 => 'CreditCard - MaestroUK',
+            'CreditCard__MasterCard'                => 'CreditCard - MasterCard',
+            'CreditCard__VISA'                      => 'CreditCard - VISA',
+            'PostFinance_Card__PostFinance_Card'    => 'PostFinance Card',
+            'PAYPAL__PAYPAL'                        => 'PayPal'
+        );
+    }
 
     /**
      * Prepare PSP params
@@ -111,6 +129,19 @@ class Postfinance extends PSP
     protected function preparePSPParams($objOrder, $objModule)
     {
         $arrParams = parent::preparePSPParams($objOrder, $objModule);
+
+        // Add PostFinance specific PSP payment methods
+        if ($this->psp_payment_method) {
+            $chunks = explode('__', $this->psp_payment_method, 2);
+            $arrParams = array_merge(
+                $arrParams,
+                array(
+                    'PM'    => str_replace('_', ' ', $chunks[0]),
+                    'BRAND' => str_replace('_', ' ', $chunks[1]),
+                )
+            );
+        }
+
         // @todo: Activate this as soon as PostFinance has fixed the issues with FIS
         // integration on their side
         //$arrParams = array_merge($arrParams, $this->prepareFISParams($objOrder));
@@ -159,7 +190,7 @@ class Postfinance extends PSP
             $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
 
             $arrOrder['ITEMID' . $i]        = $objItem->id;
-            $arrOrder['ITEMNAME' . $i]      = substr(\String::restoreBasicEntities(
+            $arrOrder['ITEMNAME' . $i]      = substr(\StringUtil::restoreBasicEntities(
                 $objItem->getName()
             ), 40);
             $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();

@@ -61,18 +61,17 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $options = deserialize($this->options);
 
                 if (!empty($options) && is_array($options)) {
-
-                    // Build for a frontend widget
                     if ($this->isCustomerDefined()) {
+                        // Build for a frontend widget
+
                         foreach ($options as $option) {
                             $option['label'] = Translation::get($option['label']);
 
                             $arrOptions[] = $option;
                         }
-                    }
+                    } else {
+                        // Build for a backend widget
 
-                    // Build for a backend widget
-                    else {
                         $group = '';
 
                         foreach ($options as $option) {
@@ -109,7 +108,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case 'product':
                 if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
-                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"');
+                    throw new \InvalidArgumentException(
+                        'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
+                    );
                 }
 
                 $objOptions = $this->getOptionsFromManager($objProduct);
@@ -124,7 +125,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             default:
-                throw new \UnexpectedValueException('Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
+                throw new \UnexpectedValueException(
+                    'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
+                );
         }
 
         return $arrOptions;
@@ -151,16 +154,25 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             case 'product':
                 /** @type IsotopeProduct|Product $objProduct */
                 if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
-                    throw new \InvalidArgumentException('Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"');
+                    throw new \InvalidArgumentException(
+                        'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
+                    );
 
-                } elseif (!is_array($this->varOptionsCache) || array_key_exists($objProduct->id, $this->varOptionsCache)) {
-                    $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute($objProduct, $this);
+                } elseif (!is_array($this->varOptionsCache)
+                    || array_key_exists($objProduct->id, $this->varOptionsCache)
+                ) {
+                    $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute(
+                        $objProduct,
+                        $this
+                    );
                 }
 
                 return $this->varOptionsCache[$objProduct->id];
 
             default:
-                throw new \UnexpectedValueException(static::$strTable.'.'.$this->field_name . ' does not use options manager');
+                throw new \UnexpectedValueException(
+                    static::$strTable.'.'.$this->field_name . ' does not use options manager'
+                );
         }
     }
 
@@ -194,7 +206,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case 'foreignKey':
                 list($table, $field) = explode('.', $this->foreignKey, 2);
-                $result = \Database::getInstance()->execute("SELECT id AS value, $field AS label FROM $table");
+                $result = \Database::getInstance()->execute("
+                    SELECT id AS value, $field AS label
+                    FROM $table
+                    WHERE id IN (" . implode(',', $arrValues) . ")
+                ");
 
                 return $result->fetchAllAssoc();
                 break;
@@ -208,7 +224,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             default:
-                throw new \UnexpectedValueException('Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name);
+                throw new \UnexpectedValueException(
+                    'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
+                );
         }
     }
 
@@ -219,21 +237,25 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      */
     public function saveToDCA(array &$arrData)
     {
+        $this->fe_search = false;
+
         if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
             $this->be_filter = false;
             $this->fe_filter = false;
         }
 
+        if ($this->multiple && ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey')) {
+            $this->csv = ',';
+        }
+
         parent::saveToDCA($arrData);
 
         if (TL_MODE == 'BE') {
-
             if ($this->be_filter && \Input::get('act') == '') {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
             if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
-
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 

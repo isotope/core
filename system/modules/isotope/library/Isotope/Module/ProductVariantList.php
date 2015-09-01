@@ -12,23 +12,16 @@
 
 namespace Isotope\Module;
 
-use Haste\Haste;
+use Isotope\Isotope;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCategory;
-use Isotope\Model\ProductType;
-
+use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Sort;
 
 /**
- * Class ProductVariantList
- *
- * Front end module Isotope "product variant list".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * Frontend module to show a list of product variants.
  */
 class ProductVariantList extends ProductList
 {
-
     /**
      * Display a wildcard in the back end
      * @return string
@@ -36,6 +29,7 @@ class ProductVariantList extends ProductList
     public function generate()
     {
         if (TL_MODE == 'BE') {
+            /** @var \BackendTemplate|object $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT VARIANT LIST ###';
@@ -51,29 +45,40 @@ class ProductVariantList extends ProductList
         return parent::generate();
     }
 
-
     /**
      * Fill the object's arrProducts array
-     * @param   array|null
-     * @return  array
+     *
+     * @param array|null $arrCacheIds
+     *
+     * @return array
      */
     protected function findProducts($arrCacheIds = null)
     {
         $t             = Product::getTable();
         $arrColumns    = array();
         $arrCategories = $this->findCategories();
-        $arrProductIds = \Database::getInstance()->query("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrCategories) . ")")->fetchEach('pid');
-        $arrTypes = \Database::getInstance()->query("SELECT id FROM " . ProductType::getTable() . " WHERE variants='1'")->fetchEach('id');
+
+        $arrProductIds = \Database::getInstance()
+            ->query("
+                SELECT pid
+                FROM tl_iso_product_category
+                WHERE page_id IN (" . implode(',', $arrCategories) . ")
+            ")
+            ->fetchEach('pid')
+        ;
+
+        $arrTypes = \Database::getInstance()
+            ->query("SELECT id FROM tl_iso_producttype WHERE variants='1'")
+            ->fetchEach('id')
+        ;
 
         if (empty($arrProductIds)) {
             return array();
         }
 
-        list($arrFilters, $arrSorting, $strWhere, $arrValues) = $this->getFiltersAndSorting();
-
-        if (!is_array($arrValues)) {
-            $arrValues = array();
-        }
+        $queryBuilder = new FilterQueryBuilder(
+            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
+        );
 
         $arrColumns[] = "(
             ($t.id IN (" . implode(',', $arrProductIds) . ") AND $t.type NOT IN (" . implode(',', $arrTypes) . "))
@@ -92,19 +97,26 @@ class ProductVariantList extends ProductList
         }
 
         if ($this->iso_list_where != '') {
-            $arrColumns[] = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+            $arrColumns[] = $this->iso_list_where;
         }
 
-        if ($strWhere != '') {
-            $arrColumns[] = $strWhere;
+        if ($queryBuilder->hasSqlCondition()) {
+            $arrColumns[] = $queryBuilder->getSqlWhere();
+        }
+
+        $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
+
+        if (empty($arrSorting) && $this->iso_listingSortField != '') {
+            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
         $objProducts = Product::findAvailableBy(
             $arrColumns,
-            $arrValues,
+            $queryBuilder->getSqlValues(),
             array(
                  'order'   => 'c.sorting',
-                 'filters' => $arrFilters,
+                 'filters' => $queryBuilder->getFilters(),
                  'sorting' => $arrSorting,
             )
         );

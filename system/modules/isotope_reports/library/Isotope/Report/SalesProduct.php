@@ -18,6 +18,8 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
+use Isotope\Report\Period\PeriodFactory;
+use Isotope\Report\Period\PeriodInterface;
 
 
 class SalesProduct extends Sales
@@ -36,28 +38,28 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $strPeriod = (string) $arrSession[$this->name]['period'];
-        $intColumns = (int) $arrSession[$this->name]['columns'];
-        $blnVariants = (bool) $arrSession[$this->name]['variants'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $periodFactory = new PeriodFactory();
+        $arrSession    = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['from'] == '')
-        {
+        $strPeriod   = (string) $arrSession[$this->name]['period'];
+        $intColumns  = (int) $arrSession[$this->name]['columns'];
+        $blnVariants = (bool) $arrSession[$this->name]['variants'];
+        $intStatus   = (int) $arrSession[$this->name]['iso_status'];
+
+        if ($arrSession[$this->name]['from'] == '') {
             $intStart = strtotime('-' . ($intColumns-1) . ' ' . $strPeriod);
-        }
-        else
-        {
+        } else {
             $intStart = (int) $arrSession[$this->name]['from'];
         }
 
-        list($publicDate, $privateDate, $sqlDate) = $this->getPeriodConfiguration($strPeriod);
+        $period   = $periodFactory->create($strPeriod);
+        $intStart = $period->getPeriodStart($intStart);
+        $dateFrom = $period->getKey($intStart);
+        $dateTo   = $period->getKey(strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 
         $arrData = array('rows'=>array());
-        $arrData['header'] = $this->getHeader($strPeriod, $publicDate, $intStart, $intColumns);
+        $arrData['header'] = $this->getHeader($period, $intStart, $intColumns);
 
-        $dateFrom = date($privateDate, $intStart);
-        $dateTo = date($privateDate, strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
         $groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
 
         $objProducts = \Database::getInstance()->query("
@@ -71,7 +73,7 @@ class SalesProduct extends Sales
                 i.configuration AS product_configuration,
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
-                DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), '$sqlDate') AS dateGroup
+                " . $period->getSqlField($this->strDateField) . " AS dateGroup
             FROM " . ProductCollectionItem::getTable() . " i
             LEFT JOIN " . ProductCollection::getTable() . " o ON i.pid=o.id
             LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
@@ -92,8 +94,7 @@ class SalesProduct extends Sales
         $objProducts->reset();
 
         // Prepare product data
-        while ($objProducts->next())
-        {
+        while ($objProducts->next()) {
             $arrAttributes = array();
             $arrVariantAttributes = array();
             $blnHasVariants = false;
@@ -145,72 +146,60 @@ class SalesProduct extends Sales
         // Prepare columns
         $arrColumns = array();
         for ($i=0; $i<$intColumns; $i++) {
-            $arrColumns[] = date($privateDate, $intStart);
-            $intStart = strtotime('+1 ' . $strPeriod, $intStart);
+            $arrColumns[] = $period->getKey($intStart);
+            $intStart = $period->getNext($intStart);
         }
 
         $arrFooter = array();
 
         // Sort the data
         if ($arrSession[$this->name]['tl_sort'] == 'product_name') {
-
             usort($arrRaw, function ($a, $b) {
                 return strcasecmp($a['name'], $b['name']);
             });
 
         } else {
-
             usort($arrRaw, function ($a, $b) {
                 return ($a['total'] == $b['total'] ? 0 : ($a['total'] < $b['total'] ? 1 : -1));
             });
         }
 
         // Generate data
-        foreach ($arrRaw as $arrProduct)
-        {
-            $arrRow = array(array
-            (
+        foreach ($arrRaw as $arrProduct) {
+            $arrRow = array(array(
                 'value'      => $arrProduct['name'],
             ));
 
-            $arrFooter[0] = array
-            (
+            $arrFooter[0] = array(
                 'value'      => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             );
 
-            foreach ($arrColumns as $i=>$column)
-            {
-                $arrRow[$i+1] = array
-                (
+            foreach ($arrColumns as $i => $column) {
+                $arrRow[$i+1] = array(
                     'value'         => Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
                 );
 
-                $arrFooter[$i+1] = array
-                (
+                $arrFooter[$i+1] = array(
                     'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
                     'quantity'      => $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
                 );
             }
 
-            $arrRow[$i+2] = array
-            (
+            $arrRow[$i+2] = array(
                 'value'         => Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
             );
 
-            $arrFooter[$i+2] = array
-            (
+            $arrFooter[$i+2] = array(
                 'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
                 'quantity'      => $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
             );
 
-            $arrData['rows'][] = array
-            (
+            $arrData['rows'][] = array(
                 'columns' => $arrRow,
             );
         }
 
-        for ($i=1; $i<count($arrFooter); $i++)
-        {
+        for ($i=1; $i<count($arrFooter); $i++) {
             $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']) . '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
             unset($arrFooter[$i]['total'], $arrFooter[$i]['quantity']);
         }
@@ -241,13 +230,11 @@ class SalesProduct extends Sales
 
     protected function initializeDefaultValues()
     {
-        $this->arrSearchOptions = array
-        (
+        $this->arrSearchOptions = array(
             'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
         );
 
-        $this->arrSortingOptions = array
-        (
+        $this->arrSortingOptions = array(
             'product_name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name'],
             'total' => &$GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'],
         );
@@ -255,8 +242,7 @@ class SalesProduct extends Sales
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['tl_sort'] == '')
-        {
+        if ($arrSession[$this->name]['tl_sort'] == '') {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
@@ -266,23 +252,20 @@ class SalesProduct extends Sales
     }
 
 
-    protected function getHeader($strPeriod, $strFormat, $intStart, $intColumns)
+    protected function getHeader(PeriodInterface $period, $intStart, $intColumns)
     {
         $arrHeader = array();
         $arrHeader[] = array('value'=>'Produkt');
 
-        for ($i=0; $i<$intColumns; $i++)
-        {
-            $arrHeader[] = array
-            (
-                'value' => \Date::parse($strFormat, $intStart),
+        for ($i=0; $i<$intColumns; $i++) {
+            $arrHeader[] = array(
+                'value' => $period->format($intStart),
             );
 
-            $intStart = strtotime('+ 1 ' . $strPeriod, $intStart);
+            $intStart = $period->getNext($intStart);
         }
 
-        $arrHeader[] = array
-        (
+        $arrHeader[] = array(
             'value' => 'Total',
         );
 

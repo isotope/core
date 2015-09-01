@@ -12,8 +12,10 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
@@ -26,7 +28,9 @@ use Isotope\Model\ProductCollection;
  *
  * @property mixed id
  */
-class Cart extends ProductCollection implements IsotopeProductCollection
+class Cart extends ProductCollection implements
+    IsotopeProductCollection,
+    IsotopeOrderableCollection
 {
 
     /**
@@ -43,14 +47,15 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Draft of Order for this cart
-     * @type Order
+     * @var Order
      */
     protected $objDraftOrder;
 
 
     /**
      * Get billing address or create if none exists
-     * @return  Address
+     *
+     * @return Address
      */
     public function getBillingAddress()
     {
@@ -80,7 +85,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get shipping address or create if none exists
-     * @return  Address
+     *
+     * @return Address
      */
     public function getShippingAddress()
     {
@@ -121,12 +127,13 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         // Temporary cart available, move to this cart. Must be after creating a new cart!
         if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0) {
             $blnMerge = $this->countItems() > 0 ? true : false;
+            $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
 
-            if (($objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id))) !== null) {
+            if (null !== $objTemp) {
                 $arrIds = $this->copyItemsFrom($objTemp);
 
                 if ($blnMerge && !empty($arrIds)) {
-                    $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['cartMerged'];
+                    Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['cartMerged']);
                 }
 
                 $objTemp->delete();
@@ -134,7 +141,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
             // Delete cookie
             \System::setCookie(static::$strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
-            \System::reload();
+            \Controller::reload();
         }
     }
 
@@ -146,7 +153,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
     public function getDraftOrder()
     {
         if ($this->objDraftOrder === null) {
-
             $t = Order::getTable();
 
             $objOrder = Order::findOneBy(
@@ -160,7 +166,6 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             if ($objOrder === null) {
                 $objOrder = Order::createFromCollection($this);
             } else {
-
                 $objOrder->config_id = (int) $this->config_id;
                 $objOrder->store_id  = (int) $this->store_id;
                 $objOrder->member    = (int) $this->member;
@@ -177,7 +182,9 @@ class Cart extends ProductCollection implements IsotopeProductCollection
                 $objOrder->updateDatabase();
 
                 // HOOK: order status has been updated
-                if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder']) && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])) {
+                if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                    && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
                         $objCallback->$callback[1]($objOrder, $this, $arrItemIds);
@@ -193,7 +200,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Check if minimum order amount is reached
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasErrors()
     {
@@ -206,14 +214,18 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get error messages for the cart
-     * @return  array
+     *
+     * @return array
      */
     public function getErrors()
     {
         $arrErrors = parent::getErrors();
 
         if (Isotope::getConfig()->cartMinSubtotal > 0 && Isotope::getConfig()->cartMinSubtotal > $this->getSubtotal()) {
-            $arrErrors[] = sprintf($GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'], Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal));
+            $arrErrors[] = sprintf(
+                $GLOBALS['TL_LANG']['ERR']['cartMinSubtotal'],
+                Isotope::formatPriceWithCurrency(Isotope::getConfig()->cartMinSubtotal)
+            );
         }
 
         return $arrErrors;
@@ -221,7 +233,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Get a collection-specific error message for items with errors
-     * @return  string
+     *
+     * @return string
      */
     protected function getMessageIfErrorsInItems()
     {
@@ -240,8 +253,8 @@ class Cart extends ProductCollection implements IsotopeProductCollection
 
     /**
      * Load the current cart
-     * @param   Config
-     * @return  Cart
+     *
+     * @return Cart
      */
     public static function findForCurrentStore()
     {
@@ -258,18 +271,31 @@ class Cart extends ProductCollection implements IsotopeProductCollection
         //  Check to see if the user is logged in.
         if (FE_USER_LOGGED_IN !== true) {
             if ($strHash == '') {
-                $strHash = sha1(session_id() . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '') . $intStore . static::$strCookie);
-                \System::setCookie(static::$strCookie, $strHash, $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'], $GLOBALS['TL_CONFIG']['websitePath']);
+                $strHash = sha1(
+                    session_id()
+                    . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
+                    . $intStore
+                    . static::$strCookie
+                );
+
+                \System::setCookie(
+                    static::$strCookie,
+                    $strHash,
+                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
+                    $GLOBALS['TL_CONFIG']['websitePath']
+                );
             }
 
             $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore));
         } else {
-            $objCart = static::findOneBy(array('member=?', 'store_id=?'), array(\FrontendUser::getInstance()->id, $intStore));
+            $objCart = static::findOneBy(
+                array('member=?', 'store_id=?'),
+                array(\FrontendUser::getInstance()->id, $intStore)
+            );
         }
 
         // Create new cart
         if ($objCart === null) {
-
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             $objCart   = new static();
 
@@ -277,7 +303,7 @@ class Cart extends ProductCollection implements IsotopeProductCollection
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
                 'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),
-                'uniqid'    => (FE_USER_LOGGED_IN === true ? '' : $strHash),
+                'uniqid'    => (FE_USER_LOGGED_IN === true ? null : $strHash),
                 'config_id' => $objConfig->id,
                 'store_id'  => $intStore,
             )));

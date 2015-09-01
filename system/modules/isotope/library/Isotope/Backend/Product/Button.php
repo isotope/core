@@ -13,6 +13,7 @@
 namespace Isotope\Backend\Product;
 
 use Isotope\Model\Download;
+use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
 
@@ -21,16 +22,16 @@ class Button extends \Backend
 
     /**
      * Hide "product groups" button for non-admins
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
+     *
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $class
+     * @param string $attributes
+     *
      * @return string
      */
-    public function forGroups($href, $label, $title, $class, $attributes, $table, $root)
+    public function forGroups($href, $label, $title, $class, $attributes)
     {
         if (!\BackendUser::getInstance()->isAdmin && (!is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp))) {
             return '';
@@ -41,12 +42,14 @@ class Button extends \Backend
 
     /**
      * Return the "copy" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forCopy($row, $href, $label, $title, $icon, $attributes)
@@ -60,12 +63,14 @@ class Button extends \Backend
 
     /**
      * Return the "cut" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forCut($row, $href, $label, $title, $icon, $attributes)
@@ -79,12 +84,14 @@ class Button extends \Backend
 
     /**
      * Disable "delete" button if product has been sold
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
@@ -98,12 +105,14 @@ class Button extends \Backend
 
     /**
      * Return the "toggle visibility" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
@@ -113,8 +122,11 @@ class Button extends \Backend
             \Controller::redirect(\System::getReferer());
         }
 
+        /** @var \BackendUser $user */
+        $user = \BackendUser::getInstance();
+
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_product::published', 'alexf')) {
+        if (!$user->isAdmin && !$user->hasAccess('tl_iso_product::published', 'alexf')) {
             return '';
         }
 
@@ -138,12 +150,14 @@ class Button extends \Backend
 
     /**
      * Hide variant buttons for product types without variant support
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forVariants($row, $href, $label, $title, $icon, $attributes)
@@ -157,12 +171,14 @@ class Button extends \Backend
 
     /**
      * Hide "related" button for variants
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forRelated($row, $href, $label, $title, $icon, $attributes)
@@ -176,12 +192,14 @@ class Button extends \Backend
 
     /**
      * Show/hide the downloads button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function forDownloads($row, $href, $label, $title, $icon, $attributes)
@@ -195,13 +213,16 @@ class Button extends \Backend
 
     /**
      * Return the "cut" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @return string
+     *
+     * @param array $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+
+     *
+*@return string
      */
     public function forGroup($row, $href, $label, $title, $icon, $attributes)
     {
@@ -218,16 +239,17 @@ class Button extends \Backend
             }
         }
 
-        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . \Isotope\Model\Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
      * Manage act=select buttons
-     * @param   array
-     * @param   DataContainer
-     * @return  array
+     *
+     * @param array $arrButtons
+     *
+     * @return array
      */
-    public function forSelect($arrButtons, $dc)
+    public function forSelect($arrButtons)
     {
         if (\Input::get('act') == 'select' && !\Input::get('id')) {
 
@@ -245,7 +267,7 @@ window.addEvent('domready', function() {
             Isotope.openModalGroupSelector({
                 'width':    765,
                 'title':    '" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "',
-                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . \Isotope\Model\Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "',
+                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "',
                 'action':   'moveProducts',
                 'trigger':  $(this)
             });
@@ -265,9 +287,9 @@ window.addEvent('domready', function() {
 
     /**
      * Publish/unpublish a product
-     * @param integer
-     * @param boolean
-     * @return void
+     *
+     * @param int  $intId
+     * @param bool $blnVisible
      */
     protected function toggleVisibility($intId, $blnVisible)
     {
@@ -277,8 +299,11 @@ window.addEvent('domready', function() {
 
         Permission::check();
 
+        /** @var \BackendUser $user */
+        $user = \BackendUser::getInstance();
+
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_product::published', 'alexf')) {
+        if (!$user->isAdmin && !$user->hasAccess('tl_iso_product::published', 'alexf')) {
             \System::log('Not enough permissions to publish/unpublish product ID "' . $intId . '"', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
@@ -304,8 +329,10 @@ window.addEvent('domready', function() {
 
     /**
      * Get number of downloads for a product id
-     * @param   int
-     * @return  int
+     *
+     * @param int $intProduct
+     *
+     * @return int
      */
     protected function getNumberOfDownloadsForProduct($intProduct)
     {

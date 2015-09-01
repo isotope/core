@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
+use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 
 /**
@@ -75,7 +76,7 @@ class RequestCache extends \Model
      *
      * @param array $arrIds
      *
-     * @return array
+     * @return Filter[]
      */
     public function getFiltersForModules(array $arrIds)
     {
@@ -494,7 +495,13 @@ class RequestCache extends \Model
      */
     public static function deleteById($intId)
     {
-        return (\Database::getInstance()->prepare("DELETE FROM " . static::$strTable . " WHERE id=?")->execute($intId)->affectedRows > 0);
+        $affected = \Database::getInstance()
+            ->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")
+            ->execute($intId)
+            ->affectedRows
+        ;
+
+        return ($affected > 0);
     }
 
     /**
@@ -502,7 +509,7 @@ class RequestCache extends \Model
      */
     public static function purge()
     {
-        \Database::getInstance()->query("TRUNCATE " . static::$strTable);
+        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
     }
 
     /**
@@ -511,68 +518,14 @@ class RequestCache extends \Model
      * @param array $arrFilters
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.3, to be removed in 3.0.
+     *             Use Isotope\RequestCache\FilterQueryBuilder instead.
      */
     public static function buildSqlFilters(array $arrFilters)
     {
-        $strWhere  = '';
-        $arrWhere  = array();
-        $arrValues = array();
-        $arrGroups = array();
+        $queryBuilder = new FilterQueryBuilder($arrFilters);
 
-        // Initiate native SQL filtering
-        /** @var \Isotope\RequestCache\Filter $objFilter  */
-        foreach ($arrFilters as $k => $objFilter) {
-            if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
-                if ($objFilter->isDynamicAttribute()) {
-                    $arrGroups[$objFilter->getGroup()] = false;
-                } else {
-                    $arrGroups[$objFilter->getGroup()][] = $k;
-                }
-            } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
-                $arrWhere[]  = $objFilter->sqlWhere();
-                $arrValues[] = $objFilter->sqlValue();
-                unset($arrFilters[$k]);
-            }
-        }
-
-        if (!empty($arrGroups)) {
-            foreach ($arrGroups as $arrGroup) {
-                $arrGroupWhere = array();
-
-                // Skip dynamic attributes
-                if (false === $arrGroup) {
-                    continue;
-                }
-
-                foreach ($arrGroup as $k) {
-                    $objFilter = $arrFilters[$k];
-
-                    $arrGroupWhere[] = $objFilter->sqlWhere();
-                    $arrValues[]     = $objFilter->sqlValue();
-                    unset($arrFilters[$k]);
-                }
-
-                $arrWhere[] = '(' . implode(' OR ', $arrGroupWhere) . ')';
-            }
-        }
-
-        if (!empty($arrWhere)) {
-            $time = time();
-            $t    = Product::getTable();
-
-            $strWhere = "
-                (
-                    (" . implode(' AND ', $arrWhere) . ")
-                    OR $t.id IN (SELECT $t.pid FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
-                    OR $t.pid IN (SELECT $t.id FROM tl_iso_product AS $t WHERE $t.language='' AND " . implode(' AND ', $arrWhere)
-                . (BE_USER_LOGGED_IN === true ? '' : " AND $t.published='1' AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time)") . ")
-                )
-            ";
-
-            $arrValues = array_merge($arrValues, $arrValues, $arrValues);
-        }
-
-        return array($arrFilters, $strWhere, $arrValues);
+        return array($queryBuilder->getFilters(), $queryBuilder->getSqlWhere(), $queryBuilder->getSqlValues());
     }
 }

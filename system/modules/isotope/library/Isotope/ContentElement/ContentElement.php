@@ -13,16 +13,10 @@
 namespace Isotope\ContentElement;
 
 use ContentElement as Contao_ContentElement;
+use Haste\Util\Debug;
+use Haste\Util\RepositoryVersion;
+use Isotope\Isotope;
 
-
-/**
- * Class ContentIsotope
- *
- * Provide methods to handle Isotope content elements.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 abstract class ContentElement extends Contao_ContentElement
 {
 
@@ -34,10 +28,17 @@ abstract class ContentElement extends Contao_ContentElement
     {
         parent::__construct($objElement);
 
+        // Load Isotope JavaScript and style sheet
         if (TL_MODE == 'FE') {
-            // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $version = RepositoryVersion::encode(Isotope::VERSION);
+
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/js/isotope.min.js|static|'.$version
+            );
+
+            $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.$version
+            );
         }
     }
 }

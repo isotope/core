@@ -25,7 +25,8 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'closed'                    => true,
         'onload_callback' => array
         (
-            array('Isotope\Backend', 'initializeSetupModule'),
+            array('Isotope\\Backend', 'initializeSetupModule'),
+            array('Isotope\\Backend\\Gallery\\Callback', 'showJsLibraryHint'),
         ),
         'sql' => array
         (
@@ -113,6 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         'standard'                  => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
         'standardlightbox'          => '{name_legend},name,type,anchor,placeholder;{size_legend},main_size,gallery_size;{lightbox_legend},lightbox_template,lightbox_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,lightbox_watermark_image,lightbox_watermark_position;{template_legend:hide},customTpl',
         'inline'                    => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position;{template_legend:hide},customTpl',
+        'elevatezoom'               => '{name_legend},name,type,placeholder;{size_legend},main_size,gallery_size,zoom_size;{config_legend},zoom_windowSize,zoom_position,zoom_windowFade,zoom_border;{watermark_legend:hide},main_watermark_image,main_watermark_position,gallery_watermark_image,gallery_watermark_position,zoom_watermark_image,zoom_watermark_position;{template_legend:hide},customTpl',
     ),
 
     // Fields
@@ -150,7 +152,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'anchor' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'],
             'exclude'               => true,
             'inputType'             => 'radio',
             'options'               => array('none', 'reader', 'lightbox'),
@@ -211,9 +213,71 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
+        'zoom_size' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_size'],
+            'exclude'               => true,
+            'inputType'             => 'imageSize',
+            'options'               => $GLOBALS['TL_CROP'],
+            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
+            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
+        'zoom_windowSize' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowSize'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
+        'zoom_position' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
+            'exclude'               => true,
+            'inputType'             => 'imageSize',
+            'options' => array(
+                'pos1'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos1'],
+                'pos2'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos2'],
+                'pos3'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos3'],
+                'pos4'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos4'],
+                'pos5'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos5'],
+                'pos6'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos6'],
+                'pos7'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos7'],
+                'pos8'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos8'],
+                'pos9'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos9'],
+                'pos10' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos10'],
+                'pos11' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos11'],
+                'pos12' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos12'],
+                'pos13' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos13'],
+                'pos14' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos14'],
+                'pos15' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos15'],
+                'pos16' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos16'],
+            ),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
+            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+            'explanation'           => 'elevatezoom_position',
+        ),
+        'zoom_windowFade' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowFade'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
+        'zoom_border' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_border'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>6, 'multiple'=>true, 'size'=>2, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
+        ),
         'main_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -221,7 +285,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -231,7 +295,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -239,7 +303,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -249,7 +313,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -257,7 +321,25 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
+            'reference'             => $GLOBALS['TL_LANG']['MSC'],
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
+        ),
+        'zoom_watermark_image' => array
+        (
+            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_image'],
+            'exclude'               => true,
+            'inputType'             => 'fileTree',
+            'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
+            'sql'                   => "binary(16) NULL",
+        ),
+        'zoom_watermark_position' => array
+        (
+            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),

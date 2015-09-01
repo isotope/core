@@ -15,7 +15,6 @@
  */
 
 $GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Muokkaa';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage'] = 'Poista';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'Ryhmät';
 $GLOBALS['TL_LANG']['MSC']['filterByPages'] = 'Sivut';
 $GLOBALS['TL_LANG']['MSC']['mmDrop'] = 'Vedä ja pudota ladattavat tiedostot tähän';
@@ -25,7 +24,7 @@ $GLOBALS['TL_LANG']['MSC']['undeletableRecords'] = 'Joitain ';
 $GLOBALS['TL_LANG']['MSC']['quantity'] = 'Määrä';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText'] = 'etsi tuotteita';
 $GLOBALS['TL_LANG']['MSC']['detailLabel'] = 'Näytä lisätietoja';
-$GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Tuotetta sivulla';
+$GLOBALS['TL_LANG']['MSC']['perPageLabel'] = 'Tuotteita sivulla';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'] = 'Avainsanat';
 $GLOBALS['TL_LANG']['MSC']['submitLabel'] = 'Lähetä';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'] = 'Tyhjennä';
@@ -52,7 +51,7 @@ $GLOBALS['TL_LANG']['MSC']['updateCartBT'] = 'Päivitä ostoskori';
 $GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'] = 'Tilauksen Tila: %s';
 $GLOBALS['TL_LANG']['MSC']['checkboutStepBack'] = 'Siirry takaisin vaiheeseen "%s"';
 $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'] = 'Luo uusi osoite';
-$GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Sama kuin laskutusosoite';
+$GLOBALS['TL_LANG']['MSC']['useBillingAddress'] = 'Käytä laskutusosoitetta';
 $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'] = 'Eri toimitusosoite';
 $GLOBALS['TL_LANG']['MSC']['editAddressLabel'] = 'Muokkaa';
 $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'] = 'Poista';
@@ -60,8 +59,8 @@ $GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm'] = 'Haluatko varmasti poistaa 
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Lasku';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Tila';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Tilauspäivä';
-$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'Yhteensä';
 $GLOBALS['TL_LANG']['MSC']['iso_order_document_number'] = 'Tilausnumero';
+$GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'Yhteensä';
 $GLOBALS['TL_LANG']['MSC']['a_to_z'] = 'A - Z';
 $GLOBALS['TL_LANG']['MSC']['z_to_a'] = 'Z - A';
 $GLOBALS['TL_LANG']['MSC']['old_to_new'] = 'vanhin ensin';

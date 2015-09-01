@@ -18,18 +18,17 @@ class AssetImport extends \Backend
 
     /**
      * Import images and other media file for products
-     * @param object
-     * @param array
+     *
      * @return string
      */
-    public function generate($dc, $arrNewImages = array())
+    public function generate()
     {
         $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product'));
 
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '') {
 
-            $objFolder = \FilesModel::findByUuid(\String::uuidToBin(\Input::post('source')));
+            $objFolder = \FilesModel::findByUuid(\StringUtil::uuidToBin(\Input::post('source')));
 
             if (null !== $objFolder) {
                 $this->importFromPath($objFolder->path);
@@ -72,6 +71,8 @@ class AssetImport extends \Backend
 
     /**
      * Import files from selected folder
+     *
+     * @param string $strPath
      */
     protected function importFromPath($strPath)
     {

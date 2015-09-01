@@ -1,0 +1,16 @@
+<h2><?php echo $this->headline; ?></h2>
+<p class="message"><?php echo $this->message; ?></p>
+<form id="quickpay<?php echo $this->id; ?>" action="https://payment.quickpay.net" method="post">
+
+<?php foreach ($this->params as $k => $v): ?>
+<input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
+<?php endforeach; ?>
+<input type="hidden" name="checksum" value="<?php echo $this->calculateHash($this->params); ?>">
+<noscript>
+<p><?php echo $this->noscript; ?></p>
+<input type="submit" value="<?php echo $this->slabel; ?>">
+</noscript>
+</form>
+<script>
+document.getElementById('quickpay<?php echo $this->id; ?>').submit();
+</script>

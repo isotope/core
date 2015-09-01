@@ -18,6 +18,8 @@ use Haste\Generator\RowClass;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
+use Isotope\Report\Period\PeriodFactory;
+use Isotope\Report\Period\PeriodInterface;
 
 
 class SalesTotal extends Sales
@@ -32,20 +34,22 @@ class SalesTotal extends Sales
 
     protected function compile()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $periodFactory = new PeriodFactory();
+        $arrSession    = \Session::getInstance()->get('iso_reports');
 
         $intConfig = (int) $arrSession[$this->name]['iso_config'];
         $strPeriod = (string) $arrSession[$this->name]['period'];
-        $intStart = (int) $arrSession[$this->name]['start'];
-        $intStop = (int) $arrSession[$this->name]['stop'];
+        $intStart  = (int) $arrSession[$this->name]['start'];
+        $intStop   = (int) $arrSession[$this->name]['stop'];
         $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
-        list($publicDate, $privateDate, $sqlDate, $jsDate) = $this->getPeriodConfiguration($strPeriod);
+        $period   = $periodFactory->create($strPeriod);
+        $intStart = $period->getPeriodStart($intStart);
+        $intStop  = $period->getPeriodEnd($intStop);
+        $dateFrom = $period->getKey($intStart);
+        $dateTo   = $period->getKey($intStop);
 
-        $dateFrom = date($privateDate, $intStart);
-        $dateTo = date($privateDate, $intStop);
-
-        $objData = \Database::getInstance()->prepare("
+        $objData = \Database::getInstance()->query("
             SELECT
                 c.id AS config_id,
                 c.currency,
@@ -56,7 +60,7 @@ class SalesTotal extends Sales
                 COUNT(DISTINCT i.id) AS total_products,
                 SUM(i.quantity) AS total_items,
                 SUM(i.tax_free_price * i.quantity) AS total_sales,
-                DATE_FORMAT(FROM_UNIXTIME(o.{$this->strDateField}), ?) AS dateGroup
+                " . $period->getSqlField('o.'.$this->strDateField) . " AS dateGroup
             FROM " . ProductCollection::getTable() . " o
             LEFT JOIN " . ProductCollectionItem::getTable() . " i ON o.id=i.pid
             LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
@@ -68,22 +72,20 @@ class SalesTotal extends Sales
             " . $this->getConfigProcedure('c') . "
             GROUP BY config_id, dateGroup
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
-        ")->execute($sqlDate);
+        ");
 
         $arrCurrencies = array();
-        $arrData = $this->initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate);
-        $arrChart = $this->initializeChart($strPeriod, $intStart, $intStop, $privateDate);
+        $arrData = $this->initializeData($period, $intStart, $intStop);
+        $arrChart = $this->initializeChart($period, $intStart, $intStop);
 
-        while ($objData->next())
-        {
+        while ($objData->next()) {
             $arrCurrencies[$objData->currency] = $objData->config_id;
 
             $arrData['rows'][$objData->dateGroup]['columns'][1]['value'] += $objData->total_orders;
             $arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_products;
             $arrData['rows'][$objData->dateGroup]['columns'][3]['value'] += $objData->total_items;
 
-            if (!is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value']))
-            {
+            if (!is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value'])) {
                 $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
             }
 
@@ -102,17 +104,14 @@ class SalesTotal extends Sales
         // Apply formatting
         $arrData = $this->formatValues($arrData, $arrCurrencies);
 
-        $this->Template->data = $arrData;
-        $this->Template->chart = $arrChart;
-        $this->Template->period = $strPeriod;
-        $this->Template->dateFormat = $jsDate;
+        $this->Template->data         = $arrData;
+        $this->Template->chart        = $arrChart;
+        $this->Template->periodFormat = $period->getJavascriptClosure();
     }
 
 
-    protected function initializeData($strPeriod, $intStart, $intStop, $privateDate, $publicDate)
+    protected function initializeData(PeriodInterface $period, $intStart, $intStop)
     {
-        $intStart = strtotime('first day of this month', $intStart);
-
         $arrData = array('rows'=>array());
 
         $arrData['header'] = array
@@ -174,13 +173,13 @@ class SalesTotal extends Sales
 
         while ($intStart <= $intStop)
         {
-            $arrData['rows'][date($privateDate, $intStart)] = array
+            $arrData['rows'][$period->getKey($intStart)] = array
             (
                 'columns' => array
                 (
                     array
                     (
-                        'value'         => \Date::parse($publicDate, $intStart),
+                        'value'         => $period->format($intStart),
                     ),
                     array
                     (
@@ -205,40 +204,7 @@ class SalesTotal extends Sales
                 ),
             );
 
-            $intStart = strtotime('+ 1 '.$strPeriod, $intStart);
-        }
-
-        if ($strPeriod == 'week') {
-            $arrData['rows'][date($privateDate, $intStart)] = array
-            (
-                'columns' => array
-                (
-                    array
-                    (
-                        'value' => \Date::parse($publicDate, $intStart),
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                    array
-                    (
-                        'value'      => 0,
-                        'attributes' => ' style="text-align:right"',
-                    ),
-                ),
-            );
+            $intStart = $period->getNext($intStart);
         }
 
         RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
@@ -247,16 +213,15 @@ class SalesTotal extends Sales
     }
 
 
-    protected function initializeChart($strPeriod, $intStart, $intStop, $privateDate)
+    protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
     {
         $arrSession  = \Session::getInstance()->get('iso_reports');
         $intConfig   = (int) $arrSession[$this->name]['iso_config'];
         $intStart    = strtotime('first day of this month', $intStart);
-        $configTable = Config::getTable();
 
         $arrData = array();
         $arrCurrencies = \Database::getInstance()->execute("
-            SELECT DISTINCT currency FROM $configTable WHERE currency!=''
+            SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''
             " . $this->getConfigProcedure() . "
             " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
         ")->fetchEach('currency');
@@ -271,18 +236,11 @@ class SalesTotal extends Sales
         {
             foreach ($arrCurrencies as $currency)
             {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $intStart;
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
+                $arrData[$currency]['data'][$period->getKey($intStart)]['x'] = $intStart;
+                $arrData[$currency]['data'][$period->getKey($intStart)]['y'] = 0;
             }
 
-            $intStart = strtotime('+ 1 '.$strPeriod, $intStart);
-        }
-
-        if ($strPeriod == 'week') {
-            foreach ($arrCurrencies as $currency) {
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['x'] = $intStart;
-                $arrData[$currency]['data'][date($privateDate, $intStart)]['y'] = 0;
-            }
+            $intStart = $period->getNext($intStart);
         }
 
         return $arrData;

@@ -178,7 +178,7 @@ abstract class TypeAgent extends \Model
                 $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
-            $objRelations = new \DcaExtractor(static::$strTable);
+            $objRelations = \DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
@@ -246,7 +246,7 @@ abstract class TypeAgent extends \Model
         $strClass = '';
 
         if (is_numeric($objResult->type)) {
-            $objRelations = new \DcaExtractor(static::$strTable);
+            $objRelations = \DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {

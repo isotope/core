@@ -12,28 +12,30 @@
 
 namespace Isotope\Model;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Product\Standard;
 
 
 /**
  * ProductPrice defines an advanced price of a product
+ *
+ * @method static|ProductPriceCollection find()
  */
 class ProductPrice extends \Model implements IsotopePrice
 {
 
     /**
      * Name of the current table
-     *
      * @var string
      */
     protected static $strTable = 'tl_iso_product_price';
 
     /**
      * Tiers for this price
-     *
      * @var array
      */
     protected $arrTiers = array();
@@ -41,25 +43,24 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Construct the object
      *
-     * @param   array
-     * @param   array
-     * @param   boolean
+     * @param \Database\Result $objResult
      */
     public function __construct(\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
 
-        $objTiers = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product_pricetier WHERE pid=? ORDER BY min")->execute($objResult->id);
+        $this->arrTiers = array_combine(
+            explode(',', $this->arrData['tier_keys']),
+            explode(',', $this->arrData['tier_values'])
+        );
 
-        while ($objTiers->next()) {
-            $this->arrTiers[$objTiers->min] = $objTiers->price;
-        }
+        ksort($this->arrTiers);
     }
 
     /**
      * Return true if more than one price is available
      *
-     * @return  bool
+     * @return bool
      */
     public function hasTiers()
     {
@@ -69,10 +70,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return price
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -82,10 +83,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return original price
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getOriginalAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -95,10 +96,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return net price (without taxes)
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getNetAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -115,10 +116,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return gross price (with all taxes)
      *
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getGrossAmount($intQuantity = 1, array $arrOptions = array())
     {
@@ -135,9 +136,9 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Get lowest amount of all tiers
      *
-     * @param   array $arrOptions
+     * @param array $arrOptions
      *
-     * @return  float
+     * @return float
      */
     public function getLowestAmount(array $arrOptions = array())
     {
@@ -151,7 +152,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return price tiers array
      *
-     * @return  array
+     * @return array
      */
     public function getTiers()
     {
@@ -161,7 +162,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Return lowest tier (= minimum quantity)
      *
-     * @return  int
+     * @return int
      */
     public function getLowestTier()
     {
@@ -171,11 +172,11 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
-     * Return value for a price tier, finding clostest match
+     * Return value for a price tier, finding closest match
      *
-     * @param   int
+     * @param int $intTier
      *
-     * @return  float
+     * @return float
      */
     public function getValueForTier($intTier)
     {
@@ -194,11 +195,11 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Generate price for HTML rendering
      *
-     * @param   bool  $blnShowTiers
-     * @param   int   $intQuantity
-     * @param   array $arrOptions
+     * @param bool  $blnShowTiers
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
-     * @return  string
+     * @return string
      */
     public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array())
     {
@@ -236,42 +237,44 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find prices for a given product and collection
      *
-     * @param IsotopeProduct           $objProduct
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrOptions
+     * @param IsotopeProduct|Standard                    $objProduct
+     * @param IsotopeProductCollection|ProductCollection $objCollection
+     * @param array                                      $arrOptions
      *
      * @return IsotopePrice
      */
     public static function findByProductAndCollection(IsotopeProduct $objProduct, IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
+        $t = static::$strTable;
+
         $arrOptions['column'] = array();
         $arrOptions['value'] = array();
 
         if ($objProduct->hasAdvancedPrices()) {
 
-            $time = $objCollection->getLastModification();
+            $time = \Date::floorToMinute($objCollection->getLastModification());
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
-            $arrOptions['column'][] = "config_id IN (" . (int) $objCollection->config_id . ",0)";
-            $arrOptions['column'][] = "member_group IN(" . implode(',', $arrGroups) . ")";
-            $arrOptions['column'][] = "(start='' OR start<$time)";
-            $arrOptions['column'][] = "(stop='' OR stop>$time)";
+            $arrOptions['column'][] = "$t.config_id IN (" . (int) $objCollection->config_id . ",0)";
+            $arrOptions['column'][] = "$t.member_group IN(" . implode(',', $arrGroups) . ")";
+            $arrOptions['column'][] = "($t.start='' OR $t.start<'$time')";
+            $arrOptions['column'][] = "($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
 
-            $arrOptions['order'] = "config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC";
+            $arrOptions['order'] = "$t.config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", $t.start DESC, $t.stop DESC";
 
         } else {
 
-            $arrOptions['column'][] = "config_id=0";
-            $arrOptions['column'][] = "member_group=0";
-            $arrOptions['column'][] = "start=''";
-            $arrOptions['column'][] = "stop=''";
+            $arrOptions['column'][] = "$t.config_id=0";
+            $arrOptions['column'][] = "$t.member_group=0";
+            $arrOptions['column'][] = "$t.start=''";
+            $arrOptions['column'][] = "$t.stop=''";
         }
 
         if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
             $arrIds = $objProduct->getVariantIds() ?: array(0);
-            $arrOptions['column'][] = "pid IN (" . implode(',', $arrIds) . ")";
+            $arrOptions['column'][] = "$t.pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
+            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
         }
 
         $objResult = static::find($arrOptions);
@@ -280,7 +283,7 @@ class ProductPrice extends \Model implements IsotopePrice
     }
 
     /**
-     * @param       $intProduct
+     * @param int   $intProduct
      * @param array $arrOptions
      *
      * @return ProductPrice|null
@@ -294,20 +297,23 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find primary price for a product
      *
-     * @param   int
+     * @param int   $intProduct
+     * @param array $arrOptions
      *
-     * @return  ProductPrice|null
+     * @return ProductPrice|null
      */
     public static function findPrimaryByProductId($intProduct, array $arrOptions = array())
     {
+        $t = static::$strTable;
+
         $arrOptions = array_merge(
             array(
                 'column' => array(
-                    "config_id=0",
-                    "member_group=0",
-                    "start=''",
-                    "stop=''",
-                    "pid=" . $intProduct
+                    "$t.config_id=0",
+                    "$t.member_group=0",
+                    "$t.start=''",
+                    "$t.stop=''",
+                    "$t.pid=" . $intProduct
                 ),
                 'limit'  => 1,
                 'return' => 'Model'
@@ -321,10 +327,10 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find primary price for multiple product/variant IDs
      *
-     * @param   array
-     * @param   array
+     * @param array $arrIds
+     * @param array $arrOptions
      *
-     * @return  \Model\Collection|null
+     * @return \Model\Collection|null
      */
     public static function findPrimaryByProductIds(array $arrIds, array $arrOptions = array())
     {
@@ -352,108 +358,50 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find advanced price for multiple product/variant IDs
      *
-     * @param   array
-     * @param   IsotopeProductCollection
+     * @param array                                      $arrIds
+     * @param IsotopeProductCollection|ProductCollection $objCollection
      *
-     * @return  \Model\Collection|null
+     * @return \Model\Collection|null
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
     {
-        $time = time();
+        $time = \Date::floorToMinute();
         $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
         $objResult = \Database::getInstance()->query("
-            SELECT * FROM (
-                SELECT *
-                FROM " . static::$strTable . "
+            SELECT *
+            FROM (
+                SELECT
+                    tl_iso_product_price.*,
+                    GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys,
+                    GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values
+                FROM tl_iso_product_price
+                LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
                 WHERE
                     config_id IN (" . (int) $objCollection->config_id . ",0) AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
-                    (start='' OR start<$time) AND
-                    (stop='' OR stop>$time) AND
-                    pid IN (" . implode(',', $arrIds) . ")
+                    (start='' OR start<'$time') AND
+                    (stop='' OR stop>'" . ($time + 60) . "') AND
+                    tl_iso_product_price.pid IN (" . implode(',', $arrIds) . ")
+                GROUP BY tl_iso_product_price.id
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
             ) AS prices
-            GROUP BY pid
+            GROUP BY prices.pid
         ");
 
         if ($objResult->numRows) {
-            return \Isotope\Collection\ProductPrice::createFromDbResult($objResult, static::$strTable);
+            return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
         }
 
         return null;
     }
 
     /**
-     * Find records and return the model or model collection
-     *
-     * Supported options:
-     *
-     * * column: the field name
-     * * value:  the field value
-     * * limit:  the maximum number of rows
-     * * offset: the number of rows to skip
-     * * order:  the sorting order
-     * * eager:  load all related records eagerly
-     *
-     * @param array $arrOptions The options array
-     *
-     * @return \Model|\Model\Collection|null A model, model collection or null if the result is empty
-     */
-    protected static function find(array $arrOptions)
-    {
-        if (static::$strTable == '') {
-            return null;
-        }
-
-        $arrOptions['table'] = static::$strTable;
-        $strQuery = \Model\QueryBuilder::find($arrOptions);
-
-        $objStatement = \Database::getInstance()->prepare($strQuery);
-
-        // Defaults for limit and offset
-        if (!isset($arrOptions['limit'])) {
-            $arrOptions['limit'] = 0;
-        }
-        if (!isset($arrOptions['offset'])) {
-            $arrOptions['offset'] = 0;
-        }
-
-        // Limit
-        if ($arrOptions['limit'] > 0 || $arrOptions['offset'] > 0) {
-            $objStatement->limit($arrOptions['limit'], $arrOptions['offset']);
-        }
-
-        $objStatement = static::preFind($objStatement);
-        $objResult = $objStatement->execute($arrOptions['value']);
-
-        if ($objResult->numRows < 1) {
-            return null;
-        }
-
-        $objResult = static::postFind($objResult);
-
-        if ($arrOptions['return'] == 'Model') {
-            $strPk = static::$strPk;
-            $intPk = $objResult->$strPk;
-
-            // Try to load from the registry
-            $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
-
-            if ($objModel !== null) {
-                return $objModel->mergeRow($objResult->row());
-            }
-
-            return new static($objResult);
-        } else {
-            return \Isotope\Collection\ProductPrice::createFromDbResult($objResult, static::$strTable);
-        }
-    }
-
-    /**
      * Compile a list of member groups suitable for retrieving prices. This includes a 0 at the last position in array
      *
-     * @return  array
+     * @param object $objMember
+     *
+     * @return array
      */
     protected static function getMemberGroups($objMember)
     {
@@ -461,12 +409,48 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrGroups = deserialize($objMember->groups);
         }
 
-        if (!is_array($arrGroups)) {
+        if (!isset($arrGroups) || !is_array($arrGroups)) {
             $arrGroups = array();
         }
 
         $arrGroups[] = 0;
 
         return $arrGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function buildFindQuery(array $arrOptions)
+    {
+        $arrOptions['group'] = ($arrOptions['group'] ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
+
+        $query = \Model\QueryBuilder::find($arrOptions);
+        $from  = substr($query, strpos($query, '*')+1);
+        $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
+
+        $query = str_replace(
+            'FROM tl_iso_product_price',
+            'FROM tl_iso_product_price LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id',
+            $query
+        );
+
+        return $query;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createCollection(array $arrModels, $strTable)
+    {
+        return new ProductPriceCollection($arrModels, $strTable);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    {
+        return ProductPriceCollection::createFromDbResult($objResult, $strTable);
     }
 }

@@ -78,6 +78,18 @@ class ProductCollectionItem extends \Model
             return true;
         }
 
+        if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['itemIsAvailable'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $available   = $objCallback->$callback[1]($this);
+
+                // If return value is boolean then we accept it as result
+                if (true === $available || false === $available) {
+                    return $available;
+                }
+            }
+        }
+
         if (!$this->hasProduct() || !$this->getProduct()->isAvailableForCollection($this->getRelated('pid'))) {
             return false;
         }

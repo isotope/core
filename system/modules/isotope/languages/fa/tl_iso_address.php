@@ -14,5 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'نشاسه فروشگاه';
+$GLOBALS['TL_LANG']['tl_iso_address']['store_id'][0] = 'شناسه‌ی فروشگاه';
 $GLOBALS['TL_LANG']['tl_iso_address']['label'][0] = 'برچسب';

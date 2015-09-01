@@ -28,9 +28,9 @@ namespace Isotope\Model;
  * @property string reader_template
  * @property int    list_gallery
  * @property int    reader_gallery
- * @property mixed  attributes
+ * @property array  attributes
  * @property bool   variants
- * @property mixed  variant_attributes
+ * @property array  variant_attributes
  * @property bool   force_variant_options
  * @property bool   shipping_exempt
  * @property bool   downloads
@@ -56,10 +56,35 @@ class ProductType extends \Model
      */
     protected $arrVariantAttributes;
 
+    /**
+     * Initialize serialized values
+     *
+     * @param array $arrData
+     *
+     * @return $this
+     */
+    public function setRow(array $arrData)
+    {
+        parent::setRow($arrData);
+
+        $this->attributes = deserialize($this->attributes);
+        $this->variant_attributes = deserialize($this->variant_attributes);
+
+        if (!is_array($this->attributes)) {
+            $this->attributes = array();
+        }
+
+        if (!is_array($this->variant_attributes)) {
+            $this->variant_attributes = array();
+        }
+
+        return $this;
+    }
 
     /**
      * Returns true if variants are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasVariants()
     {
@@ -68,7 +93,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasAdvancedPrices()
     {
@@ -77,7 +103,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if show price tiers is enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function showPriceTiers()
     {
@@ -86,7 +113,8 @@ class ProductType extends \Model
 
     /**
      * Returns true if downloads are enabled in the product type, otherwise returns false
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasDownloads()
     {
@@ -95,7 +123,8 @@ class ProductType extends \Model
 
     /**
      * Get enabled attributes by sorting
-     * @return  array
+     *
+     * @return array
      */
     public function getAttributes()
     {
@@ -108,12 +137,12 @@ class ProductType extends \Model
 
     /**
      * Get enabled variant attributes by sorting
-     * @return  array
+     *
+     * @return array
      */
     public function getVariantAttributes()
     {
         if (null === $this->arrVariantAttributes) {
-
             if (!$this->hasVariants()) {
                 $this->arrVariantAttributes = array();
             } else {
@@ -126,8 +155,10 @@ class ProductType extends \Model
 
     /**
      * Sort the attributes based on their position (from wizard) and return their names only
-     * @param   mixed
-     * @return  array
+     *
+     * @param mixed $varValue
+     *
+     * @return array
      */
     protected function getEnabledAttributesByPosition($varValue)
     {
@@ -135,7 +166,10 @@ class ProductType extends \Model
         $arrAttributes = deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
-            if ($a['enabled'] && is_array($arrFields[$a['name']]) && $arrFields[$a['name']]['attributes']['legend'] != '') {
+            if ($a['enabled']
+                && is_array($arrFields[$a['name']])
+                && $arrFields[$a['name']]['attributes']['legend'] != ''
+            ) {
                 return true;
             }
 
@@ -151,8 +185,10 @@ class ProductType extends \Model
 
     /**
      * Get all product types that are in use
-     * @param   array
-     * @return  Collection|null
+     *
+     * @param array $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findAllUsed(array $arrOptions = array())
     {
@@ -163,8 +199,10 @@ class ProductType extends \Model
 
     /**
      * Find fallback product type
-     * @param   array
-     * @return  ProductType|null
+     *
+     * @param array $arrOptions
+     *
+     * @return static|null
      */
     public static function findFallback(array $arrOptions = array())
     {
@@ -173,9 +211,11 @@ class ProductType extends \Model
 
     /**
      * Find product type for product data (as array)
-     * @param   array
-     * @param   array
-     * @return  ProductType|null
+     *
+     * @param array $row
+     * @param array $arrOptions
+     *
+     * @return static|null
      */
     public static function findByProductData(array $row, array $arrOptions = array())
     {
@@ -184,5 +224,23 @@ class ProductType extends \Model
         }
 
         return static::findByPk($row['type'], $arrOptions);
+    }
+
+    /**
+     * Gets the number of product types with attributes.
+     *
+     * @return int
+     */
+    public static function countByVariants()
+    {
+        static $result;
+
+        if (null === $result) {
+            $result = \Database::getInstance()->query(
+                "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'"
+            )->total;
+        }
+
+        return $result;
     }
 }

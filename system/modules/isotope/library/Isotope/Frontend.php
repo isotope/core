@@ -22,6 +22,7 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * Class Isotope\Frontend
@@ -45,8 +46,10 @@ class Frontend extends \Frontend
 
     /**
      * Get shipping and payment surcharges for given collection
-     * @param IsotopeProductCollection
-     * @return array
+     *
+     * @param IsotopeProductCollection|Order $objCollection
+     *
+     * @return ProductCollectionSurcharge[]
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
@@ -72,8 +75,9 @@ class Frontend extends \Frontend
 
     /**
      * Callback for add_to_cart button
-     * @param object
-     * @param array
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
      */
     public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
@@ -86,20 +90,27 @@ class Frontend extends \Frontend
         }
 
         if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
-            $_SESSION['ISO_CONFIRM'][] = $GLOBALS['TL_LANG']['MSC']['addedToCart'];
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToCart']);
 
             if (!$objModule->iso_addProductJumpTo) {
                 $this->reload();
             }
 
-            \Controller::redirect(\Haste\Util\Url::addQueryString('continue=' . base64_encode(\Environment::get('request')), $objModule->iso_addProductJumpTo));
+            \Controller::redirect(
+                \Haste\Util\Url::addQueryString(
+                    'continue=' . base64_encode(\Environment::get('request')),
+                    $objModule->iso_addProductJumpTo
+                )
+            );
         }
     }
 
     /**
      * Replace the current page with a reader page if applicable
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrFragments
+     *
+     * @return array
      */
     public function loadReaderPageFromUrl($arrFragments)
     {
@@ -129,8 +140,9 @@ class Frontend extends \Frontend
                 $arrPages   = array();
 
                 // Order by domain and language
-                while ($objPage->next()) {
-                    $objCurrentPage = $objPage->current()->loadDetails();
+                /** @var \PageModel $objCurrentPage */
+                foreach ($objPage as $objCurrentPage) {
+                    $objCurrentPage->loadDetails();
 
                     $domain                                           = $objCurrentPage->domain ? : '*';
                     $arrPages[$domain][$objCurrentPage->rootLanguage] = $objCurrentPage;
@@ -165,11 +177,11 @@ class Frontend extends \Frontend
             }
 
             if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
-
+                /** @var \PageModel $objIsotopeListPage */
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
-                $arrFragments[0] = $objReader->id;
+                $arrFragments[0] = ($objReader->alias ?: $objReader->id);
             }
         }
 
@@ -178,11 +190,10 @@ class Frontend extends \Frontend
 
     /**
      * Overrides the reader page
-     * @param   \PageModel
-     * @param   \LayoutModel
-     * @param   \PageRegular
+     *
+     * @param \PageModel $objPage
      */
-    public function overrideReaderPage($objPage, $objLayout, $objRegularPage)
+    public function overrideReaderPage($objPage)
     {
         global $objPage;
         global $objIsotopeListPage;
@@ -199,100 +210,29 @@ class Frontend extends \Frontend
 
     /**
      * Replaces Isotope specific InsertTags in Frontend
-     * @param string
+     *
+     * @param string $strTag
+     *
      * @return mixed
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
      */
     public function replaceIsotopeTags($strTag)
     {
-        $arrTag = trimsplit('::', $strTag);
+        $callback = new InsertTag();
 
-        // {{isotope::*}} and {{cache_isotope::*}} insert tags
-        if ($arrTag[0] == 'isotope' || $arrTag[0] == 'cache_isotope') {
-            switch ($arrTag[1]) {
-                case 'cart_items';
-
-                    return Isotope::getCart()->countItems();
-                    break;
-
-                case 'cart_quantity';
-
-                    return Isotope::getCart()->sumItemsQuantity();
-                    break;
-
-                case 'cart_items_label';
-                    $intCount = Isotope::getCart()->countItems();
-
-                    if (!$intCount) {
-                        return '';
-                    }
-
-                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    break;
-
-                case 'cart_quantity_label';
-                    $intCount = Isotope::getCart()->sumItemsQuantity();
-
-                    if (!$intCount) {
-                        return '';
-                    }
-
-                    return $intCount == 1 ? ('(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')') : sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
-                    break;
-
-                case 'cart_subtotal':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getSubtotal());
-                    break;
-
-                case 'cart_taxfree_subtotal':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeSubtotal());
-                    break;
-
-                case 'cart_total':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTotal());
-                    break;
-
-                case 'cart_taxfree_total':
-                    return Isotope::formatPriceWithCurrency(Isotope::getCart()->getTaxFreeTotal());
-                    break;
-            }
-
-            return '';
-        } elseif ($arrTag[0] == 'isolabel') {
-            return Translation::get($arrTag[1], $arrTag[2]);
-        } elseif ($arrTag[0] == 'order') {
-            if (($objOrder = Order::findOneByUniqid(\Input::get('uid'))) !== null) {
-                return $objOrder->{$arrTag[1]};
-            }
-
-            return '';
-        } elseif ($arrTag[0] == 'product') {
-            // 2 possible use cases:
-            // {{product::attribute}}                - gets the data of the current product (Product::getActive() or GET parameter "product")
-            // {{product::attribute::product_id}}    - gets the data of the specified product ID
-
-            if (count($arrTag) == 3) {
-                $objProduct = Product::findAvailableByPk($arrTag[2]);
-            } else {
-                if (($objProduct = Product::getActive()) === null) {
-                    $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
-                }
-            }
-
-            return ($objProduct !== null) ? $objProduct->{$arrTag[1]} : '';
-        }
-
-        return false;
+        return $callback->replace($strTag);
     }
 
 
     /**
      * Hook callback for changelanguage extension to support language switching on product reader page
-     * @param array
-     * @param string
-     * @param array
+     *
+     * @param array $arrGet
+     *
      * @return array
      */
-    public function translateProductUrls($arrGet, $strLanguage, $arrRootPage)
+    public function translateProductUrls($arrGet)
     {
         if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
             $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
@@ -312,7 +252,6 @@ class Frontend extends \Frontend
     public function injectScripts()
     {
         if (!empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS'])) {
-
             $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function() {
@@ -349,7 +288,9 @@ window.addEvent('domready', function()
 
     /**
      * Format surcharge prices
-     * @param array
+     *
+     * @param ProductCollectionSurcharge[] $arrSurcharges
+     *
      * @return array
      */
     public static function formatSurcharges($arrSurcharges)
@@ -359,11 +300,13 @@ window.addEvent('domready', function()
 
         foreach ($arrSurcharges as $k => $objSurcharge) {
             $arrReturn[$k]                = $objSurcharge->row();
-            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price);
-            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price);
-            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price);
+            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, null, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, null, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, null, $objSurcharge->applyRoundingIncrement);
             $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
             $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
+            $arrReturn[$k]['raw']         = $objSurcharge->row();
+            $arrReturn[$k]['surcharge']   = $objSurcharge;
         }
 
         return $arrReturn;
@@ -371,19 +314,25 @@ window.addEvent('domready', function()
 
 
     /**
-     * Adds the product urls to the array so they get indexed when the search index is being rebuilt in the maintenance module
-     * @param   array   Absolute page urls
-     * @param   int     Root page id
-     * @param   boolean True if it's a sitemap module call (= treat differently when page is protected etc.)
-     * @param   string  Language of the root page
-     * @return  array   Extended array of absolute page urls
+     * Adds the product urls to the array so they get indexed when search index is rebuilt in the maintenance module
+     *
+     * @param array  $arrPages     Absolute page urls
+     * @param int    $intRoot      Root page id
+     * @param bool   $blnIsSitemap True if it's a sitemap module call (= treat differently when page is protected etc.)
+     *
+     * @return array   Extended array of absolute page urls
      */
-    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false, $strLanguage = null)
+    public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false)
     {
         $t         = \PageModel::getTable();
-        $time      = time();
-        $arrColumn = array("$t.type='root'", "$t.published='1'", "($t.start='' OR $t.start<$time)", "($t.stop='' OR $t.stop>$time)");
+        $time      = \Date::floorToMinute();
         $arrValue  = array();
+        $arrColumn = array(
+            "$t.type='root'",
+            "$t.published='1'",
+            "($t.start='' OR $t.start<'$time')",
+            "($t.stop='' OR $t.stop>'" . ($time + 60) . "')"
+        );
 
         if ($intRoot > 0) {
             $arrColumn[] = "$t.id=?";
@@ -394,7 +343,6 @@ window.addEvent('domready', function()
 
         if (null !== $objRoots) {
             foreach ($objRoots as $objRoot) {
-
                 $arrPageIds   = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
                 $arrPageIds[] = $intRoot;
 
@@ -417,7 +365,10 @@ window.addEvent('domready', function()
                             }
 
                             // The target page has not been published
-                            if (!$objPage->published || ($objPage->start != '' && $objPage->start > $time) || ($objPage->stop != '' && $objPage->stop < $time)) {
+                            if (!$objPage->published
+                                || ($objPage->start != '' && $objPage->start > $time)
+                                || ($objPage->stop != '' && $objPage->stop < ($time + 60))
+                            ) {
                                 continue;
                             }
 
@@ -432,7 +383,8 @@ window.addEvent('domready', function()
                             }
 
                             // Generate the domain
-                            $strDomain = ($objRoot->useSSL ? 'https://' : 'http://') . ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
+                            $strDomain  = ($objRoot->useSSL ? 'https://' : 'http://');
+                            $strDomain .= ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
 
                             // Pass root language to page object
                             $objPage->language = $objRoot->language;
@@ -454,12 +406,19 @@ window.addEvent('domready', function()
 
     /**
      * save_callback for upload widget to store $_FILES data into the product
-     * @param mixed
-     * @param IsotopeProduct
+     *
+     * @param mixed          $varValue
+     * @param IsotopeProduct $objProduct
+     * @param \Widget        $objWidget
+     *
+     * @return mixed
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
-        if (is_array($_SESSION['FILES'][$objWidget->name]) && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1' && $_SESSION['FILES'][$objWidget->name]['error'] == 0) {
+        if (is_array($_SESSION['FILES'][$objWidget->name])
+            && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
+            && $_SESSION['FILES'][$objWidget->name]['error'] == 0
+        ) {
             return $_SESSION['FILES'][$objWidget->name]['name'];
         }
 
@@ -469,7 +428,9 @@ window.addEvent('domready', function()
 
     /**
      * Get postal codes from CSV and ranges
-     * @param string
+     *
+     * @param string $strPostalCodes
+     *
      * @return array
      */
     public static function parsePostalCodes($strPostalCodes)
@@ -497,7 +458,8 @@ window.addEvent('domready', function()
 
     /**
      * Store the current article ID so we know it for the product list
-     * @param \Database\Result
+     *
+     * @param \Database\Result $objRow
      */
     public function storeCurrentArticle($objRow)
     {
@@ -509,9 +471,11 @@ window.addEvent('domready', function()
     /**
      * Return pages in the current root available to the member
      * Necessary to check if a product is allowed in the current site and cache the value
-     * @param   array
-     * @param   \MemberModel|\FrontendUser
-     * @return  array
+     *
+     * @param array                      $arrPages
+     * @param \MemberModel|\FrontendUser $objMember
+     *
+     * @return array
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
@@ -553,12 +517,10 @@ window.addEvent('domready', function()
 
             // Page is for guests only but we have a member
             if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
-
                 $arrUnavailable[$intMember][] = $intPage;
                 continue;
 
             } elseif ($objPageDetails->protected) {
-
                 // Page is protected but we have no member
                 if ($intMember == 0) {
                     $arrUnavailable[$intMember][] = $intPage;
@@ -588,8 +550,10 @@ window.addEvent('domready', function()
 
     /**
      * Show product name in breadcrumb
-     * @param  array
-     * @param  object
+     *
+     * @param array  $arrItems
+     * @param object $objModule
+     *
      * @return array
      */
     public function addProductToBreadcrumb($arrItems, $objModule)
@@ -661,7 +625,10 @@ window.addEvent('domready', function()
 
     /**
      * Load system configuration into page object
-     * @param \Database\Result
+     *
+     * @param \Database\Result|\PageModel $objPage
+     *
+     * @return \Database\Result
      */
     public static function loadPageConfig($objPage)
     {
@@ -680,9 +647,9 @@ window.addEvent('domready', function()
 
         // Set the admin e-mail address
         if ($objPage->adminEmail != '') {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($objPage->adminEmail);
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \StringUtil::splitFriendlyEmail($objPage->adminEmail);
         } else {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \System::splitFriendlyName($GLOBALS['TL_CONFIG']['adminEmail']);
+            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
         // Define the static URL constants
@@ -690,9 +657,13 @@ window.addEvent('domready', function()
         define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
         define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
-        $objLayout = \Database::getInstance()->prepare("SELECT l.*, t.templates FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? ORDER BY l.id=? DESC")
-            ->limit(1)
-            ->execute($objPage->layout, $objPage->layout);
+        $objLayout = \Database::getInstance()->prepare("
+            SELECT l.*, t.templates
+            FROM tl_layout l
+            LEFT JOIN tl_theme t ON l.pid=t.id
+            WHERE l.id=?
+            ORDER BY l.id=? DESC
+        ")->limit(1)->execute($objPage->layout, $objPage->layout);
 
         if ($objLayout->numRows) {
             // Get the page layout
@@ -712,7 +683,8 @@ window.addEvent('domready', function()
 
     /**
      * Adjust module and module id for certain payment and/or shipping modules
-     * @param \Isotope\PostSale
+     *
+     * @param \Isotope\PostSale $objPostsale
      */
     public function setPostsaleModuleSettings(PostSale $objPostsale)
     {

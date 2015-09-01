@@ -23,22 +23,46 @@ use Isotope\Translation;
 /**
  * Attribute represents a product attribute in Isotope eCommerce
  *
- * @property int           id
- * @property int           tstamp
- * @property string        name
- * @property string        field_name
- * @property string        type
- * @property string        description
- * @property bool          variant_option
- * @property bool          customer_defined
- * @property string        optionsSource
- * @property string|array  options
- * @property string        foreignKey
- * @property bool          be_search
- * @property bool          be_filter
- * @property bool          multiple
- * @property int           size
- * @property bool          includeBlankOption
+ * @property int           $id
+ * @property int           $tstamp
+ * @property string        $name
+ * @property string        $field_name
+ * @property string        $type
+ * @property string        $legend
+ * @property string        $description
+ * @property string        $optionsSource
+ * @property string|array  $options
+ * @property string        $foreignKey
+ * @property bool          $includeBlankOption
+ * @property string        $blankOptionLabel
+ * @property bool          $variant_option
+ * @property bool          $customer_defined
+ * @property bool          $be_search
+ * @property bool          $be_filter
+ * @property bool          $mandatory
+ * @property bool          $fe_filter
+ * @property bool          $fe_search
+ * @property bool          $fe_sorting
+ * @property bool          $multiple
+ * @property int           $size
+ * @property string        $extensions
+ * @property string        $rte
+ * @property bool          $multilingual
+ * @property bool          $rgxp
+ * @property bool          $placeholder
+ * @property int           $minlength
+ * @property int           $maxlength
+ * @property string        $conditionField
+ * @property string        $fieldType
+ * @property bool          $files
+ * @property bool          $filesOnly
+ * @property string        $sortBy
+ * @property string        $path
+ * @property bool          $storeFile
+ * @property string        $uploadFolder
+ * @property bool          $useHomeDir
+ * @property bool          $doNotOverwrite
+ * @property bool          $datepicker
  */
 abstract class Attribute extends TypeAgent
 {
@@ -66,6 +90,12 @@ abstract class Attribute extends TypeAgent
      * @type array
      */
     protected static $arrFieldNameMap = array();
+
+    /**
+     * Options for variants cache
+     * @var array
+     */
+    private $arrOptionsForVariants = array();
 
     /**
      * Return true if attribute is a variant option
@@ -196,15 +226,52 @@ abstract class Attribute extends TypeAgent
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options']);
             unset($arrField['reference']);
-        }
 
-        // @deprecated remove in Isotope 3.0
-        elseif ($this->optionsSource == 'attribute' || ($this->optionsSource == 'foreignKey' && $this->isVariantOption())) {
-            if ($this->optionsSource == 'foreignKey') {
-                $arrKey     = explode('.', $this->foreignKey, 2);
-                $arrOptions = \Database::getInstance()->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")->fetchAllAssoc();
-            } else {
-                $arrOptions = deserialize($this->options);
+        } else {
+            $arrOptions = null;
+
+            switch ($this->optionsSource) {
+                case 'attribute':
+                    $arrOptions = deserialize($this->options);
+                    break;
+
+                case 'foreignKey':
+                    $arrKey     = explode('.', $this->foreignKey, 2);
+                    $arrOptions = \Database::getInstance()
+                        ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                case 'table':
+                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
+                    $arrOptions = $query
+                        ->addField('t1.id AS value')
+                        ->addOrder('t1.label')
+                        ->addWhere('t1.pid = ?')
+                        ->getStatement()
+                        ->execute($this->id)
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                case 'product':
+                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
+                    $arrOptions = $query
+                        ->addField('t1.id AS value')
+                        ->addOrder('t1.label')
+                        ->addWhere('t1.field_name = ?')
+                        ->getStatement()
+                        ->execute($this->field_name)
+                        ->fetchAllAssoc()
+                    ;
+                    break;
+
+                default:
+                    if ($this instanceof IsotopeAttributeWithOptions) {
+                        unset($arrField['options']);
+                        unset($arrField['reference']);
+                    }
             }
 
             if (!empty($arrOptions) && is_array($arrOptions)) {
@@ -231,10 +298,6 @@ abstract class Attribute extends TypeAgent
                     }
                 }
             }
-
-        } elseif ($this->optionsSource != '' && $this instanceof IsotopeAttributeWithOptions) {
-            unset($arrField['options']);
-            unset($arrField['reference']);
         }
 
         unset($arrField['eval']['foreignKey']);
@@ -262,10 +325,12 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Get available variant options for a product
-     * @param   array
-     * @param   array
-     * @return  array
-     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
+     *
+     * @param int[] $arrIds
+     * @param array $arrOptions
+     *
+     * @return array
+     * @deprecated will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
@@ -273,16 +338,24 @@ abstract class Attribute extends TypeAgent
             return array();
         }
 
-        $strWhere = '';
+        sort($arrIds);
+        ksort($arrOptions);
+        $strKey = md5(implode('-', $arrIds) . '_' . json_encode($arrOptions));
 
-        foreach ($arrOptions as $field => $value) {
-            $strWhere .= " AND $field=?";
+        if (!isset($this->arrOptionsForVariants[$strKey])) {
+            $strWhere = '';
+
+            foreach ($arrOptions as $field => $value) {
+                $strWhere .= " AND $field=?";
+            }
+
+            $this->arrOptionsForVariants[$strKey] = \Database::getInstance()->prepare("
+                SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
+                " . $strWhere
+            )->execute($arrOptions)->fetchEach($this->field_name);
         }
 
-        return \Database::getInstance()->prepare("
-            SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
-            " . $strWhere . "
-        ")->execute($arrOptions)->fetchEach($this->field_name);
+        return $this->arrOptionsForVariants[$strKey];
     }
 
     /**
@@ -297,11 +370,12 @@ abstract class Attribute extends TypeAgent
     {
         $varValue = $objProduct->{$this->field_name};
 
-        // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
+            // Generate a HTML table for associative arrays
             $strBuffer = $this->generateTable($varValue, $objProduct);
-        } // Generate ul/li listing for simple arrays
-        elseif (is_array($varValue)) {
+
+        } elseif (is_array($varValue)) {
+            // Generate ul/li listing for simple arrays
             $strBuffer = $this->generateList($varValue);
         } else {
             $strBuffer = Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
@@ -620,7 +694,9 @@ abstract class Attribute extends TypeAgent
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['dynamic'] || $config['eval']['multiple']) {
+                if ($config['attributes']['dynamic']
+                    || ($config['eval']['multiple'] && !$config['eval']['csv'])
+                ) {
                     $arrFields[] = $field;
                 }
             }

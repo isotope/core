@@ -16,12 +16,12 @@
     ],
     "require":{
         "php":">=5.3.2",
-        "contao/core":">=3.3.4,<3.5",
+        "contao/core":">=3.5.2,<5.0",
         "contao-community-alliance/composer-plugin":"2.*",
         "terminal42/contao-conditionalselectmenu":"~3.0",
         "terminal42/contao-namespace-class-loader":"~1.0",
         "terminal42/dcawizard":"~2.3",
-        "codefog/contao-haste":"~4.3",
+        "codefog/contao-haste":"~4.8",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "terminal42/contao-tablelookupwizard":"~2.0",
         "terminal42/notification_center":"~1.0",
@@ -29,18 +29,6 @@
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
-    },
-    "autoload": {
-        "psr-0": {
-            "Isotope\\": [
-                "system/modules/isotope/library/",
-                "system/modules/isotope_reports/library/",
-                "system/modules/isotope_rules/library/"
-            ]
-        },
-        "classmap": [
-            "system/modules/isotope/drivers"
-        ]
     },
     "extra":{
         "branch-alias": {
@@ -58,5 +46,7 @@
                 "system/modules/isotope/config/upgrade.php"
             ]
         }
-    }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

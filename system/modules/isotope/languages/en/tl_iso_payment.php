@@ -20,6 +20,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['note']                                   
 $GLOBALS['TL_LANG']['tl_iso_payment']['new_order_status']                       = array('Status for new orders', 'Choose a matching status for new orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['minimum_total']                          = array('Minimum total', 'Enter a number greater zero to exclude this payment method for lower priced orders.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['maximum_total']                          = array('Maximum total', 'Enter a number greater zero to exclude this payment method for higher priced orders.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['minimum_quantity']                       = array('Minimum quantity', 'Enter a number greater zero to exclude this payment method for orders with lower quantity.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['maximum_quantity']                       = array('Maximum quantity', 'Enter a number greater zero to exclude this payment method for orders with higher quantity.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode']                          = array('Quantity calculation mode', 'Select a calculation mode for min/max quantity.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['countries']                              = array('Available countries', 'Select the countries where this payment method may be used (customer\'s billing address).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['shipping_modules']                       = array('Shipping methods', 'You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['product_types']                          = array('Product types', 'You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.');
@@ -42,10 +45,13 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']                        
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_in']                            = array('SHA-IN signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_out']                           = array('SHA-OUT signature', 'This will be used to validate the server to server communication.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_dynamic_template']                   = array('Dynamic template URL', 'Enter a valid <strong>absolute</strong> URL to a dynamic template here.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['psp_payment_method']                     = array('Payment method', 'You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don\'t select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!');
 $GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV']                             = array('Require Card Code Verification (CCV) Number', 'Choose this option if you would like to increase transaction security by requiring the card code verification number.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_sign']                         = array('HMAC Key', 'Please enter your HMAC key from the Datatrans control panel.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['vads_site_id']                           = array('Site Identifier', 'Please enter your payment site identifier.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['vads_certificate']                       = array('Certificate', 'Please enter your TEST or PRODUCTION certificate.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']                = array('Payment method', 'Please select a payment method for this method.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslmerchant']                  = array('Seller ID', 'Please enter your seller ID (Händlerkennung).');
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_sslpassword']                  = array('Password', 'Please enter your SSL-Password.');
@@ -74,6 +80,11 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_callbackPW']                    
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_signatureFields']               = array('SignatureFields', 'Enter the same SignatureField value as in your WorldPay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_md5secret']                     = array('MD5 Secret', 'Enter the same MD5 secret value as in your WorldPay configuration.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['worldpay_description']                   = array('Description', 'Enter a description for your store. It will be shown to the customer on the worldpay checkout process.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_merchantId']                    = array('Merchant ID', 'Please enter your merchant ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_agreementId']                   = array('Agreement ID', 'Please enter your agreement ID.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_apiKey']                        = array('API key', 'Please enter your API key.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_privateKey']                    = array('Private key', 'Please enter your private key.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['quickpay_paymentMethods']                = array('Payment methods', 'Enter a configuration string to limit the payment methods. <a href="http://tech.quickpay.net/appendixes/payment-methods/" target="_blank">More Information</a>.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['groups']                                 = array('Member groups', 'Restrict this payment method to certain member groups.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['protected']                              = array('Protect payment method', 'Show the payment method to certain member groups only.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['guests']                                 = array('Show to guests only', 'Hide the payment method if a member is logged in.');
@@ -96,6 +107,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['show']                       = array('Pay
 $GLOBALS['TL_LANG']['tl_iso_payment']['capture']                                                = array('Authorize and Capture', 'Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['auth']                                                   = array('Authorize Only', 'Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['no_shipping']                                            = 'Orders without shipping';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode']['cart_items']                            = 'Total quantity in cart';
+$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode']['cart_products']                         = 'Total products in cart';
 $GLOBALS['TL_LANG']['tl_iso_payment']['onlyAvailable']                                          = 'Enable if only these product types are in cart';
 $GLOBALS['TL_LANG']['tl_iso_payment']['allAvailable']                                           = 'Enable if all these product types are in cart';
 $GLOBALS['TL_LANG']['tl_iso_payment']['oneAvailable']                                           = 'Enable if one of these product types is in cart';

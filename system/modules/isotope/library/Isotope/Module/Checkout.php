@@ -16,9 +16,7 @@ use Haste\Generator\RowClass;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\Shipping;
 
 
 /**
@@ -197,7 +195,7 @@ class Checkout extends Module
                 // !HOOK: pre-process checkout
                 if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
+                        $objCallback = \System::importStatic($callback[0], $this);
 
                         if ($objCallback->$callback[1]($objOrder) === false) {
                             \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
@@ -277,7 +275,7 @@ class Checkout extends Module
             foreach ($arrModules as $objModule) {
 
                 $arrBuffer[] = array(
-                    'class' => standardize($step) . ' ' . standardize($objModule->getStepClass()),
+                    'class' => standardize($step) . ' ' . $objModule->getStepClass(),
                     'html'  => $objModule->generate()
                 );
 

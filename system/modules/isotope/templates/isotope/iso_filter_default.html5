@@ -59,16 +59,16 @@
 <form action="<?php echo $this->action; ?>" method="get">
 <input type="hidden" name="isorc" value="<?php echo \Input::get('isorc'); ?>">
 <label for="ctrl_keywords_<?php echo $this->id; ?>"><?php echo $this->keywordsLabel; ?></label>
-<input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo ($this->keywords ? $this->keywords : $this->defaultSearchText); ?>" onblur="if (this.value=='') { this.value='<?php echo $this->defaultSearchText; ?>'; }" onfocus="if (this.value=='<?php echo $this->defaultSearchText; ?>') { this.value=''; this.select(); }">
+<input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo $this->keywords; ?>" placeholder="<?php echo $this->defaultSearchText; ?>">
 <input type="submit" class="submit" value="<?php echo $this->searchLabel; ?>">
 </form>
 </div>
 <?php endif; ?>
 
 <?php if ($this->hasAutocomplete):
-$GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/autocompleter/Autocompleter.min.css');
+$GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.css');
 ?>
-<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/autocompleter/Autocompleter.min.js'); ?>"></script>
+<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js'); ?>"></script>
 <script>
 window.addEvent('domready', function() {
     var requested = false;
@@ -82,22 +82,14 @@ window.addEvent('domready', function() {
             'url': '<?php echo \Environment::get('request'); ?>',
             'method': 'get',
             'data': {
-                'iso_autocomplete': '<?php echo $this->id; ?>',
+                'iso_autocomplete': '<?php echo $this->id; ?>'
             },
             onComplete: function(json) {
-                new Autocompleter.Local(searchField, json, {
-                    'minLength': 1,
-                    'autoSubmit': true,
-                    'selectMode': 'pick',
-                    'filterSubset': true,
-                    'onSelect': function(el)
-                    {
-                        el.getParent('form').submit();
-                    }
-                }).query();
+                awesomplete.list = json;
             }
         }).send();
     });
+    var awesomplete = new Awesomplete(searchField);
 });
 </script>
 <?php endif; ?>

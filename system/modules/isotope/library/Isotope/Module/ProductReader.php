@@ -96,7 +96,7 @@ class ProductReader extends Module
             'module'      => $this,
             'template'    => ($this->iso_reader_layout ? : $objProduct->getRelated('type')->reader_template),
             'gallery'     => ($this->iso_gallery ? : $objProduct->getRelated('type')->reader_gallery),
-            'buttons'     => deserialize($this->iso_buttons, true),
+            'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
             'jumpTo'      => ($objIsotopeListPage ? : $objPage),
         );
@@ -108,14 +108,14 @@ class ProductReader extends Module
 
         $arrCSS = deserialize($objProduct->cssID, true);
 
+        $this->addMetaTags($objProduct);
+        $this->addCanonicalProductUrls($objProduct);
+
         $this->Template->product       = $objProduct->generate($arrConfig);
         $this->Template->product_id    = ($arrCSS[0] != '') ? ' id="' . $arrCSS[0] . '"' : '';
         $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $arrCSS[1]);
         $this->Template->referer       = 'javascript:history.go(-1)';
         $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
-
-        $this->addMetaTags($objProduct);
-        $this->addCanonicalProductUrls($objProduct);
     }
 
     /**

@@ -163,4 +163,16 @@ abstract class OrderConditions extends CheckoutStep
 
         return $arrTokens;
     }
+
+    /**
+     * Return short name of current class (e.g. for CSS)
+     * @return string
+     */
+    public function getStepClass()
+    {
+        $strClass = get_parent_class($this);
+        $strClass = substr($strClass, strrpos($strClass, '\\') + 1);
+
+        return parent::getStepClass() . ' ' . standardize($strClass);
+    }
 }

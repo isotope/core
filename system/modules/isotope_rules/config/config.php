@@ -50,3 +50,4 @@ $GLOBALS['ISO_HOOKS']['compileCart'][]                  = array('Isotope\Rules',
 $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Rules', 'findSurcharges');
 $GLOBALS['ISO_HOOKS']['preCheckout'][]                  = array('Isotope\Rules', 'writeRuleUsages');
 $GLOBALS['ISO_HOOKS']['transferredCollection'][]        = array('Isotope\Rules', 'transferCoupons');
+$GLOBALS['ISO_HOOKS']['postDeleteCollection'][]         = array('Isotope\Rules', 'deleteRuleUsages');

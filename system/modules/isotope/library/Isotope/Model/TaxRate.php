@@ -12,14 +12,30 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 use Isotope\Translation;
 
 /**
  * TaxRate implements the tax rate model.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    id
+ * @property int    pid
+ * @property int    tstamp
+ * @property string name
+ * @property string label
+ * @property array  address
+ * @property array  countries
+ * @property array  subdivisions
+ * @property string postalCodes
+ * @property array  rate
+ * @property array  amount
+ * @property int    config
+ * @property bool   exemptOnValidVAT
+ * @property bool   stop
+ * @property bool   guests
+ * @property bool   protected
+ * @property array  groups
  */
 class TaxRate extends \Model
 {
@@ -33,8 +49,10 @@ class TaxRate extends \Model
 
     /**
      * Determine if this tax rate is applicable
-     * @paran  float
-     * @param  array
+     *
+     * @param float $fltPrice
+     * @param array $arrAddresses
+     *
      * @return bool
      */
     public function isApplicable($fltPrice, $arrAddresses)
@@ -47,11 +65,15 @@ class TaxRate extends \Model
         // Tax rate is for guests only
         if ($this->guests && FE_USER_LOGGED_IN === true && !$this->protected) {
             return false;
-        } // Tax rate is protected but no member is logged in
-        elseif ($this->protected && FE_USER_LOGGED_IN !== true && !$this->guests) {
+        }
+
+        // Tax rate is protected but no member is logged in
+        if ($this->protected && FE_USER_LOGGED_IN !== true && !$this->guests) {
             return false;
-        } // Tax rate is protected and member logged in, check member groups
-        elseif ($this->protected && FE_USER_LOGGED_IN === true) {
+        }
+
+        // Tax rate is protected and member logged in, check member groups
+        if ($this->protected && FE_USER_LOGGED_IN === true) {
             $groups = deserialize($this->groups);
 
             if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
@@ -105,6 +127,21 @@ class TaxRate extends \Model
                     } else {
                         if ($arrPrice[0] != $fltPrice) {
                             continue;
+                        }
+                    }
+                }
+
+                if ($this->exemptOnValidVAT) {
+                    $validators = deserialize(Isotope::getConfig()->vatNoValidators);
+                    if (!empty($validators) && is_array($validators)) {
+                        foreach ($validators as $type) {
+
+                            /** @type IsotopeVatNoValidator $service */
+                            $service = new $GLOBALS['ISO_VAT'][$type]();
+
+                            if ($service->exemptTax($objAddress, $this)) {
+                                continue(2);
+                            }
                         }
                     }
                 }

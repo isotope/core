@@ -33,12 +33,13 @@ $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed']                = 'User checkout
 $GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']        = 'This product is no longer available.';
 $GLOBALS['TL_LANG']['ERR']['collectionErrorInItems']            = 'There are errors in your products.';
 $GLOBALS['TL_LANG']['ERR']['cartErrorInItems']                  = 'Please resolve the errors in your cart before checking out.';
+$GLOBALS['TL_LANG']['ERR']['cumulativeDuplicateAttribute']      = 'You cannot configure the same attribute multiple times.';
 
 /**
  * Miscellaneous
  */
 $GLOBALS['TL_LANG']['MSC']['editLanguage']                      = 'Edit';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage']                    = 'Delete';
+$GLOBALS['TL_LANG']['MSC']['deleteLanguage']                    = 'Delete language';
 $GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'Fallback language';
 $GLOBALS['TL_LANG']['MSC']['editingLanguage']                   = 'ATTENTION: You are editing language-specific data!';
 $GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']             = 'Are you sure you want to delete this language? There is no undo!';
@@ -60,6 +61,7 @@ $GLOBALS['TL_LANG']['MSC']['mmProcessing']                      = 'Processing dr
 $GLOBALS['TL_LANG']['MSC']['undeletableRecords']                = 'Some records could not be deleted.';
 $GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']            = 'Some records could not be deleted and have been unpublished instead.';
 $GLOBALS['TL_LANG']['MSC']['quantity']                          = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['taxFree']                           = 'Tax-free';
 $GLOBALS['TL_LANG']['MSC']['defaultSearchText']                 = 'search products';
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']                    = 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                   = '<span class="from">From</span> %s';
@@ -107,8 +109,11 @@ $GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']              = 'Do you really
 $GLOBALS['TL_LANG']['MSC']['iso_invoice_title']                 = 'Invoice';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status']                  = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date']                    = 'Order date';
-$GLOBALS['TL_LANG']['MSC']['iso_order_total']                   = 'Total';
 $GLOBALS['TL_LANG']['MSC']['iso_order_document_number']         = 'Order number';
+$GLOBALS['TL_LANG']['MSC']['iso_order_description']             = 'Description';
+$GLOBALS['TL_LANG']['MSC']['iso_order_quantity']                = 'Quantity';
+$GLOBALS['TL_LANG']['MSC']['iso_order_price']                   = 'Price';
+$GLOBALS['TL_LANG']['MSC']['iso_order_total']                   = 'Total';
 $GLOBALS['TL_LANG']['MSC']['low_to_high']                       = 'lo to hi';
 $GLOBALS['TL_LANG']['MSC']['high_to_low']                       = 'hi to lo';
 $GLOBALS['TL_LANG']['MSC']['a_to_z']                            = 'A to Z';
@@ -217,6 +222,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.paypal']               = array('Pay
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.postfinance']          = array('PostFinance', 'Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.viveum']               = array('VIVEUM', 'Payment gateway for VIVEUM Zahlungssysteme GmbH.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.datatrans']            = array('Datatrans', 'A payment module for the swiss payment gateway "Datatrans".');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.innopay']              = array('Innopay', 'A payment module for the swiss payment gateway "Innocard".');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.sparkasse']            = array('Sparkasse');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.saferpay']             = array('Saferpay');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.billpay_saferpay']     = array('BillPay (using Saferpay)');
@@ -225,6 +231,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.expercash']            = array('Exp
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.epay']                 = array('ePay', 'Implements payment provider <a href="http://www.epay.eu" target="_blank">ePay</a>.');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('WorldPay');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.quickpay']             = array('QuickPay');
 
 /**
  * Documents
@@ -234,13 +241,19 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_document.standard']            = array('Sta
 /**
  * Galleries
  */
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.standard'] = array('Default gallery', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']   = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.standard']    = array('Default gallery', '<p>Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.</p><p>You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.</p>');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.inline']      = array('Inline gallery', 'Clicking on a gallery image will replace the main image.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery.elevatezoom'] = array('Elevate Zoom gallery', 'A gallery that zooms on the image on hover. See <a href="http://www.elevateweb.co.uk/image-zoom" target="_blank">the script website</a> for more information.');
 
 /**
  * Product types
  */
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_product.standard'] = array('Standard product', 'A default product. Select this if nothing else matches.');
+
+/**
+ * Vat No Validators
+ */
+$GLOBALS['TL_LANG']['ISO_VAT']['eu_vies'] = 'European VAT Number (<a href="http://ec.europa.eu/taxation_customs/vies/vieshome.do" target="_blank">VIES</a>)';
 
 /**
  * Credit card types

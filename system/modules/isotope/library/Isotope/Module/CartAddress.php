@@ -15,7 +15,6 @@ namespace Isotope\Module;
 use Haste\Form\Form;
 use Isotope\Isotope;
 use Isotope\Model\Address;
-use Isotope\Model\ProductCollection;
 
 
 class CartAddress extends Module

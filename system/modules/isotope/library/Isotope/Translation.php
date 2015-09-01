@@ -14,7 +14,6 @@ namespace Isotope;
 
 use Isotope\Model\Label;
 
-
 /**
  * Translates labels
  *
@@ -69,8 +68,9 @@ class Translation
         static::initialize($strLanguage);
 
         if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
-
-            static::$arrLabels[$strLanguage][$varLabel] = \String::decodeEntities(static::$arrLabels[$strLanguage][$varLabel]);
+            static::$arrLabels[$strLanguage][$varLabel] = \StringUtil::decodeEntities(
+                static::$arrLabels[$strLanguage][$varLabel]
+            );
 
             return static::$arrLabels[$strLanguage][$varLabel];
         }

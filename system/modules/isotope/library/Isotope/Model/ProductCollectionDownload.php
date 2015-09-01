@@ -43,7 +43,9 @@ class ProductCollectionDownload extends \Model
      */
     public function canDownload()
     {
-        return (($this->downloads_remaining === '' || $this->downloads_remaining > 0) && ($this->expires == '' || $this->expires > time()));
+        return (($this->downloads_remaining === '' || $this->downloads_remaining > 0)
+            && ($this->expires == '' || $this->expires > time())
+        );
     }
 
     /**
@@ -80,23 +82,33 @@ class ProductCollectionDownload extends \Model
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         foreach ($objDownload->getFiles() as $objFileModel) {
-
             $objFile = new \File($objFileModel->path, true);
 
-            if (!in_array($objFile->extension, $allowedDownload) || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)) {
+            if (!in_array($objFile->extension, $allowedDownload)
+                || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)
+            ) {
                 continue;
             }
 
             // Send file to the browser
-            if (
-                $blnOrderPaid &&
+            if ($blnOrderPaid &&
                 $this->canDownload() &&
                 \Input::get('download') == $objDownload->id &&
                 \Input::get('file') == $objFileModel->path
             ) {
+                $path = $objFileModel->path;
+
+                if (isset($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
+                    && is_array($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
+                ) {
+                    foreach ($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
+                        $path = $objCallback->$callback[1]($path, $objFileModel, $objDownload, $this);
+                    }
+                }
+
                 $this->download($objFileModel->path);
             }
-
 
             $arrMeta = \Frontend::getMetaData($objFileModel->meta, $objPage->language);
 
@@ -143,15 +155,15 @@ class ProductCollectionDownload extends \Model
     public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions = array())
     {
         $arrOptions = array_merge(
-			array(
-				'column' => ("pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)"),
-				'value'  => $objCollection->id,
-				'return' => 'Collection'
-			),
-			$arrOptions
-		);
+            array(
+                'column' => ("pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)"),
+                'value'  => $objCollection->id,
+                'return' => 'Collection'
+            ),
+            $arrOptions
+        );
 
-		return static::find($arrOptions);
+        return static::find($arrOptions);
     }
 
     /**
@@ -169,13 +181,14 @@ class ProductCollectionDownload extends \Model
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
-                $objDownloads = Download::findBy(array("($t.pid=? OR $t.pid=?)", "$t.published='1'"), array($objItem->getProduct()->id, $objItem->getProduct()->pid));
+                $objDownloads = Download::findBy(
+                    array("($t.pid=? OR $t.pid=?)", "$t.published='1'"),
+                    array($objItem->getProduct()->id, $objItem->getProduct()->pid)
+                );
 
                 if (null !== $objDownloads) {
-
                     /** @var Download $objDownload */
                     foreach ($objDownloads as $objDownload) {
-
                         $objItemDownload              = new static();
                         $objItemDownload->pid         = $objItem->id;
                         $objItemDownload->tstamp      = $time;

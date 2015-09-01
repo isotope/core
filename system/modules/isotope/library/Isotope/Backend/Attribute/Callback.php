@@ -42,7 +42,7 @@ class Callback extends \Backend
     /**
      * Show price column in dcaWizard if attribute is not a variant option
      *
-     * @param \Widget $objWidget
+     * @param \Widget|object $objWidget
      *
      * @return string
      */
@@ -66,13 +66,12 @@ class Callback extends \Backend
     /**
      * Make sure the system columns are not added as attribute
      *
-     * @param mixed  $varValue
-     * @param object $dc
+     * @param mixed $varValue
      *
      * @return mixed
      * @throws \Exception
      */
-    public function validateFieldName($varValue, $dc)
+    public function validateFieldName($varValue)
     {
         $this->loadDataContainer('tl_iso_product');
 
@@ -86,7 +85,7 @@ class Callback extends \Backend
     }
 
     /**
-     * Alter attribtue columns in tl_iso_product table
+     * Alter attribute columns in tl_iso_product table
      *
      * @param object $dc
      */
@@ -144,12 +143,11 @@ class Callback extends \Backend
     /**
      * Validate table and field of foreignKey
      *
-     * @param mixed  $varValue
-     * @param object $dc
+     * @param mixed $varValue
      *
      * @return mixed
      */
-    public function validateForeignKey($varValue, $dc)
+    public function validateForeignKey($varValue)
     {
         if ($varValue != '') {
             $arrLines = trimsplit('@\r\n|\n|\r@', $varValue);

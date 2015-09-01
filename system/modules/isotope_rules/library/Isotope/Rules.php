@@ -279,7 +279,7 @@ class Rules extends \Controller
                 $objRule = Rule::findOneByCouponCode($code, $objCart->getItems());
 
                 if (null === $objRule) {
-                    $_SESSION['ISO_ERROR'][] = sprintf($GLOBALS['TL_LANG']['ERR']['couponCodeDropped'], $code);
+                    Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['couponCodeDropped'], $code));
                     unset($arrCoupons[$k]);
                     $blnError = true;
                 } else {
@@ -326,5 +326,16 @@ class Rules extends \Controller
         if ($objOldCollection instanceof Cart && $objNewCollection instanceof Cart) {
             $objNewCollection->coupons = $objOldCollection->coupons;
         }
+    }
+
+    /**
+     * Delete rule usages after an order has been deleted
+     *
+     * @param IsotopeProductCollection $objCollection
+     * @param int                      $intId
+     */
+    public function deleteRuleUsages($objCollection, $intId)
+    {
+        \Database::getInstance()->prepare("DELETE FROM tl_iso_rule_usage WHERE order_id=?")->execute($intId);
     }
 }

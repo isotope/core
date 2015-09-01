@@ -12,6 +12,8 @@
 
 namespace Isotope\Model\Gallery;
 
+use Isotope\Template;
+
 
 /**
  * Class InlineGallery
@@ -40,7 +42,7 @@ class Inline extends Standard
     public function generateGallery($intSkip = 0, $blnForce = false)
     {
         // Do not render gallery if there are no additional image
-        $total = count($this->arrFiles);
+        $total = $this->size();
 
         if (($total == 1 || $total <= $intSkip) && !$blnForce) {
             return '';
@@ -54,19 +56,24 @@ class Inline extends Standard
 
     /**
      * Add CSS ID to main image so we can replace it
-     * @param   object
-     * @param   string
-     * @param   array
-     * @return  string
+     *
+     * @param Template|object $objTemplate
+     * @param string          $strType
+     * @param array           $arrFile
+     * @param bool            $blnWatermark
+     *
+     * @return string
      */
-    protected function addImageToTemplate(\Isotope\Template $objTemplate, $strType, array $arrFile)
+    protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {
-        parent::addImageToTemplate($objTemplate, $strType, $arrFile);
+        parent::addImageToTemplate($objTemplate, $strType, $arrFile, $blnWatermark);
 
         $objTemplate->uid = spl_object_hash($this);
 
         if ($strType == 'gallery') {
-            $objTemplate->link = $arrFile['main'];
+            $image = $this->getImageForType('main', $arrFile, $blnWatermark);
+
+            $objTemplate->link = $image['main'];
         }
     }
 }

@@ -19,20 +19,19 @@ use Isotope\Model\Product;
 /**
  * Build filter configuration for request cache
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Filter implements \ArrayAccess
 {
-
     /**
      * Filter config
      */
     protected $arrConfig = array();
 
-
     /**
      * Prevent direct instantiation
+     *
+     * @param string $attribute
      */
     protected function __construct($attribute)
     {
@@ -45,7 +44,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -53,7 +52,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -61,7 +60,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -69,7 +68,7 @@ class Filter implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -78,8 +77,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Verify if filter value is a valid option
-     * @param   array
-     * @return  bool
+     *
+     * @param array $arrValues
+     *
+     * @return bool
      */
     public function valueNotIn(array $arrValues)
     {
@@ -88,8 +89,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter value equals given value
-     * @param   mixed
-     * @return  bool
+     *
+     * @param mixed $value
+     *
+     * @return bool
      */
     public function valueEquals($value)
     {
@@ -99,70 +102,49 @@ class Filter implements \ArrayAccess
 
     public function contains($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'like';
-        $this->arrConfig['value']    = $value;
+        $this->filter('like', $value);
 
         return $this;
     }
 
     public function isEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'eq';
-        $this->arrConfig['value']    = $value;
+        $this->filter('eq', $value);
 
         return $this;
     }
 
     public function isNotEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'neq';
-        $this->arrConfig['value']    = $value;
+        $this->filter('neq', $value);
 
         return $this;
     }
 
     public function isSmallerThan($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'lt';
-        $this->arrConfig['value']    = $value;
+        $this->filter('lt', $value);
 
         return $this;
     }
 
     public function isSmallerOrEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'lte';
-        $this->arrConfig['value']    = $value;
+        $this->filter('lte', $value);
 
         return $this;
     }
 
     public function isGreaterThan($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'gt';
-        $this->arrConfig['value']    = $value;
+        $this->filter('gt', $value);
 
         return $this;
     }
 
     public function isGreaterOrEqualTo($value)
     {
-        $this->preventModification();
-
-        $this->arrConfig['operator'] = 'gte';
-        $this->arrConfig['value']    = $value;
+        $this->filter('gte', $value);
 
         return $this;
     }
@@ -184,7 +166,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter has a grouping
-     * @return  bool
+     *
+     * @return bool
      */
     public function hasGroup()
     {
@@ -193,7 +176,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Get group name for this filter
-     * @return  string
+     *
+     * @return string
      */
     public function getGroup()
     {
@@ -202,8 +186,10 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if product matches the filter
-     * @param   IsotopeProduct
-     * @return  bool
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return bool
      */
     public function matches(IsotopeProduct $objProduct)
     {
@@ -265,7 +251,9 @@ class Filter implements \ArrayAccess
                     break;
 
                 default:
-                    throw new \UnexpectedValueException('Unknown filter operator "' . $this->arrConfig['operator'] . '"');
+                    throw new \UnexpectedValueException(
+                        'Unknown filter operator "' . $this->arrConfig['operator'] . '"'
+                    );
             }
         }
 
@@ -274,7 +262,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter attribute is dynamic (can't use SQL filter then)
-     * @return  bool
+     *
+     * @return bool
      */
     public function isDynamicAttribute()
     {
@@ -283,7 +272,8 @@ class Filter implements \ArrayAccess
 
     /**
      * Check if filter attribute is dynamic (can't use SQL filter then)
-     * @return  bool
+     *
+     * @return bool
      */
     public function isMultilingualAttribute()
     {
@@ -292,32 +282,31 @@ class Filter implements \ArrayAccess
 
     /**
      * Get WHERE statement for SQL filter
-     * @return  string
+     *
+     * @return string
      */
     public function sqlWhere()
     {
-        if ($this->isMultilingualAttribute()) {
-            $strWhere = 'IFNULL(translation.' . $this->arrConfig['attribute'] . ', ' . Product::getTable() . '.' . $this->arrConfig['attribute'] . ')';
-        } else {
-            $strWhere = Product::getTable() . '.' . $this->arrConfig['attribute'];
-        }
-
-        $strWhere .= ' ' . $this->getOperatorForSQL() . ' ?';
-
-        return $strWhere;
+        return $this->getFieldForSQL() . ' ' . $this->getOperatorForSQL() . ' ?';
     }
 
     /**
      * Get value for SQL filter
-     * @return  string
+     *
+     * @return string
      */
     public function sqlValue()
     {
-        return ($this->arrConfig['operator'] == 'like' ? ('%' . $this->arrConfig['value'] . '%') : $this->arrConfig['value']);
+        if ($this->arrConfig['operator'] == 'like') {
+            return (('%' . $this->arrConfig['value'] . '%'));
+        }
+
+        return ($this->arrConfig['value']);
     }
 
     /**
      * Get filter operator suitable for SQL query
+     *
      * @return string
      */
     public function getOperatorForSQL()
@@ -354,8 +343,23 @@ class Filter implements \ArrayAccess
     }
 
     /**
+     * Sets operator and value of the filter.
+     *
+     * @param string $operator
+     * @param string $value
+     */
+    protected function filter($operator, $value)
+    {
+        $this->preventModification();
+
+        $this->arrConfig['operator'] = $operator;
+        $this->arrConfig['value']    = $value;
+    }
+
+    /**
      * Make sure filter operator or value is not modified
-     * @throws  \BadMethodCallException
+     *
+     * @throws \BadMethodCallException
      */
     protected function preventModification()
     {
@@ -365,7 +369,32 @@ class Filter implements \ArrayAccess
     }
 
     /**
+     * Returns the compiled name of the SQL field (depending on multilingual attributes).
+     *
+     * @return string
+     */
+    protected function getFieldForSQL()
+    {
+        if ($this->isMultilingualAttribute() && Product::countTranslatedProducts()) {
+            $field = sprintf(
+                'IFNULL(translation.%s, %s.%s)',
+                $this->arrConfig['attribute'],
+                Product::getTable(),
+                $this->arrConfig['attribute']
+            );
+        } else {
+            $field = Product::getTable() . '.' . $this->arrConfig['attribute'];
+        }
+
+        return $field;
+    }
+
+    /**
      * Create filter
+     *
+     * @param string $name
+     *
+     * @return static
      */
     public static function attribute($name)
     {

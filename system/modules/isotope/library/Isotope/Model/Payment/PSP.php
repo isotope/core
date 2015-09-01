@@ -61,6 +61,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
      *
      * @param IsotopeProductCollection $objOrder
      *
+     * @return  boolean Not needed when called by postsale.php but when called internally by processPayment
      * @return bool
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
@@ -118,6 +119,8 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
+        
+        $objOrder->payment_data = json_encode($this->getRawRequestData());
 
         $objOrder->updateOrderStatus($intStatus);
         $objOrder->save();
@@ -179,12 +182,23 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Prepare PSP params
+     * Gets the available payment methods
      *
      * @param Order  $objOrder
      * @param \Isotope\Module\Checkout $objModule
      *
      * @return array
+     */
+    public function getPaymentMethods()
+    {
+        return array();
+    }
+
+    /**
+     * Prepare PSP params
+     * @param   Order
+     * @param   Module
+     * @return  array
      */
     protected function preparePSPParams($objOrder, $objModule)
     {
@@ -229,6 +243,20 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         return $_POST[$strKey];
     }
 
+    /**
+     * Gets the raw request data based on the chosen HTTP method
+     *
+     * @return  array
+     */
+    private function getRawRequestData()
+    {
+        if ($this->psp_http_method == 'GET') {
+            return $_GET;
+        }
+
+        return $_POST;
+    }
+
 
     /**
      * Validate SHA-OUT signature
@@ -240,9 +268,9 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         $strSHASign = '';
         $arrParams  = array();
 
-        foreach (array_keys(($this->psp_http_method == 'GET' ? $_GET : $_POST)) as $key) {
+        foreach ($this->getRawRequestData() as $key => $value) {
             if (in_array(strtoupper($key), static::$arrShaOut)) {
-                $arrParams[$key] = $this->getRequestData($key);
+                $arrParams[$key] = $value;
             }
         }
 
@@ -262,6 +290,16 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         if ($this->getRequestData('SHASIGN') == strtoupper(hash($this->psp_hash_method, $strSHASign))) {
             return true;
         }
+
+        log_message(
+            sprintf(
+                "Received invalid postsale data.\nInput hash: %s\nCalculated hash: %s\nParameters: %s\n",
+                $this->getRequestData('SHASIGN'),
+                strtoupper(hash($this->psp_hash_method, $strSHASign)),
+                print_r($arrParams, true)
+            ),
+            'isotope_psp.log'
+        );
 
         return false;
     }

@@ -40,7 +40,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.2.6';
+    const VERSION = '2.3.0';
 
     /**
      * True if the system has been initialized
@@ -79,13 +79,11 @@ class Isotope extends \Controller
 
             // Initialize request cache for product list filters
             if (\Input::get('isorc') != '') {
-
                 if (static::getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
                 } elseif (static::getRequestCache()->id != \Input::get('isorc')) {
-
                     unset($_GET['isorc']);
 
                     // Unset the language parameter
@@ -94,7 +92,13 @@ class Isotope extends \Controller
                     }
 
                     $strQuery = http_build_query($_GET);
-                    \Controller::redirect(preg_replace('/\?.*$/i', '', \Environment::get('request')) . (($strQuery) ? '?' . $strQuery : ''));
+                    \Controller::redirect(
+                        preg_replace(
+                            '/\?.*$/i',
+                            '',
+                            (\Environment::get('request')) . (($strQuery) ? '?' . $strQuery : '')
+                        )
+                    );
                 }
             }
         }
@@ -188,7 +192,7 @@ class Isotope extends \Controller
     }
 
     /**
-     * Calculate price trough hook and foreign prices
+     * Calculate price through hooks and foreign prices
      *
      * @param float  $fltPrice
      * @param object $objSource
@@ -199,8 +203,14 @@ class Isotope extends \Controller
      *
      * @return float
      */
-    public static function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass = 0, array $arrAddresses = null, array $arrOptions = array())
-    {
+    public static function calculatePrice(
+        $fltPrice,
+        $objSource,
+        $strField,
+        $intTaxClass = 0,
+        array $arrAddresses = null,
+        array $arrOptions = array()
+    ) {
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
@@ -233,7 +243,7 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return static::roundPrice($fltPrice);
+        return $fltPrice;
     }
     
     /**
@@ -259,16 +269,18 @@ class Isotope extends \Controller
      * Format given price according to store config settings
      *
      * @param float $fltPrice
+     * @param bool  $blnApplyRoundingIncrement
      *
      * @return float
      */
-    public static function formatPrice($fltPrice)
+    public static function formatPrice($fltPrice, $blnApplyRoundingIncrement = true)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
+        $fltPrice  = static::roundPrice($fltPrice, $blnApplyRoundingIncrement);
         $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
         if (!is_array($arrFormat)) {
@@ -284,10 +296,11 @@ class Isotope extends \Controller
      * @param float  $fltPrice
      * @param bool   $blnHtml
      * @param string $strCurrencyCode
+     * @param bool   $blnApplyRoundingIncrement
      *
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
@@ -296,7 +309,7 @@ class Isotope extends \Controller
 
         $objConfig   = static::getConfig();
         $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $objConfig->currency);
-        $strPrice    = static::formatPrice($fltPrice);
+        $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
             $strCurrency = (($objConfig->currencyPosition == 'right' && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($objConfig->currencyPosition == 'left' && $objConfig->currencySpace) ? ' ' : '');
@@ -342,8 +355,14 @@ class Isotope extends \Controller
      */
     public static function defaultButtons($arrButtons)
     {
-        $arrButtons['update']      = array('label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']);
-        $arrButtons['add_to_cart'] = array('label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'], 'callback' => array('\Isotope\Frontend', 'addToCart'));
+        $arrButtons['update'] = array(
+            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']
+        );
+
+        $arrButtons['add_to_cart'] = array(
+            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
+            'callback' => array('\Isotope\Frontend', 'addToCart')
+        );
 
         return $arrButtons;
     }
@@ -418,8 +437,8 @@ class Isotope extends \Controller
     /**
      * Format product configuration using \Haste\Data
      *
-     * @param array          $arrConfig
-     * @param IsotopeProduct $objProduct
+     * @param array                  $arrConfig
+     * @param IsotopeProduct|Product $objProduct
      *
      * @return array
      */

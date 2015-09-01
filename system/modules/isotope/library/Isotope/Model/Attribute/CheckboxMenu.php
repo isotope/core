@@ -43,6 +43,10 @@ class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttrib
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+        if ($this->multiple) {
+            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+        } else {
+            $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";
+        }
     }
 }

@@ -27,6 +27,9 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total']             = array('Min
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total']             = array('Maximum subtotal', 'Enter a maximum amount to control availability based on the cart subtotal.');
 $GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight']            = array('Minimum weight', 'Enter a minimum weight to control availability based on the products in cart.');
 $GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight']            = array('Maximum weight', 'Enter a maximum weight to control availability based on the products in cart.');
+$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode']             = array('Quantity calculation mode', 'Select a calculation mode for min/max quantity.');
+$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_quantity']          = array('Minimum quantity', 'Enter a number greater zero to exclude this shipping method for orders with lower quantity.');
+$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_quantity']          = array('Maximum quantity', 'Enter a number greater zero to exclude this shipping method for orders with higher quantity.');
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types']             = array('Product types', 'You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.');
 $GLOBALS['TL_LANG']['tl_iso_shipping']['product_types_condition']   = array('Product type condition', 'Select how the product type filter should be applied.');
 $GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids']                = array('Store configurations', 'You can restrict this shipping method to certain shop configurations.');
@@ -60,14 +63,16 @@ $GLOBALS['TL_LANG']['tl_iso_shipping']['show']              = array('Shipping me
 /**
  * References
  */
-$GLOBALS['TL_LANG']['tl_iso_shipping']['flat']              = 'Flat';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['perProduct']        = 'Per Product';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['perItem']           = 'Per Item';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['first']             = 'Price of the first available method';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['lowest']            = 'Lowest price of available methods';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['highest']           = 'Highest price of available methods';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['summarize']         = 'Summed price of available methods';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['onlyAvailable']     = 'Enable if only these product types are in cart';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['allAvailable']      = 'Enable if all these product types are in cart';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['oneAvailable']      = 'Enable if one of these product types is in cart';
-$GLOBALS['TL_LANG']['tl_iso_shipping']['calculation']       = 'Calculate price for these product types';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['flat']                           = 'Flat';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['perProduct']                     = 'Per Product';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['perItem']                        = 'Per Item';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['first']                          = 'Price of the first available method';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['lowest']                         = 'Lowest price of available methods';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['highest']                        = 'Highest price of available methods';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['summarize']                      = 'Summed price of available methods';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['onlyAvailable']                  = 'Enable if only these product types are in cart';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['allAvailable']                   = 'Enable if all these product types are in cart';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['oneAvailable']                   = 'Enable if one of these product types is in cart';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['calculation']                    = 'Calculate price for these product types';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode']['cart_items']    = 'Total quantity in cart';
+$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode']['cart_products'] = 'Total products in cart';

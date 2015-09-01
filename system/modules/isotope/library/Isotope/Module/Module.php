@@ -12,8 +12,10 @@
 
 namespace Isotope\Module;
 
+use Haste\Haste;
 use Haste\Input\Input;
 use Haste\Util\Debug;
+use Haste\Util\RepositoryVersion;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -23,12 +25,22 @@ use PageModel;
 
 
 /**
- * Class ModuleIsotope
+ * Module implements a parent class for Isotope modules
  *
- * Parent class for Isotope modules.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property string $iso_category_scope
+ * @property string $iso_list_where
+ * @property string $iso_includeMessages
+ * @property bool   $iso_hide_list
+ * @property bool   $iso_emptyMessage
+ * @property string $iso_noProducts
+ * @property bool   $iso_emptyFilter
+ * @property string $iso_newFilter
+ * @property string $iso_noFilter
+ * @property array  $iso_buttons
+ * @property string $customTpl
+ * @property int    $jumpTo
+ * @property bool   $defineRoot
+ * @property int    $rootPage
  */
 abstract class Module extends Contao_Module
 {
@@ -50,27 +62,41 @@ abstract class Module extends Contao_Module
     /**
      * Load libraries and scripts
      *
-     * @param object $objModule
+     * @param \ModuleModel $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
 
+        if ($this->iso_list_where != '') {
+            $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+        }
+
+        $this->iso_buttons = deserialize($this->iso_buttons);
+
+        if (!is_array($this->iso_buttons)) {
+            $this->iso_buttons = array();
+        }
+
         Isotope::initialize();
 
+        // Load Isotope JavaScript and style sheet
         if (TL_MODE == 'FE') {
-            // Load Isotope javascript and css
-            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/isotope.min.js');
-            $GLOBALS['TL_CSS'][]        = Debug::uncompressedFile('system/modules/isotope/assets/css/isotope.min.css');
+            $version = RepositoryVersion::encode(Isotope::VERSION);
+
+            $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/js/isotope.min.js|static|'.$version
+            );
+
+            $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
+                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.$version
+            );
 
             // Disable caching for pages with certain modules (eg. Cart)
             if ($this->blnDisableCache) {
-                try {
-                    global $objPage;
-                    $objPage->cache = 0;
-                } catch (\Exception $e) {
-                }
+                global $objPage;
+                $objPage->cache = 0;
             }
         }
     }
@@ -114,8 +140,8 @@ abstract class Module extends Contao_Module
             $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
             if (!BE_USER_LOGGED_IN) {
-                $time = time();
-                $strWhere .= " AND ($t.start='' OR $t.start<$time) AND ($t.stop='' OR $t.stop>$time) AND $t.published='1'";
+                $time = \Date::floorToMinute();
+                $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
             }
 
             switch ($this->iso_category_scope) {

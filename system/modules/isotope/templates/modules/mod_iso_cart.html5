@@ -11,6 +11,7 @@
 <?php endif; ?>
 
 <?php echo $this->products; ?>
+<?php echo $this->custom; ?>
 
 </div>
 <!-- indexer::continue -->

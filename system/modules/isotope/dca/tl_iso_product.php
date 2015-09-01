@@ -280,7 +280,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
-            'relation'              => array('type'=>'hasOne', 'load'=>'eager'),
+            'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'explanation'           => 'tl_iso_product.type',
         ),
         'pages' => array
@@ -409,7 +409,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_product']['priceBlankOptionLabel'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (

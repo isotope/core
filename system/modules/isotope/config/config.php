@@ -51,7 +51,7 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 
 if (TL_MODE == 'BE')
 {
-    $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css');
+    $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css|static');
 }
 
 
@@ -202,15 +202,17 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('datatrans', 'Isotope\Model\Payment\Datatrans');
 \Isotope\Model\Payment::registerModelType('epay', 'Isotope\Model\Payment\EPay');
 \Isotope\Model\Payment::registerModelType('expercash', 'Isotope\Model\Payment\Expercash');
+\Isotope\Model\Payment::registerModelType('innopay', 'Isotope\Model\Payment\Innopay');
 \Isotope\Model\Payment::registerModelType('paybyway', 'Isotope\Model\Payment\Paybyway');
 \Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
 \Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
 \Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
-\Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
+\Isotope\Model\Payment::registerModelType('quickpay', 'Isotope\Model\Payment\QuickPay');
 \Isotope\Model\Payment::registerModelType('saferpay', 'Isotope\Model\Payment\Saferpay');
 \Isotope\Model\Payment::registerModelType('billpay_saferpay', 'Isotope\Model\Payment\BillpayWithSaferpay');
 \Isotope\Model\Payment::registerModelType('sparkasse', 'Isotope\Model\Payment\Sparkasse');
 \Isotope\Model\Payment::registerModelType('sofortueberweisung', 'Isotope\Model\Payment\Sofortueberweisung');
+\Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
 
 /**
@@ -229,6 +231,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  */
 \Isotope\Model\Gallery::registerModelType('standard', 'Isotope\Model\Gallery\Standard');
 \Isotope\Model\Gallery::registerModelType('inline', 'Isotope\Model\Gallery\Inline');
+\Isotope\Model\Gallery::registerModelType('elevatezoom', 'Isotope\Model\Gallery\ElevateZoom');
 
 /**
  * Products
@@ -367,6 +370,11 @@ $GLOBALS['ISO_INTEGRITY'] = array
     '\Isotope\IntegrityCheck\AttributeOptionOrphans',
     '\Isotope\IntegrityCheck\UnusedRules'
 );
+
+/**
+ * Vat No Validation
+ */
+$GLOBALS['ISO_VAT']['eu_vies'] = '\Isotope\VatNoValidator\EuViesValidator';
 
 /**
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)

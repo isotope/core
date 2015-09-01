@@ -37,8 +37,8 @@ class ProductCategory extends \Model
         $arrOptions['having'] = "page_id__type!='error_403' AND page_id__type!='error_404'";
 
         if (!BE_USER_LOGGED_IN) {
-            $time = time();
-            $arrOptions['having'] .= " AND (page_id__start='' OR page_id__start<$time) AND (page_id__stop='' OR page_id__stop>$time) AND page_id__published='1'";
+            $time = \Date::floorToMinute();
+            $arrOptions['having'] .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
         }
 
         return parent::findBy('pid', $intProduct, $arrOptions);

@@ -22,28 +22,31 @@ use Isotope\Translation;
  * Class Payment
  * Parent class for all payment gateway modules.
  *
- * @property int    id
- * @property int    tstamp
- * @property string name
- * @property string label
- * @property string type
- * @property string note
- * @property int    new_order_status
- * @property string price
- * @property int    tax_class
- * @property string trans_type
- * @property float  minimum_total
- * @property float  maximum_total
- * @property array  countries
- * @property array  shipping_modules
- * @property array  product_types
- * @property string product_types_condition
- * @property array  config_ids
- * @property bool   guests
- * @property bool   protected
- * @property array  groups
- * @property bool   debug
- * @property bool   enabled
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $name
+ * @property string $label
+ * @property string $type
+ * @property string $note
+ * @property int    $new_order_status
+ * @property string $price
+ * @property int    $tax_class
+ * @property string $trans_type
+ * @property string $quantity_mode
+ * @property int    $minimum_quantity
+ * @property int    $maximum_quantity
+ * @property float  $minimum_total
+ * @property float  $maximum_total
+ * @property array  $countries
+ * @property array  $shipping_modules
+ * @property array  $product_types
+ * @property string $product_types_condition
+ * @property array  $config_ids
+ * @property bool   $guests
+ * @property bool   $protected
+ * @property array  $groups
+ * @property bool   $debug
+ * @property bool   $enabled
  */
 abstract class Payment extends TypeAgent
 {
@@ -107,14 +110,39 @@ abstract class Payment extends TypeAgent
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))) // Can't use empty() because its an object property (using __get)
-            {
+            if (!is_array($arrGroups)
+                || empty($arrGroups)
+                || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))  // Can't use empty() because its an object property (using __get)
+            ) {
                 return false;
             }
         }
 
-        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal()) || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())) {
+        if (($this->minimum_total > 0 && $this->minimum_total > Isotope::getCart()->getSubtotal())
+            || ($this->maximum_total > 0 && $this->maximum_total < Isotope::getCart()->getSubtotal())
+        ) {
             return false;
+        }
+
+        if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
+            switch ($this->quantity_mode) {
+                case 'cart_items':
+                    $quantity =  Isotope::getCart()->sumItemsQuantity();
+                    break;
+
+                case 'cart_products':
+                    $quantity =  Isotope::getCart()->countItems();
+                    break;
+
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
+            }
+
+            if (($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
+                || ($this->maximum_quantity > 0 && $this->maximum_quantity < $quantity)
+            ) {
+                return false;
+            }
         }
 
         $arrConfigs = deserialize($this->config_ids);
@@ -124,13 +152,24 @@ abstract class Payment extends TypeAgent
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && !empty($arrCountries) && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)) {
+        if (is_array($arrCountries) && !empty($arrCountries)
+            && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)
+        ) {
             return false;
         }
 
         $arrShippings = deserialize($this->shipping_modules);
 
-        if (is_array($arrShippings) && !empty($arrShippings) && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings)) || (Isotope::getCart()->hasShipping() && !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)))) {
+        if (is_array($arrShippings)
+            && !empty($arrShippings)
+            && ((!Isotope::getCart()->hasShipping()
+                    && !in_array(-1, $arrShippings)
+                )
+                || (Isotope::getCart()->hasShipping() &&
+                    !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)
+                )
+            )
+        ) {
             return false;
         }
 
@@ -172,7 +211,9 @@ abstract class Payment extends TypeAgent
                     break;
 
                 default:
-                    throw new \UnexpectedValueException('Unknown product type condition "' . $this->product_types_condition . '"');
+                    throw new \UnexpectedValueException(
+                        'Unknown product type condition "' . $this->product_types_condition . '"'
+                    );
             }
         }
 

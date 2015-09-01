@@ -14,13 +14,23 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 
-
 /**
- * Class Shipping
+ * Gallery is the parent class for all gallery types
  *
- * Parent class for all gallery types
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    id
+ * @property int    tstamp
+ * @property string name
+ * @property string type
+ * @property string anchor
+ * @property string placeholder
+ * @property string main_size
+ * @property string main_watermark_image
+ * @property string main_watermark_position
+ * @property string gallery_size
+ * @property string gallery_watermark_image
+ * @property string gallery_watermark_position
+ * @property string customTpl
  */
 abstract class Gallery extends TypeAgent
 {
@@ -45,10 +55,12 @@ abstract class Gallery extends TypeAgent
 
     /**
      * Create a gallery for product, falls back to standard gallery if none is defined
-     * @param   IsotopeProduct
-     * @param   string
-     * @param   array
-     * @return  Gallery
+     *
+     * @param IsotopeProduct $objProduct
+     * @param string         $strAttribute
+     * @param array          $arrConfig
+     *
+     * @return static
      */
     public static function createForProductAttribute(IsotopeProduct $objProduct, $strAttribute, $arrConfig)
     {
@@ -59,7 +71,10 @@ abstract class Gallery extends TypeAgent
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
-        $objGallery->setFiles(static::mergeMediaData(deserialize($objProduct->$strAttribute), deserialize($objProduct->{$strAttribute . '_fallback'})));
+        $objGallery->setFiles(static::mergeMediaData(
+            deserialize($objProduct->$strAttribute, true),
+            deserialize($objProduct->{$strAttribute . '_fallback'}, true)
+        ));
         $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
         $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
@@ -68,8 +83,10 @@ abstract class Gallery extends TypeAgent
 
     /**
      * Merge media manager data from fallback and translated product data
-     * @param array
-     * @param array
+     *
+     * @param array $arrCurrent
+     * @param array $arrParent
+     *
      * @return array
      */
     public static function mergeMediaData($arrCurrent, $arrParent)

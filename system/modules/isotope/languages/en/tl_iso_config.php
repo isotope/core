@@ -35,10 +35,12 @@ $GLOBALS['TL_LANG']['tl_iso_config']['shipping_country']            = array('Def
 $GLOBALS['TL_LANG']['tl_iso_config']['billing_countries']           = array('Available billing countries', 'Select the countries you want to allow for checkout billing address. Select none to allow all countries.');
 $GLOBALS['TL_LANG']['tl_iso_config']['shipping_countries']          = array('Available shipping countries', 'Select the countries you want to allow for checkout shipping address. Select none to allow all countries.');
 $GLOBALS['TL_LANG']['tl_iso_config']['limitMemberCountries']        = array('Limit member countries', 'Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.');
+$GLOBALS['TL_LANG']['tl_iso_config']['vatNoValidators']             = array('VAT No. validation', 'If you enable one or multiple services, the VAT No. address field will be validated.');
+$GLOBALS['TL_LANG']['tl_iso_config']['priceDisplay']                = array('Price display', 'Select if you want to display net or gross prices in your shop. See the help wizard for more information.');
+$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']              = array('Price formatting', 'Choose a formatting for prices.');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundPrecision']         = array('Rounding precision', 'How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().');
 $GLOBALS['TL_LANG']['tl_iso_config']['priceRoundIncrement']         = array('Rounding increment', 'Some currencies (e.g. swiss francs) do not support 0.01 precision.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currency']                    = array('Currency', 'Please select a currency for this store.');
-$GLOBALS['TL_LANG']['tl_iso_config']['currencyFormat']              = array('Currency formatting', 'Choose a formatting for prices.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencyPosition']            = array('Position of currency code/symbol', 'Select if you want to show currency on the left or right side of the price.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySymbol']              = array('Use currency symbol', 'Use a currency symbol ($, €) if available.');
 $GLOBALS['TL_LANG']['tl_iso_config']['currencySpace']               = array('Include blank space', 'Add space between price and currency symbol.');
@@ -55,9 +57,9 @@ $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Inv
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');
 $GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod']            = array('Duration to mark a product as "new"', 'If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']						= array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_account']						= array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
-$GLOBALS['TL_LANG']['tl_iso_config']['ga_member']						= array('Track member', 'Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you\'re allowed to do this!');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_enable']                   = array('Enable Google Analytics', 'Enable e-commerce tracking with Google Analytics.');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_account']                  = array('Account', 'Please provde the account key (UA-XXXXXXX-X).');
+$GLOBALS['TL_LANG']['tl_iso_config']['ga_member']                   = array('Track member', 'Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you\'re allowed to do this!');
 
 /**
  * Reference
@@ -80,6 +82,10 @@ $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['shipping']  = array('For
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['disabled']  = 'Disabled';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['enabled']   = 'Enabled (not mandatory)';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['mandatory'] = 'Enabled (mandatory)';
+$GLOBALS['TL_LANG']['tl_iso_config']['net']                         = array('Net', 'Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.');
+$GLOBALS['TL_LANG']['tl_iso_config']['gross']                       = array('Gross (recommended)', 'Show gross prices to all customers. Applicable taxes will be added to the product price display.');
+$GLOBALS['TL_LANG']['tl_iso_config']['fixed']                       = array('Fixed', 'The product price will always be shown as in the product setting. Taxes are always calculated as "included". This means the shop owner\'s profit varies depending on the applicable taxes.');
+$GLOBALS['TL_LANG']['tl_iso_config']['legacy']                      = array('Legacy', 'Price display as in Isotope < 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.');
 
 /**
  * Buttons
@@ -97,6 +103,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['name_legend']                 = 'Name';
 $GLOBALS['TL_LANG']['tl_iso_config']['address_legend']              = 'Address configuration';
 $GLOBALS['TL_LANG']['tl_iso_config']['config_legend']               = 'Configuration';
 $GLOBALS['TL_LANG']['tl_iso_config']['checkout_legend']             = 'Checkout';
+$GLOBALS['TL_LANG']['tl_iso_config']['pricing_legend']              = 'Pricing';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency_legend']             = 'Currency formatting';
 $GLOBALS['TL_LANG']['tl_iso_config']['converter_legend']            = 'Currency conversion';
 $GLOBALS['TL_LANG']['tl_iso_config']['order_legend']                = 'Orders';
