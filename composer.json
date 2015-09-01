@@ -46,5 +46,7 @@
                 "system/modules/isotope/config/upgrade.php"
             ]
         }
-    }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
