@@ -370,11 +370,12 @@ abstract class Attribute extends TypeAgent
     {
         $varValue = $objProduct->{$this->field_name};
 
-        // Generate a HTML table for associative arrays
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
+            // Generate a HTML table for associative arrays
             $strBuffer = $this->generateTable($varValue, $objProduct);
-        } // Generate ul/li listing for simple arrays
-        elseif (is_array($varValue)) {
+
+        } elseif (is_array($varValue)) {
+            // Generate ul/li listing for simple arrays
             $strBuffer = $this->generateList($varValue);
         } else {
             $strBuffer = Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
