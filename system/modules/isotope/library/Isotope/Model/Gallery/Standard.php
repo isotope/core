@@ -343,7 +343,7 @@ class Standard extends Gallery implements IsotopeGallery
             $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
         }
 
-        $arrSize = getimagesize(TL_ROOT . '/' . $strImage);
+        $arrSize = getimagesize(TL_ROOT . '/' . rawurldecode($strImage));
 
         if (is_array($arrSize) && $arrSize[3] !== '') {
             $arrFile[$strType . '_size']      = $arrSize[3];

@@ -7,6 +7,7 @@ Version 2.3.1-stable (2015-09-??)
 ### Fixed
 - Correctly pass the checkout module to *preCheckout* hook (#1520)
 - Wildcard edit link did not work for cumulative filter
+- Image size fetching failed when encoded characters in thumbnail path
 
 
 Version 2.3.0-stable (2015-09-01)
