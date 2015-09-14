@@ -359,6 +359,18 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * Gets attribute value from given product.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return mixed
+     */
+    public function getValue(IsotopeProduct $product)
+    {
+        return $product->{$this->field_name};
+    }
+
+    /**
      * Generate HTML markup of product data for this attribute
      *
      * @param   IsotopeProduct $objProduct
@@ -368,7 +380,7 @@ abstract class Attribute extends TypeAgent
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        $varValue = $objProduct->{$this->field_name};
+        $varValue = $this->getValue($objProduct);
 
         if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
             // Generate a HTML table for associative arrays
@@ -376,6 +388,11 @@ abstract class Attribute extends TypeAgent
 
         } elseif (is_array($varValue)) {
             // Generate ul/li listing for simple arrays
+
+            foreach ($varValue as &$v) {
+                $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+            }
+
             $strBuffer = $this->generateList($varValue);
         } else {
             $strBuffer = Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
@@ -509,6 +526,8 @@ abstract class Attribute extends TypeAgent
             $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
 
             $strBuffer .= "\n<li" . ($class != '' ? ' class="' . $class . '"' : '') . '>' . $value . '</li>';
+
+            $current += 1;
         }
 
         $strBuffer .= "\n</ul>";
