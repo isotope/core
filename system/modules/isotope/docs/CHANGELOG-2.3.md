@@ -10,6 +10,7 @@ Version 2.3.1-stable (2015-09-??)
 - Wildcard edit link did not work for cumulative filter
 - Image size fetching failed when encoded characters in thumbnail path
 - Correctly generate labels instead of values from checkbox attributes (#1521)
+- Download attributes with radio button did not work (#1527)
 
 
 Version 2.3.0-stable (2015-09-01)
