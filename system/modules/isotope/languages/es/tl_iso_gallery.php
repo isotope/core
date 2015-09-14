@@ -19,3 +19,4 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['type'][0] = 'Tipo';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['placeholder'][1] = 'Esta imagen se utilizará si no se encuentra un archivo de imagen o no está asociada con un producto.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['name_legend'] = 'Nombre y tipo';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['size_legend'] = 'Talla de las imagenes';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['config_legend'] = 'Configuración';
