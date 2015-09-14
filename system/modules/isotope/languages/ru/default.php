@@ -83,6 +83,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Счет';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Состояние';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Дата заказа';
 $GLOBALS['TL_LANG']['MSC']['iso_order_description'] = 'Описание';
+$GLOBALS['TL_LANG']['MSC']['iso_order_quantity'] = 'Количество';
 $GLOBALS['TL_LANG']['MSC']['iso_order_price'] = 'Цена';
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'мал. к больш.';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'больш. к мал.';

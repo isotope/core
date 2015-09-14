@@ -23,6 +23,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
+use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
@@ -569,8 +570,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return $objProduct->generate($arrConfig);
         }
 
-        $arrGalleries = array();
-
         /** @type Template|object $objTemplate */
         $objTemplate = new Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
@@ -606,17 +605,21 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
-        $objTemplate->getGallery = function($strAttribute) use ($objProduct, $arrConfig, &$arrGalleries) {
+        /** @var StandardGallery $currentGallery */
+        $currentGallery          = null;
+        $objTemplate->getGallery = function ($strAttribute) use ($objProduct, $arrConfig, &$currentGallery) {
 
-            if (!isset($arrGalleries[$strAttribute])) {
-                $arrGalleries[$strAttribute] = Gallery::createForProductAttribute(
+            if (null === $currentGallery
+                || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
+            ) {
+                $currentGallery = Gallery::createForProductAttribute(
                     $objProduct,
                     $strAttribute,
                     $arrConfig
                 );
             }
 
-            return $arrGalleries[$strAttribute];
+            return $currentGallery;
         };
 
 

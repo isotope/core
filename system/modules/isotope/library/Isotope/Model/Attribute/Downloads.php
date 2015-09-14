@@ -69,7 +69,7 @@ class Downloads extends Attribute implements IsotopeAttribute
     {
         $objContentModel = new \ContentModel();
         $objContentModel->type = 'downloads';
-        $objContentModel->multiSRC = $objProduct->{$this->field_name};
+        $objContentModel->multiSRC = (array) $this->getValue($objProduct);
         $objContentModel->sortBy = $this->sortBy;
         $objContentModel->orderSRC = $objProduct->{$this->field_name.'_order'};
         $objContentModel->cssID = serialize(array('', $this->field_name));

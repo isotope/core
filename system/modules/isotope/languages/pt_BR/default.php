@@ -100,6 +100,7 @@ $GLOBALS['TL_LANG']['MSC']['iso_invoice_title'] = 'Fatura';
 $GLOBALS['TL_LANG']['MSC']['iso_order_status'] = 'Status';
 $GLOBALS['TL_LANG']['MSC']['iso_order_date'] = 'Data do Pedido';
 $GLOBALS['TL_LANG']['MSC']['iso_order_document_number'] = 'Número do Pedido';
+$GLOBALS['TL_LANG']['MSC']['iso_order_quantity'] = 'Quantidade';
 $GLOBALS['TL_LANG']['MSC']['iso_order_total'] = 'Total';
 $GLOBALS['TL_LANG']['MSC']['low_to_high'] = 'do menor para o maior';
 $GLOBALS['TL_LANG']['MSC']['high_to_low'] = 'do maior para o menor';

@@ -534,9 +534,17 @@ class Transifex
     protected function push()
     {
         $this->setup(true);
+        $languages = $this->languages();
+
+        if (empty($languages)) {
+            passthru('tx push --skip --source --language=en');
+            return;
+        }
 
         // Push source language to transifex.com
-        passthru('tx push --skip --source --language=en');
+        foreach ($languages as $language) {
+            passthru('tx push --skip --translations --language=' . $language);
+        }
     }
 
     /**
