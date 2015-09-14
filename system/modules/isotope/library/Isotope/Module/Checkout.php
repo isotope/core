@@ -195,9 +195,9 @@ class Checkout extends Module
                 // !HOOK: pre-process checkout
                 if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0], $this);
+                        $objCallback = \System::importStatic($callback[0]);
 
-                        if ($objCallback->$callback[1]($objOrder) === false) {
+                        if ($objCallback->$callback[1]($objOrder, $this) === false) {
                             \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                             static::redirectToStep('failed');

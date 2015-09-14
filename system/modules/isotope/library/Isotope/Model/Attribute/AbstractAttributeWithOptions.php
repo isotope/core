@@ -231,6 +231,29 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     }
 
     /**
+     * Make sure array values are unserialized and CSV values are splitted.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return mixed
+     */
+    public function getValue(IsotopeProduct $product)
+    {
+        $value = parent::getValue($product);
+
+        if ($this->multiple) {
+            if ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey') {
+                $value = explode(',', $value);
+            } else {
+                $value = deserialize($value);
+            }
+        }
+
+        return $value;
+    }
+
+
+    /**
      * Adjust DCA field for this attribute
      *
      * @param array $arrData

@@ -54,6 +54,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'][0] = 'Lightbox
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'][1] = 'Wählen Sie ein Bild aus, wenn Sie den Lightboxbildern ein Wasserzeichen hinzufügen wollen.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'][0] = 'Lightboxbild-Wasserzeichen-Position';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'][1] = 'Wählen Sie die Position für das Wasserzeichen aus.';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_position'][1] = 'Wählen Sie die Position für das Wasserzeichen aus.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl'][0] = 'Eigenes Galerie-Template';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl'][1] = 'Hier können Sie das Standard Galerie-Template überschreiben.';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['new'][0] = 'Neue Galerie';
