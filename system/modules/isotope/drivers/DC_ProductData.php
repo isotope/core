@@ -606,14 +606,10 @@ class DC_ProductData extends \DC_Table
             }
         }
 
-        $version = '';
-
         // Versions overview
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning']) {
             $version = $objVersions->renderDropdown();
-        }
-
-        if ('' === $version) {
+        } else {
             $version = '<div class="tl_version_panel"></div>';
         }
 
@@ -643,7 +639,7 @@ class DC_ProductData extends \DC_Table
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
-<select name="language" class="tl_select" onchange="document.id(this).getParent(\'form\').submit()">
+<select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '" onchange="document.id(this).getParent(\'form\').submit()">
     <option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>' . $available . $undefined . '
 </select>
 <noscript>
