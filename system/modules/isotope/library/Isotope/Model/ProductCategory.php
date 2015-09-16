@@ -22,6 +22,38 @@ class ProductCategory extends \Model
      */
     protected static $strTable = 'tl_iso_product_category';
 
+    /**
+     * Gets the options for the query for the "findByPidForPublishedPages" method.
+     *
+     * @param       $intProduct
+     * @param array $arrOptions
+     *
+     * @return array
+     */
+    public static function getFindByPidForPublishedPagesOptions($intProduct, array $arrOptions = array())
+    {
+        $t = static::getTable();
+        $having = "page_id__type!='error_403' AND page_id__type!='error_404'";
+
+        if (!BE_USER_LOGGED_IN) {
+            $time = \Date::floorToMinute();
+            $having .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
+        }
+
+        $arrOptions = array_merge(
+            array(
+                'column' => array("$t.pid=?"),
+                'value'  => array($intProduct),
+                'eager'  => true,
+                'having' => $having,
+                'return' => 'Collection'
+
+            ),
+            $arrOptions
+        );
+
+        return $arrOptions;
+    }
 
     /**
      * Find categories by product id if the respective page is published
@@ -33,14 +65,8 @@ class ProductCategory extends \Model
      */
     public static function findByPidForPublishedPages($intProduct, array $arrOptions = array())
     {
-        $arrOptions['eager'] = true;
-        $arrOptions['having'] = "page_id__type!='error_403' AND page_id__type!='error_404'";
+        $arrOptions = static::getFindByPidForPublishedPagesOptions($intProduct, $arrOptions);
 
-        if (!BE_USER_LOGGED_IN) {
-            $time = \Date::floorToMinute();
-            $arrOptions['having'] .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
-        }
-
-        return parent::findBy('pid', $intProduct, $arrOptions);
+        return parent::find($arrOptions);
     }
 }
