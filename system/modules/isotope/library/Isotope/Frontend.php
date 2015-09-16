@@ -507,7 +507,8 @@ window.addEvent('domready', function()
             $arrUnavailable[$intMember] = array();
         }
 
-        foreach (array_diff($arrPages, $arrUnavailable[$intMember], $arrUnavailable[$intMember]) as $intPage) {
+        // Load remaining (not cached) pages.
+        foreach (array_diff($arrPages, $arrAvailable[$intMember], $arrUnavailable[$intMember]) as $intPage) {
             $objPageDetails = \PageModel::findWithDetails($intPage);
 
             // Page is not in the current root
