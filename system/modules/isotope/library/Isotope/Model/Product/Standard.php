@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Product;
 
-use Contao\Model\QueryBuilder;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -24,6 +23,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
+use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductPrice;
@@ -461,7 +461,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             if ($blnPublished) {
                 $options = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
                 $options['table'] = ProductCategory::getTable();
-                $query = QueryBuilder::find($options);
+                $query = \Model\QueryBuilder::find($options);
                 $values = (array) $options['value'];
             } else {
                 $query  = 'SELECT page_id FROM ' . ProductCategory::getTable() . ' WHERE pid=?';
