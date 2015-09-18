@@ -141,7 +141,7 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . $k . ': </span></td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': </span></td>
     <td' . $strClass . '>' . $strValue . '</td>
   </tr>';
         }
