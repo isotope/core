@@ -247,31 +247,44 @@ class Frontend extends \Frontend
 
 
     /**
-     * Use generatePage Hook to inject necessary javascript
+     * Inject the necessary scripts here upon the "modifyFrontendPage" hook.
+     * We don't use the generatePage hook here anymore as modules added via
+     * InsertTags will not get those scripts added. We also don't use a combination
+     * of both (e.g. use generatePage hook by default and use the modifyFrontendPage
+     * hook only if there are still $GLOBALS['AJAX_PRODUCTS'] because a simple
+     * str_replace on </body> is really not a performance issue. So we chose
+     * simplicity here.
+     *
+     * @param string $buffer
+     *
+     * @return string
      */
-    public function injectScripts()
+    public function injectScripts($buffer)
     {
-        if (!empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS'])) {
-            $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-    IsotopeProducts.setLoadMessage('" . specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']) . "');
-    IsotopeProducts.attach(JSON.decode('" . json_encode($GLOBALS['AJAX_PRODUCTS']) . "'));
-});
-</script>";
+        $messages = Message::generate();
+        $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS']);
+
+        if ($messages === '' && !$hasProducts) {
+
+            return $buffer;
         }
 
-        $strMessages = Message::generate();
+        $template = new \FrontendTemplate('iso_scripts');
 
-        if ($strMessages != '') {
-            $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function()
-{
-    Isotope.displayBox('" . str_replace(array("\n", "'"), array('', "\'"), $strMessages) . "', true);
-});
-</script>";
+        if ($hasProducts) {
+            $template->hasProducts = true;
+            $template->loadMessage = specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']);
+            $template->products    = json_encode($GLOBALS['AJAX_PRODUCTS']);
         }
+
+        if ($messages !== '') {
+            $template->hasMessages = true;
+            $template->messages = str_replace(array("\n", "'"), array('', '\''), $messages);
+        }
+
+        $buffer = str_replace('</body>', $template->parse() . '</body>', $buffer);
+
+        return $buffer;
     }
 
     /**

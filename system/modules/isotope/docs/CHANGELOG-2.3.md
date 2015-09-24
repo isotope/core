@@ -4,6 +4,8 @@ Isotope eCommerce Changelog
 Version 2.3.2-stable (2015-??-??)
 ---------------------------------
 
+### Fixed
+- Ajax loading did not work when the list or reader module was included using InsertTags
 
 ### Improved
 - Considerable improved performance of product list
