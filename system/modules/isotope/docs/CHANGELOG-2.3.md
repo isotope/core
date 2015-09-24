@@ -5,6 +5,9 @@ Version 2.3.2-stable (2015-??-??)
 ---------------------------------
 
 
+### Improved
+- Considerable improved performance of product list
+
 Version 2.3.1-stable (2015-09-14)
 ---------------------------------
 
