@@ -6,6 +6,7 @@ Version 2.3.2-stable (2015-??-??)
 
 ### Fixed
 - Ajax loading did not work when the list or reader module was included using InsertTags
+- Variant options must not have a default value (#1546)
 
 ### Improved
 - Considerable improved performance of product list
