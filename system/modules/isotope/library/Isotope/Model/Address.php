@@ -267,7 +267,7 @@ class Address extends \Model
      * @param int   $intMember
      * @param array $arrOptions
      *
-     * @return static|null
+     * @return Address|null
      */
     public static function findOneForMember($intId, $intMember, array $arrOptions = array())
     {

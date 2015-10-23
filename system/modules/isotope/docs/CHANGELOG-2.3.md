@@ -7,6 +7,7 @@ Version 2.3.2-stable (2015-??-??)
 ### Fixed
 - Ajax loading did not work when the list or reader module was included using InsertTags
 - Variant options must not have a default value (#1546)
+- Support for member_grouped template in address book and cart address was broken (#1536)
 
 ### Improved
 - Considerable improved performance of product list
