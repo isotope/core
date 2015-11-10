@@ -11,6 +11,7 @@ Version 2.3.2-stable (2015-??-??)
 
 ### Improved
 - Considerable improved performance of product list
+- Allow to get unformatted values from attribute (#1558)
 
 Version 2.3.1-stable (2015-09-14)
 ---------------------------------
