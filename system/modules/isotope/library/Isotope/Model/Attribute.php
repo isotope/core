@@ -394,12 +394,22 @@ abstract class Attribute extends TypeAgent
             return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
         }
 
+        if ($arrOptions['noHtml']) {
+            $result = array();
+
+            foreach ($varValue as $v) {
+                $result[$v] = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+            }
+
+            return $result;
+        }
+
         // Generate ul/li listing for simple arrays
         foreach ($varValue as &$v) {
             $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
         }
 
-        return $arrOptions['noHtml'] ? $varValue : $this->generateList($varValue);
+        return $this->generateList($varValue);
     }
 
     /**
