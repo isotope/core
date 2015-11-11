@@ -117,8 +117,9 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['cc']                           
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['dc']                                           = 'Debit card';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['vor']                                          = 'Prepayment';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec']                                          = 'Invoice';
-$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['sb']                                           = 'Online bank transfer';
-$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['wlt']                                          = 'e-Wallet';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['sb']                                           = 'Online bank transfer (SOFORT/Giropay/PostFinance/iDEAL)';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['wlt']                                          = 'e-Wallet (PayPal)';
+$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['fnc']                                          = 'Financing (BillSAFE Invoice)';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['creditcard']                  = 'Credit card';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['maestro']                     = 'Debig card';
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']['directdebit']                 = 'Direct debit';

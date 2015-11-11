@@ -647,7 +647,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payone_clearingtype'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('elv', 'cc', 'dc', 'vor', 'rec', 'sb', 'wlt'),
+            'options'               => array('elv', 'cc', 'dc', 'vor', 'rec', 'sb', 'wlt', 'fnc'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['payone'],
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(3) NOT NULL default ''"
