@@ -26,6 +26,12 @@ interface IsotopeCheckoutStep
     public function isAvailable();
 
     /**
+     * Return true if the checkout step can be skipped if no error.
+     * @return bool
+     */
+    public function isSkippable();
+
+    /**
      * Return true if the step has an error and forwarding should be cancelled
      * @return  bool
      */

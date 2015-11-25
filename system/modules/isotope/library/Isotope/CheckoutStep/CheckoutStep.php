@@ -12,13 +12,14 @@
 
 namespace Isotope\CheckoutStep;
 
+use Isotope\Module\Checkout;
 
 abstract class CheckoutStep extends \Controller
 {
 
     /**
      * Checkout module instance
-     * @var \Isotope\Module\Checkout
+     * @var Checkout
      */
     protected $objModule;
 
@@ -29,7 +30,7 @@ abstract class CheckoutStep extends \Controller
     protected $blnError = false;
 
 
-    public function __construct(\Isotope\Module\Checkout $objModule)
+    public function __construct(Checkout $objModule)
     {
         parent::__construct();
 
@@ -43,6 +44,15 @@ abstract class CheckoutStep extends \Controller
     public function hasError()
     {
         return $this->blnError;
+    }
+
+    /**
+     * Check if the checkout step is skippable
+     * @return bool
+     */
+    public function isSkippable()
+    {
+        return false;
     }
 
     /**

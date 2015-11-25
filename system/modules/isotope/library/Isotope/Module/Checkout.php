@@ -22,6 +22,11 @@ use Isotope\Model\ProductCollection\Order;
 /**
  * Class ModuleIsotopeCheckout
  * Front end module Isotope "checkout".
+ *
+ * @property array $iso_shipping_modules
+ * @property bool  $iso_foward_review
+ * @property bool  $iso_skip_shipping
+ * @property bool  $iso_skip_payment
  */
 class Checkout extends Module
 {
@@ -259,6 +264,8 @@ class Checkout extends Module
             $this->redirectToNextStep();
         }
 
+        $arrStepKeys = array_keys($arrSteps);
+
         /**
          * Run trough all steps until we find the current one or one reports failure
          * @type string                $step
@@ -270,17 +277,22 @@ class Checkout extends Module
             $this->Template->formSubmit = $this->strFormId;
 
             $intCurrentStep += 1;
-            $arrBuffer = array();
+            $arrBuffer       = array();
+            $skippable       = true;
 
             foreach ($arrModules as $objModule) {
-
                 $arrBuffer[] = array(
                     'class' => standardize($step) . ' ' . $objModule->getStepClass(),
                     'html'  => $objModule->generate()
                 );
 
+                if (!$objModule->isSkippable()) {
+                    $skippable = false;
+                }
+
                 if ($objModule->hasError()) {
                     $this->doNotSubmit = true;
+                    $skippable = false;
                 }
 
                 // the user wanted to proceed but the current step is not completed yet
@@ -289,14 +301,22 @@ class Checkout extends Module
                 }
             }
 
+            if ($skippable) {
+                unset($arrStepKeys[array_search($step, $arrStepKeys)]);
+            }
+
             if ($step == $this->strCurrentStep) {
+                if ($skippable) {
+                    static::redirectToNextStep();
+                }
+
                 global $objPage;
                 $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
                 break;
             }
         }
 
-        $arrStepKeys = array_keys($arrSteps);
+        $arrStepKeys = array_values($arrStepKeys);
 
         $this->Template->steps      = $this->generateStepNavigation($arrStepKeys);
         $this->Template->activeStep = $GLOBALS['TL_LANG']['MSC']['activeStep'];
@@ -494,7 +514,7 @@ class Checkout extends Module
                 $objModule = new $strClass($this);
 
                 if (!$objModule instanceof IsotopeCheckoutStep) {
-                    throw new \RuntimeException("$strClass has to implement Isotope\Interfaces\IsotopeCheckoutStep");
+                    throw new \RuntimeException("$strClass has to implement Isotope\\Interfaces\\IsotopeCheckoutStep");
                 }
 
                 if ($objModule->isAvailable()) {
