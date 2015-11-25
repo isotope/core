@@ -216,8 +216,19 @@ abstract class Address extends CheckoutStep
         if (null === $this->arrWidgets) {
             $this->arrWidgets = array();
             $objAddress       = $this->getDefaultAddress();
+            $arrFields        = $this->getAddressFields();
 
-            foreach ($this->getAddressFields() as $field) {
+            // !HOOK: modify address fields in checkout process
+            if (isset($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
+                && is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
+            ) {
+                foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback) {
+                    $this->import($callback[0]);
+                    $arrFields = $this->$callback[0]->$callback[1]($arrFields, $objAddress, $this->getStepClass());
+                }
+            }
+
+            foreach ($arrFields as $field) {
 
                 // Do not use reference, otherwise the billing address fields would affect shipping address fields
                 $arrData = $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$field['value']];
