@@ -22,6 +22,7 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Gesamt';
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][1] = 'Gesamtverkäufe aller Produkte';
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_product'][0] = 'Pro Produkt';
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_product'][1] = 'Verkäufe pro Produkt';
+$GLOBALS['TL_LANG']['ISO_REPORT']['sales_product_quantity_suffix'] = 'Artikel';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Gesamt';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][1] = 'Verkaufs-Statistiken nach Mitglied';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_registration'][0] = 'Registrierungen';
