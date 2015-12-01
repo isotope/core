@@ -49,6 +49,7 @@ Version 2.3.0-rc2 (2015-07-31)
 - Payment methods can now be configured in QuickPay module
 - Combine CSS and JS with core files to reduce server requests (#1490) 
 - Enable PHP 7 compatiblity (requires Contao 3.5.2 now)
+- Extend the guest cart cookie lifetime on every access to the shop
 
 ### Fixed
 - Buttons in product list and reader were not shown
@@ -58,6 +59,7 @@ Version 2.3.0-rc2 (2015-07-31)
 - File name for elevateZoom was not capitalized in script link (#1496)
 - Show customer defined fields in product variant list
 - Hidden options in product list contained invalid values (#1566)
+- Prevent reuse of unique cookie hash for the cart (#1556)
 
 
 Version 2.3.0-rc1 (2015-06-26)
