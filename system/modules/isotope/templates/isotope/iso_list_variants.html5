@@ -22,6 +22,11 @@
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
+<?php if($this->hasOptions): ?>
+<div class="options">
+<?php foreach( $this->options as $arrOption ): if (!$arrOption['attributes']['variant_option']) echo $arrOption['html']; endforeach; ?>
+</div>
+<?php endif; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
 <label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">

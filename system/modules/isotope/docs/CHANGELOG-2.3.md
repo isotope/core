@@ -56,6 +56,7 @@ Version 2.3.0-rc2 (2015-07-31)
 - Serialized values were not converted to CSV
 - The language selector in products table was not accessible (#1476)
 - File name for elevateZoom was not capitalized in script link (#1496)
+- Show customer defined fields in product variant list
 
 
 Version 2.3.0-rc1 (2015-06-26)
