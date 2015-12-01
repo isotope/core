@@ -48,8 +48,8 @@
         <?php endif; ?>
         </td>
         <td class="col_<?php echo $i++; ?> price"><?php echo $item['price']; ?></td>
-        <td class="col_<?php echo $i++; if (!$this->isEditable && $this->total_tax_ids < 2) echo 'col_last'; ?> price total"><?php echo $item['total']; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax"><?php echo $item['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $item['total']; ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $item['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
         <td class="col_<?php echo $i++; ?> col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
@@ -68,8 +68,8 @@
         <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
         <td class="col_<?php echo $i++; $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
         <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo 'col_last'; ?> price total"><?php echo $this->subtotal; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $this->subtotal; ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
         <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
     <?php foreach ($this->surcharges as $surcharge): $i=0; ?>
@@ -78,8 +78,8 @@
         <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
         <td class="col_<?php echo $i++; $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $surcharge['label']; ?></td>
         <td class="col_<?php echo $i++; ?> price"><?php echo $surcharge['price']; ?></td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo 'col_last'; ?> price total"><?php echo $surcharge['total_price']; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax"><?php echo $surcharge['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $surcharge['total_price']; ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $surcharge['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
         <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
     <?php endforeach; ?>
@@ -88,8 +88,8 @@
         <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
         <td class="col_<?php echo $i++; $i++ ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
         <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo 'col_last'; ?> price total"><?php echo $this->total; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; ?> <?php if(!$this->isEditable) echo 'col_last '; ?>tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $this->total; ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
         <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
 </tfoot>
