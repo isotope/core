@@ -8,12 +8,16 @@ Version 2.3.2-stable (2015-??-??)
 - Considerable improved performance of product list
 - Allow to get unformatted values from attribute (#1558)
 - Added missing clearing types for PayOne 
+- Extend the guest cart cookie lifetime on every access to the shop
 
 ### Fixed
 - Ajax loading did not work when the list or reader module was included using InsertTags
 - Variant options must not have a default value (#1546)
 - Support for member_grouped template in address book and cart address was broken (#1536)
 - Updated transaction feedback handling for PayOne
+- Show customer defined fields in product variant list
+- Hidden options in product list contained invalid values (#1566)
+- Prevent reuse of unique cookie hash for the cart (#1556)
 
 
 Version 2.3.1-stable (2015-09-14)
@@ -49,7 +53,6 @@ Version 2.3.0-rc2 (2015-07-31)
 - Payment methods can now be configured in QuickPay module
 - Combine CSS and JS with core files to reduce server requests (#1490) 
 - Enable PHP 7 compatiblity (requires Contao 3.5.2 now)
-- Extend the guest cart cookie lifetime on every access to the shop
 
 ### Fixed
 - Buttons in product list and reader were not shown
@@ -57,9 +60,6 @@ Version 2.3.0-rc2 (2015-07-31)
 - Serialized values were not converted to CSV
 - The language selector in products table was not accessible (#1476)
 - File name for elevateZoom was not capitalized in script link (#1496)
-- Show customer defined fields in product variant list
-- Hidden options in product list contained invalid values (#1566)
-- Prevent reuse of unique cookie hash for the cart (#1556)
 
 
 Version 2.3.0-rc1 (2015-06-26)
