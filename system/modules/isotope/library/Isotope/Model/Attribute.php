@@ -13,7 +13,6 @@
 namespace Isotope\Model;
 
 use Haste\Util\Format;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -99,8 +98,10 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return true if attribute is a variant option
-     * @return      bool
-     * @deprecated  will only be available when IsotopeAttributeForVariants interface is implemented
+     *
+     * @return bool
+     *
+     * @deprecated will only be available when IsotopeAttributeForVariants interface is implemented
      */
     public function isVariantOption()
     {
@@ -113,7 +114,8 @@ abstract class Attribute extends TypeAgent
      */
     public function isCustomerDefined()
     {
-        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
+        /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
+        if ($this->isVariantOption()) {
             return false;
         }
 
@@ -185,7 +187,7 @@ abstract class Attribute extends TypeAgent
         $arrField['exclude']                        = true;
         $arrField['inputType']                      = '';
         $arrField['attributes']                     = $this->row();
-        $arrField['attributes']['variant_option']   = (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption());
+        $arrField['attributes']['variant_option']   = ($this->isVariantOption()); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
@@ -213,7 +215,8 @@ abstract class Attribute extends TypeAgent
         }
 
         // Variant selection is always mandatory
-        if (/* @todo in 3.0: $this instanceof IsotopeAttributeForVariants && */$this->isVariantOption()) {
+        /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
+        if ($this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
         }
 
@@ -373,8 +376,8 @@ abstract class Attribute extends TypeAgent
     /**
      * Generate HTML markup of product data for this attribute
      *
-     * @param   IsotopeProduct $objProduct
-     * @param   array          $arrOptions
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrOptions
      *
      * @return string
      */
@@ -382,29 +385,39 @@ abstract class Attribute extends TypeAgent
     {
         $varValue = $this->getValue($objProduct);
 
-        if (is_array($varValue) && !array_is_assoc($varValue) && is_array($varValue[0])) {
-            // Generate a HTML table for associative arrays
-            $strBuffer = $this->generateTable($varValue, $objProduct);
-
-        } elseif (is_array($varValue)) {
-            // Generate ul/li listing for simple arrays
-
-            foreach ($varValue as &$v) {
-                $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
-            }
-
-            $strBuffer = $this->generateList($varValue);
-        } else {
-            $strBuffer = Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
+        if (!is_array($varValue)) {
+            return Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
         }
 
-        return $strBuffer;
+        // Generate a HTML table for associative arrays
+        if (!array_is_assoc($varValue) && is_array($varValue[0])) {
+            return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
+        }
+
+        if ($arrOptions['noHtml']) {
+            $result = array();
+
+            foreach ($varValue as $v) {
+                $result[$v] = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+            }
+
+            return $result;
+        }
+
+        // Generate ul/li listing for simple arrays
+        foreach ($varValue as &$v) {
+            $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+        }
+
+        return $this->generateList($varValue);
     }
 
     /**
      * Returns the foreign key for a certain language with a fallback option
-     * @param string
-     * @param string
+     *
+     * @param string $strSettings
+     * @param bool   $strLanguage
+     *
      * @return mixed
      */
     protected function parseForeignKey($strSettings, $strLanguage = false)
@@ -444,9 +457,11 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Generate HTML table for associative array values
-     * @param   array
-     * @param   IsotopeProduct
-     * @return  string
+     *
+     * @param array          $arrValues
+     * @param IsotopeProduct $objProduct
+     *
+     * @return string
      */
     protected function generateTable(array $arrValues, IsotopeProduct $objProduct)
     {
@@ -495,7 +510,7 @@ abstract class Attribute extends TypeAgent
                 }
 
                 $strBuffer .= '
-      <td class="col_' . ++$c . ($c == 0 ? ' col_first' : '') . ($c == $i ? ' col_last' : '') . ' ' . standardize($name) . '">' . $value . '</td>';
+      <td class="col_' . ++$c . ($c == 0 ? ' col_first' : '') . ($c == $last ? ' col_last' : '') . ' ' . standardize($name) . '">' . $value . '</td>';
             }
 
             $strBuffer .= '
@@ -575,8 +590,10 @@ abstract class Attribute extends TypeAgent
             $arrFields = array();
             $arrAttributes = &$GLOBALS['TL_DCA']['tl_iso_product']['attributes'];
 
+            /** @var Attribute $objAttribute */
             foreach ($arrAttributes as $field => $objAttribute) {
-                if (/* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */ $objAttribute->isVariantOption()) {
+                /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants */
+                if ($objAttribute->isVariantOption()) {
                     $arrFields[] = $field;
                 }
             }

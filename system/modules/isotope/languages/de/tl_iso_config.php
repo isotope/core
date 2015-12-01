@@ -126,6 +126,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['iwWatermark'][0] = 'Wasserzeichen-Bild';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwPosition'][0] = 'Position';
 $GLOBALS['TL_LANG']['tl_iso_config']['ecb']['int'] = 'European Central Bank';
 $GLOBALS['TL_LANG']['tl_iso_config']['admin']['ch'] = 'Swiss Federal Department of Finance';
+$GLOBALS['TL_LANG']['tl_iso_config']['net'][0] = 'Netto';
 $GLOBALS['TL_LANG']['tl_iso_config']['net'][1] = 'Zeigen Sie allen Kunden den Nettopreis an. Steuern die im Produktpreis (Konfiguration des Steuersatzes) inbegriffen sind, werden abgezogen.';
 $GLOBALS['TL_LANG']['tl_iso_config']['gross'][0] = 'Brutto (empfohlen)';
 $GLOBALS['TL_LANG']['tl_iso_config']['gross'][1] = 'Zeigen Sie allen Kunden den Bruttopreis an. Anwendbare Steuern werden zum angezeigten Produktpreis hinzugefügt.';

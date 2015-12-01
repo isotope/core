@@ -639,11 +639,11 @@ class DC_ProductData extends \DC_Table
             $version = str_replace(
                 '<div class="tl_version_panel">',
                 '<div class="tl_version_panel tl_iso_products_panel">
-<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post" style="float:left;margin-left:20px;">
+<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
-<select name="language" class="tl_select" onchange="document.id(this).getParent(\'form\').submit()">
+<select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '" onchange="document.id(this).getParent(\'form\').submit()">
     <option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>' . $available . $undefined . '
 </select>
 <noscript>

@@ -1,6 +1,26 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.3.2-stable (2015-12-01)
+---------------------------------
+
+### Improved
+- Considerable improved performance of product list
+- Allow to get unformatted values from attribute (#1558)
+- Added missing clearing types for PayOne 
+- Extend the guest cart cookie lifetime on every access to the shop
+
+### Fixed
+- Ajax loading did not work when the list or reader module was included using InsertTags
+- Variant options must not have a default value (#1546)
+- Support for member_grouped template in address book and cart address was broken (#1536)
+- Updated transaction feedback handling for PayOne
+- Show customer defined fields in product variant list
+- Hidden options in product list contained invalid values (#1566)
+- Prevent reuse of unique cookie hash for the cart (#1556)
+- Download attribute with single selection was not correctly rendered (#1555)
+
+
 Version 2.3.1-stable (2015-09-14)
 ---------------------------------
 

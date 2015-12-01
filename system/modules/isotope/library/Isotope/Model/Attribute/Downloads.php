@@ -59,6 +59,25 @@ class Downloads extends Attribute implements IsotopeAttribute
 
 
     /**
+     * Make sure array values are unserialized.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return mixed
+     */
+    public function getValue(IsotopeProduct $product)
+    {
+        $value = parent::getValue($product);
+
+        if ('checkbox' === $this->fieldType) {
+            $value = deserialize($value);
+        }
+
+        return (array) $value;
+    }
+
+
+    /**
      * Generate download attributes
      *
      * @param \Isotope\Interfaces\IsotopeProduct $objProduct
@@ -69,7 +88,7 @@ class Downloads extends Attribute implements IsotopeAttribute
     {
         $objContentModel = new \ContentModel();
         $objContentModel->type = 'downloads';
-        $objContentModel->multiSRC = (array) $this->getValue($objProduct);
+        $objContentModel->multiSRC = $this->getValue($objProduct);
         $objContentModel->sortBy = $this->sortBy;
         $objContentModel->orderSRC = $objProduct->{$this->field_name.'_order'};
         $objContentModel->cssID = serialize(array('', $this->field_name));

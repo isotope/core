@@ -418,6 +418,11 @@ body.iso_be_overview .tip-wrap{
     clear: both;
 }
 
+.tl_version_panel.tl_iso_products_panel #tl_language {
+    float:left;
+    margin-left:20px;
+}
+
 .tl_version_panel.tl_iso_products_panel #tl_version {
     float: right;
 }

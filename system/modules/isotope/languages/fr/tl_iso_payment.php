@@ -133,7 +133,6 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['cc'] = 'Carte de crédit';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['dc'] = 'Carte de débit';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['vor'] = 'Prépaiement';
 $GLOBALS['TL_LANG']['tl_iso_payment']['payone']['rec'] = 'Facture';
-$GLOBALS['TL_LANG']['tl_iso_payment']['payone']['wlt'] = 'e-Portefeuille';
 $GLOBALS['TL_LANG']['tl_iso_payment']['type_legend'] = 'Nom &amp; Type';
 $GLOBALS['TL_LANG']['tl_iso_payment']['note_legend'] = 'Notes complémentaires';
 $GLOBALS['TL_LANG']['tl_iso_payment']['config_legend'] = 'Configuration générale';

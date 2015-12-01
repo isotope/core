@@ -40,7 +40,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.3.1';
+    const VERSION = '2.3.2';
 
     /**
      * True if the system has been initialized
@@ -467,19 +467,20 @@ class Isotope extends \Controller
                 );
 
                 $arrOptions = array();
+                $values     = $v;
 
                 if (!empty($arrField['options']) && is_array($arrField['options'])) {
 
-                    if (!is_array($v)) {
-                        $v = array($v);
+                    if (!is_array($values)) {
+                        $values = array($values);
                     }
 
                     $arrOptions = array_filter(
                         $arrField['options'],
-                        function(&$option) use (&$v) {
-                            if (($pos = array_search($option['value'], $v)) !== false) {
+                        function(&$option) use (&$values) {
+                            if (($pos = array_search($option['value'], $values)) !== false) {
                                 $option = $option['label'];
-                                unset($v[$pos]);
+                                unset($values[$pos]);
 
                                 return true;
                             }
@@ -488,8 +489,8 @@ class Isotope extends \Controller
                         }
                     );
 
-                    if (!empty($v)) {
-                        $arrOptions = array_merge($arrOptions, $v);
+                    if (!empty($values)) {
+                        $arrOptions = array_merge($arrOptions, $values);
                     }
                 }
 
