@@ -96,13 +96,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $objOptions = $this->getOptionsFromManager();
 
                 if (null === $objOptions) {
-                    return array();
+                    $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    return $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
 
                 } else {
-                    return $objOptions->getArrayForBackendWidget();
+                    $arrOptions = $objOptions->getArrayForBackendWidget();
                 }
                 break;
 
@@ -128,6 +128,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 throw new \UnexpectedValueException(
                     'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
                 );
+        }
+
+        // Variant options cannot have a default value (see #1546)
+        if ($this->isVariantOption()) {
+            foreach ($arrOptions as &$option) {
+                $option['default'] = '';
+            }
         }
 
         return $arrOptions;

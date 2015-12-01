@@ -264,34 +264,19 @@ class Cart extends ProductCollection implements
             return null;
         }
 
-        $time     = time();
-        $strHash  = \Input::cookie(static::$strCookie);
-        $intStore = (int) \PageModel::findByPk($objPage->rootId)->iso_store_id;
+        $time       = time();
+        $objCart    = null;
+        $cookieHash = \Input::cookie(static::$strCookie);
+        $storeId    = (int) \PageModel::findByPk($objPage->rootId)->iso_store_id;
 
         //  Check to see if the user is logged in.
-        if (FE_USER_LOGGED_IN !== true) {
-            if ($strHash == '') {
-                $strHash = sha1(
-                    session_id()
-                    . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
-                    . $intStore
-                    . static::$strCookie
-                );
-
-                \System::setCookie(
-                    static::$strCookie,
-                    $strHash,
-                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                    $GLOBALS['TL_CONFIG']['websitePath']
-                );
-            }
-
-            $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $intStore));
-        } else {
+        if (FE_USER_LOGGED_IN === true) {
             $objCart = static::findOneBy(
                 array('member=?', 'store_id=?'),
-                array(\FrontendUser::getInstance()->id, $intStore)
+                array(\FrontendUser::getInstance()->id, $storeId)
             );
+        } elseif ($cookieHash != '') {
+            $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
         }
 
         // Create new cart
@@ -299,17 +284,33 @@ class Cart extends ProductCollection implements
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             $objCart   = new static();
 
+            $cookieHash = FE_USER_LOGGED_IN === true ? null : sha1(
+                session_id()
+                . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
+                . $storeId
+                . static::$strCookie
+            );
+
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
                 'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),
-                'uniqid'    => (FE_USER_LOGGED_IN === true ? null : $strHash),
+                'uniqid'    => $cookieHash,
                 'config_id' => $objConfig->id,
-                'store_id'  => $intStore,
+                'store_id'  => $storeId,
             )));
 
         } else {
             $objCart->tstamp = $time;
+        }
+
+        if (FE_USER_LOGGED_IN !== true) {
+            \System::setCookie(
+                static::$strCookie,
+                $cookieHash,
+                $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
+                $GLOBALS['TL_CONFIG']['websitePath']
+            );
         }
 
         return $objCart;

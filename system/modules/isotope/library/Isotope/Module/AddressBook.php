@@ -258,8 +258,16 @@ class AddressBook extends Module
 
         $objForm->addToTemplate($this->Template);
 
-        // Add groups
-        $arrGroups   = array();
+        // Predefine the group order (other groups will be appended automatically)
+        $arrGroups  = array();
+        $categories = array(
+            'personal' => array(),
+            'address'  => array(),
+            'contact'  => array(),
+            'login'    => array(),
+            'profile'  => array()
+        );
+
         foreach ($objForm->getFormFields() as $strName => $arrConfig) {
             if ($arrConfig['feGroup'] != '') {
                 $arrGroups[$arrConfig['feGroup']][$strName] = $objForm->getWidget($strName)->parse();
@@ -267,9 +275,13 @@ class AddressBook extends Module
         }
 
         foreach ($arrGroups as $k => $v) {
-            $this->Template->$k = $v;
+            $this->Template->$k = $v; // backwards compatibility
+
+            $key = $k . (($k == 'personal') ? 'Data' : 'Details');
+            $categories[$GLOBALS['TL_LANG']['tl_member'][$key]] = $v;
         }
 
+        $this->Template->categories     = $categories;
         $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
         $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];

@@ -15,9 +15,6 @@
  */
 
 $GLOBALS['TL_LANG']['ERR']['noStoreConfigurationSet'] = 'هیچ تنظیم فروشگاهی وجود ندارد';
-$GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'ویرایش';
-$GLOBALS['TL_LANG']['MSC']['defaultLanguage'] = 'زبان جانشین';
-$GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] = 'تعریف نشده';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'گروه‌ها';
 $GLOBALS['TL_LANG']['MSC']['filterByPages'] = 'صفحه‌ها';
 $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] = 'هیچ فایل بارگیری نشد.';

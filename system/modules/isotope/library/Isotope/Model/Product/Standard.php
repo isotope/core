@@ -451,7 +451,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      *
      * @param bool $blnPublished Only return published categories (pages)
      *
-     * @return \PageModel[]
+     * @return array
      */
     public function getCategories($blnPublished = false)
     {
@@ -459,12 +459,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
             if ($blnPublished) {
-                $objCategories = ProductCategory::findByPidForPublishedPages($this->getProductId());
+                $options = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
+                $options['table'] = ProductCategory::getTable();
+                $query = \Model\QueryBuilder::find($options);
+                $values = (array) $options['value'];
             } else {
-                $objCategories = ProductCategory::findBy('pid', $this->getProductId());
+                $query  = 'SELECT page_id FROM ' . ProductCategory::getTable() . ' WHERE pid=?';
+                $values = array($this->getProductId());
             }
 
-            $this->arrCategories[$key] = (null === $objCategories ? array() : $objCategories->fetchEach('page_id'));
+            $objCategories = \Database::getInstance()->prepare($query)->execute($values);
+
+            $this->arrCategories[$key] = $objCategories->fetchEach('page_id');
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);

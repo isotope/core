@@ -5,8 +5,8 @@
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
 
-<?php if($this->hasOptions): foreach($this->raw_options as $name => $value): ?>
-<input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>">
+<?php if($this->hasOptions): foreach($this->raw_options as $name => $option): ?>
+<input type="hidden" name="<?php echo $name; ?>" value="<?= $option['value'] ?>">
 <?php endforeach; endif; ?>
 <h3><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
 
@@ -22,6 +22,11 @@
 
 <?php if($this->buttons): ?>
 <div class="submit_container">
+<?php if ($this->hasOptions): ?>
+<div class="options">
+<?php foreach( $this->options as $arrOption ): if (!$arrOption['attributes']['variant_option']) echo $arrOption['html']; endforeach; ?>
+</div>
+<?php endif; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
 <label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">

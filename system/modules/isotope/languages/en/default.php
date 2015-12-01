@@ -38,12 +38,6 @@ $GLOBALS['TL_LANG']['ERR']['cumulativeDuplicateAttribute']      = 'You cannot co
 /**
  * Miscellaneous
  */
-$GLOBALS['TL_LANG']['MSC']['editLanguage']                      = 'Edit';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguage']                    = 'Delete language';
-$GLOBALS['TL_LANG']['MSC']['defaultLanguage']                   = 'Fallback language';
-$GLOBALS['TL_LANG']['MSC']['editingLanguage']                   = 'ATTENTION: You are editing language-specific data!';
-$GLOBALS['TL_LANG']['MSC']['deleteLanguageConfirm']             = 'Are you sure you want to delete this language? There is no undo!';
-$GLOBALS['TL_LANG']['MSC']['undefinedLanguage']                 = 'undefined';
 $GLOBALS['TL_LANG']['MSC']['selectGroup']                       = 'Only show this group';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups']                    = 'Groups';
 $GLOBALS['TL_LANG']['MSC']['filterByPages']                     = 'Pages';

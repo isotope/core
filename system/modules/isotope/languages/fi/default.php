@@ -14,7 +14,6 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
-$GLOBALS['TL_LANG']['MSC']['editLanguage'] = 'Muokkaa';
 $GLOBALS['TL_LANG']['MSC']['filterByGroups'] = 'Ryhmät';
 $GLOBALS['TL_LANG']['MSC']['filterByPages'] = 'Sivut';
 $GLOBALS['TL_LANG']['MSC']['mmDrop'] = 'Vedä ja pudota ladattavat tiedostot tähän';
