@@ -73,7 +73,7 @@ class Downloads extends Attribute implements IsotopeAttribute
             $value = deserialize($value);
         }
 
-        return $value;
+        return (array) $value;
     }
 
 

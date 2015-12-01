@@ -18,6 +18,7 @@ Version 2.3.2-stable (2015-??-??)
 - Show customer defined fields in product variant list
 - Hidden options in product list contained invalid values (#1566)
 - Prevent reuse of unique cookie hash for the cart (#1556)
+- Download attribute with single selection was not correctly rendered (#1555)
 
 
 Version 2.3.1-stable (2015-09-14)
