@@ -56,6 +56,12 @@ class Checkout extends Module
     protected $strCurrentStep;
 
     /**
+     * Checkout steps that can be skipped
+     * @var array
+     */
+    protected $skippableSteps = array();
+
+    /**
      * Form ID
      * @var string
      */
@@ -265,6 +271,7 @@ class Checkout extends Module
         }
 
         $arrStepKeys = array_keys($arrSteps);
+        $this->skippableSteps = array();
 
         /**
          * Run trough all steps until we find the current one or one reports failure
@@ -276,9 +283,9 @@ class Checkout extends Module
             $this->Template->formId     = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
 
-            $intCurrentStep += 1;
-            $arrBuffer       = array();
-            $skippable       = true;
+            $intCurrentStep  += 1;
+            $arrBuffer        = array();
+            $this->skippableSteps[$step] = true;
 
             foreach ($arrModules as $objModule) {
                 $arrBuffer[] = array(
@@ -287,12 +294,12 @@ class Checkout extends Module
                 );
 
                 if (!$objModule->isSkippable()) {
-                    $skippable = false;
+                    $this->skippableSteps[$step] = false;
                 }
 
                 if ($objModule->hasError()) {
                     $this->doNotSubmit = true;
-                    $skippable = false;
+                    $this->skippableSteps[$step]  = false;
                 }
 
                 // the user wanted to proceed but the current step is not completed yet
@@ -301,12 +308,12 @@ class Checkout extends Module
                 }
             }
 
-            if ($skippable) {
+            if ($this->skippableSteps[$step]) {
                 unset($arrStepKeys[array_search($step, $arrStepKeys)]);
             }
 
             if ($step == $this->strCurrentStep) {
-                if ($skippable) {
+                if ($this->skippableSteps[$step]) {
                     static::redirectToNextStep();
                 }
 
@@ -360,7 +367,14 @@ class Checkout extends Module
             static::redirectToStep('process');
         }
 
-        static::redirectToStep($arrSteps[$intKey + 1]);
+        $step = $arrSteps[$intKey + 1];
+
+        if ($this->skippableSteps[$step]) {
+            $this->strCurrentStep = $step;
+            $this->redirectToNextStep();
+        }
+
+        static::redirectToStep($step);
     }
 
     /**
@@ -375,7 +389,14 @@ class Checkout extends Module
             $intKey = 1;
         }
 
-        static::redirectToStep($arrSteps[($intKey - 1)]);
+        $step = $arrSteps[$intKey - 1];
+
+        if ($this->skippableSteps[$step]) {
+            $this->strCurrentStep = $step;
+            $this->redirectToPreviousStep();
+        }
+
+        static::redirectToStep($step);
     }
 
     /**
