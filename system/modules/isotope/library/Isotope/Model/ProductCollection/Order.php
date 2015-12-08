@@ -461,12 +461,12 @@ class Order extends ProductCollection implements
     /**
      * Include downloads when adding items to template
      *
-     * @param \Isotope\Template $objTemplate
-     * @param Callable          $varCallable
+     * @param \Template $objTemplate
+     * @param Callable  $varCallable
      *
      * @return array
      */
-    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
+    protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
         $taxIds          = array();
         $arrItems        = array();
