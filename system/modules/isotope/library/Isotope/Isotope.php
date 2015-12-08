@@ -219,7 +219,7 @@ class Isotope extends \Controller
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
+                $fltPrice = $objCallback->{$callback[1]}($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
             }
         }
 

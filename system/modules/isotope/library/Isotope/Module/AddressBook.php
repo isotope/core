@@ -97,7 +97,7 @@ class AddressBook extends Module
         if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]();
+                $objCallback->{$callback[1]}();
             }
         }
 
@@ -239,7 +239,7 @@ class AddressBook extends Module
                 if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->$callback[1]($objAddress);
+                        $objCallback->{$callback[1]}($objAddress);
                     }
                 }
 

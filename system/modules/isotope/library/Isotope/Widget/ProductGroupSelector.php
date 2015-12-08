@@ -349,7 +349,7 @@ class ProductGroupSelector extends \Widget
 
         // Load the label_callback
         if (is_array($callback) && !empty($callback)) {
-            $return .= static::importStatic($callback[0])->$callback[1]($objGroup->row(), $objGroup->name, null, $folderAttribute);
+            $return .= static::importStatic($callback[0])->{$callback[1]}($objGroup->row(), $objGroup->name, null, $folderAttribute);
         }
 
         $return .= '</div> <div class="tl_right">';

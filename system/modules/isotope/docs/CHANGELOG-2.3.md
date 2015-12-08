@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.3.3-stable (????-??-??)
 ---------------------------------
 
+### Fixed
+- Callbacks were not compatible with PHP7 (#1584)
+
 
 Version 2.3.2-stable (2015-12-01)
 ---------------------------------

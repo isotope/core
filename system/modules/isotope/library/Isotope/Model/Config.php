@@ -262,7 +262,7 @@ class Config extends \Model
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
             foreach ($GLOBALS['ISO_HOOKS']['priceDisplay'] as $callback) {
-                $format = \System::importStatic($callback[0])->$callback[1]($format, $this);
+                $format = \System::importStatic($callback[0])->{$callback[1]}($format, $this);
             }
         }
 

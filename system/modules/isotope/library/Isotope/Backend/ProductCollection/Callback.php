@@ -464,7 +464,7 @@ class Callback extends \Backend
             if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $objCallback->$callback[1]($objOrder);
+                    $objCallback->{$callback[1]}($objOrder);
                 }
             }
         }

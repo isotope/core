@@ -305,7 +305,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $arrFilters  = $objCallback->$callback[1]($arrFilters);
+                    $arrFilters  = $objCallback->{$callback[1]}($arrFilters);
                 }
             }
 

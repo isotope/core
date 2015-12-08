@@ -424,7 +424,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $strEmail    = $objCallback->$callback[1]($strEmail, $this);
+                $strEmail    = $objCallback->{$callback[1]}($strEmail, $this);
             }
         }
 
@@ -492,7 +492,7 @@ abstract class ProductCollection extends TypeAgent
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this);
+                $objCallback->{$callback[1]}($this);
             }
         }
 
@@ -527,7 +527,7 @@ abstract class ProductCollection extends TypeAgent
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $blnRemove = $objCallback->$callback[1]($this);
+                    $blnRemove = $objCallback->{$callback[1]}($this);
 
                     if ($blnRemove === false) {
                         return 0;
@@ -565,7 +565,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postDeleteCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $intPid);
+                $objCallback->{$callback[1]}($this, $intPid);
             }
         }
 
@@ -895,7 +895,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
+                $intQuantity = $objCallback->{$callback[1]}($objProduct, $intQuantity, $this);
             }
         }
 
@@ -964,7 +964,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $intQuantity, $this);
+                $objCallback->{$callback[1]}($objItem, $intQuantity, $this);
             }
         }
 
@@ -1011,7 +1011,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['updateItemInCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrSet      = $objCallback->$callback[1]($objItem, $arrSet, $this);
+                $arrSet      = $objCallback->{$callback[1]}($objItem, $arrSet, $this);
 
                 if (empty($arrSet) && is_array($arrSet)) {
                     return false;
@@ -1055,7 +1055,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $arrSet['quantity'], $this);
+                $objCallback->{$callback[1]}($objItem, $arrSet['quantity'], $this);
             }
         }
 
@@ -1099,7 +1099,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnRemove   = $objCallback->$callback[1]($objItem, $this);
+                $blnRemove   = $objCallback->{$callback[1]}($objItem, $this);
 
                 if ($blnRemove === false) {
                     return false;
@@ -1119,7 +1119,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postDeleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $this);
+                $objCallback->{$callback[1]}($objItem, $this);
             }
         }
 
@@ -1177,7 +1177,7 @@ abstract class ProductCollection extends TypeAgent
                 foreach ($GLOBALS['ISO_HOOKS']['copyCollectionItem'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
 
-                    if ($objCallback->$callback[1]($objOldItem, $objSource, $this) === false) {
+                    if ($objCallback->{$callback[1]}($objOldItem, $objSource, $this) === false) {
                         continue;
                     }
                 }
@@ -1209,7 +1209,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['copiedCollectionItems'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objSource, $this, $arrIds);
+                $objCallback->{$callback[1]}($objSource, $this, $arrIds);
             }
         }
 
@@ -1379,7 +1379,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
+                $objCallback->{$callback[1]}($objTemplate, $arrItems, $this);
             }
         }
     }
@@ -1540,7 +1540,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['generateDocumentNumber'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $strOrderId  = $objCallback->$callback[1]($this, $strPrefix, $intDigits);
+                $strOrderId  = $objCallback->{$callback[1]}($this, $strPrefix, $intDigits);
 
                 if ($strOrderId !== false) {
                     $this->arrData['document_number'] = $strOrderId;
@@ -1791,7 +1791,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objCollection, $objSource, $arrItemIds);
+                $objCallback->{$callback[1]}($objCollection, $objSource, $arrItemIds);
             }
         }
 
