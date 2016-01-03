@@ -6,6 +6,7 @@ Version 2.3.3-stable (????-??-??)
 
 ### Fixed
 - Callbacks were not compatible with PHP7 (#1584)
+- Some Postfinance fields are limited to 35 characters (#1586)
 
 
 Version 2.3.2-stable (2015-12-01)
