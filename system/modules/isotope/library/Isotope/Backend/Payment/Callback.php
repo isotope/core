@@ -64,7 +64,7 @@ class Callback extends Permission
             case 'edit':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_payment_modules', 'iso_payment_modulep')
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_payment', 'iso_payment_modules', 'iso_payment_modulep')
                 ) {
                     $root[]                          = \Input::get('id');
                     $this->User->iso_payment_modules = $root;

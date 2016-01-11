@@ -17,13 +17,14 @@ class Permission extends \Backend
     /**
      * Add access permission for a record to the backend user
      *
-     * @param int     $id
+     * @param int    $id
+     * @param string $table
      * @param string $accessField
      * @param string $permissionField
      *
      * @return bool If current record in a new record
      */
-    protected function addNewRecordPermissions($id, $accessField, $permissionField)
+    protected function addNewRecordPermissions($id, $table, $accessField, $permissionField)
     {
         /** @type \BackendUser|object $user */
         $user    = \BackendUser::getInstance();
@@ -33,7 +34,7 @@ class Permission extends \Backend
 
         $newRecords = $session->get('new_records');
 
-        if (is_array($newRecords['tl_iso_group']) && in_array($id, $newRecords['tl_iso_group'])) {
+        if (is_array($newRecords[$table]) && in_array($id, $newRecords[$table])) {
 
             if ($user->inherit == 'custom' || empty($groups)) {
                 // Add permissions on user level

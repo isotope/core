@@ -60,7 +60,7 @@ class Callback extends Permission
             case 'edit':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_shipping_modules', 'iso_shipping_modulep')
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_shipping', 'iso_shipping_modules', 'iso_shipping_modulep')
                 ) {
                     $root[] = \Input::get('id');
                     \BackendUser::getInstance()->iso_shipping_modules = $root;

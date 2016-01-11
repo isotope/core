@@ -92,7 +92,7 @@ class Callback extends Permission
 
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_groups', 'iso_groupp')
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_group', 'iso_groups', 'iso_groupp')
                 ) {
                     $root[]           = \Input::get('id');
                     $user->iso_groups = $root;
