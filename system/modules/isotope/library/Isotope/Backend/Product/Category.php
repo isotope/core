@@ -69,21 +69,21 @@ class Category extends \Backend
             return;
         }
 
-        $arrData = SubtableVersion::find(ProductCategory::getTable(), $intId, $intVersion);
+        $arrData = SubtableVersion::find('tl_iso_product_category', $intId, $intVersion);
 
         if (null !== $arrData) {
             \Database::getInstance()->query("DELETE FROM tl_iso_product_category WHERE pid=" . (int) $intId);
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldnames($strTable));
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_category'));
 
-            \Controller::loadDataContainer($strTable);
+            \Controller::loadDataContainer('tl_iso_product_category');
 
             foreach ($arrData as $data) {
                 $data = array_intersect_key($data, $tableFields);
 
                 // Reset fields added after storing the version to their default value (see contao/core#7755)
                 foreach (array_diff_key($tableFields, $data) as $k=>$v) {
-                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$strTable]['fields'][$k]['sql']);
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
                 }
 
                 \Database::getInstance()->prepare("INSERT INTO tl_iso_product_category %s")->set($data)->execute();
@@ -91,12 +91,12 @@ class Category extends \Backend
 
             \Database::getInstance()
                      ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
-                     ->execute($intId, $strTable)
+                     ->execute($intId, 'tl_iso_product_category')
             ;
 
             \Database::getInstance()
                      ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
-                     ->execute($intId, $strTable, $intVersion)
+                     ->execute($intId, 'tl_iso_product_category', $intVersion)
             ;
         }
     }

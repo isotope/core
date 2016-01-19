@@ -60,7 +60,7 @@ class Price extends \Backend
             return;
         }
 
-        $arrData = SubtableVersion::find(ProductPrice::getTable(), $intId, $intVersion);
+        $arrData = SubtableVersion::find('tl_iso_product_price', $intId, $intVersion);
 
         if (null !== $arrData) {
             \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM tl_iso_product_price WHERE pid=" . $intId . ")");
@@ -82,7 +82,7 @@ class Price extends \Backend
                 \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($data)->execute();
             }
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_price'));
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_pricetier'));
 
             foreach ($arrData['tiers'] as $data) {
                 $data = array_intersect_key($data, $tableFields);
@@ -97,12 +97,12 @@ class Price extends \Backend
 
             \Database::getInstance()
                      ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
-                     ->execute($intId, $strTable)
+                     ->execute($intId, 'tl_iso_product_price')
             ;
 
             \Database::getInstance()
                      ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
-                     ->execute($intId, $strTable, $intVersion)
+                     ->execute($intId, 'tl_iso_product_price', $intVersion)
             ;
         }
     }
