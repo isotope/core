@@ -10,6 +10,7 @@ Version 2.3.3-stable (????-??-??)
 - Regular users could not always access new records (#1503)
 - Product version restore could lead to database error (#1506)
 - Custom attributes did not show in edit-multiple mode (#1589)
+- Backend order status update notification did not contain latest data (#1593)
 
 
 Version 2.3.2-stable (2015-12-01)

@@ -429,24 +429,10 @@ class Callback extends \Backend
      */
     public function updateOrderStatus($varValue, $dc)
     {
+        $GLOBALS['ISO_ORDER_STATUS'] = false;
+
         if ($dc->activeRecord && $dc->activeRecord->order_status != $varValue) {
-
-            /** @var Order $objOrder */
-            if (($objOrder = Order::findByPk($dc->id)) !== null) {
-
-                if (TL_MODE == 'BE') {
-                    if ($objOrder->pageId == 0) {
-                        unset($GLOBALS['objPage']);
-                    }
-
-                    Frontend::loadOrderEnvironment($objOrder);
-                }
-
-                // Status update has been cancelled, do not update
-                if (!$objOrder->updateOrderStatus($varValue)) {
-                    return $dc->activeRecord->order_status;
-                }
-            }
+            $GLOBALS['ISO_ORDER_STATUS'] = array($dc->activeRecord->order_status => $varValue);
         }
 
         return $varValue;
@@ -460,6 +446,27 @@ class Callback extends \Backend
     public function executeSaveHook($dc)
     {
         if (($objOrder = Order::findByPk($dc->id)) !== null) {
+            $objOrder->refresh();
+
+            if ('BE' === TL_MODE) {
+                if ($objOrder->pageId == 0) {
+                    unset($GLOBALS['objPage']);
+                }
+
+                Frontend::loadOrderEnvironment($objOrder);
+            }
+
+            // Status update has been cancelled, do not update
+            if (false !== $GLOBALS['ISO_ORDER_STATUS']) {
+                foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
+                    $objOrder->order_status = $from;
+                    if (!$objOrder->updateOrderStatus($to)) {
+                        // Will save the old status set in the line above
+                        $objOrder->save();
+                    }
+                }
+            }
+
             // !HOOK: add additional functionality when saving collection
             if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {

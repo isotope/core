@@ -288,7 +288,7 @@ class Order extends ProductCollection implements
             }
         }
 
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {
