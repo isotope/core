@@ -27,7 +27,7 @@ class Price extends \Backend
      * @param   int
      * @param   \DataContainer
      */
-    public function createVersion($strTable, $intId, $dc)
+    public function createVersion($strTable, $intId)
     {
         if ($strTable != Product::getTable()) {
             return;
@@ -45,6 +45,22 @@ class Price extends \Backend
         }
 
         SubtableVersion::create($strTable, $intId, ProductPrice::getTable(), $arrData);
+
+        $current = \Database::getInstance()
+            ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
+            ->limit(1)
+            ->execute($strTable, $intId)
+        ;
+
+        if (1 === $current->numRows) {
+            $data = deserialize($current->data);
+            $data['price'] = sprintf('%s (%s)', $arrData['prices'][0]['tier_values'], $objPrices->getRelated('tax_class')->name);
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                     ->execute(serialize($data), $current->id)
+            ;
+        }
     }
 
     /**

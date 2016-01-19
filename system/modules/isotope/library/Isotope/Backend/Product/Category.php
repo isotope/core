@@ -53,6 +53,24 @@ class Category extends \Backend
         $arrCategories = (null === $objCategories ? array() : $objCategories->fetchAll());
 
         SubtableVersion::create($strTable, $intId, ProductCategory::getTable(), $arrCategories);
+
+        $current = \Database::getInstance()
+            ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
+            ->limit(1)
+            ->execute($strTable, $intId)
+        ;
+
+        if (1 === $current->numRows) {
+            $data = deserialize($current->data);
+            $data['pages'] = array_map(function ($category) {
+                return $category['id'];
+            }, $arrCategories);
+
+            \Database::getInstance()
+                ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                ->execute(serialize($data), $current->id)
+            ;
+        }
     }
 
     /**

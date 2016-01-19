@@ -11,6 +11,7 @@ Version 2.3.3-stable (????-??-??)
 - Product version restore could lead to database error (#1506)
 - Custom attributes did not show in edit-multiple mode (#1589)
 - Backend order status update notification did not contain latest data (#1593)
+- Show price and category changes in product diff (#1598)
 
 
 Version 2.3.2-stable (2015-12-01)
