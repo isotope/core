@@ -72,11 +72,32 @@ class Category extends \Backend
         $arrData = SubtableVersion::find(ProductCategory::getTable(), $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM " . ProductCategory::getTable() . " WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_category WHERE pid=" . (int) $intId);
 
-            foreach ($arrData as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductCategory::getTable() . " %s")->set($arrRow)->execute();
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames($strTable));
+
+            \Controller::loadDataContainer($strTable);
+
+            foreach ($arrData as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$strTable]['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_category %s")->set($data)->execute();
             }
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                     ->execute($intId, $strTable)
+            ;
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->execute($intId, $strTable, $intVersion)
+            ;
         }
     }
 

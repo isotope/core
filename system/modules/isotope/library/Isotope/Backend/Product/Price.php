@@ -63,16 +63,47 @@ class Price extends \Backend
         $arrData = SubtableVersion::find(ProductPrice::getTable(), $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM " . ProductPrice::getTable() . " WHERE pid=$intId)");
-            \Database::getInstance()->query("DELETE FROM " . ProductPrice::getTable() . " WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM tl_iso_product_price WHERE pid=" . $intId . ")");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_price WHERE pid=" . $intId);
 
-            foreach ($arrData['prices'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($arrRow)->execute();
+            \Controller::loadDataContainer('tl_iso_product_price');
+            \Controller::loadDataContainer('tl_iso_product_pricetier');
+
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_price'));
+
+            foreach ($arrData['prices'] as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_price']['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($data)->execute();
             }
 
-            foreach ($arrData['tiers'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($arrRow)->execute();
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_price'));
+
+            foreach ($arrData['tiers'] as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_pricetier']['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($data)->execute();
             }
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                     ->execute($intId, $strTable)
+            ;
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->execute($intId, $strTable, $intVersion)
+            ;
         }
     }
 
