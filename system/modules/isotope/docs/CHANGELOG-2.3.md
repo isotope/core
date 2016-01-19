@@ -9,6 +9,7 @@ Version 2.3.3-stable (????-??-??)
 - Some Postfinance fields are limited to 35 characters (#1586)
 - Regular users could not always access new records (#1503)
 - Product version restore could lead to database error (#1506)
+- Custom attributes did not show in edit-multiple mode (#1589)
 
 
 Version 2.3.2-stable (2015-12-01)
