@@ -20,12 +20,10 @@ use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
@@ -200,8 +198,7 @@ class Order extends ProductCollection implements
     public function complete()
     {
         if ($this->isCheckoutComplete()) {
-            unset($_SESSION['FORM_DATA']);
-            unset($_SESSION['FILES']);
+            unset($_SESSION['FORM_DATA'], $_SESSION['FILES']);
 
             // Retain custom config ID
             if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {

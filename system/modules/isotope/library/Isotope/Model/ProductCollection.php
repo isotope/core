@@ -121,7 +121,7 @@ abstract class ProductCollection extends TypeAgent
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if (TL_MODE == 'FE') {
+        if ('FE' === TL_MODE) {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
@@ -177,11 +177,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function markModified($strKey)
     {
-        if ($strKey == 'locked') {
+        if ('locked' === $strKey) {
             throw new \InvalidArgumentException('Cannot change lock status of collection');
         }
 
-        if ($strKey == 'document_number') {
+        if ('document_number' === $strKey) {
             throw new \InvalidArgumentException(
                 'Cannot change document number of a collection, must be generated using generateDocumentNumber()'
             );
@@ -1472,9 +1472,9 @@ abstract class ProductCollection extends TypeAgent
     protected function generateItem(ProductCollectionItem $objItem)
     {
         $blnHasProduct = $objItem->hasProduct();
-        $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
         $objProduct    = $objItem->getProduct();
         $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
+        $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
 
         // Set the active product for insert tags replacement
         if ($blnHasProduct) {
@@ -1810,7 +1810,7 @@ abstract class ProductCollection extends TypeAgent
     {
         list($direction, $attribute) = explode('_', $strOrderBy, 2);
 
-        if ($direction == 'asc') {
+        if ('asc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
                     if ($objItem1->$attribute == $objItem2->$attribute) {
@@ -1823,7 +1823,7 @@ abstract class ProductCollection extends TypeAgent
                 return $arrItems;
             };
 
-        } elseif ($direction == 'desc') {
+        } elseif ('desc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
                     if ($objItem1->$attribute == $objItem2->$attribute) {

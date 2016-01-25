@@ -82,7 +82,7 @@ class Frontend extends \Frontend
     public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
         $objModule   = $arrConfig['module'];
-        $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
+        $intQuantity = ($objModule->iso_use_quantity && ((int) \Input::post('quantity_requested')) > 0) ? ((int) \Input::post('quantity_requested')) : 1;
 
         // Do not add parent of variant product to the cart
         if ($objProduct->hasVariants() && !$objProduct->isVariant()) {
@@ -93,7 +93,7 @@ class Frontend extends \Frontend
             Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToCart']);
 
             if (!$objModule->iso_addProductJumpTo) {
-                $this->reload();
+                \Controller::reload();
             }
 
             \Controller::redirect(
@@ -282,9 +282,7 @@ class Frontend extends \Frontend
             $template->messages = str_replace(array("\n", "'"), array('', '\''), $messages);
         }
 
-        $buffer = str_replace('</body>', $template->parse() . '</body>', $buffer);
-
-        return $buffer;
+        return str_replace('</body>', $template->parse() . '</body>', $buffer);
     }
 
     /**
@@ -387,12 +385,12 @@ class Frontend extends \Frontend
                             }
 
                             // The target page is exempt from the sitemap
-                            if ($blnIsSitemap && $objPage->sitemap == 'map_never') {
+                            if ($blnIsSitemap && 'map_never' === $objPage->sitemap) {
                                 continue;
                             }
 
                             // Do not generate a reader for the index page, except if it is the only one
-                            if ($intRemaining > 0 && $objPage->alias == 'index') {
+                            if ($intRemaining > 0 && 'index' === $objPage->alias) {
                                 continue;
                             }
 
@@ -567,17 +565,17 @@ class Frontend extends \Frontend
      * Show product name in breadcrumb
      *
      * @param array  $arrItems
-     * @param object $objModule
      *
      * @return array
      */
-    public function addProductToBreadcrumb($arrItems, $objModule)
+    public function addProductToBreadcrumb($arrItems)
     {
         if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
             $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
 
             if (null !== $objProduct) {
 
+                /** @var \PageModel $objPage */
                 global $objPage;
                 global $objIsotopeListPage;
 
