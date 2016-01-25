@@ -344,8 +344,8 @@ class Order extends ProductCollection implements
         $arrTokens['order_id']        = $this->id;
         $arrTokens['order_items']     = $this->sumItemsQuantity();
         $arrTokens['order_products']  = $this->countItems();
-        $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
-        $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false, $objConfig->currency);
+        $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false, $objConfig->currency);
         $arrTokens['document_number'] = $this->document_number;
         $arrTokens['cart_html']       = '';
         $arrTokens['cart_text']       = '';
