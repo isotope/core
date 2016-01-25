@@ -1314,10 +1314,10 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->collection        = $this;
         $objTemplate->config            = ($this->getRelated('config_id') || Isotope::getConfig());
         $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal());
-        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal());
-        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal());
+        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $this->getRelated('config_id')->currency);
+        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $this->getRelated('config_id')->currency);
+        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $this->getRelated('config_id')->currency);
+        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal(), true, $this->getRelated('config_id')->currency);
 
         $objTemplate->hasAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
             if (!$objItem->hasProduct()) {
@@ -1479,7 +1479,9 @@ abstract class ProductCollection extends TypeAgent
         }
 
         $arrCSS = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
-
+        
+        $objConfig = $this->getRelated('config_id');
+        
         $arrItem = array(
             'id'                => $objItem->id,
             'sku'               => $objItem->getSku(),
@@ -1487,10 +1489,10 @@ abstract class ProductCollection extends TypeAgent
             'options'           => Isotope::formatOptions($objItem->getOptions()),
             'configuration'     => $objItem->getConfiguration(),
             'quantity'          => $objItem->quantity,
-            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
-            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice()),
+            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
+            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice(), true, $objConfig->currency),
+            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice(), true, $objConfig->currency),
+            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice(), true, $objConfig->currency),
             'tax_id'            => $objItem->tax_id,
             'href'              => false,
             'hasProduct'        => $blnHasProduct,
