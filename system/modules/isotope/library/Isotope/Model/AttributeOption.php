@@ -207,7 +207,8 @@ class AttributeOption extends \MultilingualModel
      */
     public function getLabel(IsotopeProduct $objProduct = null)
     {
-        $strLabel = $this->label;
+        $strLabel    = $this->label;
+        $priceFormat = '%s (%s)';
 
         /** @type Attribute $objAttribute */
         $objAttribute = null;
@@ -222,21 +223,21 @@ class AttributeOption extends \MultilingualModel
                 break;
         }
 
-        if (null !== $objAttribute && !$objAttribute->isVariantOption() && $this->price != '') {
-
-            $strLabel .= ' (';
-
-            if (!$this->isPercentage() || null !== $objProduct) {
-                $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
-            } else {
-                $strPrice = $this->price;
-            }
-
-            $strLabel .= $this->isFromPrice($objProduct) ? sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice) : $strPrice;
-            $strLabel .= ')';
+        if (null === $objAttribute || $this->price == '' || $objAttribute->isVariantOption()) {
+            return $strLabel;
         }
 
-        return $strLabel;
+        if (null === $objProduct && $this->isPercentage()) {
+            return sprintf($priceFormat, $strLabel, $this->price);
+        }
+
+        $strPrice = Isotope::formatPriceWithCurrency($this->getPrice($objProduct), false);
+
+        if ($this->isFromPrice($objProduct)) {
+            $strPrice = sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $strPrice);
+        }
+
+        return sprintf($priceFormat, $strLabel, $strPrice);
     }
 
     /**

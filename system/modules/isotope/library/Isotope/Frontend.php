@@ -751,7 +751,7 @@ class Frontend extends \Frontend
                     /** @type AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (in_array($objOption->id, $value)) {
-                            $fltAmount += $objOption->getAmount($fltPrice, $objSource->tax_class);
+                            $fltAmount += $objOption->getAmount($fltPrice, 0);
                         }
                     }
                 }
