@@ -13,6 +13,7 @@ Version 2.3.3-stable (????-??-??)
 - Backend order status update notification did not contain latest data (#1593)
 - Show price and category changes in product diff (#1598)
 - Tax was removed twice from product option price (#1595)
+- Currency in documents and emails can be wrong with multiple store configs (#1590)
 
 
 Version 2.3.2-stable (2015-12-01)

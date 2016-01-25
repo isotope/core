@@ -333,8 +333,7 @@ class Order extends ProductCollection implements
      */
     public function getNotificationTokens($intNotification)
     {
-        /** @type \Isotope\Model\Config $objConfig */
-        $objConfig = $this->getRelated('config_id');
+        $objConfig = $this->getRelated('config_id') ?: Isotope::getConfig();
 
         $arrTokens                    = deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;

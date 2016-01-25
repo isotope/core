@@ -303,19 +303,20 @@ class Frontend extends \Frontend
      * Format surcharge prices
      *
      * @param ProductCollectionSurcharge[] $arrSurcharges
+     * @param string|null                  $currencyCode
      *
      * @return array
      */
-    public static function formatSurcharges($arrSurcharges)
+    public static function formatSurcharges($arrSurcharges, $currencyCode = null)
     {
         $i         = 0;
         $arrReturn = array();
 
         foreach ($arrSurcharges as $k => $objSurcharge) {
             $arrReturn[$k]                = $objSurcharge->row();
-            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, null, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, null, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, null, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
             $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
             $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
             $arrReturn[$k]['raw']         = $objSurcharge->row();

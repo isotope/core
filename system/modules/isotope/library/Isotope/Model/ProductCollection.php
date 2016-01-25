@@ -1308,16 +1308,17 @@ abstract class ProductCollection extends TypeAgent
     public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
     {
         $arrGalleries = array();
+        $objConfig    = $this->getRelated('config_id') ?: Isotope::getConfig();
         $arrItems     = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
 
         $objTemplate->id                = $this->id;
         $objTemplate->collection        = $this;
-        $objTemplate->config            = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $this->getRelated('config_id')->currency);
-        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $this->getRelated('config_id')->currency);
-        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $this->getRelated('config_id')->currency);
-        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal(), true, $this->getRelated('config_id')->currency);
+        $objTemplate->config            = $objConfig;
+        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges(), $objConfig->currency);
+        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $objConfig->currency);
+        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $objConfig->currency);
+        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $objConfig->currency);
+        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal(), true, $objConfig->currency);
 
         $objTemplate->hasAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
             if (!$objItem->hasProduct()) {
@@ -1471,17 +1472,15 @@ abstract class ProductCollection extends TypeAgent
     protected function generateItem(ProductCollectionItem $objItem)
     {
         $blnHasProduct = $objItem->hasProduct();
+        $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
         $objProduct    = $objItem->getProduct();
+        $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
 
         // Set the active product for insert tags replacement
         if ($blnHasProduct) {
             Product::setActive($objProduct);
         }
 
-        $arrCSS = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
-        
-        $objConfig = $this->getRelated('config_id');
-        
         $arrItem = array(
             'id'                => $objItem->id,
             'sku'               => $objItem->getSku(),
