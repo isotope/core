@@ -44,7 +44,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     /**
      * @var Filter[]
      */
-    private $activeFilters;
+    protected $activeFilters;
 
     /**
      * @var bool
