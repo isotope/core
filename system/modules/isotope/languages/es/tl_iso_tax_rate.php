@@ -19,7 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Introducir un nombre para e
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etiqueta';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Esta etiqueta se utiliza en el front end del proceso de compra.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Dirección a utilizar para el cálculo';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Seleccionar dirección qué esta tasa debería utilizar para aplicar su cálculo.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Países';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Comunidades / Regiones';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Seleccionar las comunidades o regiones donde esta clase de impuestos se aplica.';

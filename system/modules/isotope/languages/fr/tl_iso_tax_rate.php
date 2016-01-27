@@ -19,7 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Saisir un nom pour le taux 
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Libellé';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Ce libellé sera utilisé en front office lors du processus de paiement.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adresse à utiliser pour le calcul';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Sélectionner quelle adresse sera utilisée pour appliquer le calcul de ce taux.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Pays';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Régions/Départements';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Sélection les États ou Régions auxquels s\'appliquent cette classe de taxe.';

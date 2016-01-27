@@ -151,7 +151,7 @@ class Cart extends Module
         if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart'])) {
         	foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $callback) {
         		$objCallback = \System::importStatic($callback[0]);
-        		$strCustom .= $objCallback->$callback[1]($this);
+        		$strCustom .= $objCallback->{$callback[1]}($this);
         	}
         }
 

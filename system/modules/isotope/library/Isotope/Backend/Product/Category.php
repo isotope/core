@@ -53,6 +53,24 @@ class Category extends \Backend
         $arrCategories = (null === $objCategories ? array() : $objCategories->fetchAll());
 
         SubtableVersion::create($strTable, $intId, ProductCategory::getTable(), $arrCategories);
+
+        $current = \Database::getInstance()
+            ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
+            ->limit(1)
+            ->execute($strTable, $intId)
+        ;
+
+        if (1 === $current->numRows) {
+            $data = deserialize($current->data);
+            $data['pages'] = array_map(function ($category) {
+                return $category['id'];
+            }, $arrCategories);
+
+            \Database::getInstance()
+                ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                ->execute(serialize($data), $current->id)
+            ;
+        }
     }
 
     /**
@@ -69,14 +87,35 @@ class Category extends \Backend
             return;
         }
 
-        $arrData = SubtableVersion::find(ProductCategory::getTable(), $intId, $intVersion);
+        $arrData = SubtableVersion::find('tl_iso_product_category', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM " . ProductCategory::getTable() . " WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_category WHERE pid=" . (int) $intId);
 
-            foreach ($arrData as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductCategory::getTable() . " %s")->set($arrRow)->execute();
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_category'));
+
+            \Controller::loadDataContainer('tl_iso_product_category');
+
+            foreach ($arrData as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_category %s")->set($data)->execute();
             }
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                     ->execute($intId, 'tl_iso_product_category')
+            ;
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->execute($intId, 'tl_iso_product_category', $intVersion)
+            ;
         }
     }
 

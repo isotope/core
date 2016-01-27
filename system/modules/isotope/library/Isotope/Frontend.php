@@ -82,7 +82,7 @@ class Frontend extends \Frontend
     public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
         $objModule   = $arrConfig['module'];
-        $intQuantity = ($objModule->iso_use_quantity && intval(\Input::post('quantity_requested')) > 0) ? intval(\Input::post('quantity_requested')) : 1;
+        $intQuantity = ($objModule->iso_use_quantity && ((int) \Input::post('quantity_requested')) > 0) ? ((int) \Input::post('quantity_requested')) : 1;
 
         // Do not add parent of variant product to the cart
         if ($objProduct->hasVariants() && !$objProduct->isVariant()) {
@@ -93,7 +93,7 @@ class Frontend extends \Frontend
             Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToCart']);
 
             if (!$objModule->iso_addProductJumpTo) {
-                $this->reload();
+                \Controller::reload();
             }
 
             \Controller::redirect(
@@ -282,9 +282,7 @@ class Frontend extends \Frontend
             $template->messages = str_replace(array("\n", "'"), array('', '\''), $messages);
         }
 
-        $buffer = str_replace('</body>', $template->parse() . '</body>', $buffer);
-
-        return $buffer;
+        return str_replace('</body>', $template->parse() . '</body>', $buffer);
     }
 
     /**
@@ -303,19 +301,20 @@ class Frontend extends \Frontend
      * Format surcharge prices
      *
      * @param ProductCollectionSurcharge[] $arrSurcharges
+     * @param string|null                  $currencyCode
      *
      * @return array
      */
-    public static function formatSurcharges($arrSurcharges)
+    public static function formatSurcharges($arrSurcharges, $currencyCode = null)
     {
         $i         = 0;
         $arrReturn = array();
 
         foreach ($arrSurcharges as $k => $objSurcharge) {
             $arrReturn[$k]                = $objSurcharge->row();
-            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, null, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, null, $objSurcharge->applyRoundingIncrement);
-            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, null, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['price']       = Isotope::formatPriceWithCurrency($objSurcharge->price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
+            $arrReturn[$k]['tax_free_total_price'] = Isotope::formatPriceWithCurrency($objSurcharge->tax_free_total_price, true, $currencyCode, $objSurcharge->applyRoundingIncrement);
             $arrReturn[$k]['rowClass']    = trim('foot_' . (++$i) . ' ' . $objSurcharge->rowClass);
             $arrReturn[$k]['tax_id']      = $objSurcharge->getTaxNumbers();
             $arrReturn[$k]['raw']         = $objSurcharge->row();
@@ -386,12 +385,12 @@ class Frontend extends \Frontend
                             }
 
                             // The target page is exempt from the sitemap
-                            if ($blnIsSitemap && $objPage->sitemap == 'map_never') {
+                            if ($blnIsSitemap && 'map_never' === $objPage->sitemap) {
                                 continue;
                             }
 
                             // Do not generate a reader for the index page, except if it is the only one
-                            if ($intRemaining > 0 && $objPage->alias == 'index') {
+                            if ($intRemaining > 0 && 'index' === $objPage->alias) {
                                 continue;
                             }
 
@@ -566,17 +565,17 @@ class Frontend extends \Frontend
      * Show product name in breadcrumb
      *
      * @param array  $arrItems
-     * @param object $objModule
      *
      * @return array
      */
-    public function addProductToBreadcrumb($arrItems, $objModule)
+    public function addProductToBreadcrumb($arrItems)
     {
         if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
             $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
 
             if (null !== $objProduct) {
 
+                /** @var \PageModel $objPage */
                 global $objPage;
                 global $objIsotopeListPage;
 
@@ -751,7 +750,7 @@ class Frontend extends \Frontend
                     /** @type AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (in_array($objOption->id, $value)) {
-                            $fltAmount += $objOption->getAmount($fltPrice, $objSource->tax_class);
+                            $fltAmount += $objOption->getAmount($fltPrice, 0);
                         }
                     }
                 }

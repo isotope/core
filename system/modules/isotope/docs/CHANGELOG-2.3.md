@@ -1,6 +1,23 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.3.3-stable (2016-01-27)
+---------------------------------
+
+### Fixed
+- Callbacks were not compatible with PHP7 (#1584)
+- Some Postfinance fields are limited to 35 characters (#1586)
+- Regular users could not always access new records (#1503)
+- Product version restore could lead to database error (#1506)
+- Custom attributes did not show in edit-multiple mode (#1589)
+- Backend order status update notification did not contain latest data (#1593)
+- Show price and category changes in product diff (#1598)
+- Tax was removed twice from product option price (#1595)
+- Currency in documents and emails can be wrong with multiple store configs (#1590)
+- Incorrect options were shown for attributes with product source (#1563)
+- Sales tax was not correctly calculated on shipping address (#1509)
+
+
 Version 2.3.2-stable (2015-12-01)
 ---------------------------------
 

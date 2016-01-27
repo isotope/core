@@ -150,7 +150,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->$callback[1]($this, $objCollection);
+                $available   = $objCallback->{$callback[1]}($this, $objCollection);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {
@@ -657,7 +657,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrButtons  = $objCallback->$callback[1]($arrButtons);
+                $arrButtons  = $objCallback->{$callback[1]}($arrButtons);
             }
 
             $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
@@ -700,7 +700,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objTemplate, $this);
+                $objCallback->{$callback[1]}($objTemplate, $this);
             }
         }
 
@@ -848,7 +848,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                         $objCallback = \System::importStatic($callback[0]);
 
                         try {
-                            $varValue = $objCallback->$callback[1]($varValue, $this, $objWidget);
+                            $varValue = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
@@ -915,7 +915,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if (is_array($arrData['wizard'])) {
             foreach ($arrData['wizard'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $wizard .= $objCallback->$callback[1]($this);
+                $wizard .= $objCallback->{$callback[1]}($this);
             }
         }
 

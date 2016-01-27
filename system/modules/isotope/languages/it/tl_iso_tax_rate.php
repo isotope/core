@@ -19,7 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Inserisca un nome per l\'al
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etichetta';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Quest\'etichetta sarà usata nel frontend nel processo di checkout.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Indirizzo usato per il Calcolo';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Selezioni in base a quale indirizzo sarà calcolata l\'aliquota.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Paesi';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][0] = 'Quantità limite subtotale';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['amount'][1] = 'Opzionale: Limiti questa aliquota d\'imposta alla quantità subtotale specifica (ad esempio tassa beni di lusso).';

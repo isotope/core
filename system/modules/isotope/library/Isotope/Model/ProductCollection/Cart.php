@@ -187,7 +187,7 @@ class Cart extends ProductCollection implements
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->$callback[1]($objOrder, $this, $arrItemIds);
+                        $objCallback->{$callback[1]}($objOrder, $this, $arrItemIds);
                     }
                 }
             }

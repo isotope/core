@@ -81,7 +81,7 @@ class ProductCollectionItem extends \Model
         if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
             foreach ($GLOBALS['ISO_HOOKS']['itemIsAvailable'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->$callback[1]($this);
+                $available   = $objCallback->{$callback[1]}($this);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {

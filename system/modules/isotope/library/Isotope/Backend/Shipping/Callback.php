@@ -60,7 +60,7 @@ class Callback extends Permission
             case 'edit':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_shipping_modules', 'iso_shipping_modulep')
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_shipping', 'iso_shipping_modules', 'iso_shipping_modulep')
                 ) {
                     $root[] = \Input::get('id');
                     \BackendUser::getInstance()->iso_shipping_modules = $root;
@@ -187,7 +187,7 @@ class Callback extends Permission
         if (is_array($GLOBALS['TL_DCA']['tl_iso_shipping']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_shipping']['fields']['enabled']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnVisible  = $objCallback->$callback[1]($blnVisible, $this);
+                $blnVisible  = $objCallback->{$callback[1]}($blnVisible, $this);
             }
         }
 

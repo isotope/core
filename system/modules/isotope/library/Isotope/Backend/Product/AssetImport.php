@@ -111,7 +111,7 @@ class AssetImport extends \Backend
             if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $arrPattern  = $objCallback->$callback[1]($arrPattern, $objProducts);
+                    $arrPattern  = $objCallback->{$callback[1]}($arrPattern, $objProducts);
                 }
             }
 

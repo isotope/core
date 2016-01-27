@@ -103,7 +103,7 @@ class ProductCollectionDownload extends \Model
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'] as $callback) {
                         $objCallback = \System::importStatic($callback[0]);
-                        $path = $objCallback->$callback[1]($path, $objFileModel, $objDownload, $this);
+                        $path = $objCallback->{$callback[1]}($path, $objFileModel, $objDownload, $this);
                     }
                 }
 

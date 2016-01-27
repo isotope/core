@@ -19,7 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Vul de naam in voor dit bel
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Belastingtarief label';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Dit label wordt gebruikt in de front-end bij het checkout proces.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adres dat wordt gebruikt voor berekening';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Selecteer het adres waarop de berekening van toepassing moet zijn.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Landen';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Provincies/Regio\'s';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Selecteer de provincies of regio\'s waarop deze belasting van teopassing is.';

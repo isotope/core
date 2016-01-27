@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
@@ -274,10 +275,17 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         }
 
         $arrTaxes     = array();
-        $arrAddresses = array('billing' => $objCollection->getBillingAddress());
 
-        static::addTaxesForItems($arrTaxes, $objCollection, $arrPreTax, $arrAddresses);
-        static::addTaxesForSurcharges($arrTaxes, $arrPreTax, $arrAddresses);
+        static::addTaxesForItems($arrTaxes, $objCollection, $arrPreTax);
+
+        static::addTaxesForSurcharges(
+            $arrTaxes,
+            $arrPreTax,
+            array(
+                'billing'  => $objCollection->getBillingAddress(),
+                'shipping' => $objCollection->getShippingAddress()
+            )
+        );
 
         return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
     }
@@ -345,11 +353,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
 
                     $fltPrice = $objSurcharge->total_price;
-                    $arrAddresses = array('billing' => $objCollection->getBillingAddress());
-
-                    if ($objCollection->requiresShipping()) {
-                        $arrAddresses['shipping'] = $objCollection->getShippingAddress();
-                    }
+                    $arrAddresses = array(
+                        'billing'  => $objCollection->getBillingAddress(),
+                        'shipping' => $objCollection->getShippingAddress(),
+                    );
 
                     if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
                         $fltTax = $objIncludes->calculateAmountIncludedInPrice($fltPrice);
@@ -366,11 +373,11 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * Create or add taxes for each collection item
      *
      * @param Tax[]                        $arrTaxes
-     * @param IsotopeProductCollection     $objCollection
+     * @param IsotopeOrderableCollection   $objCollection
      * @param ProductCollectionSurcharge[] $arrSurcharges
      * @param Address[]                    $arrAddresses
      */
-    private static function addTaxesForItems(array &$arrTaxes, IsotopeProductCollection $objCollection, array $arrSurcharges, array $arrAddresses)
+    private static function addTaxesForItems(array &$arrTaxes, IsotopeProductCollection $objCollection, array $arrSurcharges, array $arrAddresses = null)
     {
         foreach ($objCollection->getItems() as $objItem) {
 
@@ -397,9 +404,18 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
 
+            $productAddresses = $arrAddresses;
+
+            if (null === $productAddresses) {
+                $productAddresses = array(
+                    'billing'  => $objCollection->getBillingAddress(),
+                    'shipping' => ($objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress()),
+                );
+            }
+
             /** @var \Isotope\Model\TaxRate $objIncludes */
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
-                if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
+                if ($objIncludes->isApplicable($fltPrice, $productAddresses)) {
                     $addToTotal = static::getTaxAddState(false);
                     $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
@@ -422,7 +438,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
-                    if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {
+                    if ($objTaxRate->isApplicable($fltPrice, $productAddresses)) {
                         $addToTotal = static::getTaxAddState(true);
                         $total = $addToTotal ? $objTaxRate->calculateAmountAddedToPrice($fltPrice) : $objTaxRate->calculateAmountIncludedInPrice($fltPrice);
 

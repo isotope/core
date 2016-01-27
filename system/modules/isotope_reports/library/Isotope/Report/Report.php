@@ -133,7 +133,7 @@ abstract class Report extends \Backend
                 if (is_array($callback))
                 {
                     $objCallback = \System::importStatic($callback[0]);
-                    $buffer = $objCallback->$callback[1]();
+                    $buffer = $objCallback->{$callback[1]}();
                 }
                 else
                 {

@@ -121,7 +121,7 @@ abstract class ProductCollection extends TypeAgent
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if (TL_MODE == 'FE') {
+        if ('FE' === TL_MODE) {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
@@ -177,11 +177,11 @@ abstract class ProductCollection extends TypeAgent
      */
     public function markModified($strKey)
     {
-        if ($strKey == 'locked') {
+        if ('locked' === $strKey) {
             throw new \InvalidArgumentException('Cannot change lock status of collection');
         }
 
-        if ($strKey == 'document_number') {
+        if ('document_number' === $strKey) {
             throw new \InvalidArgumentException(
                 'Cannot change document number of a collection, must be generated using generateDocumentNumber()'
             );
@@ -424,7 +424,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['emailRecipientForCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $strEmail    = $objCallback->$callback[1]($strEmail, $this);
+                $strEmail    = $objCallback->{$callback[1]}($strEmail, $this);
             }
         }
 
@@ -492,7 +492,7 @@ abstract class ProductCollection extends TypeAgent
         if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this);
+                $objCallback->{$callback[1]}($this);
             }
         }
 
@@ -527,7 +527,7 @@ abstract class ProductCollection extends TypeAgent
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['deleteCollection'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
-                    $blnRemove = $objCallback->$callback[1]($this);
+                    $blnRemove = $objCallback->{$callback[1]}($this);
 
                     if ($blnRemove === false) {
                         return 0;
@@ -565,7 +565,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postDeleteCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $intPid);
+                $objCallback->{$callback[1]}($this, $intPid);
             }
         }
 
@@ -895,7 +895,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $intQuantity = $objCallback->$callback[1]($objProduct, $intQuantity, $this);
+                $intQuantity = $objCallback->{$callback[1]}($objProduct, $intQuantity, $this);
             }
         }
 
@@ -964,7 +964,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $intQuantity, $this);
+                $objCallback->{$callback[1]}($objItem, $intQuantity, $this);
             }
         }
 
@@ -1011,7 +1011,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['updateItemInCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrSet      = $objCallback->$callback[1]($objItem, $arrSet, $this);
+                $arrSet      = $objCallback->{$callback[1]}($objItem, $arrSet, $this);
 
                 if (empty($arrSet) && is_array($arrSet)) {
                     return false;
@@ -1055,7 +1055,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postUpdateItemInCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $arrSet['quantity'], $this);
+                $objCallback->{$callback[1]}($objItem, $arrSet['quantity'], $this);
             }
         }
 
@@ -1099,7 +1099,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['deleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnRemove   = $objCallback->$callback[1]($objItem, $this);
+                $blnRemove   = $objCallback->{$callback[1]}($objItem, $this);
 
                 if ($blnRemove === false) {
                     return false;
@@ -1119,7 +1119,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postDeleteItemFromCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objItem, $this);
+                $objCallback->{$callback[1]}($objItem, $this);
             }
         }
 
@@ -1177,7 +1177,7 @@ abstract class ProductCollection extends TypeAgent
                 foreach ($GLOBALS['ISO_HOOKS']['copyCollectionItem'] as $callback) {
                     $objCallback = \System::importStatic($callback[0]);
 
-                    if ($objCallback->$callback[1]($objOldItem, $objSource, $this) === false) {
+                    if ($objCallback->{$callback[1]}($objOldItem, $objSource, $this) === false) {
                         continue;
                     }
                 }
@@ -1209,7 +1209,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['copiedCollectionItems'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objSource, $this, $arrIds);
+                $objCallback->{$callback[1]}($objSource, $this, $arrIds);
             }
         }
 
@@ -1308,16 +1308,17 @@ abstract class ProductCollection extends TypeAgent
     public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
     {
         $arrGalleries = array();
+        $objConfig    = $this->getRelated('config_id') ?: Isotope::getConfig();
         $arrItems     = $this->addItemsToTemplate($objTemplate, $arrConfig['sorting']);
 
         $objTemplate->id                = $this->id;
         $objTemplate->collection        = $this;
-        $objTemplate->config            = ($this->getRelated('config_id') || Isotope::getConfig());
-        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges());
-        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal());
-        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal());
-        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal());
-        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal());
+        $objTemplate->config            = $objConfig;
+        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges(), $objConfig->currency);
+        $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $objConfig->currency);
+        $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $objConfig->currency);
+        $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $objConfig->currency);
+        $objTemplate->tax_free_total    = Isotope::formatPriceWithCurrency($this->getTaxFreeTotal(), true, $objConfig->currency);
 
         $objTemplate->hasAttribute = function ($strAttribute, ProductCollectionItem $objItem) {
             if (!$objItem->hasProduct()) {
@@ -1379,7 +1380,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objTemplate, $arrItems, $this);
+                $objCallback->{$callback[1]}($objTemplate, $arrItems, $this);
             }
         }
     }
@@ -1472,13 +1473,13 @@ abstract class ProductCollection extends TypeAgent
     {
         $blnHasProduct = $objItem->hasProduct();
         $objProduct    = $objItem->getProduct();
+        $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
+        $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
 
         // Set the active product for insert tags replacement
         if ($blnHasProduct) {
             Product::setActive($objProduct);
         }
-
-        $arrCSS = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
 
         $arrItem = array(
             'id'                => $objItem->id,
@@ -1487,10 +1488,10 @@ abstract class ProductCollection extends TypeAgent
             'options'           => Isotope::formatOptions($objItem->getOptions()),
             'configuration'     => $objItem->getConfiguration(),
             'quantity'          => $objItem->quantity,
-            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice()),
-            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice()),
-            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice()),
-            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice()),
+            'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
+            'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice(), true, $objConfig->currency),
+            'total'             => Isotope::formatPriceWithCurrency($objItem->getTotalPrice(), true, $objConfig->currency),
+            'tax_free_total'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreeTotalPrice(), true, $objConfig->currency),
             'tax_id'            => $objItem->tax_id,
             'href'              => false,
             'hasProduct'        => $blnHasProduct,
@@ -1540,7 +1541,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['generateDocumentNumber'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $strOrderId  = $objCallback->$callback[1]($this, $strPrefix, $intDigits);
+                $strOrderId  = $objCallback->{$callback[1]}($this, $strPrefix, $intDigits);
 
                 if ($strOrderId !== false) {
                     $this->arrData['document_number'] = $strOrderId;
@@ -1791,7 +1792,7 @@ abstract class ProductCollection extends TypeAgent
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['createFromProductCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($objCollection, $objSource, $arrItemIds);
+                $objCallback->{$callback[1]}($objCollection, $objSource, $arrItemIds);
             }
         }
 
@@ -1809,7 +1810,7 @@ abstract class ProductCollection extends TypeAgent
     {
         list($direction, $attribute) = explode('_', $strOrderBy, 2);
 
-        if ($direction == 'asc') {
+        if ('asc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
                     if ($objItem1->$attribute == $objItem2->$attribute) {
@@ -1822,7 +1823,7 @@ abstract class ProductCollection extends TypeAgent
                 return $arrItems;
             };
 
-        } elseif ($direction == 'desc') {
+        } elseif ('desc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
                     if ($objItem1->$attribute == $objItem2->$attribute) {
