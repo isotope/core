@@ -315,7 +315,7 @@ window.addEvent('domready', function() {
         if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $blnVisible  = $objCallback->$callback[1]($blnVisible, $this);
+                $blnVisible  = $objCallback->{$callback[1]}($blnVisible, $this);
             }
         }
 

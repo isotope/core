@@ -167,7 +167,7 @@ class Callback extends \Backend
         if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrButtons  = $objCallback->$callback[1]($arrButtons);
+                $arrButtons  = $objCallback->{$callback[1]}($arrButtons);
             }
         }
 

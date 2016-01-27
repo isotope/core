@@ -236,7 +236,7 @@ class DC_ProductData extends \DC_Table
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'] as $callback) {
                     if (is_array($callback)) {
                         $this->import($callback[0]);
-                        $this->$callback[0]->$callback[1]($this);
+                        $this->{$callback[0]}->{$callback[1]}($this);
                     } elseif (is_callable($callback)) {
                         call_user_func($callback, $this);
                     }
@@ -587,7 +587,7 @@ class DC_ProductData extends \DC_Table
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback) {
                             if (is_array($callback)) {
                                 $this->import($callback[0]);
-                                $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+                                $this->varValue = $this->{$callback[0]}->{$callback[1]}($this->varValue, $this);
                             } elseif (is_callable($callback)) {
                                 $this->varValue = call_user_func($callback, $this->varValue, $this);
                             }
@@ -682,7 +682,7 @@ class DC_ProductData extends \DC_Table
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
                 if (is_array($callback)) {
                     $this->import($callback[0]);
-                    $arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+                    $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                 } elseif (is_callable($callback)) {
                     $arrButtons = $callback($arrButtons, $this);
                 }
@@ -734,7 +734,7 @@ class DC_ProductData extends \DC_Table
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
                     if (is_array($callback)) {
                         $this->import($callback[0]);
-                        $this->$callback[0]->$callback[1]($this);
+                        $this->{$callback[0]}->{$callback[1]}($this);
                     } elseif (is_callable($callback)) {
                         call_user_func($callback, $this);
                     }
@@ -750,7 +750,7 @@ class DC_ProductData extends \DC_Table
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback) {
                         if (is_array($callback)) {
                             $this->import($callback[0]);
-                            $this->$callback[0]->$callback[1]($this->strTable, $this->objActiveRecord->id, $this);
+                            $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->objActiveRecord->id, $this);
                         } elseif (is_callable($callback)) {
                             call_user_func($callback, $this->strTable, $this->objActiveRecord->id, $this);
                         }
@@ -949,7 +949,7 @@ class DC_ProductData extends \DC_Table
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback) {
                             if (is_array($callback)) {
                                 $this->import($callback[0]);
-                                $this->varValue = $this->$callback[0]->$callback[1]($this->varValue, $this);
+                                $this->varValue = $this->{$callback[0]}->{$callback[1]}($this->varValue, $this);
                             } elseif (is_callable($callback)) {
                                 $this->varValue = call_user_func($callback, $this->varValue, $this);
                             }
@@ -975,7 +975,7 @@ class DC_ProductData extends \DC_Table
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
                             if (is_array($callback)) {
                                 $this->import($callback[0]);
-                                $this->$callback[0]->$callback[1]($this);
+                                $this->{$callback[0]}->{$callback[1]}($this);
                             } elseif (is_callable($callback)) {
                                 call_user_func($callback, $this);
                             }
@@ -991,7 +991,7 @@ class DC_ProductData extends \DC_Table
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback) {
                                 if (is_array($callback)) {
                                     $this->import($callback[0]);
-                                    $this->$callback[0]->$callback[1]($this->strTable, $this->intId, $this);
+                                    $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->intId, $this);
                                 } elseif (is_callable($callback)) {
                                     call_user_func($callback, $this->strTable, $this->intId, $this);
                                 }
@@ -1179,7 +1179,7 @@ window.addEvent(\'domready\', function() {
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
                                 if (is_array($callback)) {
                                     $this->import($callback[0]);
-                                    $this->$callback[0]->$callback[1]($this);
+                                    $this->{$callback[0]}->{$callback[1]}($this);
                                 }
                                 elseif (is_callable($callback)) {
                                     call_user_func($callback, $this);
@@ -1636,7 +1636,7 @@ window.addEvent(\'domready\', function() {
                         if (is_array($callback))
                         {
                             $this->import($callback[0]);
-                            $arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+                            $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                         }
                         elseif (is_callable($callback))
                         {
@@ -2092,7 +2092,7 @@ window.addEvent(\'domready\', function() {
                     if (is_array($callback))
                     {
                         $this->import($callback[0]);
-                        $arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+                        $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                     }
                     elseif (is_callable($callback))
                     {

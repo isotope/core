@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 
@@ -40,7 +41,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.3.2';
+    const VERSION = '2.3.3';
 
     /**
      * True if the system has been initialized
@@ -111,7 +112,7 @@ class Isotope extends \Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && TL_MODE == 'FE') {
+        if (null === static::$objCart && 'FE' === TL_MODE) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();
@@ -149,7 +150,7 @@ class Isotope extends \Controller
             if (null === static::$objConfig) {
                 global $objPage;
 
-                static::$objConfig = (TL_MODE == 'FE' ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
+                static::$objConfig = ('FE' === TL_MODE ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
 
             // No config at all, create empty model as fallback
@@ -219,7 +220,7 @@ class Isotope extends \Controller
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $fltPrice = $objCallback->$callback[1]($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
+                $fltPrice = $objCallback->{$callback[1]}($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
             }
         }
 
@@ -235,6 +236,18 @@ class Isotope extends \Controller
                     $fltPrice = $fltPrice / $objConfig->priceCalculateFactor;
                     break;
             }
+        }
+
+        $sourceIsProduct = $objSource instanceof IsotopeProduct;
+        $sourceIsPrice   = $objSource instanceof ProductPrice;
+
+        if (!is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
+            $product = $sourceIsPrice ? $objSource->getRelated('pid') : $objSource;
+
+            $arrAddresses = array(
+                'billing'  => Isotope::getCart()->getBillingAddress(),
+                'shipping' => ($product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress()),
+            );
         }
 
         // Possibly add/subtract tax
@@ -312,12 +325,12 @@ class Isotope extends \Controller
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
-            $strCurrency = (($objConfig->currencyPosition == 'right' && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (($objConfig->currencyPosition == 'left' && $objConfig->currencySpace) ? ' ' : '');
+            $strCurrency = (('right' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (('left' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '');
         } else {
-            $strCurrency = ($objConfig->currencyPosition == 'right' ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ($objConfig->currencyPosition == 'left' ? ' ' : '');
+            $strCurrency = ('right' === $objConfig->currencyPosition ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ('left' === $objConfig->currencyPosition ? ' ' : '');
         }
 
-        if ($objConfig->currencyPosition == 'right') {
+        if ('right' === $objConfig->currencyPosition) {
             return $strPrice . $strCurrency;
         }
 

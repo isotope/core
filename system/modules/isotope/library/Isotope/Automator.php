@@ -173,7 +173,7 @@ class Automator extends \Controller
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
                             $objCallback = \System::importStatic($callback[0]);
-                            $objCallback->$callback[1]($objConfigs->current());
+                            $objCallback->{$callback[1]}($objConfigs->current());
                         }
                     }
             }

@@ -19,7 +19,6 @@ $GLOBALS['TL_LANG']['tl_iso_tax_rate']['name'][1] = 'Wprowadź nazwę stawki pod
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][0] = 'Etykieta stawki podatku';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['label'][1] = 'Ta etykieta zostanie używa we frontendzie przy składaniu zamówienia.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][0] = 'Adres do użycia w kalkulacji';
-$GLOBALS['TL_LANG']['tl_iso_tax_rate']['address'][1] = 'Wybierz, który adres powinien zostać użyty do kalkulacji.';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['countries'][0] = 'Kraje';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][0] = 'Stany/regiony';
 $GLOBALS['TL_LANG']['tl_iso_tax_rate']['subdivisions'][1] = 'Wybierz stany lub regiony, których dotyczy ta stawka podatku.';

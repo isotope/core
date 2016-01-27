@@ -62,7 +62,7 @@ class Callback extends Permission
             case 'edit':
                 // Dynamically add the record to the user profile
                 if (!in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'iso_tax_classes', 'iso_tax_classp')
+                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_tax_class', 'iso_tax_classes', 'iso_tax_classp')
                 ) {
                     $root[] = \Input::get('id');
                     $this->User->iso_tax_classes = $root;

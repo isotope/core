@@ -85,7 +85,7 @@ class TaxRate extends \Model
         if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $varValue    = $objCallback->$callback[1]($this, $fltPrice, $arrAddresses);
+                $varValue    = $objCallback->{$callback[1]}($this, $fltPrice, $arrAddresses);
 
                 if ($varValue !== true) {
                     return false;
@@ -167,7 +167,7 @@ class TaxRate extends \Model
     {
         $arrTaxRate = deserialize($this->rate, true);
 
-        return ($arrTaxRate['unit'] == '%');
+        return ('%' === $arrTaxRate['unit']);
     }
 
     /**

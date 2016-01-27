@@ -178,7 +178,7 @@ class DC_TablePageId extends \DC_Table
                 if (is_array($callback))
                 {
                     $this->import($callback[0]);
-                    $this->$callback[0]->$callback[1]($this);
+                    $this->{$callback[0]}->{$callback[1]}($this);
                 }
                 elseif (is_callable($callback))
                 {
@@ -472,7 +472,7 @@ class DC_TablePageId extends \DC_Table
                 if (is_array($callback))
                 {
                     $this->import($callback[0]);
-                    $status = $this->$callback[0]->$callback[1]($this->strTable, $new_records[$this->strTable], $ptable, $ctable);
+                    $status = $this->{$callback[0]}->{$callback[1]}($this->strTable, $new_records[$this->strTable], $ptable, $ctable);
                 }
                 elseif (is_callable($callback))
                 {
@@ -1007,7 +1007,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     if (is_array($callback))
                     {
                         $this->import($callback[0]);
-                        $arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+                        $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                     }
                     elseif (is_callable($callback))
                     {
@@ -1425,7 +1425,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         if (is_array($callback))
                         {
                             $this->import($callback[0]);
-                            $arrButtons = $this->$callback[0]->$callback[1]($arrButtons, $this);
+                            $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                         }
                         elseif (is_callable($callback))
                         {

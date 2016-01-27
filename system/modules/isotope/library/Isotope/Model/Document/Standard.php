@@ -155,7 +155,7 @@ class Standard extends Document implements IsotopeDocument
         // !HOOK: customize the document template
         if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'] as $callback) {
-                \System::importStatic($callback[0])->$callback[1]($objTemplate, $objCollection, $this);
+                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $objCollection, $this);
             }
         }
 

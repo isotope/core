@@ -113,11 +113,10 @@ class TaxClass extends \Model
     public function calculateGrossPrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
-
-            if (Isotope::getCart()->requiresShipping()) {
-                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
-            }
+            $arrAddresses = array(
+                'billing'  => Isotope::getCart()->getBillingAddress(),
+                'shipping' => Isotope::getCart()->getShippingAddress(),
+            );
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */
@@ -153,11 +152,10 @@ class TaxClass extends \Model
     public function calculateLegacyPrice($fltPrice, array $arrAddresses = null)
     {
         if (!is_array($arrAddresses)) {
-            $arrAddresses = array('billing' => Isotope::getCart()->getBillingAddress());
-
-            if (Isotope::getCart()->requiresShipping()) {
-                $arrAddresses['shipping'] = Isotope::getCart()->getShippingAddress();
-            }
+            $arrAddresses = array(
+                'billing'  => Isotope::getCart()->getBillingAddress(),
+                'shipping' => Isotope::getCart()->getShippingAddress(),
+            );
         }
 
         /** @var \Isotope\Model\TaxRate $objIncludes */

@@ -67,7 +67,12 @@ class DcaManager extends \Backend
         }
 
         $intType  = 0;
-        $intGroup = (int) \Session::getInstance()->get('iso_products_gid') ? : (\BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]));
+        $intGroup = (int) \Session::getInstance()->get('iso_products_gid');
+
+        if (!$intGroup) {
+            $intGroup = \BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]);
+        }
+
         $objGroup = Group::findByPk($intGroup);
 
         if (null === $objGroup || null === $objGroup->getRelated('product_type')) {
@@ -184,8 +189,10 @@ class DcaManager extends \Backend
 
         // Disable all variant related operations
         if (!$blnVariants) {
-            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['global_operations']['toggleVariants']);
-            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['generate']);
+            unset(
+                $GLOBALS['TL_DCA'][Product::getTable()]['list']['global_operations']['toggleVariants'],
+                $GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['generate']
+            );
         }
 
         // Disable prices button if not enabled in any product type
@@ -236,9 +243,9 @@ class DcaManager extends \Backend
      */
     public function buildPaletteString()
     {
-        $this->loadDataContainer(Attribute::getTable());
+        \Controller::loadDataContainer(Attribute::getTable());
 
-        if (\Input::get('act') == '' && \Input::get('key') == '' || \Input::get('act') == 'select') {
+        if ((\Input::get('act') == '' && \Input::get('key') == '') || 'select' === \Input::get('act')) {
             return;
         }
 
@@ -260,7 +267,7 @@ class DcaManager extends \Backend
                 $objType  = ProductType::findByPk(($objProduct->pid > 0 ? $objProduct->parent_type : $objProduct->type));
                 $arrTypes = null === $objType ? array() : array($objType);
 
-                if ($objProduct->pid > 0 || ($act != 'edit' && $act != 'copyFallback' && $act != 'show')) {
+                if ($objProduct->pid > 0 || ('edit' !== $act && 'copyFallback' !== $act && 'show' !== $act)) {
                     $blnVariants = true;
                 }
             }
@@ -346,7 +353,7 @@ class DcaManager extends \Backend
                 } else {
 
                     // Hide field from "show" option
-                    if (!isset($arrField['attributes']) || $arrField['inputType'] != '' && $name != 'inherit') {
+                    if ((!isset($arrField['attributes']) || $arrField['inputType'] != '') && 'inherit' !== $name) {
                         $arrFields[$name]['eval']['doNotShow'] = true;
                     }
                 }
@@ -386,7 +393,10 @@ class DcaManager extends \Backend
      */
     public function changeVariantColumns()
     {
-        if ((\Input::get('act') != '' && \Input::get('act') != 'select') || \Input::get('id') == '' || ($objProduct = Product::findByPk(\Input::get('id'))) === null) {
+        if ((\Input::get('act') != '' && 'select' !== \Input::get('act'))
+            || \Input::get('id') == ''
+            || ($objProduct = Product::findByPk(\Input::get('id'))) === null
+        ) {
             return;
         }
 
@@ -431,7 +441,9 @@ class DcaManager extends \Backend
                 /** @type Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
 
-                if ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->optionsSource == 'table') {
+                if ($objAttribute instanceof IsotopeAttributeWithOptions
+                    && 'table' === $objAttribute->optionsSource
+                ) {
                     $name .= ':tl_iso_attribute_option.label';
                 }
 
@@ -443,7 +455,7 @@ class DcaManager extends \Backend
 
         // Make all column fields sortable
         foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ($name != 'price' && $name != 'variantFields' && in_array($name, $arrFields));
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && in_array($name, $arrFields));
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? in_array($name, $arrVariantFields) : false;
@@ -464,25 +476,23 @@ class DcaManager extends \Backend
     {
         if ($arrData['strTable'] == Product::getTable()
             && $arrData['optionsSource'] != ''
-            && $arrData['optionsSource'] != 'foreignKey'
+            && 'foreignKey' !== $arrData['optionsSource']
         ) {
 
             /** @var IsotopeAttributeWithOptions|Attribute $objAttribute */
             $objAttribute = Attribute::findByFieldName($arrData['strField']);
 
             if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
-                $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
+                $arrData['options'] = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
 
-                if (!empty($arrOptions)) {
+                if (!empty($arrData['options'])) {
                     if ($arrData['includeBlankOption']) {
-                        array_unshift($arrOptions, array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
+                        array_unshift($arrData['options'], array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
                     }
-
-                    $arrData['options'] = $arrOptions;
 
                     if (null !== $arrData['default']) {
                         $arrDefault = array_filter(
-                            $arrOptions,
+                            $arrData['options'],
                             function (&$option) {
                                 return (bool) $option['default'];
                             }
@@ -572,7 +582,7 @@ class DcaManager extends \Backend
                 }
 
                 $intId = $objPage->pid;
-            } while ($intId > 0 && $objPage->type != 'root');
+            } while ($intId > 0 && 'root' !== $objPage->type);
         }
 
         // Check whether the node is mounted

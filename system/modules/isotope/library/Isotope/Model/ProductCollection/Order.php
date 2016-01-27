@@ -20,12 +20,10 @@ use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
-use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionDownload;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping;
 use NotificationCenter\Model\Notification;
@@ -185,7 +183,7 @@ class Order extends ProductCollection implements
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $arrTokens);
+                $objCallback->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -200,8 +198,7 @@ class Order extends ProductCollection implements
     public function complete()
     {
         if ($this->isCheckoutComplete()) {
-            unset($_SESSION['FORM_DATA']);
-            unset($_SESSION['FILES']);
+            unset($_SESSION['FORM_DATA'], $_SESSION['FILES']);
 
             // Retain custom config ID
             if (($objCart = Isotope::getCart()) !== null && $objCart->config_id != $this->config_id) {
@@ -242,7 +239,7 @@ class Order extends ProductCollection implements
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
 
                 $objCallback = \System::importStatic($callback[0]);
-                $blnCancel   = $objCallback->$callback[1]($this, $objNewStatus);
+                $blnCancel   = $objCallback->{$callback[1]}($this, $objNewStatus);
 
                 if ($blnCancel === true) {
                     return false;
@@ -288,7 +285,7 @@ class Order extends ProductCollection implements
             }
         }
 
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {
@@ -309,7 +306,7 @@ class Order extends ProductCollection implements
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->$callback[1]($this, $intOldStatus, $objNewStatus);
+                $objCallback->{$callback[1]}($this, $intOldStatus, $objNewStatus);
             }
         }
 
@@ -333,8 +330,7 @@ class Order extends ProductCollection implements
      */
     public function getNotificationTokens($intNotification)
     {
-        /** @type \Isotope\Model\Config $objConfig */
-        $objConfig = $this->getRelated('config_id');
+        $objConfig = $this->getRelated('config_id') ?: Isotope::getConfig();
 
         $arrTokens                    = deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
@@ -344,8 +340,8 @@ class Order extends ProductCollection implements
         $arrTokens['order_id']        = $this->id;
         $arrTokens['order_items']     = $this->sumItemsQuantity();
         $arrTokens['order_products']  = $this->countItems();
-        $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false);
-        $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false);
+        $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false, $objConfig->currency);
+        $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false, $objConfig->currency);
         $arrTokens['document_number'] = $this->document_number;
         $arrTokens['cart_html']       = '';
         $arrTokens['cart_text']       = '';
@@ -451,7 +447,7 @@ class Order extends ProductCollection implements
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrTokens   = $objCallback->$callback[1]($this, $arrTokens);
+                $arrTokens   = $objCallback->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -461,12 +457,12 @@ class Order extends ProductCollection implements
     /**
      * Include downloads when adding items to template
      *
-     * @param \Isotope\Template $objTemplate
-     * @param Callable          $varCallable
+     * @param \Template $objTemplate
+     * @param Callable  $varCallable
      *
      * @return array
      */
-    protected function addItemsToTemplate(\Isotope\Template $objTemplate, $varCallable = null)
+    protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
         $taxIds          = array();
         $arrItems        = array();

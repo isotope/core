@@ -189,7 +189,7 @@ abstract class Module extends Contao_Module
                     if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
                         foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
                             $objCallback   = \System::importStatic($callback[0]);
-                            $arrCategories = $objCallback->$callback[1]($this);
+                            $arrCategories = $objCallback->{$callback[1]}($this);
 
                             if ($arrCategories !== false) {
                                 break;
@@ -288,7 +288,7 @@ abstract class Module extends Contao_Module
         if (isset($GLOBALS['TL_HOOKS']['getPageIdFromUrl']) && is_array($GLOBALS['TL_HOOKS']['getPageIdFromUrl'])) {
             foreach ($GLOBALS['TL_HOOKS']['getPageIdFromUrl'] as $callback) {
                 $objCallback  = \System::importStatic($callback[0]);
-                $arrFragments = $objCallback->$callback[1]($arrFragments);
+                $arrFragments = $objCallback->{$callback[1]}($arrFragments);
             }
         }
 

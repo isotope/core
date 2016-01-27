@@ -27,7 +27,7 @@ class Price extends \Backend
      * @param   int
      * @param   \DataContainer
      */
-    public function createVersion($strTable, $intId, $dc)
+    public function createVersion($strTable, $intId)
     {
         if ($strTable != Product::getTable()) {
             return;
@@ -45,6 +45,22 @@ class Price extends \Backend
         }
 
         SubtableVersion::create($strTable, $intId, ProductPrice::getTable(), $arrData);
+
+        $current = \Database::getInstance()
+            ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
+            ->limit(1)
+            ->execute($strTable, $intId)
+        ;
+
+        if (1 === $current->numRows) {
+            $data = deserialize($current->data);
+            $data['price'] = sprintf('%s (%s)', $arrData['prices'][0]['tier_values'], $objPrices->getRelated('tax_class')->name);
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                     ->execute(serialize($data), $current->id)
+            ;
+        }
     }
 
     /**
@@ -60,19 +76,50 @@ class Price extends \Backend
             return;
         }
 
-        $arrData = SubtableVersion::find(ProductPrice::getTable(), $intId, $intVersion);
+        $arrData = SubtableVersion::find('tl_iso_product_price', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM " . ProductPrice::getTable() . " WHERE pid=$intId)");
-            \Database::getInstance()->query("DELETE FROM " . ProductPrice::getTable() . " WHERE pid=$intId");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid IN (SELECT id FROM tl_iso_product_price WHERE pid=" . $intId . ")");
+            \Database::getInstance()->query("DELETE FROM tl_iso_product_price WHERE pid=" . $intId);
 
-            foreach ($arrData['prices'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($arrRow)->execute();
+            \Controller::loadDataContainer('tl_iso_product_price');
+            \Controller::loadDataContainer('tl_iso_product_pricetier');
+
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_price'));
+
+            foreach ($arrData['prices'] as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_price']['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($data)->execute();
             }
 
-            foreach ($arrData['tiers'] as $arrRow) {
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($arrRow)->execute();
+            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_pricetier'));
+
+            foreach ($arrData['tiers'] as $data) {
+                $data = array_intersect_key($data, $tableFields);
+
+                // Reset fields added after storing the version to their default value (see contao/core#7755)
+                foreach (array_diff_key($tableFields, $data) as $k=>$v) {
+                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_pricetier']['fields'][$k]['sql']);
+                }
+
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier %s")->set($data)->execute();
             }
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+                     ->execute($intId, 'tl_iso_product_price')
+            ;
+
+            \Database::getInstance()
+                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->execute($intId, 'tl_iso_product_price', $intVersion)
+            ;
         }
     }
 
