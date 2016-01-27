@@ -49,6 +49,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      * @param IsotopeProduct $objProduct
      *
      * @return array|mixed
+     *
+     * @throws \InvalidArgumentException when optionsSource=product but product is null
+     * @throws \UnexpectedValueException for unknown optionsSource
      */
     public function getOptionsForWidget(IsotopeProduct $objProduct = null)
     {
@@ -107,7 +110,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             case 'product':
-                if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
+                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
                     );
@@ -146,6 +149,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      * @param IsotopeProduct $objProduct
      *
      * @return \Isotope\Collection\AttributeOption
+     *
+     * @throws \InvalidArgumentException when optionsSource=product but product is null
+     * @throws \UnexpectedValueException for unknown optionsSource
      */
     public function getOptionsFromManager(IsotopeProduct $objProduct = null)
     {
@@ -160,13 +166,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case 'product':
                 /** @type IsotopeProduct|Product $objProduct */
-                if (TL_MODE == 'FE' && !($objProduct instanceof IsotopeProduct)) {
+                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
                     );
 
                 } elseif (!is_array($this->varOptionsCache)
-                    || array_key_exists($objProduct->id, $this->varOptionsCache)
+                    || !array_key_exists($objProduct->id, $this->varOptionsCache)
                 ) {
                     $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute(
                         $objProduct,

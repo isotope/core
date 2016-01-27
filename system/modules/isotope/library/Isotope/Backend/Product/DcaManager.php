@@ -483,18 +483,16 @@ class DcaManager extends \Backend
             $objAttribute = Attribute::findByFieldName($arrData['strField']);
 
             if (null !== $objAttribute && $objAttribute instanceof IsotopeAttributeWithOptions) {
-                $arrOptions = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
+                $arrData['options'] = ($objDca instanceof IsotopeProduct) ? $objAttribute->getOptionsForWidget($objDca) : $objAttribute->getOptionsForWidget();
 
-                if (!empty($arrOptions)) {
+                if (!empty($arrData['options'])) {
                     if ($arrData['includeBlankOption']) {
-                        array_unshift($arrOptions, array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
+                        array_unshift($arrData['options'], array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
                     }
-
-                    $arrData['options'] = $arrOptions;
 
                     if (null !== $arrData['default']) {
                         $arrDefault = array_filter(
-                            $arrOptions,
+                            $arrData['options'],
                             function (&$option) {
                                 return (bool) $option['default'];
                             }
