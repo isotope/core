@@ -15,6 +15,7 @@ Version 2.3.3-stable (????-??-??)
 - Tax was removed twice from product option price (#1595)
 - Currency in documents and emails can be wrong with multiple store configs (#1590)
 - Incorrect options were shown for attributes with product source (#1563)
+- Sales tax was not correctly calculated on shipping address (#1509)
 
 
 Version 2.3.2-stable (2015-12-01)

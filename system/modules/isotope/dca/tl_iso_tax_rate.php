@@ -162,6 +162,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
+            'default'               => array('shipping'),
             'options'               => array('billing', 'shipping'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_tax_rate'],
             'eval'                  => array('mandatory'=>true, 'multiple'=>true),

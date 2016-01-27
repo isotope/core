@@ -167,7 +167,7 @@ class TaxRate extends \Model
     {
         $arrTaxRate = deserialize($this->rate, true);
 
-        return ($arrTaxRate['unit'] == '%');
+        return ('%' === $arrTaxRate['unit']);
     }
 
     /**

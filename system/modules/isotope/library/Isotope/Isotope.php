@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
 
@@ -235,6 +236,18 @@ class Isotope extends \Controller
                     $fltPrice = $fltPrice / $objConfig->priceCalculateFactor;
                     break;
             }
+        }
+
+        $sourceIsProduct = $objSource instanceof IsotopeProduct;
+        $sourceIsPrice   = $objSource instanceof ProductPrice;
+
+        if (!is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
+            $product = $sourceIsPrice ? $objSource->getRelated('pid') : $objSource;
+
+            $arrAddresses = array(
+                'billing'  => Isotope::getCart()->getBillingAddress(),
+                'shipping' => ($product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress()),
+            );
         }
 
         // Possibly add/subtract tax
