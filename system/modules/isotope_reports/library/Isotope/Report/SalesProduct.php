@@ -178,7 +178,7 @@ class SalesProduct extends Sales
 
             foreach ($arrColumns as $i => $column) {
                 $arrRow[$i+1] = array(
-                    'value'         => array(Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : '')),
+                    'value'         => Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
                 );
 
                 $arrFooter[$i+1] = array(
@@ -188,7 +188,7 @@ class SalesProduct extends Sales
             }
 
             $arrRow[$i+2] = array(
-                'value'         => array(Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : '')),
+                'value'         => Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
             );
 
             $arrFooter[$i+2] = array(
@@ -202,7 +202,7 @@ class SalesProduct extends Sales
         }
 
         for ($i=1; $i<count($arrFooter); $i++) {
-            $arrFooter[$i]['value'] = array(Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).  '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>');
+            $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).  '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
             unset($arrFooter[$i]['total']);
         }
 
