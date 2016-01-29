@@ -137,6 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'payunity'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},payunity_sender_id,payunity_channel_id,payunity_user_id,payunity_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
 
     // Subpalettes
@@ -756,6 +757,38 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('decodeEntities'=>true, 'tl_class'=>'clr long'),
             'sql'                   => "text NULL",
+        ),
+        'payunity_sender_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payunity_sender_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'payunity_channel_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payunity_channel_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'payunity_user_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payunity_user_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'payunity_password' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['payunity_password'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'rgxp'=>'alnum', 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'requireCCV' => array
         (
