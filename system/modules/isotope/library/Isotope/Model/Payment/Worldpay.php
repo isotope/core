@@ -87,8 +87,10 @@ class Worldpay extends Postsale implements IsotopePayment
 
     /**
      * Return the checkout form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
+     *
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
+     *
      * @return string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
