@@ -25,5 +25,5 @@ TemplateLoader::addFiles(array
     'be_iso_reports'                => 'system/modules/isotope_reports/templates',
     'iso_report_default'            => 'system/modules/isotope_reports/templates',
     'iso_report_sales_total'        => 'system/modules/isotope_reports/templates',
-	'iso_report_members_total'      => 'system/modules/isotope_reports/templates',
+	'iso_report_members_guests'     => 'system/modules/isotope_reports/templates',
 ));
