@@ -1,0 +1,7 @@
+<script>
+    var wpwlOptions = {
+        locale: "<?= $GLOBALS['TL_LANGUAGE'] ?>"
+    }
+</script>
+<script async src="<?= $this->base ?>/v1/paymentWidgets.js?checkoutId=<?= $this->checkoutId ?>"></script>
+<form action="<?= \Environment::get('base') . $this->action ?>" class="paymentWidgets"></form>

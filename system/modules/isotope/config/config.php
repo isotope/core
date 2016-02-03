@@ -214,7 +214,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('sofortueberweisung', 'Isotope\Model\Payment\Sofortueberweisung');
 \Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
-\Isotope\Model\Payment::registerModelType('payunity', 'Isotope\Model\Payment\PayUnity');
+\Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
 
 /**
  * Shipping methods

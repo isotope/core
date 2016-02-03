@@ -226,7 +226,7 @@ $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.epay']                 = array('ePa
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payone']               = array('PayOne');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.worldpay']             = array('WorldPay');
 $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.quickpay']             = array('QuickPay');
-$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.payunity']             = array('PayUnity.PAY', 'A payment gateway <a href="http://www.payunity.com" target="_blank">PayUnity.PAY</a>.');
+$GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.opp']                  = array('Open Payment Platform', 'A payment gateway for various payment providers (e.g. <a href="http://www.payunity.com" target="_blank">PayUnity.PAY</a>).');
 
 /**
  * Documents
