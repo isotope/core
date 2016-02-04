@@ -49,7 +49,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
-if (TL_MODE == 'BE')
+if ('BE' === TL_MODE)
 {
     $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css|static');
 }
@@ -150,7 +150,7 @@ $GLOBALS['ISO_MOD'] = array
 );
 
 // Enable tables in iso_setup
-if ($_GET['do'] == 'iso_setup')
+if ('iso_setup' === $_GET['do'])
 {
     foreach ($GLOBALS['ISO_MOD'] as $strGroup=>$arrModules)
     {
@@ -214,6 +214,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('sofortueberweisung', 'Isotope\Model\Payment\Sofortueberweisung');
 \Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
+\Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
 
 /**
  * Shipping methods
@@ -434,7 +435,7 @@ if (\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
 
     // Set module and module id for payment and/or shipping modules
-    if (TL_MODE == 'FE') {
+    if ('FE' === TL_MODE) {
         $GLOBALS['ISO_HOOKS']['initializePostsale'][]       = array('Isotope\Frontend', 'setPostsaleModuleSettings');
     }
 }
