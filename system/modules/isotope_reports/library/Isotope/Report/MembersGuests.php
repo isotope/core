@@ -248,9 +248,9 @@ class MembersGuests extends Sales
         ")->fetchEach('currency');
 
         foreach ($arrCurrencies as $currency) {
-            $arrData[$currency . '_Members']['label']     = $currency . $GLOBALS['TL_LANG']['ISO_REPORT']['members_chart_toggle_suffix'];
+            $arrData[$currency . '_Members']['label']     = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['members_currency'], $currency);
             $arrData[$currency . '_Members']['className'] = '.' . strtolower($currency) . '_M';
-            $arrData[$currency . '_Guests']['label']      = $currency . $GLOBALS['TL_LANG']['ISO_REPORT']['guests_chart_toggle_suffix'];
+            $arrData[$currency . '_Guests']['label']      = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['guests_currency'], $currency);
             $arrData[$currency . '_Guests']['className']  = '.' . strtolower($currency) . '_G';
         }
 
