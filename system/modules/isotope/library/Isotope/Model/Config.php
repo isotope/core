@@ -60,6 +60,8 @@ use Isotope\Translation;
  * @property int    $orderDigits
  * @property int    $orderstatus_new
  * @property int    $orderstatus_error
+ * @property bool   $order_moveUploads
+ * @property string $order_uploadTarget
  * @property string $templateGroup
  * @property array  $newProductPeriod
  * @property bool   $ga_enable

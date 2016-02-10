@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('currencySymbol', 'currencyAutomator', 'ga_enable'),
+        '__selector__'              => array('currencySymbol', 'currencyAutomator', 'order_moveUploads', 'ga_enable'),
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,order_moveUploads;
             {config_legend},templateGroup,cartMinSubtotal;
             {products_legend},newProductPeriod;
             {analytics_legend},ga_enable',
@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
     (
         'currencySymbol'            => 'currencySpace',
         'currencyAutomator'         => 'currencyOrigin,currencyProvider',
+        'order_moveUploads'         => 'order_uploadTarget',
         'ga_enable'                 => 'ga_account,ga_member',
     ),
 
@@ -592,6 +593,23 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'order_moveUploads' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['order_moveUploads'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'order_uploadTarget' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['order_uploadTarget'],
+            'exclude'               => true,
+            'inputType'             => 'fileTree',
+            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'tl_class'=>'clr'),
+            'sql'                   => "binary(16) NULL",
+            'relation'              => array('type'=>'lazy', 'table'=>'tl_files', 'field'=>'uuid'),
         ),
         'templateGroup' => array
         (
