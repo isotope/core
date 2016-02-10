@@ -334,7 +334,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
         $objSurcharge = new $strClass();
-        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
+        $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
         $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
         $objSurcharge->tax_free_total_price = $objSource->total_price;
