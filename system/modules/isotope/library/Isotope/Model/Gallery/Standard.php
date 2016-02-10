@@ -61,7 +61,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && TL_MODE == 'FE') {
+        if ($arrData['customTpl'] != '' && 'FE' === TL_MODE) {
             $this->strTemplate = $arrData['customTpl'];
         }
 
@@ -91,6 +91,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Set gallery template
+     *
      * @param string $strTemplate
      */
     public function setTemplate($strTemplate)
@@ -100,6 +101,7 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Get gallery template
+     *
      * @return string
      */
     public function getTemplate()
@@ -146,9 +148,8 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function hasImages()
     {
-        // Check files array here because we don't need to generate an image
-        // just to know if there are images
-        return !empty($this->arrFiles);
+        // Check files array here because we don't need to generate an image just to know if there are images
+        return count($this->arrFiles) > 0;
     }
 
     /**
@@ -222,7 +223,7 @@ class Standard extends Gallery implements IsotopeGallery
         $arrFiles   = array_slice($this->arrFiles, $intSkip);
 
         // Add placeholder for the gallery
-        if (empty($arrFiles) && $intSkip < 1) {
+        if (0 === count($arrFiles) && $intSkip < 1) {
             $arrFiles[] = $this->getPlaceholderImage();
             $watermark  = false;
         }
