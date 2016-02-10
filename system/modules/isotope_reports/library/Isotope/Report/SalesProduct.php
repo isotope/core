@@ -166,7 +166,7 @@ class SalesProduct extends Sales
             });
         }
 
-    // Generate data
+        // Generate data
         foreach ($arrRaw as $arrProduct) {
             $arrRow = array(array(
                 'value'      => array($arrProduct['name'], sprintf('<span style="color:#b3b3b3;">[%s]</span>',$arrProduct['product_type_name'])),
