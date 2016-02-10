@@ -55,7 +55,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'callback'          => 'Isotope\Report\MembersTotal',
                     'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
                     'icon'              => 'system/modules/isotope_reports/assets/members_total.png',
-                	'class'             => 'disabled',
+                    'class'             => 'disabled',
                 ),
                 'members_registration' => array
                 (
