@@ -156,8 +156,8 @@ class Config extends \Model
                 foreach ($arrFields as $arrField) {
                     $this->arrCache['billingFieldsConfig'][] = array(
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['billing'] != 'disabled'),
-                        'mandatory' => ($arrField['billing'] == 'mandatory'),
+                        'enabled'   => ($arrField['billing'] !== 'disabled'),
+                        'mandatory' => ($arrField['billing'] === 'mandatory'),
                     );
                 }
             }
@@ -200,8 +200,8 @@ class Config extends \Model
                 foreach ($arrFields as $arrField) {
                     $this->arrCache['shippingFieldsConfig'][] = array(
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['shipping'] != 'disabled'),
-                        'mandatory' => ($arrField['shipping'] == 'mandatory'),
+                        'enabled'   => ($arrField['shipping'] !== 'disabled'),
+                        'mandatory' => ($arrField['shipping'] === 'mandatory'),
                     );
                 }
             }
