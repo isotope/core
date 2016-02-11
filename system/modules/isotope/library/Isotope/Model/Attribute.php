@@ -61,6 +61,8 @@ use Isotope\Translation;
  * @property string        $uploadFolder
  * @property bool          $useHomeDir
  * @property bool          $doNotOverwrite
+ * @property bool          $checkoutRelocate
+ * @property string        $checkoutTarget
  * @property bool          $datepicker
  */
 abstract class Attribute extends TypeAgent
