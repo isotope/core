@@ -252,6 +252,10 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
 
+if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+    \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
+}
+
 /**
  * Notification Center notification types
  */

@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'storeFile', 'files', 'checkoutRelocate'),
+        '__selector__'              => array('type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'storeFile', 'files', 'checkoutRelocate', 'chunking'),
         'default'                   => '{attribute_legend},name,field_name,type,legend',
         'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
         'textarea'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
@@ -152,6 +152,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'multiple'                  => 'size',
         'includeBlankOption'        => 'blankOptionLabel',
         'checkoutRelocate'          => 'checkoutTargetFolder,checkoutTargetFile',
+        'chunking'                  => 'chunkSize',
     ),
 
     // Fields
@@ -577,3 +578,27 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         ),
     ),
 );
+
+
+if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory,chunking,multiple;{store_legend:hide},storeFile';
+
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunking'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
+        'sql'                     => "char(1) NOT NULL default ''"
+    );
+
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunkSize'],
+        'default'                 => 2000000,
+        'exclude'                 => true,
+        'inputType'               => 'text',
+        'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+        'sql'                     => "varchar(16) NOT NULL default ''"
+    );
+}
