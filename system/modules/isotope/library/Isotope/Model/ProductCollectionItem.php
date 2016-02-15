@@ -280,7 +280,7 @@ class ProductCollectionItem extends \Model
      */
     public function getTotalPrice()
     {
-        return (string) ($this->getPrice() * (int) $this->quantity);
+        return (string) ($this->getPrice() * (float) $this->quantity);
     }
 
     /**

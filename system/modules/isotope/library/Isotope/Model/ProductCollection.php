@@ -946,7 +946,7 @@ abstract class ProductCollection extends TypeAgent
             $objItem->sku            = (string) $objProduct->sku;
             $objItem->name           = (string) $objProduct->name;
             $objItem->configuration  = $objProduct->getOptions();
-            $objItem->quantity       = (int) $intQuantity;
+            $objItem->quantity       = (float) $intQuantity;
             $objItem->price          = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
             $objItem->tax_free_price = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
             $objItem->jumpTo         = (int) $arrConfig['jumpTo']->id;
