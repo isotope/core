@@ -20,11 +20,20 @@ class To0020040000 extends Base
     {
         $table = Attribute::getTable();
 
-        if ($blnInstalled && $this->createDatabaseField('checkoutTarget', $table)) {
-            \Database::getInstance()
-                ->prepare("UPDATE $table SET checkoutTarget=?")
-                ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTarget']['default'])
-            ;
+        if ($blnInstalled) {
+            if ($this->createDatabaseField('checkoutTargetFolder', $table)) {
+                \Database::getInstance()
+                         ->prepare("UPDATE $table SET checkoutTargetFolder=?")
+                         ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFolder']['default'])
+                ;
+            }
+
+            if ($this->createDatabaseField('checkoutTargetFile', $table)) {
+                \Database::getInstance()
+                         ->prepare("UPDATE $table SET checkoutTargetFile=?")
+                         ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFile']['default'])
+                ;
+            }
         }
     }
 }

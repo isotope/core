@@ -6,6 +6,7 @@ use Contao\File;
 use Contao\FilesModel;
 use Contao\Folder;
 use Contao\FrontendUser;
+use Haste\Util\FileUpload;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
@@ -41,14 +42,27 @@ class PostCheckoutUploads
 
                 foreach ($sources as $source) {
                     $tokens = $this->generateTokens($order, $item, $position, $total, $attribute, $source);
-                    $target = StringUtil::recursiveReplaceTokensAndTags(
-                        $attribute->checkoutTarget,
+
+                    $targetFolder = StringUtil::recursiveReplaceTokensAndTags(
+                        $attribute->checkoutTargetFolder,
+                        $tokens,
+                        StringUtil::NO_TAGS | StringUtil::NO_BREAKS
+                    );
+
+                    if ($attribute->doNotOverwrite) {
+                        $tokens['file_target'] = FileUpload::getFileName($tokens['file_name'], $targetFolder);
+                    } else {
+                        $tokens['file_target'] = $tokens['file_name'];
+                    }
+
+                    $targetFile = StringUtil::recursiveReplaceTokensAndTags(
+                        $attribute->checkoutTargetFile,
                         $tokens,
                         StringUtil::NO_TAGS | StringUtil::NO_BREAKS
                     );
 
                     $file = new File($source);
-                    $file->renameTo($target);
+                    $file->renameTo($targetFolder . '/' . $targetFile);
                 }
             }
         }

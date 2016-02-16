@@ -47,7 +47,8 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['uploadFolder']            = array('Targ
 $GLOBALS['TL_LANG']['tl_iso_attribute']['useHomeDir']              = array('Use home directory', 'Store the file in the home directory if there is an authenticated user.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['doNotOverwrite']          = array('Preserve existing files', 'Add a numeric suffix to the new file if the file name already exists.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutRelocate']        = array('Move file(s) after checkout', 'Re-organize files after an order has been completed.');
-$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTarget']          = array('Target file', 'Enter the file target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFolder']    = array('Target folder', 'Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFile']      = array('Target file name', 'Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_sorting']              = array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter']               = array('Backend filterable', 'Can this attribute be used in a backend filter?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search']               = array('Backend searchable', 'Should the field be available in the backend search?');
@@ -99,6 +100,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##product
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##attribute_field##', 'Database field name of the attribute.'];
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##attribute_name##', 'Name of the attribute.'];
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_name##', 'Full file name and extension as uploaded by the user.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_target##', 'Full file name and extension as uploaded by the user, but renamed if "Preserve existing files" is enabled and a file with same name exists in target folder. <br><strong>Only available for the file name, not for the folder!</strong>'];
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_extension##', 'The original file extension.'];
 
 /**

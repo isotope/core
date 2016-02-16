@@ -62,7 +62,8 @@ use Isotope\Translation;
  * @property bool          $useHomeDir
  * @property bool          $doNotOverwrite
  * @property bool          $checkoutRelocate
- * @property string        $checkoutTarget
+ * @property string        $checkoutTargetFolder
+ * @property string        $checkoutTargetFile
  * @property bool          $datepicker
  */
 abstract class Attribute extends TypeAgent

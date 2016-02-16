@@ -519,14 +519,24 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
-        'checkoutTarget' => array
+        'checkoutTargetFolder' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTarget'],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFolder'],
             'exclude'               => true,
-            'default'               => 'files/orders/##document_number##/##product_position##__{{flag::##product_name##|standardize}}/##attribute_field##/##file_name##',
+            'default'               => 'files/orders/##document_number##/##product_position##__{{flag::##product_name##|standardize}}/##attribute_field##',
             'inputType'             => 'text',
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr long', 'helpwizard'=>true),
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'checkoutTargetFile' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFile'],
+            'exclude'               => true,
+            'default'               => '##file_target##',
+            'inputType'             => 'text',
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50', 'helpwizard'=>true),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'datepicker' => array
