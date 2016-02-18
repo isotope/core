@@ -115,7 +115,7 @@ class PostCheckoutUploads
      */
     private function generateTokens($order, $item, $position, $total, $attribute, $source)
     {
-        return [
+        $tokens = [
             'document_number'  => $order->document_number ?: $order->id,
             'order_id'         => $order->id,
             'order_date'       => $order->locked,
@@ -127,6 +127,25 @@ class PostCheckoutUploads
             'attribute_name'   => $attribute->name,
             'file_name'        => basename($source),
             'file_extension'   => pathinfo($source, PATHINFO_EXTENSION),
+            'has_member'       => true === FE_USER_LOGGED_IN ? '1' : '0'
         ];
+
+        if (true === FE_USER_LOGGED_IN) {
+            $userData = FrontendUser::getInstance()->getData();
+            unset($userData['password']);
+
+            StringUtil::flatten(
+                $userData,
+                'member',
+                $tokens
+            );
+
+            if ($userData['assignDir']) {
+                $homeDir = FilesModel::findByPk($userData['homeDir']);
+                $tokens['member_homeDir'] = null === $homeDir ? $homeDir->path : '';
+            }
+        }
+
+        return $tokens;
     }
 }

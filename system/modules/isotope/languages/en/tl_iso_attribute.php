@@ -102,6 +102,8 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##attribu
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_name##', 'Full file name and extension as uploaded by the user.'];
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_target##', 'Full file name and extension as uploaded by the user, but renamed if "Preserve existing files" is enabled and a file with same name exists in target folder. <br><strong>Only available for the file name, not for the folder!</strong>'];
 $GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_extension##', 'The original file extension.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##has_member##', '1 if a member is signed in to the frontend, 0 if not.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##member_*##', 'If a user is logged in, all member fields are available as tokens.'];
 
 /**
  * Buttons
