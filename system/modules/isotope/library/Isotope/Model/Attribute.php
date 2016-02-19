@@ -114,7 +114,7 @@ abstract class Attribute extends TypeAgent
     /**
      * Return true if attribute is customer defined
      *
-     * @return    bool
+     * @return bool
      */
     public function isCustomerDefined()
     {
@@ -380,6 +380,16 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * @param array $options
+     *
+     * @return string
+     */
+    public function getLabel(array $options = [])
+    {
+        return Format::dcaLabel('tl_iso_product', $this->field_name);
+    }
+
+    /**
      * Generate HTML markup of product data for this attribute
      *
      * @param IsotopeProduct $objProduct
@@ -392,7 +402,7 @@ abstract class Attribute extends TypeAgent
         $varValue = $this->getValue($objProduct);
 
         if (!is_array($varValue)) {
-            return Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
+            return $this->generateValue($varValue, $arrOptions);
         }
 
         // Generate a HTML table for associative arrays
@@ -404,7 +414,7 @@ abstract class Attribute extends TypeAgent
             $result = array();
 
             foreach ($varValue as $v) {
-                $result[$v] = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+                $result[$v] = $this->generateValue($v, $arrOptions);
             }
 
             return $result;
@@ -412,10 +422,21 @@ abstract class Attribute extends TypeAgent
 
         // Generate ul/li listing for simple arrays
         foreach ($varValue as &$v) {
-            $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+            $v = $this->generateValue($v, $arrOptions);
         }
 
         return $this->generateList($varValue);
+    }
+
+    /**
+     * @param mixed $value
+     * @param array $options
+     *
+     * @return string
+     */
+    public function generateValue($value, array $options = [])
+    {
+        return Format::dcaValue('tl_iso_product', $this->field_name, $value);
     }
 
     /**

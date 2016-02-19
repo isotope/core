@@ -17,6 +17,7 @@ use Haste\Haste;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
+use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
@@ -1374,6 +1375,28 @@ abstract class ProductCollection extends TypeAgent
             return $arrGalleries[$strCacheKey];
         };
 
+        $objTemplate->attributeLabel = function ($name, array $options = []) {
+            /** @var Attribute $attribute */
+            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+
+            if (!$attribute instanceof IsotopeAttribute) {
+                return Format::dcaLabel('tl_iso_product', $name);
+            }
+
+            return $attribute->getLabel($options);
+        };
+
+        $objTemplate->attributeValue = function ($name, $value, array $options = []) {
+            /** @var Attribute $attribute */
+            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+
+            if (!$attribute instanceof IsotopeAttribute) {
+                return Format::dcaValue('tl_iso_product', $name, $value);
+            }
+
+            return $attribute->generateValue($value, $options);
+        };
+
         // !HOOK: allow overriding of the template
         if (isset($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'])
             && is_array($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'])
@@ -1487,6 +1510,7 @@ abstract class ProductCollection extends TypeAgent
             'name'              => $objItem->getName(),
             'options'           => Isotope::formatOptions($objItem->getOptions()),
             'configuration'     => $objItem->getConfiguration(),
+            'attributes'        => $objItem->getAttributes(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
             'tax_free_price'    => Isotope::formatPriceWithCurrency($objItem->getTaxFreePrice(), true, $objConfig->currency),

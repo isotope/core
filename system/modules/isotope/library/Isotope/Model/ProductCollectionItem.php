@@ -197,21 +197,33 @@ class ProductCollectionItem extends \Model
     }
 
     /**
-     * Get product options
-     * @return  array
-     * @deprecated use getConfiguration
+     * Returns key-value array for variant-enabled and customer editable attributes.
+     *
+     * @return array
      */
-    public function getOptions()
+    public function getAttributes()
     {
         $arrConfig = deserialize($this->configuration);
 
-        return is_array($arrConfig) ? $arrConfig : array();
+        return is_array($arrConfig) ? $arrConfig : [];
+    }
+
+    /**
+     * Get product options
+     * @return  array
+     * @deprecated use getConfig
+     */
+    public function getOptions()
+    {
+        return $this->getAttributes();
     }
 
     /**
      * Get product configuration
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getConfig() instead.
      */
     public function getConfiguration()
     {

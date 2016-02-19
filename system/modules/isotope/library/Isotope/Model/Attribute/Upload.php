@@ -18,6 +18,7 @@ use Haste\Util\FileUpload;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\ProductCollectionItem;
 
 
 /**
@@ -62,6 +63,23 @@ class Upload extends Attribute implements IsotopeAttribute, \uploadable
         $arrData['fields'][$this->field_name]['eval']['storeFile'] = false;
         unset($arrData['fields'][$this->field_name]['attributes']['storeFile']);
         $arrData['fields'][$this->field_name]['save_callback'][] = 'processFiles';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generateValue($value, array $options = [])
+    {
+        if (empty($value)) {
+            return '';
+        }
+
+        /** @var ProductCollectionItem $item */
+        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $value)) {
+            $item->addError('File does not exist.'); // TODO add real error message
+        }
+
+        return substr(basename($value), 9);
     }
 
     /**
