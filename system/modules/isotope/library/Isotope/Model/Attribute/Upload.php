@@ -38,11 +38,17 @@ class Upload extends Attribute implements IsotopeAttribute, \uploadable
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBackendWidget()
     {
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);

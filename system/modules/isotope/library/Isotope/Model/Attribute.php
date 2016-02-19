@@ -113,6 +113,7 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return true if attribute is customer defined
+     *
      * @return    bool
      */
     public function isCustomerDefined()
@@ -127,7 +128,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return class name for the backend widget or false if none should be available
-     * @return    string
+     *
+     * @return string|false
      */
     public function getBackendWidget()
     {
@@ -140,7 +142,8 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Return class name for the frontend widget or false if none should be available
-     * @return    string
+     *
+     * @return string|false
      */
     public function getFrontendWidget()
     {

@@ -824,8 +824,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if ($objWidget->hasErrors()) {
                 $this->doNotSubmit = true;
-            } // Store current value
-            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
+            } elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
@@ -838,7 +837,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     } catch (\OutOfBoundsException $e) {
                         $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
                     }
-
                 }
 
                 // Trigger the save_callback
