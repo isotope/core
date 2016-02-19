@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
         'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,path,mandatory,files',
         'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
-        'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
+        'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory',
         'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory',
     ),
 
@@ -479,38 +479,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
             'sql'                   =>  "binary(16) NULL",
         ),
-        'storeFile' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['storeFile'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'uploadFolder' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['uploadFolder'],
-            'exclude'               => true,
-            'inputType'             => 'fileTree',
-            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
-            'sql'                   => "binary(16) NULL",
-        ),
-        'useHomeDir' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['useHomeDir'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
-        'doNotOverwrite' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['doNotOverwrite'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default ''",
-        ),
         'checkoutRelocate' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutRelocate'],
@@ -550,6 +518,43 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             (
                 array('Isotope\Backend\Attribute\Callback', 'validateDatepicker'),
             ),
+        ),
+
+
+        /**
+         * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
+         */
+        'storeFile' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['storeFile'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('submitOnChange'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'uploadFolder' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['uploadFolder'],
+            'exclude'               => true,
+            'inputType'             => 'fileTree',
+            'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
+            'sql'                   => "binary(16) NULL",
+        ),
+        'useHomeDir' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['useHomeDir'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'doNotOverwrite' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['doNotOverwrite'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
     ),
 );

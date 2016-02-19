@@ -844,11 +844,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 // Trigger the save_callback
                 if (is_array($arrData['save_callback'])) {
                     foreach ($arrData['save_callback'] as $callback) {
-
-                        $objCallback = \System::importStatic($callback[0]);
-
                         try {
-                            $varValue = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            if (is_array($callback)) {
+                                $objCallback = \System::importStatic($callback[0]);
+                                $varValue    = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            } else {
+                                $varValue = $objAttribute->{$callback}($varValue, $this, $objWidget);
+                            }
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
