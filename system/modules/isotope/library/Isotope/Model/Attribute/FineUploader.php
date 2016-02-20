@@ -12,8 +12,11 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\ProductCollectionItem;
 
 
 /**
@@ -34,20 +37,62 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getBackendWidget()
     {
         return false;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
 
+        unset($arrData['fields'][$this->field_name]['sql']);
+
         // An upload field is always customer defined
         $arrData['fields'][$this->field_name]['attributes']['customer_defined'] = true;
 
-        $arrData['fields'][$this->field_name]['save_callback'][] = function ($value) {
-            return basename($value);
-        };
+        // Files are stored by Isotope
+        unset($arrData['fields'][$this->field_name]['attributes']['storeFile']);
+        $arrData['fields'][$this->field_name]['save_callback'][] = 'processFiles';
+
+        $arrData['fields'][$this->field_name]['eval']['storeFile'] = true;
+        $arrData['fields'][$this->field_name]['eval']['doNotOverwrite'] = true;
+        $arrData['fields'][$this->field_name]['eval']['useHomeDir'] = false;
+        $arrData['fields'][$this->field_name]['eval']['addToDbafs'] = false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generateValue($value, array $options = [])
+    {
+        if (empty($value)) {
+            return '';
+        }
+
+        /** @var ProductCollectionItem $item */
+        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $value)) {
+            $item->addError('File does not exist.'); // TODO add real error message
+        }
+
+        return substr(basename($value), 9);
+    }
+
+    /**
+     * @param mixed          $value
+     * @param IsotopeProduct $product
+     * @param Widget         $widget
+     *
+     * @return mixed
+     */
+    public function processFiles($value, IsotopeProduct $product, Widget $widget)
+    {
+        return $value;
     }
 }
