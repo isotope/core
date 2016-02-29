@@ -4,6 +4,13 @@ Isotope eCommerce Changelog
 Version 2.3.4-stable (2016-??-??)
 ---------------------------------
 
+### Improved
+- Added support for installation on Contao 4
+ 
+### Fixed
+- Potential backend error message when saving prices
+- Issue when inheriting mandatory fields in the backend
+
 
 Version 2.3.3-stable (2016-01-27)
 ---------------------------------
