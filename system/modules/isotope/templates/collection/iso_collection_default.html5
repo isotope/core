@@ -50,7 +50,10 @@
         <td class="col_<?php echo $i++; ?> price"><?php echo $item['price']; ?></td>
         <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $item['total']; ?></td><?php if ($this->total_tax_ids > 1): ?>
         <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $item['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?> col_last actions">
+            <?php if ($item['edit_href']): ?><a href="<?php echo $item['edit_href']; ?>" class="edit" title="<?php echo $item['edit_title']; ?>"><?php echo $item['edit_link']; ?></a><?php endif; ?>
+            <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
+        </td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
         <td colspan="<?php echo $i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>

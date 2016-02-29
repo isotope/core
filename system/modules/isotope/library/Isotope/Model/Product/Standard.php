@@ -27,6 +27,7 @@ use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -75,6 +76,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected $arrCustomerConfig = array();
 
     /**
+     * Default configuration (to predefine variant or customer editable attributes)
+     * @var array
+     */
+    protected $arrDefaults = array();
+
+    /**
      * Assigned categories (pages)
      * @var array
      */
@@ -97,6 +104,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @var bool
      */
     protected $doNotSubmit = false;
+
+    /**
+     * True if the collection item will be updated.
+     * @var bool
+     */
+    protected $blnUpdate = false;
 
 
     /**
@@ -571,6 +584,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function generate(array $arrConfig)
     {
+        $this->loadDefaults();
+
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
         $objProduct      = $this->validateVariant();
 
@@ -660,7 +675,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrButtons  = $objCallback->{$callback[1]}($arrButtons);
+                $arrButtons  = $objCallback->{$callback[1]}($arrButtons, $this);
             }
 
             $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
@@ -681,7 +696,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->buttons          = $arrButtons;
-        $objTemplate->useQuantity      = $arrConfig['useQuantity'];
+        $objTemplate->useQuantity      = $arrConfig['useQuantity'] && !$this->blnUpdate;
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw              = $this->arrData;
         $objTemplate->raw_options      = $this->getConfiguration();
@@ -732,8 +747,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant
-        if (\Input::get($strField) != '') {
-            $arrData['default'] = \Input::get($strField);
+        if (!empty($this->arrDefaults[$strField])) {
+            $arrData['default'] = $this->arrDefaults[$strField];
         }
 
         $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
@@ -951,8 +966,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::post($attribute);
-            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), $arrValues)) {
-                $arrOptions[$attribute] = \Input::get($attribute);
+            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array($this->arrDefaults[$attribute], $arrValues)) {
+                $arrOptions[$attribute] = $this->arrDefaults[$attribute];
             } elseif (count($arrValues) == 1) {
                 $arrOptions[$attribute] = $arrValues[0];
             } else {
@@ -1137,5 +1152,29 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
+    }
+
+    /**
+     * Load default values from URL
+     */
+    private function loadDefaults()
+    {
+        $this->arrDefaults = array();
+        $this->blnUpdate = false;
+
+        if (\Input::get('collection_item') > 0) {
+            $item = ProductCollectionItem::findByPk(\Input::get('collection_item'));
+            if (null !== $item
+                && $item->hasProduct()
+                && $item->getProduct()->getProductId() == $this->getProductId()
+            ) {
+                $this->arrDefaults = $item->getOptions();
+                $this->blnUpdate = true;
+            }
+        } else {
+            foreach ($_GET as $k => $v) {
+                $this->arrDefaults[$k] = \Input::get($k);
+            }
+        }
     }
 }

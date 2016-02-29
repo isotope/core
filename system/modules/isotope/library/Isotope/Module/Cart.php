@@ -112,6 +112,12 @@ class Cart extends Module
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
+            if ($arrItem['configuration']) {
+                list($baseUrl,) = explode('?', $arrItem['href'], 2);
+                $arrItem['edit_href']  = \Haste\Util\Url::addQueryString('collection_item=' . $arrItem['id'], $baseUrl);
+                $arrItem['edit_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['editProductLinkTitle'], $arrItem['name']));
+                $arrItem['edit_link']  = $GLOBALS['TL_LANG']['MSC']['editProductLinkText'];
+            }
 
             $arrItem['remove_href']  = \Haste\Util\Url::addQueryString('remove=' . $arrItem['id']);
             $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));

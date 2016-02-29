@@ -25,6 +25,7 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Payment;
+use Isotope\Model\Product\Standard;
 use Isotope\Model\Shipping;
 
 /**
@@ -938,19 +939,11 @@ abstract class ProductCollection extends TypeAgent
                 $intQuantity            = $intMinimumQuantity;
             }
 
-            $objItem                 = new ProductCollectionItem();
-            $objItem->pid            = $this->id;
-            $objItem->tstamp         = $time;
-            $objItem->type           = array_search(get_class($objProduct), Product::getModelTypes());
-            $objItem->product_id     = $objProduct->{$objProduct->getPk()};
-            $objItem->sku            = (string) $objProduct->sku;
-            $objItem->name           = (string) $objProduct->name;
-            $objItem->configuration  = $objProduct->getOptions();
-            $objItem->quantity       = (int) $intQuantity;
-            $objItem->price          = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getAmount((int) $intQuantity) : 0);
-            $objItem->tax_free_price = (float) ($objProduct->getPrice($this) ? $objProduct->getPrice($this)->getNetAmount((int) $intQuantity) : 0);
-            $objItem->jumpTo         = (int) $arrConfig['jumpTo']->id;
+            $objItem           = new ProductCollectionItem();
+            $objItem->pid      = $this->id;
+            $objItem->jumpTo   = (int) $arrConfig['jumpTo']->id;
 
+            $this->setProductForItem($objProduct, $objItem, $intQuantity);
             $objItem->save();
 
             // Add the new item to our cache
@@ -968,6 +961,48 @@ abstract class ProductCollection extends TypeAgent
         }
 
         return $objItem;
+    }
+
+    /**
+     * Update product details for a collection item.
+     *
+     * @param IsotopeProduct        $objProduct
+     * @param ProductCollectionItem $objItem
+     *
+     * @return bool
+     */
+    public function updateProduct(IsotopeProduct $objProduct, ProductCollectionItem $objItem)
+    {
+        if ($objItem->pid != $this->id) {
+            throw new \InvalidArgumentException('Item does not belong to this collection');
+        }
+
+        // !HOOK: additional functionality when updating product in collection
+        if (isset($GLOBALS['ISO_HOOKS']['updateProductInCollection'])
+            && is_array($GLOBALS['ISO_HOOKS']['updateProductInCollection'])
+        ) {
+            foreach ($GLOBALS['ISO_HOOKS']['updateProductInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                if (false === $objCallback->{$callback[1]}($objProduct, $objItem, $this)) {
+                    return false;
+                }
+            }
+        }
+
+        $this->setProductForItem($objProduct, $objItem, $objItem->quantity);
+        $objItem->save();
+
+        // !HOOK: additional functionality when adding product to collection
+        if (isset($GLOBALS['ISO_HOOKS']['postUpdateProductInCollection'])
+            && is_array($GLOBALS['ISO_HOOKS']['postUpdateProductInCollection'])
+        ) {
+            foreach ($GLOBALS['ISO_HOOKS']['postUpdateProductInCollection'] as $callback) {
+                $objCallback = \System::importStatic($callback[0]);
+                $objCallback->{$callback[1]}($objProduct, $objItem, $this);
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -1837,5 +1872,23 @@ abstract class ProductCollection extends TypeAgent
         }
 
         return null;
+    }
+
+    /**
+     * @param IsotopeProduct|Standard $product
+     * @param ProductCollectionItem   $item
+     * @param int                     $quantity
+     */
+    private function setProductForItem($product, $item, $quantity)
+    {
+        $item->tstamp         = time();
+        $item->type           = array_search(get_class($product), Product::getModelTypes());
+        $item->product_id     = $product->{$product->getPk()};
+        $item->sku            = (string) $product->sku;
+        $item->name           = (string) $product->name;
+        $item->configuration  = $product->getOptions();
+        $item->quantity       = (int) $quantity;
+        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
+        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $quantity) : 0);
     }
 }

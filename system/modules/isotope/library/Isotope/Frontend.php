@@ -23,6 +23,7 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
@@ -104,6 +105,37 @@ class Frontend extends \Frontend
                 )
             );
         }
+    }
+
+    /**
+     * Callback for add_to_cart button if a product is being edited.
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     */
+    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        if (\Input::get('collection_item') < 1
+            || ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) === null
+            || $item->pid != Isotope::getCart()->id
+            || !$item->hasProduct()
+            || $item->getProduct()->getProductId() != $objProduct->getProductId()
+        ) {
+            return;
+        }
+
+        Isotope::getCart()->updateProduct($objProduct, $item);
+
+        if (!$arrConfig['module']->iso_addProductJumpTo) {
+            \Controller::reload();
+        }
+
+        \Controller::redirect(
+            Url::addQueryString(
+                'continue=' . base64_encode(\Environment::get('request')),
+                $arrConfig['module']->iso_addProductJumpTo
+            )
+        );
     }
 
     /**

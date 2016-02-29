@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -362,20 +363,35 @@ class Isotope extends \Controller
     /**
      * Callback for isoButton Hook
      *
-     * @param array $arrButtons
+     * @param array          $arrButtons
+     * @param IsotopeProduct $objProduct
      *
      * @return array
      */
-    public static function defaultButtons($arrButtons)
+    public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
     {
         $arrButtons['update'] = array(
             'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']
         );
 
-        $arrButtons['add_to_cart'] = array(
-            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
-            'callback' => array('\Isotope\Frontend', 'addToCart')
-        );
+        if (null !== $objProduct
+            && \Input::get('collection_item') > 0
+            && ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) !== null
+            && $item->pid == Isotope::getCart()->id
+            && $item->hasProduct()
+            && $item->getProduct()->getProductId() == $objProduct->getProductId()
+        ) {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart'],
+                'callback' => array('\Isotope\Frontend', 'updateCart')
+            );
+        } else {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
+                'callback' => array('\Isotope\Frontend', 'addToCart')
+            );
+        }
+
 
         return $arrButtons;
     }
