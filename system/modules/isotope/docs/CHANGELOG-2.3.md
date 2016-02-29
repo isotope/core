@@ -9,7 +9,8 @@ Version 2.3.4-stable (2016-??-??)
  
 ### Fixed
 - Potential backend error message when saving prices
-- Issue when inheriting mandatory fields in the backend
+- Issue when inheriting mandatory fields in the backend (#1600)
+- Weekly report for first weeks of the year did not work as expected (#1610)
 
 
 Version 2.3.3-stable (2016-01-27)
