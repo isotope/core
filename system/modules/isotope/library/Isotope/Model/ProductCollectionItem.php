@@ -151,7 +151,7 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
-            /** @var \Isotope\Model\Product $strClass */
+            /** @var string|\Isotope\Model\Product $strClass */
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {

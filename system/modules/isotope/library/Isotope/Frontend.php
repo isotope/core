@@ -12,6 +12,7 @@
 
 namespace Isotope;
 
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
@@ -97,7 +98,7 @@ class Frontend extends \Frontend
             }
 
             \Controller::redirect(
-                \Haste\Util\Url::addQueryString(
+                Url::addQueryString(
                     'continue=' . base64_encode(\Environment::get('request')),
                     $objModule->iso_addProductJumpTo
                 )
@@ -590,8 +591,7 @@ class Frontend extends \Frontend
                     $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
                     $arrItems[$last]['isActive'] = false;
 
-                    $arrItems[] = array
-                    (
+                    $arrItems[] = array(
                         'isRoot'   => false,
                         'isActive' => true,
                         'href'     => $objProduct->generateUrl($objPage),

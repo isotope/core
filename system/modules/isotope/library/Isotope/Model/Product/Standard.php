@@ -15,6 +15,7 @@ namespace Isotope\Model\Product;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -565,6 +566,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @param array $arrConfig
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function generate(array $arrConfig)
     {
@@ -1093,6 +1096,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @param \PageModel $objJumpTo A PageModel instance
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function generateUrl(\PageModel $objJumpTo = null)
     {
@@ -1100,20 +1105,20 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             global $objPage;
             global $objIsotopeListPage;
 
-            $objJumpTo = $objIsotopeListPage ? : $objPage;
+            $objJumpTo = $objIsotopeListPage ?: $objPage;
 
             if (null === $objJumpTo) {
                 return '';
             }
         }
 
-        $strUrl = '/' . $this->arrData['alias'] ? : $this->getProductId();
+        $strUrl = '/' . ($this->arrData['alias'] ?: $this->getProductId());
 
         if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
             $strUrl = '/product' . $strUrl;
         }
 
-        return \Haste\Util\Url::addQueryString(
+        return Url::addQueryString(
             http_build_query($this->getOptions()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );

@@ -46,7 +46,7 @@ class ProductReader extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT READER ###';
@@ -62,10 +62,7 @@ class ProductReader extends Module
         // Return if no product has been specified
         if (\Haste\Input\Input::getAutoItem('product', false, true) == '') {
             if ($this->iso_display404Page) {
-                global $objPage;
-                $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                $objHandler->generate($objPage->id);
-                exit;
+                $this->generate404();
             } else {
                 return '';
             }
@@ -84,12 +81,11 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
+        /** @var Product\Standard $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
 
         if (null === $objProduct) {
-            $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-            $objHandler->generate($objPage->id);
-            exit;
+            $this->generate404();
         }
 
         $arrConfig = array(
@@ -173,5 +169,14 @@ class ProductReader extends Module
                 break;
             }
         }
+    }
+
+    private function generate404()
+    {
+        global $objPage;
+        /** @var \PageError404 $objHandler */
+        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
+        $objHandler->generate($objPage->id);
+        exit;
     }
 }

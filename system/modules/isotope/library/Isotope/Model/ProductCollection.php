@@ -955,7 +955,6 @@ abstract class ProductCollection extends TypeAgent
 
             // Add the new item to our cache
             $this->arrItems[$objItem->id] = $objItem;
-
         }
 
         // !HOOK: additional functionality when adding product to collection
