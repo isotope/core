@@ -102,7 +102,8 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root)
+            case 'cut':    
+                if (!in_array(\Input::get('id'), $user->iso_groups)
                     || (
                         \Input::get('act') == 'delete'
                         && !$user->hasAccess('delete', 'iso_groupp')
