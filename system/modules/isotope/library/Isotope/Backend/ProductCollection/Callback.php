@@ -85,15 +85,17 @@ class Callback extends \Backend
         $GLOBALS['TL_CSS'][] = Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
         // Try to find a order details module or create a dummy FE module model
-        if (($objModuleModel = \ModuleModel::findOneBy('type', 'iso_orderdetails')) === null) {
-            $objModuleModel = new \ModuleModel();
-            $objModuleModel->type = 'iso_orderdetails';
-            $objModuleModel->iso_collectionTpl = 'iso_collection_default';
+        if (($config = $objOrder->getRelated('config_id')) === null
+            || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
+        ) {
+            $moduleModel = new \ModuleModel();
+            $moduleModel->type = 'iso_orderdetails';
+            $moduleModel->iso_collectionTpl = 'iso_collection_default';
         }
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new OrderDetails($objModuleModel);
+        $objModule = new OrderDetails($moduleModel);
 
         return Haste::getInstance()->call('replaceInsertTags', $objModule->generate(true));
     }

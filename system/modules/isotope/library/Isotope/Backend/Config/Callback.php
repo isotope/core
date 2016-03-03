@@ -246,6 +246,28 @@ class Callback extends Permission
         return $this->doGetTemplateFolders('templates');
     }
 
+    /**
+     * Generate an options list of order details frontend modules
+     *
+     * @return array
+     */
+    public function getOrderDetailsModules()
+    {
+        $modules = [];
+        $result  = \Database::getInstance()->query("
+            SELECT m.id, m.name, t.name AS theme
+            FROM tl_module m
+            JOIN tl_theme t ON t.id=m.pid
+            WHERE m.type='iso_orderdetails'
+            ORDER BY theme, name
+        ");
+
+        while ($result->next()) {
+            $modules[$result->theme][$result->id] = $result->name;
+        }
+
+        return $modules;
+    }
 
     /**
      * Return all template folders as array

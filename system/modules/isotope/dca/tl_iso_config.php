@@ -125,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
-            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error;
+            {order_legend:hide},orderPrefix,orderDigits,orderstatus_new,orderstatus_error,orderDetailsModule;
             {config_legend},templateGroup,cartMinSubtotal;
             {products_legend},newProductPeriod;
             {analytics_legend},ga_enable',
@@ -592,6 +592,16 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'orderDetailsModule' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['orderDetailsModule'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options_callback'      => array('Isotope\Backend\Config\Callback', 'getOrderDetailsModules'),
+            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'relation'              => array('type'=>'hasOne', 'table'=>'tl_module'),
         ),
         'templateGroup' => array
         (
