@@ -106,6 +106,7 @@ class Callback extends \Backend
      * @param object $dc
      *
      * @return string
+     *
      * @deprecated  we should probably remove this in 3.0 as it does no longer make sense
      */
     public function generateEmailData($dc)
@@ -196,7 +197,7 @@ class Callback extends \Backend
         }
 
         \System::loadLanguageFile($objAddress->getTable());
-        $this->loadDataContainer($objAddress->getTable());
+        \Controller::loadDataContainer($objAddress->getTable());
 
         $strBuffer = '
 <div>
@@ -240,7 +241,7 @@ class Callback extends \Backend
 
         // Only admins can delete orders. Others should set the order_status to cancelled.
         unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
-        if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll') {
+        if ('delete' === \Input::get('act') || 'deleteAll' === \Input::get('act')) {
             \System::log('Only admin can delete orders!', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
@@ -278,7 +279,7 @@ class Callback extends \Backend
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['payment_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return $row['payment_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -319,7 +320,7 @@ class Callback extends \Backend
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['shipping_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return $row['shipping_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -359,7 +360,7 @@ class Callback extends \Backend
     {
         $strRedirectUrl = str_replace('&key=print_document', '', \Environment::get('request'));
 
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_print_document') {
+        if ('tl_iso_print_document' === \Input::post('FORM_SUBMIT')) {
             if (($objOrder = Order::findByPk($dc->id)) === null) {
                 \Message::addError('Could not find order id.');
                 \Controller::redirect($strRedirectUrl);
