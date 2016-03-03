@@ -769,22 +769,23 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
      *
+     * @param string|null $class
+     *
      * @return array
      */
-    public static function getFixedFields()
+    public static function getFixedFields($class = null)
     {
-        static $arrFields;
+        \Controller::loadDataContainer('tl_iso_product');
 
-        if (null === $arrFields) {
-            \Controller::loadDataContainer('tl_iso_product');
+        $arrFields = array();
+        $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
-            $arrFields = array();
-            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        foreach ($arrDCA as $field => $config) {
+            $fixed = $config['attributes']['fixed'];
+            $isArray = is_array($fixed);
 
-            foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['fixed']) {
-                    $arrFields[] = $field;
-                }
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
             }
         }
 
@@ -795,22 +796,23 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * Return list of variant fixed fields
      * Fixed fields cannot be disabled in product type config
      *
+     * @param string|null $class
+     *
      * @return array
      */
-    public static function getVariantFixedFields()
+    public static function getVariantFixedFields($class = null)
     {
-        static $arrFields;
+        \Controller::loadDataContainer('tl_iso_product');
 
-        if (null === $arrFields) {
-            \Controller::loadDataContainer('tl_iso_product');
+        $arrFields = array();
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
-            $arrFields = array();
-            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+        foreach ($arrDCA as $field => $config) {
+            $fixed   = $config['attributes']['variant_fixed'];
+            $isArray = is_array($fixed);
 
-            foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['variant_fixed']) {
-                    $arrFields[] = $field;
-                }
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
             }
         }
 

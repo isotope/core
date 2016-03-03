@@ -36,9 +36,14 @@ class AttributeWizard extends \Backend
         $blnVariants = $this->isVariants($objWidget->name);
 
         if (!empty($arrValues) && is_array($arrValues)) {
-            foreach ($arrValues as $i => $attribute) {
+            if ($blnVariants) {
+                $arrFixed = Attribute::getVariantFixedFields($objWidget->dataContainer->activeRecord->class);
+            } else {
+                $arrFixed = Attribute::getFixedFields($objWidget->dataContainer->activeRecord->class);
+            }
 
-                if ($this->isFixed($attribute['name'], $blnVariants)) {
+            foreach ($arrValues as $i => $attribute) {
+                if (in_array($attribute['name'], $arrFixed, true)) {
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
@@ -174,6 +179,12 @@ class AttributeWizard extends \Backend
         $arrValues   = deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
+        if ($blnVariants) {
+            $arrFixed = Attribute::getVariantFixedFields($dc->activeRecord->class);
+        } else {
+            $arrFixed = Attribute::getFixedFields($dc->activeRecord->class);
+        }
+
         if (!is_array($arrValues)) {
             $arrValues = array();
         }
@@ -211,7 +222,7 @@ class AttributeWizard extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled' => $this->isFixed($arrField['name'], $blnVariants) ? '1' : '',
+                'enabled' => in_array($strName, $arrFixed, true) ? '1' : '',
                 'name'    => $strName,
                 'legend'  => $arrField['attributes']['legend'],
             );
@@ -238,8 +249,14 @@ class AttributeWizard extends \Backend
             return $varValue;
         }
 
+        if ($blnVariants) {
+            $arrFixed = Attribute::getVariantFixedFields($dc->activeRecord->class);
+        } else {
+            $arrFixed = Attribute::getFixedFields($dc->activeRecord->class);
+        }
+
         foreach ($arrFields as $k => $arrField) {
-            if ($this->isFixed($arrField['name'], $blnVariants)) {
+            if (in_array($k, $arrFixed, true)) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
@@ -282,21 +299,6 @@ class AttributeWizard extends \Backend
     private function isVariants($widgetName)
     {
         return 'attributes' !== $widgetName;
-    }
-
-    /**
-     * Returns whether an attribute is fixed.
-     *
-     * @param string $attributeName
-     * @param bool   $forVariants
-     *
-     * @return bool
-     */
-    private function isFixed($attributeName, $forVariants)
-    {
-        $fixedFields = $forVariants ? Attribute::getVariantFixedFields() : Attribute::getFixedFields();
-
-        return in_array($attributeName, $fixedFields, true);
     }
 
     /**
