@@ -224,6 +224,7 @@ var Isotope = {};
             var el = document.id(('ctrl_'+name));
 
             if (el) {
+                el.removeProperty('required');
                 var parent = el.getParent('div').getFirst('h3');
 
                 if (!parent && el.match('.tl_checkbox_single_container')) {
