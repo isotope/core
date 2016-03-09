@@ -151,15 +151,15 @@ class Filter implements \ArrayAccess
 
     public function groupBy($group)
     {
-        if (isset($this->arrConfig['group'])) {
+        if (array_key_exists('group', $this->arrConfig)) {
             throw new \BadMethodCallException('Filter already has a group');
         }
 
-        if ($group == '') {
+        if ('' === (string) $group) {
             throw new \UnexpectedValueException('Group name can\'t be empty.');
         }
 
-        $this->arrConfig['group'] = $group;
+        $this->arrConfig['group'] = (string) $group;
 
         return $this;
     }
@@ -171,7 +171,7 @@ class Filter implements \ArrayAccess
      */
     public function hasGroup()
     {
-        return isset($this->arrConfig['group']);
+        return array_key_exists('group', $this->arrConfig);
     }
 
     /**
@@ -190,6 +190,8 @@ class Filter implements \ArrayAccess
      * @param IsotopeProduct $objProduct
      *
      * @return bool
+     *
+     * @throws \UnexpectedValueException
      */
     public function matches(IsotopeProduct $objProduct)
     {
@@ -297,7 +299,7 @@ class Filter implements \ArrayAccess
      */
     public function sqlValue()
     {
-        if ($this->arrConfig['operator'] == 'like') {
+        if ('like' === $this->arrConfig['operator']) {
             return (('%' . $this->arrConfig['value'] . '%'));
         }
 
@@ -347,6 +349,8 @@ class Filter implements \ArrayAccess
      *
      * @param string $operator
      * @param string $value
+     *
+     * @throws \BadMethodCallException
      */
     protected function filter($operator, $value)
     {

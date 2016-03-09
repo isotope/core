@@ -27,6 +27,7 @@ use Isotope\Model\ProductType;
  * @property string $iso_listingSortField
  * @property string $iso_listingSortDirection
  * @property bool   $iso_enableLimit
+ * @property int    $iso_perPage
  * @property string $iso_filterTpl
  */
 abstract class AbstractProductFilter extends Module
@@ -78,8 +79,10 @@ abstract class AbstractProductFilter extends Module
     {
         $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
         $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
+        $atypeCount     = count($attributeTypes);
+        $vtypeCount     = count($variantTypes);
 
-        if (empty($attributeTypes) && empty($variantTypes)) {
+        if (0 === $atypeCount && 0 === $vtypeCount) {
             return array();
         }
 
@@ -90,15 +93,15 @@ abstract class AbstractProductFilter extends Module
         $published      = '';
         $time           = \Date::floorToMinute();
 
-        if ('' != $sqlWhere) {
-            $sqlWhere = " AND " . $sqlWhere;
+        if ('' !== (string) $sqlWhere) {
+            $sqlWhere = ' AND ' . (string) $sqlWhere;
         }
 
         // Apply new/old product filter
-        if ($newFilter == self::FILTER_NEW) {
-            $sqlWhere .= " AND p1.dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($newFilter == self::FILTER_OLD) {
-            $sqlWhere .= " AND p1.dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        if (self::FILTER_NEW === $newFilter) {
+            $sqlWhere .= ' AND p1.dateAdded>=' . Isotope::getConfig()->getNewProductLimit();
+        } elseif (self::FILTER_OLD === $newFilter) {
+            $sqlWhere .= ' AND p1.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
         }
 
         if (BE_USER_LOGGED_IN !== true) {
@@ -109,18 +112,18 @@ abstract class AbstractProductFilter extends Module
             ";
         }
 
-        if (!empty($attributeTypes)) {
-            $typeConditions[] = "p1.type IN (" . implode(',', $attributeTypes) . ")";
+        if (0 !== $atypeCount) {
+            $typeConditions[] = 'p1.type IN (' . implode(',', $attributeTypes) . ')';
         }
 
-        if (!empty($variantTypes)) {
-            $typeConditions[] = "p2.type IN (" . implode(',', $variantTypes) . ")";
-            $join             = "LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id";
-            $categoryWhere    = "OR p1.pid IN (
+        if (0 !== $vtypeCount) {
+            $typeConditions[] = 'p2.type IN (' . implode(',', $variantTypes) . ')';
+            $join             = 'LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id';
+            $categoryWhere    = 'OR p1.pid IN (
                                     SELECT pid
                                     FROM tl_iso_product_category
-                                    WHERE page_id IN (" . implode(',', $categories) . ")
-                                )";
+                                    WHERE page_id IN (' . implode(',', $categories) . ')
+                                )';
 
             if (BE_USER_LOGGED_IN !== true) {
                 $published .= " AND (
@@ -140,12 +143,12 @@ abstract class AbstractProductFilter extends Module
             WHERE
                 p1.language=''
                 AND p1.$attribute!=''
-                " . $published . "
+                " . $published . '
                 AND (
                     p1.id IN (
                         SELECT pid
                         FROM tl_iso_product_category
-                        WHERE page_id IN (" . implode(',', $categories) . ")
+                        WHERE page_id IN (' . implode(',', $categories) . ")
                     )
                     $categoryWhere
                 )

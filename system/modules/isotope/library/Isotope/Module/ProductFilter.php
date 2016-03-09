@@ -48,14 +48,15 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            $objTemplate           = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
+        if ('BE' === TL_MODE) {
+            /** @var \BackendTemplate|object $objTemplate */
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
@@ -90,6 +91,8 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
     /**
      * Generate ajax
+     *
+     * @throws \Exception
      */
     public function generateAjax()
     {
@@ -118,9 +121,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     protected function initializeFilters()
     {
         if (!$this->iso_enableLimit
-            && empty($this->iso_filterFields)
-            && empty($this->iso_sortingFields)
-            && empty($this->iso_searchFields)
+            && 0 === count($this->iso_filterFields)
+            && 0 === count($this->iso_sortingFields)
+            && 0 === count($this->iso_searchFields)
         ) {
             return false;
         }
@@ -137,7 +140,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     protected function compile()
     {
-        $this->blnUpdateCache = (\Input::post('FORM_SUBMIT') == 'iso_filter_' . $this->id);
+        $this->blnUpdateCache = ('iso_filter_' . $this->id) === \Input::post('FORM_SUBMIT');
 
         $this->generateFilters();
         $this->generateSorting();
@@ -165,17 +168,19 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
     /**
      * Generate a search form
+     *
+     * @throws \Exception
      */
     protected function generateSearch()
     {
-        global $objPage;
-
         $this->Template->hasSearch       = false;
-        $this->Template->hasAutocomplete = ($this->iso_searchAutocomplete) ? true : false;
+        $this->Template->hasAutocomplete = $this->iso_searchAutocomplete ? true : false;
 
-        if (!empty($this->iso_searchFields)) {
-            if (\Input::get('keywords') != ''
-                && \Input::get('keywords') != $GLOBALS['TL_LANG']['MSC']['defaultSearchText']
+        $keywords = (string) \Input::get('keywords');
+
+        if (0 !== count($this->iso_searchFields)) {
+            if ('' !== $keywords
+                && $keywords !== $GLOBALS['TL_LANG']['MSC']['defaultSearchText']
             ) {
                 // Redirect to search result page if one is set (see #1068)
                 if (!$this->blnUpdateCache
@@ -191,7 +196,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     }
                 }
 
-                $arrKeywords = trimsplit(' |-', \Input::get('keywords'));
+                $arrKeywords = trimsplit(' |-', $keywords);
                 $arrKeywords = array_filter(array_unique($arrKeywords));
 
                 foreach ($arrKeywords as $keyword) {
@@ -206,7 +211,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
             $this->Template->hasSearch         = true;
             $this->Template->keywordsLabel     = $GLOBALS['TL_LANG']['MSC']['searchTermsLabel'];
-            $this->Template->keywords          = \Input::get('keywords');
+            $this->Template->keywords          = $keywords;
             $this->Template->searchLabel       = $GLOBALS['TL_LANG']['MSC']['searchLabel'];
             $this->Template->defaultSearchText = $GLOBALS['TL_LANG']['MSC']['defaultSearchText'];
         }
@@ -219,7 +224,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $this->Template->hasFilters = false;
 
-        if (!empty($this->iso_filterFields)) {
+        if (0 !== count($this->iso_filterFields)) {
             $arrFilters    = array();
             $arrInput      = \Input::post('filter');
             $arrCategories = $this->findCategories();
@@ -255,7 +260,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 } elseif (!$this->blnUpdateCache) {
                     // Only generate options if we do not reload anyway
 
-                    if (empty($arrValues)) {
+                    if (0 === count($arrValues)) {
                         continue;
                     }
 
@@ -282,7 +287,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                             unset($arrWidget['options'][$k]);
                             continue;
 
-                        } elseif (!in_array($option['value'], $arrValues) || $option['value'] == '-') {
+                        } elseif ('-' === $option['value'] || !in_array($option['value'], $arrValues)) {
                             // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
 
                             unset($arrWidget['options'][$k]);
@@ -309,7 +314,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 }
             }
 
-            if (!empty($arrFilters)) {
+            if (0 !== count($arrFilters)) {
                 $this->Template->hasFilters    = true;
                 $this->Template->filterOptions = $arrFilters;
             }
@@ -323,7 +328,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $this->Template->hasSorting = false;
 
-        if (!empty($this->iso_sortingFields)) {
+        if (0 !== count($this->iso_sortingFields)) {
             $arrOptions = array();
 
             // Cache new request value
@@ -333,7 +338,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields)) {
                 Isotope::getRequestCache()->setSortingForModule(
                     $sortingField,
-                    ($sortingDirection == 'DESC' ? Sort::descending() : Sort::ascending()),
+                    ('DESC' === $sortingDirection ? Sort::descending() : Sort::ascending()),
                     $this->id
                 );
 
@@ -360,15 +365,15 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $objSorting = $first == $field ? Isotope::getRequestCache()->getSortingForModule($field, $this->id) : null;
 
                     $arrOptions[] = array(
-                        'label'   => (Format::dcaLabel('tl_iso_product', $field) . ', ' . $asc),
+                        'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $asc,
                         'value'   => $field . ':ASC',
-                        'default' => ((null !== $objSorting && $objSorting->isAscending()) ? '1' : ''),
+                        'default' => (null !== $objSorting && $objSorting->isAscending()) ? '1' : '',
                     );
 
                     $arrOptions[] = array(
-                        'label'   => (Format::dcaLabel('tl_iso_product', $field) . ', ' . $desc),
+                        'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $desc,
                         'value'   => $field . ':DESC',
-                        'default' => ((null !== $objSorting && $objSorting->isDescending()) ? '1' : ''),
+                        'default' => (null !== $objSorting && $objSorting->isDescending()) ? '1' : '',
                     );
                 }
             }
@@ -413,7 +418,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $arrOptions[] = array(
                         'label'   => $limit,
                         'value'   => $limit,
-                        'default' => ($objLimit->equals($limit) ? '1' : ''),
+                        'default' => $objLimit->equals($limit) ? '1' : '',
                     );
                 }
 

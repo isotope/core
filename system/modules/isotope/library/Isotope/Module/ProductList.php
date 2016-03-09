@@ -52,10 +52,7 @@ class ProductList extends Module
     protected $blnCacheProducts = true;
 
     /**
-     * Constructor.
-     *
-     * @param object $objModule
-     * @param string $strColumn
+     * @inheritdoc
      */
     public function __construct($objModule, $strColumn = 'main')
     {
@@ -79,7 +76,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             /** @var \BackendTemplate|object $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
@@ -124,7 +121,7 @@ class ProductList extends Module
     {
         // return message if no filter is set
         if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
-            $this->Template->message  = $this->replaceInsertTags($this->iso_noFilter);
+            $this->Template->message  = \Controller::replaceInsertTags($this->iso_noFilter);
             $this->Template->type     = 'noFilter';
             $this->Template->products = array();
 
@@ -317,9 +314,9 @@ class ProductList extends Module
         }
 
         // Apply new/old product filter
-        if ($this->iso_newFilter == 'show_new') {
+        if ('show_new' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($this->iso_newFilter == 'show_old') {
+        } elseif ('show_old' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
@@ -334,7 +331,7 @@ class ProductList extends Module
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ('DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending());
             $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
@@ -452,7 +449,7 @@ class ProductList extends Module
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ('DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending());
             $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
@@ -487,7 +484,7 @@ class ProductList extends Module
 
         foreach ($arrFilters as $arrConfig) {
             if (in_array($arrConfig['attribute'], $arrFields)
-                && ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+                && ('=' === $arrConfig['operator'] || '==' === $arrConfig['operator'] || 'eq' === $arrConfig['operator'])
             ) {
                 $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
@@ -533,7 +530,7 @@ class ProductList extends Module
         ;
 
         // Find
-        if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
+        if ('show_new' === $this->iso_newFilter || 'show_old' === $this->iso_newFilter) {
             $added = \Database::getInstance()
                 ->execute("
                     SELECT MIN(dateAdded)
