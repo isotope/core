@@ -54,7 +54,17 @@ class Price extends \Backend
 
         if (1 === $current->numRows) {
             $data = deserialize($current->data);
-            $data['price'] = sprintf('%s (%s)', $arrData['prices'][0]['tier_values'], $objPrices->getRelated('tax_class')->name);
+
+            if (empty($arrData['prices'])) {
+                $data['price'] = '';
+            } elseif (null === $objPrices->getRelated('tax_class')) {
+                $data['price'] = $arrData['prices'][0]['tier_values'];
+            } else {
+                $data['price'] = sprintf(
+                    '%s (%s)',
+                    $arrData['prices'][0]['tier_values'], $objPrices->getRelated('tax_class')->name
+                );
+            }
 
             \Database::getInstance()
                      ->prepare("UPDATE tl_version SET data=? WHERE id=?")

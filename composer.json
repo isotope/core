@@ -16,8 +16,8 @@
     ],
     "require":{
         "php":">=5.3.2",
-        "contao/core":">=3.5.2,<5.0",
-        "contao-community-alliance/composer-plugin":"2.*",
+        "contao/core-bundle":"^3.5.2 || ~4.1",
+        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "terminal42/contao-conditionalselectmenu":"~3.0",
         "terminal42/contao-namespace-class-loader":"~1.0",
         "terminal42/dcawizard":"~2.3",
