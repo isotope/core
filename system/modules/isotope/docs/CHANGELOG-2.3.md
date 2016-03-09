@@ -11,6 +11,7 @@ Version 2.3.4-stable (2016-??-??)
 - Potential backend error message when saving prices
 - Issue when inheriting mandatory fields in the backend (#1600)
 - Weekly report for first weeks of the year did not work as expected (#1610)
+- Product filter did not support multiple choice attributes (##1538)
 
 
 Version 2.3.3-stable (2016-01-27)

@@ -21,6 +21,7 @@ use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
+use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
@@ -238,9 +239,15 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 );
 
                 if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
+                    if ($this->isCsv($strField)) {
+                        $filter = CsvFilter::attribute($strField)->contains($arrInput[$strField]);
+                    } else {
+                        $filter = Filter::attribute($strField)->isEqualTo($arrInput[$strField]);
+                    }
+
                     Isotope::getRequestCache()->setFilterForModule(
                         $strField,
-                        Filter::attribute($strField)->isEqualTo($arrInput[$strField]),
+                        $filter,
                         $this->id
                     );
 

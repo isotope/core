@@ -166,7 +166,7 @@ abstract class AbstractProductFilter extends Module
             }
         }
 
-        return $values;
+        return array_unique($values);
     }
 
     /**
