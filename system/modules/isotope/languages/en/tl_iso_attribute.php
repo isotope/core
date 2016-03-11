@@ -56,6 +56,8 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search']               = array('Back
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter']               = array('Frontend filterable', 'Can this attribute be used in a frontend filter?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_search']               = array('Frontend searchable', 'Should the search engine look in this field for search terms?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['datepicker']              = array('Date picker', 'Show a date picker for this field.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['chunking']                = array('Enable chunking', 'Enable the file chunking. It is useful to upload big files.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['chunkSize']               = array('Chunk size in bytes', 'Please enter the chunk size in bytes (1MB = 1000000 bytes).');
 
 /**
  * Reference

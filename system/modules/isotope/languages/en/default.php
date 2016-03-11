@@ -292,6 +292,7 @@ $GLOBALS['TL_LANG']['ATTR']['fileTree']             = array('File tree', 'A file
 $GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['TL_LANG']['ATTR']['upload']               = array('File upload', 'A single-line input field to upload a local file to the server.');
 $GLOBALS['TL_LANG']['ATTR']['media']                = array('Video/Audio', 'Generates a video or audio player.');
+$GLOBALS['TL_LANG']['ATTR']['fineUploader']         = array('Fine Uploader', 'A javascript file uploader to upload a local file to the server.');
 
 /**
  * Currencies
