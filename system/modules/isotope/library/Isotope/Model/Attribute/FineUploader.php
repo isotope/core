@@ -12,7 +12,12 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Files;
+use Contao\Folder;
+use Contao\Widget;
+use Haste\Util\FileUpload;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
@@ -55,8 +60,8 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         // An upload field is always customer defined
         $arrData['fields'][$this->field_name]['attributes']['customer_defined'] = true;
 
-        $arrData['fields'][$this->field_name]['eval']['storeFile'] = true;
-        $arrData['fields'][$this->field_name]['eval']['uploadFolder'] = 'isotope/uploads';
+        $arrData['fields'][$this->field_name]['eval']['storeFile'] = false;
+        $arrData['fields'][$this->field_name]['save_callback'][] = 'processFiles';
         $arrData['fields'][$this->field_name]['eval']['doNotOverwrite'] = true;
         $arrData['fields'][$this->field_name]['eval']['useHomeDir'] = false;
         $arrData['fields'][$this->field_name]['eval']['addToDbafs'] = false;
@@ -85,5 +90,36 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         }
 
         return substr(basename($value), 9);
+    }
+
+    /**
+     * @param mixed          $value
+     * @param IsotopeProduct $product
+     * @param Widget         $widget
+     *
+     * @return mixed
+     */
+    public function processFiles($value, IsotopeProduct $product, Widget $widget)
+    {
+        $files = [];
+
+        foreach ((array) $value as $temp) {
+            $file = basename($temp);
+
+            // Make sure the upload folder exists and is protected
+            $folder = new Folder('isotope/uploads');
+            $folder->protect();
+
+            $file = substr(md5_file(TL_ROOT . '/' . $temp), 0, 8) . '-' . $file;
+            $file = FileUpload::getFileName($file, $folder->path);
+            $file = $folder->path . '/' . $file;
+
+            Files::getInstance()->rename($temp, $file);
+            Files::getInstance()->chmod($file, \Config::get('defaultFileChmod'));
+
+            $files[] = $file;
+        }
+
+        return is_array($value) ? $files : $files[0];
     }
 }
