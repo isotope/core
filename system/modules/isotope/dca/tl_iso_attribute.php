@@ -364,7 +364,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['multiple'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'size' => array

@@ -12,9 +12,7 @@
 
 namespace Isotope\Model\Attribute;
 
-use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
@@ -57,14 +55,19 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         // An upload field is always customer defined
         $arrData['fields'][$this->field_name]['attributes']['customer_defined'] = true;
 
-        // Files are stored by Isotope
-        unset($arrData['fields'][$this->field_name]['attributes']['storeFile']);
-        $arrData['fields'][$this->field_name]['save_callback'][] = 'processFiles';
-
         $arrData['fields'][$this->field_name]['eval']['storeFile'] = true;
+        $arrData['fields'][$this->field_name]['eval']['uploadFolder'] = 'isotope/uploads';
         $arrData['fields'][$this->field_name]['eval']['doNotOverwrite'] = true;
         $arrData['fields'][$this->field_name]['eval']['useHomeDir'] = false;
         $arrData['fields'][$this->field_name]['eval']['addToDbafs'] = false;
+
+        if ($this->multiple) {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+            $arrData['fields'][$this->field_name]['eval']['uploaderLimit'] = (int) $this->size;
+        } else {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
+            $arrData['fields'][$this->field_name]['eval']['uploaderLimit'] = 1;
+        }
     }
 
     /**
@@ -82,17 +85,5 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         }
 
         return substr(basename($value), 9);
-    }
-
-    /**
-     * @param mixed          $value
-     * @param IsotopeProduct $product
-     * @param Widget         $widget
-     *
-     * @return mixed
-     */
-    public function processFiles($value, IsotopeProduct $product, Widget $widget)
-    {
-        return $value;
     }
 }
