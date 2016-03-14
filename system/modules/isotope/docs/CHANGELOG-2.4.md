@@ -11,3 +11,4 @@ Version 2.4.0-beta1 (201?-??-??)
 - Added hook to modify fields in checkout process
 - Added option to edit products that were added to the cart
 - Added config setting to define an order details module for backend view (#1578)
+- Enable module tables in Isotope setup after all modules are loaded (#1624)
