@@ -38,4 +38,7 @@ if (TL_MODE == 'BE') {
 
     // Adjust the product groups manager
     $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
+
+    // Enable the module tables in setup
+    $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\Backend', 'enableModuleTablesInSetup');
 }
