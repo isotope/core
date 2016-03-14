@@ -243,6 +243,16 @@ class AddressBook extends Module
                     }
                 }
 
+                // HOOK: address data has been updated
+                if (isset($GLOBALS['ISO_HOOKS']['updateAddressData'])
+                    && is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
+                ) {
+                    foreach ($GLOBALS['ISO_HOOKS']['updateAddressData'] as $callback) {
+                        $objCallback = \System::importStatic($callback[0]);
+                        $objCallback->{$callback[1]}($objAddress, $arrOldAddress, $this);
+                    }
+                }
+
                 // Send notifications
                 $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
 
