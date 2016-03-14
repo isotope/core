@@ -181,6 +181,43 @@ class Callback extends Permission
     }
 
     /**
+     * Throw an error if the price attribute appears in attributes and variant_attributes field
+     *
+     * @param string         $value
+     * @param \DataContainer $dc
+     *
+     * @return string
+     *
+     * @throws \LogicException
+     */
+    public function validatePriceAttribute($value, \DataContainer $dc)
+    {
+        if (!$dc->activeRecord->variants) {
+            return $value;
+        }
+
+        foreach (deserialize($dc->activeRecord->attributes, true) as $attribute) {
+            if ($attribute['name'] === 'price') {
+                if ($attribute['enabled']) {
+                    foreach (deserialize($value, true) as $variantAttribute) {
+                        if ($variantAttribute['name'] === 'price') {
+                            if ($variantAttribute['enabled']) {
+                                throw new \LogicException($GLOBALS['TL_LANG']['tl_iso_producttype']['duplicatePriceAttribute']);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * Make sure at least one variant attribute is enabled
      *
      * @param mixed $varValue
