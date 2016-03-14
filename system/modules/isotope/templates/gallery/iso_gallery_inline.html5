@@ -1,9 +1,15 @@
 <?php if ($this->type == 'gallery'): ?>
 <figure data-type="gallery" data-uid="g<?php echo $this->uid; ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
 <a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>" onclick="return Isotope.inlineGallery(this, 'g<?php echo $this->uid; ?>');">
-<img src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?><?php if ($this->class) echo ' class="'.$this->class.'"'; ?>>
+<?php $this->insert('picture_default', $this->picture); ?>
 </a>
 </figure>
 <?php else: ?>
-<figure class="image_container"><img id="g<?php echo $this->uid; ?>" src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>"></figure>
+<figure class="image_container">
+    <?php
+    $picture = $this->picture;
+    $picture['attributes'] = trim($picture['attributes'] . ' id="g' . $this->uid . '"');
+    $this->insert('picture_default', $picture);
+    ?>
+</figure>
 <?php endif; ?>

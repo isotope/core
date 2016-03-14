@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options'               => \System::getImageSizes(),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options'               => \System::getImageSizes(),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -208,7 +208,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options'               => \System::getImageSizes(),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -218,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options'               => \System::getImageSizes(),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
