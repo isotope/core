@@ -177,7 +177,7 @@ class Standard extends Document implements IsotopeDocument
         // Make image paths absolute
         $strBuffer = preg_replace_callback('@(src=")([^"]+)(")@', function ($args) {
             if (preg_match('@^(http://|https://)@', $args[2])) {
-                return $args[2];
+                return $args[1] . $args[2] . $args[3];
             }
             return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
         }, $strBuffer);
