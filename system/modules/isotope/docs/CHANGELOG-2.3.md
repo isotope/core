@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.3.5-stable (????-??-??)
+---------------------------------
+
+### Fixed
+- The external image paths in documents did not work (#1616)
+
+
 Version 2.3.4-stable (2016-03-09)
 ---------------------------------
 
