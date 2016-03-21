@@ -123,48 +123,35 @@ class CartAddress extends Module
         $objCart = Isotope::getCart();
 
         // Save the data
-        if ($objForm->isSubmitted()) {
-            $arrOldAddress = $objAddress->row();
+        if ($objForm->validate()) {
 
-            if ($objForm->validate()) {
-                if (!$objCart->id) {
-                    $objCart->save();
-                }
-
-                $objAddress->tstamp = time();
-                $objAddress->pid    = $objCart->id;
-                $objAddress->save();
-
-                // Call onsubmit_callback
-                if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
-                    foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->{$callback[1]}($objAddress);
-                    }
-                }
-
-                // HOOK: address data has been updated
-                if (isset($GLOBALS['ISO_HOOKS']['updateAddressData'])
-                    && is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
-                ) {
-                    foreach ($GLOBALS['ISO_HOOKS']['updateAddressData'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->{$callback[1]}($objAddress, $arrOldAddress, $this);
-                    }
-                }
-
-                // Set the billing address
-                if ($useBilling) {
-                    $objCart->setBillingAddress($objAddress);
-                }
-
-                // Set the shipping address
-                if (in_array('shipping', $this->iso_address)) {
-                    $objCart->setShippingAddress($objAddress);
-                }
-
-                $this->jumpToOrReload($this->jumpTo);
+            if (!$objCart->id) {
+                $objCart->save();
             }
+
+            $objAddress->tstamp = time();
+            $objAddress->pid = $objCart->id;
+            $objAddress->save();
+
+            // Call onsubmit_callback
+            if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
+                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback->{$callback[1]}($objAddress);
+                }
+            }
+
+            // Set the billing address
+            if ($useBilling) {
+                $objCart->setBillingAddress($objAddress);
+            }
+
+            // Set the shipping address
+            if (in_array('shipping', $this->iso_address)) {
+                $objCart->setShippingAddress($objAddress);
+            }
+
+            $this->jumpToOrReload($this->jumpTo);
         }
 
         $objForm->addToTemplate($this->Template);
