@@ -11,22 +11,25 @@
  */
 
 
-/**
- * Register PSR-0 namespace
- */
-NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
-NamespaceClassLoader::add('UnitedPrototype', 'system/modules/isotope/library');
+if (class_exists('NamespaceClassLoader')) {
+    /**
+     * Register PSR-0 namespace
+     */
+    NamespaceClassLoader::add('Isotope', 'system/modules/isotope/library');
+    NamespaceClassLoader::add('UnitedPrototype', 'system/modules/isotope/library');
 
-
-/**
- * Register classes outside the namespace folder
- */
-NamespaceClassLoader::addClassMap(array
-(
-    // Drivers
-    'DC_ProductData'                    => 'system/modules/isotope/drivers/DC_ProductData.php',
-    'DC_TablePageId'                    => 'system/modules/isotope/drivers/DC_TablePageId.php',
-));
+    /**
+     * Register classes outside the namespace folder
+     */
+    NamespaceClassLoader::addClassMap(
+        array
+        (
+            // Drivers
+            'DC_ProductData' => 'system/modules/isotope/drivers/DC_ProductData.php',
+            'DC_TablePageId' => 'system/modules/isotope/drivers/DC_TablePageId.php',
+        )
+    );
+}
 
 
 /**

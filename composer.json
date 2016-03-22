@@ -19,7 +19,6 @@
         "contao/core-bundle":"^3.5.2 || ~4.1",
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "terminal42/contao-conditionalselectmenu":"~3.0",
-        "terminal42/contao-namespace-class-loader":"~1.0",
         "terminal42/dcawizard":"~2.3",
         "codefog/contao-haste":"~4.8",
         "menatwork/contao-multicolumnwizard": "~3.2",
@@ -29,6 +28,21 @@
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
+    },
+    "autoload": {
+        "psr-0": {
+            "Isotope\\": [
+                "system/modules/isotope/library",
+                "system/modules/isotope_reports/library",
+                "system/modules/isotope_rules/library"
+            ],
+            "UnitedPrototype\\": [
+                "system/modules/isotope/library"
+            ]
+        },
+        "classmap": [
+            "system/modules/isotope/drivers/"
+        ]
     },
     "extra":{
         "branch-alias": {
