@@ -23,7 +23,7 @@
         "terminal42/dcawizard":"~2.3",
         "codefog/contao-haste":"~4.8",
         "menatwork/contao-multicolumnwizard": "~3.2",
-        "terminal42/contao-tablelookupwizard":"~2.0",
+        "terminal42/contao-tablelookupwizard":"~3.0",
         "terminal42/notification_center":"~1.0",
         "terminal42/dc_multilingual":"~2.0"
     },
