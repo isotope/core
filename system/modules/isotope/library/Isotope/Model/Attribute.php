@@ -238,7 +238,8 @@ abstract class Attribute extends TypeAgent
                     break;
 
                 case 'foreignKey':
-                    $arrKey     = explode('.', $this->foreignKey, 2);
+                    $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
+                    $arrKey     = explode('.', $foreignKey, 2);
                     $arrOptions = \Database::getInstance()
                         ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
                         ->fetchAllAssoc()
