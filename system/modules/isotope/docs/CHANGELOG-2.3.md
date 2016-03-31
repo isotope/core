@@ -7,6 +7,7 @@ Version 2.3.5-stable (????-??-??)
 ### Fixed
 - The external image paths in documents did not work (#1616)
 - Installation on Contao 4 failed due to invalid dependency (#1633)
+- Problem with custom media attributes when upgrading from Isotope 2.0 (#1632)
 
 
 Version 2.3.4-stable (2016-03-09)
