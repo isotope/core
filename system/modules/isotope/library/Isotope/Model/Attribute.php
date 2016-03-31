@@ -166,7 +166,7 @@ abstract class Attribute extends TypeAgent
 
         $this->field_name  = $strName;
         $this->type        = array_search(get_called_class(), static::getModelTypes());
-        $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ? : $strName);
+        $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
         $this->be_search   = $arrField['search'] ? '1' : '';
@@ -192,7 +192,7 @@ abstract class Attribute extends TypeAgent
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if (!$this->isCustomerDefined()) {
-            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL'], true);
         }
 
         // Support numeric paths (fileTree)
@@ -225,10 +225,9 @@ abstract class Attribute extends TypeAgent
         }
 
         // Prepare options
-        if ($this->optionsSource == 'foreignKey' && !$this->isVariantOption()) {
+        if ('foreignKey' === $this->optionsSource && !$this->isVariantOption()) {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
-            unset($arrField['options']);
-            unset($arrField['reference']);
+            unset($arrField['options'], $arrField['reference']);
 
         } else {
             $arrOptions = null;
@@ -272,8 +271,7 @@ abstract class Attribute extends TypeAgent
 
                 default:
                     if ($this instanceof IsotopeAttributeWithOptions) {
-                        unset($arrField['options']);
-                        unset($arrField['reference']);
+                        unset($arrField['options'], $arrField['reference']);
                     }
             }
 
@@ -303,8 +301,7 @@ abstract class Attribute extends TypeAgent
             }
         }
 
-        unset($arrField['eval']['foreignKey']);
-        unset($arrField['eval']['options']);
+        unset($arrField['eval']['foreignKey'], $arrField['eval']['options']);
 
         // Add field to the current DCA table
         $arrData['fields'][$this->field_name] = $arrField;
@@ -337,7 +334,7 @@ abstract class Attribute extends TypeAgent
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
-        if (empty($arrIds)) {
+        if (0 === count($arrIds)) {
             return array();
         }
 
@@ -352,9 +349,9 @@ abstract class Attribute extends TypeAgent
                 $strWhere .= " AND $field=?";
             }
 
-            $this->arrOptionsForVariants[$strKey] = \Database::getInstance()->prepare("
-                SELECT DISTINCT " . $this->field_name . " FROM tl_iso_product WHERE id IN (" . implode(',', $arrIds) . ")
-                " . $strWhere
+            $this->arrOptionsForVariants[$strKey] = \Database::getInstance()->prepare('
+                SELECT DISTINCT ' . $this->field_name . ' FROM tl_iso_product WHERE id IN (' . implode(',', $arrIds) . ')
+                ' . $strWhere
             )->execute($arrOptions)->fetchEach($this->field_name);
         }
 
@@ -397,16 +394,16 @@ abstract class Attribute extends TypeAgent
         if ($arrOptions['noHtml']) {
             $result = array();
 
-            foreach ($varValue as $v) {
-                $result[$v] = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+            foreach ($varValue as $v1) {
+                $result[$v1] = Format::dcaValue('tl_iso_product', $this->field_name, $v1);
             }
 
             return $result;
         }
 
         // Generate ul/li listing for simple arrays
-        foreach ($varValue as &$v) {
-            $v = Format::dcaValue('tl_iso_product', $this->field_name, $v);
+        foreach ($varValue as &$v2) {
+            $v2 = Format::dcaValue('tl_iso_product', $this->field_name, $v2);
         }
 
         return $this->generateList($varValue);
@@ -501,7 +498,7 @@ abstract class Attribute extends TypeAgent
                     continue;
                 }
 
-                if ($arrFormat[$name]['rgxp'] == 'price') {
+                if ('price' === $arrFormat[$name]['rgxp']) {
                     $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
