@@ -35,7 +35,6 @@ class Callback extends \Backend
         );
     }
 
-
     /**
      * Return the page view button
      * @param string
