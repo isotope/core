@@ -288,6 +288,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
                 'tl_class'          =>'clr',
                 'columnsCallback'   => array('Isotope\Backend\ProductType\AttributeWizard', 'getColumns'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
+                'uniqueAttributes'  => ['price'],
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array

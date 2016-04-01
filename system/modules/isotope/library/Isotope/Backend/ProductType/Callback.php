@@ -183,13 +183,16 @@ class Callback extends Permission
     /**
      * Make sure at least one variant attribute is enabled
      *
-     * @param mixed $varValue
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
      *
      * @return mixed
      * @throws \UnderflowException
      */
-    public function validateVariantAttributes($varValue)
+    public function validateVariantAttributes($varValue, \DataContainer $dc)
     {
+        $this->validateVariantUniqueAttributes($varValue, $dc);
+
         \Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
@@ -222,5 +225,51 @@ class Callback extends Permission
         }
 
         return $varValue;
+    }
+
+    /**
+     * Check if the unique attributes appear in the both product type attributes and variant attributes
+     *
+     * @param string         $value
+     * @param \DataContainer $dc
+     *
+     * @throws \LogicException
+     */
+    protected function validateVariantUniqueAttributes($value, \DataContainer $dc)
+    {
+        $unique = $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variant_attributes']['eval']['uniqueAttributes'];
+
+        if (!is_array($unique) || count($unique) === 0) {
+            return;
+        }
+
+        $error = [];
+
+        foreach ($unique as $uniqueAttribute) {
+            foreach (deserialize($dc->activeRecord->attributes, true) as $attribute) {
+                if ($attribute['name'] === $uniqueAttribute) {
+                    if ($attribute['enabled']) {
+                        foreach (deserialize($value, true) as $variantAttribute) {
+                            if ($variantAttribute['name'] === $uniqueAttribute) {
+                                if ($variantAttribute['enabled']) {
+                                    $error[] = $uniqueAttribute;
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        if (count($error) > 0) {
+            throw new \LogicException(sprintf(
+                $GLOBALS['TL_LANG']['tl_iso_producttype']['duplicatePriceAttribute'],
+                implode(', ', $error)
+            ));
+        }
     }
 }
