@@ -846,6 +846,32 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
+     * Return list of singular fields
+     * Singular fields must not be enabled in product AND variant configuration.
+     *
+     * @return array
+     */
+    public static function getSingularFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            \Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['singular']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
      * Return list of fields that must be inherited by variants
      *
      * @return array

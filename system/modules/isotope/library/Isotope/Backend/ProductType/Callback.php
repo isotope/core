@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Haste\Util\Format;
 use Isotope\Backend\Permission;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
@@ -187,12 +188,12 @@ class Callback extends Permission
      * @param \DataContainer $dc
      *
      * @return mixed
+     *
      * @throws \UnderflowException
+     * @throws \LogicException
      */
     public function validateVariantAttributes($varValue, \DataContainer $dc)
     {
-        $this->validateVariantUniqueAttributes($varValue, $dc);
-
         \Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
@@ -228,31 +229,35 @@ class Callback extends Permission
     }
 
     /**
-     * Check if the unique attributes appear in the both product type attributes and variant attributes
+     * Check if singular attributes appear in the both product type attributes and variant attributes
      *
-     * @param string         $value
+     * @param mixed          $value
      * @param \DataContainer $dc
+     *
+     * @return mixed
      *
      * @throws \LogicException
      */
-    protected function validateVariantUniqueAttributes($value, \DataContainer $dc)
+    public function validateSingularAttributes($value, \DataContainer $dc)
     {
-        $unique = $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variant_attributes']['eval']['uniqueAttributes'];
+        $productFields  = deserialize($dc->activeRecord->attributes);
+        $variantFields  = deserialize($value);
+        $singularFields = Attribute::getSingularFields();
 
-        if (!is_array($unique) || count($unique) === 0) {
-            return;
+        if (!is_array($productFields) || !is_array($variantFields) || 0 === count($singularFields)) {
+            return $value;
         }
 
         $error = [];
 
-        foreach ($unique as $uniqueAttribute) {
-            foreach (deserialize($dc->activeRecord->attributes, true) as $attribute) {
-                if ($attribute['name'] === $uniqueAttribute) {
-                    if ($attribute['enabled']) {
-                        foreach (deserialize($value, true) as $variantAttribute) {
-                            if ($variantAttribute['name'] === $uniqueAttribute) {
-                                if ($variantAttribute['enabled']) {
-                                    $error[] = $uniqueAttribute;
+        foreach ($singularFields as $singular) {
+            foreach ($productFields as $product) {
+                if ($product['name'] === $singular) {
+                    if ($product['enabled']) {
+                        foreach ($variantFields as $variant) {
+                            if ($variant['name'] === $singular) {
+                                if ($variant['enabled']) {
+                                    $error[] = Format::dcaLabel('tl_iso_product', $singular);
                                 }
 
                                 break;
@@ -267,9 +272,11 @@ class Callback extends Permission
 
         if (count($error) > 0) {
             throw new \LogicException(sprintf(
-                $GLOBALS['TL_LANG']['tl_iso_producttype']['duplicatePriceAttribute'],
+                $GLOBALS['TL_LANG']['tl_iso_producttype']['singularAttributes'],
                 implode(', ', $error)
             ));
         }
+
+        return $value;
     }
 }
