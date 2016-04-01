@@ -161,7 +161,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return true;
         }
 
-        if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable'])
+            && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $available   = $objCallback->{$callback[1]}($this, $objCollection);
@@ -178,7 +180,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         // Show to guests only
-        if ($this->arrData['guests'] && $objCollection->member > 0 && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
+        if ($this->arrData['guests'] && $objCollection->member > 0
+            && BE_USER_LOGGED_IN !== true
+            && !$this->arrData['protected']
+        ) {
             return false;
         }
 
@@ -191,7 +196,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $groups       = deserialize($this->arrData['groups']);
             $memberGroups = deserialize($objCollection->getRelated('member')->groups);
 
-            if (!is_array($groups) || empty($groups) || !is_array($memberGroups) || empty($memberGroups) || !count(array_intersect($groups, $memberGroups))) {
+            if (!is_array($groups)
+                || empty($groups)
+                || !is_array($memberGroups)
+                || empty($memberGroups)
+                || !count(array_intersect($groups, $memberGroups))
+            ) {
                 return false;
             }
         }
@@ -202,7 +212,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice($objCollection) && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
+        if (null === $this->getPrice($objCollection)
+            && (in_array('price', $this->getAttributes(), true) || $this->hasVariantPrices())) {
             return false;
         }
 
@@ -259,7 +270,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function hasVariantPrices()
     {
-        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes())) {
+        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes(), true)) {
             return true;
         }
 
@@ -414,11 +425,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getVariantAttributes();
-                $blnHasProtected = in_array('protected', $arrAttributes);
-                $blnHasGroups    = in_array('groups', $arrAttributes);
+                $blnHasProtected = in_array('protected', $arrAttributes, true);
+                $blnHasGroups    = in_array('groups', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes)) {
+                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes, true)) {
                     $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ")";
                 } // Hide protected if no user is logged in
                 elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
@@ -442,7 +453,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
 
             // Only show variants where a price is available
-            if (!empty($this->arrVariantIds) && $this->hasVariantPrices()) {
+            if (0 !== count($this->arrVariantIds) && $this->hasVariantPrices()) {
                 if ($this->hasAdvancedPrices()) {
                     $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
                 } else {
@@ -478,7 +489,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 $query = \Model\QueryBuilder::find($options);
                 $values = (array) $options['value'];
             } else {
-                $query  = 'SELECT page_id FROM ' . ProductCategory::getTable() . ' WHERE pid=?';
+                $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
                 $values = array($this->getProductId());
             }
 
@@ -1136,7 +1147,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $strUrl = '/' . ($this->arrData['alias'] ?: $this->getProductId());
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strUrl = '/product' . $strUrl;
         }
 

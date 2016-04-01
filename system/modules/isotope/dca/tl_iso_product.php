@@ -607,8 +607,10 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
 if (\Input::get('id')) {
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
-    unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['import']);
-    unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['groups']);
+    unset(
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['import'],
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['groups']
+    );
 } else {
     unset($GLOBALS['TL_DCA']['tl_iso_product']['list']['global_operations']['generate']);
 }
