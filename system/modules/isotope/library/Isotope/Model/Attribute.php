@@ -768,7 +768,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return list of fixed fields
+     * Return list of variant fixed fields
      * Fixed fields cannot be disabled in product type config
      *
      * @return array
@@ -785,6 +785,58 @@ abstract class Attribute extends TypeAgent
 
             foreach ($arrDCA as $field => $config) {
                 if ($config['attributes']['variant_fixed']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of excluded fields
+     * Excluded fields cannot be enabled in product type config
+     *
+     * @return array
+     */
+    public static function getExcludedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            \Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['excluded']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of variant excluded fields
+     * Excluded fields cannot be disabled in product type config
+     *
+     * @return array
+     */
+    public static function getVariantExcludedFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            \Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['variant_excluded']) {
                     $arrFields[] = $field;
                 }
             }
