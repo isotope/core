@@ -58,3 +58,4 @@ $GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['tl_class']    = array('
 $GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['mandatory']   = array('Mandatory', 'You can override the default mandatory-ness here.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default']     = 'Default';
 $GLOBALS['TL_LANG']['tl_iso_producttype']['noVariantAttributes']       = 'You must select at least one variant option (one of those: %s).';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['singularAttributes']        = 'Attribute(s) "%s" cannot be enabled for both attributes and variant attributes.';

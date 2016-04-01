@@ -297,6 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'save_callback'         => array
             (
                 array('Isotope\Backend\ProductType\Callback', 'validateVariantAttributes'),
+                array('Isotope\Backend\ProductType\Callback', 'validateSingularAttributes'),
                 array('Isotope\Backend\ProductType\AttributeWizard', 'save'),
             ),
         ),

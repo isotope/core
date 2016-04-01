@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Haste\Util\Format;
 use Isotope\Backend\Permission;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
@@ -183,12 +184,15 @@ class Callback extends Permission
     /**
      * Make sure at least one variant attribute is enabled
      *
-     * @param mixed $varValue
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
      *
      * @return mixed
+     *
      * @throws \UnderflowException
+     * @throws \LogicException
      */
-    public function validateVariantAttributes($varValue)
+    public function validateVariantAttributes($varValue, \DataContainer $dc)
     {
         \Controller::loadDataContainer('tl_iso_product');
 
@@ -222,5 +226,57 @@ class Callback extends Permission
         }
 
         return $varValue;
+    }
+
+    /**
+     * Check if singular attributes appear in the both product type attributes and variant attributes
+     *
+     * @param mixed          $value
+     * @param \DataContainer $dc
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     */
+    public function validateSingularAttributes($value, \DataContainer $dc)
+    {
+        $productFields  = deserialize($dc->activeRecord->attributes);
+        $variantFields  = deserialize($value);
+        $singularFields = Attribute::getSingularFields();
+
+        if (!is_array($productFields) || !is_array($variantFields) || 0 === count($singularFields)) {
+            return $value;
+        }
+
+        $error = [];
+
+        foreach ($singularFields as $singular) {
+            foreach ($productFields as $product) {
+                if ($product['name'] === $singular) {
+                    if ($product['enabled']) {
+                        foreach ($variantFields as $variant) {
+                            if ($variant['name'] === $singular) {
+                                if ($variant['enabled']) {
+                                    $error[] = Format::dcaLabel('tl_iso_product', $singular);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        if (count($error) > 0) {
+            throw new \LogicException(sprintf(
+                $GLOBALS['TL_LANG']['tl_iso_producttype']['singularAttributes'],
+                implode(', ', $error)
+            ));
+        }
+
+        return $value;
     }
 }

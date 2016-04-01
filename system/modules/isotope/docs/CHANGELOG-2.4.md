@@ -13,4 +13,5 @@ Version 2.4.0-beta1 (201?-??-??)
 - Added option to edit products that were added to the cart
 - Added config setting to define an order details module for backend view (#1578)
 - Enable module tables in Isotope setup after all modules are loaded (#1624)
+- Validate the price attribute in product type against duplication (#1542)
 - Added hook triggered when address data is updated (#1473)

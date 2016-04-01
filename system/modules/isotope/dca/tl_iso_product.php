@@ -360,7 +360,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'sorting'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'unique'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'general_legend', 'fe_sorting'=>true, 'fe_search'=>true),
+            'attributes'            => array('legend'=>'general_legend', 'fe_sorting'=>true, 'fe_search'=>true, 'singular'=>true),
             'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'name' => array
@@ -431,7 +431,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'inputType'             => 'timePeriod',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
+            'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'singular'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (
                 array('\Isotope\Backend\Product\Price', 'load'),
