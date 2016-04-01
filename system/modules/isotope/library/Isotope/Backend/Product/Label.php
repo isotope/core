@@ -37,7 +37,7 @@ class Label
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
                 case 'images':
-                    $args[$i] = $this->generateImages($objProduct);
+                    $args[$i] = static::generateImage($objProduct);
                     break;
 
                 case 'name':
@@ -64,7 +64,7 @@ class Label
      *
      * @return string
      */
-    private function generateImages($objProduct)
+    public static function generateImage($objProduct)
     {
         $arrImages = deserialize($objProduct->images);
 
