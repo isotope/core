@@ -27,13 +27,24 @@ class Callback extends \Backend
     {
         $objProduct = Product::findByPk($row['pid']);
 
-        $label = $objProduct->name;
+        $arrImages = deserialize($objProduct->images);
+        $strImageHtml = '';
 
-        if ($objProduct->sku != '') {
-            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProduct->sku . ']</span>';
+        if (is_array($arrImages) && !empty($arrImages)) {
+
+            $strImage = 'isotope/' . strtolower(substr($arrImages[0]['src'], 0, 1)) . '/' . $arrImages[0]['src'];
+
+            if (is_file(TL_ROOT . '/' . $strImage)) {
+
+                $size = @getimagesize(TL_ROOT . '/' . $strImage);
+
+                $strImageHtml = sprintf('<a href="%s" target="_blank" onclick="Backend.openModalImage({\'width\':%s,\'title\':\'%s\',\'url\':\'%s\'});return false"><img src="%s" alt="%s" align="left"></a>',
+                    $strImage, $size[0], str_replace("'", "\\'", $objProduct->name), $strImage,
+                    \Image::get($strImage, 50, 50, 'crop'), $arrImages[0]['alt']);
+            }
         }
 
-        return $label;
+        return $strImageHtml . '<span style="display: block;float: left;margin: 0 0 0 10px;padding: 18px 0;">' . $objProduct->name . '</span>';
     }
 
 
