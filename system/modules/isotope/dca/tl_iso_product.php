@@ -401,7 +401,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr long'),
-            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true, 'variant_excluded'=>true),
             'sql'                   =>  "varchar(255) NOT NULL default ''",
         ),
         'meta_description' => array
@@ -411,7 +411,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'search'                => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:60px', 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true, 'variant_excluded'=>true),
             'sql'                   =>  "text NULL",
         ),
         'meta_keywords' => array
@@ -421,7 +421,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'search'                => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true),
+            'attributes'            => array('legend'=>'meta_legend', 'multilingual'=>true, 'variant_excluded'=>true),
             'sql'                   => "text NULL",
         ),
         'price' => array
