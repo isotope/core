@@ -64,6 +64,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'id'                                    => 'primary',
                 'gid'                                   => 'index',
                 'pid,language'                          => 'index',
+                'language,fallback'                     => 'index',
                 'language,published,start,stop,pid'     => 'index',
                 'start'                                 => 'index',
             )
@@ -183,6 +184,13 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'button_callback'   => function() {
                     return '<br>';
                 }
+            ),
+            'fallback' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['fallback'],
+                'href'              => 'key=fallback',
+                'icon'              => 'featured.gif',
+                'button_callback'   => array('Isotope\Backend\Product\Button', 'forFallbackToggle')
             ),
             'variants' => array
             (
@@ -315,6 +323,19 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array('multiple'=>true),
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "blob NULL",
+        ),
+        'fallback' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['fallback'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('doNotCopy'=>true, 'tl_class'=>'clr'),
+            'attributes'            => array('legend'=>'general_legend', 'variant_fixed'=>true, 'excluded'=>true, 'systemColumn'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('Isotope\Backend\Product\Fallback', 'reset')
+            ),
         ),
         'alias' => array
         (

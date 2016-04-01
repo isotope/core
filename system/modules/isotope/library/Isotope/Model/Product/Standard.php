@@ -306,7 +306,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function getProductId()
     {
-        return (int) $this->pid ? : $this->id;
+        return (int) $this->pid ?: $this->id;
     }
 
     /**
@@ -955,6 +955,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return $this;
         }
 
+        $hasOptions = null;
         $arrOptions = array();
 
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
@@ -973,11 +974,17 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             } else {
 
                 // Abort if any attribute does not have a value, we can't find a variant
-                return $this;
+                $hasOptions = false;
+                break;
             }
         }
 
-        if (!empty($arrOptions) && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
+        $hasOptions = false !== $hasOptions && count($arrOptions) > 0;
+
+        if ($hasOptions && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
+            return $objVariant;
+
+        } elseif (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
             return $objVariant;
         }
 

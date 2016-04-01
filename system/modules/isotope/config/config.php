@@ -28,6 +28,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
+        'fallback'          => array('Isotope\Backend\Product\Fallback', 'setFromUrl'),
     ),
     'iso_orders' => array
     (

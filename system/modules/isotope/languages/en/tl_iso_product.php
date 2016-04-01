@@ -16,6 +16,7 @@
 $GLOBALS['TL_LANG']['tl_iso_product']['id']                        = array('Product ID');
 $GLOBALS['TL_LANG']['tl_iso_product']['pages']                     = array('Categories', 'Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.');
 $GLOBALS['TL_LANG']['tl_iso_product']['type']                      = array('Product type', 'Select your product type. Product types are defined in the store configuration.');
+$GLOBALS['TL_LANG']['tl_iso_product']['fallback']                  = array('Default variant', 'Click here if this variant should be pre-selected by default.');
 $GLOBALS['TL_LANG']['tl_iso_product']['alias']                     = array('Alias', 'You can enter a unique alias for this product. It will be automatically generated from the name if empty.');
 $GLOBALS['TL_LANG']['tl_iso_product']['name']                      = array('Name', 'Please enter the name of this product.');
 $GLOBALS['TL_LANG']['tl_iso_product']['sku']                       = array('SKU', 'Please enter a unique stock keeping unit for this product.');

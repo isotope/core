@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\Product\Standard;
 use Isotope\RequestCache\Filter;
 
 
@@ -298,7 +299,7 @@ abstract class Product extends TypeAgent
      * @param mixed $arrValues
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return \Model\Collection|Product[]
      */
     public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -329,7 +330,7 @@ abstract class Product extends TypeAgent
      * @param array          $arrVariant
      * @param array          $arrOptions
      *
-     * @return \Model|null
+     * @return static|null
      */
     public static function findVariantOfProduct(
         IsotopeProduct $objProduct,
@@ -354,6 +355,38 @@ abstract class Product extends TypeAgent
         );
 
         return static::find($arrOptions);
+    }
+
+    /**
+     * Finds the default variant of a product.
+     *
+     * @param IsotopeProduct|Standard $objProduct
+     * @param array          $arrOptions
+     *
+     * @return static|null
+     */
+    public static function findDefaultVariantOfProduct(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        static $cache;
+
+        if (null === $cache) {
+            $cache = [];
+            $data  = \Database::getInstance()->execute(
+                "SELECT id, pid FROM tl_iso_product WHERE pid>0 AND language='' AND fallback='1'"
+            );
+
+            while ($data->next()) {
+                $cache[$data->pid] = $data->id;
+            }
+        }
+
+        $defaultId = $cache[$objProduct->getProductId()];
+
+        if ($defaultId < 1 || !in_array($defaultId, $objProduct->getVariantIds())) {
+            return null;
+        }
+
+        return static::findByPk($defaultId, $arrOptions);
     }
 
     /**

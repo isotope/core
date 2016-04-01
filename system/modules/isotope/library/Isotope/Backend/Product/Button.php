@@ -149,6 +149,29 @@ class Button extends \Backend
     }
 
     /**
+     * Return the "toggle fallback" button
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
+     */
+    public function forFallbackToggle($row, $href, $label, $title, $icon, $attributes)
+    {
+        if ($row['pid'] < 1) {
+            return '';
+        }
+
+        $icon = $row['fallback'] ? 'featured.gif' : 'featured_.gif';
+
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+    }
+
+    /**
      * Hide variant buttons for product types without variant support
      *
      * @param array  $row
