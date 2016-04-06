@@ -46,6 +46,9 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['storeFile']               = array('Stor
 $GLOBALS['TL_LANG']['tl_iso_attribute']['uploadFolder']            = array('Target folder', 'Please select the target folder from the files directory.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['useHomeDir']              = array('Use home directory', 'Store the file in the home directory if there is an authenticated user.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['doNotOverwrite']          = array('Preserve existing files', 'Add a numeric suffix to the new file if the file name already exists.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutRelocate']        = array('Move file(s) after checkout', 'Re-organize files after an order has been completed.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFolder']    = array('Target folder', 'Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFile']      = array('Target file name', 'Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_sorting']              = array('Add to "Order By" option list', 'This field will be sortable in the listing module provided the attribute is visible to customers.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_filter']               = array('Backend filterable', 'Can this attribute be used in a backend filter?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search']               = array('Backend searchable', 'Should the field be available in the backend search?');
@@ -86,6 +89,21 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['name_desc']               = 'File name 
 $GLOBALS['TL_LANG']['tl_iso_attribute']['date_asc']                = 'Date (ascending)';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['date_desc']               = 'Date (descending)';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['random']                  = 'Random order';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = 'Use these simple tokens to generate a dynamic folder name.';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##document_number##', 'Generated document number for the order.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##order_id##', 'Database ID of the order record.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##order_date##', 'Date of the order as timestamp. Use insert tags <i>{{formatted_datetime::*}}</i> to convert timestamp to formatted date.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##product_id##', 'Database ID of the product.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##product_sku##', 'SKU of the product.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##product_name##', 'Name of the product.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##product_position##', 'Position of the product on the order document, starting from 1.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##attribute_field##', 'Database field name of the attribute.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##attribute_name##', 'Name of the attribute.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_name##', 'Full file name and extension as uploaded by the user.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_target##', 'Full file name and extension as uploaded by the user, but renamed if "Preserve existing files" is enabled and a file with same name exists in target folder. <br><strong>Only available for the file name, not for the folder!</strong>'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##file_extension##', 'The original file extension.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##has_member##', '1 if a member is signed in to the frontend, 0 if not.'];
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][]       = ['##member_*##', 'If a user is logged in, all member fields are available as tokens.'];
 
 /**
  * Buttons

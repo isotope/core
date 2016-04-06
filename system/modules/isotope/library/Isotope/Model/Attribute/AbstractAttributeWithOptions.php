@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Translation;
 
 abstract class AbstractAttributeWithOptions extends Attribute implements IsotopeAttributeWithOptions
@@ -265,6 +266,59 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         return $value;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function generateValue($value, array $options = [])
+    {
+        $product = null;
+
+        if ($options['product'] instanceof IsotopeProduct) {
+            $product = $options['product'];
+        } elseif (($item = $options['item']) instanceof ProductCollectionItem && $item->hasProduct()) {
+            $product = $item->getProduct();
+        }
+
+        if (null === $product) {
+            return parent::generateValue($value, $options);
+        }
+
+        /** @type \Widget $strClass */
+        $strClass = $this->getFrontendWidget();
+        $arrField = $strClass::getAttributesFromDca(
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name],
+            $this->field_name,
+            $value,
+            $this->field_name,
+            'tl_iso_product',
+            $product
+        );
+
+        if (empty($arrField['options']) && is_array($arrField['options'])) {
+            return parent::generateValue($value, $options);
+        }
+
+        $values     = (array) $value;
+        $arrOptions = array_filter(
+            $arrField['options'],
+            function(&$option) use (&$values) {
+                if (($pos = array_search($option['value'], $values)) !== false) {
+                    $option = $option['label'];
+                    unset($values[$pos]);
+
+                    return true;
+                }
+
+                return false;
+            }
+        );
+
+        if (0 !== count($values)) {
+            $arrOptions = array_merge($arrOptions, $values);
+        }
+
+        return implode(', ', $arrOptions);
+    }
 
     /**
      * Adjust DCA field for this attribute

@@ -457,6 +457,8 @@ class Frontend extends \Frontend
      * @param \Widget        $objWidget
      *
      * @return mixed
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {

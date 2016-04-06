@@ -444,6 +444,8 @@ class Isotope extends \Controller
      * @param bool   $blnSkipEmpty
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {
@@ -470,6 +472,8 @@ class Isotope extends \Controller
      * @param IsotopeProduct|Product $objProduct
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
     {

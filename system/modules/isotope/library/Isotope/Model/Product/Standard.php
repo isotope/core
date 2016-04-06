@@ -853,8 +853,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if ($objWidget->hasErrors()) {
                 $this->doNotSubmit = true;
-            } // Store current value
-            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
+            } elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
@@ -867,17 +866,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                     } catch (\OutOfBoundsException $e) {
                         $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
                     }
-
                 }
 
                 // Trigger the save_callback
                 if (is_array($arrData['save_callback'])) {
                     foreach ($arrData['save_callback'] as $callback) {
-
-                        $objCallback = \System::importStatic($callback[0]);
-
                         try {
-                            $varValue = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            if (is_array($callback)) {
+                                $objCallback = \System::importStatic($callback[0]);
+                                $varValue    = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            } else {
+                                $varValue = $objAttribute->{$callback}($varValue, $this, $objWidget);
+                            }
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
