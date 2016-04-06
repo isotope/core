@@ -581,7 +581,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
 
 
 if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
-    $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory,chunking,multiple;{store_legend:hide},checkoutRelocate';
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},mandatory,extensions,minlength,maxlength,chunking,multiple;{store_legend:hide},checkoutRelocate';
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array
     (
