@@ -43,9 +43,9 @@ class Datatrans extends Postsale implements IsotopePayment
 
         // Validate HMAC sign
         $hash = hash_hmac(
-            'md5',
+            'sha256',
             $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
-            $this->datatrans_sign
+            hex2bin($this->datatrans_sign)
         );
 
         if (\Input::post('sign2') != $hash) {
@@ -124,7 +124,11 @@ class Datatrans extends Postsale implements IsotopePayment
         );
 
         // Security signature (see Security Level 2)
-        $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'], $this->datatrans_sign);
+        $arrParams['sign'] = hash_hmac(
+            'sha256',
+            $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'],
+            hex2bin($this->datatrans_sign)
+        );
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id       = $this->id;
