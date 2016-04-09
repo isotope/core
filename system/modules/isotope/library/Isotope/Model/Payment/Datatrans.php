@@ -23,6 +23,7 @@ use Isotope\Model\ProductCollection\Order;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas@schempp.ch>
  * @author     Leo Unglaub <leo@leo-unglaub.net>
+ * @author     Chris Raidler <c.raidler@rad-consulting.ch>
  */
 class Datatrans extends Postsale implements IsotopePayment
 {
@@ -43,9 +44,9 @@ class Datatrans extends Postsale implements IsotopePayment
 
         // Validate HMAC sign
         $hash = hash_hmac(
-            'sha256',
+            $this->datatrans_hash_method,
             $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
-            hex2bin($this->datatrans_sign)
+            $this->convertHMAC($this->datatrans_sign)
         );
 
         if (\Input::post('sign2') != $hash) {
@@ -125,9 +126,9 @@ class Datatrans extends Postsale implements IsotopePayment
 
         // Security signature (see Security Level 2)
         $arrParams['sign'] = hash_hmac(
-            'sha256',
+            $this->datatrans_hash_method,
             $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'],
-            hex2bin($this->datatrans_sign)
+            $this->convertHMAC($this->datatrans_sign)
         );
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
@@ -163,5 +164,15 @@ class Datatrans extends Postsale implements IsotopePayment
         }
 
         return true;
+    }
+
+    /**
+     * Converts HMAC from hex to bin if configured to do so
+     * @param string $hmac
+     * @return string
+     */
+    protected function convertHMAC($hmac)
+    {
+        return 1 == $this->datatrans_hash_convert ? hex2bin($hmac) : $hmac;
     }
 }
