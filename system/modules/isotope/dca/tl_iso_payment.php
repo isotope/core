@@ -455,7 +455,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_convert'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'sql'                   => "char(1) NOT NULL default '0'"
+            'sql'                   => "char(1) NOT NULL default '0'",
+            'eval'                  => array('tl_class' => 'w50 m12'),
         ),
         'datatrans_hash_method' => array
         (
