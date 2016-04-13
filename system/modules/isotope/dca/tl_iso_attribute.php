@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'checkboxproduct'           => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_sorting',
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
-        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
+        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files,isGallery',
         'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
         'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory',
@@ -459,6 +459,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50 m12'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'isGallery' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['isGallery'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'sortBy' => array
