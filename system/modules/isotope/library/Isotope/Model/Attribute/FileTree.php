@@ -57,41 +57,112 @@ class FileTree extends Attribute implements IsotopeAttribute
 
             /** @var \FilesModel $objFile */
             foreach ($objFiles as $objFile) {
-                $files[$objFile->uuid] = $objFile->path;
-            }
-
-            // Order the files
-            if (($orderSource = $objProduct->{$this->getOrderFieldName()}) != '') {
-                $tmp = deserialize($orderSource);
-
-                if (!empty($tmp) && is_array($tmp)) {
-                    // Remove all values
-                    $order = array_map(function () {
-                    }, array_flip($tmp));
-
-                    // Move the matching elements to their position in $order
-                    foreach ($files as $k => $v) {
-                        if (array_key_exists($k, $order)) {
-                            $order[$k] = $v;
-                            unset($files[$k]);
-                        }
-                    }
-
-                    // Append the left-over images at the end
-                    if (count($files) > 0) {
-                        $order = array_merge($order, array_values($files));
-                    }
-
-                    // Remove empty (unreplaced) entries
-                    $files = array_values(array_filter($order));
-                    unset($order);
+                if (!is_file(TL_ROOT.'/'.$objFile->path)) {
+                    continue;
                 }
+
+                $files[$objFile->path] = $objFile;
             }
 
-            return $this->generateList(array_values($files));
+            // Sort the files
+            $files = $this->sortFiles($files, $objProduct);
+
+            // Convert the file models to paths
+            foreach ($files as $k => $v) {
+                $files[$k] = $v->path;
+            }
+
+            return $this->generateList($files);
         }
 
         return '';
+    }
+
+    /**
+     * Sort the files
+     *
+     * @param array $files
+     * @param IsotopeProduct $product
+     *
+     * @return array
+     */
+    protected function sortFiles(array $files, IsotopeProduct $product)
+    {
+        switch ($this->sortBy)
+        {
+            default:
+            case 'name_asc':
+                uksort($files, 'basename_natcasecmp');
+                break;
+
+            case 'name_desc':
+                uksort($files, 'basename_natcasercmp');
+                break;
+
+            case 'date_asc':
+                array_multisort($files, SORT_NUMERIC, $this->getSortDateHelper($files), SORT_ASC);
+                break;
+
+            case 'date_desc':
+                array_multisort($files, SORT_NUMERIC, $this->getSortDateHelper($files), SORT_DESC);
+                break;
+
+            case 'custom':
+                if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
+                    $tmp = deserialize($orderSource);
+
+                    if (!empty($tmp) && is_array($tmp)) {
+                        // Remove all values
+                        $order = array_map(function () {
+                        }, array_flip($tmp));
+
+                        // Move the matching elements to their position in $order
+                        /** @var \FilesModel $file */
+                        foreach ($files as $k => $file) {
+                            if (array_key_exists($file->uuid, $order)) {
+                                $order[$file->uuid] = $file;
+                                unset($files[$k]);
+                            }
+                        }
+
+                        // Append the left-over images at the end
+                        if (count($files) > 0) {
+                            $order = array_merge($order, array_values($files));
+                        }
+
+                        // Remove empty (unreplaced) entries
+                        $files = array_filter($order);
+                        unset($order);
+                    }
+                }
+                break;
+
+            case 'random':
+                shuffle($files);
+                break;
+        }
+
+        return array_values($files);
+    }
+
+    /**
+     * Get the sort date helper
+     *
+     * @param array $files
+     *
+     * @return array
+     */
+    protected function getSortDateHelper(array $files)
+    {
+        $helper = [];
+
+        /** @var \FilesModel $fileModel */
+        foreach ($files as $fileModel) {
+            $file = new \File($fileModel->path);
+            $helper[] = $file->mtime;
+        }
+
+        return $helper;
     }
 
     /**
