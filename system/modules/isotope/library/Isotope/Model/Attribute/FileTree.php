@@ -38,8 +38,10 @@ class FileTree extends Attribute implements IsotopeAttribute
         }
 
         // Make the field sortable
-        $arrData['fields'][$this->field_name]['eval']['orderField'] = $this->getOrderFieldName();
-        $arrData['fields'][$this->getOrderFieldName()]              = ['sql' => "blob NULL"];
+        if ($this->sortBy === 'custom') {
+            $arrData['fields'][$this->field_name]['eval']['orderField'] = $this->getOrderFieldName();
+            $arrData['fields'][$this->getOrderFieldName()]              = ['sql' => "blob NULL"];
+        }
     }
 
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())

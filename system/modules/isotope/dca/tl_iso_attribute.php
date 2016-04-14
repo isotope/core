@@ -472,6 +472,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'sortBy' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['sortBy'],
+            'default'               => 'name_asc',
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('custom', 'name_asc', 'name_desc', 'date_asc', 'date_desc', 'random'),
