@@ -414,19 +414,46 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
  * Hooks
  */
 if (\Config::getInstance()->isComplete()) {
-    // Contao core hooks are in external file to fix postsale script
-    include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
+    $GLOBALS['TL_HOOKS']['getAttributesFromDca'][]          = array('Isotope\Backend\Product\DcaManager', 'addOptionsFromAttribute');
+    $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
+    $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
+    $GLOBALS['TL_HOOKS']['getPageLayout'][]                 = array('Isotope\Frontend', 'overrideReaderPage');
+    $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
+    $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
+    $GLOBALS['TL_HOOKS']['modifyFrontendPage'][]            = array('Isotope\Frontend', 'injectScripts');
+    $GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Backend', 'executePreActions');
+    $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend', 'executePostActions');
+    $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\Frontend', 'translateProductUrls');
+    $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
+    $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
+    $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'addProductToBreadcrumb');
 
     $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
+    $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\EventListener\PostCheckoutUploads', 'onPostCheckout');
     $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
     $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
+    $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
 
     // Set module and module id for payment and/or shipping modules
     if ('FE' === TL_MODE) {
-        $GLOBALS['ISO_HOOKS']['initializePostsale'][]       = array('Isotope\Frontend', 'setPostsaleModuleSettings');
+        // Only limit countries in FE
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
+    }
+
+    if ('BE' === TL_MODE) {
+        // Type agent help is only needed in back end
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
+        $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');
+
+        // Adjust the product groups manager
+        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
+
+        // Enable the module tables in setup
+        $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\BackendModule\InitializeListener', 'enableModuleTablesInSetup');
     }
 }
 
