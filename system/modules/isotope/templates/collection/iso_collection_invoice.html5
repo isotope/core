@@ -13,8 +13,8 @@
         <tr>
             <td><?php echo $item['name']; ?>
                 <?php if(!empty($item['configuration'])): ?>
-                        <?php foreach($item['configuration'] as $value): ?>
-                            <br><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?>
+                        <?php foreach($item['configuration'] as $name => $value): ?>
+                            <br><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?>
                         <?php endforeach; ?>
                 <?php endif; ?>
             </td>
