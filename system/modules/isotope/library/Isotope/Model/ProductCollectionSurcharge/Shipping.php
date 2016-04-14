@@ -14,6 +14,7 @@ namespace Isotope\Model\ProductCollectionSurcharge;
 
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Model\Shipping as ShippingModel;
 
 /**
  * Class Shipping
@@ -24,4 +25,14 @@ use Isotope\Model\ProductCollectionSurcharge;
  */
 class Shipping extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {
+
+    /**
+     * Get the source shipping model if available
+     *
+     * @return ShippingModel|null
+     */
+    public function getSource()
+    {
+        return ShippingModel::findByPk($this->source_id);
+    }
 }

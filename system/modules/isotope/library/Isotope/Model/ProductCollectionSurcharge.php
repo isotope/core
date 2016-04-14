@@ -30,6 +30,7 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  * @property int    sorting
  * @property int    tstamp
  * @property string type
+ * @property int    source_id
  * @property string label
  * @property string price
  * @property float  total_price
@@ -334,6 +335,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
         $objSurcharge = new $strClass();
+        $objSurcharge->source_id = $objSource->id;
         $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
         $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
