@@ -9,6 +9,7 @@ Version 2.3.5-stable (????-??-??)
 - Installation on Contao 4 failed due to invalid dependency (#1633)
 - Problem with custom media attributes when upgrading from Isotope 2.0 (#1632)
 - Multilingual attribute options from foreignKey did not work for variants (#1631)
+- Variant selection resulted in empty page if debug bar is enabled (#1639)
 
 
 Version 2.3.4-stable (2016-03-09)
