@@ -10,6 +10,11 @@
  * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
+/**
+ * Load tl_iso_product data container
+ */
+\Contao\System::loadLanguageFile(\Isotope\Model\Product::getTable());
+\Contao\Controller::loadDataContainer(\Isotope\Model\Product::getTable());
 
 /**
  * Table tl_iso_rule
@@ -468,8 +473,23 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
                 'tl_class'                  => 'clr',
                 'foreignTable'              => 'tl_iso_product',
                 'fieldType'                 => 'checkbox',
-                'listFields'                => array('type'=>"(SELECT name FROM " . \Isotope\Model\ProductType::getTable() . " WHERE " . \Isotope\Model\Product::getTable() . ".type=" . \Isotope\Model\ProductType::getTable() . ".id)", 'name', 'sku'),
+                'listFields'                => array(\Isotope\Model\ProductType::getTable().'.name', 'name', 'sku'),
+                'joins'                     => array
+                (
+                    \Isotope\Model\ProductType::getTable() => array
+                    (
+                        'type' => 'LEFT JOIN',
+                        'jkey' => 'id',
+                        'fkey' => 'type',
+                    ),
+                ),
                 'searchFields'              => array('name', 'alias', 'sku', 'description'),
+                'customLabels'              => array
+                (
+                    $GLOBALS['TL_DCA'][\Isotope\Model\Product::getTable()]['fields']['type']['label'][0],
+                    $GLOBALS['TL_DCA'][\Isotope\Model\Product::getTable()]['fields']['name']['label'][0],
+                    $GLOBALS['TL_DCA'][\Isotope\Model\Product::getTable()]['fields']['sku']['label'][0],
+                ),
                 'sqlWhere'                  => 'pid=0',
                 'searchLabel'               => 'Search products',
             ),
