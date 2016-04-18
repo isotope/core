@@ -285,6 +285,11 @@ class AttributeOption extends \MultilingualModel
         }
 
         $t = static::getTable();
+        $productId = $objProduct->id;
+
+        if ($objProduct->isVariant() && !in_array($objAttribute->field_name, $objProduct->getVariantAttributes())) {
+            $productId = $objProduct->getProductId();
+        }
 
         return static::findBy(
             array(
@@ -294,7 +299,7 @@ class AttributeOption extends \MultilingualModel
                 "$t.published='1'"
             ),
             array(
-                $objProduct->id,
+                $productId,
                 $objAttribute->field_name
             ),
             array(

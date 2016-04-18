@@ -10,6 +10,7 @@ Version 2.3.5-stable (????-??-??)
 - Problem with custom media attributes when upgrading from Isotope 2.0 (#1632)
 - Multilingual attribute options from foreignKey did not work for variants (#1631)
 - Variant selection resulted in empty page if debug bar is enabled (#1639)
+- The customer defined attribute options set in base product were not available in the variants 
 
 
 Version 2.3.4-stable (2016-03-09)
