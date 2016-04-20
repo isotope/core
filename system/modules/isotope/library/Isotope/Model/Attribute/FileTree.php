@@ -16,15 +16,16 @@ use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
-
 /**
  * Attribute to implement FileTree widget
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class FileTree extends Attribute implements IsotopeAttribute
 {
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
@@ -63,12 +64,7 @@ class FileTree extends Attribute implements IsotopeAttribute
     }
 
     /**
-     * Generates the attribute.
-     *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrOptions
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {

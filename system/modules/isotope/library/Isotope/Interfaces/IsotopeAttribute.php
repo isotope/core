@@ -12,52 +12,55 @@
 
 namespace Isotope\Interfaces;
 
-
 /**
  * IsotopeAttribute is a product attribute for Isotope eCommerce
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 interface IsotopeAttribute
 {
-
     /**
-     * Return true if attribute is customer defined
-     * @return    bool
+     * Returns true if attribute is customer defined.
+     *
+     * @return bool
      */
     public function isCustomerDefined();
 
     /**
      * Return class name for the backend widget or empty if none should be available
-     * @return    string
+     *
+     * @return string
      */
     public function getBackendWidget();
 
     /**
      * Return class name for the frontend widget or empty if none should be available
-     * @return    string
+     *
+     * @return string
      */
     public function getFrontendWidget();
 
     /**
      * Load attribute configuration from given DCA array
+     *
      * @param   array
      */
     public function loadFromDCA(array &$arrData, $strName);
 
     /**
      * Save attribute configuration into the given DCA array
-     * @param    array
+     *
+     * @param array $arrData
      */
     public function saveToDCA(array &$arrData);
 
     /**
      * Generate attribute for given product
-     * @param   IsotopeProduct
-     * @param   array
-     * @return  string
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrOptions
+     *
+     * @return string
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array());
-
 }

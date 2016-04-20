@@ -16,32 +16,24 @@ use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
-
 /**
  * Attribute to provide downloads in the product details
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Christoph Wiechert <cw@4wardmedia.de>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Christoph Wiechert <cw@4wardmedia.de>
  */
 class Downloads extends FileTree
 {
     /**
-     * Return class name for the backend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
         return $GLOBALS['BE_FFL']['fileTree'];
     }
 
-
     /**
-     * Generate download attributes
-     *
-     * @param \Isotope\Interfaces\IsotopeProduct $objProduct
-     * @param array $arrOptions
-     * @return string
+     * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
