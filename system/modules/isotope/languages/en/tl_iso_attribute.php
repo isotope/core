@@ -39,6 +39,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey']              = array('Fore
 $GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField']          = array('Parent field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['files']                   = array('Show files', 'Show both files and folders.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['filesOnly']               = array('Files only', 'Remove the radio buttons or checkboxes next to folders.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['isGallery']               = array('Mark as gallery', 'Mark the attribute as image gallery which allows for better display in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fieldType']               = array('Field type', 'Display radio buttons or checkboxes next to folders.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['sortBy']                  = array('Order by', 'Please choose the sort order.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['path']                    = array('Root directory', 'You can limit the file tree by defining a root directory here.');

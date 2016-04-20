@@ -15,6 +15,7 @@ Version 2.4.0-beta1 (201?-??-??)
 - Enable module tables in Isotope setup after all modules are loaded (#1624)
 - Validate the price attribute in product type against duplication (#1542)
 - Added hook triggered when address data is updated (#1473)
+- The FileTree attribute is now sortable (#1561)
 
 
 ### Improved
