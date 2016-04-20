@@ -24,30 +24,8 @@ use Isotope\Model\Attribute;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
-class Downloads extends Attribute implements IsotopeAttribute
+class Downloads extends FileTree
 {
-    public function saveToDCA(array &$arrData)
-    {
-        parent::saveToDCA($arrData);
-
-        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-
-        if ($this->fieldType == 'checkbox') {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
-
-            // Custom sorting
-            if ($this->sortBy == 'custom') {
-                $strOrderField = $this->field_name . '_order';
-                $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql'] = "blob NULL";
-            }
-        } else {
-            $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
-            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
-        }
-    }
-
     /**
      * Return class name for the backend widget or false if none should be available
      * @return    string
@@ -55,25 +33,6 @@ class Downloads extends Attribute implements IsotopeAttribute
     public function getBackendWidget()
     {
         return $GLOBALS['BE_FFL']['fileTree'];
-    }
-
-
-    /**
-     * Make sure array values are unserialized.
-     *
-     * @param IsotopeProduct $product
-     *
-     * @return mixed
-     */
-    public function getValue(IsotopeProduct $product)
-    {
-        $value = parent::getValue($product);
-
-        if ('checkbox' === $this->fieldType) {
-            $value = deserialize($value);
-        }
-
-        return (array) $value;
     }
 
 

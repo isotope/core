@@ -18,46 +18,68 @@ use Isotope\Model\Attribute;
 
 
 /**
- * Attribute to impelement FileTree widget
+ * Attribute to implement FileTree widget
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class FileTree extends Attribute implements IsotopeAttribute
 {
-
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
-
-        if ($this->fieldType == 'checkbox') {
+        if ('checkbox' === $this->fieldType) {
+            $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-        }
 
-        // Make the field sortable
-        if ($this->sortBy === 'custom') {
-            $arrData['fields'][$this->field_name]['eval']['orderField'] = $this->getOrderFieldName();
-            $arrData['fields'][$this->getOrderFieldName()]              = ['sql' => "blob NULL"];
+            // Custom sorting
+            if ('custom' === $this->sortBy) {
+                $arrData['fields'][$this->field_name]['eval']['orderField'] = $this->getOrderFieldName();
+                $arrData['fields'][$this->getOrderFieldName()]['sql'] = 'blob NULL';
+            }
+        } else {
+            $arrData['fields'][$this->field_name]['sql'] = 'binary(16) NULL';
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
         }
     }
 
-    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    /**
+     * Make sure array values are unserialized.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return mixed
+     */
+    public function getValue(IsotopeProduct $product)
     {
-        $varValue = $objProduct->{$this->field_name};
+        $value = parent::getValue($product);
 
-        if ($this->fieldType == 'checkbox') {
-            $varValue = deserialize($varValue, true);
+        if ('checkbox' === $this->fieldType) {
+            $value = deserialize($value);
         }
 
+        return (array) $value;
+    }
+
+    /**
+     * Generates the attribute.
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrOptions
+     *
+     * @return string
+     */
+    public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
+    {
+        $varValue = $this->getValue($objProduct);
+
+        /** @var \FilesModel[] $objFiles */
         $objFiles = \FilesModel::findMultipleByUuids((array) $varValue);
 
         if (null !== $objFiles) {
             $files = [];
 
-            /** @var \FilesModel $objFile */
             foreach ($objFiles as $objFile) {
                 if (!is_file(TL_ROOT.'/'.$objFile->path)) {
                     continue;
@@ -83,15 +105,14 @@ class FileTree extends Attribute implements IsotopeAttribute
     /**
      * Sort the files
      *
-     * @param array $files
+     * @param \FilesModel[]  $files
      * @param IsotopeProduct $product
      *
      * @return array
      */
-    protected function sortFiles(array $files, IsotopeProduct $product)
+    private function sortFiles(array $files, IsotopeProduct $product)
     {
-        switch ($this->sortBy)
-        {
+        switch ($this->sortBy) {
             default:
             case 'name_asc':
                 uksort($files, 'basename_natcasecmp');
@@ -109,17 +130,23 @@ class FileTree extends Attribute implements IsotopeAttribute
                 array_multisort($files, SORT_NUMERIC, $this->getSortDateHelper($files), SORT_DESC);
                 break;
 
+            case 'random':
+                shuffle($files);
+                break;
+
             case 'custom':
                 if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
                     $tmp = deserialize($orderSource);
 
                     if (!empty($tmp) && is_array($tmp)) {
                         // Remove all values
-                        $order = array_map(function () {
-                        }, array_flip($tmp));
+                        $order = array_map(
+                            function () {
+                            },
+                            array_flip($tmp)
+                        );
 
                         // Move the matching elements to their position in $order
-                        /** @var \FilesModel $file */
                         foreach ($files as $k => $file) {
                             if (array_key_exists($file->uuid, $order)) {
                                 $order[$file->uuid] = $file;
@@ -138,10 +165,6 @@ class FileTree extends Attribute implements IsotopeAttribute
                     }
                 }
                 break;
-
-            case 'random':
-                shuffle($files);
-                break;
         }
 
         return array_values($files);
@@ -150,15 +173,14 @@ class FileTree extends Attribute implements IsotopeAttribute
     /**
      * Get the sort date helper
      *
-     * @param array $files
+     * @param \FilesModel[] $files
      *
      * @return array
      */
-    protected function getSortDateHelper(array $files)
+    private function getSortDateHelper(array $files)
     {
         $helper = [];
 
-        /** @var \FilesModel $fileModel */
         foreach ($files as $fileModel) {
             $file = new \File($fileModel->path);
             $helper[] = $file->mtime;
@@ -172,8 +194,8 @@ class FileTree extends Attribute implements IsotopeAttribute
      *
      * @return string
      */
-    protected function getOrderFieldName()
+    private function getOrderFieldName()
     {
-        return $this->field_name.'_order';
+        return $this->field_name . '_order';
     }
 }
