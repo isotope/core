@@ -13,6 +13,7 @@
 namespace Isotope\Module;
 
 use Haste\Http\Response\HtmlResponse;
+use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 
@@ -20,10 +21,11 @@ use Isotope\Model\Product;
 /**
  * Class ProductReader
  *
- * Front end module Isotope "product reader".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property bool   $iso_use_quantity
+ * @property bool   $iso_display404Page
+ * @property bool   $iso_addProductJumpTo
+ * @property string $iso_reader_layout
+ * @property int    $iso_gallery
  */
 class ProductReader extends Module
 {
@@ -37,7 +39,7 @@ class ProductReader extends Module
      * Product
      * @var IsotopeProduct
      */
-    protected $objProduct = null;
+    protected $objProduct;
 
 
     /**
@@ -60,7 +62,7 @@ class ProductReader extends Module
         }
 
         // Return if no product has been specified
-        if (\Haste\Input\Input::getAutoItem('product', false, true) == '') {
+        if (Input::getAutoItem('product', false, true) == '') {
             if ($this->iso_display404Page) {
                 $this->generate404();
             } else {
@@ -82,7 +84,7 @@ class ProductReader extends Module
         global $objIsotopeListPage;
 
         /** @var Product\Standard $objProduct */
-        $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product'));
+        $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
             $this->generate404();
@@ -94,7 +96,7 @@ class ProductReader extends Module
             'gallery'     => ($this->iso_gallery ? : $objProduct->getRelated('type')->reader_gallery),
             'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
-            'jumpTo'      => ($objIsotopeListPage ? : $objPage),
+            'jumpTo'      => $objIsotopeListPage ? : $objPage,
         );
 
         if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
@@ -116,7 +118,8 @@ class ProductReader extends Module
 
     /**
      * Add meta header fields to the current page
-     * @param   IsotopeProduct
+     *
+     * @param IsotopeProduct $objProduct
      */
     protected function addMetaTags(IsotopeProduct $objProduct)
     {
@@ -132,7 +135,8 @@ class ProductReader extends Module
 
     /**
      * Adds canonical product URLs to the document
-     * @param   IsotopeProduct
+     *
+     * @param IsotopeProduct $objProduct
      */
     protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
     {
@@ -146,7 +150,7 @@ class ProductReader extends Module
         foreach ($arrCategories as $intPage) {
 
             // Do not use the index page as canonical link
-            if ($objPage->alias == 'index' && count($arrCategories) > 1) {
+            if ('index' === $objPage->alias && count($arrCategories) > 1) {
                 continue;
             }
 

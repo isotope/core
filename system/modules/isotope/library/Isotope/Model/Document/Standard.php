@@ -16,6 +16,7 @@ use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
+use Isotope\Template;
 
 class Standard extends Document implements IsotopeDocument
 {
@@ -128,7 +129,8 @@ class Standard extends Document implements IsotopeDocument
     {
         $objPage = \PageModel::findWithDetails($objCollection->page_id);
 
-        $objTemplate = new \Isotope\Template($this->documentTpl);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
         $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
@@ -140,7 +142,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
-        $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
+        $objCollectionTemplate = new Template($this->collectionTpl);
 
         $objCollection->addToTemplate(
             $objCollectionTemplate,

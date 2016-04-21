@@ -23,10 +23,8 @@ use Isotope\Interfaces\IsotopeAttribute;
  */
 class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttribute
 {
-
     /**
-     * Adjust the options wizard for this attribute
-     * @return  array
+     * @inheritdoc
      */
     public function prepareOptionsWizard($objWidget, $arrColumns)
     {
@@ -36,17 +34,12 @@ class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttrib
     }
 
     /**
-     * Set SQL field for this attribute
-     * @param   array
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
 
-        if ($this->multiple) {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-        } else {
-            $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";
-        }
+        $arrData['fields'][$this->field_name]['sql'] = $this->multiple ? 'blob NULL' : "char(1) NOT NULL default ''";
     }
 }

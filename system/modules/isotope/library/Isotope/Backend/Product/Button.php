@@ -118,7 +118,7 @@ class Button extends \Backend
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
     {
         if (strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
             \Controller::redirect(\System::getReferer());
         }
 
@@ -290,7 +290,7 @@ window.addEvent('domready', function() {
             Isotope.openModalGroupSelector({
                 'width':    765,
                 'title':    '" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "',
-                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "',
+                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . \Session::getInstance()->get('iso_products_gid') . "',
                 'action':   'moveProducts',
                 'trigger':  $(this)
             });
@@ -346,7 +346,7 @@ window.addEvent('domready', function() {
         \Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
     }
 
 

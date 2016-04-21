@@ -26,16 +26,15 @@ use Isotope\Model\ProductCollection\Order;
  */
 class Datatrans extends Postsale implements IsotopePayment
 {
-
     /**
      * Perform server to server data check
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         // Verify payment status
-        if (\Input::post('status') != 'success') {
+        if (\Input::post('status') !== 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
 
             return;
@@ -59,7 +58,7 @@ class Datatrans extends Postsale implements IsotopePayment
             'refno'         => $objOrder->id,
             'currency'      => $objOrder->currency,
             'amount'        => round($objOrder->getTotal() * 100),
-            'reqtype'       => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'reqtype'       => $this->trans_type == 'auth' ? 'NOA' : 'CAA',
         ))) {
             return;
         }
@@ -77,8 +76,7 @@ class Datatrans extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -86,12 +84,7 @@ class Datatrans extends Postsale implements IsotopePayment
     }
 
     /**
-     * Generate the submit form for datatrans and if javascript is enabled redirect automaticly
-     *
-     * @param   IsotopeProductCollection|Order   $objOrder  The order being places
-     * @param   \Module|\Isotope\Module\Checkout $objModule The checkout module instance
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -104,7 +97,7 @@ class Datatrans extends Postsale implements IsotopePayment
             'currency'              => $objOrder->currency,
             'refno'                 => $objOrder->id,
             'language'              => $objOrder->language,
-            'reqtype'               => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'reqtype'               => 'auth' === $this->trans_type ? 'NOA' : 'CAA',
             'uppCustomerDetails'    => 'yes',
             'uppCustomerTitle'      => $objAddress->salutation,
             'uppCustomerFirstName'  => $objAddress->firstname,

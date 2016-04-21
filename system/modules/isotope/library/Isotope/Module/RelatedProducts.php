@@ -101,6 +101,9 @@ class RelatedProducts extends ProductList
         parent::compileEmptyMessage(false);
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function getCacheKey()
     {
         return md5(

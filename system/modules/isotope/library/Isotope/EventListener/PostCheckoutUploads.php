@@ -4,22 +4,18 @@ namespace Isotope\EventListener;
 
 use Contao\File;
 use Contao\FilesModel;
-use Contao\Folder;
 use Contao\FrontendUser;
 use Haste\Util\FileUpload;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
-use Isotope\Model\Config;
-use Isotope\Model\Product\Standard as StandardProduct;
-use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionItem;
 
 class PostCheckoutUploads
 {
 
     /**
-     * @param IsotopeProductCollection|Order $order
+     * @param IsotopeProductCollection $order
      */
     public function onPostCheckout(IsotopeProductCollection $order)
     {
@@ -73,7 +69,7 @@ class PostCheckoutUploads
      * @param string|array $files
      *
      * @return array
-     * @throws \Exception
+     * @throws \UnderflowException if upload folder does not exist
      */
     private function getSources(Attribute $attribute, $files)
     {
@@ -93,7 +89,7 @@ class PostCheckoutUploads
 
         // The upload folder could not be found
         if (null === $filesModel) {
-            throw new \Exception("Invalid upload folder ID $folder");
+            throw new \UnderflowException("Invalid upload folder ID $folder");
         }
 
         foreach ((array) $files as $file) {
@@ -104,12 +100,12 @@ class PostCheckoutUploads
     }
 
     /**
-     * @param Order                 $order
-     * @param ProductCollectionItem $item
-     * @param int                   $position
-     * @param int                   $total
-     * @param Attribute             $attribute
-     * @param string                $source
+     * @param IsotopeProductCollection $order
+     * @param ProductCollectionItem    $item
+     * @param int                      $position
+     * @param int                      $total
+     * @param Attribute                $attribute
+     * @param string                   $source
      *
      * @return array
      */

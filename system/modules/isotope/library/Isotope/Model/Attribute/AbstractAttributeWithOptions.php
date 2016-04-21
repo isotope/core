@@ -31,9 +31,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     protected $varOptionsCache = false;
 
     /**
-     * Return true if attribute can have prices
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function canHavePrices()
     {
@@ -41,7 +39,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return false;
         }
 
-        return in_array($this->field_name, Attribute::getPricedFields());
+        return in_array($this->field_name, Attribute::getPricedFields(), true);
     }
 
     /**
@@ -103,7 +101,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
 
                 } else {
                     $arrOptions = $objOptions->getArrayForBackendWidget();
@@ -123,7 +121,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } else {
-                    return $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
+                    return $objOptions->getArrayForFrontendWidget($objProduct, ('FE' === TL_MODE));
                 }
 
                 break;
@@ -196,6 +194,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      * @param array $arrValues
      *
      * @return array
+     *
+     * @throws \UnexpectedValueException on invalid options source
      */
     public function getOptionsForProductFilter(array $arrValues)
     {
@@ -256,7 +256,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         $value = parent::getValue($product);
 
         if ($this->multiple) {
-            if ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey') {
+            if ('table' === $this->optionsSource || 'foreignKey' === $this->optionsSource) {
                 $value = explode(',', $value);
             } else {
                 $value = deserialize($value);
@@ -329,23 +329,23 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         $this->fe_search = false;
 
-        if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
+        if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
             $this->be_filter = false;
             $this->fe_filter = false;
         }
 
-        if ($this->multiple && ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey')) {
+        if ($this->multiple && ('table' === $this->optionsSource || 'foreignKey' === $this->optionsSource)) {
             $this->csv = ',';
         }
 
         parent::saveToDCA($arrData);
 
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             if ($this->be_filter && \Input::get('act') == '') {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
-            if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
+            if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 
@@ -360,7 +360,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $arrField['attributes']['dynamic'] = true;
                 $arrField['foreignKey'] = 'tl_iso_attribute_option.label';
 
-                if (\Input::get('do') == 'iso_products') {
+                if ('iso_products' === \Input::get('do')) {
                     $arrField['eval']['whereCondition'] = "field_name='{$this->field_name}'";
                 }
 

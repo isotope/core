@@ -26,6 +26,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping;
+use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 
@@ -53,10 +54,7 @@ class Order extends ProductCollection implements
 {
 
     /**
-     * Return true if order has been paid.
-     * This is the case if either payment date is set or order status has the paid flag
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isPaid()
     {
@@ -162,7 +160,7 @@ class Order extends ProductCollection implements
             if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (!empty($arrResult) && !in_array(false, $arrResult)) {
+                if (count($arrResult) > 0 && !in_array(false, $arrResult, true)) {
                     $blnNotificationError = false;
                 }
             }
@@ -270,14 +268,14 @@ class Order extends ProductCollection implements
             if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (in_array(false, $arrResult)) {
+                if (in_array(false, $arrResult, true)) {
                     $blnNotificationError = true;
                     \System::log(
                         'Error sending status update notification for order ID ' . $this->id,
                         __METHOD__,
                         TL_ERROR
                     );
-                } elseif (!empty($arrResult)) {
+                } elseif (count($arrResult) > 0) {
                     $blnNotificationError = false;
                 }
             } else {
@@ -355,7 +353,7 @@ class Order extends ProductCollection implements
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['billing_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['billing_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
@@ -370,7 +368,7 @@ class Order extends ProductCollection implements
         // Add shipping address fields
         if (($objAddress = $this->getShippingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['shipping_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['shipping_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
@@ -415,8 +413,10 @@ class Order extends ProductCollection implements
             }
         }
 
+        /** @var Notification|object $objNotification */
         if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
-            $objTemplate                 = new \Isotope\Template($objNotification->iso_collectionTpl);
+            /** @var Template|object $objTemplate */
+            $objTemplate                 = new Template($objNotification->iso_collectionTpl);
             $objTemplate->isNotification = true;
 
             $this->addToTemplate(
@@ -464,12 +464,12 @@ class Order extends ProductCollection implements
      */
     protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
-        $taxIds          = array();
-        $arrItems        = array();
-        $arrAllDownloads = array();
+        $taxIds          = [];
+        $arrItems        = [];
+        $arrAllDownloads = [];
 
         foreach ($this->getItems($varCallable) as $objItem) {
-            $arrDownloads = array();
+            $arrDownloads = [];
             $arrItem      = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
@@ -487,7 +487,7 @@ class Order extends ProductCollection implements
 
         $objTemplate->items         = $arrItems;
         $objTemplate->downloads     = $arrAllDownloads;
-        $objTemplate->total_tax_ids = count(array_unique($taxIds));
+        $objTemplate->total_tax_ids = count(array_count_values($taxIds));
 
         return $arrItems;
     }

@@ -130,11 +130,11 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -220,7 +220,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['list_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'      		=> \Isotope\Model\Gallery::getTable().'.name',
+            'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
@@ -229,7 +229,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['reader_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'      		=> \Isotope\Model\Gallery::getTable().'.name',
+            'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),

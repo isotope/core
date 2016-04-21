@@ -20,7 +20,6 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
-
 /**
  * Attribute to implement frontend uploads
  *

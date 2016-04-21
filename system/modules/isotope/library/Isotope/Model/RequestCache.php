@@ -16,6 +16,7 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
+use Model\Registry;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
@@ -398,7 +399,7 @@ class RequestCache extends \Model
      */
     public function save()
     {
-        if ($this->isModified() && \Model\Registry::getInstance()->isRegistered($this)) {
+        if ($this->isModified() && Registry::getInstance()->isRegistered($this)) {
             throw new \BadMethodCallException('Can\'t save a modified cache');
         }
 
@@ -464,9 +465,9 @@ class RequestCache extends \Model
     protected function preSave(array $arrSet)
     {
         $arrSet['config'] = array(
-            'filters'   => (empty($this->arrFilters) ? null : $this->arrFilters),
-            'sortings'  => (empty($this->arrSortings) ? null : $this->arrSortings),
-            'limits'    => (empty($this->arrLimits) ? null : $this->arrLimits)
+            'filters'   => empty($this->arrFilters) ? null : $this->arrFilters,
+            'sortings'  => empty($this->arrSortings) ? null : $this->arrSortings,
+            'limits'    => empty($this->arrLimits) ? null : $this->arrLimits
         );
 
         return $arrSet;

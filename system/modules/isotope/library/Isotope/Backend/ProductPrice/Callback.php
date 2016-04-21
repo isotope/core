@@ -81,20 +81,24 @@ class Callback extends \Backend
         $strReturn = '
 <table class="tl_listing showColumns">
 <thead>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'tax_class') . '</td>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'config_id') . '</td>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'member_group') . '</td>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'start') . '</td>
-    <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'stop') . '</td>
-    <td class="tl_folder_tlist">&nbsp;</td>
+    <tr>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'price_tiers') . '</td>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'tax_class') . '</td>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'config_id') . '</td>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'member_group') . '</td>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'start') . '</td>
+        <td class="tl_folder_tlist">' . Format::dcaLabel('tl_iso_product_price', 'stop') . '</td>
+        <td class="tl_folder_tlist">&nbsp;</td>
+    </tr>
 </thead>
 <tbody>';
 
         while ($objRecords->next()) {
 
             $arrTiers = array();
-            $objTiers = \Database::getInstance()->execute("SELECT * FROM tl_iso_product_pricetier WHERE pid={$objRecords->id} ORDER BY min");
+            $objTiers = \Database::getInstance()->execute(
+                "SELECT * FROM tl_iso_product_pricetier WHERE pid={$objRecords->id} ORDER BY min"
+            );
 
             while ($objTiers->next()) {
                 $arrTiers[] = "{$objTiers->min}={$objTiers->price}";
@@ -160,7 +164,10 @@ class Callback extends \Backend
             $time      = time();
             $arrInsert = array();
             $arrUpdate = array();
-            $arrDelete = \Database::getInstance()->execute("SELECT min FROM tl_iso_product_pricetier WHERE pid={$dc->id}")->fetchEach('min');
+            $arrDelete = \Database::getInstance()
+                ->execute("SELECT min FROM tl_iso_product_pricetier WHERE pid={$dc->id}")
+                ->fetchEach('min')
+            ;
 
             foreach ($arrNew as $new) {
                 $pos = array_search($new['min'], $arrDelete);
@@ -174,18 +181,25 @@ class Callback extends \Backend
             }
 
             if (!empty($arrDelete)) {
-                \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")");
+                \Database::getInstance()->query(
+                    "DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id} AND min IN (" . implode(',', $arrDelete) . ")"
+                );
             }
 
             if (!empty($arrUpdate)) {
                 foreach ($arrUpdate as $min => $price) {
-                    \Database::getInstance()->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid={$dc->id} AND min=?")->execute($price, $min);
+                    \Database::getInstance()
+                        ->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid=? AND min=?")
+                        ->execute($price, $dc->id, $min)
+                    ;
                 }
             }
 
             if (!empty($arrInsert)) {
                 foreach ($arrInsert as $min => $price) {
-                    \Database::getInstance()->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES ({$dc->id}, $time, ?, ?)")->execute($min, $price);
+                    \Database::getInstance()
+                        ->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?, $time, ?, ?)")
+                        ->execute($dc->id, $min, $price);
                 }
             }
         }

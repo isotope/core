@@ -15,7 +15,6 @@ namespace Isotope\Model\Attribute;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 
-
 /**
  * Attribute to impelement SelectMenu widget
  *
@@ -24,24 +23,20 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
  */
 class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
 {
-
     /**
-     * Adjust the options wizard for this attribute
-     * @return  array
+     * @inheritdoc
      */
     public function prepareOptionsWizard($objWidget, $arrColumns)
     {
         if ($this->isVariantOption()) {
-            unset($arrColumns['default']);
-            unset($arrColumns['group']);
+            unset($arrColumns['default'], $arrColumns['group']);
         }
 
         return $arrColumns;
     }
 
     /**
-     * Adjust DCA field for this attribute
-     * @param   arary
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {
@@ -54,7 +49,7 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
         parent::saveToDCA($arrData);
 
         if ($this->multiple) {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+            $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         } else {
             if ('attribute' === $this->optionsSource) {
                 $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";

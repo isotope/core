@@ -30,13 +30,14 @@ class RelatedProduct extends \Model
      */
     protected static $strTable = 'tl_iso_related_product';
 
-
     /**
      * Find related products of a product
-     * @param   IsotopeProduct
-     * @param   array
-     * @param   array
-     * @return  \Model\Collection|null
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrCategories
+     * @param array          $arrOptions
+     *
+     * @return \Model\Collection|null
      */
     public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions = array())
     {
@@ -44,7 +45,7 @@ class RelatedProduct extends \Model
 
         $arrOptions = array_merge(
             array(
-                'column'    => array("$t.pid=?", "$t.category IN (" . implode(',', $arrCategories) . ")"),
+                'column'    => array("$t.pid=?", "$t.category IN (" . implode(',', $arrCategories) . ')'),
                 'value'     => array($objProduct->getProductId()),
                 'order'     => \Database::getInstance()->findInSet("$t.category", $arrCategories),
                 'return'    => 'Collection'

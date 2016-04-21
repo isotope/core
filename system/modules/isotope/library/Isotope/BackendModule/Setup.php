@@ -30,7 +30,7 @@ class Setup extends BackendOverview
      */
     protected function getModules()
     {
-        $return = array();
+        $return = [];
 
         $this->addIntroduction($return);
 
@@ -81,8 +81,10 @@ class Setup extends BackendOverview
 
     /**
      * Adds first steps and fundraising hints
+     *
+     * @param array $return
      */
-    protected function addIntroduction(&$return)
+    protected function addIntroduction(array &$return)
     {
         if (\BackendUser::getInstance()->isAdmin) {
             $objTemplate = new \BackendTemplate('be_iso_introduction');

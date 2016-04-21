@@ -101,11 +101,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getBillingFieldsConfig());
 
         if (!empty($arrOptions)) {
-            $arrOptions[] = array(
+            $arrOptions[] = [
                 'value'   => '0',
                 'label'   => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
-                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id),
-            );
+                'default' => $this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id,
+            ];
         }
 
         return $arrOptions;
@@ -142,7 +142,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     /**
      * Get default address for this collection and address type
      *
-     * @return Address
+     * @return AddressModel
      */
     protected function getDefaultAddress()
     {

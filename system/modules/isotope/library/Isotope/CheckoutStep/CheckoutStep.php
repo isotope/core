@@ -29,7 +29,11 @@ abstract class CheckoutStep extends \Controller
      */
     protected $blnError = false;
 
-
+    /**
+     * Constructor.
+     *
+     * @param Checkout $objModule
+     */
     public function __construct(Checkout $objModule)
     {
         parent::__construct();

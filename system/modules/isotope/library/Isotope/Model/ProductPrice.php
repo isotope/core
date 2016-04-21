@@ -185,7 +185,7 @@ class ProductPrice extends \Model implements IsotopePrice
                 return $this->arrTiers[$intTier];
             }
 
-            $intTier -= 1;
+            --$intTier;
 
         } while ($intTier > 0);
 

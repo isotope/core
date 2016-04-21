@@ -61,7 +61,7 @@ class CumulativeFields extends \Backend
      */
     public function getAttributes()
     {
-        $this->loadDataContainer('tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
         \System::loadLanguageFile('tl_iso_product');
 
         $arrAttributes = array();

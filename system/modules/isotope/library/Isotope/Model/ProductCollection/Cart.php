@@ -20,19 +20,13 @@ use Isotope\Model\Address;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 
-
 /**
- * Class Cart
-
- * Provide methods to handle Isotope cart.
- *
- * @property mixed id
+ * Class Cart provides methods to handle Isotope cart.
  */
 class Cart extends ProductCollection implements
     IsotopeProductCollection,
     IsotopeOrderableCollection
 {
-
     /**
      * Cookie hash value
      * @var string
@@ -117,22 +111,24 @@ class Cart extends ProductCollection implements
 
     /**
      * Merge guest cart if necessary
+     * 
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function mergeGuestCart()
     {
         $this->ensureNotLocked();
 
-        $strHash = \Input::cookie(static::$strCookie);
+        $strHash = (string) \Input::cookie(static::$strCookie);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (FE_USER_LOGGED_IN === true && $strHash != '' && $this->member > 0) {
-            $blnMerge = $this->countItems() > 0 ? true : false;
+        if (FE_USER_LOGGED_IN === true && '' !== $strHash && $this->member > 0) {
+            $blnMerge = $this->countItems() > 0;
             $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
 
             if (null !== $objTemp) {
                 $arrIds = $this->copyItemsFrom($objTemp);
 
-                if ($blnMerge && !empty($arrIds)) {
+                if ($blnMerge && count($arrIds) > 0) {
                     Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['cartMerged']);
                 }
 
@@ -140,7 +136,7 @@ class Cart extends ProductCollection implements
             }
 
             // Delete cookie
-            \System::setCookie(static::$strCookie, '', (time() - 3600), $GLOBALS['TL_CONFIG']['websitePath']);
+            \System::setCookie(static::$strCookie, '', time() - 3600, $GLOBALS['TL_CONFIG']['websitePath']);
             \Controller::reload();
         }
     }
@@ -258,16 +254,20 @@ class Cart extends ProductCollection implements
      */
     public static function findForCurrentStore()
     {
+        /** @var \PageModel $objPage */
         global $objPage;
 
-        if (TL_MODE != 'FE' || null === $objPage || $objPage->rootId == 0) {
+        if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
+        /** @var \PageModel|\stdClass $rootPage */
+        $rootPage = \PageModel::findByPk($objPage->rootId);
+
         $time       = time();
         $objCart    = null;
-        $cookieHash = \Input::cookie(static::$strCookie);
-        $storeId    = (int) \PageModel::findByPk($objPage->rootId)->iso_store_id;
+        $cookieHash = (string) \Input::cookie(static::$strCookie);
+        $storeId    = (int) $rootPage->iso_store_id;
 
         //  Check to see if the user is logged in.
         if (FE_USER_LOGGED_IN === true) {
@@ -275,7 +275,7 @@ class Cart extends ProductCollection implements
                 array('member=?', 'store_id=?'),
                 array(\FrontendUser::getInstance()->id, $storeId)
             );
-        } elseif ($cookieHash != '') {
+        } elseif ('' !== $cookieHash) {
             $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
         }
 
@@ -294,7 +294,7 @@ class Cart extends ProductCollection implements
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
-                'member'    => (FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0),
+                'member'    => FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0,
                 'uniqid'    => $cookieHash,
                 'config_id' => $objConfig->id,
                 'store_id'  => $storeId,

@@ -16,21 +16,19 @@ use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
-
 /**
  * Attribute to implement TextArea widget
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class TextArea extends Attribute implements IsotopeAttribute
 {
-
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "text NULL";
+        $arrData['fields'][$this->field_name]['sql'] = 'text NULL';
 
         // Textarea cannot be w50
         if ($this->rte != '') {
@@ -38,6 +36,9 @@ class TextArea extends Attribute implements IsotopeAttribute
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         if ($this->rte == '') {

@@ -14,17 +14,17 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
 
-
+/**
+ * OrderConditionsBeforeProducts checkout step shows conditions form before the product list.
+ */
 class OrderConditionsBeforeProducts extends OrderConditions implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true if order conditions should be before products
-     * @return  bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if ($this->objModule->iso_order_conditions_position != 'before') {
+        if ('before' !== $this->objModule->iso_order_conditions_position) {
             return false;
         }
 

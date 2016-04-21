@@ -18,16 +18,12 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
-
+use Isotope\Template;
 
 /**
- * Class Paypal
+ * PayPal Standard payment method
  *
- * Handle Paypal payments
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
+ * @property string $paypal_account
  *
  * @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
  */
@@ -37,11 +33,11 @@ class Paypal extends Postsale implements IsotopePayment
     /**
      * Process PayPal Instant Payment Notifications (IPN)
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if (\Input::post('payment_status') != 'Completed') {
+        if ('Completed' !== \Input::post('payment_status')) {
             \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
             return;
         }
@@ -55,12 +51,12 @@ class Paypal extends Postsale implements IsotopePayment
             $response->send();
         }
 
-        if ($objRequest->response != 'VERIFIED') {
+        if ('VERIFIED' !== $objRequest->response) {
             \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
             return;
         }
 
-        if ((\Input::post('receiver_email', true) != $this->paypal_account && !$this->debug)) {
+        if (!$this->debug && \Input::post('receiver_email', true) != $this->paypal_account) {
             \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return;
         }
@@ -101,10 +97,10 @@ class Paypal extends Postsale implements IsotopePayment
     /**
      * Return the PayPal form.
      *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module|Checkout               $objModule The checkout module instance
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
      *
-     * @return  string
+     * @return string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -158,7 +154,8 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 
-        $objTemplate = new \Isotope\Template('iso_payment_paypal');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_paypal');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->id            = $this->id;
@@ -219,8 +216,9 @@ class Paypal extends Postsale implements IsotopePayment
   <tbody>';
 
         foreach ($arrPayment as $k => $v) {
-            if (is_array($v))
+            if (is_array($v)) {
                 continue;
+            }
 
             $strBuffer .= '
   <tr>

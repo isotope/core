@@ -196,8 +196,8 @@ class Callback extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        \System::loadLanguageFile($objAddress->getTable());
-        \Controller::loadDataContainer($objAddress->getTable());
+        \System::loadLanguageFile(Address::getTable());
+        \Controller::loadDataContainer(Address::getTable());
 
         $strBuffer = '
 <div>
@@ -206,7 +206,7 @@ class Callback extends \Backend
 
         $i = 0;
 
-        foreach ($GLOBALS['TL_DCA'][$objAddress->getTable()]['fields'] as $k => $v) {
+        foreach ($GLOBALS['TL_DCA'][Address::getTable()]['fields'] as $k => $v) {
             if (!isset($objAddress->$k)) {
                 continue;
             }
@@ -216,8 +216,8 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel($objAddress->getTable(), $k) . ': </span></td>
-    <td' . $strClass . '>' . Format::dcaValue($objAddress->getTable(), $k, $v) . '</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel(Address::getTable(), $k) . ': </span></td>
+    <td' . $strClass . '>' . Format::dcaValue(Address::getTable(), $k, $v) . '</td>
   </tr>';
         }
 
@@ -250,7 +250,9 @@ class Callback extends \Backend
         $arrConfigs = $this->User->iso_configs;
 
         if (is_array($arrConfigs) && !empty($arrConfigs)) {
-            $objOrders = \Database::getInstance()->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+            $objOrders = \Database::getInstance()->query(
+                'SELECT id FROM tl_iso_product_collection WHERE config_id IN (' . implode(',', $arrConfigs) . ')'
+            );
 
             if ($objOrders->numRows) {
                 $arrIds = $objOrders->fetchEach('id');

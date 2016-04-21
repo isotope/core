@@ -56,7 +56,7 @@ interface IsotopeProductCollection
     public function purge();
 
     /**
-     * Lock collection from begin modified
+     * Lock collection from being modified
      */
     public function lock();
 

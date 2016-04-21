@@ -65,7 +65,7 @@ class Callback extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_related_product']['config']['closed'] = true;
         }
 
-        if (\Input::get('act') == 'edit') {
+        if ('edit' === \Input::get('act')) {
             unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options']            = $arrCategories;
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');

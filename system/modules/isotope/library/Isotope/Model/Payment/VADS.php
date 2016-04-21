@@ -18,12 +18,13 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 /**
  * Class VADS
  *
- * @property string vads_site_id
- * @property string vads_certificate
+ * @property string $vads_site_id
+ * @property string $vads_certificate
  */
 abstract class VADS extends Postsale implements IsotopePayment
 {
@@ -45,9 +46,7 @@ abstract class VADS extends Postsale implements IsotopePayment
     );
 
     /**
-     * Perform server to server data check
-     *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -82,8 +81,7 @@ abstract class VADS extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -93,17 +91,15 @@ abstract class VADS extends Postsale implements IsotopePayment
     /**
      * Generate the submit form for Innopay and if javascript is enabled redirect automatically
      *
-     * @param   IsotopeProductCollection|Order   $objOrder  The order being placed
-     * @param   \Module|\Isotope\Module\Checkout $objModule The checkout module instance
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         $parameters = $this->getOutboundParameters($objOrder, $objModule);
         $parameters['signature'] = $this->calculateSignature($parameters, $this->vads_certificate);
 
-        $objTemplate           = new \Isotope\Template($this->strTemplate);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate           = new Template($this->strTemplate);
         $objTemplate->id       = $this->id;
         $objTemplate->params   = $parameters;
         $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
@@ -115,8 +111,8 @@ abstract class VADS extends Postsale implements IsotopePayment
     }
 
     /**
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
+     * @param IsotopeProductCollection $objOrder
+     * @param \Module                  $objModule
      *
      * @return array
      */

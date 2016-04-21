@@ -24,7 +24,7 @@ class Callback extends \Backend
      */
     public function renderLabel($arrAddress)
     {
-        $objAddress = new \Isotope\Model\Address();
+        $objAddress = new Address();
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generate();
 

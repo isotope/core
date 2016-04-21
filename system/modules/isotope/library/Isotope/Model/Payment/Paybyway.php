@@ -22,16 +22,16 @@ use Isotope\Model\ProductCollection\Order;
 
 class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
 {
-
     /**
      * Paybyway only supports EUR currency
-     * @return  bool
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
         $objConfig = Isotope::getConfig();
 
-        if (null === $objConfig || $objConfig->currency != 'EUR') {
+        if (null === $objConfig || 'EUR' !== $objConfig->currency) {
             return false;
         }
 
@@ -39,10 +39,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the redirect form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -58,7 +55,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         $objTemplate->amount = round($objOrder->getTotal() * 100);
         $objTemplate->currency = 'EUR';
         $objTemplate->order_number = $objOrder->id;
-        $objTemplate->lang = ($GLOBALS['TL_LANGUAGE'] == 'fi' ? 'FI' : 'EN');
+        $objTemplate->lang = ('fi' === $GLOBALS['TL_LANGUAGE'] ? 'FI' : 'EN');
         $objTemplate->return_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->cancel_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
 
@@ -82,10 +79,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -96,10 +90,8 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         return false;
     }
 
-
     /**
-     * Process post-sale requestion from the PSP payment server.
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -153,10 +145,8 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         \Isotope\Module\Checkout::redirectToStep('failed');
     }
 
-
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {

@@ -89,7 +89,7 @@ class InsertTag
                 if ($intCount == 1) {
                     return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
                 } else {
-                    return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
+                    return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
                 }
                 break;
 
@@ -103,7 +103,7 @@ class InsertTag
                 if ($intCount == 1) {
                     return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
                 } else {
-                    return sprintf(('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')'), $intCount);
+                    return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
                 }
                 break;
 
@@ -171,6 +171,7 @@ class InsertTag
      * {{product::attribute::product_id}}    - gets the data of the specified product ID
      *
      * @param IsotopeProduct $product
+     * @param string         $attribute
      *
      * @return string
      */

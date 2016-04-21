@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 use Isotope\Translation;
 
 
@@ -26,11 +27,8 @@ use Isotope\Translation;
  */
 class Worldpay extends Postsale implements IsotopePayment
 {
-
     /**
-     * Process Instant Payment Notifications (IPN)
-     *
-     * @param IsotopeProductCollection $objOrder
+     * @inheritdoc
      */
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
@@ -51,11 +49,11 @@ class Worldpay extends Postsale implements IsotopePayment
         }
 
         // Order status cancelled and order not yet completed, do nothing
-        if (\Input::post('transStatus') != 'Y' && $objOrder->status == 0) {
+        if ('Y' !== \Input::post('transStatus') && $objOrder->status == 0) {
             $this->postsaleError();
         }
 
-        if (\Input::post('transStatus') == 'Y') {
+        if ('Y' === \Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
                 \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
                 $this->postsaleError();
@@ -76,9 +74,7 @@ class Worldpay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -86,12 +82,7 @@ class Worldpay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the checkout form.
-     *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
-     *
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -126,7 +117,8 @@ class Worldpay extends Postsale implements IsotopePayment
         // Generate MD5 secret hash
         $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
 
-        $objTemplate = new \Isotope\Template('iso_payment_worldpay');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);
         $objTemplate->id       = $this->id;
@@ -171,7 +163,7 @@ Redirecting back to shop...
      *
      * @param IsotopeProductCollection $objOrder
      */
-    protected function postsaleSuccess($objOrder)
+    protected function postsaleSuccess(IsotopeProductCollection $objOrder)
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
         $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder, $objPage);

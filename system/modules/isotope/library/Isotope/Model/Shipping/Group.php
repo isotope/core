@@ -124,6 +124,7 @@ class Group extends Shipping implements IsotopeShipping
                 unset($arrMethods[$key]);
             }
 
+            /** @var Shipping[] $objMethods */
             if (($objMethods = Shipping::findMultipleByIds($arrMethods)) !== null) {
                 foreach ($objMethods as $objMethod) {
                     if ($objMethod->isAvailable()) {

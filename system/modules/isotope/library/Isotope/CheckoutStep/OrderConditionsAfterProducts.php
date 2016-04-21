@@ -14,17 +14,17 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
 
-
+/**
+ * OrderConditionsAfterProducts checkout step shows conditions form after the product list.
+ */
 class OrderConditionsAfterProducts extends OrderConditions implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true if order conditions should be after products
-     * @return  bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if ($this->objModule->iso_order_conditions_position != 'after') {
+        if ('after' !== $this->objModule->iso_order_conditions_position) {
             return false;
         }
 

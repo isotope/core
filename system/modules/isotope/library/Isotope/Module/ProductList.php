@@ -22,6 +22,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\ProductType;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
+use Isotope\Template;
 
 /**
  * @property string $iso_list_layout
@@ -165,7 +166,7 @@ class ProductList extends Module
                     $objPage->noSearch = 1;
                     $objPage->cache    = 0;
 
-                    $this->Template          = new \Isotope\Template('mod_iso_productlist_caching');
+                    $this->Template          = new Template('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;
@@ -186,7 +187,7 @@ class ProductList extends Module
                     $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
 
                     \Database::getInstance()
-                        ->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")
+                        ->prepare('UPDATE tl_module SET iso_productcache=? WHERE id=?')
                         ->execute(serialize($arrCacheMessage), $this->id)
                     ;
                 }
@@ -238,8 +239,8 @@ class ProductList extends Module
 
             $arrConfig = array(
                 'module'        => $this,
-                'template'      => ($this->iso_list_layout ?: $type->list_template),
-                'gallery'       => ($this->iso_gallery ?: $type->list_gallery),
+                'template'      => $this->iso_list_layout ?: $type->list_template,
+                'gallery'       => $this->iso_gallery ?: $type->list_gallery,
                 'buttons'       => $this->iso_buttons,
                 'useQuantity'   => $this->iso_use_quantity,
                 'jumpTo'        => $this->findJumpToPage($objProduct),

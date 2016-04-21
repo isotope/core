@@ -13,12 +13,12 @@
 namespace Isotope;
 
 use Backend as Contao_Backend;
+use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
-
 
 /**
  * Class Isotope\Backend
@@ -48,7 +48,6 @@ class Backend extends Contao_Backend
         return $varValue;
     }
 
-
     /**
      * Truncate the request cache table
      */
@@ -56,7 +55,6 @@ class Backend extends Contao_Backend
     {
         RequestCache::purge();
     }
-
 
     /**
      * Get array of subdivisions, delay loading of file if not necessary
@@ -90,11 +88,10 @@ class Backend extends Contao_Backend
         return $arrSubdivisions;
     }
 
-
     /**
      * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
      *
-     * @param object $dc
+     * @param \DataContainer $dc
      */
     public function initializeSetupModule($dc)
     {
@@ -102,7 +99,6 @@ class Backend extends Contao_Backend
             $GLOBALS['TL_DCA'][$dc->table]['config']['closed'] = false;
         }
     }
-
 
     /**
      * Return all Isotope modules
@@ -119,7 +115,6 @@ class Backend extends Contao_Backend
 
         return $arrModules;
     }
-
 
     /**
      * List template from all themes, show theme name
@@ -164,7 +159,6 @@ class Backend extends Contao_Backend
         return $arrTemplates;
     }
 
-
     /**
      * Get order status and return it as array
      *
@@ -185,7 +179,6 @@ class Backend extends Contao_Backend
         return $arrStatus;
     }
 
-
     /**
      * Show messages for new order status
      *
@@ -196,7 +189,7 @@ class Backend extends Contao_Backend
         /** @type \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
-        if (!\Database::getInstance()->tableExists(\Isotope\Model\OrderStatus::getTable())
+        if (!\Database::getInstance()->tableExists(OrderStatus::getTable())
             || !$objUser->hasAccess('iso_orders', 'modules')
         ) {
             return '';
@@ -230,18 +223,17 @@ class Backend extends Contao_Backend
         return implode("\n", $arrMessages);
     }
 
-
     /**
      * Returns an array of all allowed product IDs and variant IDs for the current backend user
      *
      * @return array|bool
+     *
      * @deprecated will be removed in Isotope 3.0
      */
     public static function getAllowedProductIds()
     {
-        return \Isotope\Backend\Product\Permission::getAllowedIds();
+        return Permission::getAllowedIds();
     }
-
 
     /**
      * Check the Ajax pre actions
@@ -255,20 +247,20 @@ class Backend extends Contao_Backend
         switch ($action) {
             // Move the product
             case 'moveProduct':
-                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
                 \Controller::redirect(html_entity_decode(\Input::post('redirect')));
                 break;
 
             // Move multiple products
             case 'moveProducts':
-                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
+                \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
                 exit;
                 break;
 
             // Filter the groups
             case 'filterGroups':
-                \Session::getInstance()->set('iso_products_gid', intval(\Input::post('value')));
-                $this->reload();
+                \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
+                \Controller::reload();
                 break;
 
             // Filter the pages
@@ -276,7 +268,7 @@ class Backend extends Contao_Backend
                 $filter = \Session::getInstance()->get('filter');
                 $filter['tl_iso_product']['iso_page'] = (int) \Input::post('value');
                 \Session::getInstance()->set('filter', $filter);
-                $this->reload();
+                \Controller::reload();
                 break;
 
             // Sorty products by page
@@ -293,8 +285,8 @@ class Backend extends Contao_Backend
     /**
      * Check the Ajax post actions
      *
-     * @param string $action
-     * @param object $dc
+     * @param string         $action
+     * @param \DataContainer $dc
      *
      * @return string
      */
@@ -304,7 +296,7 @@ class Backend extends Contao_Backend
             case 'uploadMediaManager':
                 $arrData = array(
                     'strTable' => $dc->table,
-                    'id'       => ($this->strAjaxName ?: $dc->id),
+                    'id'       => $this->strAjaxName ?: $dc->id,
                     'name'     => \Input::post('name'),
                 );
 
@@ -319,7 +311,7 @@ class Backend extends Contao_Backend
                 $this->import('Database');
 
                 // Handle the keys in "edit multiple" mode
-                if (\Input::get('act') == 'editAll') {
+                if ('editAll' === \Input::get('act')) {
                     $intId    = preg_replace('/.*_([0-9a-zA-Z]+)$/', '$1', $strField);
                     $strField = preg_replace('/(.*)_[0-9a-zA-Z]+$/', '$1', $strField);
                 }
@@ -382,7 +374,7 @@ class Backend extends Contao_Backend
             return;
         }
 
-        if ($strKey == 'tl_iso_producttype') {
+        if ('tl_iso_producttype' === $strKey) {
             $strKey = 'tl_iso_product';
         }
 
@@ -432,14 +424,14 @@ class Backend extends Contao_Backend
     /**
      * Adjust the product groups manager view
      *
-     * @param \Template $objTemplate
+     * @param \Template|\stdClass $objTemplate
      */
     public function adjustGroupsManager($objTemplate)
     {
         if (\Input::get('popup')
-            && \Input::get('do') == 'iso_products'
-            && \Input::get('table') == Group::getTable()
-            && $objTemplate->getName() == 'be_main'
+            && 'iso_products' === \Input::get('do')
+            && Group::getTable() === \Input::get('table')
+            && 'be_main' === $objTemplate->getName()
         ) {
             $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];

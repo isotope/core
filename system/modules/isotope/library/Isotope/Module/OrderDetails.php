@@ -12,18 +12,15 @@
 
 namespace Isotope\Module;
 
+use Contao\PageError403;
 use Haste\Util\Format;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
-
+use Isotope\Template;
 
 /**
- * Class OrderDetails
- *
- * Front end module Isotope "order details".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property int    $iso_gallery
+ * @property string $iso_collectionTpl
  */
 class OrderDetails extends Module
 {
@@ -43,11 +40,14 @@ class OrderDetails extends Module
 
     /**
      * Display a wildcard in the back end
+     *
+     * @param bool $blnBackend
+     *
      * @return string
      */
     public function generate($blnBackend = false)
     {
-        if (TL_MODE == 'BE' && !$blnBackend) {
+        if ('BE' === TL_MODE && !$blnBackend) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER DETAILS ###';
@@ -68,7 +68,6 @@ class OrderDetails extends Module
         return parent::generate();
     }
 
-
     /**
      * Generate the module
      */
@@ -76,7 +75,7 @@ class OrderDetails extends Module
     {
         // Also check owner (see #126)
         if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null || (FE_USER_LOGGED_IN === true && $objOrder->member > 0 && \FrontendUser::getInstance()->id != $objOrder->member)) {
-            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['orderNotFound'];
 
@@ -84,9 +83,11 @@ class OrderDetails extends Module
         }
 
         // Order belongs to a member but not logged in
-        if (TL_MODE == 'FE' && $this->iso_loginRequired && $objOrder->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if ('FE' === TL_MODE && $this->iso_loginRequired && $objOrder->member > 0 && FE_USER_LOGGED_IN !== true) {
+            /** @var \PageModel $objPage */
             global $objPage;
 
+            /** @var PageError403 $objHandler */
             $objHandler = new $GLOBALS['TL_PTY']['error_403']();
             $objHandler->generate($objPage->id);
             exit;
@@ -94,7 +95,8 @@ class OrderDetails extends Module
 
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
-        $objTemplate               = new \Isotope\Template($this->iso_collectionTpl);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate               = new Template($this->iso_collectionTpl);
         $objTemplate->linkProducts = true;
 
         $objOrder->addToTemplate(

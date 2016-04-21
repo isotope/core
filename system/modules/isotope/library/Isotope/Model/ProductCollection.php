@@ -18,6 +18,7 @@ use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
+use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
@@ -28,6 +29,7 @@ use Isotope\Message;
 use Isotope\Model\Payment;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\Shipping;
+use Model\Registry;
 
 /**
  * Class ProductCollection
@@ -145,9 +147,9 @@ abstract class ProductCollection extends TypeAgent
      */
     public function updateDatabase($blnCreate = true)
     {
-        if (!$this->isLocked()
-            && !$this->blnPreventSaving
-            && (\Model\Registry::getInstance()->isRegistered($this) || $blnCreate)
+        if (!$this->blnPreventSaving
+            && !$this->isLocked()
+            && (Registry::getInstance()->isRegistered($this) || $blnCreate)
         ) {
 
             foreach ($this->getItems() as $objItem) {
@@ -195,24 +197,19 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * Return true if collection is locked
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isLocked()
     {
-        return (isset($this->locked) && $this->locked !== '');
+        return isset($this->locked) && $this->locked !== '';
     }
 
     /**
-     * Return true if collection has no items
-     * @return bool
+     * @inheritdoc
      */
     public function isEmpty()
     {
-        $arrItems = $this->getItems();
-
-        return empty($arrItems);
+        return 0 === count($this->getItems());
     }
 
     /**
@@ -247,7 +244,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getPaymentSurcharge()
     {
-        return ($this->hasPayment()) ? $this->getPaymentMethod()->getSurcharge($this) : null;
+        return $this->hasPayment() ? $this->getPaymentMethod()->getSurcharge($this) : null;
     }
 
     /**
@@ -257,7 +254,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function hasPayment()
     {
-        return (null === $this->getPaymentMethod()) ? false : true;
+        return null !== $this->getPaymentMethod();
     }
 
     /**
@@ -267,7 +264,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function requiresPayment()
     {
-        return $this->getTotal() > 0 ? true : false;
+        return $this->getTotal() > 0;
     }
 
     /**
@@ -302,7 +299,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getShippingSurcharge()
     {
-        return ($this->hasShipping()) ? $this->getShippingMethod()->getSurcharge($this) : null;
+        return $this->hasShipping() ? $this->getShippingMethod()->getSurcharge($this) : null;
     }
 
     /**
@@ -312,7 +309,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function hasShipping()
     {
-        return (null === $this->getShippingMethod()) ? false : true;
+        return null !== $this->getShippingMethod();
     }
 
     /**
@@ -517,6 +514,8 @@ abstract class ProductCollection extends TypeAgent
      * @param bool $blnForce Force to delete the collection even if it's locked
      *
      * @return int Number of rows affected
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function delete($blnForce = false)
     {
@@ -576,6 +575,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Delete all products in the collection
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function purge()
     {
@@ -596,6 +597,8 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Lock collection from begin modified
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function lock()
     {
@@ -840,7 +843,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function getItemForProduct(IsotopeProduct $objProduct)
     {
-        $strClass = array_search(get_class($objProduct), Product::getModelTypes());
+        $strClass = array_search(get_class($objProduct), Product::getModelTypes(), true);
 
         $objItem = ProductCollectionItem::findOneBy(
             array('pid=?', 'type=?', 'product_id=?', 'configuration=?'),
@@ -909,7 +912,7 @@ abstract class ProductCollection extends TypeAgent
         $this->tstamp = $time;
 
         // Make sure collection is in DB before adding product
-        if (!\Model\Registry::getInstance()->isRegistered($this)) {
+        if (!Registry::getInstance()->isRegistered($this)) {
             $this->save();
         }
 
@@ -1048,7 +1051,7 @@ abstract class ProductCollection extends TypeAgent
                 $objCallback = \System::importStatic($callback[0]);
                 $arrSet      = $objCallback->{$callback[1]}($objItem, $arrSet, $this);
 
-                if (empty($arrSet) && is_array($arrSet)) {
+                if (!is_array($arrSet) || 0 === count($arrSet)) {
                     return false;
                 }
             }
@@ -1115,6 +1118,8 @@ abstract class ProductCollection extends TypeAgent
      * @param int $intId
      *
      * @return bool
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function deleteItemById($intId)
     {
@@ -1189,6 +1194,8 @@ abstract class ProductCollection extends TypeAgent
      * @param IsotopeProductCollection $objSource
      *
      * @return int[]
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
     {
@@ -1200,7 +1207,7 @@ abstract class ProductCollection extends TypeAgent
         $objSource->updateDatabase();
 
         $time        = time();
-        $arrIds      = array();
+        $arrIds      = [];
         $arrOldItems = $objSource->getItems();
 
         foreach ($arrOldItems as $objOldItem) {
@@ -1234,7 +1241,7 @@ abstract class ProductCollection extends TypeAgent
             $arrIds[$objOldItem->id] = $objNewItem->id;
         }
 
-        if (!empty($arrIds)) {
+        if (count($arrIds) > 0) {
             $this->tstamp = $time;
         }
 
@@ -1263,6 +1270,8 @@ abstract class ProductCollection extends TypeAgent
      *
      * @deprecated Deprecated since version 2.2, to be removed in 3.0.
      *             Surcharges are calculated on the fly, so it does not make sense to copy them from another one.
+     *
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     public function copySurchargesFrom(IsotopeProductCollection $objSource, array $arrItemMap = array())
     {
@@ -1349,7 +1358,7 @@ abstract class ProductCollection extends TypeAgent
         $objTemplate->id                = $this->id;
         $objTemplate->collection        = $this;
         $objTemplate->config            = $objConfig;
-        $objTemplate->surcharges        = \Isotope\Frontend::formatSurcharges($this->getSurcharges(), $objConfig->currency);
+        $objTemplate->surcharges        = Frontend::formatSurcharges($this->getSurcharges(), $objConfig->currency);
         $objTemplate->subtotal          = Isotope::formatPriceWithCurrency($this->getSubtotal(), true, $objConfig->currency);
         $objTemplate->total             = Isotope::formatPriceWithCurrency($this->getTotal(), true, $objConfig->currency);
         $objTemplate->tax_free_subtotal = Isotope::formatPriceWithCurrency($this->getTaxFreeSubtotal(), true, $objConfig->currency);
@@ -1362,8 +1371,8 @@ abstract class ProductCollection extends TypeAgent
 
             $objProduct = $objItem->getProduct();
 
-            return in_array($strAttribute, $objProduct->getAttributes())
-                || in_array($strAttribute, $objProduct->getVariantAttributes());
+            return in_array($strAttribute, $objProduct->getAttributes(), true)
+                || in_array($strAttribute, $objProduct->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function (
@@ -1459,7 +1468,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function hasErrors()
     {
-        if (!empty($this->arrErrors)) {
+        if (count($this->arrErrors) > 0) {
             return true;
         }
 
@@ -1559,7 +1568,7 @@ abstract class ProductCollection extends TypeAgent
             'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $arrCSS[1]),
         );
 
-        if (null !== $objItem->getRelated('jumpTo') && $blnHasProduct && $objProduct->isAvailableInFrontend()) {
+        if ($blnHasProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailableInFrontend()) {
             $arrItem['href'] = $objProduct->generateUrl($objItem->getRelated('jumpTo'));
         }
 
@@ -1616,21 +1625,25 @@ abstract class ProductCollection extends TypeAgent
                 // Lock tables so no other order can get the same ID
                 \Database::getInstance()->lockTables(array(static::$strTable => 'WRITE'));
 
+                $prefixCondition = ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%'" : '');
+
                 // Retrieve the highest available order ID
-                $objMax = \Database::getInstance()->prepare("
+                $objMax = \Database::getInstance()
+                    ->prepare("
                         SELECT document_number
                         FROM tl_iso_product_collection
                         WHERE
                             type=?
-                            " . ($strPrefix != '' ? " AND document_number LIKE '$strPrefix%'" : '') . "
+                            $prefixCondition
                             AND store_id=?
-                        ORDER BY CAST(" . ($strPrefix != '' ? "SUBSTRING(document_number, " . ($intPrefix + 1) . ")" : 'document_number') . " AS UNSIGNED) DESC
-                    ")
+                        ORDER BY CAST(" . ($strPrefix != '' ? 'SUBSTRING(document_number, ' . ($intPrefix + 1) . ')' : 'document_number') . ' AS UNSIGNED) DESC
+                    ')
                     ->limit(1)
                     ->execute(
-                        array_search(get_called_class(), static::getModelTypes()),
+                        array_search(get_called_class(), static::getModelTypes(), true),
                         $this->store_id
-                    );
+                    )
+                ;
 
                 $intMax = (int) substr($objMax->document_number, $intPrefix);
 
@@ -1670,7 +1683,7 @@ abstract class ProductCollection extends TypeAgent
     /**
      * Prevent modifying a locked collection
      *
-     * @throws \BadMethodCallException
+     * @throws \BadMethodCallException if the collection is locked.
      */
     protected function ensureNotLocked()
     {
@@ -1681,6 +1694,9 @@ abstract class ProductCollection extends TypeAgent
 
     /**
      * Make sure the addresses belong to this collection only, so they will never be modified
+     *
+     * @throws \UnderflowException if collection is not saved (not in DB)
+     * @throws \BadMethodCallException if the product collection is locked.
      */
     protected function createPrivateAddresses()
     {
@@ -1899,9 +1915,9 @@ abstract class ProductCollection extends TypeAgent
     }
 
     /**
-     * @param IsotopeProduct|Standard $product
-     * @param ProductCollectionItem   $item
-     * @param int                     $quantity
+     * @param IsotopeProduct        $product
+     * @param ProductCollectionItem $item
+     * @param int                   $quantity
      */
     private function setProductForItem($product, $item, $quantity)
     {

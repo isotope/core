@@ -147,7 +147,7 @@ abstract class Module extends Contao_Module
             switch ($this->iso_category_scope) {
 
                 case 'global':
-                    $arrCategories = array($objPage->rootId);
+                    $arrCategories = [$objPage->rootId];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
@@ -157,22 +157,21 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'current_and_all_children':
-                    $arrCategories = array($objPage->id);
+                    $arrCategories = [$objPage->id];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
                 case 'parent':
-                    $arrCategories = array($objPage->pid);
+                    $arrCategories = [$objPage->pid];
                     break;
 
                 case 'product':
                     /** @var \Isotope\Model\Product\Standard $objProduct */
                     $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
+                    $arrCategories = [0];
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories(true);
-                    } else {
-                        $arrCategories = array(0);
                     }
                     break;
 
@@ -182,7 +181,7 @@ abstract class Module extends Contao_Module
 
                 case '':
                 case 'current_category':
-                    $arrCategories = array($objPage->id);
+                    $arrCategories = [$objPage->id];
                     break;
 
                 default:

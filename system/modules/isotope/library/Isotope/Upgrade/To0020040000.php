@@ -23,20 +23,25 @@ class To0020040000 extends Base
             return;
         }
 
+        $this->migrateUploadAttributes();
+    }
+
+    private function migrateUploadAttributes()
+    {
         $db = \Database::getInstance();
         $table = Attribute::getTable();
 
         if ($this->createDatabaseField('checkoutTargetFolder', $table)) {
             $db
-                 ->prepare("UPDATE $table SET checkoutTargetFolder=?")
-                 ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFolder']['default'])
+                ->prepare("UPDATE $table SET checkoutTargetFolder=?")
+                ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFolder']['default'])
             ;
         }
 
         if ($this->createDatabaseField('checkoutTargetFile', $table)) {
             $db
-                 ->prepare("UPDATE $table SET checkoutTargetFile=?")
-                 ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFile']['default'])
+                ->prepare("UPDATE $table SET checkoutTargetFile=?")
+                ->execute($GLOBALS['TL_DCA'][$table]['fields']['checkoutTargetFile']['default'])
             ;
         }
 

@@ -14,6 +14,7 @@ namespace Isotope\Model;
 
 use Database\Result;
 use Haste\Util\Format;
+use Isotope\Backend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
@@ -84,6 +85,7 @@ class Address extends \Model
      * @param Config $config
      *
      * @return bool
+     *
      * @throws \LogicException if a validator does not implement the correct interface
      * @throws \RuntimeException if a validators reports an error about the VAT number
      */
@@ -96,7 +98,7 @@ class Address extends \Model
         $validators = deserialize($config->vatNoValidators);
 
         // if no validators are enabled, the VAT No is always valid
-        if (empty($validators) || !is_array($validators)) {
+        if (!is_array($validators) || 0 === count($validators)) {
             return true;
         }
 
@@ -123,6 +125,8 @@ class Address extends \Model
      * @param array $arrFields
      *
      * @return string
+     *
+     * @throws \Exception on error parsing simple tokens
      */
     public function generate($arrFields = null)
     {
@@ -133,9 +137,8 @@ class Address extends \Model
         $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?: $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens  = $this->getTokens($arrFields);
-        $strAddress = \StringUtil::parseSimpleTokens($strFormat, $arrTokens);
 
-        return $strAddress;
+        return \StringUtil::parseSimpleTokens($strFormat, $arrTokens);
     }
 
     /**
@@ -144,7 +147,9 @@ class Address extends \Model
      * @param array $arrFields
      *
      * @return string
+     *
      * @deprecated use Address::generate() and strip_tags
+     * @throws \Exception on invalid simple tokens
      */
     public function generateText($arrFields = null)
     {
@@ -157,7 +162,9 @@ class Address extends \Model
      * @param array $arrFields
      *
      * @return string
+     *
      * @deprecated use Address::generate()
+     * @throws \Exception on invalid simple tokens
      */
     public function generateHtml($arrFields = null)
     {
@@ -190,8 +197,8 @@ class Address extends \Model
                 continue;
             }
 
-            if ($strField == 'subdivision' && $this->subdivision != '') {
-                $arrSubdivisions = \Isotope\Backend::getSubdivisions();
+            if ('subdivision' === $strField && $this->subdivision != '') {
+                $arrSubdivisions = Backend::getSubdivisions();
 
                 list($country, $subdivion) = explode('-', $this->subdivision);
 
@@ -404,8 +411,8 @@ class Address extends \Model
             'ptable'            => 'tl_iso_product_collection',
             'tstamp'            => time(),
             'store_id'          => (int) $objCollection->store_id,
-            'isDefaultBilling'  => ($blnDefaultBilling ? '1' : ''),
-            'isDefaultShipping' => ($blnDefaultShipping ? '1' : ''),
+            'isDefaultBilling'  => $blnDefaultBilling ? '1' : '',
+            'isDefaultShipping' => $blnDefaultShipping ? '1' : '',
         );
 
         if ($objCollection->member > 0

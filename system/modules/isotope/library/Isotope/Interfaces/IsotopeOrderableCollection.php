@@ -15,9 +15,11 @@ namespace Isotope\Interfaces;
 use Isotope\Model\Address;
 use Isotope\Model\ProductCollectionSurcharge;
 
-interface IsotopeOrderableCollection
+/**
+ * IsotopeOrderableCollection describes a product collection that can have order information.
+ */
+interface IsotopeOrderableCollection extends IsotopeProductCollection
 {
-
     /**
      * Return boolean whether collection has payment
      *

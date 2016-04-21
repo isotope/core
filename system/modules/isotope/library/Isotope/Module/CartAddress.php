@@ -16,7 +16,9 @@ use Haste\Form\Form;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 
-
+/**
+ * CartAddress frontend modules allows to set the billing and shipping address for current cart.
+ */
 class CartAddress extends Module
 {
 
@@ -32,7 +34,7 @@ class CartAddress extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ADDRESS ###';
@@ -83,7 +85,7 @@ class CartAddress extends Module
         }
 
         $arrFields = $this->iso_addressFields;
-        $useBilling = in_array('billing', $this->iso_address);
+        $useBilling = in_array('billing', $this->iso_address, true);
         $objAddress = $this->getDefaultAddress($useBilling);
 
         $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
@@ -96,7 +98,7 @@ class CartAddress extends Module
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
 
-            if (!in_array($strName, $arrFields)
+            if (!in_array($strName, $arrFields, true)
                 || !$arrDca['eval']['feEditable']
                 || ($arrDca['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
             ) {
@@ -104,7 +106,7 @@ class CartAddress extends Module
             }
 
             // Special field "country"
-            if ($strName == 'country') {
+            if ('country' === $strName) {
                 if ($useBilling) {
                     $arrCountries = Isotope::getConfig()->getBillingCountries();
                     $arrDca['default'] = Isotope::getConfig()->billing_country;
@@ -147,7 +149,7 @@ class CartAddress extends Module
             }
 
             // Set the shipping address
-            if (in_array('shipping', $this->iso_address)) {
+            if (in_array('shipping', $this->iso_address, true)) {
                 $objCart->setShippingAddress($objAddress);
             }
 
@@ -175,7 +177,7 @@ class CartAddress extends Module
         foreach ($arrGroups as $k => $v) {
             $this->Template->$k = $v; // backwards compatibility
 
-            $key = $k . (($k == 'personal') ? 'Data' : 'Details');
+            $key = $k . (('personal' === $k) ? 'Data' : 'Details');
             $categories[$GLOBALS['TL_LANG']['tl_member'][$key]] = $v;
         }
 

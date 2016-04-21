@@ -12,6 +12,7 @@
 
 namespace Isotope;
 
+use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopePrice;
@@ -49,7 +50,7 @@ class Frontend extends \Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection|Order $objCollection
+     * @param IsotopeProductCollection $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
@@ -151,7 +152,7 @@ class Frontend extends \Frontend
         $strAlias = '';
 
         // Find products alias. Can't use Input because they're not yet initialized
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strKey = 'auto_item';
         }
 
@@ -267,10 +268,10 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
-        } elseif (\Haste\Input\Input::getAutoItem('step', false, true) != '') {
-            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step', false, true);
+        if (Input::getAutoItem('product', false, true) != '') {
+            $arrGet['url']['product'] = Input::getAutoItem('product', false, true);
+        } elseif (Input::getAutoItem('step', false, true) != '') {
+            $arrGet['url']['step'] = Input::getAutoItem('step', false, true);
         } elseif (\Input::get('uid', false, true) != '') {
             $arrGet['get']['uid'] = \Input::get('uid', false, true);
         }
@@ -526,10 +527,11 @@ class Frontend extends \Frontend
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
-        if (empty($arrPages)) {
+        if (0 === count($arrPages)) {
             return $arrPages;
         }
 
+        /** @var \PageModel $objPage */
         global $objPage;
 
         // $objPage not available, we don't know if the page is allowed
@@ -541,6 +543,8 @@ class Frontend extends \Frontend
         static $arrUnavailable = array();
 
         $intMember = 0;
+        $arrGroups = [];
+
         if (null !== $objMember) {
             $intMember = $objMember->id;
             $arrGroups = deserialize($objMember->groups, true);
@@ -605,8 +609,8 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
+        if (Input::getAutoItem('product', false, true) != '') {
+            $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
 
             if (null !== $objProduct) {
 

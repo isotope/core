@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 /**
  * Class QuickPay
@@ -30,11 +31,8 @@ use Isotope\Model\ProductCollection\Order;
  */
 class QuickPay extends Postsale implements IsotopePayment
 {
-
     /**
-     * Process postsale callback
-     *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -56,9 +54,7 @@ class QuickPay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return  IsotopeProductCollection|null
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -72,16 +68,11 @@ class QuickPay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form
-     *
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_quickpay');
+        $objTemplate = new Template('iso_payment_quickpay');
         $objTemplate->setData($this->arrData);
 
         $params = array(
@@ -90,12 +81,12 @@ class QuickPay extends Postsale implements IsotopePayment
             'agreement_id' => $this->quickpay_agreementId,
             'order_id'     => str_pad($objOrder->id, 4, '0', STR_PAD_LEFT),
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
-            'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency),
+            'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'currency'     => $objOrder->currency,
             'continueurl'  => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
             'cancelurl'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
             'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
-            'autocapture'  => ($this->trans_type == 'capture' ? '1' : '0'),
+            'autocapture'  => 'capture' === $this->trans_type ? '1' : '0',
         );
 
         if ('' !== $this->quickpay_paymentMethods) {
@@ -117,7 +108,7 @@ class QuickPay extends Postsale implements IsotopePayment
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

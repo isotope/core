@@ -55,9 +55,9 @@ class AttributeOption extends \MultilingualModel
     {
         return array(
             'value'     => $this->id,
-            'label'     => ($blnPriceInLabel ? $this->getLabel($objProduct) : $this->label),
-            'group'     => ($this->type == 'group' ? '1' : ''),
-            'default'   => ($this->isDefault ? '1' : ''),
+            'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
+            'group'     => 'group' === $this->type ? '1' : '',
+            'default'   => $this->isDefault ? '1' : '',
             'model'     => $this
         );
     }
@@ -69,10 +69,10 @@ class AttributeOption extends \MultilingualModel
      */
     public function getAttribute()
     {
-        if ($this->ptable == 'tl_iso_attribute') {
+        if ('tl_iso_attribute' === $this->ptable) {
             return Attribute::findByPk($this->pid);
 
-        } elseif ($this->ptable == 'tl_iso_product') {
+        } elseif ('tl_iso_product' === $this->ptable) {
             return Attribute::findByFieldName($this->field_name);
 
         } else {
@@ -87,7 +87,7 @@ class AttributeOption extends \MultilingualModel
      */
     public function isPercentage()
     {
-        return substr($this->arrData['price'], -1) == '%' ? true : false;
+        return '%' === substr($this->arrData['price'], -1) ? true : false;
     }
 
     /**
@@ -246,6 +246,8 @@ class AttributeOption extends \MultilingualModel
      * @param IsotopeAttributeWithOptions|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
+     *
+     * @throws \LogicException if attribute option source is not the database table
      */
     public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute)
     {
@@ -256,17 +258,13 @@ class AttributeOption extends \MultilingualModel
         $t = static::getTable();
 
         return static::findBy(
-            array(
+            [
                 "$t.pid=?",
                 "$t.ptable='tl_iso_attribute'",
                 "$t.published='1'"
-            ),
-            array(
-                $objAttribute->id
-            ),
-            array(
-                'order' => "$t.sorting"
-            )
+            ],
+            [$objAttribute->id],
+            ['order' => "$t.sorting"]
         );
     }
 
@@ -277,6 +275,8 @@ class AttributeOption extends \MultilingualModel
      * @param IsotopeAttributeWithOptions $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
+     *
+     * @throws \LogicException if attribute options source is not the product
      */
     public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
     {
@@ -297,9 +297,7 @@ class AttributeOption extends \MultilingualModel
                 $objProduct->id,
                 $objAttribute->field_name
             ),
-            array(
-                'order' => "$t.sorting"
-            )
+            ['order' => "$t.sorting"]
         );
     }
 

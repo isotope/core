@@ -26,8 +26,29 @@ use Isotope\RequestCache\Filter;
  * @property int    $gid
  * @property int    $tstamp
  * @property string $language
- * @proeprty int    $dateAdded
+ * @property int    $dateAdded
  * @property int    $type
+ * @property array  $pages
+ * @property array  $orderPages
+ * @property array  $inherit
+ * @property bool   $fallback
+ * @property string $alias
+ * @property string $sku
+ * @property string $name
+ * @property string $teaser
+ * @property string $description
+ * @property string $meta_title
+ * @property string $meta_description
+ * @property string $meta_keywords
+ * @property bool   $shipping_exempt
+ * @property array  $images
+ * @property bool   $protected
+ * @property array  $groups
+ * @property bool   $guests
+ * @property array  $cssID
+ * @property bool   $published
+ * @property string $start
+ * @property string $stop
  */
 abstract class Product extends TypeAgent
 {
@@ -63,7 +84,7 @@ abstract class Product extends TypeAgent
      */
     public static function getActive()
     {
-        return empty(static::$arrActive) ? null : end(static::$arrActive);
+        return 0 === count(static::$arrActive) ? null : end(static::$arrActive);
     }
 
     /**
@@ -73,7 +94,7 @@ abstract class Product extends TypeAgent
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
-        array_push(static::$arrActive, $objProduct);
+        static::$arrActive[] = $objProduct;
     }
 
     /**
@@ -160,7 +181,7 @@ abstract class Product extends TypeAgent
         $t = static::$strTable;
 
         $arrColumns = array("($t.id=? OR $t.alias=?)");
-        $arrValues  = array((is_numeric($varId) ? $varId : 0), $varId);
+        $arrValues  = array(is_numeric($varId) ? $varId : 0, $varId);
 
         $arrOptions = array_merge(
             array(
@@ -299,7 +320,7 @@ abstract class Product extends TypeAgent
      * @param mixed $arrValues
      * @param array $arrOptions
      *
-     * @return \Model\Collection|Product[]
+     * @return \Model\Collection
      */
     public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -478,7 +499,7 @@ abstract class Product extends TypeAgent
 
         if (!empty($arrFilters) || !empty($arrSorting)) {
 
-            /** @var IsotopeProduct[]|Product[] $arrProducts */
+            /** @var static[] $arrProducts */
             $arrProducts = $objProducts->getModels();
 
             if (!empty($arrFilters)) {
@@ -495,7 +516,7 @@ abstract class Product extends TypeAgent
                         }
                     }
 
-                    if (!empty($arrGroups) && in_array(false, $arrGroups)) {
+                    if (!empty($arrGroups) && in_array(false, $arrGroups, true)) {
                         return false;
                     }
 
@@ -516,8 +537,8 @@ abstract class Product extends TypeAgent
                         // search, force the sorting order to be determined by a lowercase copy of the original value.
 
                         // Temporary fix for price attribute (see #945)
-                        if ($strField == 'price') {
-                            if (($objProduct->getPrice() !== null)) {
+                        if ('price' === $strField) {
+                            if (null !== $objProduct->getPrice()) {
                                 $arrData[$strField][$objProduct->id] = $objProduct->getPrice()->getAmount();
                             } else {
                                 $arrData[$strField][$objProduct->id] = 0;
@@ -614,11 +635,11 @@ abstract class Product extends TypeAgent
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if (($arrConfig['load'] == 'eager' || $arrOptions['eager'])
-                    && ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
+                if (('eager' === $arrConfig['load'] || $arrOptions['eager'])
+                    && ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type'])
                 ) {
                     if (is_array($arrOptions['joinAliases'])
-                        && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'])) !== false
+                        && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'], true)) !== false
                     ) {
                         $strJoinAlias = $key;
                         unset($arrOptions['joinAliases'][$key]);
@@ -629,12 +650,12 @@ abstract class Product extends TypeAgent
 
                     $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
 
-                    foreach (array_keys($objRelated->getFields()) as $strField) {
+                    foreach ($objRelated->getFields() as $strField => $config) {
                         $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
                     }
 
                     $arrJoins[] = sprintf(
-                        " LEFT JOIN %s %s ON %s.%s=%s.id",
+                        ' LEFT JOIN %s %s ON %s.%s=%s.id',
                         $arrConfig['table'],
                         $strJoinAlias,
                         $arrOptions['table'],
@@ -646,7 +667,7 @@ abstract class Product extends TypeAgent
         }
 
         // Generate the query
-        $strQuery = "SELECT " . implode(', ', $arrFields) . " FROM " . $arrOptions['table'] . implode("", $arrJoins);
+        $strQuery = 'SELECT ' . implode(', ', $arrFields) . ' FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
         if (!is_array($arrOptions['column'])) {
@@ -658,12 +679,12 @@ abstract class Product extends TypeAgent
 
         // Group by
         if ($arrOptions['group'] !== null) {
-            $strQuery .= " GROUP BY " . $arrOptions['group'];
+            $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
         // Order by
         if ($arrOptions['order'] !== null) {
-            $strQuery .= " ORDER BY " . $arrOptions['order'];
+            $strQuery .= ' ORDER BY ' . $arrOptions['order'];
         }
 
         return $strQuery;
@@ -683,13 +704,13 @@ abstract class Product extends TypeAgent
 
         $arrJoins  = array();
         $arrFields = array(
-            $arrOptions['table'] . ".*",
+            $arrOptions['table'] . '.*',
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
         if ($hasVariants) {
             $arrFields[] = sprintf(
-                "IF(%s.pid>0, parent.type, %s.type) AS type",
+                'IF(%s.pid>0, parent.type, %s.type) AS type',
                 $arrOptions['table'],
                 $arrOptions['table']
             );
@@ -718,7 +739,7 @@ abstract class Product extends TypeAgent
 
         if ($hasVariants) {
             $arrJoins[] = sprintf(
-                " LEFT OUTER JOIN %s parent ON %s.pid=parent.id",
+                ' LEFT OUTER JOIN %s parent ON %s.pid=parent.id',
                 $arrOptions['table'],
                 $arrOptions['table']
             );
@@ -726,11 +747,11 @@ abstract class Product extends TypeAgent
 
         // Generate the query
         $strWhere = '';
-        $strQuery = "
+        $strQuery = '
             SELECT
-                " . implode(', ', $arrFields) . ",
-                COUNT(DISTINCT " . $arrOptions['table'] . ".id) AS count
-            FROM " . $arrOptions['table'] . implode("", $arrJoins);
+                ' . implode(', ', $arrFields) . ',
+                COUNT(DISTINCT ' . $arrOptions['table'] . '.id) AS count
+            FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
         if (!empty($arrOptions['column'])) {
@@ -738,7 +759,7 @@ abstract class Product extends TypeAgent
                 $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
             }
 
-            $strWhere = " AND " . implode(" AND ", $arrOptions['column']);
+            $strWhere = ' AND ' . implode(' AND ', $arrOptions['column']);
         }
 
         // The model must never find a language record
@@ -746,7 +767,7 @@ abstract class Product extends TypeAgent
 
         // Group by
         if ($arrOptions['group'] !== null) {
-            $strQuery .= " GROUP BY " . $arrOptions['group'];
+            $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
         return $strQuery;

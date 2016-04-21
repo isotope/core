@@ -20,17 +20,17 @@ use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
- * Class Sparkasse
+ * Sparkasse payment method.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
+ * @property string $sparkasse_paymentmethod
+ * @property string $sparkasse_sslmerchant
+ * @property string $sparkasse_sslpassword
+ * @property string $sparkasse_merchantref
  */
 class Sparkasse extends Postsale implements IsotopePayment
 {
-
     /**
-     * Server to server communication
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -86,8 +86,7 @@ class Sparkasse extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -95,15 +94,13 @@ class Sparkasse extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         global $objPage;
 
+        /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_sparkasse');
 
         $objTemplate->amount = number_format($objOrder->getTotal(), 2, ',', '');
@@ -112,16 +109,16 @@ class Sparkasse extends Postsale implements IsotopePayment
         $objTemplate->locale = $objOrder->language;
         $objTemplate->orderid = $objOrder->id;
         $objTemplate->sessionid = $objPage->id;
-        $objTemplate->transactiontype = ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization');
+        $objTemplate->transactiontype = ('auth' === $this->trans_type ? 'preauthorization' : 'authorization');
         $objTemplate->merchantref = '';
 
         if ($this->sparkasse_merchantref != '') {
-            $objTemplate->merchantref = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+            $objTemplate->merchantref = substr(\Controller::replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->link = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
+        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->link     = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
 
         // Unfortunately we can't use the class method for this
         // @todo change when PHP 5.4 is compulsory
@@ -134,10 +131,11 @@ class Sparkasse extends Postsale implements IsotopePayment
         return $objTemplate->parse();
     }
 
-
     /**
      * Calculate hash
-     * @param  array
+     *
+     * @param  array $arrData
+     *
      * @return string
      */
     private function calculateHash($arrData)
@@ -147,10 +145,10 @@ class Sparkasse extends Postsale implements IsotopePayment
         return hash_hmac('sha1', implode('', $arrData), $this->sparkasse_sslpassword);
     }
 
-
     /**
      * Redirect the Sparkasse server to our error page
-     * @param array
+     *
+     * @param array $arrData
      */
     private function redirectError($arrData)
     {

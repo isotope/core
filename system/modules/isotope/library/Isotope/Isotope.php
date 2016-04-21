@@ -98,7 +98,7 @@ class Isotope extends \Controller
                         preg_replace(
                             '/\?.*$/i',
                             '',
-                            (\Environment::get('request')) . (($strQuery) ? '?' . $strQuery : '')
+                            \Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
                         )
                     );
                 }
@@ -247,7 +247,7 @@ class Isotope extends \Controller
 
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => ($product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress()),
+                'shipping' => $product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
             );
         }
 
@@ -273,7 +273,7 @@ class Isotope extends \Controller
         $objConfig = static::getConfig();
 
         if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
-            $fltValue = (round(20 * $fltValue)) / 20;
+            $fltValue = round(20 * $fltValue) / 20;
         }
 
         return round($fltValue, $objConfig->priceRoundPrecision);
@@ -452,8 +452,9 @@ class Isotope extends \Controller
         $arrOptions = array();
 
         foreach ($arrData as $field => $value) {
-            if ($blnSkipEmpty && ($value == '' || $value == '-'))
+            if ($blnSkipEmpty && ($value == '' || $value == '-')) {
                 continue;
+            }
 
             $arrOptions[$field] = array
             (
@@ -479,7 +480,7 @@ class Isotope extends \Controller
     {
         Product::setActive($objProduct);
 
-        $strTable = $objProduct->getTable();
+        $strTable = Product::getTable();
 
         foreach ($arrConfig as $k => $v) {
 

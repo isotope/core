@@ -24,7 +24,7 @@ class Limit
     /**
      * Limit config
      */
-    protected $intLimit = null;
+    protected $intLimit;
 
 
     /**
@@ -42,7 +42,10 @@ class Limit
 
     /**
      * Check if current limit is not in a given list
-     * @return  bool
+     *
+     * @param array $arrLimits
+     *
+     * @return bool
      */
     public function notIn($arrLimits)
     {
@@ -51,8 +54,10 @@ class Limit
 
     /**
      * Check if limit equals value
-     * @param   int
-     * @return  bool
+     *
+     * @param int $value
+     *
+     * @return bool
      */
     public function equals($value)
     {
@@ -61,7 +66,8 @@ class Limit
 
     /**
      * Get the limit value
-     * @return  int
+     *
+     * @return int
      */
     public function asInt()
     {

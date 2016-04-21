@@ -18,8 +18,8 @@ interface IsotopePurchasableCollection
 {
 
     /**
-     * Return true if order has been paid.
-     * This is the case if either payment date is set or order status has the paid flag
+     * Returns true if order has been paid.
+     * This is the case if either payment date is set or order status has the paid flag.
      *
      * @return bool
      */

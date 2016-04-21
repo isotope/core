@@ -13,6 +13,7 @@
 namespace Isotope\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Model\Collection;
 
 
 /**
@@ -21,7 +22,7 @@ use Isotope\Interfaces\IsotopeProduct;
  * @method \Isotope\Model\AttributeOption[] getModels()
  * @method \Isotope\Model\AttributeOption current()
  */
-class AttributeOption extends \Model\Collection
+class AttributeOption extends Collection
 {
 
     /**

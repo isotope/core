@@ -18,10 +18,16 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 
-
+/**
+ * Saferpay payment method
+ *
+ * @property string $saferpay_accountid
+ * @property string $saferpay_description
+ * @property string $saferpay_vtconfig
+ * @property array  $saferpay_paymentmethods
+ */
 class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAware
 {
-
     /**
      * CreatePayInit URI
      * @var string
@@ -43,11 +49,8 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
 
     protected $objXML;
 
-
     /**
-     * Process Saferpay server to server notification
-     *
-     * @param IsotopeProductCollection $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -60,7 +63,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
-        if (strtoupper(substr($objRequest->response, 0, 3)) != 'OK:') {
+        if (0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
             \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
@@ -85,7 +88,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $objOrder->save();
 
         // everything has been okay so far and the debit has been authorized. We capture it now if this is requested (usually it is).
-        if ($this->trans_type != 'auth') {
+        if ('auth' !== $this->trans_type) {
             $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
             $objOrder->date_paid = time();
         }
@@ -94,9 +97,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -104,12 +105,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
     }
 
     /**
-     * HTML form for checkout
-     *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -118,7 +114,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
         $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder, $objModule), null, '&'), 'POST');
 
-        if ((int) $objRequest->code !== 200 || substr($objRequest->response, 0, 6) === 'ERROR:') {
+        if ((int) $objRequest->code !== 200 || 0 !== strpos($objRequest->response, 'ERROR:')) {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
@@ -142,12 +138,12 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
      */
     public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus)
     {
-        if ($objNewStatus->saferpay_status == 'capture') {
+        if ('capture' === $objNewStatus->saferpay_status) {
 
             $arrPayment = deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
-            if (TL_MODE == 'BE') {
+            if ('BE' === TL_MODE) {
                 if ($blnResult) {
                     \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
@@ -155,7 +151,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
                 }
             }
 
-        } elseif ($objNewStatus->saferpay_status == 'cancel' && TL_MODE == 'BE') {
+        } elseif ('cancel' === $objNewStatus->saferpay_status && 'BE' === TL_MODE) {
             \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }
@@ -204,7 +200,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $strData = $_POST['DATA'];
 
         // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
-        if (substr($strData, 0, 15) == '<IDP MSGTYPE=\"') {
+        if (0 === strpos($strData, '<IDP MSGTYPE=\"')) {
             $strData = stripslashes($strData);
         }
 
@@ -243,12 +239,12 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $params = array(
             'ID'          => $strId,
             'ACCOUNTID'   => $this->saferpay_accountid,
-            'ACTION'      => ($blnCancel ? 'Cancel' : 'Settlement'),
+            'ACTION'      => $blnCancel ? 'Cancel' : 'Settlement',
             'TOKEN'       => $strToken
         );
 
         // This is only for the sandbox mode where a password is required
-        if (substr($this->saferpay_accountid, 0, 6) == '99867-') {
+        if (0 === strpos($this->saferpay_accountid, '99867-')) {
             $params['spPassword'] = 'XAjc3Kna';
         }
 
@@ -257,7 +253,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         $objRequest->send(static::payCompleteURI, http_build_query($params, null, '&'), 'POST');
 
         // Stop if capture was not successful
-        if ($objRequest->hasError() || strtoupper(substr($objRequest->response, 0, 3)) != 'OK:') {
+        if ($objRequest->hasError() || 0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
             \System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
@@ -267,15 +263,14 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         return true;
     }
 
-
     /**
      * Check XML data, add to log if debugging is enabled
      *
-     * @param Order $objOrder
+     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */
-    private function validateXML(Order $objOrder)
+    private function validateXML(IsotopeProductCollection $objOrder)
     {
         if ($this->getPostValue('ACCOUNTID') != $this->saferpay_accountid) {
             \System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
@@ -283,7 +278,7 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
 
             return false;
 
-        } elseif ($this->getPostValue('AMOUNT') != round(($objOrder->getTotal() * 100), 0)) {
+        } elseif ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100, 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $this->getTotal()), 'isotope_saferpay.log');
 

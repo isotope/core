@@ -17,6 +17,7 @@ use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
+use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 /**
@@ -91,7 +92,7 @@ class AddressBook extends Module
         $table = Address::getTable();
 
         \System::loadLanguageFile($table);
-        $this->loadDataContainer($table);
+        \Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
@@ -137,7 +138,7 @@ class AddressBook extends Module
         /** @type \PageModel $objPage */
         global $objPage;
 
-        $arrAddresses = array();
+        $arrAddresses = [];
         $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
         /** @type Address[] $objAddresses */
@@ -147,12 +148,12 @@ class AddressBook extends Module
             foreach ($objAddresses as $objAddress) {
                 $arrAddresses[] = array_merge($objAddress->row(), array(
                     'id'                => $objAddress->id,
-                    'class'             => (($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : '')),
+                    'class'             => ($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : ''),
                     'text'              => $objAddress->generate(),
                     'edit_url'          => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
                     'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
-                    'default_billing'   => ($objAddress->isDefaultBilling ? true : false),
-                    'default_shipping'  => ($objAddress->isDefaultShipping ? true : false),
+                    'default_billing'   => $objAddress->isDefaultBilling ? true : false,
+                    'default_shipping'  => $objAddress->isDefaultShipping ? true : false,
                 ));
             }
         }
@@ -183,7 +184,7 @@ class AddressBook extends Module
         $table = Address::getTable();
         \System::loadLanguageFile(\MemberModel::getTable());
 
-        $this->Template            = new \Isotope\Template($this->memberTpl);
+        $this->Template            = new Template($this->memberTpl);
         $this->Template->hasError  = false;
         $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
@@ -210,17 +211,17 @@ class AddressBook extends Module
         $arrFields = $this->arrFields;
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
 
-            if (!in_array($strName, $arrFields) || !$arrDca['eval']['feEditable']) {
+            if (!in_array($strName, $arrFields, true) || !$arrDca['eval']['feEditable']) {
                 return false;
             }
 
             // Map checkboxWizard to regular checkbox widget
-            if ($arrDca['inputType'] == 'checkboxWizard') {
+            if ('checkboxWizard' === $arrDca['inputType']) {
                 $arrDca['inputType'] = 'checkbox';
             }
 
             // Special field "country"
-            if ($strName == 'country') {
+            if ('country' === $strName) {
                 $arrCountries = array_merge(Isotope::getConfig()->getBillingCountries(), Isotope::getConfig()->getShippingCountries());
                 $arrDca['reference'] = $arrDca['options'];
                 $arrDca['options'] = array_values(array_intersect(array_keys($arrDca['options']), $arrCountries));
@@ -287,7 +288,7 @@ class AddressBook extends Module
         foreach ($arrGroups as $k => $v) {
             $this->Template->$k = $v; // backwards compatibility
 
-            $key = $k . (($k == 'personal') ? 'Data' : 'Details');
+            $key = $k . (('personal' === $k) ? 'Data' : 'Details');
             $categories[$GLOBALS['TL_LANG']['tl_member'][$key]] = $v;
         }
 

@@ -18,7 +18,9 @@ use Isotope\Model\Group;
 
 class Callback extends Permission
 {
-
+    /**
+     * Make the constructor public
+     */
     public function __construct()
     {
         parent::__construct();
@@ -40,7 +42,7 @@ class Callback extends Permission
         }
 
         // Load permissions in tl_iso_product
-        if ($dc->table == 'tl_iso_product' || stripos(\Environment::get('request'), 'group.php') !== false) {
+        if ('tl_iso_product' === $dc->table || stripos(\Environment::get('request'), 'group.php') !== false) {
             $arrGroups = $user->iso_groups;
 
             if (!is_array($arrGroups) || empty($arrGroups)) {
@@ -70,12 +72,12 @@ class Callback extends Permission
 
         $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = (empty($root) ? true : $root);
 
-        if (in_array('rootPaste', $user->iso_groupp)) {
+        if (in_array('rootPaste', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
         // Check permissions to add product group
-        if (!in_array('create', $user->iso_groupp)) {
+        if (!in_array('create', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
@@ -104,7 +106,7 @@ class Callback extends Permission
             case 'show':
                 if (!in_array(\Input::get('id'), $root)
                     || (
-                        \Input::get('act') == 'delete'
+                        'delete' === \Input::get('act')
                         && !$user->hasAccess('delete', 'iso_groupp')
                     )
                 ) {
@@ -117,7 +119,7 @@ class Callback extends Permission
             case 'deleteAll':
             case 'overrideAll':
                 $sessionData = $session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$user->hasAccess('delete', 'iso_groupp')) {
+                if ('deleteAll' === \Input::get('act') && !$user->hasAccess('delete', 'iso_groupp')) {
                     $sessionData['CURRENT']['IDS'] = array();
                 } else {
                     $sessionData['CURRENT']['IDS'] = array_intersect($sessionData['CURRENT']['IDS'], $root);
@@ -148,7 +150,7 @@ class Callback extends Permission
     {
         $image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
 
-        if ($dc->table == 'tl_iso_product') {
+        if ('tl_iso_product' === $dc->table) {
             return $image . ' <span style="font-weight:bold">' . $label . '</span>';
         } else {
             $strProductType = '';
@@ -171,7 +173,9 @@ class Callback extends Permission
         $arrGroups   = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
         $arrGroups[] = $dc->id;
 
-        \Database::getInstance()->query("UPDATE tl_iso_product SET gid=0 WHERE gid IN (" . implode(',', $arrGroups) . ")");
+        \Database::getInstance()->query(
+            'UPDATE tl_iso_product SET gid=0 WHERE gid IN (' . implode(',', $arrGroups) . ')'
+        );
     }
 
     /**
@@ -191,13 +195,13 @@ class Callback extends Permission
         if (!\BackendUser::getInstance()->isAdmin
             && (
                 !is_array(\BackendUser::getInstance()->iso_groupp)
-                || !in_array('create', \BackendUser::getInstance()->iso_groupp)
+                || !in_array('create', \BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -217,12 +221,12 @@ class Callback extends Permission
         if (!\BackendUser::getInstance()->isAdmin
             && (
                 !is_array(\BackendUser::getInstance()->iso_groupp)
-                || !in_array('delete', \BackendUser::getInstance()->iso_groupp)
+                || !in_array('delete', \BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 }

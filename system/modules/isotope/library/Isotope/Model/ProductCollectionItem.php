@@ -58,7 +58,7 @@ class ProductCollectionItem extends \Model
      * Errors
      * @var array
      */
-    protected $arrErrors = array();
+    protected $arrErrors = [];
 
     /**
      * True if product collection is locked
@@ -410,7 +410,7 @@ class ProductCollectionItem extends \Model
      */
     public function hasErrors()
     {
-        return !empty($this->arrErrors);
+        return 0 !== count($this->arrErrors);
     }
 
     /**

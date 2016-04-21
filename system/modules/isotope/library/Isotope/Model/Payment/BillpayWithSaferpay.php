@@ -23,7 +23,9 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
 
 class BillpayWithSaferpay extends Saferpay
 {
-
+    /**
+     * @inheritdoc
+     */
     public function isAvailable()
     {
         $objBillingAddress = Isotope::getCart()->getBillingAddress();

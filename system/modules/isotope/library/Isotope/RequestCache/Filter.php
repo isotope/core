@@ -300,10 +300,10 @@ class Filter implements \ArrayAccess
     public function sqlValue()
     {
         if ('like' === $this->arrConfig['operator']) {
-            return (('%' . $this->arrConfig['value'] . '%'));
+            return ('%' . $this->arrConfig['value'] . '%');
         }
 
-        return ($this->arrConfig['value']);
+        return $this->arrConfig['value'];
     }
 
     /**

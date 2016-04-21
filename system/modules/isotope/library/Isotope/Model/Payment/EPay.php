@@ -20,6 +20,7 @@ use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 
 class EPay extends Payment implements IsotopePayment, IsotopePostsale
@@ -59,12 +60,7 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Process payment on the confirmation page
-     *
-     * @param IsotopeProductCollection|Order $objOrder
-     * @param \Module                        $objModule
-     *
-     * @return bool|mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -85,11 +81,10 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
         return true;
     }
 
-
     /**
      * Process ePay callback
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -107,9 +102,7 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return  IsotopeProductCollection|null
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -117,16 +110,12 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the ePay form
-     *
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_epay');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_epay');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->currency = $objOrder->currency;
@@ -144,7 +133,7 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

@@ -17,7 +17,6 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
-
 /**
  * Class Flat
  *
@@ -25,10 +24,8 @@ use Isotope\Model\Shipping;
  */
 class Flat extends Shipping implements IsotopeShipping
 {
-
     /**
-     * Return calculated price for this shipping method
-     * @return float
+     * @inheritdoc
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -42,7 +39,7 @@ class Flat extends Shipping implements IsotopeShipping
             $fltPrice = (float) $this->arrData['price'];
         }
 
-        if ($this->flatCalculation == 'perProduct' || $this->flatCalculation == 'perItem') {
+        if ('perProduct' === $this->flatCalculation || 'perItem' === $this->flatCalculation) {
             $arrItems = $objCollection->getItems();
             $arrProductTypes = deserialize($this->product_types);
             $intMultiplier = 0;
@@ -58,7 +55,7 @@ class Flat extends Shipping implements IsotopeShipping
                 $intMultiplier += ($this->flatCalculation == 'perProduct') ? 1 : $objItem->quantity;
             }
 
-            $fltPrice = ($fltPrice * $intMultiplier);
+            $fltPrice *= $intMultiplier;
         }
 
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);

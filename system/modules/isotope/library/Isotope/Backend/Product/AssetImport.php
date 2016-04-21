@@ -85,7 +85,7 @@ class AssetImport extends \Backend
 
         $blnEmpty    = true;
         $arrDelete   = array();
-        $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE pid=0")->execute();
+        $objProducts = \Database::getInstance()->prepare('SELECT * FROM tl_iso_product WHERE pid=0')->execute();
 
         while ($objProducts->next()) {
             $arrImageNames = array();
@@ -103,7 +103,7 @@ class AssetImport extends \Backend
 
             $arrPattern   = array();
             $arrPattern[] = $objProducts->alias ? standardize($objProducts->alias) : null;
-            $arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
+            $arrPattern[] = $objProducts->sku ?: null;
             $arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
             $arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
@@ -163,7 +163,7 @@ class AssetImport extends \Backend
                         $blnEmpty = false;
                     }
 
-                    \Database::getInstance()->prepare("UPDATE tl_iso_product SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+                    \Database::getInstance()->prepare('UPDATE tl_iso_product SET images=? WHERE id=?')->execute(serialize($arrImages), $objProducts->id);
                 }
             }
         }

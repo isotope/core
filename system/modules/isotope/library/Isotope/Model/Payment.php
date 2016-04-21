@@ -17,7 +17,6 @@ use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
 
-
 /**
  * Class Payment
  * Parent class for all payment gateway modules.
@@ -75,10 +74,8 @@ abstract class Payment extends TypeAgent
      */
     protected $strTemplate;
 
-
     /**
-     * Initialize the object
-     * @param array
+     * @inheritdoc
      */
     public function __construct(\Database\Result $objResult = null)
     {
@@ -94,16 +91,21 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return true or false depending on availability of the payment method
+     *
      * @return bool
+     *
      * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
+     *
+     * @throws \InvalidArgumentException on unknown quantity mode
+     * @throws \UnexpectedValueException on unknown product types condition
      */
     public function isAvailable()
     {
-        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
+        if (!$this->enabled && true !== BE_USER_LOGGED_IN) {
             return false;
         }
 
-        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {
+        if (($this->guests && true === FE_USER_LOGGED_IN) || ($this->protected && true !== FE_USER_LOGGED_IN)) {
             return false;
         }
 
@@ -111,8 +113,8 @@ abstract class Payment extends TypeAgent
             $arrGroups = deserialize($this->groups);
 
             if (!is_array($arrGroups)
-                || empty($arrGroups)
-                || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))  // Can't use empty() because its an object property (using __get)
+                || 0 === count($arrGroups)
+                || 0 === count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -146,14 +148,14 @@ abstract class Payment extends TypeAgent
         }
 
         $arrConfigs = deserialize($this->config_ids);
-        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+        if (is_array($arrConfigs) && count($arrConfigs) > 0 && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && !empty($arrCountries)
-            && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries)
+        if (is_array($arrCountries) && count($arrCountries) > 0
+            && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries, true)
         ) {
             return false;
         }
@@ -175,7 +177,7 @@ abstract class Payment extends TypeAgent
 
         $arrConfigTypes = deserialize($this->product_types);
 
-        if (is_array($arrConfigTypes) && !empty($arrConfigTypes)) {
+        if (is_array($arrConfigTypes) && count($arrConfigTypes) > 0) {
             $arrItems = Isotope::getCart()->getItems();
             $arrItemTypes = array();
 
@@ -183,7 +185,7 @@ abstract class Payment extends TypeAgent
                 if ($objItem->hasProduct()) {
                     $arrItemTypes[] = $objItem->getProduct()->type;
 
-                } elseif ($this->product_types_condition == 'onlyAvailable') {
+                } elseif ('onlyAvailable' === $this->product_types_condition) {
                     // If one product in cart is not of given type, shipping method is not available
                     return false;
                 }
@@ -222,17 +224,20 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return true if the payment has a percentage (not fixed) amount
+     *
      * @return bool
      */
     public function isPercentage()
     {
-        return substr($this->arrData['price'], -1) == '%' ? true : false;
+        return '%' === substr($this->arrData['price'], -1);
     }
 
     /**
      * Return percentage amount (if applicable)
+     *
      * @return float
-     * @throws \UnexpectedValueException
+     *
+     * @throws \UnexpectedValueException if the surcharge is not a percentage amount.
      */
     public function getPercentage()
     {
@@ -245,7 +250,8 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return percentage label if price is percentage
-     * @return  string
+     *
+     * @return string
      */
     public function getPercentageLabel()
     {
@@ -254,6 +260,9 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return calculated price for this payment method
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
      * @return float
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
@@ -271,9 +280,9 @@ abstract class Payment extends TypeAgent
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
     }
 
-
     /**
      * Return translated label for this payment method
+     *
      * @return string
      */
     public function getLabel()
@@ -284,21 +293,23 @@ abstract class Payment extends TypeAgent
 
     /**
      * Return a html form for checkout or false
-     * @param   IsotopeProductCollection    $objOrder   The order being places
-     * @param   \Module                     $objModule  The checkout module instance
-     * @return  bool
+     *
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
+     *
+     * @return bool
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         return false;
     }
 
-
     /**
      * Return information or advanced features in the backend.
-     *
      * Use this function to present advanced features or basic payment information for an order in the backend.
-     * @param integer $orderId Order ID
+     *
+     * @param int $orderId
+     *
      * @return string
      */
     public function backendInterface($orderId)
@@ -317,7 +328,6 @@ abstract class Payment extends TypeAgent
 </div>';
     }
 
-
     /**
      * Return the checkout review information.
      *
@@ -331,21 +341,17 @@ abstract class Payment extends TypeAgent
         return $this->getLabel();
     }
 
-
     /**
-     * Get the checkout surcharge for this payment method
-     *
-     * @return  \Isotope\Model\ProductCollectionSurcharge\Payment|null
+     * @inheritdoc
      */
     public function getSurcharge($objCollection)
     {
-        if ($this->getPrice() == 0) {
+        if (0 === (int) $this->getPrice()) {
             return null;
         }
 
         return ProductCollectionSurcharge::createForPaymentInCollection($this, $objCollection);
     }
-
 
     /**
      * Validate a credit card number and return the card type.
@@ -388,11 +394,11 @@ abstract class Payment extends TypeAgent
         return false;
     }
 
-
     /**
      * Return a list of valid credit card types for this payment module
      *
      * @return array
+     *
      * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
      */
     public static function getAllowedCCTypes()

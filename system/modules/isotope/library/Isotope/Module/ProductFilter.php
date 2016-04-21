@@ -26,6 +26,9 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 
+/**
+ * ProductFilter allows to filter a product list by attributes.
+ */
 class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
 

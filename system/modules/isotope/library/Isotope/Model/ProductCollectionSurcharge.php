@@ -409,7 +409,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             if (null === $productAddresses) {
                 $productAddresses = array(
                     'billing'  => $objCollection->getBillingAddress(),
-                    'shipping' => ($objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress()),
+                    'shipping' => $objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
                 );
             }
 
@@ -433,9 +433,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
+            /** @var \Isotope\Model\TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
-
-                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $productAddresses)) {
@@ -520,9 +519,8 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 }
             }
 
+            /** @var \Isotope\Model\TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
-
-                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {

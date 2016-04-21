@@ -20,12 +20,7 @@ use Isotope\Template;
 class OpenPaymentPlatform extends Payment implements IsotopePayment
 {
     /**
-     * Return the checkout form.
-     *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module|Checkout               $objModule The checkout module instance
-     *
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -58,12 +53,7 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
     }
 
     /**
-     * Process payment on checkout confirmation page.
-     *
-     * @param   IsotopeProductCollection|Order $objOrder  The order being places
-     * @param   \Module                        $objModule The checkout module instance
-     *
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -128,8 +118,8 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
     }
 
     /**
-     * @param string                         $type
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param string                   $type
+     * @param IsotopeProductCollection $objOrder
      *
      * @return Request
      */
@@ -153,8 +143,8 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
     }
 
     /**
-     * @param array                          $data
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param array                    $data
+     * @param IsotopeProductCollection $objOrder
      */
     private function storeApiResponse(array $data, IsotopeProductCollection $objOrder)
     {

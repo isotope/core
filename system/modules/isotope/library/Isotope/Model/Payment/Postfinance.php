@@ -17,12 +17,7 @@ use Isotope\Model\Payment;
 
 
 /**
- * Class Postfinance
- *
  * Handle Postfinance (Swiss Post) payments
- * @copyright  Isotope eCommerce Workgroup 2009-2013
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Postfinance extends PSP
 {

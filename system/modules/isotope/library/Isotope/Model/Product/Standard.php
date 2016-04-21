@@ -31,16 +31,14 @@ use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
-
+use Model\QueryBuilder;
 
 /**
- * Class Product
- *
- * Provide methods to handle Isotope products.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
+ * Standard implementation of an Isotope product.
+ * 
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Fred Bliss <fred.bliss@intelligentspark.com>
+ * @author Christian de la Haye <service@delahaye.de>
  */
 class Standard extends Product implements IsotopeProduct, WeightAggregate
 {
@@ -421,7 +419,16 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGroups    = false;
-            $strQuery        = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<'$time') AND (stop='' OR stop>'" . ($time + 60) . "')";
+            $strQuery        = '
+                SELECT id, protected, groups 
+                FROM tl_iso_product 
+                WHERE 
+                    pid=' . $this->getProductId() . " 
+                    AND language='' 
+                    AND published='1' 
+                    AND (start='' OR start<'$time') 
+                    AND (stop='' OR stop>'" . ($time + 60) . "')
+            ";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getVariantAttributes();
@@ -430,7 +437,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
                 // Hide guests-only products when logged in
                 if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes, true)) {
-                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ")";
+                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
                 elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
                     $strQuery .= " AND protected=''";
@@ -484,10 +491,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
             if ($blnPublished) {
-                $options = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
+                $options          = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
                 $options['table'] = ProductCategory::getTable();
-                $query = \Model\QueryBuilder::find($options);
-                $values = (array) $options['value'];
+                $query            = QueryBuilder::find($options);
+                $values           = (array) $options['value'];
             } else {
                 $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
                 $values = array($this->getProductId());
@@ -612,8 +619,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->config  = $arrConfig;
 
         $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
-            return in_array($strAttribute, $objProduct->getAttributes())
-                || in_array($strAttribute, $objProduct->getVariantAttributes());
+            return in_array($strAttribute, $objProduct->getAttributes(), true)
+                || in_array($strAttribute, $objProduct->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
@@ -715,7 +722,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->href             = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail     = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options          = $arrProductOptions;
-        $objTemplate->hasOptions       = !empty($arrProductOptions);
+        $objTemplate->hasOptions       = count($arrProductOptions) > 0;
         $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId           = $this->getFormId();
         $objTemplate->action           = ampersand(\Environment::get('request'), true);
@@ -845,7 +852,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
         $objWidget->storeValues = true;
         $objWidget->tableless   = true;
-        $objWidget->id .= "_" . $this->getFormId();
+        $objWidget->id .= '_' . $this->getFormId();
 
         // Validate input
         if (\Input::post('FORM_SUBMIT') == $this->getFormId()) {
@@ -857,7 +864,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
+                if ($varValue != '' && in_array($arrData['eval']['rgxp'], ['date', 'time', 'datim'], true)) {
                     try {
                         /** @type \Date|object $objDate */
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
@@ -1116,7 +1123,9 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             $arrAttributes = array_diff($this->getAttributes(), Attribute::getCustomerDefinedFields());
         }
 
-        if (!in_array($strKey, $arrAttributes) && $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] != '') {
+        if (!in_array($strKey, $arrAttributes, true)
+            && '' !== (string) $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend']
+        ) {
             return;
         }
 

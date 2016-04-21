@@ -40,8 +40,8 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
-            return \Input::post('FORM_SUBMIT') === $haste->getFormId();
+        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function (Form $form) {
+            return \Input::post('FORM_SUBMIT') === $form->getFormId();
         });
 
 
@@ -129,8 +129,10 @@ abstract class OrderConditions extends CheckoutStep
 
     /**
      * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return array
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {

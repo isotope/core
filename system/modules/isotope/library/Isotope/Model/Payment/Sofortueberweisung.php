@@ -16,28 +16,29 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
-
+/**
+ * Sofortueberweisung payment method
+ */
 class Sofortueberweisung extends Postsale implements IsotopePayment
 {
-
     /**
      * sofortueberweisung.de only supports these currencies
-     * @return  true
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'))) {
+        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'), true)) {
             return false;
         }
 
         return parent::isAvailable();
     }
 
-
     /**
-     * Handle the server to server postsale request
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
@@ -95,8 +96,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -104,10 +104,7 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -138,7 +135,8 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         $arrParams['hash']        = sha1(implode('|', $arrParams));
         $arrParams['language_id'] = $GLOBALS['TL_LANGUAGE'];
 
-        $objTemplate = new \Isotope\Template('iso_payment_sofortueberweisung');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_sofortueberweisung');
         $objTemplate->setData($this->arrData);
         $objTemplate->action   = $strUrl;
         $objTemplate->params   = array_filter(array_diff_key($arrParams, array('project_password' => '')));
@@ -150,4 +148,3 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         return $objTemplate->parse();
     }
 }
-

@@ -27,12 +27,8 @@ use Isotope\Model\Payment;
  */
 class Cash extends Payment implements IsotopePayment
 {
-
     /**
-     * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {

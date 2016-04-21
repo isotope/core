@@ -20,7 +20,7 @@ namespace Isotope\Interfaces;
 interface IsotopeAttribute
 {
     /**
-     * Returns true if attribute is customer defined.
+     * Returns true if attribute is customer defined
      *
      * @return bool
      */

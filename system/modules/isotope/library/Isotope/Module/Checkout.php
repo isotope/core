@@ -13,10 +13,13 @@
 namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
+use Haste\Input\Input;
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 
 /**
@@ -75,7 +78,7 @@ class Checkout extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE CHECKOUT ###';
@@ -87,7 +90,7 @@ class Checkout extends Module
             return $objTemplate->parse();
         }
 
-        $this->strCurrentStep = \Haste\Input\Input::getAutoItem('step');
+        $this->strCurrentStep = Input::getAutoItem('step');
 
         if ($this->strCurrentStep == '') {
             $this->redirectToNextStep();
@@ -146,7 +149,7 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    \Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -155,7 +158,9 @@ class Checkout extends Module
                 if ($strBuffer === true) {
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
-                        \Controller::redirect(\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                        \Controller::redirect(
+                            Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
+                        );
                     }
 
                     // Checkout failed, show error message
@@ -283,8 +288,9 @@ class Checkout extends Module
             $this->Template->formId     = $this->strFormId;
             $this->Template->formSubmit = $this->strFormId;
 
-            $intCurrentStep  += 1;
-            $arrBuffer        = array();
+            ++$intCurrentStep;
+
+            $arrBuffer                   = array();
             $this->skippableSteps[$step] = true;
 
             foreach ($arrModules as $objModule) {
@@ -314,7 +320,7 @@ class Checkout extends Module
 
             if ($step == $this->strCurrentStep) {
                 if ($this->skippableSteps[$step]) {
-                    static::redirectToNextStep();
+                    $this->redirectToNextStep();
                 }
 
                 global $objPage;
@@ -464,13 +470,13 @@ class Checkout extends Module
     protected function canCheckout()
     {
         // Redirect to login page if not logged in
-        if ($this->iso_checkout_method == 'member' && FE_USER_LOGGED_IN !== true) {
+        if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
 
             /** @type \PageModel $objJump */
             $objJump = \PageModel::findPublishedById($this->iso_login_jumpTo);
 
             if (null === $objJump) {
-                $this->Template          = new \Isotope\Template('mod_message');
+                $this->Template          = new Template('mod_message');
                 $this->Template->type    = 'error';
                 $this->Template->message = $GLOBALS['TL_LANG']['ERR']['isoLoginRequired'];
 
@@ -480,8 +486,8 @@ class Checkout extends Module
             $objJump->loadDetails();
             \Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
 
-        } elseif ($this->iso_checkout_method == 'guest' && FE_USER_LOGGED_IN === true) {
-            $this->Template          = new \Isotope\Template('mod_message');
+        } elseif ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+            $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
 
@@ -490,7 +496,7 @@ class Checkout extends Module
 
         // Return error message if cart is empty
         if (Isotope::getCart()->isEmpty()) {
-            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template          = new Template('mod_message');
             $this->Template->type    = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['MSC']['noItemsInCart'];
 
@@ -510,7 +516,7 @@ class Checkout extends Module
                 }
             }
 
-            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = implode("</p>\n<p class=\"error message\">", Isotope::getCart()->getErrors());
 
@@ -578,7 +584,7 @@ class Checkout extends Module
             (
                 'isActive' => $blnActive,
                 'class'    => $class,
-                'link'     => ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step),
+                'link'     => $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step,
                 'href'     => $href,
                 'title'    => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step))),
             );
@@ -617,14 +623,14 @@ class Checkout extends Module
             $objTarget = $objPage;
         }
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'])) {
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strStep = 'step/' . $strStep;
         }
 
         $strUrl = \Controller::generateFrontendUrl($objTarget->row(), '/' . $strStep, $objTarget->language);
 
         if (null !== $objCollection) {
-            $strUrl = \Haste\Util\Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);
+            $strUrl = Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);
         }
 
         return $strUrl;

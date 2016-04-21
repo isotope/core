@@ -67,7 +67,7 @@ class Category extends \Backend
             }, $arrCategories);
 
             \Database::getInstance()
-                ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                ->prepare('UPDATE tl_version SET data=? WHERE id=?')
                 ->execute(serialize($data), $current->id)
             ;
         }
@@ -90,9 +90,9 @@ class Category extends \Backend
         $arrData = SubtableVersion::find('tl_iso_product_category', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_category WHERE pid=" . (int) $intId);
+            \Database::getInstance()->query('DELETE FROM tl_iso_product_category WHERE pid=' . (int) $intId);
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_category'));
+            $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_category'));
 
             \Controller::loadDataContainer('tl_iso_product_category');
 
@@ -104,7 +104,7 @@ class Category extends \Backend
                     $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_category %s")->set($data)->execute();
+                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_category %s')->set($data)->execute();
             }
 
             \Database::getInstance()
@@ -113,7 +113,7 @@ class Category extends \Backend
             ;
 
             \Database::getInstance()
-                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->prepare('UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?')
                      ->execute($intId, 'tl_iso_product_category', $intVersion)
             ;
         }

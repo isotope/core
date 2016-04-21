@@ -36,7 +36,7 @@ class Permission extends \Backend
 
         if (is_array($newRecords[$table]) && in_array($id, $newRecords[$table])) {
 
-            if ($user->inherit == 'custom' || empty($groups)) {
+            if ('custom' === $user->inherit || empty($groups)) {
                 // Add permissions on user level
 
                 $objUser = $db->prepare(
@@ -81,7 +81,7 @@ class Permission extends \Backend
     {
         $arrPermissions = deserialize($record->$permissionField);
 
-        if (is_array($arrPermissions) && in_array('create', $arrPermissions)) {
+        if (is_array($arrPermissions) && in_array('create', $arrPermissions, true)) {
             $arrAccess   = deserialize($record->$accessField);
             $arrAccess[] = $id;
             $arrAccess   = array_unique($arrAccess);

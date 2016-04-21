@@ -426,8 +426,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'options_callback'      => function($dc) {
                 $payment = \Isotope\Model\Payment::findByPk($dc->id);
 
-                if ($payment === null || !$payment instanceof \Isotope\Model\Payment\PSP) {
-                    return array();
+                if (null === $payment || !$payment instanceof \Isotope\Model\Payment\PSP) {
+                    return [];
                 }
 
                 return $payment->getPaymentMethods();

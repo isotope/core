@@ -26,8 +26,10 @@ class Callback extends \Backend
      */
     public function disableFieldName($dc)
     {
+        $act = \Input::get('act');
+
         // Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
-        if (\Input::get('act') == 'editAll' || \Input::get('act') == 'overrideAll') {
+        if ('editAll' === $act || 'overrideAll' === $act) {
             $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['doNotShow'] = true;
         } elseif ($dc->id) {
             $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attribute WHERE id={$dc->id}");
@@ -50,7 +52,7 @@ class Callback extends \Backend
     {
         /** @type Attribute $objAttribute */
 
-        if (\Input::get('do') == 'iso_products') {
+        if ('iso_products' === \Input::get('do')) {
             $objAttribute = Attribute::findByFieldName($objWidget->name);
         } else {
             $objAttribute = Attribute::findByPk(\Input::get('id'));
@@ -73,11 +75,13 @@ class Callback extends \Backend
      */
     public function validateFieldName($varValue)
     {
-        $this->loadDataContainer('tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
 
         $varValue = str_replace('-', '_', standardize($varValue));
 
-        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]) && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']) {
+        if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue])
+            && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']
+        ) {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
 
@@ -97,7 +101,7 @@ class Callback extends \Backend
 
         // Make sure the latest SQL definitions are written to the DCA
         $GLOBALS['TL_CONFIG']['bypassCache'] = true;
-        $this->loadDataContainer('tl_iso_product', true);
+        \Controller::loadDataContainer('tl_iso_product', true);
 
         $objUpdater = new DatabaseUpdater();
         $objUpdater->autoUpdateTables(array('tl_iso_product'));
@@ -110,11 +114,13 @@ class Callback extends \Backend
      */
     public function getConditionFields($dc)
     {
-        $this->loadDataContainer('tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
         $arrFields = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['inputType'] == 'select' || ($arrData['inputType'] == 'conditionalselect' && $field != $dc->activeRecord->field_name)) {
+            if ('select' === $arrData['inputType']
+                || ('conditionalselect' === $arrData['inputType'] && $field != $dc->activeRecord->field_name)
+            ) {
                 $arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -176,10 +182,12 @@ class Callback extends \Backend
      * @param object $dc
      *
      * @return mixed
+     *
+     * @throws \UnexpectedValueException if rgxp is not valid for a datepicker
      */
     public function validateDatepicker($varValue, $dc)
     {
-        if ($varValue && !in_array($dc->activeRecord->rgxp, array('date', 'time', 'datim'))) {
+        if ($varValue && !in_array($dc->activeRecord->rgxp, ['date', 'time', 'datim'], true)) {
             throw new \UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
         }
 

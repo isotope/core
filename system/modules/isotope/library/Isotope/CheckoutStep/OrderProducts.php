@@ -20,11 +20,8 @@ use Isotope\Template;
 
 class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true to enable the module
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -32,9 +29,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
@@ -55,7 +50,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     /**
      * Cart product view does not have review information
      *
-     * @return string
+     * @inheritdoc
      */
     public function review()
     {
@@ -63,14 +58,10 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return array of tokens for notification
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
-        return array();
+        return [];
     }
 }

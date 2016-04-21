@@ -14,6 +14,10 @@ namespace Isotope;
 
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
+use UnitedPrototype\GoogleAnalytics\Session;
+use UnitedPrototype\GoogleAnalytics\Tracker;
+use UnitedPrototype\GoogleAnalytics\Transaction;
+use UnitedPrototype\GoogleAnalytics\Visitor;
 
 
 class Analytics extends Frontend
@@ -30,11 +34,8 @@ class Analytics extends Frontend
     {
         $objConfig = Config::findByPk($objOrder->config_id);
 
-        if (null !== $objConfig) {
-
-            if ($objConfig->ga_enable) {
-                $this->trackGATransaction($objConfig, $objOrder);
-            }
+        if (null !== $objConfig && $objConfig->ga_enable) {
+            $this->trackGATransaction($objConfig, $objOrder);
         }
 
         return true;
@@ -42,21 +43,22 @@ class Analytics extends Frontend
 
     /**
      * Actually execute the GoogleAnalytics tracking
-     * @param Database_Result
+     *
+     * @param Config                   $objConfig
      * @param IsotopeProductCollection $objOrder
      */
     protected function trackGATransaction($objConfig, $objOrder)
     {
         // Initilize GA Tracker
-        $tracker = new \UnitedPrototype\GoogleAnalytics\Tracker($objConfig->ga_account, \Environment::get('base'));
+        $tracker = new Tracker($objConfig->ga_account, \Environment::get('base'));
 
         // Assemble Visitor information
         // (could also get unserialized from database)
-        $visitor = new \UnitedPrototype\GoogleAnalytics\Visitor();
+        $visitor = new Visitor();
         $visitor->setIpAddress(\Environment::get('ip'));
         $visitor->setUserAgent(\Environment::get('httpUserAgent'));
 
-        $transaction = new \UnitedPrototype\GoogleAnalytics\Transaction();
+        $transaction = new Transaction();
 
         $transaction->setOrderId($objOrder->document_number);
         $transaction->setAffiliation($objConfig->name);
@@ -112,7 +114,7 @@ class Analytics extends Frontend
 
         // Assemble Session information
         // (could also get unserialized from PHP session)
-        $session = new \UnitedPrototype\GoogleAnalytics\Session();
+        $session = new Session();
 
         $tracker->trackTransaction($transaction, $session, $visitor);
     }

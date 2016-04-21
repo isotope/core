@@ -12,13 +12,11 @@
 
 namespace Isotope\Model;
 
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
-
 
 /**
  * ProductCollectionDownload model represents a download in a collection (usually an order)
- *
- * @method \Isotope\Model\Download getRelated()
  *
  * @property int    $pid
  * @property int    $tstamp
@@ -55,7 +53,7 @@ class ProductCollectionDownload extends \Model
      */
     protected function download($strFile)
     {
-        if (TL_MODE == 'FE' && $this->downloads_remaining !== '') {
+        if ('FE' === TL_MODE && $this->downloads_remaining !== '') {
             \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
@@ -71,7 +69,10 @@ class ProductCollectionDownload extends \Model
      */
     public function getForTemplate($blnOrderPaid = false)
     {
+        /** @var \PageModel $objPage */
         global $objPage;
+
+        /** @var Download $objDownload */
         $objDownload = $this->getRelated('download_id');
 
         if (null === $objDownload) {
@@ -118,8 +119,8 @@ class ProductCollectionDownload extends \Model
             }
 
             $strHref = '';
-            if (TL_MODE == 'FE') {
-                $strHref = \Haste\Util\Url::addQueryString('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
+            if ('FE' === TL_MODE) {
+                $strHref = Url::addQueryString('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
             }
 
             // Add the image
@@ -136,8 +137,8 @@ class ProductCollectionDownload extends \Model
                 'meta'          => $arrMeta,
                 'extension'     => $objFile->extension,
                 'path'          => $objFile->dirname,
-                'remaining'     => ($objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], intval($this->downloads_remaining)) : ''),
-                'downloadable'  => ($blnOrderPaid && $this->canDownload()),
+                'remaining'     => $objDownload->downloads_allowed > 0 ? sprintf($GLOBALS['TL_LANG']['MSC']['downloadsRemaining'], (int) $this->downloads_remaining) : '',
+                'downloadable'  => $blnOrderPaid && $this->canDownload(),
             );
         }
 
@@ -156,7 +157,7 @@ class ProductCollectionDownload extends \Model
     {
         $arrOptions = array_merge(
             array(
-                'column' => ("pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)"),
+                'column' => 'pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)',
                 'value'  => $objCollection->id,
                 'return' => 'Collection'
             ),

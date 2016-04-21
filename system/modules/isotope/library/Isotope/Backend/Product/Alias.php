@@ -45,8 +45,10 @@ class Alias extends \Backend
             }
         }
 
-        $objAlias = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE id=? OR alias=?")
-                                   ->execute($dc->id, $varValue);
+        $objAlias = \Database::getInstance()
+            ->prepare('SELECT id FROM tl_iso_product WHERE id=? OR alias=?')
+            ->execute($dc->id, $varValue)
+        ;
 
         // Check whether the product alias exists
         if ($objAlias->numRows > 1) {

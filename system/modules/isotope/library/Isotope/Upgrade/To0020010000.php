@@ -12,10 +12,13 @@
 
 namespace Isotope\Upgrade;
 
+use Isotope\Model\Gallery;
 
 class To0020010000 extends Assistant
 {
-
+    /**
+     * @var Gallery[]
+     */
     protected $objGaleries;
 
     public function run($blnInstalled)
@@ -23,8 +26,8 @@ class To0020010000 extends Assistant
         if ($blnInstalled && \Database::getInstance()->tableExists('tl_iso_gallery')) {
             $this->createDatabaseField('lightbox_template', 'tl_iso_gallery');
 
-            $t = \Isotope\Model\Gallery::getTable();
-            $this->objGaleries = \Isotope\Model\Gallery::findBy(
+            $t = Gallery::getTable();
+            $this->objGaleries = Gallery::findBy(
                 array("$t.type='standard'", "$t.anchor='lightbox'", "lightbox_template IS NULL"),
                 null
             );
@@ -59,7 +62,7 @@ class To0020010000 extends Assistant
                 'eval' => array('includeBlankOption'=>true, 'mandatory'=>true)
             ), 'gallery['.$objGallery->id.']'));
 
-            if (\Input::post('FORM_SUBMIT') == 'tl_iso_upgrade_20010000') {
+            if ('tl_iso_upgrade_20010000' === \Input::post('FORM_SUBMIT')) {
                 $objSelect->validate();
 
                 if (!$objSelect->hasErrors()) {
@@ -83,7 +86,7 @@ class To0020010000 extends Assistant
         $this->Template->fields = $strBuffer;
         $this->Template->matter = $GLOBALS['TL_LANG']['UPG']['20010000'];
 
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_upgrade_20010000') {
+        if ('tl_iso_upgrade_20010000' === \Input::post('FORM_SUBMIT')) {
             \Controller::reload();
         }
     }
