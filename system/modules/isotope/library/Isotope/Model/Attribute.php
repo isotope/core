@@ -231,7 +231,7 @@ abstract class Attribute extends TypeAgent
         }
 
         // Prepare options
-        if ($this->optionsSource == 'foreignKey' && !$this->isVariantOption()) {
+        if (IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource && !$this->isVariantOption()) {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options'], $arrField['reference']);
 
@@ -239,11 +239,11 @@ abstract class Attribute extends TypeAgent
             $arrOptions = null;
 
             switch ($this->optionsSource) {
-                case 'attribute':
+                case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                     $arrOptions = deserialize($this->options);
                     break;
 
-                case 'foreignKey':
+                case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                     $arrKey     = explode('.', $this->foreignKey, 2);
                     $arrOptions = \Database::getInstance()
                         ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
@@ -251,7 +251,7 @@ abstract class Attribute extends TypeAgent
                     ;
                     break;
 
-                case 'table':
+                case IsotopeAttributeWithOptions::SOURCE_TABLE:
                     $query = new \DC_Multilingual_Query(AttributeOption::getTable());
                     $arrOptions = $query
                         ->addField('t1.id AS value')
@@ -263,7 +263,7 @@ abstract class Attribute extends TypeAgent
                     ;
                     break;
 
-                case 'product':
+                case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                     $query = new \DC_Multilingual_Query(AttributeOption::getTable());
                     $arrOptions = $query
                         ->addField('t1.id AS value')

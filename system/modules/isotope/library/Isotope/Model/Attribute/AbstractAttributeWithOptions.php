@@ -43,6 +43,15 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getOptionsSource()
+    {
+        return $this->optionsSource;
+    }
+
+
+    /**
      * Get options of attribute from database
      *
      * @param IsotopeProduct $objProduct
@@ -59,7 +68,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         switch ($this->optionsSource) {
 
             // @deprecated remove in Isotope 3.0
-            case 'attribute':
+            case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $options = deserialize($this->options);
 
                 if (!empty($options) && is_array($options)) {
@@ -94,7 +103,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
                 break;
 
-            case 'table':
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
                 $objOptions = $this->getOptionsFromManager();
 
                 if (null === $objOptions) {
@@ -108,7 +117,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
                 break;
 
-            case 'product':
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                 if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
@@ -156,14 +165,14 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         switch ($this->optionsSource) {
 
-            case 'table':
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
                 if (false === $this->varOptionsCache) {
                     $this->varOptionsCache = AttributeOption::findByAttribute($this);
                 }
 
                 return $this->varOptionsCache;
 
-            case 'product':
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                 /** @type IsotopeProduct|Product $objProduct */
                 if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
@@ -202,7 +211,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         switch ($this->optionsSource) {
 
             // @deprecated remove in Isotope 3.0
-            case 'attribute':
+            case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $arrOptions = array();
                 $options = deserialize($this->options);
 
@@ -218,7 +227,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $arrOptions;
                 break;
 
-            case 'foreignKey':
+            case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                 list($table, $field) = explode('.', $this->foreignKey, 2);
                 $result = \Database::getInstance()->execute("
                     SELECT id AS value, $field AS label
@@ -229,8 +238,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $result->fetchAllAssoc();
                 break;
 
-            case 'table':
-            case 'product':
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                 /** @type \Isotope\Collection\AttributeOption $objOptions */
                 $objOptions = AttributeOption::findPublishedByIds($arrValues);
 
@@ -256,7 +265,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         $value = parent::getValue($product);
 
         if ($this->multiple) {
-            if ('table' === $this->optionsSource || 'foreignKey' === $this->optionsSource) {
+            if (IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+                || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+            ) {
                 $value = explode(',', $value);
             } else {
                 $value = deserialize($value);
@@ -334,7 +345,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             $this->fe_filter = false;
         }
 
-        if ($this->multiple && ('table' === $this->optionsSource || 'foreignKey' === $this->optionsSource)) {
+        if ($this->multiple
+            && (IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+                || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+            )
+        ) {
             $this->csv = ',';
         }
 

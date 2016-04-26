@@ -251,7 +251,7 @@ class AttributeOption extends \MultilingualModel
      */
     public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute)
     {
-        if ($objAttribute->optionsSource != 'table') {
+        if (IsotopeAttributeWithOptions::SOURCE_TABLE !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table');
         }
 
@@ -280,7 +280,7 @@ class AttributeOption extends \MultilingualModel
      */
     public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
     {
-        if ($objAttribute->optionsSource != 'product') {
+        if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the product');
         }
 

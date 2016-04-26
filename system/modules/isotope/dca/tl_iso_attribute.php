@@ -222,10 +222,19 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'radio',
             'options_callback'      => function($dc) {
-                $arrOptions = array('table', 'foreignKey', 'attribute');
+                $arrOptions = [
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_TABLE,
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                ];
 
-                if ($dc->activeRecord->variant_option == '' && $dc->activeRecord->customer_defined == '1') {
-                    $arrOptions = array('table', 'product', 'foreignKey', 'attribute');
+                if (!$dc->activeRecord->variant_option && $dc->activeRecord->customer_defined) {
+                    $arrOptions = [
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_TABLE,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_PRODUCT,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                    ];
                 }
 
                 return $arrOptions;
