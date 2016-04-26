@@ -136,7 +136,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             'shipping_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->note,
+                'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->getNote(),
                 'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping'),
             ),
         );

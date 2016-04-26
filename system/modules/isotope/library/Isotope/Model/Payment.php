@@ -163,12 +163,10 @@ abstract class Payment extends TypeAgent
         $arrShippings = deserialize($this->shipping_modules);
 
         if (is_array($arrShippings)
-            && !empty($arrShippings)
-            && ((!Isotope::getCart()->hasShipping()
-                    && !in_array(-1, $arrShippings)
-                )
+            && count($arrShippings) > 0
+            && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings))
                 || (Isotope::getCart()->hasShipping() &&
-                    !in_array(Isotope::getCart()->getShippingMethod()->id, $arrShippings)
+                    !in_array(Isotope::getCart()->getShippingMethod()->getId(), $arrShippings)
                 )
             )
         ) {

@@ -13,7 +13,6 @@
 namespace Isotope\Model\Shipping;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
@@ -22,7 +21,7 @@ use Isotope\Model\Shipping;
  *
  * @property string flatCalculation
  */
-class Flat extends Shipping implements IsotopeShipping
+class Flat extends Shipping
 {
     /**
      * @inheritdoc

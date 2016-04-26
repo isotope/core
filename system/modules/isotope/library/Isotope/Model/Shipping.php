@@ -15,6 +15,7 @@ namespace Isotope\Model;
 use Haste\Units\Mass\Weight;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
@@ -49,7 +50,7 @@ use Isotope\Translation;
  * @property array  $groups
  * @property bool   $enabled
  */
-abstract class Shipping extends TypeAgent
+abstract class Shipping extends TypeAgent implements IsotopeShipping
 {
 
     /**
@@ -76,6 +77,14 @@ abstract class Shipping extends TypeAgent
      */
     protected $strTemplate;
 
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return (int) $this->id;
+    }
 
     /**
      * @inheritdoc
@@ -271,6 +280,13 @@ abstract class Shipping extends TypeAgent
         return Translation::get($this->label ? : $this->name);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
 
     /**
      * @inheritdoc

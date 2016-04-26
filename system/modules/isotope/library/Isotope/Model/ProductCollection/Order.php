@@ -394,9 +394,9 @@ class Order extends ProductCollection implements
 
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
-            $arrTokens['shipping_id']        = $objShipping->id;
+            $arrTokens['shipping_id']        = $objShipping->getId();
             $arrTokens['shipping_label']     = $objShipping->getLabel();
-            $arrTokens['shipping_note']      = $objShipping->note;
+            $arrTokens['shipping_note']      = $objShipping->getNote();
         }
 
         // Add config fields

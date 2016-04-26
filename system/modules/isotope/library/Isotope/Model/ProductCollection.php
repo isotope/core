@@ -288,7 +288,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setShippingMethod(IsotopeShipping $objShipping = null)
     {
-        $this->shipping_id = (null === $objShipping ? 0 : $objShipping->id);
+        $this->shipping_id = (null === $objShipping ? 0 : $objShipping->getId());
         $this->objShipping = $objShipping;
     }
 
