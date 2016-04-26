@@ -50,12 +50,14 @@ class Standard extends AbstractProduct implements WeightAggregate
     /**
      * Attributes assigned to this product type
      * @var array
+     * @deprecated
      */
     protected $arrAttributes;
 
     /**
      * Variant attributes assigned to this product type
      * @var array
+     * @deprecated
      */
     protected $arrVariantAttributes;
 
@@ -193,15 +195,13 @@ class Standard extends AbstractProduct implements WeightAggregate
      * Return the product attributes
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getAttributes()
      */
     public function getAttributes()
     {
         if (null === $this->arrAttributes) {
-
-            /** @type ProductType $objType */
-            $objType = $this->getRelated('type');
-
-            $this->arrAttributes = $objType->getAttributes();
+            $this->arrAttributes = $this->getType()->getAttributes();
         }
 
         return $this->arrAttributes;
@@ -212,15 +212,13 @@ class Standard extends AbstractProduct implements WeightAggregate
      * Return the product variant attributes
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getVariantAttributes()
      */
     public function getVariantAttributes()
     {
         if (null === $this->arrVariantAttributes) {
-
-            /** @type ProductType $objType */
-            $objType = $this->getRelated('type');
-
-            $this->arrVariantAttributes = $objType->getVariantAttributes();
+            $this->arrVariantAttributes = $this->getType()->getVariantAttributes();
         }
 
         return $this->arrVariantAttributes;
@@ -257,7 +255,7 @@ class Standard extends AbstractProduct implements WeightAggregate
             ";
 
             if (BE_USER_LOGGED_IN !== true) {
-                $arrAttributes   = $this->getVariantAttributes();
+                $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = in_array('protected', $arrAttributes, true);
                 $blnHasGroups    = in_array('groups', $arrAttributes, true);
 
@@ -364,7 +362,7 @@ class Standard extends AbstractProduct implements WeightAggregate
         }
 
         $arrVariantConfig = array();
-        $arrAttributes = array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $arrAttributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
 
         foreach (array_unique($arrAttributes) as $attribute) {
             $arrVariantConfig[$attribute] = $this->arrData[$attribute];
@@ -401,8 +399,8 @@ class Standard extends AbstractProduct implements WeightAggregate
         $objTemplate->config  = $arrConfig;
 
         $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
-            return in_array($strAttribute, $objProduct->getAttributes(), true)
-                || in_array($strAttribute, $objProduct->getVariantAttributes(), true);
+            return in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
+                || in_array($strAttribute, $objProduct->getType()->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
@@ -451,7 +449,7 @@ class Standard extends AbstractProduct implements WeightAggregate
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute) {
+        foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
@@ -759,7 +757,7 @@ class Standard extends AbstractProduct implements WeightAggregate
         $arrOptions = array();
 
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
-        foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
+        foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
             /** @type IsotopeAttribute|Attribute $objAttribute */
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
@@ -819,7 +817,7 @@ class Standard extends AbstractProduct implements WeightAggregate
 
             // Set all variant attributes, except if they are inherited
             $arrFallbackFields = Attribute::getFetchFallbackFields();
-            $arrVariantFields = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+            $arrVariantFields = array_diff($this->getType()->getVariantAttributes(), $this->getInheritedFields());
             foreach ($arrData as $attribute => $value) {
                 if (
                     in_array($attribute, $arrVariantFields)
@@ -859,8 +857,8 @@ class Standard extends AbstractProduct implements WeightAggregate
         // Remove attributes not in this product type
         foreach ($arrData as $attribute => $value) {
             if ((
-                    !in_array($attribute, $this->getAttributes())
-                    && !in_array($attribute, $this->getVariantAttributes())
+                    !in_array($attribute, $this->getType()->getAttributes(), true)
+                    && !in_array($attribute, $this->getType()->getVariantAttributes(), true)
                     && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
@@ -899,9 +897,13 @@ class Standard extends AbstractProduct implements WeightAggregate
     public function markModified($strKey)
     {
         if ($this->isVariant()) {
-            $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields(), Attribute::getCustomerDefinedFields());
+            $arrAttributes = array_diff(
+                $this->getType()->getVariantAttributes(),
+                $this->getInheritedFields(),
+                Attribute::getCustomerDefinedFields()
+            );
         } else {
-            $arrAttributes = array_diff($this->getAttributes(), Attribute::getCustomerDefinedFields());
+            $arrAttributes = array_diff($this->getType()->getAttributes(), Attribute::getCustomerDefinedFields());
         }
 
         if (!in_array($strKey, $arrAttributes, true)

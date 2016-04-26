@@ -777,8 +777,8 @@ class Frontend extends \Frontend
             $arrAttributes = array_intersect(
                 Attribute::getPricedFields(),
                 array_merge(
-                    $objProduct->getAttributes(),
-                    $objProduct->getVariantAttributes()
+                    $objProduct->getType()->getAttributes(),
+                    $objProduct->getType()->getVariantAttributes()
                 )
             );
 

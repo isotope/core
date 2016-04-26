@@ -33,7 +33,7 @@ class VariantGenerator extends \Backend
         $strBuffer   = '';
         $arrOptions  = array();
 
-        foreach ($objProduct->getRelated('type')->getVariantAttributes() as $attribute) {
+        foreach ($objProduct->getType()->getVariantAttributes() as $attribute) {
             if ($GLOBALS['TL_DCA'][$table]['fields'][$attribute]['attributes']['variant_option']) {
 
                 $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
@@ -93,7 +93,7 @@ class VariantGenerator extends \Backend
                 if (!$objVariant->numRows) {
 
                     $arrInherit = array_diff(
-                        $objProduct->getRelated('type')->getVariantAttributes(),
+                        $objProduct->getType()->getVariantAttributes(),
                         Attribute::getVariantOptionFields(),
                         Attribute::getCustomerDefinedFields(),
                         Attribute::getSystemColumnsFields()

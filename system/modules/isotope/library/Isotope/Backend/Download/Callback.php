@@ -92,7 +92,7 @@ class Callback extends \Backend
             $arrAttributes = array_merge(
                 $arrAttributes,
                 array_intersect(
-                    array_merge($objProduct->getAttributes(), $objProduct->getVariantAttributes()),
+                    array_merge($objProduct->getType()->getAttributes(), $objProduct->getType()->getVariantAttributes()),
                     Attribute::getVariantOptionFields()
                 )
             );
