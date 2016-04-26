@@ -186,7 +186,7 @@ class Address extends \Model
             $arrFields = Isotope::getConfig()->getBillingFieldsConfig();
         }
 
-        $arrTokens = array('outputFormat' => $objPage->outputFormat);
+        $arrTokens = array('outputFormat' => 'html');
 
         foreach ($arrFields as $arrField) {
             $strField = $arrField['value'];
@@ -226,7 +226,7 @@ class Address extends \Model
             $fnCompany = '';
         }
 
-        $street = implode(($objPage->outputFormat == 'html' ? '<br>' : '<br />'), array_filter(array($this->street_1, $this->street_2, $this->street_3)));
+        $street = implode('<br>', array_filter([$this->street_1, $this->street_2, $this->street_3]));
 
         $arrTokens += array
         (
