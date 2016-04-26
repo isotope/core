@@ -422,8 +422,8 @@ class Order extends ProductCollection implements
             $this->addToTemplate(
                 $objTemplate,
                 array(
-                    'gallery'   => $objNotification->iso_gallery,
-                    'sorting'   => $this->getItemsSortingCallable($objNotification->iso_orderCollectionBy),
+                    'gallery' => $objNotification->iso_gallery,
+                    'sorting' => static::getItemsSortingCallable($objNotification->iso_orderCollectionBy),
                 )
             );
 

@@ -15,6 +15,7 @@ namespace Isotope\Module;
 use Contao\PageError403;
 use Haste\Util\Format;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
@@ -103,7 +104,7 @@ class OrderDetails extends Module
             $objTemplate,
             array(
                 'gallery' => $this->iso_gallery,
-                'sorting' => $objOrder->getItemsSortingCallable($this->iso_orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 

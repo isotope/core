@@ -14,6 +14,7 @@ namespace Isotope\Module;
 
 use Haste\Util\Url;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
 
 
 /**
@@ -96,7 +97,7 @@ class Cart extends Module
             $objTemplate,
             array(
                 'gallery' => $this->iso_gallery,
-                'sorting' => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 

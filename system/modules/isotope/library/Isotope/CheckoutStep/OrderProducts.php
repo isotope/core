@@ -15,6 +15,7 @@ namespace Isotope\CheckoutStep;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
 use Isotope\Template;
 
 
@@ -40,7 +41,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
             $objTemplate,
             array(
                 'gallery' => $this->objModule->iso_gallery,
-                'sorting' => $objOrder->getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
             )
         );
 

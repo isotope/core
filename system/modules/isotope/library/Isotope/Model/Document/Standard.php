@@ -16,6 +16,7 @@ use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
+use Isotope\Model\ProductCollection;
 use Isotope\Template;
 
 class Standard extends Document implements IsotopeDocument
@@ -148,7 +149,7 @@ class Standard extends Document implements IsotopeDocument
             $objCollectionTemplate,
             array(
                 'gallery' => $this->gallery,
-                'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
