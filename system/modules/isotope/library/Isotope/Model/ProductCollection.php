@@ -134,6 +134,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Prevent cloning because we can't copy items etc.
+     *
+     * @throws \LogicException because ProductCollection cannot be cloned
      */
     public function __clone()
     {

@@ -17,7 +17,6 @@ use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 
-
 /**
  * Class ProductReader
  *
@@ -49,6 +48,7 @@ class ProductReader extends Module
     public function generate()
     {
         if ('BE' === TL_MODE) {
+            /** @var \BackendTemplate|\stdClass $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT READER ###';
@@ -98,9 +98,16 @@ class ProductReader extends Module
             'jumpTo'      => $objIsotopeListPage ? : $objPage,
         );
 
-        if (\Environment::get('isAjaxRequest') && \Input::post('AJAX_MODULE') == $this->id && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()) {
-            $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
-            $objResponse->send();
+        if (\Environment::get('isAjaxRequest')
+            && \Input::post('AJAX_MODULE') == $this->id
+            && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+        ) {
+            try {
+                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
+                $objResponse->send();
+            } catch (\InvalidArgumentException $e) {
+                return;
+            }
         }
 
         $arrCSS = deserialize($objProduct->cssID, true);
@@ -124,8 +131,10 @@ class ProductReader extends Module
     {
         global $objPage;
 
-        $objPage->pageTitle   = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
-        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ? : ($objProduct->teaser ? : $objProduct->description));
+        $descriptionFallback = ($objProduct->teaser ?: $objProduct->description);
+
+        $objPage->pageTitle   = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->getName());
+        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: $descriptionFallback);
 
         if ($objProduct->meta_keywords) {
             $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
@@ -167,7 +176,8 @@ class ProductReader extends Module
                     $strDomain = ($objJumpTo->useSSL ? 'https://' : 'http://') . $objJumpTo->dns . TL_PATH . '/';
                 }
 
-                $GLOBALS['TL_HEAD'][] = sprintf('<link rel="canonical" href="%s">', $strDomain . $objProduct->generateUrl($objJumpTo));
+                $href = $strDomain . $objProduct->generateUrl($objJumpTo);
+                $GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="' . $href . '">';
 
                 break;
             }

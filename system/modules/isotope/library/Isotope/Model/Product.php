@@ -15,7 +15,7 @@ namespace Isotope\Model;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\RequestCache\Filter;
-
+use Model\Collection;
 
 /**
  * The basic Isotope product model
@@ -118,7 +118,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      *
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection|Product[]|null
      */
     public static function findPublished(array $arrOptions = array())
     {
@@ -132,7 +132,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param mixed $arrValues
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection|Product[]|null
      */
     public static function findPublishedBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -162,7 +162,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param int   $intId
      * @param array $arrOptions
      *
-     * @return \Model
+     * @return static|null
      */
     public static function findPublishedByPk($intId, array $arrOptions = array())
     {
@@ -182,7 +182,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param mixed $varId      The ID or alias
      * @param array $arrOptions An optional options array
      *
-     * @return \Model|null      The model or null if the result is empty
+     * @return static|null      The model or null if the result is empty
      */
     public static function findPublishedByIdOrAlias($varId, array $arrOptions = array())
     {
@@ -208,11 +208,11 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array $arrIds
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Product[]|Collection
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
     {
-        if (empty($arrIds) || !is_array($arrIds)) {
+        if (0 === count($arrIds)) {
             return null;
         }
 
@@ -229,7 +229,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param int   $intPid
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection|Product[]|null
      */
     public static function findPublishedByPid($intPid, array $arrOptions = array())
     {
@@ -242,12 +242,12 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array $arrCategories
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection|Product[]|null
      */
     public static function findPublishedByCategories(array $arrCategories, array $arrOptions = array())
     {
         return static::findPublishedBy(
-            array("c.page_id IN (" . implode(',', array_map('intval', $arrCategories)) . ")"),
+            array('c.page_id IN (' . implode(',', array_map('intval', $arrCategories)) . ')'),
             null,
             $arrOptions
         );
@@ -259,7 +259,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param int   $intId
      * @param array $arrOptions
      *
-     * @return \Model
+     * @return static|null
      */
     public static function findAvailableByPk($intId, array $arrOptions = array())
     {
@@ -297,7 +297,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array $arrIds
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection|Product[]|null
      */
     public static function findAvailableByIds(array $arrIds, array $arrOptions = array())
     {
@@ -307,18 +307,18 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             return null;
         }
 
-        $arrProducts = array();
+        $arrProducts = [];
         foreach ($objProducts as $objProduct) {
             if ($objProduct->isAvailableInFrontend()) {
                 $arrProducts[] = $objProduct;
             }
         }
 
-        if (empty($arrProducts)) {
+        if (0 === count($arrProducts)) {
             return null;
         }
 
-        return new \Model\Collection($arrProducts, static::$strTable);
+        return new Collection($arrProducts, static::$strTable);
     }
 
     /**
@@ -328,7 +328,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param mixed $arrValues
      * @param array $arrOptions
      *
-     * @return \Model\Collection
+     * @return Collection
      */
     public static function findAvailableBy($arrColumns, $arrValues, array $arrOptions = array())
     {
@@ -338,18 +338,18 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             return null;
         }
 
-        $arrProducts = array();
+        $arrProducts = [];
         foreach ($objProducts as $objProduct) {
             if ($objProduct->isAvailableInFrontend()) {
                 $arrProducts[] = $objProduct;
             }
         }
 
-        if (empty($arrProducts)) {
+        if (0 === count($arrProducts)) {
             return null;
         }
 
-        return new \Model\Collection($arrProducts, static::$strTable);
+        return new Collection($arrProducts, static::$strTable);
     }
 
     /**
@@ -359,7 +359,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array          $arrVariant
      * @param array          $arrOptions
      *
-     * @return static|null
+     * @return \Model|null
      */
     public static function findVariantOfProduct(
         IsotopeProduct $objProduct,
@@ -369,8 +369,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $t = static::$strTable;
 
         $arrColumns = array(
-            "$t.id IN (" . implode(',', $objProduct->getVariantIds()) . ")",
-            "$t." . implode("=? AND $t.", array_keys($arrVariant)) . "=?"
+            "$t.id IN (" . implode(',', $objProduct->getVariantIds()) . ')',
+            "$t." . implode("=? AND $t.", array_keys($arrVariant)) . '=?'
         );
 
         $arrOptions = array_merge(
@@ -389,7 +389,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Finds the default variant of a product.
      *
-     * @param IsotopeProduct|Standard $objProduct
+     * @param IsotopeProduct $objProduct
      * @param array          $arrOptions
      *
      * @return static|null
@@ -489,7 +489,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      *
      * @param array $arrOptions
      *
-     * @return \Model|\Model\Collection|null
+     * @return Product|Product[]|Collection|null
      */
     protected static function find(array $arrOptions)
     {
@@ -505,14 +505,17 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $arrFilters = $arrOptions['filters'];
         $arrSorting = $arrOptions['sorting'];
 
-        if (!empty($arrFilters) || !empty($arrSorting)) {
+        $hasFilters = is_array($arrFilters) && 0 !== count($arrFilters);
+        $hasSorting = is_array($arrSorting) && 0 !== count($arrSorting);
+
+        if ($hasFilters || $hasSorting) {
 
             /** @var static[] $arrProducts */
             $arrProducts = $objProducts->getModels();
 
-            if (!empty($arrFilters)) {
+            if ($hasFilters) {
                 $arrProducts = array_filter($arrProducts, function ($objProduct) use ($arrFilters) {
-                    $arrGroups = array();
+                    $arrGroups = [];
 
                     foreach ($arrFilters as $objFilter) {
                         $blnMatch = $objFilter->matches($objProduct);
@@ -524,16 +527,12 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                         }
                     }
 
-                    if (!empty($arrGroups) && in_array(false, $arrGroups, true)) {
-                        return false;
-                    }
-
-                    return true;
+                    return !in_array(false, $arrGroups, true);
                 });
             }
 
             // $arrProducts can be empty if the filter removed all records
-            if (!empty($arrSorting) && !empty($arrProducts)) {
+            if ($hasSorting && 0 !== count($arrProducts)) {
                 $arrParam = array();
                 $arrData  = array();
 
@@ -569,7 +568,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 call_user_func_array('array_multisort', $arrParam);
             }
 
-            $objProducts = new \Model\Collection($arrProducts, static::$strTable);
+            $objProducts = new Collection($arrProducts, static::$strTable);
         }
 
         return $objProducts;
@@ -590,13 +589,13 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $arrJoins  = array();
         $arrFields = array(
-            $arrOptions['table'] . ".*",
+            $arrOptions['table'] . '.*',
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
         if ($hasVariants) {
             $arrFields[] = sprintf(
-                "IF(%s.pid>0, parent.type, %s.type) AS type",
+                'IF(%s.pid>0, parent.type, %s.type) AS type',
                 $arrOptions['table'],
                 $arrOptions['table']
             );
@@ -612,10 +611,10 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 
-        $arrFields[] = "c.sorting";
+        $arrFields[] = 'c.sorting';
 
         $arrJoins[] = sprintf(
-            " LEFT OUTER JOIN %s c ON %s.id=c.pid",
+            ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
             ProductCategory::getTable(),
             $arrOptions['table']
         );
@@ -631,7 +630,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         if ($hasVariants) {
             $arrJoins[] = sprintf(
-                " LEFT OUTER JOIN %s parent ON %s.pid=parent.id",
+                ' LEFT OUTER JOIN %s parent ON %s.pid=parent.id',
                 $arrOptions['table'],
                 $arrOptions['table']
             );
@@ -683,7 +682,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // The model must never find a language record
-        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(" AND ", $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(' AND ', $arrOptions['column']);
 
         // Group by
         if ($arrOptions['group'] !== null) {
@@ -731,7 +730,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         $arrJoins[] = sprintf(
-            " LEFT OUTER JOIN %s c ON %s.id=c.pid",
+            ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
             ProductCategory::getTable(),
             $arrOptions['table']
         );

@@ -227,13 +227,12 @@ class Standard extends AbstractProduct implements WeightAggregate
     /**
      * Return all available variant IDs of this product
      *
-     * @return int[]|false
+     * @return int[]
      */
     public function getVariantIds()
     {
         if (null === $this->arrVariantIds) {
-
-            $this->arrVariantIds = array();
+            $this->arrVariantIds = [];
 
             // Nothing to do if we have no variants
             if (!$this->hasVariants()) {
@@ -292,7 +291,7 @@ class Standard extends AbstractProduct implements WeightAggregate
                 }
 
                 if (null === $objPrices) {
-                    $this->arrVariantIds = array();
+                    $this->arrVariantIds = [];
                 } else {
                     $this->arrVariantIds = $objPrices->fetchEach('pid');
                 }
@@ -392,7 +391,7 @@ class Standard extends AbstractProduct implements WeightAggregate
             return $objProduct->generate($arrConfig);
         }
 
-        /** @type Template|object $objTemplate */
+        /** @type Template|\stdClass $objTemplate */
         $objTemplate = new Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
@@ -627,7 +626,7 @@ class Standard extends AbstractProduct implements WeightAggregate
             }
         }
 
-        /** @var \Widget|object $objWidget */
+        /** @var \Widget|\stdClass $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
@@ -845,7 +844,7 @@ class Standard extends AbstractProduct implements WeightAggregate
         $this->arrAttributes        = null;
         $this->arrVariantAttributes = null;
         $this->arrVariantIds        = null;
-        $this->arrRelated           = array();
+        $this->arrRelated           = [];
 
         // Must initialize product type to have attributes etc.
         if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
@@ -862,7 +861,7 @@ class Standard extends AbstractProduct implements WeightAggregate
                     && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
-                || in_array($attribute, Attribute::getVariantOptionFields())
+                || in_array($attribute, Attribute::getVariantOptionFields(), true)
             ) {
                 unset($arrData[$attribute]);
             }
@@ -931,10 +930,10 @@ class Standard extends AbstractProduct implements WeightAggregate
             global $objIsotopeListPage;
 
             $objJumpTo = $objIsotopeListPage ?: $objPage;
+        }
 
-            if (null === $objJumpTo) {
-                return '';
-            }
+        if (null === $objJumpTo) {
+            return '';
         }
 
         $strUrl = '/' . ($this->arrData['alias'] ?: $this->getProductId());
