@@ -31,6 +31,7 @@ use Isotope\Template;
  * @property string $psp_hash_in
  * @property string $psp_hash_out
  * @property string $psp_dynamic_template
+ * @property string $psp_payment_method
  */
 abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 {
@@ -171,10 +172,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
      *
      * @return array
      */
-    public function getPaymentMethods()
-    {
-        return array();
-    }
+    abstract public function getPaymentMethods();
 
     /**
      * Prepare PSP params
