@@ -110,14 +110,12 @@ class ProductReader extends Module
             }
         }
 
-        $arrCSS = deserialize($objProduct->cssID, true);
-
         $this->addMetaTags($objProduct);
         $this->addCanonicalProductUrls($objProduct);
 
         $this->Template->product       = $objProduct->generate($arrConfig);
-        $this->Template->product_id    = ($arrCSS[0] != '') ? ' id="' . $arrCSS[0] . '"' : '';
-        $this->Template->product_class = trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $arrCSS[1]);
+        $this->Template->product_id    = $this->getCssId($objProduct);
+        $this->Template->product_class = $this->getCssClass($objProduct);
         $this->Template->referer       = 'javascript:history.go(-1)';
         $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
     }
@@ -184,6 +182,46 @@ class ProductReader extends Module
         }
     }
 
+    /**
+     * Gets the CSS ID for this product
+     *
+     * @param Product $objProduct
+     *
+     * @return string|null
+     */
+    protected function getCssId(Product $objProduct)
+    {
+        $css = deserialize($objProduct->cssID, true);
+
+        return $css[0] ?: null;
+    }
+
+    /**
+     * Gets the CSS classes for this product
+     *
+     * @param Product $objProduct
+     *
+     * @return string
+     */
+    protected function getCssClass(Product $objProduct)
+    {
+        $classes = ['product'];
+
+        if ($objProduct->isNew()) {
+            $classes[] = 'new';
+        }
+
+        $arrCSS = deserialize($objProduct->cssID, true);
+        if ('' !== (string) $arrCSS[1]) {
+            $classes[] = (string) $arrCSS[1];
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Generates a 404 page and stops page output.
+     */
     private function generate404()
     {
         global $objPage;

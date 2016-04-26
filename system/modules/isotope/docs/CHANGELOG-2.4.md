@@ -16,6 +16,7 @@ Version 2.4.0-beta1 (201?-??-??)
 - Validate the price attribute in product type against duplication (#1542)
 - Added hook triggered when address data is updated (#1473)
 - The FileTree attribute is now sortable (#1561)
+- Added CSS class field to product type (#1532)
 
 
 ### Improved
