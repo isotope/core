@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
@@ -119,15 +120,11 @@ abstract class VADS extends Postsale implements IsotopePayment
     protected function getOutboundParameters(IsotopeProductCollection $objOrder, \Module $objModule = null)
     {
         $objAddress = $objOrder->getBillingAddress();
-        $successUrl = '';
-        $failureUrl = '';
+        $successUrl = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $failureUrl = \Environment::get('base') . Checkout::generateUrlForStep('failed');
+
         $transDate  = new DateTime();
         $transDate->setTimezone(new \DateTimeZone('UTC'));
-
-        if (null !== $objModule) {
-            $successUrl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-            $failureUrl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
-        }
 
         return array(
             'vads_action_mode'    => 'INTERACTIVE',

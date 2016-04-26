@@ -165,8 +165,8 @@ class Paypal extends Postsale implements IsotopePayment
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->currency;
-        $objTemplate->return        = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $objTemplate->return        = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancel_return = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->headline      = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
         $objTemplate->message       = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);

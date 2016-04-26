@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 
 class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
@@ -109,7 +110,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
 
         if (\Input::post('AUTHCODE') != $strChecksum) {
             \System::log('Postsale manipulation for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
-            \Isotope\Module\Checkout::redirectToStep('failed');
+            Checkout::redirectToStep('failed');
         }
 
         switch (\Input::post('RETURN_CODE')) {
@@ -118,7 +119,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
                 if ($objOrder->checkout()) {
                     $objOrder->date_paid = time();
                     $objOrder->updateOrderStatus($this->new_order_status);
-                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                    Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
 
@@ -128,7 +129,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
 
                 } elseif ($objOrder->checkout()) {
                     $objOrder->updateOrderStatus($objConfig->orderstatus_error);
-                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                    Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
 
@@ -142,7 +143,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
 
         \System::log('Paybyway checkout failed for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
 
-        \Isotope\Module\Checkout::redirectToStep('failed');
+        Checkout::redirectToStep('failed');
     }
 
     /**

@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
@@ -83,8 +84,8 @@ class QuickPay extends Postsale implements IsotopePayment
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'currency'     => $objOrder->currency,
-            'continueurl'  => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'cancelurl'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'continueurl'  => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'cancelurl'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'autocapture'  => 'capture' === $this->trans_type ? '1' : '0',
         );

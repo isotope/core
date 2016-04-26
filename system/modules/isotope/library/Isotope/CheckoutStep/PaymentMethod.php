@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
@@ -136,7 +137,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
                 'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->note,
-                'edit'     => ($this->isSkippable() ? '' : \Isotope\Module\Checkout::generateUrlForStep('payment')),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('payment'),
             ),
         );
     }

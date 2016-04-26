@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
 
 /**
  * ShippingAddress checkout step lets the user enter a shipping address
@@ -59,7 +60,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'edit'     => Checkout::generateUrlForStep('address'),
         ));
     }
 

@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 /**
  * Saferpay payment method
@@ -112,13 +113,13 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
         // Get redirect url
         $objRequest = new \Request();
         $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder, $objModule), null, '&'), 'POST');
+        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
 
         if ((int) $objRequest->code !== 200 || 0 !== strpos($objRequest->response, 'ERROR:')) {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
-            $objModule->redirectToStep('failed');
+            Checkout::redirectToStep('failed');
         }
 
         $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="1; URL=' . $objRequest->response . '">';
@@ -160,19 +161,18 @@ class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAwa
      * Generate POST data to initialize payment
      *
      * @param IsotopeProductCollection $objOrder
-     * @param \Module                  $objModule
      *
      * @return array
      */
-    protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
+    protected function generatePaymentPostData(IsotopeProductCollection $objOrder)
     {
         $arrData = array();
 
         $arrData['ACCOUNTID'] = $this->saferpay_accountid;
         $arrData['AMOUNT'] = (round(($objOrder->getTotal() * 100), 0));
         $arrData['CURRENCY'] = $objOrder->currency;
-        $arrData['SUCCESSLINK'] = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $arrData['FAILLINK'] = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $arrData['SUCCESSLINK'] = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $arrData['FAILLINK']    = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $arrData['BACKLINK'] = $arrData['FAILLINK'];
         $arrData['NOTIFYURL'] = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $arrData['DESCRIPTION'] = $this->saferpay_description;

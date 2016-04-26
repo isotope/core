@@ -18,6 +18,7 @@ use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 /**
  * Expercash payment method.
@@ -93,8 +94,8 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
             'amount'        => (round($objOrder->getTotal(), 2) * 100),
             'currency'      => $objOrder->currency,
             'paymentMethod' => $this->expercash_paymentMethod,
-            'returnUrl'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'errorUrl'      => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'returnUrl'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'errorUrl'      => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'notifyUrl'     => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'       => $this->expercash_profile,
         );

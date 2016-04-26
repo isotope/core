@@ -40,13 +40,13 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
 
             log_message(print_r($response, true), 'open_payment.log');
 
-            $objModule->redirectToStep('failed');
+            Checkout::redirectToStep('failed');
         }
 
         /** @var Template|object $template */
         $template = new Template('iso_payment_opp');
         $template->base   = $base;
-        $template->action = $objModule->generateUrlForStep('complete', $objOrder);
+        $template->action = Checkout::generateUrlForStep('complete', $objOrder);
         $template->checkoutId = $response['id'];
 
         return $template->parse();

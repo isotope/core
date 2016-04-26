@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
@@ -136,7 +137,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->checkoutReview(),
                 'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->note,
-                'edit'     => ($this->isSkippable() ? '' : \Isotope\Module\Checkout::generateUrlForStep('shipping')),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping'),
             ),
         );
     }

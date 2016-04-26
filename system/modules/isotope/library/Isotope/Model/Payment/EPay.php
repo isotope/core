@@ -20,6 +20,7 @@ use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 
@@ -123,8 +124,8 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
         $objTemplate->orderid = $objOrder->id;
         $objTemplate->instantcapture = ($this->trans_type == 'capture' ? '1' : '0');
         $objTemplate->callbackurl = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->accepturl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancelurl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $objTemplate->accepturl      = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancelurl      = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $objTemplate->language = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
 
         return $objTemplate->parse();

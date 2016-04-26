@@ -17,6 +17,7 @@ use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 use Isotope\Template;
 
 
@@ -199,9 +200,9 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => substr($objBillingAddress->city, 0, 35),
             'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'DECLINEURL'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
-            'BACKURL'       => \Environment::get('base') . $objModule->generateUrlForStep('review'),
+            'ACCEPTURL'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'DECLINEURL'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'BACKURL'       => \Environment::get('base') . Checkout::generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );

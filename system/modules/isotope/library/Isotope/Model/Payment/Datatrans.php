@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
 
 
 /**
@@ -109,9 +110,9 @@ class Datatrans extends Postsale implements IsotopePayment
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder)),
-            'errorUrl'              => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
-            'cancelUrl'             => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
+            'successUrl'            => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder)),
+            'errorUrl'              => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('failed')),
+            'cancelUrl'             => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('failed')),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
