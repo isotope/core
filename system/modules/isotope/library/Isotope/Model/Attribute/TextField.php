@@ -12,13 +12,12 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement TextField widget
  */
-class TextField extends Attribute implements IsotopeAttribute
+class TextField extends Attribute
 {
     /**
      * @inheritdoc

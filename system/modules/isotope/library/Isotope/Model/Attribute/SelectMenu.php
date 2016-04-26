@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 
 /**
@@ -21,7 +20,7 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
+class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttributeForVariants
 {
     /**
      * @inheritdoc

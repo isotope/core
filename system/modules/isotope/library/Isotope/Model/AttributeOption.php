@@ -281,7 +281,7 @@ class AttributeOption extends \MultilingualModel
     public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
     {
         if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
-            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the product');
+            throw new \LogicException('Options source for attribute "' . $objAttribute->getFieldName() . '" is not the product');
         }
 
         $t = static::getTable();
@@ -295,7 +295,7 @@ class AttributeOption extends \MultilingualModel
             ),
             array(
                 $objProduct->id,
-                $objAttribute->field_name
+                $objAttribute->getFieldName()
             ),
             ['order' => "$t.sorting"]
         );

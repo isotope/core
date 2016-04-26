@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
@@ -20,7 +19,7 @@ use Isotope\Model\Gallery;
 /**
  * Attribute to implement additional image galleries
  */
-class MediaManager extends Attribute implements IsotopeAttribute
+class MediaManager extends Attribute
 {
     /**
      * @inheritdoc

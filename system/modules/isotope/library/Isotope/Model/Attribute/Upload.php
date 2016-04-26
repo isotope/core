@@ -15,7 +15,6 @@ namespace Isotope\Model\Attribute;
 use Contao\Files;
 use Contao\Folder;
 use Haste\Util\FileUpload;
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
@@ -26,7 +25,7 @@ use Isotope\Model\ProductCollectionItem;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class Upload extends Attribute implements IsotopeAttribute, \uploadable
+class Upload extends Attribute implements \uploadable
 {
 
     /**

@@ -12,14 +12,13 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement base price calculation
  */
-class Price extends Attribute implements IsotopeAttribute
+class Price extends Attribute
 {
     /**
      * @inheritdoc

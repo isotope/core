@@ -12,16 +12,13 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
-
-
 /**
  * Attribute to implement CheckboxMenu widget
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttribute
+class CheckboxMenu extends AbstractAttributeWithOptions
 {
     /**
      * @inheritdoc

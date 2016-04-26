@@ -27,6 +27,13 @@ interface IsotopeAttribute
     public function isCustomerDefined();
 
     /**
+     * Returns the database field name
+     *
+     * @return string
+     */
+    public function getFieldName();
+
+    /**
      * Return class name for the backend widget or empty if none should be available
      *
      * @return string

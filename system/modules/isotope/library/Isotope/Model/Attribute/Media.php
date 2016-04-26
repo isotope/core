@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -22,7 +21,7 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2014
  * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
-class Media extends Attribute implements IsotopeAttribute
+class Media extends Attribute
 {
     /**
      * @inheritdoc

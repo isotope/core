@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -21,7 +20,7 @@ use Isotope\Model\Attribute;
  *
  * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class FileTree extends Attribute implements IsotopeAttribute
+class FileTree extends Attribute
 {
     /**
      * @inheritdoc

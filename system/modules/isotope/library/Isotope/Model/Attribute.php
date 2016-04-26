@@ -13,6 +13,7 @@
 namespace Isotope\Model;
 
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -66,7 +67,7 @@ use Isotope\Translation;
  * @property string        $checkoutTargetFile
  * @property bool          $datepicker
  */
-abstract class Attribute extends TypeAgent
+abstract class Attribute extends TypeAgent implements IsotopeAttribute
 {
 
     /**
@@ -112,9 +113,15 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return true if attribute is customer defined
-     *
-     * @return bool
+     * @inheritdoc
+     */
+    public function getFieldName()
+    {
+        return $this->field_name;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function isCustomerDefined()
     {
@@ -127,9 +134,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return class name for the backend widget or false if none should be available
-     *
-     * @return string|false
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
@@ -141,9 +146,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return class name for the frontend widget or false if none should be available
-     *
-     * @return string|false
+     * @inheritdoc
      */
     public function getFrontendWidget()
     {
@@ -155,10 +158,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Load attribute configuration from given DCA array
-     *
-     * @param array  $arrData
-     * @param string $strName
+     * @inheritdoc
      */
     public function loadFromDCA(array &$arrData, $strName)
     {
@@ -181,8 +181,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Save attribute configuration into the given DCA array
-     * @param    array
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {

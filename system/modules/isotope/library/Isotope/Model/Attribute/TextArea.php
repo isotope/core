@@ -12,14 +12,13 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement TextArea widget
  */
-class TextArea extends Attribute implements IsotopeAttribute
+class TextArea extends Attribute
 {
     /**
      * @inheritdoc
