@@ -189,7 +189,8 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
             foreach ($arrItems as $objItem) {
                 if ($objItem->hasProduct()) {
-                    $arrItemTypes[] = $objItem->getProduct()->type;
+                    $productType = $objItem->getProduct()->getType();
+                    $arrItemTypes[] = null === $productType ? 0 : $productType->id;
 
                 } elseif ('onlyAvailable' === $this->product_types_condition) {
                     // If one product in cart is not of given type, shipping method is not available

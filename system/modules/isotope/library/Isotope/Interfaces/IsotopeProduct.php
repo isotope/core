@@ -12,6 +12,8 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Model\ProductType;
+
 
 /**
  * IsotopeProduct is the interface for a product object
@@ -38,6 +40,27 @@ interface IsotopeProduct
      * @return string
      */
     public function getFormId();
+
+    /**
+     * Returns the product type for this product, or null if not applicable or not found.
+     *
+     * @return ProductType|null
+     */
+    public function getType();
+
+    /**
+     * Returns the product name, necessary to store as fallback in the product collection.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Returns the product SKU, necessary to store as fallback in the product collection.
+     *
+     * @return string
+     */
+    public function getSku();
 
     /**
      * Returns true if the product is available in the frontend
@@ -82,6 +105,13 @@ interface IsotopeProduct
      * @return bool
      */
     public function hasVariants();
+
+    /**
+     * Returns an array of variant IDs
+     *
+     * @return array
+     */
+    public function getVariantIds();
 
     /**
      * Returns true if this product is a variant

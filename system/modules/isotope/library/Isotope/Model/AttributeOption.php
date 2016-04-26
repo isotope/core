@@ -294,7 +294,7 @@ class AttributeOption extends \MultilingualModel
                 "$t.published='1'"
             ),
             array(
-                $objProduct->id,
+                $objProduct->getId(),
                 $objAttribute->getFieldName()
             ),
             ['order' => "$t.sorting"]

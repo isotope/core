@@ -76,7 +76,7 @@ abstract class Gallery extends TypeAgent
             deserialize($objProduct->$strAttribute, true),
             deserialize($objProduct->{$strAttribute . '_fallback'}, true)
         ));
-        $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+        $objGallery->product_id = $objProduct->getProductId();
         $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;

@@ -14,7 +14,6 @@ namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-use Isotope\Model\Product\Standard;
 use Isotope\RequestCache\Filter;
 
 
@@ -50,7 +49,7 @@ use Isotope\RequestCache\Filter;
  * @property string $start
  * @property string $stop
  */
-abstract class Product extends TypeAgent
+abstract class Product extends TypeAgent implements IsotopeProduct
 {
 
     /**
@@ -76,6 +75,15 @@ abstract class Product extends TypeAgent
      * @var array
      */
     protected static $arrActive = array();
+
+    /**
+     * Get categories (pages) assigned to this product
+     *
+     * @param bool $blnPublished Only return published categories (pages)
+     *
+     * @return array
+     */
+    abstract public function getCategories($blnPublished = false);
 
     /**
      * Get product that is currently active (needed e.g. for insert tag replacement)

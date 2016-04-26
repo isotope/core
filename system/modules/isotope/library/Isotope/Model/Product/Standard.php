@@ -26,12 +26,10 @@ use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
-use Model\QueryBuilder;
 
 /**
  * Standard implementation of an Isotope product.
@@ -40,7 +38,7 @@ use Model\QueryBuilder;
  * @author Fred Bliss <fred.bliss@intelligentspark.com>
  * @author Christian de la Haye <service@delahaye.de>
  */
-class Standard extends Product implements IsotopeProduct, WeightAggregate
+class Standard extends AbstractProduct implements WeightAggregate
 {
 
     /**
@@ -80,12 +78,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected $arrDefaults = array();
 
     /**
-     * Assigned categories (pages)
-     * @var array
-     */
-    protected $arrCategories;
-
-    /**
      * Unique form ID
      * @var string
      */
@@ -109,183 +101,27 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected $blnUpdate = false;
 
-
     /**
-     * Returns true if the product is published, otherwise returns false
-     *
-     * @return bool
-     */
-    public function isPublished()
-    {
-        $time = \Date::floorToMinute();
-
-        if (!$this->arrData['published']) {
-            return false;
-        } elseif ($this->arrData['start'] != '' && $this->arrData['start'] > $time) {
-            return false;
-        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < ($time + 60)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns true if the product is available to show on the website
-     *
-     * @return bool
-     */
-    public function isAvailableInFrontend()
-    {
-        $objCollection = Isotope::getCart();
-
-        if (null === $objCollection) {
-            return false;
-        }
-
-        return $this->isAvailableForCollection($objCollection);
-    }
-
-    /**
-     * Returns true if the product is available
-     *
-     * @param IsotopeProductCollection|\Isotope\Model\ProductCollection $objCollection
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailableForCollection(IsotopeProductCollection $objCollection)
     {
-        if ($objCollection->isLocked()) {
-            return true;
-        }
-
-        if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable'])
-            && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
-        ) {
-            foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->{$callback[1]}($this, $objCollection);
-
-                // If return value is boolean then we accept it as result
-                if (true === $available || false === $available) {
-                    return $available;
-                }
-            }
-        }
-
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+        if (false === parent::isAvailableForCollection($objCollection)) {
             return false;
-        }
-
-        // Show to guests only
-        if ($this->arrData['guests'] && $objCollection->member > 0
-            && BE_USER_LOGGED_IN !== true
-            && !$this->arrData['protected']
-        ) {
-            return false;
-        }
-
-        // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
-            if ($objCollection->member == 0) {
-                return false;
-            }
-
-            $groups       = deserialize($this->arrData['groups']);
-            $memberGroups = deserialize($objCollection->getRelated('member')->groups);
-
-            if (!is_array($groups)
-                || empty($groups)
-                || !is_array($memberGroups)
-                || empty($memberGroups)
-                || !count(array_intersect($groups, $memberGroups))
-            ) {
-                return false;
-            }
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getRelated('member'))) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getMember())) == 0) {
             return false;
         }
 
         // Check if "advanced price" is available
         if (null === $this->getPrice($objCollection)
-            && (in_array('price', $this->getAttributes(), true) || $this->hasVariantPrices())) {
+            && (in_array('price', $this->getType()->getAttributes(), true) || $this->hasVariantPrices())) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * Checks whether a product is new according to the current store config
-     *
-     * @return bool
-     */
-    public function isNew()
-    {
-        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
-    }
-
-    /**
-     * Return true if the product or product type has shipping exempt activated
-     *
-     * @return bool
-     */
-    public function isExemptFromShipping()
-    {
-        return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
-    }
-
-    /**
-     * Returns true if a variant is loaded
-     *
-     * @return bool
-     */
-    public function isVariant()
-    {
-        return ($this->pid > 0 && $this->hasVariants());
-    }
-
-    /**
-     * Returns true if variants are enabled in the product type, otherwise returns false
-     *
-     * @return bool
-     */
-    public function hasVariants()
-    {
-        /** @type ProductType $objType */
-        $objType = $this->getRelated('type');
-
-        return (bool) $objType->hasVariants();
-    }
-
-    /**
-     * Returns true if product has variants, and the price is a variant attribute
-     *
-     * @return bool
-     */
-    public function hasVariantPrices()
-    {
-        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes(), true)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     *
-     * @return bool
-     */
-    public function hasAdvancedPrices()
-    {
-        /** @type ProductType $objType */
-        $objType = $this->getRelated('type');
-
-        return (bool) $objType->hasAdvancedPrices();
     }
 
     /**
@@ -295,7 +131,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function canSeePriceTiers()
     {
-        return $this->hasAdvancedPrices() && $this->getRelated('type')->show_price_tiers;
+        return $this->hasAdvancedPrices() && $this->getType()->show_price_tiers;
     }
 
     /**
@@ -306,16 +142,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     public function getFormId()
     {
         return $this->strFormId;
-    }
-
-    /**
-     * Get the product id (NOT variant id)
-     *
-     * @return int
-     */
-    public function getProductId()
-    {
-        return (int) $this->pid ?: $this->id;
     }
 
     /**
@@ -476,50 +302,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return $this->arrVariantIds;
-    }
-
-    /**
-     * Get categories (pages) assigned to this product
-     *
-     * @param bool $blnPublished Only return published categories (pages)
-     *
-     * @return array
-     */
-    public function getCategories($blnPublished = false)
-    {
-        $key = ($blnPublished ? 'published' : 'all');
-
-        if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
-            if ($blnPublished) {
-                $options          = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
-                $options['table'] = ProductCategory::getTable();
-                $query            = QueryBuilder::find($options);
-                $values           = (array) $options['value'];
-            } else {
-                $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
-                $values = array($this->getProductId());
-            }
-
-            $objCategories = \Database::getInstance()->prepare($query)->execute($values);
-
-            $this->arrCategories[$key] = $objCategories->fetchEach('page_id');
-
-            // Sort categories by the backend drag&drop
-            $arrOrder = deserialize($this->orderPages);
-            if (!empty($arrOrder) && is_array($arrOrder)) {
-                $this->arrCategories[$key] = array_unique(
-                    array_merge(
-                        array_intersect(
-                            $arrOrder,
-                            $this->arrCategories[$key]
-                        ),
-                        $this->arrCategories[$key]
-                    )
-                );
-            }
-        }
-
-        return $this->arrCategories[$key];
     }
 
     /**
@@ -1065,7 +847,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $this->arrAttributes        = null;
         $this->arrVariantAttributes = null;
         $this->arrVariantIds        = null;
-        $this->arrCategories        = null;
         $this->arrRelated           = array();
 
         // Must initialize product type to have attributes etc.

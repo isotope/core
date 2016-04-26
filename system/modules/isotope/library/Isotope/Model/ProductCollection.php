@@ -29,7 +29,6 @@ use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Payment;
-use Isotope\Model\Product\Standard;
 use Isotope\Model\Shipping;
 use Model\Registry;
 
@@ -933,7 +932,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         $objItem = ProductCollectionItem::findOneBy(
             array('pid=?', 'type=?', 'product_id=?', 'configuration=?'),
-            array($this->id, $strClass, $objProduct->{$objProduct->getPk()}, serialize($objProduct->getOptions()))
+            array($this->id, $strClass, $objProduct->getId(), serialize($objProduct->getOptions()))
         );
 
         return $objItem;
@@ -950,23 +949,20 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true)
     {
         if (true === $blnIdentical) {
-            $objItem = $this->getItemForProduct($objProduct);
-
-            return (null === $objItem) ? false : true;
-
-        } else {
-            $intId = $objProduct->pid ? : $objProduct->id;
-
-            foreach ($this->getItems() as $objItem) {
-                if ($objItem->hasProduct()
-                    && ($objItem->getProduct()->id == $intId || $objItem->getProduct()->pid == $intId)
-                ) {
-                    return true;
-                }
-            }
-
-            return false;
+            return null !== $this->getItemForProduct($objProduct);
         }
+
+        $intId = $objProduct->getProductId();
+
+        foreach ($this->getItems() as $objItem) {
+            if ($objItem->hasProduct()
+                && ($objItem->getProduct()->getId() == $intId || $objItem->getProduct()->getProductId() == $intId)
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -1012,7 +1008,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             if (($objItem->quantity + $intQuantity) < $intMinimumQuantity) {
                 Message::addInfo(sprintf(
                     $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
-                    $objProduct->name,
+                    $objProduct->getName(),
                     $intMinimumQuantity
                 ));
                 $intQuantity            = $intMinimumQuantity - $objItem->quantity;
@@ -1023,7 +1019,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             if ($intQuantity < $intMinimumQuantity) {
                 Message::addInfo(sprintf(
                     $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
-                    $objProduct->name,
+                    $objProduct->getName(),
                     $intMinimumQuantity
                 ));
                 $intQuantity            = $intMinimumQuantity;
@@ -1157,7 +1153,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             if ($arrSet['quantity'] < $intMinimumQuantity) {
                 Message::addInfo(sprintf(
                     $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
-                    $objProduct->name,
+                    $objProduct->getName(),
                     $intMinimumQuantity
                 ));
                 $arrSet['quantity']     = $intMinimumQuantity;
@@ -2013,13 +2009,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @param ProductCollectionItem $item
      * @param int                   $quantity
      */
-    private function setProductForItem($product, $item, $quantity)
+    private function setProductForItem(IsotopeProduct $product, ProductCollectionItem $item, $quantity)
     {
         $item->tstamp         = time();
-        $item->type           = array_search(get_class($product), Product::getModelTypes());
-        $item->product_id     = $product->{$product->getPk()};
-        $item->sku            = (string) $product->sku;
-        $item->name           = (string) $product->name;
+        $item->type           = array_search(get_class($product), Product::getModelTypes(), true);
+        $item->product_id     = $product->getId();
+        $item->sku            = $product->getSku();
+        $item->name           = $product->getName();
         $item->configuration  = $product->getOptions();
         $item->quantity       = (int) $quantity;
         $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);

@@ -59,6 +59,6 @@ class Price extends Attribute
             return '';
         }
 
-        return $objPrice->generate($objProduct->getRelated('type')->showPriceTiers());
+        return $objPrice->generate($objProduct->getType()->showPriceTiers());
     }
 }

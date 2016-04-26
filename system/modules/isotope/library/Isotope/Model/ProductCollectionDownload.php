@@ -184,7 +184,7 @@ class ProductCollectionDownload extends \Model
             if ($objItem->hasProduct()) {
                 $objDownloads = Download::findBy(
                     array("($t.pid=? OR $t.pid=?)", "$t.published='1'"),
-                    array($objItem->getProduct()->id, $objItem->getProduct()->pid)
+                    array($objItem->getProduct()->getId(), $objItem->getProduct()->getProductId())
                 );
 
                 if (null !== $objDownloads) {

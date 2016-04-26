@@ -83,7 +83,6 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
-        /** @var Product\Standard $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
@@ -92,8 +91,8 @@ class ProductReader extends Module
 
         $arrConfig = array(
             'module'      => $this,
-            'template'    => ($this->iso_reader_layout ? : $objProduct->getRelated('type')->reader_template),
-            'gallery'     => ($this->iso_gallery ? : $objProduct->getRelated('type')->reader_gallery),
+            'template'    => $this->iso_reader_layout ? : $objProduct->getType()->reader_template,
+            'gallery'     => $this->iso_gallery ? : $objProduct->getType()->reader_gallery,
             'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
             'jumpTo'      => $objIsotopeListPage ? : $objPage,
@@ -119,9 +118,9 @@ class ProductReader extends Module
     /**
      * Add meta header fields to the current page
      *
-     * @param IsotopeProduct $objProduct
+     * @param Product $objProduct
      */
-    protected function addMetaTags(IsotopeProduct $objProduct)
+    protected function addMetaTags(Product $objProduct)
     {
         global $objPage;
 
@@ -136,9 +135,9 @@ class ProductReader extends Module
     /**
      * Adds canonical product URLs to the document
      *
-     * @param IsotopeProduct $objProduct
+     * @param Product $objProduct
      */
-    protected function addCanonicalProductUrls(IsotopeProduct $objProduct)
+    protected function addCanonicalProductUrls(Product $objProduct)
     {
         global $objPage;
         $arrPageIds   = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
