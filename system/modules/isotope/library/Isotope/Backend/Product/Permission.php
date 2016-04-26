@@ -117,13 +117,13 @@ class Permission extends \Backend
 
         if (null === $arrProducts) {
             $arrProducts = \Database::getInstance()->query("
-                    SELECT i.product_id AS id FROM " . ProductCollectionItem::getTable() . " i
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT i.product_id AS id FROM tl_iso_product_collection_item i
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
                 UNION
-                    SELECT p.pid AS id FROM " . Product::getTable() . " p
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.pid AS id FROM tl_iso_product p
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.pid>0 AND c.type='order'
             ")->fetchEach('id');
         }

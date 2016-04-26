@@ -542,17 +542,17 @@ abstract class ProductCollection extends TypeAgent
 
         if ($intAffectedRows > 0 && $intPid > 0) {
             \Database::getInstance()->query("
-                DELETE FROM " . ProductCollectionDownload::getTable() . "
-                WHERE pid IN (SELECT id FROM " . ProductCollectionItem::getTable() . " WHERE pid=$intPid)
+                DELETE FROM tl_iso_product_collection_download
+                WHERE pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=$intPid)
             ");
             \Database::getInstance()->query(
-                "DELETE FROM " . ProductCollectionItem::getTable() . " WHERE pid=$intPid"
+                "DELETE FROM tl_iso_product_collection_item WHERE pid=$intPid"
             );
             \Database::getInstance()->query(
-                "DELETE FROM " . ProductCollectionSurcharge::getTable() . " WHERE pid=$intPid"
+                "DELETE FROM tl_iso_product_collection_surcharge WHERE pid=$intPid"
             );
             \Database::getInstance()->query(
-                "DELETE FROM " . Address::getTable() . " WHERE ptable='" . static::$strTable . "' AND pid=$intPid"
+                "DELETE FROM tl_iso_address WHERE ptable='" . static::$strTable . "' AND pid=$intPid"
             );
         }
 
@@ -631,7 +631,7 @@ abstract class ProductCollection extends TypeAgent
 
         // Can't use model, it would not save as soon as it's locked
         \Database::getInstance()->query(
-            "UPDATE " . static::$strTable . " SET locked=" . $time . " WHERE id=" . $this->id
+            "UPDATE tl_iso_product_collection SET locked=$time WHERE id=" . $this->id
         );
         $this->arrData['locked'] = $time;
 
@@ -1650,9 +1650,10 @@ abstract class ProductCollection extends TypeAgent
                 $this->arrData['document_number'] = $strPrefix . str_pad($intMax + 1, $intDigits, '0', STR_PAD_LEFT);
             }
 
-            \Database::getInstance()->prepare("
-                    UPDATE " . static::$strTable . " SET document_number=? WHERE id=?
-                ")->execute($this->arrData['document_number'], $this->id);
+            \Database::getInstance()
+                ->prepare('UPDATE tl_iso_product_collection SET document_number=? WHERE id=?')
+                ->execute($this->arrData['document_number'], $this->id)
+            ;
 
             \Database::getInstance()->unlockTables();
 
@@ -1808,11 +1809,12 @@ abstract class ProductCollection extends TypeAgent
             $arrSet['isDefaultShipping'] = '';
         }
 
-        if (!empty($arrSet)) {
-            // @todo restore foratting when #6623 is fixed in Contao core
-            \Database::getInstance()->prepare(
-                "UPDATE " . $objAddress->getTable() . " %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?"
-            )->set($arrSet)->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id);
+        if (count($arrSet) > 0) {
+            \Database::getInstance()
+                ->prepare('UPDATE tl_iso_address %s WHERE pid=? AND ptable=? AND store_id=? AND id!=?')
+                ->set($arrSet)
+                ->execute($this->member, \MemberModel::getTable(), $this->store_id, $objAddress->id)
+            ;
         }
     }
 

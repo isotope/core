@@ -60,7 +60,7 @@ class Permission extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = function($dc) {
 
                 // Make sure variants are disabled in this product type (see #1114)
-                \Database::getInstance()->prepare("UPDATE " . $dc->table . " SET variants='' WHERE id=?")->execute($dc->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_producttype SET variants='' WHERE id=?")->execute($dc->id);
 
                 return '<br><p class="tl_info">'.$GLOBALS['TL_LANG']['XPL']['noVariantAttributes'].'</p>';
             };
@@ -78,15 +78,15 @@ class Permission extends \Backend
 
         if (null === $arrProducts) {
             $arrProducts = \Database::getInstance()->query("
-                    SELECT p.type AS type FROM " . Product::getTable() . " p
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.type AS type FROM tl_iso_product p
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.type>0 AND c.type='order'
                 UNION
-                    SELECT p.type AS type FROM " . Product::getTable() . " p
-                    INNER JOIN " . Product::getTable() . " p2 ON p2.pid=p.pid
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p2.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.type AS type FROM tl_iso_product p
+                    INNER JOIN tl_iso_product p2 ON p2.pid=p.pid
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p2.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
             ")->fetchEach('type');
         }

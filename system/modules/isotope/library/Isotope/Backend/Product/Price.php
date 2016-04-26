@@ -113,7 +113,7 @@ class Price extends \Backend
                     $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_price']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare("INSERT INTO " . ProductPrice::getTable() . " %s")->set($data)->execute();
+                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_price %s')->set($data)->execute();
             }
 
             $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_pricetier'));
@@ -149,7 +149,12 @@ class Price extends \Backend
      */
     public function load($varValue, \DataContainer $dc)
     {
-        $objPrice = \Database::getInstance()->query("SELECT t.id, p.id AS pid, p.tax_class, t.price FROM " . ProductPrice::getTable() . " p LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''");
+        $objPrice = \Database::getInstance()->query("
+            SELECT t.id, p.id AS pid, p.tax_class, t.price 
+            FROM tl_iso_product_price p 
+            LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 
+            WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''
+        ");
 
         if (!$objPrice->numRows) {
             $objTax = TaxClass::findFallback();
@@ -212,14 +217,17 @@ class Price extends \Backend
 
             // Neither price tier nor price record exist, must add both
             if (!$objPrice->numRows) {
-                $intPrice = \Database::getInstance()->prepare("
-                    INSERT INTO " . ProductPrice::getTable() . " (pid,tstamp,tax_class) VALUES (?,?,?)
-                ")->execute($dc->id, $time, $intTax)->insertId;
+                $intPrice = \Database::getInstance()
+                    ->prepare("INSERT INTO tl_iso_product_price (pid,tstamp,tax_class) VALUES (?,?,?)")
+                    ->execute($dc->id, $time, $intTax)
+                    ->insertId
+                ;
 
             } elseif ($objPrice->tax_class != $intTax) {
-                \Database::getInstance()->prepare("
-                    UPDATE " . ProductPrice::getTable() . " SET tstamp=?, tax_class=? WHERE id=?
-                ")->execute($time, $intTax, $intPrice);
+                \Database::getInstance()
+                    ->prepare('UPDATE tl_iso_product_price SET tstamp=?, tax_class=? WHERE id=?')
+                    ->execute($time, $intTax, $intPrice)
+                ;
             }
 
             \Database::getInstance()

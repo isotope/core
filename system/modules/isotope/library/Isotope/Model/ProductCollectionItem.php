@@ -338,10 +338,17 @@ class ProductCollectionItem extends \Model
     {
         $time = time();
 
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+        \Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item 
+            SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ') 
+            WHERE id=' . $this->id
+        );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+        $this->quantity = \Database::getInstance()
+            ->query("SELECT quantity FROM tl_iso_product_collection_item WHERE id=" . $this->id)
+            ->quantity
+        ;
 
         return $this;
     }
@@ -361,10 +368,17 @@ class ProductCollectionItem extends \Model
 
         $time = time();
 
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+        \Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item 
+            SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ') 
+            WHERE id=' . $this->id
+        );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+        $this->quantity = \Database::getInstance()
+            ->query('SELECT quantity FROM tl_iso_product_collection_item WHERE id=' . $this->id)
+            ->quantity
+        ;
 
         return $this;
     }
@@ -380,14 +394,10 @@ class ProductCollectionItem extends \Model
      */
     public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
-        if (static::$strTable == '') {
-            return 0;
-        }
-
-        $strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
+        $strQuery = "SELECT SUM($strField) AS sum FROM tl_iso_product_collection_item";
 
         if ($strColumn !== null) {
-            $strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
+            $strQuery .= ' WHERE ' . (is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 
         return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;

@@ -46,7 +46,7 @@ class PasteButton extends \Backend
             return '';
         }
 
-        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM " . \Isotope\Model\Product::getTable() . " p LEFT JOIN " . ProductType::getTable() . " t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
+        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM tl_iso_product p LEFT JOIN tl_iso_producttype t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
         if ('cut' === $arrClipboard['mode'] || 'copy' === $arrClipboard['mode']) {

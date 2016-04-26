@@ -96,8 +96,10 @@ class DcaManager extends \Backend
      */
     public function updateDateAdded($insertId)
     {
-        $strTable = Product::getTable();
-        \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
+        \Database::getInstance()
+            ->prepare("UPDATE tl_iso_product SET dateAdded=? WHERE id=?")
+            ->execute(time(), $insertId)
+        ;
     }
 
     /**

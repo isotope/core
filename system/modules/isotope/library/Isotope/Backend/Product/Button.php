@@ -363,9 +363,9 @@ window.addEvent('domready', function() {
         static $arrDownloads;
 
         if (null === $arrDownloads) {
-            $objDownloads = \Database::getInstance()->query("
-                SELECT pid, COUNT(id) AS total FROM " . Download::getTable() . " GROUP BY pid
-            ");
+            $objDownloads = \Database::getInstance()->query(
+                'SELECT pid, COUNT(id) AS total FROM tl_iso_download GROUP BY pid'
+            );
 
             while ($objDownloads->next()) {
                 $arrDownloads[$objDownloads->pid] = $objDownloads->total;

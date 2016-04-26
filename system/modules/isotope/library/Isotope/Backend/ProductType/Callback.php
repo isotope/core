@@ -166,13 +166,12 @@ class Callback extends Permission
             $arrTypes = array(0);
         }
 
-        $t = ProductType::getTable();
         $arrProductTypes = array();
-        $objProductTypes = \Database::getInstance()->execute("
-            SELECT id,name FROM $t
-            WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . "
+        $objProductTypes = \Database::getInstance()->execute('
+            SELECT id,name FROM tl_iso_producttype
+            WHERE tstamp>0' . ($objUser->isAdmin ? '' : (' AND id IN (' . implode(',', $arrTypes) . ')')) . '
             ORDER BY name
-        ");
+        ');
 
         while ($objProductTypes->next()) {
             $arrProductTypes[$objProductTypes->id] = $objProductTypes->name;

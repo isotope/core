@@ -210,8 +210,8 @@ class Backend extends Contao_Backend
         $arrMessages = array();
         $objOrders   = \Database::getInstance()->query("
             SELECT COUNT(*) AS total, s.name
-            FROM " . \Isotope\Model\ProductCollection::getTable() . " c
-            LEFT JOIN " . \Isotope\Model\OrderStatus::getTable() . " s ON c.order_status=s.id
+            FROM tl_iso_product_collection c
+            LEFT JOIN tl_iso_orderstatus s ON c.order_status=s.id
             WHERE c.type='order' AND s.welcomescreen='1' $strConfig
             GROUP BY s.id"
         );
