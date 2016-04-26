@@ -37,7 +37,11 @@ class Sofortueberweisung extends Postsale
             return false;
         }
 
-        return parent::isAvailable();
+        try {
+            return parent::isAvailable();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**

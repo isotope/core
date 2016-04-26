@@ -76,7 +76,11 @@ class Address extends \Model
      */
     public function __toString()
     {
-        return $this->generate();
+        try {
+            return $this->generate();
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**

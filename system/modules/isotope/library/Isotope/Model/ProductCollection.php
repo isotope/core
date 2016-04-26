@@ -279,7 +279,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function getPaymentMethod()
     {
         if (false === $this->objPayment) {
-            $this->objPayment = $this->getRelated('payment_id');
+            try {
+                $this->objPayment = $this->getRelated('payment_id');
+            } catch (\Exception $e) {
+                $this->objPayment = null;
+            }
         }
 
         return $this->objPayment;
@@ -334,7 +338,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function getShippingMethod()
     {
         if (false === $this->objShipping) {
-            $this->objShipping = $this->getRelated('shipping_id');
+            try {
+                $this->objShipping = $this->getRelated('shipping_id');
+            } catch (\Exception $e) {
+                $this->objShipping = null;
+            }
         }
 
         return $this->objShipping;

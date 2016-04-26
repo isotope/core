@@ -60,10 +60,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         // Otherwise we check the orderstatus checkbox
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
+            return (null !== $objStatus && $objStatus->isPaid());
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -123,10 +127,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      */
     public function getStatusLabel()
     {
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null === $objStatus) ? '' : $objStatus->getName();
+            return (null === $objStatus) ? '' : $objStatus->getName();
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**
@@ -136,10 +144,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      */
     public function getStatusAlias()
     {
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
+            return null === $objStatus ? $this->order_status : $objStatus->getAlias();
+        } catch (\Exception $e) {
+            return $this->order_status;
+        }
     }
 
     /**
