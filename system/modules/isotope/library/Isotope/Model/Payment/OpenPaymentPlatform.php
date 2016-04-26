@@ -3,7 +3,6 @@
 namespace Isotope\Model\Payment;
 
 use Contao\Request;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
@@ -17,7 +16,7 @@ use Isotope\Template;
  * @property string $opp_password
  * @property string $opp_entity_id
  */
-class OpenPaymentPlatform extends Payment implements IsotopePayment
+class OpenPaymentPlatform extends Payment
 {
     /**
      * @inheritdoc

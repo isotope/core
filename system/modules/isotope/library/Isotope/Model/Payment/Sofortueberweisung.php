@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
@@ -20,8 +19,12 @@ use Isotope\Template;
 
 /**
  * Sofortueberweisung payment method
+ *
+ * @property string $sofortueberweisung_user_id
+ * @property string $sofortueberweisung_project_id
+ * @property string sofortueberweisung_project_password
  */
-class Sofortueberweisung extends Postsale implements IsotopePayment
+class Sofortueberweisung extends Postsale
 {
     /**
      * sofortueberweisung.de only supports these currencies

@@ -14,7 +14,6 @@ namespace Isotope\Model\Payment;
 
 use Haste\DateTime\DateTime;
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
@@ -27,7 +26,7 @@ use Isotope\Template;
  * @property string $vads_site_id
  * @property string $vads_certificate
  */
-abstract class VADS extends Postsale implements IsotopePayment
+abstract class VADS extends Postsale
 {
     /**
      * List of parameters to validate on inbound data

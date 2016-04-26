@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
@@ -30,7 +29,7 @@ use Isotope\Template;
  * @property string $quickpay_privateKey
  * @property string $quickpay_paymentMethods
  */
-class QuickPay extends Postsale implements IsotopePayment
+class QuickPay extends Postsale
 {
     /**
      * @inheritdoc

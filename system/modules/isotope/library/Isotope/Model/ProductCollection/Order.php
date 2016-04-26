@@ -387,9 +387,9 @@ class Order extends ProductCollection implements
 
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
-            $arrTokens['payment_id']        = $objPayment->id;
+            $arrTokens['payment_id']        = $objPayment->getId();
             $arrTokens['payment_label']     = $objPayment->getLabel();
-            $arrTokens['payment_note']      = $objPayment->note;
+            $arrTokens['payment_note']      = $objPayment->getNote();
         }
 
         // Add shipping method info

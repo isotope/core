@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 
@@ -25,7 +24,7 @@ use Isotope\Model\Payment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Cash extends Payment implements IsotopePayment
+class Cash extends Payment
 {
     /**
      * @inheritdoc

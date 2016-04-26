@@ -12,20 +12,17 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 
-
 /**
- * Class Datatrans
+ * Datatrans payment method
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Leo Unglaub <leo@leo-unglaub.net>
+ * @property string $datatrans_id
+ * @property string $datatrans_sign
  */
-class Datatrans extends Postsale implements IsotopePayment
+class Datatrans extends Postsale
 {
     /**
      * Perform server to server data check

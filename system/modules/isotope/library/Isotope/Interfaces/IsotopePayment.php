@@ -19,6 +19,12 @@ use Isotope\Model\ProductCollectionSurcharge\Payment;
  */
 interface IsotopePayment
 {
+    /**
+     * Returns the ID of this payment method.
+     *
+     * @return int
+     */
+    public function getId();
 
     /**
      * Returns whether the payment method is available
@@ -47,6 +53,13 @@ interface IsotopePayment
      * @return string
      */
     public function getLabel();
+
+    /**
+     * Returns the payment note.
+     *
+     * @return string
+     */
+    public function getNote();
 
     /**
      * Return the calculated total price for payment
@@ -109,5 +122,5 @@ interface IsotopePayment
      *
      * @return Payment|null
      */
-    public function getSurcharge($objCollection);
+    public function getSurcharge(IsotopeProductCollection $objCollection);
 }

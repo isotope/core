@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopeOrderStatusAware;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
@@ -27,7 +26,7 @@ use Isotope\Module\Checkout;
  * @property string $saferpay_vtconfig
  * @property array  $saferpay_paymentmethods
  */
-class Saferpay extends Postsale implements IsotopePayment, IsotopeOrderStatusAware
+class Saferpay extends Postsale implements IsotopeOrderStatusAware
 {
     /**
      * CreatePayInit URI

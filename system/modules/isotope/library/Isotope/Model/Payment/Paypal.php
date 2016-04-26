@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
@@ -27,7 +26,7 @@ use Isotope\Template;
  *
  * @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
  */
-class Paypal extends Postsale implements IsotopePayment
+class Paypal extends Postsale
 {
 
     /**

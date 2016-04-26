@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -23,8 +22,14 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
-
-class EPay extends Payment implements IsotopePayment, IsotopePostsale
+/**
+ * EPay payment method
+ *
+ * @property string $epay_windowstate
+ * @property string $epay_merchantnumber
+ * @property string $epay_secretkey
+ */
+class EPay extends Payment implements IsotopePostsale
 {
 
     /**

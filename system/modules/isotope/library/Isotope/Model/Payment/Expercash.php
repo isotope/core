@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
@@ -29,7 +28,7 @@ use Isotope\Module\Checkout;
  * @property string $expercash_paymentMethod
  * @property string $expercash_css
  */
-class Expercash extends Payment implements IsotopePayment, IsotopePostsale
+class Expercash extends Payment implements IsotopePostsale
 {
     /**
      * @inheritdoc

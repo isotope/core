@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
@@ -27,7 +26,7 @@ use Isotope\Template;
  * @property string $payone_portalid
  * @property string $payone_key
  */
-class Payone extends Postsale implements IsotopePayment
+class Payone extends Postsale
 {
 
     /**

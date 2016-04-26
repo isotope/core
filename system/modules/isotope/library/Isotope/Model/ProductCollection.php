@@ -233,7 +233,7 @@ abstract class ProductCollection extends TypeAgent
      */
     public function setPaymentMethod(IsotopePayment $objPayment = null)
     {
-        $this->payment_id = (null === $objPayment ? 0 : $objPayment->id);
+        $this->payment_id = (null === $objPayment ? 0 : $objPayment->getId());
         $this->objPayment = $objPayment;
     }
 

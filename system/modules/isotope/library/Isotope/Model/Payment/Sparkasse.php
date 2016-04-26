@@ -13,7 +13,6 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
@@ -27,7 +26,7 @@ use Isotope\Template;
  * @property string $sparkasse_sslpassword
  * @property string $sparkasse_merchantref
  */
-class Sparkasse extends Postsale implements IsotopePayment
+class Sparkasse extends Postsale
 {
     /**
      * @inheritdoc

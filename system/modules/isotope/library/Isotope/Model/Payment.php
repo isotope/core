@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
@@ -47,7 +48,7 @@ use Isotope\Translation;
  * @property bool   $debug
  * @property bool   $enabled
  */
-abstract class Payment extends TypeAgent
+abstract class Payment extends TypeAgent implements IsotopePayment
 {
 
     /**
@@ -88,6 +89,13 @@ abstract class Payment extends TypeAgent
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return (int) $this->id;
+    }
 
     /**
      * Return true or false depending on availability of the payment method
@@ -288,6 +296,13 @@ abstract class Payment extends TypeAgent
         return Translation::get($this->label ? : $this->name);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
 
     /**
      * Return a html form for checkout or false
@@ -342,7 +357,7 @@ abstract class Payment extends TypeAgent
     /**
      * @inheritdoc
      */
-    public function getSurcharge($objCollection)
+    public function getSurcharge(IsotopeProductCollection $objCollection)
     {
         if (0 === (int) $this->getPrice()) {
             return null;

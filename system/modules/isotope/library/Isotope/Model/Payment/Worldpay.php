@@ -12,20 +12,22 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use Isotope\Translation;
 
-
 /**
  * Isotope payment method for www.worldpay.com
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    $worldpay_instId
+ * @property string $worldpay_callbackPW
+ * @property string $worldpay_signatureFields
+ * @property string $worldpay_md5secret
+ * @property string $worldpay_description
  */
-class Worldpay extends Postsale implements IsotopePayment
+class Worldpay extends Postsale
 {
     /**
      * @inheritdoc

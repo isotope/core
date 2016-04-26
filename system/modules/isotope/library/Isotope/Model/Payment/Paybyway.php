@@ -12,7 +12,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -20,8 +19,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 
-
-class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
+class Paybyway extends Payment implements IsotopePostsale
 {
     /**
      * Paybyway only supports EUR currency
