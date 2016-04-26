@@ -13,6 +13,7 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 
 
@@ -31,6 +32,10 @@ class Cash extends Payment
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            return false;
+        }
+
         $objOrder->checkout();
         $objOrder->updateOrderStatus($this->new_order_status);
 

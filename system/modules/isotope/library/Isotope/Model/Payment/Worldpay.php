@@ -13,6 +13,7 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -34,6 +35,11 @@ class Worldpay extends Postsale
      */
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            $this->postsaleError();
+        }
+
         if (\Input::post('instId') != $this->worldpay_instId) {
             \System::log('Installation ID does not match', __METHOD__, TL_ERROR);
             $this->postsaleError();
@@ -88,6 +94,11 @@ class Worldpay extends Postsale
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         global $objPage;
         $objAddress = $objOrder->getBillingAddress();
 

@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
@@ -36,6 +37,11 @@ class QuickPay extends Postsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if ($this->validatePayment($objOrder)) {
             if ($objOrder->isCheckoutComplete()) {
                 return;

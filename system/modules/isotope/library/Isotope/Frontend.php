@@ -15,6 +15,7 @@ namespace Isotope;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -56,6 +57,11 @@ class Frontend extends \Frontend
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        if (!$objCollection instanceof IsotopeOrderableCollection) {
+            \System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // Do not add shipping and payment surcharge to cart,
         // they should only appear in the order review
         if ($objCollection instanceof Cart) {

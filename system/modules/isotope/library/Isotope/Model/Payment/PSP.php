@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
@@ -40,6 +41,11 @@ abstract class PSP extends Payment implements IsotopePostsale
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // If the order has already been placed through postsale
         if ($objOrder->isCheckoutComplete()) {
             return true;
@@ -58,6 +64,10 @@ abstract class PSP extends Payment implements IsotopePostsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
 
         if (!$this->validateSHASign()) {
             \System::log('Received invalid postsale data for order ID "' . $objOrder->getId() . '"', __METHOD__, TL_ERROR);
@@ -138,6 +148,11 @@ abstract class PSP extends Payment implements IsotopePostsale
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $arrParams = $this->preparePSPParams($objOrder, $objModule);
 
         // SHA-1 must be generated on alphabetically sorted keys.
@@ -178,11 +193,13 @@ abstract class PSP extends Payment implements IsotopePostsale
 
     /**
      * Prepare PSP params
-     * @param   Order
-     * @param   Module
+     *
+     * @param   IsotopePurchasableCollection $objOrder
+     * @param   \Module                      $objModule
+     *
      * @return  array
      */
-    protected function preparePSPParams($objOrder, $objModule)
+    protected function preparePSPParams(IsotopePurchasableCollection $objOrder, $objModule)
     {
         $objBillingAddress = $objOrder->getBillingAddress();
 

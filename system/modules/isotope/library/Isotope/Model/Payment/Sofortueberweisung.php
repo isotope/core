@@ -13,6 +13,7 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
@@ -49,6 +50,11 @@ class Sofortueberweisung extends Postsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         $arrHash = array(
             'transaction'               => \Input::post('transaction'),
             'user_id'                   => \Input::post('user_id'),
@@ -115,6 +121,11 @@ class Sofortueberweisung extends Postsale
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $strCountry = in_array($objOrder->getBillingAddress()->country, array('de', 'ch', 'at')) ? $objOrder->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 

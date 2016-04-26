@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
@@ -70,6 +71,11 @@ class EPay extends Payment implements IsotopePostsale
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         if (!$this->validatePayment($objOrder)) {
             return false;
         }
@@ -94,6 +100,11 @@ class EPay extends Payment implements IsotopePostsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if ($this->validatePayment($objOrder)) {
             if (!$objOrder->checkout()) {
                 \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);

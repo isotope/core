@@ -15,6 +15,7 @@ namespace Isotope\Model\Payment;
 use Haste\DateTime\DateTime;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
@@ -50,6 +51,11 @@ abstract class VADS extends Postsale
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         // Verify payment status
         if (\Input::post('vads_result') != '00') {
             \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
@@ -95,7 +101,12 @@ abstract class VADS extends Postsale
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $parameters = $this->getOutboundParameters($objOrder, $objModule);
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $parameters = $this->getOutboundParameters($objOrder);
         $parameters['signature'] = $this->calculateSignature($parameters, $this->vads_certificate);
 
         /** @var Template|\stdClass $objTemplate */
@@ -111,12 +122,11 @@ abstract class VADS extends Postsale
     }
 
     /**
-     * @param IsotopeProductCollection $objOrder
-     * @param \Module                  $objModule
+     * @param IsotopePurchasableCollection $objOrder
      *
      * @return array
      */
-    protected function getOutboundParameters(IsotopeProductCollection $objOrder, \Module $objModule = null)
+    protected function getOutboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $objAddress = $objOrder->getBillingAddress();
         $successUrl = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
@@ -186,11 +196,11 @@ abstract class VADS extends Postsale
     /**
      * Validate input parameters to prevent payment manipulation
      *
-     * @param IsotopeProductCollection $objOrder
+     * @param IsotopePurchasableCollection $objOrder
      *
      * @return bool
      */
-    protected function validateInboundParameters(IsotopeProductCollection $objOrder)
+    protected function validateInboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $parameters = $this->getOutboundParameters($objOrder);
 
