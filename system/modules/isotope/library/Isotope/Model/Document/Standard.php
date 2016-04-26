@@ -136,7 +136,7 @@ class Standard extends Document implements IsotopeDocument
 
         $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
-        $objTemplate->config        = $objCollection->getRelated('config_id');
+        $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
         $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
         $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];

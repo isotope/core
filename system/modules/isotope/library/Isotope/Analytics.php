@@ -12,8 +12,11 @@
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopeOrderableCollection;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
+use UnitedPrototype\GoogleAnalytics\CustomVariable;
 use UnitedPrototype\GoogleAnalytics\Session;
 use UnitedPrototype\GoogleAnalytics\Tracker;
 use UnitedPrototype\GoogleAnalytics\Transaction;
@@ -32,7 +35,7 @@ class Analytics extends Frontend
      */
     public function trackOrder(Order $objOrder)
     {
-        $objConfig = Config::findByPk($objOrder->config_id);
+        $objConfig = $objOrder->getConfig();
 
         if (null !== $objConfig && $objConfig->ga_enable) {
             $this->trackGATransaction($objConfig, $objOrder);
@@ -47,8 +50,12 @@ class Analytics extends Frontend
      * @param Config                   $objConfig
      * @param IsotopeProductCollection $objOrder
      */
-    protected function trackGATransaction($objConfig, $objOrder)
+    protected function trackGATransaction(Config $objConfig, IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopeOrderableCollection) {
+            return;
+        }
+
         // Initilize GA Tracker
         $tracker = new Tracker($objConfig->ga_account, \Environment::get('base'));
 
@@ -60,7 +67,7 @@ class Analytics extends Frontend
 
         $transaction = new Transaction();
 
-        $transaction->setOrderId($objOrder->document_number);
+        $transaction->setOrderId($objOrder->getDocumentNumber());
         $transaction->setAffiliation($objConfig->name);
         $transaction->setTotal($objOrder->getTotal());
         $transaction->setTax(($objOrder->getTotal() - $objOrder->getTaxFreeTotal()));
@@ -105,9 +112,17 @@ class Analytics extends Frontend
         }
 
         // Track logged-in member as custom variable
-        if ($objConfig->ga_member != '' && $objOrder->member > 0 && ($objMember = \MemberModel::findByPk($objOrder->member)) !== null)
+        if ($objConfig->ga_member != '' && null !== $objOrder->getMember())
         {
-            $customVar = new \UnitedPrototype\GoogleAnalytics\CustomVariable(1, 'Member', $this->parseSimpleTokens($objConfig->ga_member, $objMember->row()), \UnitedPrototype\GoogleAnalytics\CustomVariable::SCOPE_VISITOR);
+            $customVar = new CustomVariable(
+                1,
+                'Member',
+                \StringUtil::parseSimpleTokens(
+                    $objConfig->ga_member,
+                    $objOrder->getMember()->row()
+                ),
+                CustomVariable::SCOPE_VISITOR
+            );
 
             $tracker->addCustomVariable($customVar);
         }

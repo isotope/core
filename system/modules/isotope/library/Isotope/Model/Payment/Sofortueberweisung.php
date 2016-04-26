@@ -92,7 +92,7 @@ class Sofortueberweisung extends Postsale
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -123,12 +123,12 @@ class Sofortueberweisung extends Postsale
             'sender_bank_code'      => '',
             'sender_country_id'     => strtoupper($objOrder->getBillingAddress()->country),
             'amount'                => number_format($objOrder->getTotal(), 2, '.', ''),
-            'currency_id'           => $objOrder->currency,
+            'currency_id'           => $objOrder->getCurrency(),
             'reason_1'              => \Environment::get('host'),
             'reason_2'              => '',
-            'user_variable_0'       => $objOrder->id,
+            'user_variable_0'       => $objOrder->getId(),
             'user_variable_1'       => $this->id,
-            'user_variable_2'       => $objOrder->uniqid,
+            'user_variable_2'       => $objOrder->getUniqueId(),
             'user_variable_3'       => '',
             'user_variable_4'       => '',
             'user_variable_5'       => '',

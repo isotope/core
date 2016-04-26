@@ -52,29 +52,29 @@ abstract class VADS extends Postsale
     {
         // Verify payment status
         if (\Input::post('vads_result') != '00') {
-            \System::log('Payment for order ID "' . $objOrder->id . '" failed.', __METHOD__, TL_ERROR);
+            \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
             return;
         }
 
         // Validate HMAC sign
         if (\Input::post('signature') != $this->calculateSignature($_POST, $this->vads_certificate)) {
-            \System::log('Invalid signature for Order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \System::log('Invalid signature for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         // For maximum security, also validate individual parameters
         if (!$this->validateInboundParameters($objOrder)) {
-            \System::log('Parameter mismatch for Order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \System::log('Parameter mismatch for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -127,27 +127,27 @@ abstract class VADS extends Postsale
 
         return array(
             'vads_action_mode'    => 'INTERACTIVE',
-            'vads_amount'         => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency),
+            'vads_amount'         => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'vads_contrib'        => 'Isotope eCommerce ' . Isotope::VERSION,
-            'vads_ctx_mode'       => ($this->debug ? 'TEST' : 'PRODUCTION'),
-            'vads_currency'       => Currency::getIsoNumber($objOrder->currency),
+            'vads_ctx_mode'       => $this->debug ? 'TEST' : 'PRODUCTION',
+            'vads_currency'       => Currency::getIsoNumber($objOrder->getCurrency()),
             'vads_cust_address'   => $objAddress->street_1,
             'vads_cust_city'      => $objAddress->city,
             'vads_cust_country'   => $objAddress->country,
             'vads_cust_email'     => $objAddress->email,
-            'vads_cust_id'        => ($objOrder->member ?: ''),
-            'vads_cust_name'      => ($objAddress->firstname . ' ' . $objAddress->lastname),
+            'vads_cust_id'        => null === $objOrder->getMember() ? 0 : $objOrder->getMember()->id,
+            'vads_cust_name'      => $objAddress->firstname . ' ' . $objAddress->lastname,
             'vads_cust_phone'     => $objAddress->phone,
             'vads_cust_title'     => $objAddress->salutation,
             'vads_cust_zip'       => $objAddress->postal,
             'vads_language'       => $objOrder->language,
-            'vads_order_id'       => $objOrder->id,
+            'vads_order_id'       => $objOrder->getId(),
             'vads_page_action'    => 'PAYMENT',
             'vads_payment_config' => 'SINGLE',
             'vads_return_mode'    => 'NONE',
             'vads_site_id'        => $this->vads_site_id,
             'vads_trans_date'     => $transDate->format('YmdHis'),
-            'vads_trans_id'       => str_pad($objOrder->id, 6, '0', STR_PAD_LEFT),
+            'vads_trans_id'       => str_pad($objOrder->getId(), 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
             'vads_url_check'      => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'vads_url_error'      => $failureUrl,

@@ -165,7 +165,7 @@ class Postfinance extends PSP
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
             // This key is mandatory and just has to be unique (17 chars)
-            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17),
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->getId() . '_' . $objOrder->getUniqueId(), 0, 17),
 
             // Additional fields, not mandatory
             'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',

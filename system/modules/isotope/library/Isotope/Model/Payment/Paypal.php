@@ -61,7 +61,9 @@ class Paypal extends Postsale
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
+        if ($objOrder->getCurrency() !== \Input::post('mc_currency')
+            || $objOrder->getTotal() != \Input::post('mc_gross')
+        ) {
             \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
             return;
         }
@@ -76,7 +78,7 @@ class Paypal extends Postsale
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data = $arrPayment;
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -159,11 +161,11 @@ class Paypal extends Postsale
 
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
-        $objTemplate->invoice       = $objOrder->id;
+        $objTemplate->invoice       = $objOrder->getId();
         $objTemplate->data          = array_map('specialchars', $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
-        $objTemplate->currency      = $objOrder->currency;
+        $objTemplate->currency      = $objOrder->getCurrency();
         $objTemplate->return        = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $objTemplate->cancel_return = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;

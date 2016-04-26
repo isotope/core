@@ -51,7 +51,7 @@ class Payone extends Postsale
             die('TSOK');
         }
 
-        if (\Input::post('currency') != $objOrder->currency || $objOrder->getTotal() != \Input::post('price')) {
+        if (\Input::post('currency') != $objOrder->getCurrency() || $objOrder->getTotal() != \Input::post('price')) {
             \System::log('PayOne order data mismatch for Order ID "' . \Input::post('reference') . '"', __METHOD__, TL_ERROR);
             die('TSOK');
         }
@@ -62,7 +62,7 @@ class Payone extends Postsale
         }
 
         if ('paid' === \Input::post('txaction') && \Input::post('balance') == 0) {
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
         }
 
         $objOrder->updateOrderStatus($this->new_order_status);
@@ -95,13 +95,13 @@ class Payone extends Postsale
             'request'           => 'auth' === $this->trans_type ? 'preauthorization' : 'authorization',
             'encoding'          => 'UTF-8',
             'clearingtype'      => $this->payone_clearingtype,
-            'reference'         => $objOrder->id,
+            'reference'         => $objOrder->getId(),
             'display_name'      => 'no',
             'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'backurl'           => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'amount'            => ($objOrder->getTotal() * 100),
-            'currency'          => $objOrder->currency,
+            'amount'            => $objOrder->getTotal() * 100,
+            'currency'          => $objOrder->getCurrency(),
 
             // Custom parameter to recognize payone in postsale request (only alphanumeric is allowed)
             'param'             => 'paymentMethodPayone' . $this->id

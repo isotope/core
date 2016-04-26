@@ -60,13 +60,15 @@ abstract class PSP extends Payment implements IsotopePostsale
     {
 
         if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->getId() . '"', __METHOD__, TL_ERROR);
             return false;
         }
 
         // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+        if ($objOrder->getCurrency() !== $this->getRequestData('currency')
+            || $objOrder->getTotal() != $this->getRequestData('amount')
+        ) {
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->getId() . '!', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -75,7 +77,7 @@ abstract class PSP extends Payment implements IsotopePostsale
 
             /** @noinspection PhpMissingBreakStatementInspection */
             case 9:  // Zahlung beantragt (Authorize & Capture)
-                $objOrder->date_paid = time();
+                $objOrder->setDatePaid(time());
                 // no break
 
             case 5:  // Genehmigt (Authorize ohne Capture)
@@ -89,8 +91,8 @@ abstract class PSP extends Payment implements IsotopePostsale
             case 92: // Zahlung unsicher
 
                 /** @type \Isotope\Model\Config $objConfig */
-                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                if (($objConfig = $objOrder->getConfig()) === null) {
+                    \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
                     return false;
                 }
 
@@ -107,7 +109,7 @@ abstract class PSP extends Payment implements IsotopePostsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Post-Sale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
         
@@ -187,9 +189,9 @@ abstract class PSP extends Payment implements IsotopePostsale
         return array
         (
             'PSPID'         => $this->psp_pspid,
-            'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round(($objOrder->getTotal() * 100)),
-            'CURRENCY'      => $objOrder->currency,
+            'ORDERID'       => $objOrder->getId(),
+            'AMOUNT'        => round($objOrder->getTotal() * 100),
+            'CURRENCY'      => $objOrder->getCurrency(),
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
             'EMAIL'         => $objBillingAddress->email,

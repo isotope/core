@@ -41,7 +41,7 @@ class Worldpay extends Postsale
 
         // Validate payment data
         if (
-            $objOrder->currency != \Input::post('currency') ||
+            $objOrder->getCurrency() != \Input::post('currency') ||
             $objOrder->getTotal() != \Input::post('amount') ||
             $this->worldpay_callbackPW != \Input::post('callbackPW') ||
             (!$this->debug && \Input::post('testMode') == '100')
@@ -57,11 +57,11 @@ class Worldpay extends Postsale
 
         if ('Y' === \Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
-                \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 $this->postsaleError();
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
         }
 
@@ -93,9 +93,9 @@ class Worldpay extends Postsale
 
         $arrData                = array();
         $arrData['instId']      = $this->worldpay_instId;
-        $arrData['cartId']      = $objOrder->id;
+        $arrData['cartId']      = $objOrder->getId();
         $arrData['amount']      = number_format($objOrder->getTotal(), 2);
-        $arrData['currency']    = $objOrder->currency;
+        $arrData['currency']    = $objOrder->getCurrency();
         $arrData['description'] = Translation::get($this->worldpay_description);
         $arrData['name']        = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 

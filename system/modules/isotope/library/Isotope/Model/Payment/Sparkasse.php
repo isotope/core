@@ -54,8 +54,8 @@ class Sparkasse extends Postsale
         $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
 
         // Validate payment data
-        if ($objOrder->currency != $arrData['currency']) {
-            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrData['currency']), __METHOD__, TL_ERROR);
+        if ($objOrder->getCurrency() !== $arrData['currency']) {
+            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->getCurrency(), $arrData['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         } elseif ($objOrder->getTotal() != $arrData['amount']) {
             \System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
@@ -63,7 +63,7 @@ class Sparkasse extends Postsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -72,7 +72,7 @@ class Sparkasse extends Postsale
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data   = $arrPayment;
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -104,9 +104,9 @@ class Sparkasse extends Postsale
 
         $objTemplate->amount = number_format($objOrder->getTotal(), 2, ',', '');
         $objTemplate->basketid = $objOrder->source_collection_id;
-        $objTemplate->currency = $objOrder->currency;
+        $objTemplate->currency = $objOrder->getCurrency();
         $objTemplate->locale = $objOrder->language;
-        $objTemplate->orderid = $objOrder->id;
+        $objTemplate->orderid = $objOrder->getId();
         $objTemplate->sessionid = $objPage->id;
         $objTemplate->transactiontype = ('auth' === $this->trans_type ? 'preauthorization' : 'authorization');
         $objTemplate->merchantref = '';

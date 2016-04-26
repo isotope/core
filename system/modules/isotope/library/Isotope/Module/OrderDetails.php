@@ -94,7 +94,7 @@ class OrderDetails extends Module
             exit;
         }
 
-        Isotope::setConfig($objOrder->getRelated('config_id'));
+        Isotope::setConfig($objOrder->getConfig());
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate               = new Template($this->iso_collectionTpl);
@@ -114,7 +114,7 @@ class OrderDetails extends Module
         $this->Template->date                 = Format::date($objOrder->locked);
         $this->Template->time                 = Format::time($objOrder->locked);
         $this->Template->datim                = Format::datim($objOrder->locked);
-        $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->document_number, $this->Template->datim);
+        $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->getDocumentNumber(), $this->Template->datim);
         $this->Template->orderStatus          = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey       = $objOrder->getStatusAlias();
     }

@@ -407,18 +407,17 @@ class Address extends \Model
         $objAddress = new static();
 
         $arrData = array(
-            'pid'               => (int) $objCollection->id,
+            'pid'               => $objCollection->getId(),
             'ptable'            => 'tl_iso_product_collection',
             'tstamp'            => time(),
-            'store_id'          => (int) $objCollection->store_id,
+            'store_id'          => $objCollection->getStoreId(),
             'isDefaultBilling'  => $blnDefaultBilling ? '1' : '',
             'isDefaultShipping' => $blnDefaultShipping ? '1' : '',
         );
 
-        if ($objCollection->member > 0
-            && !empty($arrFill)
+        if (!empty($arrFill)
             && is_array($arrFill)
-            && ($objMember = \MemberModel::findByPk($objCollection->member)) !== null
+            && ($objMember = $objCollection->getMember()) !== null
         ) {
             // Generate address data from tl_member, limit to fields enabled in the shop configuration
             $arrMember = array_intersect_key(
@@ -437,7 +436,7 @@ class Address extends \Model
             $arrData = array_merge($arrMember, $arrData);
         }
 
-        if ($arrData['country'] == '' && ($objConfig = $objCollection->getRelated('config_id')) !== null) {
+        if ($arrData['country'] == '' && null !== ($objConfig = $objCollection->getConfig())) {
             if ($blnDefaultBilling) {
                 $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
             } elseif ($blnDefaultShipping) {

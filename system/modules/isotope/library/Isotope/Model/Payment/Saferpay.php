@@ -79,7 +79,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $arrPayment['PAYCONFIRM'] = $arrResponse;
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -90,7 +90,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         // everything has been okay so far and the debit has been authorized. We capture it now if this is requested (usually it is).
         if ('auth' !== $this->trans_type) {
             $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
         }
 
         $objOrder->updateOrderStatus($this->new_order_status);
@@ -167,15 +167,15 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     {
         $arrData = array();
 
-        $arrData['ACCOUNTID'] = $this->saferpay_accountid;
-        $arrData['AMOUNT'] = (round(($objOrder->getTotal() * 100), 0));
-        $arrData['CURRENCY'] = $objOrder->currency;
+        $arrData['ACCOUNTID']   = $this->saferpay_accountid;
+        $arrData['AMOUNT']      = round($objOrder->getTotal() * 100, 0);
+        $arrData['CURRENCY']    = $objOrder->getCurrency();
         $arrData['SUCCESSLINK'] = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $arrData['FAILLINK']    = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $arrData['BACKLINK'] = $arrData['FAILLINK'];
         $arrData['NOTIFYURL'] = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $arrData['DESCRIPTION'] = $this->saferpay_description;
-        $arrData['ORDERID'] = $objOrder->id; // order id
+        $arrData['ORDERID']     = $objOrder->getId();
 
         // Additional attributes
         if ($this->saferpay_vtconfig) {
@@ -283,7 +283,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
             return false;
 
-        } elseif ($this->getPostValue('CURRENCY') != $objOrder->currency) {
+        } elseif ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
             \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency), 'isotope_saferpay.log');
 

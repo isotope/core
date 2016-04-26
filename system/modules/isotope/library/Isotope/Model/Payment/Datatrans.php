@@ -52,12 +52,14 @@ class Datatrans extends Postsale
         }
 
         // For maximum security, also validate individual parameters
-        if (!$this->validateParameters(array(
-            'refno'         => $objOrder->id,
-            'currency'      => $objOrder->currency,
-            'amount'        => round($objOrder->getTotal() * 100),
-            'reqtype'       => $this->trans_type == 'auth' ? 'NOA' : 'CAA',
-        ))) {
+        if (!$this->validateParameters(
+            [
+                'refno'    => $objOrder->getId(),
+                'currency' => $objOrder->getCurrency(),
+                'amount'   => round($objOrder->getTotal() * 100),
+                'reqtype'  => 'auth' === $this->trans_type ? 'NOA' : 'CAA',
+            ]
+        )) {
             return;
         }
 
@@ -67,7 +69,7 @@ class Datatrans extends Postsale
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -92,8 +94,8 @@ class Datatrans extends Postsale
         (
             'merchantId'            => $this->datatrans_id,
             'amount'                => round($objOrder->getTotal() * 100),
-            'currency'              => $objOrder->currency,
-            'refno'                 => $objOrder->id,
+            'currency'              => $objOrder->getCurrency(),
+            'refno'                 => $objOrder->getId(),
             'language'              => $objOrder->language,
             'reqtype'               => 'auth' === $this->trans_type ? 'NOA' : 'CAA',
             'uppCustomerDetails'    => 'yes',

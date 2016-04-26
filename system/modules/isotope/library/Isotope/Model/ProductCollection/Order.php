@@ -15,9 +15,7 @@ namespace Isotope\Model\ProductCollection;
 use Haste\Generator\RowClass;
 use Haste\Haste;
 use Haste\Util\Format;
-use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Document;
@@ -37,7 +35,6 @@ use NotificationCenter\Model\Notification;
  *
  * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
  *
- * @property int    $locked
  * @property array  $checkout_info
  * @property array  $payment_data
  * @property array  $shipping_data
@@ -47,10 +44,7 @@ use NotificationCenter\Model\Notification;
  * @property int    $date_shipped
  * @property string $notes
  */
-class Order extends ProductCollection implements
-    IsotopeProductCollection,
-    IsotopeOrderableCollection,
-    IsotopePurchasableCollection
+class Order extends ProductCollection implements IsotopePurchasableCollection
 {
 
     /**
@@ -70,6 +64,46 @@ class Order extends ProductCollection implements
         $objStatus = $this->getRelated('order_status');
 
         return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDatePaid()
+    {
+        return $this->date_paid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDatePaid($timestamp = null)
+    {
+        $this->date_paid = $timestamp;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isShipped()
+    {
+        return null !== $this->date_shipped;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDateShipped()
+    {
+        return $this->date_shipped;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDateShipped($timestamp = null)
+    {
+        $this->date_shipped = $timestamp;
     }
 
     /**
@@ -123,8 +157,8 @@ class Order extends ProductCollection implements
         // (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber(
-            $this->getRelated('config_id')->orderPrefix,
-            (int) $this->getRelated('config_id')->orderDigits
+            $this->getConfig()->orderPrefix,
+            (int) $this->getConfig()->orderDigits
         );
 
         if (!$this->isLocked()) {
@@ -503,7 +537,7 @@ class Order extends ProductCollection implements
             return $this->arrData['uniqid'];
         }
 
-        $objConfig = $this->getRelated('config_id');
+        $objConfig = $this->getConfig();
 
         if (null === $objConfig) {
             $objConfig = Isotope::getConfig();

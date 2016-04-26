@@ -42,11 +42,11 @@ class QuickPay extends Postsale
             }
 
             if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 return;
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->save();
@@ -79,10 +79,10 @@ class QuickPay extends Postsale
             'version'      => 'v10',
             'merchant_id'  => $this->quickpay_merchantId,
             'agreement_id' => $this->quickpay_agreementId,
-            'order_id'     => str_pad($objOrder->id, 4, '0', STR_PAD_LEFT),
+            'order_id'     => str_pad($objOrder->getId(), 4, '0', STR_PAD_LEFT),
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
-            'currency'     => $objOrder->currency,
+            'currency'     => $objOrder->getCurrency(),
             'continueurl'  => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'cancelurl'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
@@ -142,9 +142,9 @@ class QuickPay extends Postsale
             return false;
         }
 
-        $amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
+        $amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency());
 
-        if ($objOrder->currency != $data['currency']
+        if ($objOrder->getCurrency() != $data['currency']
             || $amount != $data['operations'][0]['amount']
             || 0 != $data['balance']
             || $data['test_mode'] != $this->debug
@@ -164,7 +164,7 @@ class QuickPay extends Postsale
                     "Accepted: got \"%s\", expected \"yes\"\n\n" .
                     "Test Mode: got \"%s\", expected \"%s\"\n\n",
                     $data['currency'],
-                    $objOrder->currency,
+                    $objOrder->getCurrency(),
                     $data['operations'][0]['amount'],
                     $amount,
                     $data['balance'],

@@ -56,12 +56,11 @@ class Expercash extends Payment implements IsotopePostsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -88,10 +87,10 @@ class Expercash extends Payment implements IsotopePostsale
         (
             'popupId'       => $this->expercash_popupId,
             'jobId'         => microtime(),
-            'functionId'    => ($objOrder->member ?: $objOrder->uniqid),
-            'transactionId' => $objOrder->id,
-            'amount'        => (round($objOrder->getTotal(), 2) * 100),
-            'currency'      => $objOrder->currency,
+            'functionId'    => null !== $objOrder->getMember() ? $objOrder->getMember()->id : $objOrder->getUniqueId(),
+            'transactionId' => $objOrder->getId(),
+            'amount'        => round($objOrder->getTotal(), 2) * 100,
+            'currency'      => $objOrder->getCurrency(),
             'paymentMethod' => $this->expercash_paymentMethod,
             'returnUrl'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'errorUrl'      => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
@@ -160,13 +159,13 @@ class Expercash extends Payment implements IsotopePostsale
             return false;
         }
 
-        if (\Input::get('currency') != $objOrder->currency) {
+        if (\Input::get('currency') != $objOrder->getCurrency()) {
             \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('transactionId') != $objOrder->id) {
+        if (\Input::get('transactionId') != $objOrder->getId()) {
             \System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;

@@ -13,7 +13,6 @@
 namespace Isotope\Model\ProductCollection;
 
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Address;
@@ -23,9 +22,7 @@ use Isotope\Model\ProductCollection;
 /**
  * Class Cart provides methods to handle Isotope cart.
  */
-class Cart extends ProductCollection implements
-    IsotopeProductCollection,
-    IsotopeOrderableCollection
+class Cart extends ProductCollection implements IsotopeOrderableCollection
 {
     /**
      * Cookie hash value

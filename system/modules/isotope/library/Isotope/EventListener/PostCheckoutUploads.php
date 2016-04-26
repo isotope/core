@@ -7,17 +7,17 @@ use Contao\FilesModel;
 use Contao\FrontendUser;
 use Haste\Util\FileUpload;
 use Haste\Util\StringUtil;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 
 class PostCheckoutUploads
 {
-
     /**
-     * @param IsotopeProductCollection $order
+     * @param IsotopeOrderableCollection $order
      */
-    public function onPostCheckout(IsotopeProductCollection $order)
+    public function onPostCheckout(IsotopeOrderableCollection $order)
     {
         $items    = $order->getItems();
         $total    = count($items);
@@ -100,7 +100,7 @@ class PostCheckoutUploads
     }
 
     /**
-     * @param IsotopeProductCollection $order
+     * @param IsotopeOrderableCollection $order
      * @param ProductCollectionItem    $item
      * @param int                      $position
      * @param int                      $total
@@ -109,12 +109,12 @@ class PostCheckoutUploads
      *
      * @return array
      */
-    private function generateTokens($order, $item, $position, $total, $attribute, $source)
+    private function generateTokens(IsotopeOrderableCollection $order, $item, $position, $total, $attribute, $source)
     {
         $tokens = [
-            'document_number'  => $order->document_number ?: $order->id,
-            'order_id'         => $order->id,
-            'order_date'       => $order->locked,
+            'document_number'  => $order->getDocumentNumber() ?: $order->getId(),
+            'order_id'         => $order->getId(),
+            'order_date'       => $order->getLockTime(),
             'product_id'       => $item->product_id,
             'product_sku'      => $item->sku,
             'product_name'     => $item->name,

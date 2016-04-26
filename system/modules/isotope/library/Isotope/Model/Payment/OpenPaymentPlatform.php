@@ -5,7 +5,6 @@ namespace Isotope\Model\Payment;
 use Contao\Request;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
-use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
@@ -32,7 +31,10 @@ class OpenPaymentPlatform extends Payment
 
         if ('000.200.100' !== $response['result']['code']) {
             \System::log(
-                sprintf('Payment for order ID %s could not be initialized. See log files for more information.', $objOrder->id),
+                sprintf(
+                    'Payment for order ID %s could not be initialized. See log files for more information.',
+                    $objOrder->getId()
+                ),
                 __METHOD__,
                 TL_ERROR
             );
@@ -68,10 +70,13 @@ class OpenPaymentPlatform extends Payment
             || 'PA' !== $response['paymentType']
             || $ndc !== $response['ndc']
             || $objOrder->getTotal() != $response['amount']
-            || $objOrder->currency != $response['currency']
+            || $objOrder->getCurrency() != $response['currency']
         ) {
             \System::log(
-                sprintf('Payment data for order ID %s could not be verified. See log files for more information.', $objOrder->id),
+                sprintf(
+                    'Payment data for order ID %s could not be verified. See log files for more information.',
+                    $objOrder->getId()
+                ),
                 __METHOD__,
                 TL_ERROR
             );
@@ -93,12 +98,12 @@ class OpenPaymentPlatform extends Payment
             if ('000.100.110' !== $response['result']['code']
                 || 'CP' !== $response['paymentType']
                 || $objOrder->getTotal() != $response['amount']
-                || $objOrder->currency != $response['currency']
+                || $objOrder->getCurrency() != $response['currency']
             ) {
                 \System::log(
                     sprintf(
                         'Payment for order ID %s could not be captured. See log files for more information.',
-                        $objOrder->id
+                        $objOrder->getId()
                     ),
                     __METHOD__,
                     TL_ERROR
@@ -129,7 +134,7 @@ class OpenPaymentPlatform extends Payment
             'authentication.password' => $this->opp_password,
             'authentication.entityId' => $this->opp_entity_id,
             'amount'                  => number_format($objOrder->getTotal(), 2, '.', ''),
-            'currency'                => $objOrder->currency,
+            'currency'                => $objOrder->getCurrency(),
             'paymentType'             => $type
         ];
 

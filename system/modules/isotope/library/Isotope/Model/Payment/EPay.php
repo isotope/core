@@ -75,11 +75,11 @@ class EPay extends Payment implements IsotopePostsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -96,11 +96,11 @@ class EPay extends Payment implements IsotopePostsale
     {
         if ($this->validatePayment($objOrder)) {
             if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 return;
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->save();
@@ -124,14 +124,14 @@ class EPay extends Payment implements IsotopePostsale
         $objTemplate = new Template('iso_payment_epay');
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->currency = $objOrder->currency;
-        $objTemplate->amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
-        $objTemplate->orderid = $objOrder->id;
-        $objTemplate->instantcapture = ($this->trans_type == 'capture' ? '1' : '0');
-        $objTemplate->callbackurl = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->currency       = $objOrder->getCurrency();
+        $objTemplate->amount         = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency());
+        $objTemplate->orderid        = $objOrder->getId();
+        $objTemplate->instantcapture = 'capture' === $this->trans_type ? '1' : '0';
+        $objTemplate->callbackurl    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->accepturl      = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $objTemplate->cancelurl      = \Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $objTemplate->language = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
+        $objTemplate->language       = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
 
         return $objTemplate->parse();
     }
@@ -146,12 +146,16 @@ class EPay extends Payment implements IsotopePostsale
     protected function validatePayment(IsotopeProductCollection $objOrder)
     {
         $arrValues = $_GET;
-        unset($arrValues['hash']);
-        unset($arrValues['auto_item']);
-        unset($arrValues['step']);
 
-        $strHash = md5(implode('', $arrValues) . $this->epay_secretkey);
-        $intAmount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
+        unset(
+            $arrValues['hash'],
+            $arrValues['auto_item'],
+            $arrValues['step']
+        );
+
+        $strHash       = md5(implode('', $arrValues) . $this->epay_secretkey);
+        $orderCurrency = $objOrder->getCurrency();
+        $orderAmount   = Currency::getAmountInMinorUnits($objOrder->getTotal(), $orderCurrency);
 
         if ($strHash != \Input::get('hash')) {
             \System::log('Invalid hash for ePay payment. See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
@@ -169,17 +173,19 @@ class EPay extends Payment implements IsotopePostsale
             return false;
         }
 
-        if (Currency::getIsoNumber($objOrder->currency) != \Input::get('currency') || $intAmount != \Input::get('amount')) {
+        if (Currency::getIsoNumber($orderCurrency) != \Input::get('currency')
+            || $orderAmount != \Input::get('amount')
+        ) {
             \System::log('Currency or amount does not match order.  See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
 
             log_message(
                 sprintf(
                     "Currency or amount does not match order:\nCurrency: got %s (%s), expected %s\nAmount: got %s, expected %s\n\n",
                     \Input::get('currency'),
-                    Currency::getIsoNumber($objOrder->currency),
-                    $objOrder->currency,
+                    Currency::getIsoNumber($orderCurrency),
+                    $orderCurrency,
                     \Input::get('amount'),
-                    $intAmount
+                    $orderAmount
                 ),
                 'isotope_epay.log'
             );

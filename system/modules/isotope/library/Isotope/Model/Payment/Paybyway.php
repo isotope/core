@@ -53,7 +53,7 @@ class Paybyway extends Payment implements IsotopePostsale
         $objTemplate->merchant_id = (int) $this->paybyway_merchant_id;
         $objTemplate->amount = round($objOrder->getTotal() * 100);
         $objTemplate->currency = 'EUR';
-        $objTemplate->order_number = $objOrder->id;
+        $objTemplate->order_number = $objOrder->getId();
         $objTemplate->lang = ('fi' === $GLOBALS['TL_LANGUAGE'] ? 'FI' : 'EN');
         $objTemplate->return_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->cancel_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
@@ -107,7 +107,7 @@ class Paybyway extends Payment implements IsotopePostsale
         ));
 
         if (\Input::post('AUTHCODE') != $strChecksum) {
-            \System::log('Postsale manipulation for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \System::log('Postsale manipulation for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             Checkout::redirectToStep('failed');
         }
 
@@ -115,18 +115,18 @@ class Paybyway extends Payment implements IsotopePostsale
 
             case 0: // Payment completed successfully.
                 if ($objOrder->checkout()) {
-                    $objOrder->date_paid = time();
+                    $objOrder->setDatePaid(time());
                     $objOrder->updateOrderStatus($this->new_order_status);
                     Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
 
             case 4: // Transaction status could not be updated after customer returned from the web page of a bank. Please use the merchant UI to resolve the payment status.
-                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                if (null === $objOrder->getConfig()) {
+                    \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
 
                 } elseif ($objOrder->checkout()) {
-                    $objOrder->updateOrderStatus($objConfig->orderstatus_error);
+                    $objOrder->updateOrderStatus($objOrder->getConfig()->orderstatus_error);
                     Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
@@ -139,7 +139,7 @@ class Paybyway extends Payment implements IsotopePostsale
                 break;
         }
 
-        \System::log('Paybyway checkout failed for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+        \System::log('Paybyway checkout failed for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
 
         Checkout::redirectToStep('failed');
     }

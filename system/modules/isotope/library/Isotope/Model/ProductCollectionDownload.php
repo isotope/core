@@ -158,7 +158,7 @@ class ProductCollectionDownload extends \Model
         $arrOptions = array_merge(
             array(
                 'column' => 'pid IN (SELECT id FROM tl_iso_product_collection_item WHERE pid=?)',
-                'value'  => $objCollection->id,
+                'value'  => $objCollection->getId(),
                 'return' => 'Collection'
             ),
             $arrOptions
@@ -178,7 +178,7 @@ class ProductCollectionDownload extends \Model
     {
         $arrDownloads = array();
         $t            = Download::getTable();
-        $time         = ($objCollection->locked ?: ($objCollection->tstamp ?: time()));
+        $time         = $objCollection->isLocked() ? $objCollection->getLockTime(): time();
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {

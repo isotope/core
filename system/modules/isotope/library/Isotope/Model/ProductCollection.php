@@ -20,6 +20,7 @@ use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -39,6 +40,7 @@ use Model\Registry;
  * @property string $type
  * @property int    $member
  * @property int    $store_id
+ * @property int    $locked
  * @property mixed  $settings
  * @property int    $source_collection_id
  * @property string $uniqid
@@ -54,7 +56,7 @@ use Model\Registry;
  * @property string $currency
  * @property string $language
  */
-abstract class ProductCollection extends TypeAgent
+abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {
 
     /**
@@ -168,7 +170,7 @@ abstract class ProductCollection extends TypeAgent
             $this->tax_free_subtotal = $this->getTaxFreeSubtotal();
             $this->total             = $this->getTotal();
             $this->tax_free_total    = $this->getTaxFreeTotal();
-            $this->currency          = (string) $this->getRelated('config_id')->currency;
+            $this->currency          = (string) $this->getConfig()->currency;
 
             $this->save();
         }
@@ -199,10 +201,67 @@ abstract class ProductCollection extends TypeAgent
     /**
      * @inheritdoc
      */
+    public function getId()
+    {
+        return (int) $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUniqueId()
+    {
+        return $this->uniqid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMember()
+    {
+        if (0 === (int) $this->member) {
+            return null;
+        }
+
+        return \MemberModel::findByPk($this->member);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getStoreId()
+    {
+        return (int) $this->store_id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getConfig()
+    {
+        try {
+            return $this->getRelated('config_id');
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function isLocked()
     {
         return isset($this->locked) && $this->locked !== '';
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLockTime()
+    {
+        return '' === $this->locked ? null : (int) $this->locked;
+    }
+
 
     /**
      * @inheritdoc
@@ -379,6 +438,16 @@ abstract class ProductCollection extends TypeAgent
         } else {
             $this->shipping_address_id = $objAddress->id;
         }
+    }
+
+    /**
+     * Returns the generated document number or empty string if not available.
+     *
+     * @return string
+     */
+    public function getDocumentNumer()
+    {
+        return (string) $this->arrData['document_number'];
     }
 
     /**
@@ -755,6 +824,14 @@ abstract class ProductCollection extends TypeAgent
         }
 
         return $this->arrCache['taxFreeTotal'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 
     /**
@@ -1841,22 +1918,28 @@ abstract class ProductCollection extends TypeAgent
     public static function createFromCollection(IsotopeProductCollection $objSource)
     {
         $objCollection = new static();
-        $objConfig = $objSource->getRelated('config_id');
+        $objConfig = $objSource->getConfig();
 
         if (null === $objConfig) {
             $objConfig = Isotope::getConfig();
         }
 
-        $objCollection->source_collection_id = (int) $objSource->id;
+        $member = $objSource->getMember();
+
+        $objCollection->source_collection_id = $objSource->getId();
         $objCollection->config_id            = (int) $objConfig->id;
-        $objCollection->store_id             = (int) $objSource->store_id;
-        $objCollection->member               = (int) $objSource->member;
+        $objCollection->store_id             = (int) $objSource->getStoreId();
+        $objCollection->member               = (null === $member ? 0 : $member->id);
 
-        $objCollection->setShippingMethod($objSource->getShippingMethod());
-        $objCollection->setPaymentMethod($objSource->getPaymentMethod());
+        if ($objCollection instanceof IsotopeOrderableCollection
+            && $objSource instanceof  IsotopeOrderableCollection)
+        {
+            $objCollection->setShippingMethod($objSource->getShippingMethod());
+            $objCollection->setPaymentMethod($objSource->getPaymentMethod());
 
-        $objCollection->setShippingAddress($objSource->getShippingAddress());
-        $objCollection->setBillingAddress($objSource->getBillingAddress());
+            $objCollection->setShippingAddress($objSource->getShippingAddress());
+            $objCollection->setBillingAddress($objSource->getBillingAddress());
+        }
 
         $arrItemIds = $objCollection->copyItemsFrom($objSource);
 

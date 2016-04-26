@@ -117,4 +117,11 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
      * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null);
+
+    /**
+     * Returns the generated document number or empty string if not available.
+     *
+     * @return string
+     */
+    public function getDocumentNumber();
 }
