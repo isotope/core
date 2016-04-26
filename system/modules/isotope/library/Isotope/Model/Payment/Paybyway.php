@@ -19,6 +19,7 @@ use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 
 class Paybyway extends Payment implements IsotopePostsale
 {
@@ -43,7 +44,8 @@ class Paybyway extends Payment implements IsotopePostsale
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_paybyway');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_paybyway');
 
         $objTemplate->action   = 'https://www.paybyway.com/e-payments/pay';
         $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);

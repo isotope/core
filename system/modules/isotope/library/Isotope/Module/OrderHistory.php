@@ -101,7 +101,7 @@ class OrderHistory extends Module
 
         /** @type Order $objOrder */
         foreach ($objOrders as $objOrder) {
-            Isotope::setConfig($objOrder->getRelated('config_id'));
+            Isotope::setConfig($objOrder->getConfig());
 
             $arrOrders[] = array
             (

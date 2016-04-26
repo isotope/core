@@ -130,7 +130,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } else {
-                    return $objOptions->getArrayForFrontendWidget($objProduct, ('FE' === TL_MODE));
+                    return $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
                 }
 
                 break;

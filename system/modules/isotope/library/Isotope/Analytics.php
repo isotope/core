@@ -70,7 +70,7 @@ class Analytics extends Frontend
         $transaction->setOrderId($objOrder->getDocumentNumber());
         $transaction->setAffiliation($objConfig->name);
         $transaction->setTotal($objOrder->getTotal());
-        $transaction->setTax(($objOrder->getTotal() - $objOrder->getTaxFreeTotal()));
+        $transaction->setTax($objOrder->getTotal() - $objOrder->getTaxFreeTotal());
 //        $transaction->setShipping($objOrder->shippingTotal);
 
         $objAddress = $objOrder->getBillingAddress();

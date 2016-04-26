@@ -20,7 +20,6 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
-
 class BillpayWithSaferpay extends Saferpay
 {
     /**
@@ -279,7 +278,7 @@ class BillpayWithSaferpay extends Saferpay
         $total->appendChild($cartTotalPriceGross);
 
         $currency = $xml->createAttribute('currency');
-        $currency->value = $objCollection->currency;
+        $currency->value = $objCollection->getCurrency();
         $total->appendChild($currency);
 
         $xml->appendChild($total);

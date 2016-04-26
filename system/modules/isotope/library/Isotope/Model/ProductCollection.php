@@ -27,6 +27,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
+use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Payment;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\Shipping;
@@ -453,7 +454,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @return string
      */
-    public function getDocumentNumer()
+    public function getDocumentNumber()
     {
         return (string) $this->arrData['document_number'];
     }
@@ -1486,7 +1487,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             &$arrGalleries
         ) {
             if (!$objItem->hasProduct()) {
-                return new \Isotope\Model\Gallery\Standard();
+                return new StandardGallery();
             }
 
             $strCacheKey         = 'product' . $objItem->product_id . '_' . $strAttribute;

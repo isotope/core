@@ -126,7 +126,7 @@ class Sofortueberweisung extends Postsale
             return false;
         }
 
-        $strCountry = in_array($objOrder->getBillingAddress()->country, array('de', 'ch', 'at')) ? $objOrder->getBillingAddress()->country : 'de';
+        $strCountry = in_array($objOrder->getBillingAddress()->country, ['de', 'ch', 'at'], true) ? $objOrder->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 
         $arrParams = array

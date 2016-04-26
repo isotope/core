@@ -156,33 +156,39 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 array($this->id)
             );
 
-            if ($objOrder === null) {
-                $objOrder = Order::createFromCollection($this);
-            } else {
-                $objOrder->config_id = (int) $this->config_id;
-                $objOrder->store_id  = (int) $this->store_id;
-                $objOrder->member    = (int) $this->member;
+            if (null !== $objOrder) {
+                try {
+                    $objOrder->config_id = (int) $this->config_id;
+                    $objOrder->store_id  = (int) $this->store_id;
+                    $objOrder->member    = (int) $this->member;
 
-                $objOrder->setShippingMethod($this->getShippingMethod());
-                $objOrder->setPaymentMethod($this->getPaymentMethod());
+                    $objOrder->setShippingMethod($this->getShippingMethod());
+                    $objOrder->setPaymentMethod($this->getPaymentMethod());
 
-                $objOrder->setShippingAddress($this->getShippingAddress());
-                $objOrder->setBillingAddress($this->getBillingAddress());
+                    $objOrder->setShippingAddress($this->getShippingAddress());
+                    $objOrder->setBillingAddress($this->getBillingAddress());
 
-                $objOrder->purge();
-                $arrItemIds = $objOrder->copyItemsFrom($this);
+                    $objOrder->purge();
+                    $arrItemIds = $objOrder->copyItemsFrom($this);
 
-                $objOrder->updateDatabase();
+                    $objOrder->updateDatabase();
 
-                // HOOK: order status has been updated
-                if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
-                    && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
-                ) {
-                    foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->{$callback[1]}($objOrder, $this, $arrItemIds);
+                    // HOOK: order status has been updated
+                    if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                        && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                    ) {
+                        foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
+                            $objCallback = \System::importStatic($callback[0]);
+                            $objCallback->{$callback[1]}($objOrder, $this, $arrItemIds);
+                        }
                     }
+                } catch (\Exception $e) {
+                    $objOrder = null;
                 }
+            }
+
+            if (null === $objOrder) {
+                $objOrder = Order::createFromCollection($this);
             }
 
             $this->objDraftOrder = $objOrder;

@@ -48,7 +48,11 @@ class Paypal extends Postsale
         }
 
         $objRequest = new \Request();
-        $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
+        $objRequest->send(
+            'https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate',
+            file_get_contents('php://input'),
+            'post'
+        );
 
         if ($objRequest->hasError()) {
             \System::log('PayPal IPN: Request Error (' . $objRequest->error . ')', __METHOD__, TL_ERROR);

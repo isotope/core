@@ -178,8 +178,8 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $arrData['CURRENCY']    = $objOrder->getCurrency();
         $arrData['SUCCESSLINK'] = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $arrData['FAILLINK']    = \Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $arrData['BACKLINK'] = $arrData['FAILLINK'];
-        $arrData['NOTIFYURL'] = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $arrData['BACKLINK']    = $arrData['FAILLINK'];
+        $arrData['NOTIFYURL']   = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $arrData['DESCRIPTION'] = $this->saferpay_description;
         $arrData['ORDERID']     = $objOrder->getId();
 
