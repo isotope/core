@@ -24,6 +24,7 @@ class To0020040000 extends Base
         }
 
         $this->migrateUploadAttributes();
+        $this->migrateCollectionDates();
     }
 
     private function migrateUploadAttributes()
@@ -67,5 +68,28 @@ class To0020040000 extends Base
                 ->execute($target, $uploads->id)
             ;
         }
+    }
+
+    private function migrateCollectionDates()
+    {
+        $db = \Database::getInstance();
+
+        $db->query('
+            ALTER TABLE tl_iso_product_collection 
+            CHANGE COLUMN `date_paid` `date_paid` VARCHAR(10) NULL, 
+            CHANGE COLUMN `date_shipped` `date_shipped` VARCHAR(10) NULL,
+            CHANGE COLUMN `locked` `locked` VARCHAR(10) NULL
+        ');
+
+        $db->query("UPDATE tl_iso_product_collection SET date_paid=NULL WHERE date_paid=''");
+        $db->query("UPDATE tl_iso_product_collection SET date_shipped=NULL WHERE date_shipped=''");
+        $db->query("UPDATE tl_iso_product_collection SET locked=NULL WHERE locked=''");
+
+        $db->query('
+            ALTER TABLE tl_iso_product_collection 
+            CHANGE COLUMN `date_paid` `date_paid` INT(10) NULL, 
+            CHANGE COLUMN `date_shipped` `date_shipped` INT(10) NULL,
+            CHANGE COLUMN `locked` `locked` INT(10) NULL
+        ');
     }
 }

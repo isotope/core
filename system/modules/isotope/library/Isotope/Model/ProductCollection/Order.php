@@ -53,9 +53,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     public function isPaid()
     {
         // Order is paid if a payment date is set
-        $paid = (int) $this->date_paid;
-
-        if ($paid > 0 && $paid <= time()) {
+        if (null !== $this->date_paid > 0 && $this->date_paid <= time()) {
             return true;
         }
 

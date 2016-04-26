@@ -251,7 +251,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public function isLocked()
     {
-        return isset($this->locked) && $this->locked !== '';
+        return null !== $this->locked;
     }
 
     /**
@@ -259,7 +259,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public function getLockTime()
     {
-        return '' === $this->locked ? null : (int) $this->locked;
+        return $this->locked;
     }
 
 

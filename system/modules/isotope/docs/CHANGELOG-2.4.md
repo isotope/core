@@ -22,3 +22,4 @@ Version 2.4.0-beta1 (201?-??-??)
 
 - Meta data cannot be entered per product variant
 - Product images are now shown in the sort-on-page backend view (#1249)
+- Collection dates (locked, paid, shipped) are now stored as NULL if empty
