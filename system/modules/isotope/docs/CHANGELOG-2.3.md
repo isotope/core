@@ -19,6 +19,7 @@ Version 2.3.5-stable (????-??-??)
 - Saferpay payment method dumped empty amount to postsale debug file
 - Translation labels with special characters were not replaces (#1637)
 - Protecting variants of a product for member groups did not work
+- Product sub-groups could not be moved by non-admins (#1618)
 
 
 Version 2.3.4-stable (2016-03-09)

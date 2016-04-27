@@ -157,7 +157,7 @@ class Permission extends \Backend
             if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
                 $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
 
-                if (in_array('rootPaste', $objUser->iso_groupp)) {
+                if (is_array($objUser->iso_groupp) && in_array('rootPaste', $objUser->iso_groupp)) {
                     $arrGroups[] = 0;
                 }
             }
