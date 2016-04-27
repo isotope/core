@@ -25,12 +25,12 @@ class To0020010064 extends \System
             $arrFields = array();
 
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $config) {
-                if ($config['inputType'] == 'mediaManager') {
+                if ('mediaManager' === $config['inputType']) {
                     $arrFields[] = $field;
                 }
             }
 
-            if (empty($arrFields)) {
+            if (0 === count($arrFields)) {
                 return;
             }
 
@@ -39,8 +39,9 @@ class To0020010064 extends \System
             ");
 
             while ($objProducts->next()) {
+                $arrUpdate = array();
+
                 foreach ($arrFields as $field) {
-                    $arrUpdate = array();
                     $arrData = deserialize($objProducts->$field);
 
                     if (!empty($arrData) && is_array($arrData)) {
@@ -54,7 +55,7 @@ class To0020010064 extends \System
                     }
                 }
 
-                if (!empty($arrUpdate)) {
+                if (0 !== count($arrUpdate)) {
                     \Database::getInstance()->prepare(
                         "UPDATE tl_iso_product %s WHERE id=?"
                     )->set($arrUpdate)->execute($objProducts->id);

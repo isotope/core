@@ -395,13 +395,11 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
-            $blnHasGroups    = false;
             $strQuery        = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<'$time') AND (stop='' OR stop>'" . ($time + 60) . "')";
 
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getVariantAttributes();
                 $blnHasProtected = in_array('protected', $arrAttributes);
-                $blnHasGroups    = in_array('groups', $arrAttributes);
 
                 // Hide guests-only products when logged in
                 if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes)) {
@@ -417,7 +415,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             while ($objVariants->next()) {
                 if ($blnHasProtected && $objVariants->protected) {
-                    $groups = $blnHasGroups ? deserialize($objVariants->groups) : '';
+                    $groups = deserialize($objVariants->groups);
 
                     if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                         continue;

@@ -67,11 +67,9 @@ class Translation
         // Load labels
         static::initialize($strLanguage);
 
-        if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
-            static::$arrLabels[$strLanguage][$varLabel] = \StringUtil::decodeEntities(
-                static::$arrLabels[$strLanguage][$varLabel]
-            );
+        $varLabel = \StringUtil::decodeEntities($varLabel);
 
+        if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
             return static::$arrLabels[$strLanguage][$varLabel];
         }
 
@@ -93,7 +91,7 @@ class Translation
 
         static::initialize($strLanguage);
 
-        static::$arrLabels[$strLanguage][$strLabel] = $strReplacement;
+        static::$arrLabels[$strLanguage][\StringUtil::decodeEntities($strLabel)] = $strReplacement;
     }
 
     /**
@@ -114,7 +112,7 @@ class Translation
 
             if (null !== $objLabels) {
                 while ($objLabels->next()) {
-                    static::$arrLabels[$strLanguage][$objLabels->label] = $objLabels->replacement;
+                    static::$arrLabels[$strLanguage][\StringUtil::decodeEntities($objLabels->label)] = $objLabels->replacement;
                 }
             }
 
