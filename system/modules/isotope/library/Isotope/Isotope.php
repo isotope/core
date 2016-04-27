@@ -321,20 +321,27 @@ class Isotope extends \Controller
         }
 
         $objConfig   = static::getConfig();
-        $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $objConfig->currency);
+        $strCurrency = $strCurrencyCode ?: $objConfig->currency;
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
+        $space       = $blnHtml ? '&nbsp;' : ' ';
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
-            $strCurrency = (('right' === $objConfig->currencyPosition && $objConfig->currencySpace) ? '&#160;' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (('left' === $objConfig->currencyPosition && $objConfig->currencySpace) ? '&#160;' : '');
-        } else {
-            $strCurrency = ('right' === $objConfig->currencyPosition ? '&#160;' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ('left' === $objConfig->currencyPosition ? '&#160;' : '');
+            $strCurrency = $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency];
+
+            if (!$objConfig->currencySpace) {
+                $space = '';
+            }
+        }
+
+        if ($blnHtml) {
+            $strCurrency = '<span class="currency">' . $strCurrency . '</span>';
         }
 
         if ('right' === $objConfig->currencyPosition) {
-            return $strPrice . $strCurrency;
+            return $strPrice . $space . $strCurrency;
         }
 
-        return $strCurrency . $strPrice;
+        return $strCurrency . $space . $strPrice;
     }
 
     /**
