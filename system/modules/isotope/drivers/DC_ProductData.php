@@ -1112,14 +1112,15 @@ window.addEvent(\'domready\', function() {
 
     /**
      * Auto-generate a form to override all records that are currently shown
-     * @author Based on a patch by Andreas Schempp
+     *
      * @return string
      */
     public function overrideAll()
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable']) {
-            \System::log('Table ' . $this->strTable . ' is not editable', 'DC_Table overrideAll()', TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+        {
+            $this->log('Table "'.$this->strTable.'" is not editable', __METHOD__, TL_ERROR);
+            $this->redirect('contao/main.php?act=error');
         }
 
         $return = '';
@@ -1130,7 +1131,8 @@ window.addEvent(\'domready\', function() {
         $ids = $session['CURRENT']['IDS'];
 
         // Save field selection in session
-        if (\Input::post('FORM_SUBMIT') == $this->strTable . '_all' && \Input::get('fields')) {
+        if (\Input::post('FORM_SUBMIT') == $this->strTable.'_all' && \Input::get('fields'))
+        {
             $session['CURRENT'][$this->strTable] = \Input::post('all_fields');
             $this->Session->setData($session);
         }
@@ -1138,26 +1140,40 @@ window.addEvent(\'domready\', function() {
         // Add fields
         $fields = $session['CURRENT'][$this->strTable];
 
-        if (is_array($fields) && !empty($fields) && \Input::get('fields')) {
-            $class = 'tl_tbox block';
+        if (!empty($fields) && is_array($fields) && \Input::get('fields'))
+        {
+            $class = 'tl_tbox';
             $formFields = array();
 
             // Save record
-            if (\Input::post('FORM_SUBMIT') == $this->strTable) {
-                foreach ($ids as $id) {
+            if (\Input::post('FORM_SUBMIT') == $this->strTable)
+            {
+                foreach ($ids as $id)
+                {
                     $this->intId = $id;
                     $this->procedure = array('id=?');
                     $this->values = array($this->intId);
                     $this->blnCreateNewVersion = false;
 
-                    $this->createInitialVersion($this->strTable, $this->intId);
+                    // Get the field values
+                    $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
+                                             ->limit(1)
+                                             ->execute($this->intId);
+
+                    // Store the active record
+                    $this->objActiveRecord = $objRow;
+
+                    $objVersions = new \Versions($this->strTable, $this->intId);
+                    $objVersions->initialize();
 
                     $this->strPalette = trimsplit('[;,]', $this->getPalette());
 
                     // Store all fields
-                    foreach ($fields as $v) {
+                    foreach ($fields as $v)
+                    {
                         // Check whether field is excluded or not in palette
-                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !in_array($v, $this->strPalette)) {
+                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !in_array($v, $this->strPalette))
+                        {
                             continue;
                         }
 
@@ -1173,40 +1189,76 @@ window.addEvent(\'domready\', function() {
                     }
 
                     // Post processing
-                    if (!$this->noReload) {
-                        // Call onsubmit_callback
-                        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
-                            foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
-                                if (is_array($callback)) {
+                    if (!$this->noReload)
+                    {
+                        // Call the onsubmit_callback
+                        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+                        {
+                            foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
+                            {
+                                if (is_array($callback))
+                                {
                                     $this->import($callback[0]);
                                     $this->{$callback[0]}->{$callback[1]}($this);
                                 }
-                                elseif (is_callable($callback)) {
-                                    call_user_func($callback, $this);
+                                elseif (is_callable($callback))
+                                {
+                                    $callback($this);
                                 }
                             }
                         }
 
                         // Create a new version
-                        if ($this->blnCreateNewVersion) {
-                            $this->createNewVersion($this->strTable, $this->intId);
-                            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $this->intId, $this->strTable), 'DC_Table editAll()', TL_GENERAL);
+                        if ($this->blnCreateNewVersion)
+                        {
+                            $objVersions->create();
+
+                            // Call the onversion_callback
+                            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
+                            {
+                                @trigger_error('Using the onversion_callback has been deprecated and will no longer work in Contao 5.0. Use the oncreate_version_callback instead.', E_USER_DEPRECATED);
+
+                                foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback)
+                                {
+                                    if (is_array($callback))
+                                    {
+                                        $this->import($callback[0]);
+                                        $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->intId, $this);
+                                    }
+                                    elseif (is_callable($callback))
+                                    {
+                                        $callback($this->strTable, $this->intId, $this);
+                                    }
+                                }
+                            }
                         }
 
-                        // Set current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
-                        $this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
-                            ->execute(time(), $this->intId);
+                        // Set the current timestamp (-> DO NOT CHANGE ORDER version - timestamp)
+                        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+                        {
+                            $this->Database->prepare("UPDATE " . $this->strTable . " SET ptable=?, tstamp=? WHERE id=?")
+                                           ->execute($this->ptable, time(), $this->intId);
+                        }
+                        else
+                        {
+                            $this->Database->prepare("UPDATE " . $this->strTable . " SET tstamp=? WHERE id=?")
+                                           ->execute(time(), $this->intId);
+                        }
                     }
                 }
             }
 
+            $blnIsFirst = true;
+
             // Begin current row
             $return .= '
-<div class="' . $class . '">';
+<div class="'.$class.'">';
 
-            foreach ($fields as $v) {
+            foreach ($fields as $v)
+            {
                 // Check whether field is excluded
-                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude']) {
+                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'])
+                {
                     continue;
                 }
 
@@ -1219,6 +1271,13 @@ window.addEvent(\'domready\', function() {
                 $this->strInputName = $v;
                 $this->varValue = '';
 
+                // Autofocus the first field
+                if ($blnIsFirst && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['inputType'] == 'text')
+                {
+                    $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['autofocus'] = 'autofocus';
+                    $blnIsFirst = false;
+                }
+
                 // Disable auto-submit
                 $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['submitOnChange'] = false;
                 $return .= $this->row();
@@ -1226,55 +1285,80 @@ window.addEvent(\'domready\', function() {
 
             // Close box
             $return .= '
-<input type="hidden" name="FORM_FIELDS[]" value="' . specialchars(implode(',', $formFields)) . '">
+<input type="hidden" name="FORM_FIELDS[]" value="'.specialchars(implode(',', $formFields)).'">
 </div>';
+
+            // Submit buttons
+            $arrButtons = array();
+            $arrButtons['save'] = '<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['save']).'">';
+            $arrButtons['saveNclose'] = '<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">';
+
+            // Call the buttons_callback (see #4691)
+            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback']))
+            {
+                foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback)
+                {
+                    if (is_array($callback))
+                    {
+                        $this->import($callback[0]);
+                        $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
+                    }
+                    elseif (is_callable($callback))
+                    {
+                        $arrButtons = $callback($arrButtons, $this);
+                    }
+                }
+            }
 
             // Add the form
             $return = '
 
-<h2 class="sub_headline_all">' . sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable) . '</h2>
-
-<form action="' . ampersand(\Environment::get('request'), true) . '" id="' . $this->strTable . '" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
+<form action="'.ampersand(\Environment::get('request'), true).'" id="'.$this->strTable.'" class="tl_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($this->noReload ? '
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($this->noReload ? '
 
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . $return . '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').$return.'
 
 </div>
 
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['save']) . '">
-<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']) . '">
+  ' . implode(' ', $arrButtons) . '
 </div>
 
 </div>
 </form>';
 
             // Set the focus if there is an error
-            if ($this->noReload) {
+            if ($this->noReload)
+            {
                 $return .= '
 
 <script>
-window.addEvent(\'domready\', function() {
-  Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
-});
+  window.addEvent(\'domready\', function() {
+    Backend.vScrollTo(($(\'' . $this->strTable . '\').getElement(\'label.error\').getPosition().y - 20));
+  });
 </script>';
             }
 
             // Reload the page to prevent _POST variables from being sent twice
-            if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload) {
-                if (\Input::post('saveNclose')) {
-                    setcookie('BE_PAGE_OFFSET', 0, 0, '/');
-                    \Controller::redirect(\System::getReferer());
+            if (\Input::post('FORM_SUBMIT') == $this->strTable && !$this->noReload)
+            {
+                if (\Input::post('saveNclose'))
+                {
+                    \System::setCookie('BE_PAGE_OFFSET', 0, 0);
+                    $this->redirect($this->getReferer());
                 }
 
-                \Controller::reload();
+                $this->reload();
             }
-        } // Else show a form to select the fields
-        else {
+        }
+
+        // Else show a form to select the fields
+        else
+        {
             $options = '';
             $fields = array();
 
@@ -1282,21 +1366,26 @@ window.addEvent(\'domready\', function() {
             $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields']));
 
             // Add meta fields if the current user is an administrator
-            if ($this->User->isAdmin) {
-                if ($this->Database->fieldExists('sorting', $this->strTable) && !in_array('sorting', $fields)) {
+            if ($this->User->isAdmin)
+            {
+                if ($this->Database->fieldExists('sorting', $this->strTable) && !in_array('sorting', $fields))
+                {
                     array_unshift($fields, 'sorting');
                 }
 
-                if ($this->Database->fieldExists('pid', $this->strTable) && !in_array('pid', $fields)) {
+                if ($this->Database->fieldExists('pid', $this->strTable) && !in_array('pid', $fields))
+                {
                     array_unshift($fields, 'pid');
                 }
             }
 
             // Show all non-excluded fields
-            foreach ($fields as $field) {
-                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] != '' || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'])))) {
+            foreach ($fields as $field)
+            {
+                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+                {
                     $options .= '
-  <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] != '' ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_LANG']['MSC'][$field][0]) . '</label><br>';
+  <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?: $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
                 }
             }
 
@@ -1305,22 +1394,20 @@ window.addEvent(\'domready\', function() {
             // Return the select menu
             $return .= '
 
-<h2 class="sub_headline_all">' . sprintf($GLOBALS['TL_LANG']['MSC']['all_info'], $this->strTable) . '</h2>
-
-<form action="' . ampersand(\Environment::get('request'), true) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form" method="post">
+<form action="'.ampersand(\Environment::get('request'), true).'&amp;fields=1" id="'.$this->strTable.'_all" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
-<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($blnIsError ? '
+<input type="hidden" name="FORM_SUBMIT" value="'.$this->strTable.'_all">
+<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">'.($blnIsError ? '
 
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['general'].'</p>' : '').'
 
-<div class="tl_tbox block">
+<div class="tl_tbox">
 <fieldset class="tl_checkbox_container">
-  <legend' . ($blnIsError ? ' class="error"' : '') . '>' . $GLOBALS['TL_LANG']['MSC']['all_fields'][0] . '</legend>
-  <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6;"><em>' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</em></label><br>' . $options . '
-</fieldset>' . ($blnIsError ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['all_fields'] . '</p>' : (($GLOBALS['TL_CONFIG']['showHelp'] && $GLOBALS['TL_LANG']['MSC']['all_fields'][1] != '') ? '
-<p class="tl_help tl_tip">' . $GLOBALS['TL_LANG']['MSC']['all_fields'][1] . '</p>' : '')) . '
+  <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
+  <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
+</fieldset>'.($blnIsError ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : ((\Config::get('showHelp') && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
 </div>
@@ -1328,7 +1415,7 @@ window.addEvent(\'domready\', function() {
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['continue']) . '">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['continue']).'">
 </div>
 
 </div>
@@ -1338,8 +1425,8 @@ window.addEvent(\'domready\', function() {
         // Return
         return '
 <div id="tl_buttons">
-<a href="' . \System::getReferer(true) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '" accesskey="b" onclick="Backend.getScrollOffset();">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
-</div>' . $return;
+<a href="'.$this->getReferer(true).'" class="header_back" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>
+</div>'.$return;
     }
 
 
