@@ -6,6 +6,7 @@ Version 2.3.5-stable (????-??-??)
 
 ### Improved
 - Alias was not generated from product name in override-all mode (#1638)
+- Prevent umlauts and other special chars in coupon code (#1608)
 
 ### Fixed
 - The external image paths in documents did not work (#1616)

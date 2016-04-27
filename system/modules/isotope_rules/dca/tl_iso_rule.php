@@ -216,6 +216,16 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'inputType'                     => 'text',
             'eval'                          => array('mandatory'=>true, 'maxlength'=>255),
             'sql'                           => "varchar(255) NOT NULL default ''",
+            'save_callback' => array
+            (
+                function ($varValue) {
+                    if (!preg_match('/^[a-z0-9 \.\-_]+$/iu', $varValue)) {
+                        throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['alnum'], $GLOBALS['TL_LANG']['tl_iso_rule']['code'][0]));
+                    }
+
+                    return $varValue;
+                }
+            )
         ),
         'limitPerMember' => array
         (
