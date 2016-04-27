@@ -325,9 +325,9 @@ class Isotope extends \Controller
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
-            $strCurrency = (('right' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (('left' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '');
+            $strCurrency = (('right' === $objConfig->currencyPosition && $objConfig->currencySpace) ? '&#160;' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (('left' === $objConfig->currencyPosition && $objConfig->currencySpace) ? '&#160;' : '');
         } else {
-            $strCurrency = ('right' === $objConfig->currencyPosition ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ('left' === $objConfig->currencyPosition ? ' ' : '');
+            $strCurrency = ('right' === $objConfig->currencyPosition ? '&#160;' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ('left' === $objConfig->currencyPosition ? '&#160;' : '');
         }
 
         if ('right' === $objConfig->currencyPosition) {
