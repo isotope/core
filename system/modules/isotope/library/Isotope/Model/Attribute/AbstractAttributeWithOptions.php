@@ -173,22 +173,28 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $this->varOptionsCache;
 
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                /** @type IsotopeProduct|Product $objProduct */
                 if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
                     );
+                }
 
-                } elseif (!is_array($this->varOptionsCache)
-                    || !array_key_exists($objProduct->id, $this->varOptionsCache)
+                $productId = $objProduct->id;
+
+                if ($objProduct->isVariant() && !in_array($this->field_name, $objProduct->getVariantAttributes())) {
+                    $productId = $objProduct->getProductId();
+                }
+
+                if (!is_array($this->varOptionsCache)
+                    || !array_key_exists($productId, $this->varOptionsCache)
                 ) {
-                    $this->varOptionsCache[$objProduct->id] = AttributeOption::findByProductAndAttribute(
+                    $this->varOptionsCache[$productId] = AttributeOption::findByProductAndAttribute(
                         $objProduct,
                         $this
                     );
                 }
 
-                return $this->varOptionsCache[$objProduct->id];
+                return $this->varOptionsCache[$productId];
 
             default:
                 throw new \UnexpectedValueException(

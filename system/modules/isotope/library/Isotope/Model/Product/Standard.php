@@ -241,7 +241,6 @@ class Standard extends AbstractProduct implements WeightAggregate
 
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
-            $blnHasGroups    = false;
             $strQuery        = '
                 SELECT id, protected, groups 
                 FROM tl_iso_product 
@@ -256,7 +255,6 @@ class Standard extends AbstractProduct implements WeightAggregate
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = in_array('protected', $arrAttributes, true);
-                $blnHasGroups    = in_array('groups', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
                 if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes, true)) {
@@ -272,7 +270,7 @@ class Standard extends AbstractProduct implements WeightAggregate
 
             while ($objVariants->next()) {
                 if ($blnHasProtected && $objVariants->protected) {
-                    $groups = $blnHasGroups ? deserialize($objVariants->groups) : '';
+                    $groups = deserialize($objVariants->groups);
 
                     if (empty($groups) || !is_array($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                         continue;

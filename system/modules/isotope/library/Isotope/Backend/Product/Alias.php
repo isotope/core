@@ -26,24 +26,29 @@ class Alias extends \Backend
     public function save($varValue, \DataContainer $dc)
     {
         $autoAlias = false;
+        $varValue  = (string) $varValue;
 
         // Generate alias if there is none
-        if ($varValue == '') {
+        if ('' === $varValue) {
             $autoAlias = true;
-            $varValue  = standardize(\Input::post('name'));
+            $act       = \Input::get('mode');
 
-            if ($varValue == '') {
-                $varValue = standardize(\Input::post('sku'));
-            }
-
-            if ($varValue == '') {
-                $varValue = strlen($dc->activeRecord->name) ? standardize($dc->activeRecord->name) : standardize($dc->activeRecord->sku);
-            }
-
-            if ($varValue == '') {
-                $varValue = $dc->id;
+            if ('edit' === $act || 'overrideAll' === $act) {
+                $varValue = (string) (\Input::post('name') ?: \Input::post('sku'));
+            } elseif ('editAll' === $act) {
+                $varValue = (string) (\Input::post('name_'.$dc->id) ?: \Input::post('sku_'.$dc->id));
             }
         }
+
+        if ('' === $varValue) {
+            $varValue = (string) ($dc->activeRecord->name ?: $dc->activeRecord->sku);
+        }
+
+        if ('' === $varValue) {
+            $varValue = $dc->id;
+        }
+
+        $varValue = standardize(strip_tags($varValue));
 
         $objAlias = \Database::getInstance()
             ->prepare('SELECT id FROM tl_iso_product WHERE id=? OR alias=?')

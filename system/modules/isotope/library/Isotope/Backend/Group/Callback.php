@@ -81,9 +81,12 @@ class Callback extends Permission
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
+        $root = array_merge($root, \Database::getInstance()->getChildRecords($root, 'tl_iso_group'));
+
         // Check current action
         switch (\Input::get('act')) {
             case 'create':
+            case 'copy':
             case 'select':
             case 'paste':
                 // Allow
@@ -101,9 +104,9 @@ class Callback extends Permission
                 }
             // No break;
 
-            case 'copy':
             case 'delete':
             case 'show':
+            case 'cut':
                 if (!in_array(\Input::get('id'), $root)
                     || (
                         'delete' === \Input::get('act')

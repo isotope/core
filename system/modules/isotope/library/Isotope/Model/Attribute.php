@@ -197,7 +197,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if (!$this->isCustomerDefined()) {
-            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL']);
+            $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL'], true);
         }
 
         // Support numeric paths (fileTree)
@@ -243,7 +243,8 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
-                    $arrKey     = explode('.', $this->foreignKey, 2);
+                    $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
+                    $arrKey     = explode('.', $foreignKey, 2);
                     $arrOptions = \Database::getInstance()
                         ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
                         ->fetchAllAssoc()
@@ -339,7 +340,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
-        if (empty($arrIds)) {
+        if (0 === count($arrIds)) {
             return [];
         }
 
@@ -409,16 +410,16 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         if ($arrOptions['noHtml']) {
             $result = array();
 
-            foreach ($varValue as $v) {
-                $result[$v] = $this->generateValue($v, $arrOptions);
+            foreach ($varValue as $v1) {
+                $result[$v1] = $this->generateValue($v1, $arrOptions);
             }
 
             return $result;
         }
 
         // Generate ul/li listing for simple arrays
-        foreach ($varValue as &$v) {
-            $v = $this->generateValue($v, $arrOptions);
+        foreach ($varValue as &$v2) {
+            $v2 = $this->generateValue($v2, $arrOptions);
         }
 
         return $this->generateList($varValue);

@@ -158,40 +158,45 @@ var IsotopeProducts = (function() {
     var loadMessage = 'Loading product data …';
 
     function initProduct(config) {
-        var form = document.getElementById(config.formId);
+        var formParent = document.getElementById(config.formId).parentNode;
 
-        if (form) {
-            registerEvents(form, config);
+        if (formParent) {
+            registerEvents(formParent, config);
         }
     }
 
-    function registerEvents(form, config) {
+    function registerEvents(formParent, config) {
         var i, el, xhr;
 
         // @todo implement native XMLHttpRequest
         xhr = new Request.HTML({
-            url: form.action,
+            url: formParent.getElementsByTagName('form')[0].action,
             link: 'cancel',
             evalScripts: false,
             onRequest: Isotope.displayBox.pass(loadMessage),
             onSuccess: function(responseTree, responseElements, txt, responseJavaScript)
             {
-                Isotope.hideBox();
+                var div = document.createElement('div'),
+                    i;
 
-                var div = document.createElement('div');
                 div.innerHTML = txt;
-                var newForm = div.firstChild;
 
                 // Remove all error messages
                 var errors = div.getElementsByTagName('p');
-                for(var i=0; i<errors.length; i++) {
+                for(i=0; i<errors.length; i++) {
                     if (errors[i].className.search(/(^| )error( |$)/) != -1) {
                         errors[i].parentNode.removeChild(errors[i]);
                     }
                 }
 
-                form.parentNode.replaceChild(newForm, form);
-                registerEvents(newForm, config);
+                formParent.innerHTML = '';
+                for(i = 0; i<div.childNodes.length; i++) {
+                    formParent.appendChild(div.childNodes[i]);
+                }
+
+                registerEvents(formParent, config);
+
+                Isotope.hideBox();
                 Browser.exec(responseJavaScript);
             },
             onFailure: Isotope.hideBox
@@ -202,7 +207,7 @@ var IsotopeProducts = (function() {
                 el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
                 if (el) {
                     el.addEventListener('change', function() {
-                        xhr.send(form.toQueryString());
+                        xhr.send(formParent.toQueryString());
                     }, false);
                 }
             }

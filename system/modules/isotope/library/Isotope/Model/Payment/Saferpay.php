@@ -285,7 +285,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
         } elseif ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100, 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $this->getTotal()), 'isotope_saferpay.log');
+            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()), 'isotope_saferpay.log');
 
             return false;
 
