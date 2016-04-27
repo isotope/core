@@ -16,6 +16,7 @@ Version 2.3.5-stable (????-??-??)
 - Variant selection resulted in empty page if debug bar is enabled (#1639)
 - The customer defined attribute options set in base product were not available in the variants
 - Saferpay payment method dumped empty amount to postsale debug file
+- Translation labels with special characters were not replaces (#1637)
 
 
 Version 2.3.4-stable (2016-03-09)
