@@ -4,6 +4,9 @@ Isotope eCommerce Changelog
 Version 2.3.5-stable (????-??-??)
 ---------------------------------
 
+### Improved
+- Alias was not generated from product name in override-all mode (#1638)
+
 ### Fixed
 - The external image paths in documents did not work (#1616)
 - Installation on Contao 4 failed due to invalid dependency (#1633)
