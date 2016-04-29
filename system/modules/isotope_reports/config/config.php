@@ -55,7 +55,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'callback'          => 'Isotope\Report\MembersTotal',
                     'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
                     'icon'              => 'system/modules/isotope_reports/assets/members_total.png',
-                    'class'             => 'disabled',
+                	'class'             => 'disabled',
                 ),
                 'members_registration' => array
                 (
@@ -69,7 +69,11 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'callback'          => 'Isotope\Report\MembersGuests',
                     'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_guests'],
                     'icon'              => 'system/modules/isotope_reports/assets/members_guests.png',
-                    'class'             => 'disabled',
+                    'panels' => array
+                    (
+                        array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
+                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel')
+                    )
                 ),
             ),
             'rules' => array
