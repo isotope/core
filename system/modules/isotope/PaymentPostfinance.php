@@ -223,10 +223,10 @@ class PaymentPostfinance extends IsotopePayment
 	{
 		if ($this->postfinance_method == 'GET')
 		{
-			return $this->Input->get($strKey);
+			return $this->Input->get($strKey, true);
 		}
 
-		return $this->Input->post($strKey);
+		return $this->Input->post($strKey, true);
 	}
 
 
