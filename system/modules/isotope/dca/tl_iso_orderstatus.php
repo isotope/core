@@ -35,6 +35,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             (
                 'id' => 'primary',
                 'pid' => 'index',
+                'paid' => 'index',
             )
         ),
     ),

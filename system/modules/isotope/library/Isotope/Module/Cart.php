@@ -54,7 +54,7 @@ class Cart extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ###';

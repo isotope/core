@@ -56,4 +56,3 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['total_sales'] = 'Total sales';
 $GLOBALS['TL_LANG']['ISO_REPORT']['product_name'] = 'Product name';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Columns';
 $GLOBALS['TL_LANG']['ISO_REPORT']['variants'] = 'Variants';
-

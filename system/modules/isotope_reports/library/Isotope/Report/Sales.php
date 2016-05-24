@@ -28,19 +28,16 @@ abstract class Sales extends Report
         return parent::generate();
     }
 
-
     protected function initializeDefaultValues()
     {
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '')
-        {
+        if ($arrSession[$this->name]['period'] == '') {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['columns'] == '')
-        {
+        if ($arrSession[$this->name]['columns'] == '') {
             $arrSession[$this->name]['columns'] = '6';
         }
 
@@ -60,10 +57,8 @@ abstract class Sales extends Report
             }
         }
 
-        if (!isset($arrSession[$this->name]['iso_status']))
-        {
-            $orderStatusTable = OrderStatus::getTable();
-            $objStatus = \Database::getInstance()->query("SELECT id FROM $orderStatusTable WHERE paid=1 ORDER BY sorting");
+        if (!isset($arrSession[$this->name]['iso_status'])) {
+            $objStatus = \Database::getInstance()->query("SELECT id FROM tl_iso_orderstatus WHERE paid='1' ORDER BY sorting");
             $arrSession[$this->name]['iso_status'] = $objStatus->id;
         }
 
@@ -75,15 +70,14 @@ abstract class Sales extends Report
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'      => 'from',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
             'value'     => ($arrSession[$this->name]['from'] ? \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
             'class'     => 'tl_from',
-        );
+        ];
     }
 
 
@@ -91,21 +85,19 @@ abstract class Sales extends Report
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'  => 'columns',
             'label' => &$GLOBALS['TL_LANG']['ISO_REPORT']['columns'],
             'type'  => 'text',
             'value' => (int) $arrSession[$this->name]['columns'],
             'class' => 'tl_columns',
-        );
+        ];
     }
 
 
     protected function getPeriodConfiguration($strPeriod)
     {
-        switch ($strPeriod)
-        {
+        switch ($strPeriod) {
             case 'day':
                 $publicDate  = 'd.m.y';
                 $privateDate = 'Ymd';
@@ -158,8 +150,7 @@ abstract class Sales extends Report
         $arrSession = \Session::getInstance()->get('iso_reports');
         $varValue = (int) $arrSession[$this->name]['iso_status'];
 
-        return array
-        (
+        return [
             'name'      => 'iso_status',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['status'],
             'type'      => 'filter',
@@ -167,7 +158,6 @@ abstract class Sales extends Report
             'active'    => ($varValue != ''),
             'class'     => 'iso_status',
             'options'   => $arrStatus,
-        );
+        ];
     }
-}
 

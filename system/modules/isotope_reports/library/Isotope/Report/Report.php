@@ -66,8 +66,7 @@ abstract class Report extends \Backend
 
     public function __get($strKey)
     {
-        if (isset($this->arrObjects[$strKey]))
-        {
+        if (isset($this->arrObjects[$strKey])) {
             return $this->arrObjects[$strKey];
         }
 
@@ -83,12 +82,10 @@ abstract class Report extends \Backend
 
     public function generate()
     {
-        if (\Input::post('FORM_SUBMIT') == 'tl_filters')
-        {
+        if ('tl_filters' === \Input::post('FORM_SUBMIT')) {
             $session = \Session::getInstance()->getData();
 
-            foreach (array_keys($_POST) as $strKey)
-            {
+            foreach (array_keys($_POST) as $strKey) {
                 $session['iso_reports'][$this->name][$strKey] = \Input::post($strKey);
             }
 
@@ -181,45 +178,41 @@ abstract class Report extends \Backend
 
     protected function getSearchPanel()
     {
-        if (empty($this->arrSearchOptions))
-        {
+        if (empty($this->arrSearchOptions)) {
             return null;
         }
 
         $arrSession = \Session::getInstance()->get('iso_reports');
         $varValue = array('tl_field'=>(string) $arrSession[$this->name]['tl_field'], 'tl_value'=>(string) $arrSession[$this->name]['tl_value']);
 
-        return array
-        (
+        return [
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['search'],
             'class'     => 'tl_search',
             'type'      => 'search',
             'value'     => $varValue,
             'active'    => ($varValue['tl_field'] != '' && $varValue['tl_value'] != ''),
             'options'   => $this->arrSearchOptions,
-        );
+        ];
     }
 
 
     protected function getSortingPanel()
     {
-        if (empty($this->arrSortingOptions))
-        {
+        if (empty($this->arrSortingOptions)) {
             return null;
         }
 
         $arrSession = \Session::getInstance()->get('iso_reports');
         $varValue = (string) $arrSession[$this->name]['tl_sort'];
 
-        return array
-        (
+        return [
             'name'      => 'tl_sort',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['sort'],
             'type'      => 'filter',
             'value'     => $varValue,
             'class'     => 'tl_sorting',
             'options'   => $this->arrSortingOptions,
-        );
+        ];
     }
 
 
@@ -237,8 +230,7 @@ abstract class Report extends \Backend
         $arrSession = \Session::getInstance()->get('iso_reports');
         $varValue = (string) $arrSession[$this->name]['iso_config'];
 
-        return array
-        (
+        return [
             'name'      => 'iso_config',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'],
             'type'      => 'filter',
@@ -246,7 +238,7 @@ abstract class Report extends \Backend
             'active'    => ($varValue != ''),
             'class'     => 'iso_config',
             'options'   => $arrConfigs,
-        );
+        ];
     }
 
 
@@ -254,21 +246,20 @@ abstract class Report extends \Backend
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'      => 'period',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
             'type'      => 'filter',
             'value'     => (string) $arrSession[$this->name]['period'],
             'class'     => 'tl_period',
-            'options'   => array
-            (
+            'options'   =>
+                [
                 'day'   => &$GLOBALS['TL_LANG']['ISO_REPORT']['day'],
                 'week'  => &$GLOBALS['TL_LANG']['ISO_REPORT']['week'],
                 'month' => &$GLOBALS['TL_LANG']['ISO_REPORT']['month'],
                 'year'  => &$GLOBALS['TL_LANG']['ISO_REPORT']['year']
-            )
-        );
+                ]
+        ];
     }
 
 
@@ -276,15 +267,14 @@ abstract class Report extends \Backend
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'      => 'start',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
             'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
             'class'     => 'tl_start',
-        );
+        ];
     }
 
 
@@ -292,15 +282,14 @@ abstract class Report extends \Backend
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'      => 'stop',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['to'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
             'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
             'class'     => 'tl_stop',
-        );
+        ];
     }
 
     /**
@@ -351,4 +340,3 @@ abstract class Report extends \Backend
         return $strPrefix . $strTable . '.' . $strField . ' IN (' . implode(',', $arrConfig) . ')';
     }
 }
-
