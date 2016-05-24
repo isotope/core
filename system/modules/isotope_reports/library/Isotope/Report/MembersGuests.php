@@ -45,6 +45,10 @@ class MembersGuests extends Sales
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey($intStop);
 
+        if ('locked' === $this->strDateField) {
+            $this->strDateField = $arrSession[$this->name]['date_field'];
+        }
+
         $dateGroup = $period->getSqlField('o.' . $this->strDateField);
 
         $objData = \Database::getInstance()->query("

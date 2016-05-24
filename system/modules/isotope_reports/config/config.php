@@ -33,7 +33,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'panels' => array
                     (
                         array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
-                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel')
+                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
                 'sales_product' => array
@@ -44,7 +44,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'panels' => array
                     (
                         array('getSelectFromPanel', 'getSelectColumnsPanel', 'getSelectPeriodPanel', 'getSelectVariantsPanel'),
-                        array('getSortingPanel', 'getStatusPanel')
+                        array('getSortingPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
             ),
@@ -72,7 +72,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'panels' => array
                     (
                         array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
-                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel')
+                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
             ),

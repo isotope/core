@@ -54,6 +54,10 @@ class SalesProduct extends Sales
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey(strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
 
+        if ('locked' === $this->strDateField) {
+            $this->strDateField = $arrSession[$this->name]['date_field'];
+        }
+
         $arrData = array('rows'=>array());
         $arrData['header'] = $this->getHeader($period, $intStart, $intColumns);
 

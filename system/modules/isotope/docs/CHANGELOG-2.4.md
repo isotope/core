@@ -17,6 +17,7 @@ Version 2.4.0-beta1 (201?-??-??)
 - Added hook triggered when address data is updated (#1473)
 - The FileTree attribute is now sortable (#1561)
 - Added CSS class field to product type (#1532)
+- Can now perform reports on order, payment or shipping date (#1620)
 
 
 ### Improved

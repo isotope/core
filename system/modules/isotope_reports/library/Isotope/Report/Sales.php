@@ -17,7 +17,7 @@ use Isotope\Model\OrderStatus;
 abstract class Sales extends Report
 {
 
-    // Allow extensions to use date_paid or date_shipped
+    // @deprecated
     protected $strDateField = 'locked';
 
 
@@ -41,12 +41,13 @@ abstract class Sales extends Report
             $arrSession[$this->name]['columns'] = '6';
         }
 
-        if ($arrSession[$this->name]['from'] == '')
-        {
-            $arrSession[$this->name]['from'] = '';
+        if (!in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
+            $arrSession[$this->name]['date_field'] = 'locked';
         }
-        elseif (!is_numeric($arrSession[$this->name]['from']))
-        {
+
+        if ($arrSession[$this->name]['from'] == '') {
+            $arrSession[$this->name]['from'] = '';
+        } elseif (!is_numeric($arrSession[$this->name]['from'])) {
             // Convert date formats into timestamps
             try {
                 $objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
@@ -161,3 +162,23 @@ abstract class Sales extends Report
         ];
     }
 
+
+    protected function getDateFieldPanel()
+    {
+        $arrSession = \Session::getInstance()->get('iso_reports');
+        $varValue = $arrSession[$this->name]['date_field'];
+
+        return [
+            'name'      => 'date_field',
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['date_field'],
+            'type'      => 'filter',
+            'value'     => $varValue,
+            'class'     => 'iso_date_field',
+            'options' => [
+                'locked'       => $GLOBALS['TL_LANG']['ISO_REPORT']['locked'],
+                'date_paid'    => $GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'],
+                'date_shipped' => $GLOBALS['TL_LANG']['ISO_REPORT']['date_shipped'],
+            ],
+        ];
+    }
+}
