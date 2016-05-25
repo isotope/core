@@ -27,13 +27,13 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['includeBlankOption']      = array('Incl
 $GLOBALS['TL_LANG']['tl_iso_attribute']['blankOptionLabel']        = array('Label for blank option', 'You can optionally enter a label for the blank option. If you do not enter anything, a dash (-) will be used.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['mandatory']               = array('Mandatory field', 'The field must be filled when editing a product.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multiple']                = array('Multiple selection', 'Allow visitors to select more than one option.');
-$GLOBALS['TL_LANG']['tl_iso_attribute']['size']                    = array('List size', 'Here you can enter the size of the select box.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['size']                    = array('Size/Amount', 'Here you can set a limit, e.g. size of the select box or number of file uploads.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['extensions']              = array('Allowed file types', 'A comma separated list of valid file extensions.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rte']                     = array('Use HTML editor', 'Select a tinyMCE configuration file to enable the rich text editor.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['multilingual']            = array('Multilingual', 'Check here if this field should be translated.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['rgxp']                    = array('Input validation', 'Validate the input against a regular expression.');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['placeholder']             = array('Placeholder', 'Show this text as long as the field is empty (requires HTML5).');
-$GLOBALS['TL_LANG']['tl_iso_attribute']['minlength']               = array('Minimum length', 'Require the field value to be a certain number of characters long.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['minlength']               = array('Minimum length', 'Require the field value to be a certain number of characters (text) or bytes (file uploads).');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['maxlength']               = array('Maximum length', 'Limit the field length to a certain number of characters (text) or bytes (file uploads).');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['foreignKey']              = array('Foreign table & field', 'Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['conditionField']          = array('Parent field', 'Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.');
@@ -56,6 +56,8 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['be_search']               = array('Back
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_filter']               = array('Frontend filterable', 'Can this attribute be used in a frontend filter?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['fe_search']               = array('Frontend searchable', 'Should the search engine look in this field for search terms?');
 $GLOBALS['TL_LANG']['tl_iso_attribute']['datepicker']              = array('Date picker', 'Show a date picker for this field.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['chunking']                = array('Enable chunking', 'Enable the file chunking. It is useful to upload big files.');
+$GLOBALS['TL_LANG']['tl_iso_attribute']['chunkSize']               = array('Chunk size in bytes', 'Please enter the chunk size in bytes (1MB = 1000000 bytes).');
 
 /**
  * Reference
