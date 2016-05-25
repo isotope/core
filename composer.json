@@ -29,6 +29,9 @@
     "replace": {
         "contao-legacy/isotope": "self.version"
     },
+    "suggest": {
+        "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader"
+    },
     "autoload": {
         "psr-0": {
             "Isotope\\": [
