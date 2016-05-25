@@ -3,7 +3,7 @@
 
     if (!jQuery && !MooTools) {
         var polyfill = _doc.createElement('script');
-        polyfill.src = 'system/modules/isotope/assets/js/polyfills.js';
+        polyfill.src = 'system/modules/isotope/assets/js/polyfills.min.js';
 
         var script = _doc.getElementsByTagName('script')[0];
         script.parentNode.insertBefore(polyfill, script);
