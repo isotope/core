@@ -256,7 +256,7 @@ class AttributeWizard extends \Backend
         }
 
         foreach ($arrFields as $k => $arrField) {
-            if (in_array($k, $arrFixed, true)) {
+            if (in_array($arrField['name'], $arrFixed, true)) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
