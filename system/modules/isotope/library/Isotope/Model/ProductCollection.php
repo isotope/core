@@ -1703,7 +1703,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         try {
             if ($this->arrData['document_number'] == '') {
-                $strPrefix = Haste::getInstance()->call('replaceInsertTags', array($strPrefix, false));
+                $strPrefix = \Controller::replaceInsertTags($strPrefix, false);
                 $intPrefix = utf8_strlen($strPrefix);
 
                 // Lock tables so no other order can get the same ID
