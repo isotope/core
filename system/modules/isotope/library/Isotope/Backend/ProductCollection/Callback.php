@@ -138,7 +138,7 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . $k . ': </span></td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . ($GLOBALS['TL_LANG']['MSC'][$k] ?: $k) . ': </span></td>
     <td' . $strClass . '>' . $strValue . '</td>
   </tr>';
         }
