@@ -26,13 +26,21 @@ use Isotope\Template;
  * Class ModuleIsotopeCheckout
  * Front end module Isotope "checkout".
  *
+ * @property array $iso_payment_modules
  * @property array $iso_shipping_modules
- * @property bool  $iso_foward_review
+ * @property bool  $iso_forward_review
  * @property bool  $iso_skip_shipping
  * @property bool  $iso_skip_payment
  */
 class Checkout extends Module
 {
+    const STEP_ADDRESS = 'address';
+    const STEP_SHIPPING = 'shipping';
+    const STEP_PAYMENT = 'payment';
+    const STEP_REVIEW = 'review';
+    const STEP_PROCESS = 'process';
+    const STEP_COMPLETE = 'complete';
+    const STEP_FAILED = 'failed';
 
     /**
      * Template
@@ -134,7 +142,7 @@ class Checkout extends Module
 
             // Complete order after successful payment
             // At this stage, we do no longer use the client's cart but the order through UID in URL
-            case 'complete':
+            case self::STEP_COMPLETE:
                 /** @var Order $objOrder */
                 if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
@@ -143,7 +151,7 @@ class Checkout extends Module
                         $objHandler->generate((int) $GLOBALS['objPage']->id);
                         exit;
                     } else {
-                        static::redirectToStep('failed');
+                        static::redirectToStep(self::STEP_FAILED);
                     }
                 }
 
@@ -164,12 +172,12 @@ class Checkout extends Module
                     }
 
                     // Checkout failed, show error message
-                    static::redirectToStep('failed');
+                    static::redirectToStep(self::STEP_FAILED);
                 }
 
                 // False means payment has failed
                 elseif ($strBuffer === false) {
-                    static::redirectToStep('failed');
+                    static::redirectToStep(self::STEP_FAILED);
                 }
 
                 // Otherwise we assume a string that shows a message to customer
@@ -181,7 +189,7 @@ class Checkout extends Module
                 break;
 
             // Process order and initiate payment method if necessary
-            case 'process':
+            case self::STEP_PROCESS:
 
                 // canCheckout will override the template and show a message
                 if (!$this->canCheckout()) {
@@ -216,7 +224,7 @@ class Checkout extends Module
                         if ($objCallback->{$callback[1]}($objOrder, $this) === false) {
                             \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
-                            static::redirectToStep('failed');
+                            static::redirectToStep(self::STEP_FAILED);
                         }
                     }
                 }
@@ -225,8 +233,8 @@ class Checkout extends Module
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
 
-                if ($strBuffer === false) {
-                    static::redirectToStep('complete', $objOrder);
+                if (false === $strBuffer) {
+                    static::redirectToStep(self::STEP_COMPLETE, $objOrder);
                 }
 
                 $this->Template->showForm = false;
@@ -236,7 +244,7 @@ class Checkout extends Module
 
             // Checkout/payment has failed, show the review page again with an error message
             /** @noinspection PhpMissingBreakStatementInspection */
-            case 'failed':
+            case self::STEP_FAILED:
                 $this->Template->mtype   = 'error';
                 $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
                 $this->strCurrentStep    = 'review';
@@ -370,7 +378,7 @@ class Checkout extends Module
             $intKey = -1;
         } // redirect to step "process" if the next step is the last one
         elseif (($intKey + 1) == count($arrSteps)) {
-            static::redirectToStep('process');
+            static::redirectToStep(self::STEP_PROCESS);
         }
 
         $step = $arrSteps[$intKey + 1];
