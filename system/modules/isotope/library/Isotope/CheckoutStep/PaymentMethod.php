@@ -31,7 +31,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
     private $modules;
 
     /**
-     * PAyment options
+     * Payment options
      * @var array
      */
     private $options;
