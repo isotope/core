@@ -28,8 +28,8 @@ class PaypalPlus extends PaypalApi
         }
 
         $request = $this->createPayment($objOrder);
-        
-        if (200 === $request->code) {
+
+        if (201 === $request->code) {
             $paypalData = json_decode($request->response, true);
             $this->storePayment($objOrder, $paypalData);
 
