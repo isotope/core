@@ -41,8 +41,8 @@ abstract class PaypalApi extends Payment
         $data = [
             'intent'        => 'sale',
             'redirect_urls' => [
-                'return_url' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
-                'cancel_url' => Checkout::generateUrlForStep(Checkout::STEP_FAILED),
+                'return_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
+                'cancel_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_FAILED),
             ],
             'payer'         => [
                 'payment_method' => 'paypal',
@@ -125,6 +125,7 @@ abstract class PaypalApi extends Payment
     private function getApiToken()
     {
         $request = $this->prepareRequest();
+        $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
         $request->username = $this->paypal_plus_client;
         $request->password = $this->paypal_plus_secret;
 
@@ -143,24 +144,14 @@ abstract class PaypalApi extends Payment
         return array_key_exists('access_token', $response) ? $response : null;
     }
 
-
-    private function prepareRequest()
-    {
-        $request = new Request();
-        $request->setHeader('Accept', 'application/json');
-        $request->setHeader('Accept-Language', 'en_US');
-        $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        return $request;
-    }
-
     private function sendRequest($path, $data = null, $method = null, $renewToken = false)
     {
         $request = $this->prepareRequest();
 
         // TODO store and reuse token
         $token = $this->getApiToken();
-        $request->setHeader('Authentication', $token['token_type'] . ' ' . $token['access_token']);
+        $request->setHeader('Authorization', $token['token_type'] . ' ' . $token['access_token']);
+        $request->setHeader('Content-Type', 'application/json');
 
         $request->send($this->getApiUrl($path), $data, $method);
 
@@ -168,6 +159,16 @@ abstract class PaypalApi extends Payment
         if (401 === $request->code && !$renewToken) {
             return $this->sendRequest($path, $data, $method, true);
         }
+
+        return $request;
+    }
+
+
+    private function prepareRequest()
+    {
+        $request = new Request();
+        $request->setHeader('Accept', 'application/json');
+        $request->setHeader('Accept-Language', 'en_US');
 
         return $request;
     }
