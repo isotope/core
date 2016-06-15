@@ -374,16 +374,16 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paypal_plus_client'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'paypal_plus_secret' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['paypal_plus_secret'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>64, 'hideInput'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(128) NOT NULL default ''",
         ),
         'psp_pspid' => array
         (
