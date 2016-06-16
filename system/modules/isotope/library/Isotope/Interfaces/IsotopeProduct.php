@@ -151,11 +151,9 @@ interface IsotopeProduct
     public function getMinimumQuantity();
 
     /**
-     * Return the product's options
+     * See IsotopeProductWithOptions interface!
      *
      * @return array
-     *
-     * @deprecated implement getConfiguration
      */
     public function getOptions();
 

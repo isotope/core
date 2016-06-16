@@ -13,6 +13,8 @@
 namespace Isotope\Model;
 
 use Haste\Data\Plain;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 
 
@@ -44,7 +46,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Cache the current product
-     * @var \Isotope\Interfaces\IsotopeProduct|false
+     * @var IsotopeProduct|IsotopeProductWithOptions|false
      */
     protected $objProduct = false;
 
@@ -143,7 +145,7 @@ class ProductCollectionItem extends \Model
      *
      * @param bool $blnNoCache
      *
-     * @return \Isotope\Interfaces\IsotopeProduct|null
+     * @return IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {
@@ -161,6 +163,10 @@ class ProductCollectionItem extends \Model
             }
 
             $this->objProduct = $strClass::findByPk($this->product_id);
+            
+            if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
+                $this->objProduct->setOptions($this->getOptions());
+            }
         }
 
         return $this->objProduct;
@@ -183,7 +189,7 @@ class ProductCollectionItem extends \Model
      */
     public function getSku()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->sku;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->getSku();
     }
 
     /**
@@ -193,15 +199,27 @@ class ProductCollectionItem extends \Model
      */
     public function getName()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->name;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->getName();
     }
 
     /**
      * Returns key-value array for variant-enabled and customer editable attributes.
      *
      * @return array
+     *
+     * @deprecated Use getOptions()
      */
     public function getAttributes()
+    {
+        return $this->getOptions();
+    }
+
+    /**
+     * Returns key-value array for variant-enabled and customer editable attributes.
+     *
+     * @return  array
+     */
+    public function getOptions()
     {
         $arrConfig = deserialize($this->configuration);
 
@@ -209,21 +227,11 @@ class ProductCollectionItem extends \Model
     }
 
     /**
-     * Get product options
-     * @return  array
-     * @deprecated use getConfig
-     */
-    public function getOptions()
-    {
-        return $this->getAttributes();
-    }
-
-    /**
      * Get product configuration
      *
      * @return array
      *
-     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getConfig() instead.
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
      */
     public function getConfiguration()
     {

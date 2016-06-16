@@ -21,6 +21,7 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
@@ -33,12 +34,8 @@ use Isotope\Template;
 
 /**
  * Standard implementation of an Isotope product.
- * 
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author Fred Bliss <fred.bliss@intelligentspark.com>
- * @author Christian de la Haye <service@delahaye.de>
  */
-class Standard extends AbstractProduct implements WeightAggregate
+class Standard extends AbstractProduct implements WeightAggregate, IsotopeProductWithOptions
 {
 
     /**
@@ -314,10 +311,7 @@ class Standard extends AbstractProduct implements WeightAggregate
     }
 
     /**
-     * Return all product options
-     *
-     * @return array
-     * @deprecated use getConfiguration
+     * @inheritdoc
      */
     public function getOptions()
     {
@@ -325,16 +319,47 @@ class Standard extends AbstractProduct implements WeightAggregate
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setOptions(array $options)
+    {
+        if (!$this->isVariant()) {
+            $this->arrCustomerConfig = $options;
+            return;
+        }
+
+        $attributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $this->arrCustomerConfig = [];
+
+        foreach ($options as $k => $v) {
+            if (in_array($k, $attributes, true)) {
+                if ($this->arrData[$k] != $v) {
+                    throw new \RuntimeException(
+                        sprintf('"%s" for attribute "%s" does not match current variant.', $v, $k)
+                    );
+                }
+
+                // Ignore variant data, that's already stored
+                continue;
+            }
+
+            $this->arrCustomerConfig[$k] = $v;
+        }
+
+        $this->preventSaving();
+    }
+
+    /**
      * Get the product configuration
      * This includes customer defined fields and variant options
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
      */
     public function getConfiguration()
     {
-        $arrConfig = array_merge($this->getVariantConfig(), $this->getCustomerConfig());
-
-        return Isotope::formatProductConfiguration($arrConfig, $this);
+        return Isotope::formatProductConfiguration($this->getOptions(), $this);
     }
 
     /**
@@ -354,7 +379,7 @@ class Standard extends AbstractProduct implements WeightAggregate
      */
     public function getVariantConfig()
     {
-        if (!$this->hasVariants()) {
+        if (!$this->isVariant()) {
             return array();
         }
 
@@ -817,13 +842,13 @@ class Standard extends AbstractProduct implements WeightAggregate
             $arrVariantFields = array_diff($this->getType()->getVariantAttributes(), $this->getInheritedFields());
             foreach ($arrData as $attribute => $value) {
                 if (
-                    in_array($attribute, $arrVariantFields)
+                    in_array($attribute, $arrVariantFields, true)
                     || ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
-                        && !in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields))
+                        && !in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields, true))
                 ) {
                     $this->arrData[$attribute] = $arrData[$attribute];
 
-                    if (in_array($attribute, $arrFallbackFields)) {
+                    if (in_array($attribute, $arrFallbackFields, true)) {
                         $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
                     }
                 }

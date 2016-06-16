@@ -28,11 +28,12 @@ interface IsotopePrice
     /**
      * Return price
      *
-     * @param int $intQuantity
+     * @param int   $intQuantity
+     * @param array $arrOptions
      *
      * @return float
      */
-    public function getAmount($intQuantity = 1);
+    public function getAmount($intQuantity = 1, array $arrOptions = array());
 
     /**
      * Return original price
