@@ -133,7 +133,7 @@
             if (!form) return;
 
             xhr.open(form.getAttribute('method').toUpperCase(), encodeURI(form.getAttribute('action')));
-            xhr.setRequestHeader('Content-Type', form.getAttribute('enctype'));
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             xhr.onload = function() {
