@@ -323,7 +323,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function setOptions(array $options)
     {
-        $this->preventSaving();
+        if (!$this->blnPreventSaving) {
+            throw new \RuntimeException('Do not modify a product object that is in the model registry!');
+        }
 
         if (!$this->isVariant()) {
             $this->arrCustomerConfig = $options;

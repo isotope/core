@@ -165,6 +165,11 @@ class ProductCollectionItem extends \Model
             $this->objProduct = $strClass::findByPk($this->product_id);
             
             if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
+                if ($this->objProduct instanceof \Model) {
+                    $this->objProduct = clone $this->objProduct;
+                    $this->objProduct->preventSaving(false);
+                }
+
                 $this->objProduct->setOptions($this->getOptions());
             }
         }
