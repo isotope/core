@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_layout'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_list_layout'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => function(\DataContainer $dc) {
+    'options_callback'          => function() {
         return \Isotope\Backend::getTemplates('iso_list_');
     },
     'eval'                      => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
@@ -66,7 +66,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_reader_layout'] = array
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_reader_layout'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => function(\DataContainer $dc) {
+    'options_callback'          => function() {
         return \Isotope\Backend::getTemplates('iso_reader_');
     },
     'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
@@ -89,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_collectionTpl'] = array
     'exclude'                   => true,
     'default'                   => 'iso_collection_default',
     'inputType'                 => 'select',
-    'options_callback'          => function(\DataContainer $dc) {
+    'options_callback'          => function() {
         return \Isotope\Backend::getTemplates('iso_collection_');
     },
     'eval'                      => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
@@ -216,7 +216,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_config_ids'] = array
     'inputType'                 => 'checkboxWizard',
     'foreignKey'                => \Isotope\Model\Config::getTable().'.name',
     'eval'                      => array('multiple'=>true, 'mandatory'=>true, 'tl_class'=>'clr'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -228,7 +228,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_payment_modules'] = array
     'foreignKey'                => \Isotope\Model\Payment::getTable().'.name',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getPaymentModules'),
     'eval'                      => array('multiple'=>true),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -240,7 +240,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_shipping_modules'] = array
     'foreignKey'                => \Isotope\Model\Shipping::getTable().'.name',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getShippingModules'),
     'eval'                      => array('multiple'=>true),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -387,7 +387,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterModules'] = array
     'foreignKey'                => 'tl_module.name',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getFilterModules'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -398,7 +398,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_filterFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getFilterFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = array
@@ -411,7 +411,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = array
         'tl_class'  => 'clr',
         'columnsCallback' => array('Isotope\Backend\Module\CumulativeFields', 'getColumns')
     ),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'save_callback' => array(
         array('Isotope\Backend\Module\CumulativeFields', 'validateConfiguration')
     )
@@ -445,7 +445,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getSearchFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_searchAutocomplete'] = array
@@ -465,7 +465,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_sortingFields'] = array
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getSortingFields'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_enableLimit'] = array
@@ -545,7 +545,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_buttons'] = array
     'default'                   => array('add_to_cart'),
     'options_callback'          => array('Isotope\Backend\Module\Callback', 'getButtons'),
     'eval'                      => array('multiple'=>true, 'tl_class'=>'clr'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
@@ -555,7 +555,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_related_categories'] = array
     'inputType'                 => 'checkboxWizard',
     'foreignKey'                => \Isotope\Model\RelatedCategory::getTable().'.name',
     'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
     'relation'                  => array('type'=>'hasMany', 'load'=>'lazy'),
 );
 
@@ -585,7 +585,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_address'] = array
     'options'                   => array('billing', 'shipping'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_address'],
     'eval'                      => array('mandatory'=>true, 'multiple'=>true),
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = array
@@ -611,12 +611,12 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = array
         return $arrOptions;
     },
     'eval'                      => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'clr'),
-    'sql'                       => "blob NULL"
+    'sql'                       => 'blob NULL'
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
 (
-    'sql'                       => "blob NULL",
+    'sql'                       => 'blob NULL',
 );
 
 
