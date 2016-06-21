@@ -168,6 +168,7 @@ class ProductCollectionItem extends \Model
                 if ($this->objProduct instanceof \Model) {
                     $this->objProduct = clone $this->objProduct;
                     $this->objProduct->preventSaving(false);
+                    $this->objProduct->id = $this->product_id;
                 }
 
                 $this->objProduct->setOptions($this->getOptions());
