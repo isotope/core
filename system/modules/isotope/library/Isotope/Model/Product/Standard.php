@@ -323,6 +323,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function setOptions(array $options)
     {
+        $this->preventSaving();
+
         if (!$this->isVariant()) {
             $this->arrCustomerConfig = $options;
             return;
@@ -345,8 +347,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             $this->arrCustomerConfig[$k] = $v;
         }
-
-        $this->preventSaving();
     }
 
     /**
