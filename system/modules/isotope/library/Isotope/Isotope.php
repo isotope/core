@@ -355,7 +355,7 @@ class Isotope extends \Controller
     public static function formatItemsString($intItems)
     {
         if ($intItems == 1) {
-            return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+            return $GLOBALS['TL_LANG']['MSC']['productSingle'];
         } else {
             $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
@@ -363,7 +363,7 @@ class Isotope extends \Controller
                 $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
             }
 
-            return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+            return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
         }
     }
 
