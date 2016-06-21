@@ -30,3 +30,4 @@ Version 2.4.0-beta1 (2016-??-??)
 - Meta data cannot be entered per product variant
 - Collection dates (locked, paid, shipped) are now stored as NULL if empty
 - Sales report now shows the number of items in totals (#1577)
+- Allow custom form field as recipient tokens in notification center
