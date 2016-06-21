@@ -284,7 +284,7 @@ class Config extends \Model
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );
             } else {
-                $this->arrCache['newProductLimit'] = time();
+                $this->arrCache['newProductLimit'] = \Date::floorToMinute();
             }
         }
 

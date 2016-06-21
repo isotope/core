@@ -12,6 +12,7 @@ Version 2.4.0-beta1 (2016-??-??)
 - Allow to set a default variant for each product (#1565)
 - Skip shipping and payment methods if only one option is available (#1217)
 - Added option to edit products that were added to the cart
+- Added support for SQL condition, new/old filter and sorting in related product list (#1518)
 - Added support for ajax file uploads with terminal42/contao-fineuploader
 - The FileTree attribute is now sortable (#1561)
 - Added CSS class field to product type (#1532)

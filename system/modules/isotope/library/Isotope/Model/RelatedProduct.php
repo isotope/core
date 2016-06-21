@@ -18,8 +18,11 @@ use Isotope\Interfaces\IsotopeProduct;
 /**
  * RelatedProduct holds array of related products
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property int    $sorting
+ * @property int    $category
+ * @property string $products
  */
 class RelatedProduct extends \Model
 {
