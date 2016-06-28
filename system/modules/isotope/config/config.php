@@ -53,6 +53,12 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 if ('BE' === TL_MODE)
 {
     $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css|static');
+
+    if (file_exists(TL_ROOT . '/system/themes/flexible/icons')) {
+        $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile(
+            'system/modules/isotope/assets/css/backend-svg.min.css|static'
+        );
+    }
 }
 
 

@@ -63,7 +63,6 @@ abstract class Report extends \Backend
         parent::__construct();
     }
 
-
     public function __get($strKey)
     {
         if (isset($this->arrObjects[$strKey])) {
@@ -73,25 +72,31 @@ abstract class Report extends \Backend
         return $this->arrData[$strKey];
     }
 
-
     public function __set($strKey, $varValue)
     {
         $this->arrData[$strKey] = $varValue;
     }
 
+    public function __isset($strKey)
+    {
+        return isset($this->arrData[$strKey]);
+    }
 
     public function generate()
     {
         if ('tl_filters' === \Input::post('FORM_SUBMIT')) {
             $session = \Session::getInstance()->getData();
 
-            foreach (array_keys($_POST) as $strKey) {
-                $session['iso_reports'][$this->name][$strKey] = \Input::post($strKey);
+            if (\Input::post('filter_reset')) {
+                $session['iso_reports'][$this->name] = [];
+            } else {
+                foreach ($_POST as $strKey => $v) {
+                    $session['iso_reports'][$this->name][$strKey] = \Input::post($strKey);
+                }
             }
 
             \Session::getInstance()->setData($session);
-
-            $this->reload();
+            \Controller::reload();
         }
 
         $this->Template = new \BackendTemplate($this->strTemplate);
@@ -116,29 +121,22 @@ abstract class Report extends \Backend
 
     protected function getPanels()
     {
-        if (!is_array($this->arrData['panels']))
-        {
+        if (!is_array($this->arrData['panels'])) {
             return array();
         }
 
         $return = array();
 
-        foreach ($this->arrData['panels'] as $group=>$callbacks)
-        {
-            foreach ($callbacks as $callback)
-            {
-                if (is_array($callback))
-                {
+        foreach ($this->arrData['panels'] as $group=>$callbacks) {
+            foreach ($callbacks as $callback) {
+                if (is_array($callback)) {
                     $objCallback = \System::importStatic($callback[0]);
                     $buffer = $objCallback->{$callback[1]}();
-                }
-                else
-                {
+                } else {
                     $buffer = $this->$callback();
                 }
 
-                if ($buffer !== null)
-                {
+                if ($buffer !== null) {
                     $return[$group][] = $buffer;
                 }
             }
@@ -156,15 +154,13 @@ abstract class Report extends \Backend
 
     protected function getLimitPanel()
     {
-        if (empty($this->arrLimitOptions))
-        {
+        if (empty($this->arrLimitOptions)) {
             return null;
         }
 
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'          => 'tl_limit',
             'label'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['show'],
             'class'         => 'tl_limit',
@@ -172,7 +168,7 @@ abstract class Report extends \Backend
             'value'         => $arrSession[$this->name]['tl_limit'],
             'options'       => $this->arrLimitOptions,
             'attributes'    => ' onchange="this.form.submit()"',
-        );
+        ];
     }
 
 

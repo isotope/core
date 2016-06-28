@@ -58,11 +58,6 @@ abstract class Sales extends Report
             }
         }
 
-        if (!isset($arrSession[$this->name]['iso_status'])) {
-            $objStatus = \Database::getInstance()->query("SELECT id FROM tl_iso_orderstatus WHERE paid='1' ORDER BY sorting");
-            $arrSession[$this->name]['iso_status'] = $objStatus->id;
-        }
-
         \Session::getInstance()->set('iso_reports', $arrSession);
     }
 
