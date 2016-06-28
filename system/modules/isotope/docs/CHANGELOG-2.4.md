@@ -11,6 +11,7 @@ Version 2.4.0-beta1 (2016-??-??)
 - Added new report for "members vs. guest" orders (#1577)
 - Allow to set a default variant for each product (#1565)
 - Skip shipping and payment methods if only one option is available (#1217)
+- Added the responsive images feature (#1423)
 - Added option to edit products that were added to the cart
 - Added support for SQL condition, new/old filter and sorting in related product list (#1518)
 - Added support for ajax file uploads with terminal42/contao-fineuploader
