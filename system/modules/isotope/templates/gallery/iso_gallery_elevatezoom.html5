@@ -1,17 +1,11 @@
 <?php if ($this->type == 'gallery'): ?>
 <figure data-type="gallery" data-uid="g<?php echo $this->uid; ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
 <a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>"<?php if($this->zoom): ?> data-zoom-image="<?php echo $this->zoom['zoom']; ?>" onclick="return Isotope.elevateZoom(this, 'g<?php echo $this->uid; ?>');"<?php endif; ?>>
-<?php $this->insert('picture_default', $this->picture); ?>
+<img src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?><?php if ($this->class) echo ' class="'.$this->class.'"'; ?>>
 </a>
 </figure>
 <?php else: ?>
-<figure class="image_container">
-    <?php
-    $picture = $this->picture;
-    $picture['attributes'] = trim($picture['attributes'] . ' id="g' . $this->uid . '"');
-    $this->insert('picture_default', $picture);
-    ?>
-</figure>
+<figure class="image_container"><img id="g<?php echo $this->uid; ?>" src="<?php echo $this->src; ?>"<?php if($this->zoom): ?> data-zoom-image="<?php echo $this->zoom['zoom']; ?>"<?php endif; ?> itemprop="image" alt="<?php echo $this->alt; ?>"></figure>
 
 <?php if ($this->zoom): ?>
 <script>

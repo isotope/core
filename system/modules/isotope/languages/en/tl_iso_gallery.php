@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['tl_iso_gallery']['none']                   = 'No link actio
 $GLOBALS['TL_LANG']['tl_iso_gallery']['reader']                 = 'Link to the product reader';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox']               = 'Open lightbox/mediabox';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['includeJQuery']          = 'Make sure to include jQuery in your page layout for this gallery to work correctly.';
+$GLOBALS['TL_LANG']['tl_iso_gallery']['pictureNotSupported']    = 'Be aware that this gallery type does not support &lt;picture&gt; (responsive images).';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos1']  = 'Right Top (Pos. #1)';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos2']  = 'Right Center (Pos. #2)';
 $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos3']  = 'Right Bottom (Pos. #3)';

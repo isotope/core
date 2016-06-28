@@ -27,4 +27,15 @@ class Callback extends \Backend
             }
         }
     }
+
+    public function showImageSizeHint()
+    {
+        if ('edit' === \Input::get('act')) {
+            $gallery = Gallery::findByPk(\Input::get('id'));
+
+            if (null !== $gallery && ('elevatezoom' === $gallery->type || 'inline' === $gallery->type)) {
+                \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_gallery']['pictureNotSupported']);
+            }
+        }
+    }
 }
