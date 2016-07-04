@@ -595,9 +595,6 @@ class DcaManager extends \Backend
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        // Limit tree
-        $GLOBALS['TL_DCA']['tl_page']['list']['sorting']['root'] = array($intNode);
-
         // Add root link
         $arrLinks[] = '<img src="' . TL_FILES_URL . 'system/themes/' . \Backend::getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . \Controller::addToUrl('page=0') . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']) . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';
         $arrLinks   = array_reverse($arrLinks);
