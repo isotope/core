@@ -47,6 +47,11 @@
             "system/modules/isotope/drivers/"
         ]
     },
+    "autoload-dev": {
+        "psr-0": {
+            "Isotope\\Test\\": "system/modules/isotope/test/tests"
+        }
+    },
     "extra":{
         "branch-alias": {
             "dev-master": "2.3.x-dev",
