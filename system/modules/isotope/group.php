@@ -22,16 +22,7 @@ define('TL_SCRIPT', 'system/modules/isotope/group.php');
  */
 define('TL_MODE', 'BE');
 
-// Include the Contao initialization script
-if (file_exists('../../initialize.php')) {
-    // Regular way
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../initialize.php');
-} else {
-    // Try composer location (see #1136)
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../../../../../../system/initialize.php');
-}
+require_once('initialize.php');
 
 
 /**
