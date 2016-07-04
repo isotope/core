@@ -13,8 +13,6 @@
 namespace Isotope\Backend\Product;
 
 use Isotope\Model\Group;
-use Isotope\Model\ProductCategory;
-
 
 class Panel extends \Backend
 {
