@@ -32,3 +32,8 @@ Version 2.4.0-beta1 (2016-??-??)
 - Collection dates (locked, paid, shipped) are now stored as NULL if empty
 - Sales report now shows the number of items in totals (#1577)
 - Allow custom form field as recipient tokens in notification center
+
+
+### Fixed
+
+- "Description" column in iso_collection_invoice template was not translated (#1652)
