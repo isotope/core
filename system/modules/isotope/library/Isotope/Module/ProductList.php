@@ -130,9 +130,9 @@ class ProductList extends Module
         }
 
         global $objPage;
-        $cacheKey    = $this->getCacheKey();
-        $arrProducts = null;
-        $arrCacheIds = null;
+        $cacheKey      = $this->getCacheKey();
+        $arrProducts   = null;
+        $arrCacheIds   = null;
 
         // Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findByUniqid($cacheKey)) !== null) {
@@ -389,7 +389,9 @@ class ProductList extends Module
             $limit = $this->numberOfItems;
         }
 
-        $total = count($arrItems);
+        $pagination = '';
+        $page       = 1;
+        $total      = count($arrItems);
 
         // Split the results
         if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
@@ -400,7 +402,7 @@ class ProductList extends Module
 
             // Get the current page
             $id   = 'page_iso' . $this->id;
-            $page = \Input::get($id) ? : 1;
+            $page = \Input::get($id) ?: 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
@@ -423,8 +425,15 @@ class ProductList extends Module
 
             // Add the pagination menu
             $objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
-            $this->Template->pagination = $objPagination->generate("\n  ");
+
+            $pagination = $objPagination->generate("\n  ");
         }
+
+        $this->Template->pagination = $pagination;
+        $this->Template->total      = count($arrItems);
+        $this->Template->page       = $page;
+        $this->Template->offset     = $offset;
+        $this->Template->limit      = $limit;
 
         if (isset($limit)) {
             $arrItems = array_slice($arrItems, $offset, $limit);

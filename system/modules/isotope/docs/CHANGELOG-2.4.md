@@ -20,6 +20,7 @@ Version 2.4.0-beta1 (2016-??-??)
 - Can now perform reports on order, payment or shipping date (#1620)
 - Added config setting to define an order details module for backend view (#1578)
 - Validate the price attribute in product type against duplication (#1542)
+- Added pagination information to product list template (#1650)
 - Enable module tables in Isotope setup after all modules are loaded (#1624)
 - Added hook triggered when address data is updated (#1473)
 - Added hook to modify fields in checkout process
