@@ -17,7 +17,6 @@ install:
     - cp -R system/modules/isotope_reports contao/system/modules/isotope_reports
     - cp -R system/modules/isotope_rules contao/system/modules/isotope_rules
     - cp -R vendor/terminal42/contao-conditionalselectmenu contao/system/modules/conditionalselectmenu
-    - cp -R vendor/terminal42/contao-namespace-class-loader contao/system/modules/_autoload
     - cp -R vendor/terminal42/dcawizard contao/system/modules/dcawizard
     - cp -R vendor/codefog/contao-haste contao/system/modules/haste
     - cp -R vendor/menatwork/contao-multicolumnwizard contao/system/modules/multicolumnwizard
