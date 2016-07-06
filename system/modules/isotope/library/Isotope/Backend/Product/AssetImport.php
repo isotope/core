@@ -128,7 +128,7 @@ class AssetImport extends \Backend
 
                         if (!empty($arrSubfiles)) {
                             foreach ($arrSubfiles as $subfile) {
-                                if (is_file($strPath . '/' . $file . '/' . $subfile)) {
+                                if (is_file(TL_ROOT . '/' . $strPath . '/' . $file . '/' . $subfile)) {
                                     $objFile = new \File($strPath . '/' . $file . '/' . $subfile);
 
                                     if ($objFile->isGdImage) {

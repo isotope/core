@@ -41,3 +41,4 @@ Version 2.4.0-beta1 (2016-??-??)
 ### Fixed
 
 - "Description" column in iso_collection_invoice template was not translated (#1652)
+- Product image import did not work with subfolders (#1666)
