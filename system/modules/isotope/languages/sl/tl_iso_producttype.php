@@ -15,4 +15,7 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_producttype']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description'][0] = 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_producttype']['attributes'][0] = 'Lastnosti';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['description_legend'] = 'Opis';
+$GLOBALS['TL_LANG']['tl_iso_producttype']['expert_legend'] = 'Napredne nastavitve';

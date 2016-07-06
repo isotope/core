@@ -14,3 +14,5 @@
  * @license http://www.gnu.org/licenses/lgpl-3.0.html
  */
 
+$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['price'][0] = 'Cena';
+$GLOBALS['TL_LANG']['tl_iso_product_price']['price_legend'] = 'Cena';

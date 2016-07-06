@@ -16,3 +16,4 @@
 
 $GLOBALS['TL_LANG']['tl_iso_document']['gallery'][0] = 'Galerija';
 $GLOBALS['TL_LANG']['tl_iso_document']['orderCollectionBy'][0] = 'Razvrščanje';
+$GLOBALS['TL_LANG']['tl_iso_document']['template_legend'] = 'Predloga';

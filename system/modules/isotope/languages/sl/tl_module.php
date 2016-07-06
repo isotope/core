@@ -17,6 +17,8 @@
 $GLOBALS['TL_LANG']['tl_module']['iso_gallery'][0] = 'Galerija';
 $GLOBALS['TL_LANG']['tl_module']['iso_use_quantity'][0] = 'Omogoči količino';
 $GLOBALS['TL_LANG']['tl_module']['iso_cols'][0] = 'Stolpci';
+$GLOBALS['TL_LANG']['tl_module']['iso_payment_modules'][0] = 'Načini plačila';
+$GLOBALS['TL_LANG']['tl_module']['iso_shipping_modules'][0] = 'Načini dostave';
 $GLOBALS['TL_LANG']['tl_module']['iso_orderCollectionBy'][0] = 'Razvrščanje';
 $GLOBALS['TL_LANG']['tl_module']['iso_list_where'][0] = 'Pogoj';
 $GLOBALS['TL_LANG']['tl_module']['iso_filterFields'][0] = 'Omogočeni filtri';

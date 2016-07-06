@@ -20,3 +20,4 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'کل';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'کل';
 $GLOBALS['TL_LANG']['ISO_REPORT']['search'] = 'جستجو';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'وضعیت';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'تاریخ سفارش';

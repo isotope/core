@@ -27,6 +27,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['city'][0] = 'Kraj';
 $GLOBALS['TL_LANG']['tl_iso_config']['country'][0] = 'Država';
 $GLOBALS['TL_LANG']['tl_iso_config']['phone'][0] = 'Telefonska številka';
 $GLOBALS['TL_LANG']['tl_iso_config']['currency'][0] = 'Valuta';
+$GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new'][0] = 'Status novih naročil';
 $GLOBALS['TL_LANG']['tl_iso_config']['div'] = 'Deli';
 $GLOBALS['TL_LANG']['tl_iso_config']['mul'] = 'Množi';
 $GLOBALS['TL_LANG']['tl_iso_config']['iwName'][0] = 'Naziv';
