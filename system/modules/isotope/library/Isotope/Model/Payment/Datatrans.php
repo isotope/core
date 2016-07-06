@@ -22,6 +22,8 @@ use Isotope\Module\Checkout;
  *
  * @property string $datatrans_id
  * @property string $datatrans_sign
+ * @property string $datatrans_hash_method
+ * @property string $datatrans_hash_convert
  */
 class Datatrans extends Postsale
 {
@@ -45,11 +47,7 @@ class Datatrans extends Postsale
         }
 
         // Validate HMAC sign
-        $hash = hash_hmac(
-            'md5',
-            $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
-            $this->datatrans_sign
-        );
+        $hash = $this->createHash($this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'));
 
         if (\Input::post('sign2') != $hash) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
@@ -128,7 +126,7 @@ class Datatrans extends Postsale
         );
 
         // Security signature (see Security Level 2)
-        $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'], $this->datatrans_sign);
+        $arrParams['sign'] = $this->createHash($arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno']);
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id       = $this->id;
@@ -163,5 +161,23 @@ class Datatrans extends Postsale
         }
 
         return true;
+    }
+
+    /**
+     * Create hash based on module config for given value.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    private function createHash($value)
+    {
+        $algo = 'sha256' === $this->datatrans_hash_method ? 'sha256' : 'md5';
+
+        return hash_hmac(
+            $algo,
+            $value,
+            $this->datatrans_hash_convert ? hex2bin($this->datatrans_sign) : $this->datatrans_sign
+        );
     }
 }

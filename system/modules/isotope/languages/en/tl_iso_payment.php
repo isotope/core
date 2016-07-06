@@ -50,6 +50,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV']                             
 $GLOBALS['TL_LANG']['tl_iso_payment']['allowed_cc_types']                       = array('Allowed Credit Card Types', 'Select which credit cards the payment method accepts.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_id']                           = array('Merchant-ID', 'Please enter your merchant ID.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_sign']                         = array('HMAC Key', 'Please enter your HMAC key from the Datatrans control panel.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_method']                  = array('Hash method', 'Please select the hashing method configured in your Datatrans control panel.');
+$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_convert']                 = array('Convert hash to binary', 'Check here if the hash key needs to be converted to binary.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['vads_site_id']                           = array('Site Identifier', 'Please enter your payment site identifier.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['vads_certificate']                       = array('Certificate', 'Please enter your TEST or PRODUCTION certificate.');
 $GLOBALS['TL_LANG']['tl_iso_payment']['sparkasse_paymentmethod']                = array('Payment method', 'Please select a payment method for this method.');
@@ -136,6 +138,8 @@ $GLOBALS['TL_LANG']['tl_iso_payment']['expercash_paymentMethod']['sofortueberwei
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha1']                                = 'SHA-1';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha256']                              = 'SHA-256';
 $GLOBALS['TL_LANG']['tl_iso_payment']['psp_hash_method']['sha512']                              = 'SHA-512';
+$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_method']['md5']                           = 'MD5 (outdated)';
+$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_method']['sha256']                        = 'SHA-256';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][3]                            = 'Full screen';
 $GLOBALS['TL_LANG']['tl_iso_payment']['epay_windowstate_options'][4]                            = 'Integrated payment form';
 
