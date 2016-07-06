@@ -43,11 +43,7 @@ class Datatrans extends Postsale implements IsotopePayment
         }
 
         // Validate HMAC sign
-        $hash = hash_hmac(
-            $this->datatrans_hash_method,
-            $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
-            $this->convertHMAC($this->datatrans_sign)
-        );
+        $hash = $this->createHash($this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'));
 
         if (\Input::post('sign2') != $hash) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
@@ -125,11 +121,7 @@ class Datatrans extends Postsale implements IsotopePayment
         );
 
         // Security signature (see Security Level 2)
-        $arrParams['sign'] = hash_hmac(
-            $this->datatrans_hash_method,
-            $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'],
-            $this->convertHMAC($this->datatrans_sign)
-        );
+        $arrParams['sign'] = $this->createHash($arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno']);
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id       = $this->id;
@@ -167,12 +159,20 @@ class Datatrans extends Postsale implements IsotopePayment
     }
 
     /**
-     * Converts HMAC from hex to bin if configured to do so
-     * @param string $hmac
+     * Create hash based on module config for given value.
+     *
+     * @param string $value
+     *
      * @return string
      */
-    protected function convertHMAC($hmac)
+    private function createHash($value)
     {
-        return 1 == $this->datatrans_hash_convert ? hex2bin($hmac) : $hmac;
+        $algo = 'sha256' === $this->datatrans_hash_method ? 'sha256' : 'md5';
+
+        return hash_hmac(
+            $algo,
+            $value,
+            $this->datatrans_hash_convert ? hex2bin($this->datatrans_sign) : $this->datatrans_sign
+        );
     }
 }
