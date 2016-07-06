@@ -35,6 +35,7 @@ Version 2.4.0-beta1 (2016-??-??)
 - Allow custom form field as recipient tokens in notification center
 - Do not limit product categories selection by active page filter (#1648)
 - Allow backend filter for text, radio and checkbox attributes (#1644)
+- Datatrans payment method now supports SHA-256 algorithm (#1640)
 
 
 ### Fixed
