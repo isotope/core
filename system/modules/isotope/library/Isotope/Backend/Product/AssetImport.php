@@ -148,10 +148,10 @@ class AssetImport extends \Backend
 
                 if (!empty($arrNewImages)) {
                     foreach ($arrNewImages as $strFile) {
-                        $pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
+                        $pathinfo = pathinfo(TL_ROOT . '/' . strtolower($strFile));
 
                         // Will recursively create the folder
-                        $objFolder = new \Folder('isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)));
+                        $objFolder = new \Folder('isotope/' . substr($pathinfo['filename'], 0, 1));
 
                         $strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 
