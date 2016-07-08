@@ -14,12 +14,15 @@ namespace Isotope\Module;
 
 use Contao\PageError403;
 use Haste\Util\Format;
+use Haste\Util\Url;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
 /**
+ * @property int    $iso_cart_jumpTo
  * @property int    $iso_gallery
  * @property string $iso_collectionTpl
  */
@@ -94,6 +97,10 @@ class OrderDetails extends Module
             exit;
         }
 
+        if ($this->iso_cart_jumpTo && (int) \Input::get('reorder') === (int) $objOrder->id) {
+            $this->reorder($objOrder);
+        }
+
         Isotope::setConfig($objOrder->getConfig());
 
         /** @var Template|\stdClass $objTemplate */
@@ -117,5 +124,20 @@ class OrderDetails extends Module
         $this->Template->orderDetailsHeadline = sprintf($GLOBALS['TL_LANG']['MSC']['orderDetailsHeadline'], $objOrder->getDocumentNumber(), $this->Template->datim);
         $this->Template->orderStatus          = sprintf($GLOBALS['TL_LANG']['MSC']['orderStatusHeadline'], $objOrder->getStatusLabel());
         $this->Template->orderStatusKey       = $objOrder->getStatusAlias();
+        $this->Template->reorder              = $this->iso_cart_jumpTo ? (Url::addQueryString('reorder=' . $objOrder->id)) : '';
+    }
+
+    private function reorder(Order $order)
+    {
+        Isotope::getCart()->copyItemsFrom($order);
+
+        Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
+
+        \Controller::redirect(
+            Url::addQueryString(
+                'continue=' . base64_encode(\System::getReferer()),
+                $this->iso_cart_jumpTo
+            )
+        );
     }
 }

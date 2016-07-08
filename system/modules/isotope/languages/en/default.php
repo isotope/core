@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['MSC']['defaultSearchText']                 = 'search produc
 $GLOBALS['TL_LANG']['MSC']['downloadsLabel']                    = 'Your downloadable products';
 $GLOBALS['TL_LANG']['MSC']['priceRangeLabel']                   = '<span class="from">From</span> %s';
 $GLOBALS['TL_LANG']['MSC']['detailLabel']                       = 'View Details';
+$GLOBALS['TL_LANG']['MSC']['reorderLabel']                      = 'Reorder';
 $GLOBALS['TL_LANG']['MSC']['perPageLabel']                      = 'Products Per Page';
 $GLOBALS['TL_LANG']['MSC']['searchTermsLabel']                  = 'Keywords';
 $GLOBALS['TL_LANG']['MSC']['submitLabel']                       = 'Submit';
@@ -77,6 +78,7 @@ $GLOBALS['TL_LANG']['MSC']['labelSubmit']                       = 'Submit';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart']                     = 'There are no items in your cart.';
 $GLOBALS['TL_LANG']['MSC']['addedToCart']                       = 'The selected product has been added to your shopping cart.';
 $GLOBALS['TL_LANG']['MSC']['cartMerged']                        = 'The products from your last visit have been readded. Please review your shopping cart items.';
+$GLOBALS['TL_LANG']['MSC']['reorderConfirmation']               = 'The products of the selected order have been added to your shopping cart.';
 $GLOBALS['TL_LANG']['MSC']['editProductLinkTitle']              = 'Edit %s';
 $GLOBALS['TL_LANG']['MSC']['editProductLinkText']               = 'Edit';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkText']             = 'Remove';

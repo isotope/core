@@ -16,17 +16,13 @@ use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Haste\Util\Url;
 use Isotope\Isotope;
+use Isotope\Message;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
 
 /**
- * Class OrderHistory
- *
- * Front end module Isotope "order history".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property int $iso_cart_jumpTo
  */
 class OrderHistory extends Module
 {
@@ -50,23 +46,21 @@ class OrderHistory extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->title    = $this->headline;
+            $objTemplate->id       = $this->id;
+            $objTemplate->link     = $this->name;
+            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
             return $objTemplate->parse();
         }
 
         $this->iso_config_ids = deserialize($this->iso_config_ids);
 
-        if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || !count($this->iso_config_ids)) // Can't use empty() because its an object property (using __get)
-        {
+        if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || 0 === count($this->iso_config_ids)) {
             return '';
         }
 
@@ -80,14 +74,15 @@ class OrderHistory extends Module
      */
     protected function compile()
     {
-        $arrOrders = array();
+        $arrOrders = [];
         $objOrders = Order::findBy(
-            array(
+            [
                 'order_status>0',
                 'member=?',
-                'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'),
-            array(\FrontendUser::getInstance()->id),
-            array('order' => 'locked DESC')
+                'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'
+            ],
+            [\FrontendUser::getInstance()->id],
+            ['order' => 'locked DESC']
         );
 
         // No orders found, just display an "empty" message
@@ -99,12 +94,16 @@ class OrderHistory extends Module
             return;
         }
 
-        /** @type Order $objOrder */
+        $reorder = (int) \Input::get('reorder');
+
         foreach ($objOrders as $objOrder) {
+            if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
+                $this->reorder($objOrder);
+            }
+
             Isotope::setConfig($objOrder->getConfig());
 
-            $arrOrders[] = array
-            (
+            $arrOrders[] = [
                 'collection' => $objOrder,
                 'raw'        => $objOrder->row(),
                 'date'       => Format::date($objOrder->locked),
@@ -113,12 +112,27 @@ class OrderHistory extends Module
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
                 'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',
+                'reorder'    => $this->iso_cart_jumpTo ? (Url::addQueryString('reorder=' . $objOrder->id)) : '',
                 'class'      => $objOrder->getStatusAlias(),
-            );
+            ];
         }
 
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
 
         $this->Template->orders = $arrOrders;
+    }
+
+    private function reorder(Order $order)
+    {
+        Isotope::getCart()->copyItemsFrom($order);
+
+        Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
+
+        \Controller::redirect(
+            Url::addQueryString(
+                'continue=' . base64_encode(\System::getReferer()),
+                $this->iso_cart_jumpTo
+            )
+        );
     }
 }
