@@ -7,7 +7,13 @@ Version 2.4.0-rc1 (2016-08-??)
 ### New
 
 - Re-order an order from order history or details frontend module
+- Cart rules can be limited to the weight of products in cart
 - Added new favorite products collection
+
+
+### Improved
+
+- Product teaser is now searchable in the frontend
 
 
 
