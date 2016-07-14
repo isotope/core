@@ -165,6 +165,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_productlist'               => 'Isotope\Module\ProductList',
     'iso_productvariantlist'        => 'Isotope\Module\ProductVariantList',
     'iso_productreader'             => 'Isotope\Module\ProductReader',
+    'iso_favorites'                 => 'Isotope\Module\Favorites',
     'iso_cart'                      => 'Isotope\Module\Cart',
     'iso_checkout'                  => 'Isotope\Module\Checkout',
     'iso_productfilter'             => 'Isotope\Module\ProductFilter',
@@ -234,6 +235,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Product collections
  */
+\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
 \Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
 

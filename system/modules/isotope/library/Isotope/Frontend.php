@@ -146,6 +146,26 @@ class Frontend extends \Frontend
     }
 
     /**
+     * Callback for toggle_favorites button
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     */
+    public function toggleFavorites(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        $favorites = Isotope::getFavorites();
+
+        if ($favorites->hasProduct($objProduct)) {
+            $favorites->deleteItem($favorites->getItemForProduct($objProduct));
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['removedFromFavorites']);
+        } elseif ($favorites->addProduct($objProduct, 1, $arrConfig) !== false) {
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToFavorites']);
+        }
+
+        \Controller::reload();
+    }
+
+    /**
      * Replace the current page with a reader page if applicable
      *
      * @param array $arrFragments

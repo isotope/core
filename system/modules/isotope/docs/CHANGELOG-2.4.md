@@ -7,6 +7,7 @@ Version 2.4.0-rc1 (2016-08-??)
 ### New
 
 - Re-order an order from order history or details frontend module
+- Added new favorite products collection
 
 
 

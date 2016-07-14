@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Favorites;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
@@ -121,6 +122,16 @@ class Isotope extends \Controller
         }
 
         return static::$objCart;
+    }
+
+    /**
+     * Gets the favorites collection for the currently logged in user
+     *
+     * @return Favorites|null
+     */
+    public static function getFavorites()
+    {
+        return Favorites::findForCurrentStore();
     }
 
     /**
@@ -399,6 +410,15 @@ class Isotope extends \Controller
             );
         }
 
+        if (true === FE_USER_LOGGED_IN || 'BE' === TL_MODE) {
+            $isFavorited = ($favorites = Isotope::getFavorites()) !== null && $favorites->hasProduct($objProduct);
+
+            $arrButtons['toggle_favorites'] = array(
+                'label'    => $GLOBALS['TL_LANG']['MSC']['buttonLabel'][$isFavorited ? 'remove_from_favorites' : 'add_to_favorites'],
+                'callback' => array('\Isotope\Frontend', 'toggleFavorites'),
+                'class'    => $isFavorited ? 'active' : '',
+            );
+        }
 
         return $arrButtons;
     }

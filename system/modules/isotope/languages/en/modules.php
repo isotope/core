@@ -27,6 +27,7 @@ $GLOBALS['TL_LANG']['FMD']['iso_cumulativefilter']          = array('Cumulative 
 $GLOBALS['TL_LANG']['FMD']['iso_productlist']               = array('Product List', 'General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.');
 $GLOBALS['TL_LANG']['FMD']['iso_productvariantlist']        = array('Product Variant List', 'Lists each variant of a product. Make sure you use the iso_list_variants template.');
 $GLOBALS['TL_LANG']['FMD']['iso_productreader']             = array('Product Reader', 'Product reader module. This is used to display product details.');
+$GLOBALS['TL_LANG']['FMD']['iso_favorites']                 = array('Favorites', 'Renders the list of products on the favorites list.');
 $GLOBALS['TL_LANG']['FMD']['iso_cart']                      = array('Shopping Cart', 'A fully-featured shopping cart module.  Box or Full Display can be set by template selection.');
 $GLOBALS['TL_LANG']['FMD']['iso_checkout']                  = array('Checkout', 'Allow store customers to complete their transactions.');
 $GLOBALS['TL_LANG']['FMD']['iso_addressbook']               = array('Address Book','Allow customers to manage their address book.');

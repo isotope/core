@@ -13,7 +13,6 @@
 namespace Isotope\Model;
 
 use Haste\Generator\RowClass;
-use Haste\Haste;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
@@ -28,8 +27,6 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\Payment;
-use Isotope\Model\Shipping;
 use Model\Registry;
 
 /**
@@ -941,6 +938,24 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
+     * Gets the product collection with given ID if it belongs to this collection.
+     *
+     * @param int $id
+     *
+     * @return ProductCollectionItem|null
+     */
+    public function getItemById($id)
+    {
+        $items = $this->getItems();
+
+        if (!isset($items[$id])) {
+            return null;
+        }
+
+        return $items[$id];
+    }
+
+    /**
      * Check if a given product is already in the collection
      *
      * @param IsotopeProduct $objProduct
@@ -974,7 +989,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @param int            $intQuantity
      * @param array          $arrConfig
      *
-     * @return ProductCollectionItem
+     * @return ProductCollectionItem|false
      */
     public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array())
     {

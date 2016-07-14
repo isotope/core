@@ -25,6 +25,7 @@ use Isotope\Template;
  * @property int    $iso_cart_jumpTo
  * @property int    $iso_gallery
  * @property string $iso_collectionTpl
+ * @property string $iso_orderCollectionBy
  */
 class OrderDetails extends Module
 {
