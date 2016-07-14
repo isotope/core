@@ -107,8 +107,8 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
         '__selector__'                      => array('type', 'applyTo', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
         'default'                           => '{basic_legend},type',
         'product'                           => '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cart'                              => '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'cart'                              => '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -258,6 +258,28 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'inputType'                     => 'text',
             'eval'                          => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                           => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'minWeight' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['minWeight'],
+            'exclude'                       => true,
+            'default'                       => array('unit'=>'kg'),
+            'inputType'                     => 'timePeriod',
+            'options'                       => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'                     => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                          => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                           => "varchar(255) NOT NULL default ''",
+        ),
+        'maxWeight' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['maxWeight'],
+            'exclude'                       => true,
+            'default'                       => array('unit'=>'kg'),
+            'inputType'                     => 'timePeriod',
+            'options'                       => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'                     => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                          => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                           => "varchar(255) NOT NULL default ''",
         ),
         'minItemQuantity' => array
         (

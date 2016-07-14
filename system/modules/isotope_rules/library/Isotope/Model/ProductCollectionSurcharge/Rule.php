@@ -12,8 +12,10 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
+use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
@@ -32,6 +34,21 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         // Cart subtotal
         if (($objRule->minSubtotal > 0 && $objCollection->getSubtotal() < $objRule->minSubtotal) || ($objRule->maxSubtotal > 0 && $objCollection->getSubtotal() > $objRule->maxSubtotal)) {
             return null;
+        }
+
+        // Cart weight
+        $objScale = Isotope::getCart()->addToScale();
+
+        if (($minWeight = Weight::createFromTimePeriod($objRule->minWeight)) !== null
+            && $objScale->isLessThan($minWeight)
+        ) {
+            return false;
+        }
+
+        if (($maxWeight = Weight::createFromTimePeriod($objRule->maxWeight)) !== null
+            && $objScale->isMoreThan($maxWeight)
+        ) {
+            return false;
         }
 
         $arrCollectionItems = $objCollection->getItems();
