@@ -14,6 +14,7 @@ Version 2.4.0-rc1 (2016-08-??)
 ### Improved
 
 - Product teaser is now searchable in the frontend
+- Merged address DCA into fields so modifyAddressFields hook can modify field config
 
 
 
