@@ -17,6 +17,11 @@ Version 2.4.0-rc1 (2016-08-??)
 - Merged address DCA into fields so modifyAddressFields hook can modify field config
 
 
+### Fixed
+
+- Fixed live payment validation for Open Payment Platform
+
+
 
 Version 2.4.0-beta1 (2016-07-06)
 --------------------------------
