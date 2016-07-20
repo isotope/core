@@ -20,6 +20,7 @@ Version 2.4.0-rc1 (2016-08-??)
 ### Fixed
 
 - Fixed live payment validation for Open Payment Platform
+- Variant attributes must always have a blank option
 
 
 

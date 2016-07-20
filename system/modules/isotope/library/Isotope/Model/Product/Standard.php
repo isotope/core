@@ -592,10 +592,19 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             // Remove options not available in any product variant
             if (is_array($arrField['options'])) {
-                foreach ($arrField['options'] as $k => $option) {
+                $blankOption = null;
 
+                foreach ($arrField['options'] as $k => $option) {
                     // Keep groups and blankOptionLabels
-                    if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '') {
+                    if ($option['value'] == '') {
+                        if (null !== $blankOption) {
+                            // Last blank option wins
+                            $arrField['options'][$blankOption] = $option;
+                            unset($arrField['options'][$k]);
+                        } else {
+                            $blankOption = $k;
+                        }
+                    } elseif (!in_array($option['value'], $arrOptions) && !$option['group']) {
                         unset($arrField['options'][$k]);
                     }
                 }
@@ -603,18 +612,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 $arrField['options'] = array_values($arrField['options']);
             }
 
-            $arrField['value']   = $this->$strField;
+            $arrField['value'] = $this->$strField;
 
         } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
             return '';
         }
 
         if ($objAttribute->isVariantOption()
-            || (
-                $objAttribute instanceof IsotopeAttributeWithOptions
-                && $objAttribute->canHavePrices()
-            )
-            || $arrField['attributes']['ajax_option']) {
+            || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
+            || $arrField['attributes']['ajax_option']
+        ) {
             $arrAjaxOptions[] = $strField;
         }
 
