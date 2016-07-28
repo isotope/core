@@ -138,6 +138,9 @@ class InsertTag
 
                 return $this->getValueForAddressTag($address, $tokens[2]);
 
+            case 'weight':
+                return $collection->addToScale()->amountIn($tokens[2]);
+
             default:
                 return $collection->{$tokens[1]};
         }

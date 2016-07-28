@@ -10,6 +10,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Added new favorite products collection
 - Shipping weight can now be generated on product and collection
 - Cart rules can be limited to the weight of products in cart
+- Added insert tag {{cart::weight::kg}} to output weight of product collection
 
 
 ### Improved

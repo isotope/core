@@ -1404,11 +1404,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add all products in the collection to the given scale
-     *
-     * @param Scale $objScale
-     *
-     * @return Scale
+     * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
     {

@@ -13,6 +13,7 @@
 namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
+use Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
@@ -235,6 +236,15 @@ interface IsotopeProductCollection
      * @return ProductCollectionSurcharge[]
      */
     public function getSurcharges();
+
+    /**
+     * Add all products in the collection to the given scale
+     *
+     * @param Scale $objScale
+     *
+     * @return Scale
+     */
+    public function addToScale(Scale $objScale = null);
 
     /**
      * Check if minimum order amount is reached
