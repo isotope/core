@@ -19,7 +19,8 @@
             <?php endif; ?>
         </td>
         <td class="col_<?php echo $i++; ?> col_last actions">
-            <a href="<?= \Haste\Util\Url::addQueryString('add_to_cart='.$item['id']) ?>" class="add_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] ?></a>
+            <a href="<?php echo $item['cart_href']; ?>" class="add_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] ?></a>
+            <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
         </td>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
@@ -30,4 +31,4 @@
 </tbody>
 </table>
 
-<a href="<?= \Haste\Util\Url::addQueryString('add_to_cart=all') ?>" class="add_all_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart'] ?></a>
+<a href="<?= $this->cart_all_href ?>" class="add_all_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart'] ?></a>

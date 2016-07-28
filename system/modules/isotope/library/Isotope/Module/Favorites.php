@@ -13,8 +13,10 @@
 namespace Isotope\Module;
 
 use Haste\Util\Url;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Template;
 
 /**
@@ -83,17 +85,8 @@ class Favorites extends Module
 
         $addToCart = (string) \Input::get('add_to_cart');
 
-        if ('' !== $addToCart) {
-            if ('all' === $addToCart) {
-                Isotope::getCart()->copyItemsFrom($collection);
-            } else {
-                $item = $collection->getItemById($addToCart);
-
-                if (null !== $item && $item->hasProduct()) {
-                    Isotope::getCart()->addProduct($item->getProduct(), 1, ['jumpTo' => $item->getRelated('jumpTo')]);
-                }
-            }
-
+        if ('all' === $addToCart) {
+            Isotope::getCart()->copyItemsFrom($collection);
             \Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
@@ -108,8 +101,44 @@ class Favorites extends Module
                 'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
+        
+        $collectionTemplate->items = $this->updateTemplate(
+            $collection,
+            $collectionTemplate->items,
+            (int) \Input::get('remove'),
+            $addToCart
+        );
 
+        $collectionTemplate->cart_all_href = \Haste\Util\Url::addQueryString('add_to_cart=all');
+        
         $this->Template->collection = $collection;
         $this->Template->products   = $collectionTemplate->parse();
+    }
+
+    private function updateTemplate(IsotopeProductCollection $collection, array $data, $removeId, $addToCart)
+    {
+        foreach ($data as $k => &$row) {
+            /** @var ProductCollectionItem $item */
+            $item = $row['item'];
+            $itemId = (int) $item->id;
+
+            // Remove from collection
+            if ($removeId > 0 && $removeId === $itemId) {
+                $collection->deleteItemById($itemId);
+                \Controller::redirect(Url::removeQueryString(['remove']));
+            } elseif ($addToCart > 0 && $addToCart === $itemId) {
+                if ($item->hasProduct()) {
+                    Isotope::getCart()->addProduct($item->getProduct(), 1, ['jumpTo' => $item->getRelated('jumpTo')]);
+                    \Controller::redirect(Url::removeQueryString(['add_to_cart']));
+                }
+            }
+
+            $row['remove_href']  = Url::addQueryString('remove=' . $itemId);
+            $row['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name']));
+            $row['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
+            $row['cart_href']    = Url::addQueryString('add_to_cart=' . $itemId);
+        }
+
+        return $data;
     }
 }
