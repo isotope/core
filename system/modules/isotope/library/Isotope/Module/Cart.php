@@ -124,8 +124,6 @@ class Cart extends Module
             $arrItem['remove_href']  = Url::addQueryString('remove=' . $arrItem['id']);
             $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));
             $arrItem['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
-
-            $arrItems[$k] = $arrItem;
         }
 
         $arrButtons = $this->generateButtons();
