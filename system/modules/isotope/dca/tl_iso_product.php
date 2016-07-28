@@ -495,7 +495,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
             'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
-            'attributes'            => array('legend'=>'shipping_legend'),
+            'attributes'            => array('legend'=>'shipping_legend', 'type'=>'\Isotope\Model\Attribute\Weight'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_exempt' => array
