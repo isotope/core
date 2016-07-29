@@ -162,7 +162,12 @@ class ProductCollectionItem extends \Model
                 return null;
             }
 
-            $this->objProduct = $strClass::findByPk($this->product_id);
+            try {
+                $this->objProduct = $strClass::findByPk($this->product_id);
+            } catch (\Exception $e) {
+                $this->objProduct = null;
+                $this->addError($e->getMessage());
+            }
             
             if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
                 if ($this->objProduct instanceof \Model) {
