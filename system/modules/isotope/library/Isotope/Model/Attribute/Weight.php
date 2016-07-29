@@ -54,11 +54,10 @@ class Weight extends Attribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        if (!$objProduct instanceof WeightAggregate) {
+        if (!$objProduct instanceof WeightAggregate || ($weight = $objProduct->getWeight()) === null) {
             return '';
         }
 
-        $weight = $objProduct->getWeight();
         $format = $arrOptions['format'] ?: '%s %s';
 
         return sprintf($format, $weight->getWeightValue(), $weight->getWeightUnit());
