@@ -106,7 +106,7 @@ class Favorites extends Module
             $collection,
             $collectionTemplate->items,
             (int) \Input::get('remove'),
-            $addToCart
+            (int) $addToCart
         );
 
         $collectionTemplate->cart_all_href = \Haste\Util\Url::addQueryString('add_to_cart=all');
