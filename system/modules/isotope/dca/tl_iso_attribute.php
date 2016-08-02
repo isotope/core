@@ -135,10 +135,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'checkboxproduct'           => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_sorting',
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
-        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files,isGallery',
-        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files,isGallery',
+        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
+        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},checkoutRelocate',
-        'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory',
+        'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory,multilingual',
     ),
 
     // Subpalettes
