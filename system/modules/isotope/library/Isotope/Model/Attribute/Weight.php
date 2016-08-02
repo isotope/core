@@ -14,6 +14,7 @@ namespace Isotope\Model\Attribute;
 
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Isotope;
 use Isotope\Model\Attribute;
 
 /**
@@ -58,8 +59,10 @@ class Weight extends Attribute
             return '';
         }
 
-        $format = $arrOptions['format'] ?: '%s %s';
-
-        return sprintf($format, $weight->getWeightValue(), $weight->getWeightUnit());
+        return sprintf(
+            $arrOptions['format'] ?: '%s %s',
+            Isotope::formatPrice($weight->getWeightValue(), false),
+            $weight->getWeightUnit()
+        );
     }
 }

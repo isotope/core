@@ -139,7 +139,7 @@ class InsertTag
                 return $this->getValueForAddressTag($address, $tokens[2]);
 
             case 'weight':
-                return $collection->addToScale()->amountIn($tokens[2]);
+                return Isotope::formatPrice($collection->addToScale()->amountIn($tokens[2]), false);
 
             default:
                 return $collection->{$tokens[1]};
