@@ -87,7 +87,7 @@ abstract class Address extends CheckoutStep
 
             $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-            /** @type \Widget $objWidget */
+            /** @var \Widget $objWidget */
             $objWidget = new $strClass(
                 [
                     'id'          => $this->getStepClass(),
@@ -257,7 +257,7 @@ abstract class Address extends CheckoutStep
                     continue;
                 }
 
-                /** @type \Widget $strClass */
+                /** @var \Widget $strClass */
                 $strClass = $GLOBALS['TL_FFL'][$field['dca']['inputType']];
 
                 if ('country' === $field['value']) {
@@ -304,7 +304,7 @@ abstract class Address extends CheckoutStep
 
         if (FE_USER_LOGGED_IN === true) {
 
-            /** @type AddressModel[] $arrAddresses */
+            /** @var AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 

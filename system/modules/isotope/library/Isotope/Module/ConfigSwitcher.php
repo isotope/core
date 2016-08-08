@@ -87,7 +87,7 @@ class ConfigSwitcher extends Module
     {
         $arrConfigs = array();
 
-        /** @type Config[] $objConfigs */
+        /** @var Config[] $objConfigs */
         $objConfigs = Config::findMultipleByIds($this->iso_config_ids);
 
         if (null !== $objConfigs) {

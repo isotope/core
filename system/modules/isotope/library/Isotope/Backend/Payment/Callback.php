@@ -115,7 +115,7 @@ class Callback extends Permission
     {
         $arrCCTypes = array();
 
-        /** @type Payment $objPayment */
+        /** @var Payment $objPayment */
         if (($objPayment = Payment::findByPk($dc->id)) !== null) {
 
             try {

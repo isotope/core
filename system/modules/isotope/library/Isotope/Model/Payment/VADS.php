@@ -31,7 +31,7 @@ abstract class VADS extends Postsale
 {
     /**
      * List of parameters to validate on inbound data
-     * @type array
+     * @var array
      */
     protected $inboundParameters = array(
         'vads_action_mode',

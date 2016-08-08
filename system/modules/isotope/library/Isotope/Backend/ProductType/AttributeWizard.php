@@ -47,7 +47,7 @@ class AttributeWizard extends \Backend
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
-                /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+                /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
@@ -114,7 +114,7 @@ class AttributeWizard extends \Backend
         $strName  = $arrField['name'];
         $style = '';
 
-        /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+        /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
 
         if (null !== $objAttribute && $objAttribute->isVariantOption()) {

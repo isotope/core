@@ -89,7 +89,7 @@ class CartAddress extends Module
         $objAddress = $this->getDefaultAddress($useBilling);
 
         $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
-            /** @type Form $objHaste */
+            /** @var Form $objHaste */
             return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
         }, (boolean) $this->tableless);
 

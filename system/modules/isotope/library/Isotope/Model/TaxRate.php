@@ -137,7 +137,7 @@ class TaxRate extends \Model
                     if (!empty($validators) && is_array($validators)) {
                         foreach ($validators as $type) {
 
-                            /** @type IsotopeVatNoValidator $service */
+                            /** @var IsotopeVatNoValidator $service */
                             $service = new $GLOBALS['ISO_VAT'][$type]();
 
                             if ($service->exemptTax($objAddress, $this)) {

@@ -50,7 +50,7 @@ class Callback extends \Backend
      */
     public function initializeTableOptions(\Widget $objWidget)
     {
-        /** @type Attribute $objAttribute */
+        /** @var Attribute $objAttribute */
 
         if ('iso_products' === \Input::get('do')) {
             $objAttribute = Attribute::findByFieldName($objWidget->name);

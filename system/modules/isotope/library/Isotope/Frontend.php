@@ -792,7 +792,7 @@ class Frontend extends \Frontend
         $fltAmount = $fltPrice;
 
         if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
-            /** @type IsotopeProduct|Standard $objProduct */
+            /** @var IsotopeProduct|Standard $objProduct */
 
             $arrAttributes = array_intersect(
                 Attribute::getPricedFields(),
@@ -811,7 +811,7 @@ class Frontend extends \Frontend
                     $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
                     $value = deserialize($value, true);
 
-                    /** @type AttributeOption $objOption */
+                    /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (in_array($objOption->id, $value)) {
                             $fltAmount += $objOption->getAmount($fltPrice, 0);

@@ -1834,7 +1834,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             }
         }
 
-        /** @type Config $config */
+        /** @var Config $config */
         $config         = $this->getRelated('config_id');
         $billingFields  = (null === $config) ? array() : $config->getBillingFields();
         $shippingFields = (null === $config) ? array() : $config->getShippingFields();

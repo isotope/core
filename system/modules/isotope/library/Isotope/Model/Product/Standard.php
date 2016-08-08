@@ -262,7 +262,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
             }
 
-            /** @type object $objVariants */
+            /** @var object $objVariants */
             $objVariants = \Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
@@ -416,7 +416,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objProduct->generate($arrConfig);
         }
 
-        /** @type Template|\stdClass $objTemplate */
+        /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
@@ -441,7 +441,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->generatePrice = function() use ($objProduct) {
             $objPrice = $objProduct->getPrice();
 
-            /** @type ProductType $objType */
+            /** @var ProductType $objType */
             $objType = $objProduct->getRelated('type');
 
             if (null === $objPrice) {
@@ -677,7 +677,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], ['date', 'time', 'datim'], true)) {
                     try {
-                        /** @type \Date|object $objDate */
+                        /** @var \Date|object $objDate */
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
 
@@ -790,7 +790,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
         foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
-            /** @type IsotopeAttribute|Attribute $objAttribute */
+            /** @var IsotopeAttribute|Attribute $objAttribute */
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
@@ -832,7 +832,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
             // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-            /** @type object $objParent */
+            /** @var object $objParent */
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {

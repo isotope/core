@@ -190,7 +190,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 if (!$this->blnUpdateCache
                     && null !== $this->objModel->getRelated('jumpTo')
                 ) {
-                    /** @type \PageModel $objJumpTo */
+                    /** @var \PageModel $objJumpTo */
                     $objJumpTo = $this->objModel->getRelated('jumpTo');
                     $strUrl    = $objJumpTo->getFrontendUrl() . '?' . $_SERVER['QUERY_STRING'];
 

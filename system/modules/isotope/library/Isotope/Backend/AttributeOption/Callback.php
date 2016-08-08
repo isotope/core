@@ -43,7 +43,7 @@ class Callback extends \Backend
         // Attribute options for products can always have a price
         if ('iso_products' !== \Input::get('do')) {
 
-            /** @type Attribute $objAttribute */
+            /** @var Attribute $objAttribute */
             $objAttribute = null;
 
             switch (\Input::get('act')) {

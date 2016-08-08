@@ -232,7 +232,7 @@ abstract class AbstractProductFilter extends Module
         static $cache;
 
         if (null === $cache) {
-            /** @type ProductType[] $productTypes */
+            /** @var ProductType[] $productTypes */
             $productTypes = ProductType::findAll();
             $cache        = array();
 

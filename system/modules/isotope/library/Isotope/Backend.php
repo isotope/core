@@ -170,7 +170,7 @@ class Backend extends Contao_Backend
 
         if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
 
-            /** @type OrderStatus $status */
+            /** @var OrderStatus $status */
             foreach ($objStatus as $status) {
                 $arrStatus[$status->id] = $status->getName();
             }
@@ -186,7 +186,7 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         if (!\Database::getInstance()->tableExists(OrderStatus::getTable())
@@ -300,7 +300,7 @@ class Backend extends Contao_Backend
                     'name'     => \Input::post('name'),
                 );
 
-                /** @type \Isotope\Widget\MediaManager $objWidget */
+                /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
                 $objWidget->ajaxUpload();
                 exit;
@@ -353,7 +353,7 @@ class Backend extends Contao_Backend
                 $arrAttribs['strField']     = $strField;
                 $arrAttribs['activeRecord'] = $dc->activeRecord;
 
-                /** @type \Isotope\Widget\MediaManager $objWidget */
+                /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
                 echo $objWidget->generate();
                 exit;

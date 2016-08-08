@@ -30,14 +30,14 @@ class EuViesValidator implements IsotopeVatNoValidator
     /**
      * WSDL VIES Url Service
      *
-     * @type string
+     * @var string
      */
     private static $url_vies = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     /**
      * Valid european countries ISO codes
      *
-     * @type array
+     * @var array
      */
     private static $european_countries = array('AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK');
 

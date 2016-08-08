@@ -511,12 +511,12 @@ class Isotope extends \Controller
 
         foreach ($arrConfig as $k => $v) {
 
-            /** @type \Isotope\Model\Attribute $objAttribute */
+            /** @var \Isotope\Model\Attribute $objAttribute */
             if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
                 && $objAttribute instanceof IsotopeAttributeWithOptions
             ) {
 
-                /** @type \Widget $strClass */
+                /** @var \Widget $strClass */
                 $strClass = $objAttribute->getFrontendWidget();
                 $arrField = $strClass::getAttributesFromDca(
                     $GLOBALS['TL_DCA'][$strTable]['fields'][$k],

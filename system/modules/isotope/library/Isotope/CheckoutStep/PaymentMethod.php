@@ -85,7 +85,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-        /** @type \Widget $objWidget */
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass(array(
             'id'            => $this->getStepClass(),
             'name'          => $this->getStepClass(),
@@ -171,7 +171,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $arrColumns[] = "enabled='1'";
             }
 
-            /** @type Payment[] $objModules */
+            /** @var Payment[] $objModules */
             $objModules = Payment::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {

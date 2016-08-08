@@ -26,7 +26,7 @@ class Permission extends \Backend
      */
     protected function addNewRecordPermissions($id, $table, $accessField, $permissionField)
     {
-        /** @type \BackendUser|object $user */
+        /** @var \BackendUser|object $user */
         $user    = \BackendUser::getInstance();
         $session = \Session::getInstance();
         $db      = \Database::getInstance();

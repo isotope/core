@@ -315,7 +315,7 @@ abstract class Module extends Contao_Module
             }
         }
 
-        /** @type PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');

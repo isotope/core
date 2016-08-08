@@ -33,7 +33,7 @@ class Callback extends Permission
      */
     public function checkPermission($dc)
     {
-        /** @type \BackendUser $user */
+        /** @var \BackendUser $user */
         $user    = \BackendUser::getInstance();
         $session = \Session::getInstance();
 

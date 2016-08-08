@@ -26,7 +26,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Cache product options for attribute
      * "false" as long as the cache is not built
-     * @type \Isotope\Collection\AttributeOption|array
+     * @var \Isotope\Collection\AttributeOption|array
      */
     protected $varOptionsCache = false;
 
@@ -246,7 +246,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case IsotopeAttributeWithOptions::SOURCE_TABLE:
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                /** @type \Isotope\Collection\AttributeOption $objOptions */
+                /** @var \Isotope\Collection\AttributeOption $objOptions */
                 $objOptions = AttributeOption::findPublishedByIds($arrValues);
 
                 return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
@@ -300,7 +300,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return parent::generateValue($value, $options);
         }
 
-        /** @type \Widget $strClass */
+        /** @var \Widget $strClass */
         $strClass = $this->getFrontendWidget();
         $arrField = $strClass::getAttributesFromDca(
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name],

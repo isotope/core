@@ -201,7 +201,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         if ($this->nc_notification) {
             $blnNotificationError = true;
 
-            /** @type Notification $objNotification */
+            /** @var Notification $objNotification */
             if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 

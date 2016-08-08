@@ -134,7 +134,7 @@ class DcaManager extends \Backend
 
                 if ($strClass != '') {
 
-                    /** @type Attribute $objAttribute */
+                    /** @var Attribute $objAttribute */
                     $objAttribute = new $strClass();
                     $objAttribute->loadFromDCA($arrData, $strName);
                     $arrData['attributes'][$strName] = $objAttribute;
@@ -261,7 +261,7 @@ class DcaManager extends \Backend
 
         if (\Input::get('id') > 0) {
 
-            /** @type object $objProduct */
+            /** @var object $objProduct */
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_product p1 LEFT JOIN tl_iso_product p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
@@ -408,7 +408,7 @@ class DcaManager extends \Backend
 
         $arrFields         = array();
 
-        /** @type ProductType $objType */
+        /** @var ProductType $objType */
         $objType           = $objProduct->getRelated('type');
 
         $arrVariantFields  = $objType->getVariantAttributes();
@@ -439,7 +439,7 @@ class DcaManager extends \Backend
         } else {
             foreach (array_merge($arrVariantOptions) as $name) {
 
-                /** @type Attribute $objAttribute */
+                /** @var Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
 
                 if ($objAttribute instanceof IsotopeAttributeWithOptions

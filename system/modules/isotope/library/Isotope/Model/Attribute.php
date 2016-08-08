@@ -90,7 +90,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
     /**
      * Holds a map for field name to ID
-     * @type array
+     * @var array
      */
     protected static $arrFieldNameMap = array();
 

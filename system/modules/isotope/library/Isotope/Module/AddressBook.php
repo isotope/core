@@ -135,13 +135,13 @@ class AddressBook extends Module
      */
     protected function show()
     {
-        /** @type \PageModel $objPage */
+        /** @var \PageModel $objPage */
         global $objPage;
 
         $arrAddresses = [];
         $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
-        /** @type Address[] $objAddresses */
+        /** @var Address[] $objAddresses */
         $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
@@ -195,7 +195,7 @@ class AddressBook extends Module
         }
 
         if (null === $objAddress) {
-            /** @type \PageModel $objPage */
+            /** @var \PageModel $objPage */
             global $objPage;
 
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
@@ -257,7 +257,7 @@ class AddressBook extends Module
                 // Send notifications
                 $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
 
-                /** @type \PageModel $objPage */
+                /** @var \PageModel $objPage */
                 global $objPage;
 
                 \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
@@ -313,7 +313,7 @@ class AddressBook extends Module
             return;
         }
 
-        /** @type Notification $objNotification */
+        /** @var Notification $objNotification */
         $objNotification = Notification::findByPk($this->nc_notification);
 
         if (null === $objNotification) {
@@ -356,7 +356,7 @@ class AddressBook extends Module
             $objAddress->delete();
         }
 
-        /** @type \PageModel $objPage */
+        /** @var \PageModel $objPage */
         global $objPage;
 
         \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));

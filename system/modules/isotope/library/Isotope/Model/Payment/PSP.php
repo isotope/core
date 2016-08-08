@@ -100,7 +100,7 @@ abstract class PSP extends Payment implements IsotopePostsale
             case 52: // Genehmigung nicht bekannt
             case 92: // Zahlung unsicher
 
-                /** @type \Isotope\Model\Config $objConfig */
+                /** @var \Isotope\Model\Config $objConfig */
                 if (($objConfig = $objOrder->getConfig()) === null) {
                     \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
                     return false;

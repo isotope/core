@@ -33,7 +33,7 @@ class Callback extends Permission
             return;
         }
 
-        /** @type \BackendUser $objBackendUser */
+        /** @var \BackendUser $objBackendUser */
         $objBackendUser = \BackendUser::getInstance();
 
         if ($objBackendUser->isAdmin) {
@@ -119,7 +119,7 @@ class Callback extends Permission
      */
     public function copyProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
@@ -144,7 +144,7 @@ class Callback extends Permission
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
@@ -157,7 +157,7 @@ class Callback extends Permission
      */
     public function getOptions()
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         $arrTypes = $objUser->iso_product_types;
@@ -202,7 +202,7 @@ class Callback extends Permission
         if (!empty($arrAttributes) && is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
 
-                /** @type IsotopeAttributeForVariants|Attribute $objAttribute */
+                /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
