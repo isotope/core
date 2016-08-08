@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/exception.xlf" source-language="en" target-language="fr">
     <body>
       <trans-unit id="XPT.isotopeOld">
@@ -19,16 +18,16 @@
         <target>Créer une sauvegarde, puis désinstaller complètement Isotope. Retirer toute les tables de la base et les extensions liées. Ensuite, installer à nouveau Isotope eCommerce 2.0.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
-        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Please consider participating&lt;/a&gt;.</source>
-        <target>Nous menons actuellement une levée de fonds pour développer un outil de mise à jour. Plus les personnes nous aide, plus vite vous serez en mesure de mettre à jour votre ancienne installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Participer&lt;/a&gt;.</target>
+        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
+        <target>Nous menons actuellement une levée de fonds pour développer un outil de mise à jour. Plus les personnes nous aide, plus vite vous serez en mesure de mettre à jour votre ancienne installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Participer&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
-        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href="http://contao.org/en/" target="_blank"&gt;the Contao partner listing&lt;/a&gt;.</source>
-        <target>Contacter un développeur expérimenté Contao afin de migrer vos données manuellement. Nous vous suggérons de jeter un œil à  &lt;a href="http://contao.org/en/" target="_blank"&gt;la liste des partenaires Contao&lt;/ a&gt;.</target>
+        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>
+        <target>Contacter un développeur expérimenté Contao afin de migrer vos données manuellement. Nous vous suggérons de jeter un œil à  &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;la liste des partenaires Contao&lt;/ a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
-        <source>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
-        <target>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Visitez notre site web&lt;/ a&gt; pour obtenir plus d'informations sur Isotope eCommerce.</target>
+        <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visitez notre site web&lt;/ a&gt; pour obtenir plus d'informations sur Isotope eCommerce.</target>
       </trans-unit>
     </body>
   </file>

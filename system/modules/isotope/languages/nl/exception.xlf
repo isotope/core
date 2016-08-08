@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/exception.xlf" source-language="en" target-language="nl">
     <body>
       <trans-unit id="XPT.isotopeOld">
@@ -19,16 +18,16 @@
         <target>Maak een backup, de-installeer Isotope en verwijder alle gerelateerde tabellen en uitbreidingen. Hierna kunt u Isotope eCommerce 2.0 installeren.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
-        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Please consider participating&lt;/a&gt;.</source>
-        <target>Momenteel hebben we een geldinzameling om een automatische update te ontwikkelen. Hoe meer mensen helpen, hoe sneller we oude installaties kunnen updaten. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Wellicht wilt u meehelpen&lt;/a&gt;.</target>
+        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
+        <target>Momenteel hebben we een geldinzameling om een automatische update te ontwikkelen. Hoe meer mensen helpen, hoe sneller we oude installaties kunnen updaten. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Wellicht wilt u meehelpen&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
-        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href="http://contao.org/en/" target="_blank"&gt;the Contao partner listing&lt;/a&gt;.</source>
-        <target>Zoek een ervaren Contao ontwikkelaar om uw gegevens handmatig te migreren. Wij adviseren de &lt;a href="http://contao.org/en/" target="_blank"&gt;Contao partnerlijst&lt;/a&gt; te bekijken.</target>
+        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>
+        <target>Zoek een ervaren Contao ontwikkelaar om uw gegevens handmatig te migreren. Wij adviseren de &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;Contao partnerlijst&lt;/a&gt; te bekijken.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
-        <source>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
-        <target>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Bezoek onze website&lt;/a&gt; voor meer informatie over Isotope eCommerce.</target>
+        <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Bezoek onze website&lt;/a&gt; voor meer informatie over Isotope eCommerce.</target>
       </trans-unit>
     </body>
   </file>

@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
         <source>
-&lt;p class="tl_help_table"&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
     Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
     &lt;br&gt;
     The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
@@ -21,7 +20,7 @@
     &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
 &lt;/p&gt;</source>
         <target>
-&lt;p class="tl_help_table"&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
     Anders als bei anderen Contao-Modulen wird der Benutzer nicht direkt auf die Detailseite weitergeleitet, wenn er sich die Produktdetails ansieht. Wir haben eine neue Lösung für das Problem, den Seitennamen leserlich auszugeben und die zugehörige Detailseite zuzuordnen.&lt;br&gt;
     &lt;br&gt;
     Die Detailseite (Alias) ist immer die selbe Seite, welche für eine Produktkategorie ausgewählt wurde. Es gibt 2 Möglichkeiten die Produktdetails anzuzeigen:&lt;br&gt;
@@ -39,16 +38,16 @@
 &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
-        <source>&lt;p class="tl_help_table"&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
-        <target>&lt;p class="tl_help_table"&gt;Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.</target>
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
-        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href="http://isotopeecommerce.org/en/manual.html" target="_blank" style="text-decoration:underline"&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
-        <target>Um Produktvarianten mit Isotope eCommerce nutzen zu können, müssen Sie erst Attribute konfigurieren.&lt;br&gt;Bitte beachten Sie &lt;a href="http://isotopeecommerce.org/en/manual.html" target="_blank" style="text-decoration:underline"&gt;das Handbuch&lt;/a&gt; für weitere Infos zur Attribut-Erstellung</target>
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Um Produktvarianten mit Isotope eCommerce nutzen zu können, müssen Sie erst Attribute konfigurieren.&lt;br&gt;Bitte beachten Sie &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;das Handbuch&lt;/a&gt; für weitere Infos zur Attribut-Erstellung</target>
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
-        <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href="http://www.elevateweb.co.uk/image-zoom/examples#window-position" target="_blank"&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src="system/modules/isotope/assets/images/elevatezoom-positions.png" alt=""&gt;</source>
-        <target>Die Fensterposition kann über die Basis-Position sowie einem horizontalen und vertikalen Abstand definiert werden. Genauere Infos unter: &lt;a href="http://www.elevateweb.co.uk/image-zoom/examples#window-position" target="_blank"&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src="system/modules/isotope/assets/images/elevatezoom-positions.png" alt=""&gt;</target>
+        <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
+        <target>Die Fensterposition kann über die Basis-Position sowie einem horizontalen und vertikalen Abstand definiert werden. Genauere Infos unter: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
       </trans-unit>
     </body>
   </file>

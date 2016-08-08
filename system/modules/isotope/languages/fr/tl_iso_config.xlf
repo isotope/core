@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="fr">
     <body>
       <trans-unit id="tl_iso_config.name.0">
@@ -202,6 +201,21 @@
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
         <target>Limiter les pays des membres (inscription, données personnelles) à la liste combinée des pays de facturation et d'expédition.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.0">
+        <source>VAT No. validation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.1">
+        <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.0">
+        <source>Price display</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.1">
+        <source>Select if you want to display net or gross prices in your shop. See the help wizard for more information.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.0">
+        <source>Price formatting</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.currencyFormat.1">
         <source>Choose a formatting for prices.</source>
         <target>Choisir un formatage de la monnaie pour les prix.</target>
@@ -326,6 +340,12 @@
         <source>Select an order status if something goes wrong (e.g. payment).</source>
         <target>Sélectionnez un état de la commande en cas d'erreur (par exemple : le paiement).</target>
       </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.0">
+        <source>Module for backend view</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.1">
+        <source>Select a order details module that is used to show the order in the backend.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.invoiceLogo.0">
         <source>Invoice Logo</source>
         <target>Logo des factures</target>
@@ -351,12 +371,30 @@
         <target>Le sous-total minimum du panier requis lors d'une commande. Saisir 0 pour désactiver.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.0">
-        <source>Duration to mark a product as "new"</source>
-        <target>Durée pendant laquelle un produit est "nouveau"</target>
+        <source>Duration to mark a product as &quot;new&quot;</source>
+        <target>Durée pendant laquelle un produit est &quot;nouveau&quot;</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.1">
-        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.</source>
-        <target>Si vous souhaitez mettre en valeur de nouveau produits, vous pouvez entrer une durée ici. Ceci ajoutera automatiquement une classe CSS "new" à tout les produits dans Isotope eCommerce.</target>
+        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
+        <target>Si vous souhaitez mettre en valeur de nouveau produits, vous pouvez entrer une durée ici. Ceci ajoutera automatiquement une classe CSS &quot;new&quot; à tout les produits dans Isotope eCommerce.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.0">
+        <source>Enable Google Analytics</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.1">
+        <source>Enable e-commerce tracking with Google Analytics.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.0">
+        <source>Account</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.1">
+        <source>Please provde the account key (UA-XXXXXXX-X).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.0">
+        <source>Track member</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.1">
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>
@@ -405,6 +443,30 @@
       <trans-unit id="tl_iso_config.admin.ch">
         <source>Swiss Federal Department of Finance</source>
         <target>Département fédéral des finances</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.net.0">
+        <source>Net</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.gross.0">
+        <source>Gross (recommended)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fixed.0">
+        <source>Fixed</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.legacy.0">
+        <source>Legacy</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.legacy.1">
+        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.new.0">
         <source>New configuration</source>
@@ -462,6 +524,9 @@
         <source>Checkout</source>
         <target>Commander</target>
       </trans-unit>
+      <trans-unit id="tl_iso_config.pricing_legend">
+        <source>Pricing</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.currency_legend">
         <source>Currency formatting</source>
         <target>Formatage de la monnaie</target>
@@ -485,6 +550,9 @@
       <trans-unit id="tl_iso_config.products_legend">
         <source>Products</source>
         <target>Produits</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.analytics_legend">
+        <source>Analytics</source>
       </trans-unit>
     </body>
   </file>

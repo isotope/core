@@ -1,22 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="tl_module.iso_list_layout.0">
         <source>Product list template</source>
         <target>Template elenco prodotti</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_list_layout.1">
+        <source>Please choose a list layout. List template files start with &lt;em&gt;iso_list_&lt;/em&gt;.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_reader_layout.0">
         <source>Product reader template</source>
         <target>Template lettore prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_reader_layout.1">
+        <source>Please choose a reader template. Reader template files start with &lt;em&gt;iso_reader_&lt;/em&gt;.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_gallery.0">
         <source>Gallery</source>
         <target>Galleria </target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_gallery.1">
+        <source>Select a gallery to render images (overrides the product type config).</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_collectionTpl.0">
         <source>Product collection template</source>
         <target>Modulo per la raccolta del prodotto </target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_collectionTpl.1">
+        <source>Please choose a template to render the products. You can add custom collection templates to folder &lt;em&gt;templates&lt;/em&gt;. Collection template files start with &lt;em&gt;iso_collection_&lt;/em&gt;.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterTpl.0">
+        <source>Filter template</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterTpl.1">
+        <source>Please choose a filter template. Filter template files start with &lt;em&gt;iso_filter_&lt;/em&gt;.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_jump_first.0">
         <source>Redirect to first product</source>
@@ -26,6 +43,12 @@
         <source>Check here if users are redirected to the first product of the list.</source>
         <target>Spunti qui se gli utenti saranno reindirizzati al primo prodotto nell'elenco.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_hide_list.0">
+        <source>Hide in reader mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_hide_list.1">
+        <source>Hide product list when a product alias is found in the URL.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_use_quantity.0">
         <source>Enable quantity</source>
         <target>Abiliti la quantità</target>
@@ -34,6 +57,12 @@
         <source>Allow users to specify 1 or more of a product to be purchased.</source>
         <target>Permetta agli utilizzatori di specificare uno o più prodotti da acquistare.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.0">
+        <source>Display a 404 page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.1">
+        <source>Display the 404 not found page if no product alias is in the URL. Use this if your reader module is on a separate page that should not be available otherwise.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method.0">
         <source>Checkout method</source>
         <target>Metodo di checkout</target>
@@ -41,6 +70,18 @@
       <trans-unit id="tl_module.iso_checkout_method.1">
         <source>Choose your checkout method.</source>
         <target>Scelga il metodo di checkout.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.0">
+        <source>Require login</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.1">
+        <source>A member login is required to view this page (e.g. if the order belongs to a member).</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.0">
+        <source>Login page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.1">
+        <source>Select the page where a member can login.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_addProductJumpTo.0">
         <source>Add product jump to page</source>
@@ -106,6 +147,18 @@
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Forward utente alal pagina riassunto se nessun dato è richiesto in nessuna tappa.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.0">
+        <source>Skip shipping step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.1">
+        <source>Skips the shipping step if only one shippig method is available.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.0">
+        <source>Skip payment step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.1">
+        <source>Skips the payment step if only one payment method is available.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>
         <target>Form condizioni ordine</target>
@@ -113,6 +166,21 @@
       <trans-unit id="tl_module.iso_order_conditions.1">
         <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
         <target>Scelga un form personalizzato per visualizzare i termini e le condizioni di ventita (opzionale).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.0">
+        <source>Position of order conditions form</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.1">
+        <source>Define if the order condition form should be shown before or after the products list.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.top">
+        <source>On top (before address)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.before">
+        <source>Before products list</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.after">
+        <source>After products list</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_addToAddressbook.0">
         <source>Add to address book</source>
@@ -130,6 +198,12 @@
         <source>Define in what order the collection items should be listed.</source>
         <target>Definisci in quale ordine gli elementi della raccolta dovrebbero essere elencati.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_emptyMessage.0">
+        <source>Define empty message</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyMessage.1">
+        <source>Set a custom message when there is nothing to show (empty product list, empty cart, etc.).</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_noProducts.0">
         <source>Message when empty</source>
         <target>Messaggio per elenco vuoto</target>
@@ -137,6 +211,18 @@
       <trans-unit id="tl_module.iso_noProducts.1">
         <source>Enter a custom message if there is nothing to show (empty product list, empty cart, etc.).</source>
         <target>Lasci non compilato per il messaggio preimpostato.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyFilter.0">
+        <source>Define a message if no filter is set</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyFilter.1">
+        <source>Set a custom message when there is no filter set.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noFilter.0">
+        <source>Message when no filter is set</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noFilter.1">
+        <source>Enter a custom message if there is no filter set.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope.0">
         <source>Category Scope</source>
@@ -146,6 +232,18 @@
         <source>Specify the scope of a product lister.</source>
         <target>Selezioni l'ambito di un elenco prodotti</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.0">
+        <source>Condition</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.1">
+        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with &quot;tl_iso_product.&quot; (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterModules.0">
+        <source>Filter modules</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterModules.1">
+        <source>Select the filter modules you want to consider for this product list.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_filterFields.0">
         <source>Enabled filters</source>
         <target>Filtri abilitati</target>
@@ -153,6 +251,42 @@
       <trans-unit id="tl_module.iso_filterFields.1">
         <source>Please select filters to enable.</source>
         <target>Per cortesia selezioni i filtri da abilitare.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.0">
+        <source>Filter configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.1">
+        <source>Please configure the cumulative filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.attribute.0">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
+        <source>Query Type</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.and">
+        <source>AND</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.or">
+        <source>OR</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.0">
+        <source>Number of results</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.none">
+        <source>Do not show</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.all">
+        <source>Show total</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
+        <source>Show difference</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterHideSingle.0">
+        <source>Hide single options</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterHideSingle.1">
+        <source>Hide filter field if there is just one option.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_searchFields.0">
         <source>Enabled search fields</source>
@@ -162,13 +296,34 @@
         <source>Please select search fields to enable.</source>
         <target>Per cortesia selezioni i campi ricerca da abilitare.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_searchAutocomplete.0">
+        <source>Autocomplete search field</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchAutocomplete.1">
+        <source>If you select a field here, the search will be autocompleted by the values of that field.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_sortingFields.0">
         <source>Enabled sorting fields</source>
-        <target>Campi "ordina per" abilitati</target>
+        <target>Campi &quot;ordina per&quot; abilitati</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_sortingFields.1">
         <source>Please select orderable fields to enable.</source>
         <target>Per cortesia selezioni i campi ordinabili da abilitare</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.0">
+        <source>Filtering for new products</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.1">
+        <source>If you have configured marking products as &quot;new&quot; in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_all">
+        <source>Show all products</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_new">
+        <source>Only show new products</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_old">
+        <source>Only show old products</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.0">
         <source>Enable per-page limiting</source>
@@ -177,6 +332,12 @@
       <trans-unit id="tl_module.iso_enableLimit.1">
         <source>Allow the user to select the number of records to show per page.</source>
         <target>Permetta agli utilizzatori di selezionare il numero di record da mostrare per pagina.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_perPage.0">
+        <source>Per page options</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_perPage.1">
+        <source>Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_cart_jumpTo.0">
         <source>Shopping Cart Jump to page</source>
@@ -226,6 +387,24 @@
         <source>Select the categories to show products of.</source>
         <target>Selezioni le categorie prodotti da mostrare.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_includeMessages.0">
+        <source>Include messaging</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_includeMessages.1">
+        <source>This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_continueShopping.0">
+        <source>Enable &quot;Continue shopping&quot; button</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_continueShopping.1">
+        <source>Add a link to the currently added product to the cart.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.0">
+        <source>Address types</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.1">
+        <source>Please choose the address types.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_address.billing">
         <source>Billing address</source>
         <target>Indirizzo Fatturazione</target>
@@ -233,6 +412,12 @@
       <trans-unit id="tl_module.iso_address.shipping">
         <source>Shipping address</source>
         <target>Indirizzo Spedizione</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.0">
+        <source>Available address fields</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.1">
+        <source>Choose the available address fields you would like to display.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_legend">
         <source>Order conditions form</source>
@@ -254,25 +439,49 @@
         <source>All Categories</source>
         <target>Tutte le categorie</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.global.1">
+        <source>Show all products that are assigned to a page of the active page tree (based on the root page).</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.0">
         <source>Current Category and First Child Category</source>
-        <target>Categoria corrente e categoria "Primo Figlio"</target>
+        <target>Categoria corrente e categoria &quot;Primo Figlio&quot;</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.1">
+        <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.0">
         <source>Current Category and All Child Categories</source>
-        <target>Categoria corrente e categorie "Tutti i Figli"</target>
+        <target>Categoria corrente e categorie &quot;Tutti i Figli&quot;</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.1">
+        <source>Show all products that are assigned to the active page or any child page of it.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_category.0">
         <source>Current Category</source>
         <target>Categoria Corrente</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_category.1">
+        <source>Show all products that are assigned to the active page (default).</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.parent.0">
         <source>Parent Category</source>
         <target>Categoria Genitore</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.parent.1">
+        <source>Show all products that are assigned to the parent page of the active page.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.product.0">
         <source>Current Product's Categories</source>
         <target>Categorie prodotti correnti</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.product.1">
+        <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.article.0">
+        <source>Category of article</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.article.1">
+        <source>If you place the module in an article, it will show products assigned to the artilce's partent page, even though if you place the article in another page (e.g. using insert tag).</source>
       </trans-unit>
       <trans-unit id="tl_module.sortingDirection.ASC">
         <source>ASC</source>

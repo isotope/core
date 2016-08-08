@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_iso_product_collection.document_number.0">
@@ -183,12 +182,12 @@
         <target>Saferpay-Zahlung wurde erfolgreich erfasst.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusError">
-        <source>Saferpay payment could not be captured! Please check &lt;a href="https://www.saferpay.com/BO/Login/" target="_blank"&gt;the Saferpay web interface&lt;/a&gt;.</source>
-        <target>Saferpay-Zahlung konnte nicht erfasst werden! Bitte überprüfen Sie &lt;a href="https://www.saferpay.com/BO/Login/" target="_blank"&gt;die Saferpay-Webschnittstelle&lt;/a&gt;.</target>
+        <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
+        <target>Saferpay-Zahlung konnte nicht erfasst werden! Bitte überprüfen Sie &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;die Saferpay-Webschnittstelle&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
-        <source>Saferpay payment cannot be canceled automatically. Use &lt;a href="https://www.saferpay.com/BO/Login/" target="_blank"&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
-        <target>Saferpay-Zahlung kann nicht automatisch annulliert werden. Verwenden Sie &lt;a href="https://www.saferpay.com/BO/Login/" target="_blank"&gt;die Saferpay-Webschittstelle&lt;/a&gt; um eine Rückerstattung auszugeben.</target>
+        <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
+        <target>Saferpay-Zahlung kann nicht automatisch annulliert werden. Verwenden Sie &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;die Saferpay-Webschittstelle&lt;/a&gt; um eine Rückerstattung auszugeben.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="nl">
     <body>
       <trans-unit id="tl_iso_producttype.name.0">
@@ -81,6 +80,12 @@
       <trans-unit id="tl_iso_producttype.reader_gallery.1">
         <source>Select a gallery for product details.</source>
         <target>Kies een gallerij voor product details.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.0">
+        <source>CSS class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.1">
+        <source>The class(es) will be added to the product list and reader templates.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.0">
         <source>Attributes</source>
@@ -225,6 +230,12 @@
       <trans-unit id="tl_iso_producttype.expert_legend">
         <source>Expert settings</source>
         <target>Expert instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.noVariantAttributes">
+        <source>You must select at least one variant option (one of those: %s).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.singularAttributes">
+        <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
       </trans-unit>
     </body>
   </file>

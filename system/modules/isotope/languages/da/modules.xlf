@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="da">
     <body>
       <trans-unit id="MOD.isotope">
@@ -74,6 +73,12 @@
         <source>Product reader module. This is used to display product details.</source>
         <target>Modulet viser detaljerne for et produkt.</target>
       </trans-unit>
+      <trans-unit id="FMD.iso_favorites.0">
+        <source>Favorites</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.1">
+        <source>Renders the list of products on the favorites list.</source>
+      </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>
         <target>Indkøbskurv</target>
@@ -138,6 +143,18 @@
         <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
         <target>Viser alle beskeder hvis de ikke har været vist andre steder.</target>
       </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.0">
+        <source>Shipping cost calculator</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.1">
+        <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.0">
+        <source>Cart address</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.1">
+        <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
+      </trans-unit>
       <trans-unit id="IMD.config_module">
         <source>Isotope eCommerce configuration (Version: %s)</source>
         <target>Isotope eCommerce konfiguration (Version: %s)</target>
@@ -169,6 +186,12 @@
       <trans-unit id="IMD.related_categories.1">
         <source>Define categories for product relations.</source>
         <target>Definer kattegorier for relaterede produkter.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
       </trans-unit>
       <trans-unit id="IMD.baseprice.0">
         <source>Base prices</source>
@@ -233,6 +256,33 @@
       <trans-unit id="IMD.orderstatus.1">
         <source>Define order status.</source>
         <target>Angiv ordrestatus</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.1">
+        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+      </trans-unit>
+      <trans-unit id="IMD.labels.1">
+        <source>Replace given labels for certain languages.</source>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.0">
+        <source>Integrity Check</source>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.1">
+        <source>Validate your shop configuration against common errors.</source>
       </trans-unit>
     </body>
   </file>

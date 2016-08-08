@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="MOD.isotope">
@@ -10,13 +9,22 @@
         <source>Product management</source>
         <target>Управление товарами</target>
       </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+      </trans-unit>
       <trans-unit id="MOD.iso_orders.0">
         <source>Orders</source>
         <target>Заказы</target>
       </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+      </trans-unit>
       <trans-unit id="MOD.iso_setup.0">
         <source>Store configuration</source>
         <target>Конфигурация магазина</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs</source>
       </trans-unit>
       <trans-unit id="FMD.isotope">
         <source>Isotope eCommerce</source>
@@ -29,6 +37,12 @@
       <trans-unit id="FMD.iso_productfilter.1">
         <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
         <target>Определите названия отдельных фильтров для Isotope, таких как деревья категроий и фильтры атрибутов товара.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
@@ -53,6 +67,12 @@
       <trans-unit id="FMD.iso_productreader.1">
         <source>Product reader module. This is used to display product details.</source>
         <target>Средство отображения товара. Модкль используемый для отображения дополнительной информации о товаре.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.0">
+        <source>Favorites</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.1">
+        <source>Renders the list of products on the favorites list.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>
@@ -110,6 +130,27 @@
         <source>List products related to the current one.</source>
         <target>Список товаров сопутсвующих текущему товару.</target>
       </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.0">
+        <source>Shipping cost calculator</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.1">
+        <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.0">
+        <source>Cart address</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.1">
+        <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
+      </trans-unit>
+      <trans-unit id="IMD.config_module">
+        <source>Isotope eCommerce configuration (Version: %s)</source>
+      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
         <target>Товары</target>
@@ -137,6 +178,18 @@
       <trans-unit id="IMD.related_categories.1">
         <source>Define categories for product relations.</source>
         <target>Определите категории связанные с товаром.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.0">
+        <source>Base prices</source>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.1">
+        <source>Define base price.</source>
       </trans-unit>
       <trans-unit id="IMD.checkout">
         <source>Checkout Flow</source>
@@ -185,6 +238,39 @@
       <trans-unit id="IMD.configs.1">
         <source>Configure general settings for this store.</source>
         <target>Установить общие настройки для этого магазина.</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.1">
+        <source>Define order status.</source>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.1">
+        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+      </trans-unit>
+      <trans-unit id="IMD.labels.1">
+        <source>Replace given labels for certain languages.</source>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.0">
+        <source>Integrity Check</source>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.1">
+        <source>Validate your shop configuration against common errors.</source>
       </trans-unit>
     </body>
   </file>

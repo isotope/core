@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_iso_product.id.0">
@@ -21,6 +20,12 @@
       <trans-unit id="tl_iso_product.type.1">
         <source>Select your product type. Product types are defined in the store configuration.</source>
         <target>Produkttypen sind im Produkttypen-Manager definiert</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.0">
+        <source>Default variant</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.1">
+        <source>Click here if this variant should be pre-selected by default.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.alias.0">
         <source>Alias</source>
@@ -115,8 +120,8 @@
         <target>Grundpreis-Menge</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.1">
-        <source>Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).</source>
-        <target>Geben Sie die Menge dieses Produkts für den Grundpreis ein (z.B. "1500" wenn das Produkt 1500 Gramm schwer ist).</target>
+        <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
+        <target>Geben Sie die Menge dieses Produkts für den Grundpreis ein (z.B. &quot;1500&quot; wenn das Produkt 1500 Gramm schwer ist).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.images.0">
         <source>Images</source>

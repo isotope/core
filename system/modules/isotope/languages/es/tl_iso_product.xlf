@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="tl_iso_product.id.0">
@@ -14,9 +13,18 @@
         <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
         <target>Seleccione una categoría (las categorías basadas en páginas se aprovechan de las funciones de las páginas de Contao como la automatización de la navegación, la protección, plantillas, y la plena integración con los elementos de contenido).</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.type.0">
+        <source>Product type</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.type.1">
         <source>Select your product type. Product types are defined in the store configuration.</source>
         <target>Seleccione el tipo de producto. Los tipos de productos se definen en la configuración de la tienda.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.0">
+        <source>Default variant</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.1">
+        <source>Click here if this variant should be pre-selected by default.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.alias.0">
         <source>Alias</source>
@@ -66,6 +74,12 @@
         <source>Please enter the product description.</source>
         <target>Por favor, introduzca una descripción para este producto.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.0">
+        <source>Meta title</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.1">
+        <source>Meta title is used as page title in the product detail view. If you leave it empty, the product name will be used.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.meta_description.0">
         <source>Meta description</source>
         <target>Meta descripción</target>
@@ -82,6 +96,12 @@
         <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
         <target>Palabras clave meta serán colocados en la cabecera de la página de detalles del producto, para la optimización de motor de búsqueda.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.price.0">
+        <source>Price &amp;amp; tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.1">
+        <source>Please enter the price(s) for this product and select the tax class.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
         <target>Exento de envío</target>
@@ -95,8 +115,8 @@
         <target>Importe de precio básico</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.1">
-        <source>Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).</source>
-        <target>Introduzca la cantidad para calcular el precio base (por ejemplo, "1500" si su producto es 1500 gramos).</target>
+        <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
+        <target>Introduzca la cantidad para calcular el precio base (por ejemplo, &quot;1500&quot; si su producto es 1500 gramos).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.images.0">
         <source>Images</source>
@@ -113,6 +133,12 @@
       <trans-unit id="tl_iso_product.protected.1">
         <source>Restrict product access to certain member groups.</source>
         <target>Restringir el acceso del producto a ciertos grupos.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.0">
+        <source>Allowed member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.1">
+        <source>These groups will be able to access the product.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.guests.0">
         <source>Show to guests only</source>
@@ -218,6 +244,9 @@
         <source>Variant</source>
         <target>Variante</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.showVariants">
+        <source>Show product variants</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.new.0">
         <source>New product</source>
         <target>Nuevo producto</target>
@@ -282,9 +311,18 @@
         <source>Show details of product ID %s</source>
         <target>Mostrar los detalles del producto ID %s</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.filter">
+        <source>Advanced filter:</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_noimages">
+        <source>Without images</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.filter_nocategory">
         <source>Unassigned products</source>
         <target>Productos sin asignar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new">
+        <source>New products</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_today">
         <source>Added today</source>
@@ -297,6 +335,9 @@
       <trans-unit id="tl_iso_product.filter_new_month">
         <source>Added this month</source>
         <target>Añadido este mes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sorting">
+        <source>Manually sort products in a page</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.product_groups.0">
         <source>Product groups</source>
@@ -317,6 +358,18 @@
       <trans-unit id="tl_iso_product.prices.0">
         <source>Manage prices</source>
         <target>Gestionar los precios</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.1">
+        <source>Click the button to manage advanced prices for this product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.apply_and_close">
+        <source>Apply and close</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.0">
+        <source>Product variants</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.1">
+        <source>Show variants for product ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.generate.0">
         <source>Generate variants</source>
@@ -341,6 +394,15 @@
       <trans-unit id="tl_iso_product.downloads.1">
         <source>Edit downloads for product ID %s</source>
         <target>Editar descarga del producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.2">
+        <source>Currently: %s downloads.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.0">
+        <source>Move to group</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.1">
+        <source>Move product ID %s to a group</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.groupSelected">
         <source>Group</source>
@@ -393,6 +455,15 @@
       <trans-unit id="tl_iso_product.price_tiers.price">
         <source>Price</source>
         <target>Precio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.importAssetsDescr">
+        <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+</source>
       </trans-unit>
     </body>
   </file>

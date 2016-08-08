@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="fr">
     <body>
       <trans-unit id="tl_iso_attribute.name.0">
@@ -58,9 +57,24 @@
         <source>The description is shown as a hint to the backend user.</source>
         <target>La description est indiquée par un indice à l'utilisateur back office.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.0">
+        <source>Options source</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.1">
+        <source>Choose where the options for this field should be loaded from.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.table">
+        <source>Options Manager</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.product">
         <source>Product</source>
         <target>Produit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.foreignKey">
+        <source>Custom database table (foreignKey)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.attribute">
+        <source>Options Wizard (deprecated)</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.0">
         <source>Options</source>
@@ -90,6 +104,21 @@
         <source>Options</source>
         <target>Options</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable.1">
+        <source>Use the options manager to add your options to the field.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.includeBlankOption.0">
+        <source>Include blank option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.includeBlankOption.1">
+        <source>Check here to include a blank option in the select menu.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.blankOptionLabel.0">
+        <source>Label for blank option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.blankOptionLabel.1">
+        <source>You can optionally enter a label for the blank option. If you do not enter anything, a dash (-) will be used.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.mandatory.0">
         <source>Mandatory field</source>
         <target>Champ obligatoire</target>
@@ -105,6 +134,12 @@
       <trans-unit id="tl_iso_attribute.multiple.1">
         <source>Allow visitors to select more than one option.</source>
         <target>Autorise les visiteurs à sélectionner plusieurs options.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.size.0">
+        <source>Size/Amount</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.size.1">
+        <source>Here you can set a limit, e.g. size of the select box or number of file uploads.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file types</source>
@@ -138,6 +173,18 @@
         <source>Validate the input against a regular expression.</source>
         <target>Validez l'entrée avec une expression régulière.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.placeholder.0">
+        <source>Placeholder</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.placeholder.1">
+        <source>Show this text as long as the field is empty (requires HTML5).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minlength.0">
+        <source>Minimum length</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minlength.1">
+        <source>Require the field value to be a certain number of characters (text) or bytes (file uploads).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.maxlength.0">
         <source>Maximum length</source>
         <target>Longueur maximale</target>
@@ -152,15 +199,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.1">
         <source>Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)</source>
-        <target>Au lieu d'ajouter des options vous pouvez entrer une combinaison "table.champ" pour les sélectionner depuis la base de données.</target>
+        <target>Au lieu d'ajouter des options vous pouvez entrer une combinaison &quot;table.champ&quot; pour les sélectionner depuis la base de données.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.conditionField.0">
         <source>Parent field</source>
         <target>Champ parent</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.conditionField.1">
-        <source>Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</source>
-        <target>Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</target>
+        <source>Please select the parent field, which must be of type &quot;Select-Menu&quot;. For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</source>
+        <target>Please select the parent field, which must be of type &quot;Select-Menu&quot;. For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.files.0">
         <source>Show files</source>
@@ -177,6 +224,12 @@
       <trans-unit id="tl_iso_attribute.filesOnly.1">
         <source>Remove the radio buttons or checkboxes next to folders.</source>
         <target>Remove the radio buttons or checkboxes next to folders.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.isGallery.0">
+        <source>Mark as gallery</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.isGallery.1">
+        <source>Mark the attribute as image gallery which allows for better display in the backend.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fieldType.0">
         <source>Field type</source>
@@ -234,13 +287,28 @@
         <source>Add a numeric suffix to the new file if the file name already exists.</source>
         <target>Ajouter un suffixe numérique au nouveau fichier si le nom de fichier existe déjà.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutRelocate.0">
+        <source>Move file(s) after checkout</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutRelocate.1">
+        <source>Re-organize files after an order has been completed.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFolder.0">
         <source>Target folder</source>
         <target>Dossier de destination</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFolder.1">
+        <source>Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFile.0">
+        <source>Target file name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFile.1">
+        <source>Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_sorting.0">
-        <source>Add to "Order By" option list</source>
-        <target>Add to "Order By" option list</target>
+        <source>Add to &quot;Order By&quot; option list</source>
+        <target>Add to &quot;Order By&quot; option list</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_sorting.1">
         <source>This field will be sortable in the listing module provided the attribute is visible to customers.</source>
@@ -257,6 +325,9 @@
       <trans-unit id="tl_iso_attribute.be_search.0">
         <source>Backend searchable</source>
         <target>Peut être recherché en back office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_search.1">
+        <source>Should the field be available in the backend search?</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_filter.0">
         <source>Frontend filterable</source>
@@ -281,6 +352,21 @@
       <trans-unit id="tl_iso_attribute.datepicker.1">
         <source>Show a date picker for this field.</source>
         <target>Afficher un sélecteur de date pour ce champ.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunking.0">
+        <source>Enable chunking</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunking.1">
+        <source>Enable the file chunking. It is useful to upload big files.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunkSize.0">
+        <source>Chunk size in bytes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunkSize.1">
+        <source>Please enter the chunk size in bytes (1MB = 1000000 bytes).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable_edit">
+        <source>Edit options</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkbox">
         <source>Checkbox</source>
@@ -418,13 +504,94 @@
         <source>Random order</source>
         <target>Ordre aléatoire</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.0">
+        <source>Use these simple tokens to generate a dynamic folder name.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
         <source>##document_number##</source>
         <target>##order_id##</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.1.1">
+        <source>Generated document number for the order.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
         <source>##order_id##</source>
         <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.2.1">
+        <source>Database ID of the order record.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.3.0">
+        <source>##order_date##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.3.1">
+        <source>Date of the order as timestamp. Use insert tags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt; to convert timestamp to formatted date.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.4.0">
+        <source>##product_id##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.4.1">
+        <source>Database ID of the product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.5.0">
+        <source>##product_sku##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
+        <source>SKU of the product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
+        <source>##product_name##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.6.1">
+        <source>Name of the product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.7.0">
+        <source>##product_position##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.7.1">
+        <source>Position of the product on the order document, starting from 1.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.8.0">
+        <source>##attribute_field##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.8.1">
+        <source>Database field name of the attribute.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.9.0">
+        <source>##attribute_name##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.9.1">
+        <source>Name of the attribute.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.10.0">
+        <source>##file_name##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.10.1">
+        <source>Full file name and extension as uploaded by the user.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.11.0">
+        <source>##file_target##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.11.1">
+        <source>Full file name and extension as uploaded by the user, but renamed if &quot;Preserve existing files&quot; is enabled and a file with same name exists in target folder. &lt;br&gt;&lt;strong&gt;Only available for the file name, not for the folder!&lt;/strong&gt;</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.12.0">
+        <source>##file_extension##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.12.1">
+        <source>The original file extension.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.13.0">
+        <source>##has_member##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.13.1">
+        <source>1 if a member is signed in to the frontend, 0 if not.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.14.0">
+        <source>##member_*##</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.14.1">
+        <source>If a user is logged in, all member fields are available as tokens.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.new.0">
         <source>New attribute</source>

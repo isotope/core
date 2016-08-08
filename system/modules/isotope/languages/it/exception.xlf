@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/exception.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="XPT.isotopeOld">
@@ -19,16 +18,16 @@
         <target>Crea un backup, poi disinstalla completamente Isotope e rimuovi tutte le tabelle di database e le relative estensioni. Successivamente puoi installare di nuovo Isotope eCommerce 2.0.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
-        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Please consider participating&lt;/a&gt;.</source>
-        <target>Stiamo attualmente gestendo una raccolta fondi per sviluppare uno strumento aggiornato. Maggiore è il numero di persone che aiutano, prima sarà possibile aggiornare la tua vecchia istallazione. &lt;a href="http://isotopeecommerce.com/en/" target="_blank"&gt;Prego considera la tua partecipazione</target>
+        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
+        <target>Stiamo attualmente gestendo una raccolta fondi per sviluppare uno strumento aggiornato. Maggiore è il numero di persone che aiutano, prima sarà possibile aggiornare la tua vecchia istallazione. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Prego considera la tua partecipazione</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix3">
-        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href="http://contao.org/en/" target="_blank"&gt;the Contao partner listing&lt;/a&gt;.</source>
-        <target>Ottieni uno sviluppatore Contao esperto per migrare manualmente i dati. Ti suggeriamo di dare uno sguardo a &lt;a href="http://contao.org/en/" target="_blank"&gt; la lista partner Contao &lt;/a&gt;.</target>
+        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>
+        <target>Ottieni uno sviluppatore Contao esperto per migrare manualmente i dati. Ti suggeriamo di dare uno sguardo a &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt; la lista partner Contao &lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
-        <source>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
-        <target>&lt;a href="http://isotopeecommerce.org/" target="_blank"&gt;Visita il nostro sito web&lt;/a&gt; per maggiori informazioni riguardo Isotope eCommerce.</target>
+        <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visita il nostro sito web&lt;/a&gt; per maggiori informazioni riguardo Isotope eCommerce.</target>
       </trans-unit>
     </body>
   </file>

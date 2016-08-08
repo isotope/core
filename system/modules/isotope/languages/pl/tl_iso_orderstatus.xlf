@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="pl">
     <body>
       <trans-unit id="tl_iso_orderstatus.name.0">
@@ -9,6 +8,12 @@
       <trans-unit id="tl_iso_orderstatus.name.1">
         <source>Please enter a name for this status.</source>
         <target>Wprowadź nazwę tego statusu.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.paid.0">
         <source>Order is paid</source>
@@ -33,6 +38,18 @@
       <trans-unit id="tl_iso_orderstatus.notification.1">
         <source>Please select a notification.</source>
         <target>Proszę wybrać powiadomienie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.0">
+        <source>Saferpay transaction</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.1">
+        <source>Please select an option if you want to automatically update the payment gateway. This only applies if the client has used &quot;Saferpay&quot; or &quot;Billpay for Saferpay&quot; payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.capture">
+        <source>Capture payment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.cancel">
+        <source>Suggest manual payment cancellation</source>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.new.0">
         <source>New order status</source>
@@ -105,6 +122,9 @@
       <trans-unit id="tl_iso_orderstatus.email_legend">
         <source>E-Mail Notification</source>
         <target>Powiadomienie e-mail</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.payment_legend">
+        <source>Payment Gateways</source>
       </trans-unit>
     </body>
   </file>

@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="pl">
     <body>
       <trans-unit id="tl_module.iso_list_layout.0">
         <source>Product list template</source>
         <target>Szablon listy produktów</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_list_layout.1">
+        <source>Please choose a list layout. List template files start with &lt;em&gt;iso_list_&lt;/em&gt;.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_reader_layout.0">
         <source>Product reader template</source>
         <target>Szablon czytnika produktów</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_reader_layout.1">
+        <source>Please choose a reader template. Reader template files start with &lt;em&gt;iso_reader_&lt;/em&gt;.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_gallery.0">
         <source>Gallery</source>
@@ -29,6 +34,9 @@
       <trans-unit id="tl_module.iso_filterTpl.0">
         <source>Filter template</source>
         <target>Szablon filtru</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterTpl.1">
+        <source>Please choose a filter template. Filter template files start with &lt;em&gt;iso_filter_&lt;/em&gt;.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_jump_first.0">
         <source>Redirect to first product</source>
@@ -69,6 +77,18 @@
       <trans-unit id="tl_module.iso_checkout_method.1">
         <source>Choose your checkout method.</source>
         <target>Proszę wybrać metodę kasy.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.0">
+        <source>Require login</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.1">
+        <source>A member login is required to view this page (e.g. if the order belongs to a member).</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.0">
+        <source>Login page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.1">
+        <source>Select the page where a member can login.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_addProductJumpTo.0">
         <source>Add product jump to page</source>
@@ -133,6 +153,18 @@
       <trans-unit id="tl_module.iso_forward_review.1">
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Przekieruj użytkownika do strony przeglądu, jeśli żadne informacje nie są wymagane w żadnym z kroków.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.0">
+        <source>Skip shipping step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.1">
+        <source>Skips the shipping step if only one shippig method is available.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.0">
+        <source>Skip payment step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.1">
+        <source>Skips the payment step if only one payment method is available.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>
@@ -222,6 +254,9 @@
         <source>Condition</source>
         <target>Warunek</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.1">
+        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with &quot;tl_iso_product.&quot; (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_filterModules.0">
         <source>Filter modules</source>
         <target>Moduły filtrów</target>
@@ -237,6 +272,36 @@
       <trans-unit id="tl_module.iso_filterFields.1">
         <source>Please select filters to enable.</source>
         <target>Wybierz filtry do włączenia.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.0">
+        <source>Filter configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.1">
+        <source>Please configure the cumulative filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.attribute.0">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
+        <source>Query Type</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.and">
+        <source>AND</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.or">
+        <source>OR</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.0">
+        <source>Number of results</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.none">
+        <source>Do not show</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.all">
+        <source>Show total</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
+        <source>Show difference</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -275,8 +340,8 @@
         <target>Filtrowanie dla nowych produktów</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.1">
-        <source>If you have configured marking products as "new" in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
-        <target>Jeśli skonfigurowałeś oznaczanie produktów jako "nowe" w konfiguracji sklepu, możesz wyświetlić stare, nowe lub wszystkie produkty.</target>
+        <source>If you have configured marking products as &quot;new&quot; in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
+        <target>Jeśli skonfigurowałeś oznaczanie produktów jako &quot;nowe&quot; w konfiguracji sklepu, możesz wyświetlić stare, nowe lub wszystkie produkty.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.show_all">
         <source>Show all products</source>
@@ -363,12 +428,30 @@
         <target>To ustawienie pozwala modułowi na dołączenie wszelakich błędów, powiadomień czy potwierdzeń, z którymi odwiedzający powinien się zapoznać.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.0">
-        <source>Enable "Continue shopping" button</source>
-        <target>Włącz przycisk "Kontynuuj zakupy"</target>
+        <source>Enable &quot;Continue shopping&quot; button</source>
+        <target>Włącz przycisk &quot;Kontynuuj zakupy&quot;</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
         <target>Dodaj link do właśnie dodanego produktu do koszyka.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.0">
+        <source>Address types</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.1">
+        <source>Please choose the address types.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.billing">
+        <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.shipping">
+        <source>Shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.0">
+        <source>Available address fields</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.1">
+        <source>Choose the available address fields you would like to display.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_legend">
         <source>Order conditions form</source>

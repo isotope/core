@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="nl">
     <body>
       <trans-unit id="tl_iso_product.id.0">
@@ -21,6 +20,12 @@
       <trans-unit id="tl_iso_product.type.1">
         <source>Select your product type. Product types are defined in the store configuration.</source>
         <target>Product types zoals gedefinieerd in de Product type manager</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.0">
+        <source>Default variant</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.1">
+        <source>Click here if this variant should be pre-selected by default.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.alias.0">
         <source>Alias</source>
@@ -115,8 +120,8 @@
         <target>Eenheidsprijs hoeveelheid</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.1">
-        <source>Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).</source>
-        <target>Vul de hoeveelheid in om de eenheidsprijs mee te berekenen (bijv. "1500" als het product 1500 gram weegt).</target>
+        <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
+        <target>Vul de hoeveelheid in om de eenheidsprijs mee te berekenen (bijv. &quot;1500&quot; als het product 1500 gram weegt).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.images.0">
         <source>Images</source>
@@ -406,6 +411,9 @@
         <source>Edit downloads for product ID %s</source>
         <target>Wijzig downloads voor product ID %s</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.2">
+        <source>Currently: %s downloads.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.group.0">
         <source>Move to group</source>
         <target>Verplaats naar groep</target>
@@ -465,6 +473,15 @@
       <trans-unit id="tl_iso_product.price_tiers.price">
         <source>Price</source>
         <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.importAssetsDescr">
+        <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+</source>
       </trans-unit>
     </body>
   </file>

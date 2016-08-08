@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_baseprice.xlf" source-language="en" target-language="nl">
     <body>
       <trans-unit id="tl_iso_baseprice.name.0">
@@ -15,16 +14,16 @@
         <target>Hoeveelheid per eenheid</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.amount.1">
-        <source>Enter the base amount (e.g. "100").</source>
-        <target>Vul de hoeveelheid per eenheid in (bijv. "100").</target>
+        <source>Enter the base amount (e.g. &quot;100&quot;).</source>
+        <target>Vul de hoeveelheid per eenheid in (bijv. &quot;100&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.0">
         <source>Label</source>
         <target>Label</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.1">
-        <source>Enter a label for this base price (e.g. "%s per 100g".)</source>
-        <target>Vul een label in voor de eenheidsprijs (bijv. "%s per 100gr").</target>
+        <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
+        <target>Vul een label in voor de eenheidsprijs (bijv. &quot;%s per 100gr&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.0">
         <source>New base price</source>

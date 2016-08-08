@@ -1,10 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="it">
     <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_address.label.0">
         <source>Label</source>
         <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.1">
+        <source>Please enter a custom label for this address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.0">
+        <source>Gender</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.1">
+        <source>Please choose the gender.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
       </trans-unit>
       <trans-unit id="tl_iso_address.firstname.0">
         <source>First name</source>
@@ -22,6 +42,12 @@
         <source>Please enter the last name.</source>
         <target>Per cortesia inserisca il cognome</target>
       </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.0">
+        <source>Date of birth</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_address.company.0">
         <source>Company</source>
         <target>Ditta</target>
@@ -29,6 +55,12 @@
       <trans-unit id="tl_iso_address.company.1">
         <source>You can enter a company name here.</source>
         <target>Può inserire il nome della ditta qui.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.1">
+        <source>Please enter a VAT number.</source>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.0">
         <source>Street</source>
@@ -66,9 +98,15 @@
         <source>City</source>
         <target>Città</target>
       </trans-unit>
+      <trans-unit id="tl_iso_address.city.1">
+        <source>Please enter the name of the city.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.0">
         <source>State</source>
         <target>Stato/Provincia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.1">
+        <source>Please enter the name of the state.</source>
       </trans-unit>
       <trans-unit id="tl_iso_address.country.0">
         <source>Country</source>
@@ -109,6 +147,9 @@
       <trans-unit id="tl_iso_address.isDefaultShipping.1">
         <source>Is this your default shipping address?</source>
         <target>E' questo il suo indirizzo di spedizione principale?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
       </trans-unit>
       <trans-unit id="tl_iso_address.personal_legend">
         <source>Personal data</source>

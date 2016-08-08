@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_iso_config.name.0">
@@ -346,6 +345,12 @@
         <source>Select an order status if something goes wrong (e.g. payment).</source>
         <target>Wählen Sie einen Status für fehlgeschlagene Bestellungen aus (z.B. Zahlung).</target>
       </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.0">
+        <source>Module for backend view</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.1">
+        <source>Select a order details module that is used to show the order in the backend.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.invoiceLogo.0">
         <source>Invoice Logo</source>
         <target>Rechnungslogo</target>
@@ -371,12 +376,12 @@
         <target>Diese Gesamtsumme muss im Warenkorb mindest erreicht werden um die Bestellung durchzuführen. Geben Sie eine 0 ein um diese Funktion zu deaktivieren.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.0">
-        <source>Duration to mark a product as "new"</source>
-        <target>Dauer, für die ein Produkt als "Neu" angezeigt wird</target>
+        <source>Duration to mark a product as &quot;new&quot;</source>
+        <target>Dauer, für die ein Produkt als &quot;Neu&quot; angezeigt wird</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.1">
-        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.</source>
-        <target>Wenn Sie neue Produkte hervorheben möchten, können Sie hier eine Dauer festlegen. Es wird automatisch eine CSS-Klasse "new" zu jedem Produkt in ganz Isotope eCommerce hinzugefügt.</target>
+        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
+        <target>Wenn Sie neue Produkte hervorheben möchten, können Sie hier eine Dauer festlegen. Es wird automatisch eine CSS-Klasse &quot;new&quot; zu jedem Produkt in ganz Isotope eCommerce hinzugefügt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_enable.0">
         <source>Enable Google Analytics</source>
@@ -471,8 +476,8 @@
         <target>Festgelegt</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as "included". This means the shop owner's profit varies depending on the applicable taxes.</source>
-        <target>Der Produktpreis wird immer so angezeigt wie in den Produkteinstellungen festgelegt. Steuern werden immer als "inbegriffen" berechnet. Das Bedeutet, dass der Verdienst des Shop-Besitzers je nach verwendeter Steuer variiert.</target>
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <target>Der Produktpreis wird immer so angezeigt wie in den Produkteinstellungen festgelegt. Steuern werden immer als &quot;inbegriffen&quot; berechnet. Das Bedeutet, dass der Verdienst des Shop-Besitzers je nach verwendeter Steuer variiert.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.legacy.0">
         <source>Legacy</source>

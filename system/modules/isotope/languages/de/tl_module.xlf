@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_module.iso_list_layout.0">
@@ -100,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_addProductJumpTo.0">
         <source>Add product jump to page</source>
-        <target>"In den Warenkorb"-Weiterleitungsseite hinzufügen</target>
+        <target>&quot;In den Warenkorb&quot;-Weiterleitungsseite hinzufügen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addProductJumpTo.1">
         <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
@@ -161,6 +160,18 @@
       <trans-unit id="tl_module.iso_forward_review.1">
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Den Nutzer zur Bestätigungsseite weiterleiten, wenn alle benötigten Daten vorhanden sind.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.0">
+        <source>Skip shipping step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_shipping.1">
+        <source>Skips the shipping step if only one shippig method is available.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.0">
+        <source>Skip payment step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_skip_payment.1">
+        <source>Skips the payment step if only one payment method is available.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>
@@ -251,8 +262,8 @@
         <target>Bedingung</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_list_where.1">
-        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with "tl_iso_product." (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
-        <target>Geben Sie eine SQL-Bedingung zum filtern der Produkte ein. Sie müssen die Felder mit "tl_iso_product." beginnen (z. B. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; oder &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</target>
+        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with &quot;tl_iso_product.&quot; (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
+        <target>Geben Sie eine SQL-Bedingung zum filtern der Produkte ein. Sie müssen die Felder mit &quot;tl_iso_product.&quot; beginnen (z. B. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; oder &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterModules.0">
         <source>Filter modules</source>
@@ -347,8 +358,8 @@
         <target>Filterung für neue Produkte</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.1">
-        <source>If you have configured marking products as "new" in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
-        <target>Wenn Sie die Möglichkeit in Ihrem Shop konfiguriert haben, Produkte als "neu" zu kennzeichnen, können Sie entweder nach alten, neuen oder nach allen Produkten filtern.</target>
+        <source>If you have configured marking products as &quot;new&quot; in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
+        <target>Wenn Sie die Möglichkeit in Ihrem Shop konfiguriert haben, Produkte als &quot;neu&quot; zu kennzeichnen, können Sie entweder nach alten, neuen oder nach allen Produkten filtern.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.show_all">
         <source>Show all products</source>
@@ -364,7 +375,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.0">
         <source>Enable per-page limiting</source>
-        <target>"Pro Seite"-Limit aktivieren</target>
+        <target>&quot;Pro Seite&quot;-Limit aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.1">
         <source>Allow the user to select the number of records to show per page.</source>
@@ -372,7 +383,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_perPage.0">
         <source>Per page options</source>
-        <target>"Pro Seite"-Optionen</target>
+        <target>&quot;Pro Seite&quot;-Optionen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_perPage.1">
         <source>Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.</source>
@@ -435,8 +446,8 @@
         <target>Diese Einstellung ermöglicht es dem Modul Fehler, Hinweise oder Bestätigungen anzuzeigen, die der Besucher sehen sollte.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.0">
-        <source>Enable "Continue shopping" button</source>
-        <target>"Einkauf fortsetzen"-Schaltfläche aktivieren</target>
+        <source>Enable &quot;Continue shopping&quot; button</source>
+        <target>&quot;Einkauf fortsetzen&quot;-Schaltfläche aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
@@ -492,7 +503,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.0">
         <source>Current Category and First Child Category</source>
-        <target>Aktive Kategorie und "Erstes Kind"-Kategorie</target>
+        <target>Aktive Kategorie und &quot;Erstes Kind&quot;-Kategorie</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.1">
         <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
@@ -500,7 +511,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.0">
         <source>Current Category and All Child Categories</source>
-        <target>Aktive Kategorie und "Alle Kinder"-Kategorien</target>
+        <target>Aktive Kategorie und &quot;Alle Kinder&quot;-Kategorien</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.1">
         <source>Show all products that are assigned to the active page or any child page of it.</source>

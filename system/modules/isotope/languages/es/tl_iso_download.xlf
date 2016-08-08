@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_download.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="tl_iso_download.singleSRC.0">
         <source>Attachement</source>
         <target>Anexo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.singleSRC.1">
+        <source>Select the file or folder content you want to sell.</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.downloads_allowed.0">
         <source>Downloads allowed</source>
@@ -21,6 +23,12 @@
       <trans-unit id="tl_iso_download.expires.1">
         <source>Define if the download(s) expires after a certain time period.</source>
         <target>Definir si la(s) descarga(s) expira(n) después de un cierto período de tiempo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.published.0">
+        <source>Download available</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.published.1">
+        <source>Click here to include this download in new orders.</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.new.0">
         <source>Add download</source>
@@ -61,6 +69,12 @@
       <trans-unit id="tl_iso_download.delete.1">
         <source>Delete download ID %s</source>
         <target>Borrar descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.toggle.0">
+        <source>Publish/unpublish download</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.toggle.1">
+        <source>Publish/unpublish download ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.show.0">
         <source>Download details</source>

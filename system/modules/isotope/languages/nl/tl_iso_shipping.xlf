@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="nl">
     <body>
       <trans-unit id="tl_iso_shipping.name.0">
@@ -130,6 +129,18 @@
         <source>Total products in cart</source>
         <target>Totaal aantal producten in winkelwagen</target>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_quantity.0">
+        <source>Minimum quantity</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_quantity.1">
+        <source>Enter a number greater zero to exclude this shipping method for orders with lower quantity.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_quantity.0">
+        <source>Maximum quantity</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_quantity.1">
+        <source>Enter a number greater zero to exclude this shipping method for orders with higher quantity.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.product_types.0">
         <source>Product types</source>
         <target>Productsoorten</target>
@@ -138,9 +149,18 @@
         <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
         <target>U kan deze verzendmethode beperken tot bepaalde product soorten. Als de winkelwagen een product soort bevat die niet geselecteerd is, is deze verzendmethode niet beschikbaar.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.0">
+        <source>Product type condition</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.config_ids.0">
         <source>Store configurations</source>
         <target>Winkel configuraties</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_ids.1">
+        <source>You can restrict this shipping method to certain shop configurations.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
@@ -209,6 +229,9 @@
       <trans-unit id="tl_iso_shipping.expert_legend">
         <source>Expert settings</source>
         <target>Expert instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled_legend">
+        <source>Approval</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.new.0">
         <source>New shipping method</source>
@@ -285,6 +308,18 @@
       <trans-unit id="tl_iso_shipping.summarize">
         <source>Summed price of available methods</source>
         <target>Optelling van alle beschikbare methoden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.calculation">
+        <source>Calculate price for these product types</source>
       </trans-unit>
     </body>
   </file>

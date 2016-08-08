@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_iso_payment.name.0">
@@ -135,8 +134,8 @@
         <target>Preis</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.1">
-        <source>Enter a price or percent value (e.g. "10" or "10%").</source>
-        <target>Geben Sie Preis oder einen prozentualen Wert ein (z. B. "10" oder "10%").</target>
+        <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
+        <target>Geben Sie Preis oder einen prozentualen Wert ein (z. B. &quot;10&quot; oder &quot;10%&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.tax_class.0">
         <source>Tax Class</source>
@@ -182,6 +181,9 @@
         <source>Paypal Payflow Pro username</source>
         <target>Paypal Payflow Pro Nutzername</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.payflowpro_user.1">
+        <source/>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.payflowpro_vendor.0">
         <source>Paypal Payflow Pro vendor</source>
         <target>Paypal Payflow Pro Händler</target>
@@ -195,8 +197,8 @@
         <target>Paypal Payflow Pro Partner</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payflowpro_partner.1">
-        <source>Case-sensitive! Usual partner Ids are either "PayPal" or "PayPalUK".</source>
-        <target>Groß-/Kleinschreibung beachten! Normalerweise sind Partner IDs entweder "PayPal" oder "PayPalUK".</target>
+        <source>Case-sensitive! Usual partner Ids are either &quot;PayPal&quot; or &quot;PayPalUK&quot;.</source>
+        <target>Groß-/Kleinschreibung beachten! Normalerweise sind Partner IDs entweder &quot;PayPal&quot; oder &quot;PayPalUK&quot;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payflowpro_password.0">
         <source>Paypal Payflow Pro api password</source>
@@ -318,9 +320,21 @@
         <source>Hash method</source>
         <target>Hash-Methode</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.1">
+        <source>Please select the hashing method configured in your Datatrans control panel.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.md5">
+        <source>MD5 (outdated)</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
         <source>SHA-256</source>
         <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_convert.0">
+        <source>Convert hash to binary</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_convert.1">
+        <source>Check here if the hash key needs to be converted to binary.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_site_id.0">
         <source>Site Identifier</source>
@@ -427,8 +441,8 @@
         <target>Konfiguration Zahlungsseite (VTCONFIG)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_vtconfig.1">
-        <source>You can create different Payment Page configurations. If you want to use a specific one of them, enter its "Parameter for the request" value here.</source>
-        <target>Sie können verschiedene Zahlseiten-Konfigurationen erstellen. Wenn Sie eine spezielle verwenden möchten, geben Sie den Wert des "Request"-Parameter hier ein.</target>
+        <source>You can create different Payment Page configurations. If you want to use a specific one of them, enter its &quot;Parameter for the request&quot; value here.</source>
+        <target>Sie können verschiedene Zahlseiten-Konfigurationen erstellen. Wenn Sie eine spezielle verwenden möchten, geben Sie den Wert des &quot;Request&quot;-Parameter hier ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
         <source>Payment methods</source>
@@ -639,12 +653,27 @@
         <target>Zahlungsarten</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_paymentMethods.1">
-        <source>Enter a configuration string to limit the payment methods. &lt;a href="http://tech.quickpay.net/appendixes/payment-methods/" target="_blank"&gt;More Information&lt;/a&gt;.</source>
-        <target>Bitte geben Sie eine Konfigurations-Zeichenfolge ein. &lt;a href="http://tech.quickpay.net/appendixes/payment-methods/" target="_blank"&gt;Weitere Informationen&lt;/a&gt;.</target>
+        <source>Enter a configuration string to limit the payment methods. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;More Information&lt;/a&gt;.</source>
+        <target>Bitte geben Sie eine Konfigurations-Zeichenfolge ein. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;Weitere Informationen&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.0">
+        <source>User ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.1">
+        <source>Please enter your user ID.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.0">
         <source>Password</source>
         <target>Passwort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.1">
+        <source>Please enter your user password.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.0">
+        <source>Entity/Channel ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.1">
+        <source>Please enter your entity or channel ID</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>

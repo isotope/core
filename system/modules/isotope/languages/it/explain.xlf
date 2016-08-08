@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
         <source>
-&lt;p class="tl_help_table"&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
     Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
     &lt;br&gt;
     The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
@@ -21,7 +20,7 @@
     &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
 &lt;/p&gt;</source>
         <target>
-&lt;p class="tl_help_table"&gt;
+&lt;p class=&quot;tl_help_table&quot;&gt;
 A differenza di qualsiasi altro modulo Contao, un utente non viene reindirizzato alla pagina di lettura quando si visualizzano i dettagli del prodotto. Per risolvere il problema di bei alias e per conoscere la pagina di dettaglio di un prodotto, siamo arrivati ​​a una nuova soluzione.&lt;br&gt;
 &lt;br&gt;
 La pagina di lettore (alias) sarà sempre la stessa pagina da voi selezionato come categoria per il prodotto. Ci sono due opzioni per visualizzare i dettagli di un prodotto:&lt;br&gt;
@@ -39,8 +38,14 @@ Isotope ora userà questa pagina per generare il sito se un alias prodotto è tr
 &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
-        <source>&lt;p class="tl_help_table"&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
-        <target>&lt;p class="tl_help_table"&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un'anteprima del messaggio e vicino ad essa puo' inserire il testo alternativo e una descrizione. Per immagini multipli, puo' fare click sulle frecce e cambiare la loro posizione, l'immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un'anteprima del messaggio e vicino ad essa puo' inserire il testo alternativo e una descrizione. Per immagini multipli, puo' fare click sulle frecce e cambiare la loro posizione, l'immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.noVariantAttributes">
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+      </trans-unit>
+      <trans-unit id="XPL.elevatezoom_position">
+        <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
       </trans-unit>
     </body>
   </file>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff version="1.1">
-  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en" target-language="fr">
     <body>
       <trans-unit id="tl_iso_rule.type.0">
         <source>Type</source>
@@ -113,6 +112,22 @@
       <trans-unit id="tl_iso_rule.maxSubtotal.1">
         <source>Please specify a maximum subtotal this rule applies to.</source>
         <target>Indiquer un sous total maximum auquel s'applique cette règle.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.0">
+        <source>Minimum weight</source>
+        <target>Poids minimum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Entrez un poids minimum pour contrôler la disponibilité basée sur les produits dans le panier.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.0">
+        <source>Maximum weight</source>
+        <target>Poids maximum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Entrez un poids maximum pour contrôler la disponibilité basée sur les produits dans le panier.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minItemQuantity.0">
         <source>Minimum item quantity</source>

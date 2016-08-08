@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="pl">
     <body>
       <trans-unit id="tl_iso_tax_rate.name.0">
@@ -22,9 +21,15 @@
         <source>Address to use for calculation</source>
         <target>Adres do użycia w kalkulacji</target>
       </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.1">
+        <source>Select to which address this rate should use to apply its calculation. Be aware that for non-shippable products, the shipping address will equal to billing address.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_tax_rate.countries.0">
         <source>Countries</source>
         <target>Kraje</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.1">
+        <source>Select the countries this tax class applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.subdivisions.0">
         <source>States/Regions</source>
@@ -65,6 +70,12 @@
       <trans-unit id="tl_iso_tax_rate.config.1">
         <source>Select the store configuration that the tax rate applies to.</source>
         <target>Proszę wybrać konfigurację sklepu dla tej stawki podatku.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
+        <source>Exempt on valid VAT number</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
+        <source>Do not apply tax if the VAT number is valid.</source>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.stop.0">
         <source>Stop calculations on trigger?</source>

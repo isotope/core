@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="tl_iso_producttype.name.0">
@@ -50,13 +49,37 @@
         <source>Show highest tier as lowest product price.</source>
         <target>Mostrar la gama más alta como el precio más bajo del producto.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_template.0">
+        <source>List template</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.list_template.1">
         <source>Select a template for product listing.</source>
         <target>Seleccione una plantilla para el listado de productos.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_template.0">
+        <source>Reader template</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.reader_template.1">
         <source>Select a template for product details.</source>
         <target>Seleccione una plantilla para el lector de producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.0">
+        <source>List gallery</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.1">
+        <source>Select a gallery for product listing.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.0">
+        <source>Reader gallery</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.1">
+        <source>Select a gallery for product details.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.0">
+        <source>CSS class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.1">
+        <source>The class(es) will be added to the product list and reader templates.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.0">
         <source>Attributes</source>
@@ -66,9 +89,24 @@
         <source>Select the collection of attributes that should be included for this product type.</source>
         <target>Seleccione el conjunto de atributos que se deben incluir para este tipo de producto.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.0">
+        <source>Grouping</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.1">
+        <source>Group fields by topic (legends)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.0">
+        <source>Alignment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.1">
+        <source>Enter a tl_class to override alignment for this attribute.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.mandatory.0">
         <source>Mandatory</source>
         <target>Obligatorio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.mandatory.1">
+        <source>You can override the default mandatory-ness here.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.default">
         <source>Default</source>
@@ -181,6 +219,12 @@
       <trans-unit id="tl_iso_producttype.expert_legend">
         <source>Expert settings</source>
         <target>Configuración avanzada</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.noVariantAttributes">
+        <source>You must select at least one variant option (one of those: %s).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.singularAttributes">
+        <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
       </trans-unit>
     </body>
   </file>

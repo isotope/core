@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_document.xlf" source-language="en" target-language="pl">
     <body>
       <trans-unit id="tl_iso_document.name.0">
@@ -31,16 +30,16 @@
         <target>Tytuł dokumentu</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTitle.1">
-        <source>You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "Invoice title ##collection_document_number##").</source>
-        <target>Możesz używać prostych tokenów ("collection_*" gdzie * odpowiada kolumnie w bazie danych kolekcji), aby wyświetlić tytuł pliku (np. "Tytuł faktury ##collection_document_number##").</target>
+        <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;Invoice title ##collection_document_number##&quot;).</source>
+        <target>Możesz używać prostych tokenów (&quot;collection_*&quot; gdzie * odpowiada kolumnie w bazie danych kolekcji), aby wyświetlić tytuł pliku (np. &quot;Tytuł faktury ##collection_document_number##&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.0">
         <source>File title</source>
         <target>Tytuł pliku</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.1">
-        <source>You can use simple tokens ("collection_*" whereas * equals the database column of the collection) to render your file title (e.g. "invoice_##collection_document_number##").</source>
-        <target>Możesz używać prostych tokenów ("collection_*" gdzie * odpowiada kolumnie w bazie danych kolekcji), aby wyświetlić tytuł pliku (np. "faktura_##collection_document_number##").</target>
+        <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;invoice_##collection_document_number##&quot;).</source>
+        <target>Możesz używać prostych tokenów (&quot;collection_*&quot; gdzie * odpowiada kolumnie w bazie danych kolekcji), aby wyświetlić tytuł pliku (np. &quot;faktura_##collection_document_number##&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTpl.0">
         <source>Document template</source>
@@ -97,6 +96,9 @@
       <trans-unit id="tl_iso_document.copy.1">
         <source>Copy document ID %s</source>
         <target>Kopiuj dokument ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.delete.0">
+        <source>Delete document</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.1">
         <source>Delete document ID %s</source>

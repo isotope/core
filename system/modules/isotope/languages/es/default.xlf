@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="ERR.systemColumn">
-        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
         <target>El nombre '%s' esta reservado para una utilización del sistema. Por favor elige otro nombre.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
@@ -50,6 +49,9 @@
         <source>The minimum order amount is %s. Please add more products before checkout.</source>
         <target>La cantidad mínima de pedido es %s. Por favor, añada más productos antes de pagar.</target>
       </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
+      </trans-unit>
       <trans-unit id="ERR.imageInFallback">
         <source>This image has already been assigned to the fallback language.</source>
         <target>Esta imagen ya ha sido asignado al idioma por defecto.</target>
@@ -62,9 +64,39 @@
         <source>The selected folder is empty.</source>
         <target>La carpeta seleccionada está vacía.</target>
       </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+      </trans-unit>
+      <trans-unit id="ERR.cumulativeDuplicateAttribute">
+        <source>You cannot configure the same attribute multiple times.</source>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+      </trans-unit>
       <trans-unit id="MSC.filterByGroups">
         <source>Groups</source>
         <target>Groupos</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
       </trans-unit>
       <trans-unit id="MSC.copyFallback">
         <source>Duplicate Fallback</source>
@@ -82,9 +114,30 @@
         <source>No files uploaded.</source>
         <target>No hay archivos subidos.</target>
       </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+      </trans-unit>
       <trans-unit id="MSC.quantity">
         <source>Quantity</source>
         <target>Cantidad</target>
+      </trans-unit>
+      <trans-unit id="MSC.taxFree">
+        <source>Tax-free</source>
       </trans-unit>
       <trans-unit id="MSC.defaultSearchText">
         <source>search products</source>
@@ -95,12 +148,15 @@
         <target>Sus productos descargables</target>
       </trans-unit>
       <trans-unit id="MSC.priceRangeLabel">
-        <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
-        <target>&lt;span class="from"&gt;A partir de&lt;/span&gt; %s</target>
+        <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class=&quot;from&quot;&gt;A partir de&lt;/span&gt; %s</target>
       </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
         <target>Ver detalles</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderLabel">
+        <source>Reorder</source>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -126,9 +182,18 @@
         <source>Add To Cart</source>
         <target>Añadir al la cesta</target>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+      </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
         <target>Actualizar la cesta</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_favorites">
+        <source>Add To Favorites</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.remove_from_favorites">
+        <source>Remove From Favorites</source>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -158,9 +223,18 @@
         <source>Submit</source>
         <target>Enviar</target>
       </trans-unit>
+      <trans-unit id="MSC.noItemsInFavorites">
+        <source>There are no items in your favorites list.</source>
+      </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
         <target>No hay artículos en su cesta.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToFavorites">
+        <source>The selected product has been added to your favorites.</source>
+      </trans-unit>
+      <trans-unit id="MSC.removedFromFavorites">
+        <source>The selected product has been removed to your favorites.</source>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
@@ -169,6 +243,12 @@
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
         <target>Los productos de su última visita han sido añadidos de nuevo. Por favor, revise los productos de su cesta.</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderConfirmation">
+        <source>The products of the selected order have been added to your shopping cart.</source>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkTitle">
+        <source>Edit %s</source>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkText">
         <source>Edit</source>
@@ -185,6 +265,12 @@
       <trans-unit id="MSC.subTotalLabel">
         <source>Order Subtotal: </source>
         <target>Subtotal del pedido : </target>
+      </trans-unit>
+      <trans-unit id="MSC.shippingLabel">
+        <source>Shipping (%s)</source>
+      </trans-unit>
+      <trans-unit id="MSC.paymentLabel">
+        <source>Payment (%s)</source>
       </trans-unit>
       <trans-unit id="MSC.grandTotalLabel">
         <source>Order Total: </source>
@@ -231,8 +317,8 @@
         <target>Estado del pedido: %s</target>
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
-        <source>Go back to step "%s"</source>
-        <target>Vuelva al paso "%s"</target>
+        <source>Go back to step &quot;%s&quot;</source>
+        <target>Vuelva al paso &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="MSC.createNewAddressLabel">
         <source>Create New Address</source>
@@ -274,6 +360,9 @@
         <source>Order date</source>
         <target>Fecha del pedido</target>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+      </trans-unit>
       <trans-unit id="MSC.iso_order_description">
         <source>Description</source>
         <target>Descripción</target>
@@ -285,6 +374,9 @@
       <trans-unit id="MSC.iso_order_price">
         <source>Price</source>
         <target>Precio</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
       </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
@@ -314,9 +406,15 @@
         <source>Processing payment</source>
         <target>Procesando el pago</target>
       </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+      </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.2">
         <source>Pay now</source>
         <target>Pagar ahora</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the &quot;Pay now&quot; button to continue.</source>
       </trans-unit>
       <trans-unit id="MSC.paypalTransactionOnline">
         <source>Click here to view this PayPal transaction online</source>
@@ -467,24 +565,33 @@
         <target>Cargando productos...</target>
       </trans-unit>
       <trans-unit id="MSC.productcacheNoscript">
-        <source>Your browser does not support JavaScript. Please &lt;a href="%s"&gt;click here&lt;/a&gt; to load the product list.</source>
-        <target>Su navegador no soporta JavaScript. Por favor &lt;a href="%s"&gt;haz clic aquí&lt;/a&gt; para cargar la lista de productos.</target>
+        <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
+        <target>Su navegador no soporta JavaScript. Por favor &lt;a href=&quot;%s&quot;&gt;haz clic aquí&lt;/a&gt; para cargar la lista de productos.</target>
       </trans-unit>
       <trans-unit id="MSC.noFilesInFolder">
         <source>No files in this folder</source>
         <target>No hay archivos en esta carpeta</target>
       </trans-unit>
+      <trans-unit id="MSC.assetImportConfirmation">
+        <source>Imported file %s for product &quot;%s&quot;</source>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportNoFilesFound">
+        <source>The folder did not contain any files to be imported.</source>
+      </trans-unit>
       <trans-unit id="MSC.loadingProductData">
         <source>Loading product data …</source>
         <target>Cargando datos del producto…</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config &quot;%s&quot;</source>
       </trans-unit>
       <trans-unit id="MSC.splittedTaxRate">
         <source>Splitted</source>
         <target>Fraccionado</target>
       </trans-unit>
       <trans-unit id="MSC.newOrders">
-        <source>You have %s order(s) with status "%s"</source>
-        <target>Tiene %s orden(s) con el estado "%s"</target>
+        <source>You have %s order(s) with status &quot;%s&quot;</source>
+        <target>Tiene %s orden(s) con el estado &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="MSC.checkoutStep">
         <source>Step %s of %s (%s) - </source>
@@ -514,6 +621,72 @@
         <source>Years</source>
         <target>Años</target>
       </trans-unit>
+      <trans-unit id="MSC.isotopeIntroductionLegend">
+        <source>Introduction</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.3">
+        <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>Isotope is a product of %s in association with &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
+        <source>by date added (ascending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
+        <source>by date added (descending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
+        <source>by date updated (ascending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_tstamp">
+        <source>by date updated (descending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
+        <source>by product name (ascending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_name">
+        <source>by product name (descending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_price">
+        <source>by price (ascending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
+        <source>by price (descending)</source>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingAddress">
+        <source>Please fill in the shipping address.</source>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingRequiredMsg">
+        <source>None of the products in your shopping cart require shipping!</source>
+      </trans-unit>
+      <trans-unit id="MSC.availableShippingMethodsMsg">
+        <source>The following shipping methods are available for your current shopping cart and the shipping address details you provided:</source>
+      </trans-unit>
+      <trans-unit id="MSC.saveAddressButton">
+        <source>Save address</source>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_de">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_ch">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_at">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
         <target>Isotope eCommerce</target>
@@ -521,6 +694,15 @@
       <trans-unit id="MODEL.tl_iso_shipping.flat.0">
         <source>Flat-price shipping</source>
         <target>Precio fijo de envío</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
@@ -530,6 +712,12 @@
         <source>Use this for all offline processed payment.</source>
         <target>Usar esto para todos los pagos desconectados.</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
+        <source>Paybyway</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paybyway.1">
+        <source>Implements payment provider &lt;a href=&quot;https://www.paybyway.com/en/&quot; target=&quot;_blank&quot;&gt;Paybyway&lt;/a&gt;.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal.0">
         <source>PayPal Standard Checkout</source>
         <target>Pago PayPal estándar</target>
@@ -538,33 +726,81 @@
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
         <target>Este módulo soporta PayPal IPN (notificaciones de pago instantáneas).</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
+        <source>PostFinance</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.1">
         <source>Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.</source>
         <target>Pasarela de pago para el sistema de pago del correo suizo que soporta varios tipos de tarjetas. La tienda estará inmediatamente notificado de las transacciones con éxito.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.viveum.0">
+        <source>VIVEUM</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.viveum.1">
+        <source>Payment gateway for VIVEUM Zahlungssysteme GmbH.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.datatrans.0">
         <source>Datatrans</source>
         <target>Datatrans</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.datatrans.1">
-        <source>A payment module for the swiss payment gateway "Datatrans".</source>
-        <target>Pasarela de pago para el sistema de pago suizo "Datatrans".</target>
+        <source>A payment module for the swiss payment gateway &quot;Datatrans&quot;.</source>
+        <target>Pasarela de pago para el sistema de pago suizo &quot;Datatrans&quot;.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.innopay.0">
+        <source>Innopay</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.innopay.1">
+        <source>A payment module for the swiss payment gateway &quot;Innocard&quot;.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
         <source>Sparkasse</source>
         <target>Sparkasse</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.saferpay.0">
+        <source>Saferpay</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.billpay_saferpay.0">
+        <source>BillPay (using Saferpay)</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.sofortueberweisung.0">
+        <source>sofortüberweisung.de</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.expercash.0">
         <source>ExperCash</source>
         <target>ExperCash</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.epay.0">
+        <source>ePay</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.epay.1">
+        <source>Implements payment provider &lt;a href=&quot;http://www.epay.eu&quot; target=&quot;_blank&quot;&gt;ePay&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.payone.0">
         <source>PayOne</source>
         <target>PayOne</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.worldpay.0">
+        <source>WorldPay</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.quickpay.0">
+        <source>QuickPay</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.opp.0">
+        <source>Open Payment Platform</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.opp.1">
+        <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.1">
-        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
-        <target>&lt;p&gt;Utiliza lightbox/mediabox para imágenes de tamaño completo. Asegúrate de seleccionar la plantilla "moo_" adecuada en la configuración de diseño de la página&lt;/p&gt;&lt;p&gt;Puede proporcionar un atributo "rel" para el destino del enlace mediante un tubo (por ejemplo, "tl_files/video.mov|lightbox[400 300]"). Si no se proporciona ningún atributo "rel", el enlace se abrirá en una nueva ventana.&lt;/p&gt;</target>
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+        <target>&lt;p&gt;Utiliza lightbox/mediabox para imágenes de tamaño completo. Asegúrate de seleccionar la plantilla &quot;moo_&quot; adecuada en la configuración de diseño de la página&lt;/p&gt;&lt;p&gt;Puede proporcionar un atributo &quot;rel&quot; para el destino del enlace mediante un tubo (por ejemplo, &quot;tl_files/video.mov|lightbox[400 300]&quot;). Si no se proporciona ningún atributo &quot;rel&quot;, el enlace se abrirá en una nueva ventana.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.inline.0">
         <source>Inline gallery</source>
@@ -574,6 +810,12 @@
         <source>Clicking on a gallery image will replace the main image.</source>
         <target>Al hacer clic en una imagen de la galería se reemplazará la imagen principal.</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.0">
+        <source>Elevate Zoom gallery</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.1">
+        <source>A gallery that zooms on the image on hover. See &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;the script website&lt;/a&gt; for more information.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.0">
         <source>Standard product</source>
         <target>Producto normal</target>
@@ -581,6 +823,9 @@
       <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
         <target>Un producto predeterminado. Seleccione esta opción si ninguna otra corresponde.</target>
+      </trans-unit>
+      <trans-unit id="ISO_VAT.eu_vies">
+        <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
       </trans-unit>
       <trans-unit id="CCT.mc">
         <source>MasterCard</source>
@@ -745,6 +990,18 @@
       <trans-unit id="ATTR.upload.1">
         <source>A single-line input field to upload a local file to the server.</source>
         <target>Un campo de entrada de una línea para cargar un archivo local al servidor.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.media.0">
+        <source>Video/Audio</source>
+      </trans-unit>
+      <trans-unit id="ATTR.media.1">
+        <source>Generates a video or audio player.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.fineUploader.0">
+        <source>Fine Uploader</source>
+      </trans-unit>
+      <trans-unit id="ATTR.fineUploader.1">
+        <source>A javascript file uploader to upload a local file to the server.</source>
       </trans-unit>
       <trans-unit id="CUR.AED">
         <source>AED - United Arab Emirates Dirham</source>

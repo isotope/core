@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_price.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="tl_iso_product_price.price_tiers.0">
@@ -7,8 +6,8 @@
         <target>Gruppi prezzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tiers.1">
-        <source>Setup at least one price tier for "Quantity 1". You can enter discount prices if the user orders more than one product.</source>
-        <target>Fissi almeno un gruppo di prezzo per la "Quantità 1". Può inserire prezzi scontati se il cliente ordina più di un prodotto.</target>
+        <source>Setup at least one price tier for &quot;Quantity 1&quot;. You can enter discount prices if the user orders more than one product.</source>
+        <target>Fissi almeno un gruppo di prezzo per la &quot;Quantità 1&quot;. Può inserire prezzi scontati se il cliente ordina più di un prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.0">
         <source>Tax Class</source>
