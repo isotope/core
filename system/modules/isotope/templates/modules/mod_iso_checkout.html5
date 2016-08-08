@@ -1,10 +1,6 @@
+<?php $this->extend('block_unsearchable'); ?>
 
-<!-- indexer::stop -->
-<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-<?php if ($this->headline): ?>
-
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+<?php $this->block('content'); ?>
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
@@ -49,7 +45,6 @@
 </form>
 <?php endif; ?>
 
-</div>
 <script>
 window.addEvent('domready', function() {
     document.getElements('.mod_iso_checkout form').addEvent('submit', function() {
@@ -58,4 +53,5 @@ window.addEvent('domready', function() {
     });
 });
 </script>
-<!-- indexer::continue -->
+
+<?php $this->endblock(); ?>
