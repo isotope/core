@@ -11,6 +11,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Shipping weight can now be generated on product and collection
 - Cart rules can be limited to the weight of products in cart
 - Added insert tag {{cart::weight::kg}} to output weight of product collection
+- Added support for ChangeLanguage v3
 
 
 ### Improved
@@ -20,6 +21,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Custom FileTree, Downloads and Media attributes are now translatable
 - Now uses Contao block templates for template inheritance
 - Correctly handle tableless forms in Contao 4
+- Language files are now stored as XLIFF
 
 
 ### Fixed

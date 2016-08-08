@@ -13,6 +13,7 @@ namespace Isotope;
 
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
@@ -290,18 +291,13 @@ class Frontend extends \Frontend
      * @param array $arrGet
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4. See Isotope\EventListener\ChangeLanguageListener
      */
     public function translateProductUrls($arrGet)
     {
-        if (Input::getAutoItem('product', false, true) != '') {
-            $arrGet['url']['product'] = Input::getAutoItem('product', false, true);
-        } elseif (Input::getAutoItem('step', false, true) != '') {
-            $arrGet['url']['step'] = Input::getAutoItem('step', false, true);
-        } elseif (\Input::get('uid', false, true) != '') {
-            $arrGet['get']['uid'] = \Input::get('uid', false, true);
-        }
-
-        return $arrGet;
+        $listener = new ChangeLanguageListener();
+        return $listener->onTranslateUrlParameters($arrGet);
     }
 
 
