@@ -4,8 +4,6 @@
 # Do not ignore ".gitignore"
 !.gitignore
 !.tx
-.tx/config
-.tx/source/*
 !README.md
 !composer.json
 !.scrutinizer.yml

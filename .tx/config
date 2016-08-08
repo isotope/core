@@ -1,0 +1,223 @@
+[main]
+host = https://www.transifex.com
+type = XLIFF
+
+[isotope.develop-isotope-default]
+source_file = system/modules/isotope/languages/en/default.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/default.xlf
+
+[isotope.develop-isotope-exception]
+source_file = system/modules/isotope/languages/en/exception.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/exception.xlf
+
+[isotope.develop-isotope-explain]
+source_file = system/modules/isotope/languages/en/explain.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/explain.xlf
+
+[isotope.develop-isotope-iso_upgrade]
+source_file = system/modules/isotope/languages/en/iso_upgrade.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/iso_upgrade.xlf
+
+[isotope.develop-isotope-modules]
+source_file = system/modules/isotope/languages/en/modules.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/modules.xlf
+
+[isotope.develop-isotope-tl_iso_address]
+source_file = system/modules/isotope/languages/en/tl_iso_address.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_address.xlf
+
+[isotope.develop-isotope-tl_iso_attribute]
+source_file = system/modules/isotope/languages/en/tl_iso_attribute.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_attribute.xlf
+
+[isotope.develop-isotope-tl_iso_attribute_option]
+source_file = system/modules/isotope/languages/en/tl_iso_attribute_option.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_attribute_option.xlf
+
+[isotope.develop-isotope-tl_iso_baseprice]
+source_file = system/modules/isotope/languages/en/tl_iso_baseprice.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_baseprice.xlf
+
+[isotope.develop-isotope-tl_iso_config]
+source_file = system/modules/isotope/languages/en/tl_iso_config.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_config.xlf
+
+[isotope.develop-isotope-tl_iso_document]
+source_file = system/modules/isotope/languages/en/tl_iso_document.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_document.xlf
+
+[isotope.develop-isotope-tl_iso_download]
+source_file = system/modules/isotope/languages/en/tl_iso_download.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_download.xlf
+
+[isotope.develop-isotope-tl_iso_gallery]
+source_file = system/modules/isotope/languages/en/tl_iso_gallery.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_gallery.xlf
+
+[isotope.develop-isotope-tl_iso_group]
+source_file = system/modules/isotope/languages/en/tl_iso_group.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_group.xlf
+
+[isotope.develop-isotope-tl_iso_integrity]
+source_file = system/modules/isotope/languages/en/tl_iso_integrity.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_integrity.xlf
+
+[isotope.develop-isotope-tl_iso_label]
+source_file = system/modules/isotope/languages/en/tl_iso_label.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_label.xlf
+
+[isotope.develop-isotope-tl_iso_orderstatus]
+source_file = system/modules/isotope/languages/en/tl_iso_orderstatus.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_orderstatus.xlf
+
+[isotope.develop-isotope-tl_iso_payment]
+source_file = system/modules/isotope/languages/en/tl_iso_payment.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_payment.xlf
+
+[isotope.develop-isotope-tl_iso_product]
+source_file = system/modules/isotope/languages/en/tl_iso_product.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_product.xlf
+
+[isotope.develop-isotope-tl_iso_product_category]
+source_file = system/modules/isotope/languages/en/tl_iso_product_category.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_product_category.xlf
+
+[isotope.develop-isotope-tl_iso_product_collection]
+source_file = system/modules/isotope/languages/en/tl_iso_product_collection.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_product_collection.xlf
+
+[isotope.develop-isotope-tl_iso_product_price]
+source_file = system/modules/isotope/languages/en/tl_iso_product_price.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_product_price.xlf
+
+[isotope.develop-isotope-tl_iso_producttype]
+source_file = system/modules/isotope/languages/en/tl_iso_producttype.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_producttype.xlf
+
+[isotope.develop-isotope-tl_iso_related_category]
+source_file = system/modules/isotope/languages/en/tl_iso_related_category.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_related_category.xlf
+
+[isotope.develop-isotope-tl_iso_related_product]
+source_file = system/modules/isotope/languages/en/tl_iso_related_product.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_related_product.xlf
+
+[isotope.develop-isotope-tl_iso_shipping]
+source_file = system/modules/isotope/languages/en/tl_iso_shipping.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_shipping.xlf
+
+[isotope.develop-isotope-tl_iso_tax_class]
+source_file = system/modules/isotope/languages/en/tl_iso_tax_class.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_tax_class.xlf
+
+[isotope.develop-isotope-tl_iso_tax_rate]
+source_file = system/modules/isotope/languages/en/tl_iso_tax_rate.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_tax_rate.xlf
+
+[isotope.develop-isotope-tl_maintenance]
+source_file = system/modules/isotope/languages/en/tl_maintenance.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_maintenance.xlf
+
+[isotope.develop-isotope-tl_member]
+source_file = system/modules/isotope/languages/en/tl_member.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_member.xlf
+
+[isotope.develop-isotope-tl_module]
+source_file = system/modules/isotope/languages/en/tl_module.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_module.xlf
+
+[isotope.develop-isotope-tl_nc_notification]
+source_file = system/modules/isotope/languages/en/tl_nc_notification.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_nc_notification.xlf
+
+[isotope.develop-isotope-tl_page]
+source_file = system/modules/isotope/languages/en/tl_page.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_page.xlf
+
+[isotope.develop-isotope-tl_settings]
+source_file = system/modules/isotope/languages/en/tl_settings.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_settings.xlf
+
+[isotope.develop-isotope-tl_user]
+source_file = system/modules/isotope/languages/en/tl_user.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_user.xlf
+
+[isotope.develop-isotope-tl_user_group]
+source_file = system/modules/isotope/languages/en/tl_user_group.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_user_group.xlf
+
+[isotope.develop-isotope-tokens]
+source_file = system/modules/isotope/languages/en/tokens.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tokens.xlf
+
+[isotope.develop-isotope_reports-default]
+source_file = system/modules/isotope_reports/languages/en/default.xlf
+source_lang = en
+file_filter = system/modules/isotope_reports/languages/<lang>/default.xlf
+
+[isotope.develop-isotope_reports-modules]
+source_file = system/modules/isotope_reports/languages/en/modules.xlf
+source_lang = en
+file_filter = system/modules/isotope_reports/languages/<lang>/modules.xlf
+
+[isotope.develop-isotope_reports-tl_iso_orderstatus]
+source_file = system/modules/isotope_reports/languages/en/tl_iso_orderstatus.xlf
+source_lang = en
+file_filter = system/modules/isotope_reports/languages/<lang>/tl_iso_orderstatus.xlf
+
+[isotope.develop-isotope_reports-tl_user]
+source_file = system/modules/isotope_reports/languages/en/tl_user.xlf
+source_lang = en
+file_filter = system/modules/isotope_reports/languages/<lang>/tl_user.xlf
+
+[isotope.develop-isotope_rules-default]
+source_file = system/modules/isotope_rules/languages/en/default.xlf
+source_lang = en
+file_filter = system/modules/isotope_rules/languages/<lang>/default.xlf
+
+[isotope.develop-isotope_rules-modules]
+source_file = system/modules/isotope_rules/languages/en/modules.xlf
+source_lang = en
+file_filter = system/modules/isotope_rules/languages/<lang>/modules.xlf
+
+[isotope.develop-isotope_rules-tl_iso_rule]
+source_file = system/modules/isotope_rules/languages/en/tl_iso_rule.xlf
+source_lang = en
+file_filter = system/modules/isotope_rules/languages/<lang>/tl_iso_rule.xlf
