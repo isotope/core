@@ -18,7 +18,10 @@ class To0020010004 extends \System
 
     public function run($blnInstalled)
     {
-        if ($blnInstalled) {
+        if ($blnInstalled
+            && \Database::getInstance()->fieldExists('tableless', 'tl_module')
+            && \Database::getInstance()->fieldExists('tableless', 'tl_form')
+        ) {
 
             $objModules = \Database::getInstance()->query("
                 SELECT iso_order_conditions, tableless FROM tl_module WHERE iso_order_conditions>0

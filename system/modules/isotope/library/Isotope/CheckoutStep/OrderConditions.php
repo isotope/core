@@ -52,7 +52,9 @@ abstract class OrderConditions extends CheckoutStep
                 throw new \InvalidArgumentException('Order condition form "' . $this->objModule->iso_order_conditions . '" not found.');
             }
 
-            $this->objForm->setTableless($objFormConfig->tableless);
+            if (isset($objFormConfig->tableless)) {
+                $this->objForm->setTableless($objFormConfig->tableless);
+            }
 
             $this->objForm->addFieldsFromFormGenerator(
                 $this->objModule->iso_order_conditions,

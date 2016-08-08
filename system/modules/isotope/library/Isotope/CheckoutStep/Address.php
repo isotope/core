@@ -58,7 +58,7 @@ abstract class Address extends CheckoutStep
         $blnValidate = \Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
-        $this->Template->tableless = $this->objModule->tableless;
+        $this->Template->tableless = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
         $this->Template->options   = $this->generateOptions($blnValidate);
         $this->Template->fields    = $this->generateFields($blnValidate);
 
@@ -280,7 +280,7 @@ abstract class Address extends CheckoutStep
 
                 $objWidget->mandatory   = $field['mandatory'] ? true : false;
                 $objWidget->required    = $objWidget->mandatory;
-                $objWidget->tableless   = $this->objModule->tableless;
+                $objWidget->tableless   = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
                 $objWidget->storeValues = true;
                 $objWidget->dca_config  = $field['dca'];
 

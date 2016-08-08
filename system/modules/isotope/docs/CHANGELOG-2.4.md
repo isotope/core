@@ -19,6 +19,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Merged address DCA into fields so modifyAddressFields hook can modify field config
 - Custom FileTree, Downloads and Media attributes are now translatable
 - Now uses Contao block templates for template inheritance
+- Correctly handle tableless forms in Contao 4
 
 
 ### Fixed

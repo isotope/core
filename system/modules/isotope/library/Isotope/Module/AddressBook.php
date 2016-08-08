@@ -201,9 +201,14 @@ class AddressBook extends Module
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
-        $objForm = new Form($table . '_' . $this->id, 'POST', function(Form $objForm) {
-            return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
-        }, (boolean) $this->tableless);
+        $objForm = new Form(
+            $table . '_' . $this->id,
+            'POST',
+            function(Form $objForm) {
+                return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
+            },
+            isset($this->tableless) ? (boolean) $this->tableless : true
+        );
 
         $objForm->bindModel($objAddress);
 
