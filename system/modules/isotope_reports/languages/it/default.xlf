@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ISO_REPORT.sales_total.0">
+        <source>Total</source>
+        <target>Totale</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.0">
+        <source>Total</source>
+        <target>Totale</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.shop_config">
+        <source>Shop configuration</source>
+        <target>Configurazione negozio</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.currency">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Stato</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Data dell'ordine</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_paid">
+        <source>Payment date</source>
+        <target>Data pagamento</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.columns">
+        <source>Columns</source>
+        <target>Colonne</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="fi">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>Tuotteiden hallinta</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Hallitse Isotope eCommerce verkkokauppasi tuotteita</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Tilaukset</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+        <target>Näe ja hallitse verkkokauppasi tilauksia</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.0">
+        <source>Store configuration</source>
+        <target>Verkkokaupan asetukset</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs</source>
+        <target>Aseta Isotope eCommerce tarpeisiisi sopivaksi</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Tuotesuodatus</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.0">
+        <source>Product List</source>
+        <target>Tuotelistaus</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Ostoskori</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Osoitekirja</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Tilaushistoria</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+        <target>Viestit</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Tuotteet</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Ominaisuudet</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Galleriat</target>
+      </trans-unit>
+      <trans-unit id="IMD.config">
+        <source>General settings</source>
+        <target>Yleiset asetukset</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>Tilauksen tila</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Dokumentit</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

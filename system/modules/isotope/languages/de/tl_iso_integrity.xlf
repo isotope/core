@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_integrity.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_integrity.headline">
+        <source>Integrity Check</source>
+        <target>Integritätscheck</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.columns.0">
+        <source>Problem</source>
+        <target>Problem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.columns.1">
+        <source>Result of the check</source>
+        <target>Ergebnis der Überprüfung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.description">
+        <source>Please choose the errors to be fixed.</source>
+        <target>Bitte wählen Sie die zu behebenen Fehler aus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.action">
+        <source>Resolve problems</source>
+        <target>Probleme lösen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.permission">
+        <source>Only admin can perform integrity check.</source>
+        <target>Nur Administratoren können den Integritätscheck ausführen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.0">
+        <source>Advanced prices</source>
+        <target>Erweiterte Preisangaben</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.1">
+        <source>%s invalid andvanced prices were found.&lt;br&gt;PIDs: %s.</source>
+        <target>%s ungültige erweiterte Preisangaben gefunden.&lt;br&gt;PIDs: %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.2">
+        <source>There are no invalid prices in your database.</source>
+        <target>Keine ungültigen Preise in der Datenbank.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.0">
+        <source>Invalid product variants</source>
+        <target>Ungültige Produkt-Varianten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.1">
+        <source>You have %s variants that belong to products without active variant support.&lt;br&gt;IDs: %s</source>
+        <target>%s Varianten, die Produkten ohne Varianten-Unterstützung zugewiesen wurden. &lt;br&gt;IDs: %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.2">
+        <source>There are no invalid variants in your database.</source>
+        <target>Keine ungültigen Varianten in der Datenbank.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.0">
+        <source>Invalid attribute options</source>
+        <target>Ungültige Attribut-Optionen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.1">
+        <source>You have %s attribute options that belong to non-existant variants or products or have a wrong optionsSource set.&lt;br&gt;IDs: %s</source>
+        <target>%s Attribut-Optionen, die zu nicht-existierenden Varianten oder Produkten zugewiesen wurden oder eine falsche optionsSource-Einstellung besitzen.&lt;br&gt;IDs: %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.2">
+        <source>There are no invalid attribute options in your database.</source>
+        <target>Keine ungültigen Attribut-Optionen in der Datenbank.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.0">
+        <source>Rules module</source>
+        <target>Regel-Modul</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.1">
+        <source>The rules module should be disabled if you do not use it.</source>
+        <target>Das Regel-Modul sollte deaktiviert werden, wenn es nicht benutzt wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.2">
+        <source>The rules module is disabled or in use.</source>
+        <target>Das Regelmodul ist deaktiviert oder in Benutzung.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

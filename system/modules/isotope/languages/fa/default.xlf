@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="fa">
+    <body>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>هیچ تنظیم فروشگاهی وجود ندارد</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>گروه‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>صفحه‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>هیچ فایل بارگیری نشد.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>تعداد</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>دیدن جزئیات</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>کلیدواژه‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>ارسال</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>بروزرسانی</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>افزودن به سبد</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>بروزرسانی سبد</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>بازگشت</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>ادامه</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>سفارش</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>ارسال</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>ویرایش</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>حذف</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>سبد خرید</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>بروزرسانی سبد</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>ویرایش</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>حذف</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>صورت‌حساب</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>وضعیت</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>تاریخ سفارش</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>شماره سفارش</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>تعداد</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>کل</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>کم به زیاد</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>زیاد به کم</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>الف تا ی</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>ی تا الف</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>یک کالا</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s کالا</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>نشانی</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>حمل</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>پرداخت</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>تغییر</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>شماره کارت اعتباری</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>نوع کارت اعتباری</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>ماه انقضاء</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>سال انقضاء</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>دقیقه‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>ساعت‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>روزها</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>هفته‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>ماه‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>سال‌ها</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroductionLegend">
+        <source>Introduction</source>
+        <target>مقدمه</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>نقد</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>مسترکارت</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>ویزا</target>
+      </trans-unit>
+      <trans-unit id="CCT.discover">
+        <source>Discover</source>
+        <target>دیسکاور</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>دلتا</target>
+      </trans-unit>
+      <trans-unit id="CCT.solo">
+        <source>Solo</source>
+        <target>سولو</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fileTree.0">
+        <source>File tree</source>
+        <target>درخت پرونده</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>بارگیری‌ها</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>بارگذاری پرونده</target>
+      </trans-unit>
+      <trans-unit id="ATTR.media.0">
+        <source>Video/Audio</source>
+        <target>صوتی/تصویری</target>
+      </trans-unit>
+      <trans-unit id="CUR.AED">
+        <source>AED - United Arab Emirates Dirham</source>
+        <target>AED - درهم امارات متحده عربی</target>
+      </trans-unit>
+      <trans-unit id="CUR.AFN">
+        <source>AFN - Afghani</source>
+        <target>AFN - افغانی</target>
+      </trans-unit>
+      <trans-unit id="CUR.ALL">
+        <source>ALL - Lek</source>
+        <target>ALL - Lek</target>
+      </trans-unit>
+      <trans-unit id="CUR.AMD">
+        <source>AMD - Dram</source>
+        <target>AMD - Dram</target>
+      </trans-unit>
+      <trans-unit id="CUR.ANG">
+        <source>ANG - Netherlands Antilles Guilder</source>
+        <target>ANG - Netherlands Antilles Guilder</target>
+      </trans-unit>
+      <trans-unit id="CUR.AOA">
+        <source>AOA - Kwanza</source>
+        <target>AOA - Kwanza</target>
+      </trans-unit>
+      <trans-unit id="CUR.ARS">
+        <source>ARS - Argentinian Nuevo Peso</source>
+        <target>ARS - Argentinian Nuevo Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.AUD">
+        <source>AUD - Australian Dollar</source>
+        <target>AUD - Australian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.AWG">
+        <source>AWG - Aruban Guilder</source>
+        <target>AWG - Aruban Guilder</target>
+      </trans-unit>
+      <trans-unit id="CUR.AZN">
+        <source>AZN - Azerbaijani Manat</source>
+        <target>AZN - Azerbaijani Manat</target>
+      </trans-unit>
+      <trans-unit id="CUR.BAM">
+        <source>BAM - Convertible Mark</source>
+        <target>BAM - Convertible Mark</target>
+      </trans-unit>
+      <trans-unit id="CUR.BBD">
+        <source>BBD - Barbados Dollar</source>
+        <target>BBD - Barbados Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BDT">
+        <source>BDT - Taka</source>
+        <target>BDT - Taka</target>
+      </trans-unit>
+      <trans-unit id="CUR.BGN">
+        <source>BGN - Bulgarian Lev</source>
+        <target>BGN - Bulgarian Lev</target>
+      </trans-unit>
+      <trans-unit id="CUR.BHD">
+        <source>BHD - Bahraini Dinar</source>
+        <target>BHD - دینار بحرین</target>
+      </trans-unit>
+      <trans-unit id="CUR.BIF">
+        <source>BIF - Burundi Franc</source>
+        <target>BIF - Burundi Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.BND">
+        <source>BND - Brunei Dollar</source>
+        <target>BND - دلار برونئی</target>
+      </trans-unit>
+      <trans-unit id="CUR.BOB">
+        <source>BOB - Boliviano</source>
+        <target>BOB - Boliviano</target>
+      </trans-unit>
+      <trans-unit id="CUR.BRL">
+        <source>BRL - Brazilian real</source>
+        <target>BRL - Brazilian real</target>
+      </trans-unit>
+      <trans-unit id="CUR.CHF">
+        <source>CHF - Swiss Franc</source>
+        <target>CHF - فرانک سويس</target>
+      </trans-unit>
+      <trans-unit id="CUR.EUR">
+        <source>EUR - Euro</source>
+        <target>EUR - یورو</target>
+      </trans-unit>
+      <trans-unit id="CUR.GMD">
+        <source>GMD - Dalasi</source>
+        <target>GMD - Dalasi</target>
+      </trans-unit>
+      <trans-unit id="CUR.IQD">
+        <source>IQD - Iraqi Dinar</source>
+        <target>IQD - دینار عراق</target>
+      </trans-unit>
+      <trans-unit id="CUR.IRR">
+        <source>IRR - Iranian Rial</source>
+        <target>IRR - ریال ایران</target>
+      </trans-unit>
+      <trans-unit id="CUR.JPY">
+        <source>JPY - Yen</source>
+        <target>JPY - ین</target>
+      </trans-unit>
+      <trans-unit id="CUR.QAR">
+        <source>QAR - Qatari Riyal</source>
+        <target>QAR - ریال قطر</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.CHF">
+        <source>Fr.</source>
+        <target>Fr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.DKK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.EUR">
+        <source>€</source>
+        <target>€</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.GBP">
+        <source>£</source>
+        <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.JPY">
+        <source>¥</source>
+        <target>¥</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.NOK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.SEK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.USD">
+        <source>$</source>
+        <target>$</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

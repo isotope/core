@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="fi">
+    <body>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Etunimi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Sukunimi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Yritys</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>Y-Tunnus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Syötä Y-Tunnus.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Osoite</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Syötä kadun nimi ja kiinteistön numero.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Osoite 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Syötä lisäosoitetietoja.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Osoite 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Syötä lisäosoitetietoja.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Postinumero</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Syötä postinumero.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Kaupunki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Syötä kaupunki.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Osavaltio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Syötä osavaltion nimi.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Maa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Puhelinnumero</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Syötä puhelinnumero.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Syötä oikea sähköpostiosoite.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Tilaukset</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Tuotteet</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

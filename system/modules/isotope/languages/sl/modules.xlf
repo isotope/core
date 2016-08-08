@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>Upravljanje izdelkov</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Upravljajte izdelke v vaši Isotope eCommerce trgovini</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Naročila</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+        <target>Pregled in upravljanje naročil v vaši trgovini</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Filter izdelkov</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.0">
+        <source>Product List</source>
+        <target>Seznam izdelkov</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Nakupovalna košarica</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Adresar</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Zgodovina naročil</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Podrobnosti naročila</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Sorodni izdelki</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+        <target>Sporočila</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Izdelki</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Lastnosti</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.0">
+        <source>Product types</source>
+        <target>Vrste izdelkov</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.0">
+        <source>Related categories</source>
+        <target>Sorodni kategorije</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Galerije</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.0">
+        <source>Shipping methods</source>
+        <target>Načini dostave</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.0">
+        <source>Payment methods</source>
+        <target>Načini plačila</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>Status naročila</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+        <target>Obvestila</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Dokumenti</target>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Razno</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+        <target>Prevodi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_gallery.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.0">
+        <source>Type</source>
+        <target>Tipo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.new.0">
+        <source>New gallery</source>
+        <target>Nuova galleria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.new.1">
+        <source>Create a new gallery</source>
+        <target>Crea una nuova galleria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.edit.0">
+        <source>Edit gallery</source>
+        <target>Modifica galleria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.delete.0">
+        <source>Delete gallery</source>
+        <target>Elimina galleria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name_legend">
+        <source>Name &amp;amp; Type</source>
+        <target>Nome &amp; Tipo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.config_legend">
+        <source>Configuration</source>
+        <target>Configurazione</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

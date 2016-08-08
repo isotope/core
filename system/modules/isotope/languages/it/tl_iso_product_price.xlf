@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_price.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_product_price.price_tiers.0">
+        <source>Price Tiers</source>
+        <target>Gruppi prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tiers.1">
+        <source>Setup at least one price tier for "Quantity 1". You can enter discount prices if the user orders more than one product.</source>
+        <target>Fissi almeno un gruppo di prezzo per la "Quantità 1". Può inserire prezzi scontati se il cliente ordina più di un prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.tax_class.0">
+        <source>Tax Class</source>
+        <target>Classe aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.tax_class.1">
+        <source>Please select a tax class for this price.</source>
+        <target>Per cortesia selezioni una classe aliquota per questo prezzo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.config_id.0">
+        <source>Store configuration</source>
+        <target>Configurazione negozio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.config_id.1">
+        <source>Select a store configuration for this price.</source>
+        <target>Selezioni una configurazione negozio per questo prezzo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.member_group.0">
+        <source>Member group</source>
+        <target>Gruppo prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.member_group.1">
+        <source>Select a member group for this price.</source>
+        <target>Selezioni un gruppo prezzo (gruppo membro) per questo prezzo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.start.0">
+        <source>Use from</source>
+        <target>Usa da</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.start.1">
+        <source>Do not use the price on the website before this day.</source>
+        <target>Non usare il prezzo sul sito web prima di questo giorno.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.stop.0">
+        <source>Use until</source>
+        <target>Usa fino</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.stop.1">
+        <source>Do not use the price on the website after this day.</source>
+        <target>Non usare il prezzo sul sito web dopo questo giorno.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.new.0">
+        <source>Add price</source>
+        <target>Aggiungi prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.new.1">
+        <source>Add a new price to this product</source>
+        <target>Aggiungi un nuovo prezzo a questo prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.edit.0">
+        <source>Edit price</source>
+        <target>Modifica prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.edit.1">
+        <source>Edit price ID %s</source>
+        <target>Modifica prezzo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.copy.0">
+        <source>Duplicate price</source>
+        <target>Duplica prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.copy.1">
+        <source>Duplicate price ID %s</source>
+        <target>Duplica prezzo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.delete.0">
+        <source>Delete price</source>
+        <target>Cancella prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.delete.1">
+        <source>Delete price ID %s</source>
+        <target>Cancella prezzo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.show.0">
+        <source>Price details</source>
+        <target>Dettagli prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.show.1">
+        <source>Show details of price ID %s</source>
+        <target>Mostra i dettagli del prezzo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tier_columns.min.0">
+        <source>Quantity (min)</source>
+        <target>Quantità (min)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tier_columns.price.0">
+        <source>Price</source>
+        <target>Prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_legend">
+        <source>Price</source>
+        <target>Prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.limit_legend">
+        <source>Limitations</source>
+        <target>Restrizioni</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

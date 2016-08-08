@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_related_product.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_related_product.category.0">
+        <source>Category</source>
+        <target>Categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category.1">
+        <source>Select a category.</source>
+        <target>Selezioni una categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products.0">
+        <source>Products</source>
+        <target>Prodotti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.new.0">
+        <source>Add category</source>
+        <target>Aggiuni categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.new.1">
+        <source>Add a new category with products</source>
+        <target>Aggiungi una nuova categoria con prodotti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.edit.0">
+        <source>Edit category</source>
+        <target>Modifica categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.edit.1">
+        <source>Edit category ID %s</source>
+        <target>Modifica la categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.copy.0">
+        <source>Duplicate category</source>
+        <target>Duplica categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.copy.1">
+        <source>Duplicate category ID %s</source>
+        <target>Duplica categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.cut.0">
+        <source>Move category</source>
+        <target>Sposta categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.cut.1">
+        <source>Move category ID %s</source>
+        <target>Sposta categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.delete.0">
+        <source>Delete category</source>
+        <target>Cancella categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.delete.1">
+        <source>Delete category ID %s</source>
+        <target>Cancella categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.show.0">
+        <source>Category details</source>
+        <target>Dettagli categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.show.1">
+        <source>Show details of category ID %s</source>
+        <target>Visualizza i dettagli categoria ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.editheader.0">
+        <source>Edit product</source>
+        <target>Modifica prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.editheader.1">
+        <source>Edit this product</source>
+        <target>Modifica questo prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category_legend">
+        <source>Category</source>
+        <target>Categoria</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products_legend">
+        <source>Related products</source>
+        <target>Prodotti correlati</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

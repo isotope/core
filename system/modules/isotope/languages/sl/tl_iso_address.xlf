@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>ID trgovine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Oznaka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Ime</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Priimek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Podjetje</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+        <target>Davčna številka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Ulica</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Ulica 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Ulica 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Poštna številka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Kraj</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Država</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Telefonska številka</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

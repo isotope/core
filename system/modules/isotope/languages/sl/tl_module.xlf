@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_module.iso_gallery.0">
+        <source>Gallery</source>
+        <target>Galerija</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_use_quantity.0">
+        <source>Enable quantity</source>
+        <target>Omogoči količino</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cols.0">
+        <source>Columns</source>
+        <target>Stolpci</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_payment_modules.0">
+        <source>Payment methods</source>
+        <target>Načini plačila</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Načini dostave</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Razvrščanje</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.0">
+        <source>Condition</source>
+        <target>Pogoj</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Omogočeni filtri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_all">
+        <source>Show all products</source>
+        <target>Prikaži vse izdelke</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_new">
+        <source>Only show new products</source>
+        <target>Prikaži samo nove izdelke</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_old">
+        <source>Only show old products</source>
+        <target>Prikaži samo stare izdelke</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortField.0">
+        <source>Initial sorting field</source>
+        <target>Privzeto polje za razvrščanje</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_buttons.0">
+        <source>Buttons</source>
+        <target>Gumbi</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_related_categories.0">
+        <source>Related categories</source>
+        <target>Sorodni kategorije</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method_ref.member">
+        <source>Login/Registration required</source>
+        <target>Zahtevana prijava/registracija</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.global.0">
+        <source>All Categories</source>
+        <target>Vse kategorije</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_category.0">
+        <source>Current Category</source>
+        <target>Trenutna kategorija</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

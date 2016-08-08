@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tokens.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.uniqid">
+        <source>The order's unique ID.</source>
+        <target>Eindeutige ID der Bestellung</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status">
+        <source>The label of the order's current status.</source>
+        <target>Bezeichnung des derzeitigen Status der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_old">
+        <source>The label of the order's previous status. Useful for things like "order status changed from x to y".</source>
+        <target>Bezeichnung des vorherigen Bestellstatus. Nützlich beispielsweise für „Bestellstatus änderte sich von x zu y“.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id">
+        <source>The ID of the order's current status.</source>
+        <target>Die ID des derzeitigen Status der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id_old">
+        <source>The ID of the order's previous status.</source>
+        <target>ID des vorherigen Status der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.recipient_email">
+        <source>The email address of the recipient.</source>
+        <target>Die E-Mail-Adresse des Empfängers.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_id">
+        <source>The ID of the order.</source>
+        <target>Die ID der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_items">
+        <source>The number of items (quantities summed up) in the order.</source>
+        <target>Die Anzahl der Artikel (Anzahl aufsummiert) in der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_products">
+        <source>The number of individual products in the order.</source>
+        <target>Die Anzahl von individuellen Produkten in der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_subtotal">
+        <source>The order's subtotal.</source>
+        <target>Zwischensumme der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_total">
+        <source>The order's total.</source>
+        <target>Gesamtsumme der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document_number">
+        <source>The order document number.</source>
+        <target>Die Dokumentennummer der Bestellung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_text">
+        <source>Order/Cart as text.</source>
+        <target>Bestellung/Warenkorb im Text-Format.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_html">
+        <source>Order/Cart as HTML.</source>
+        <target>Bestellung/Warenkorb in HTML.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document">
+        <source>The document that should be attached (e.g. an invoice).</source>
+        <target>Das Dokument, welches angehängt werden soll (z. B. eine Rechnung).</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.collection_*">
+        <source>All the collection/order column fields as stored in the database</source>
+        <target>Alle Collection/Bestell-Spalten-Felder wie in der Datenbank gespeichert.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address">
+        <source>Formatted billing address.</source>
+        <target>Formatierte Rechnungsanschrift</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address_*">
+        <source>All the billing address model fields.</source>
+        <target>Alle Rechnungsadresse-Model-Felder.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address">
+        <source>Formatted shipping address.</source>
+        <target>Formatierte Versandanschrift</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address_*">
+        <source>All the shipping address model fields.</source>
+        <target>Alle Versandadresse-Model-Felder.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.form_*">
+        <source>All the order condition form fields.</source>
+        <target>Alle Bestellbedingungen-Formular-Felder.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_id">
+        <source>Payment method ID.</source>
+        <target>ID der Zahlungsart.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_label">
+        <source>Payment method label.</source>
+        <target>Zahlungsart-Beschriftung.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_note">
+        <source>Payment method note.</source>
+        <target>Notiz zur Zahlungsart.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_id">
+        <source>Shipping method ID.</source>
+        <target>ID der Versandart.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_label">
+        <source>Shipping method label.</source>
+        <target>Versandart-Name.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_note">
+        <source>Shipping method note.</source>
+        <target>Versandart-Hinweis.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.config_*">
+        <source>All the store configuration fields.</source>
+        <target>Alle Shop-Konfiguration-Felder.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.member_*">
+        <source>All the member fields if it was a member checkout.</source>
+        <target>Alle Mitglieder-Felder wenn es die Bestellung eines Migliedes war.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

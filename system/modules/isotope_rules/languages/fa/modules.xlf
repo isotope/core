@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/modules.xlf" source-language="en">
+    <body>
+      <trans-unit id="MOD.iso_rules.0">
+        <source>Rules &amp;amp; Coupons</source>
+        <target>قوانین و کوپن‌ها</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_attribute.name.0">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.0">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.product">
+        <source>Product</source>
+        <target>Izdelek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.label.0">
+        <source>Label</source>
+        <target>Oznaka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.0">
+        <source>Phone number</source>
+        <target>Telefonska številka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.0">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.0">
+        <source>Discount</source>
+        <target>Popust</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description_legend">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

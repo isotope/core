@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_document.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_document.name.0">
+        <source>Document name</source>
+        <target>Documentnaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.name.1">
+        <source>Enter a name for this document. This will only be used in the backend.</source>
+        <target>Vul een naam in voor dit bestand. Dit wordt alleen in het backend gebruikt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type.0">
+        <source>Type of document</source>
+        <target>Type document</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.0">
+        <source>Logo</source>
+        <target>Logo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.0">
+        <source>Document title</source>
+        <target>Documenttitel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.0">
+        <source>File title</source>
+        <target>Bestandstitel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTpl.0">
+        <source>Document template</source>
+        <target>Documenttemplate</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+        <target>Gallerij</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Kies een gallerij om afbeeldingen mee weer te geven.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.collectionTpl.0">
+        <source>Collection template</source>
+        <target>Verzameling template</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.collectionTpl.1">
+        <source>Choose a collection template you want to render the products with.</source>
+        <target>Kies een verzameling template waarmee producten weergegeven moeten worden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Volgorde</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Geef aan in welke volgorde de items in deze verzameling weergegeven moeten worden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.new.0">
+        <source>New document</source>
+        <target>Nieuw document</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.edit.0">
+        <source>Edit document</source>
+        <target>Bewerk document</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.config_legend">
+        <source>General configuration</source>
+        <target>Algemene configuratie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.template_legend">
+        <source>Template</source>
+        <target>Template</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

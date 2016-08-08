@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_rule.type.0">
+        <source>Type</source>
+        <target>Tipo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.1">
+        <source>Please choose the type of rule.</source>
+        <target>Prego scegliere il tipo di regola.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.product">
+        <source>Product</source>
+        <target>Prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart">
+        <source>Cart</source>
+        <target>Carrello </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.1">
+        <source>Please enter a name for this rule.</source>
+        <target>Prego inserire un nome per questa regola.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.0">
+        <source>Label</source>
+        <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.1">
+        <source>The label will be show in cart. If you do not enter a label, the name will be used.</source>
+        <target>L'etichetta sarà mostrata nel carrello. Se non inserisci un'etichetta, verrà usato il nome.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.0">
+        <source>Discount</source>
+        <target>Sconto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.1">
+        <source>Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.</source>
+        <target>I valori validi sono numeri decimali o interi, meno un valore numerico o meno una percentuale.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.0">
+        <source>Tax Class</source>
+        <target>Classe aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.0">
+        <source>Apply discount to</source>
+        <target>Applica sconto a </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.1">
+        <source>Select how the discount is applied.</source>
+        <target>Seleziona come lo sconto è applicato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.products">
+        <source>to each product</source>
+        <target>per ogni prodotto </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.items">
+        <source>to each unit of a product</source>
+        <target>per ogni unità di un prodotto </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.subtotal">
+        <source>to the cart subtotal</source>
+        <target>per il subtotale del carrello </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.0">
+        <source>Enable coupon code</source>
+        <target>Attiva codice coupon </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.1">
+        <source>Require a code to be entered to invoke this rule, as a coupon.</source>
+        <target>Richiedi un codice da immettere per invocare questa regola, come un coupon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.0">
+        <source>Rule (coupon) code</source>
+        <target>Regola (coupon) codice </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.1">
+        <source>Please enter a code by which a customer will invoke this rule, as a coupon.</source>
+        <target>Prego inserire un codice tale che un cliente possa invocare questa regola, come un coupon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.0">
+        <source>Uses per member</source>
+        <target>Utilizza per membro </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each customer.</source>
+        <target>Questo sarà utilizzato per verificare se la regola è stata già riscattata. Se è fissato a 0, può essere usato illimitatamente per ogni cliente.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.0">
+        <source>Uses per store config</source>
+        <target>Utilizza per configurazione negozio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each store config.</source>
+        <target>Questo sarà utilizzato per verificare se la regola è stata già riscattata. Se è fissato a 0, può essere usato illimitatamente per ogni cliente. </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Subtotale minimo </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.1">
+        <source>Please specify a minimum subtotal this rule applies to.</source>
+        <target>Prego specificare un subtotale minimo a cui questa regola è applicata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.0">
+        <source>Maximum subtotal</source>
+        <target>Subtotale massimo </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.1">
+        <source>Please specify a maximum subtotal this rule applies to.</source>
+        <target>Prego specificare un subtotale massimo a cui questa regola è applicata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.0">
+        <source>Minimum item quantity</source>
+        <target>Quantità articolo minima </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.1">
+        <source>Please specify a minimum quantity of an item this rule applies to.</source>
+        <target>Prego specificare una quantità minima di un articolo a cui questa regola è applicata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.0">
+        <source>Maximum item quantity</source>
+        <target>Quantità articolo massima</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.1">
+        <source>Please specify a maximum quantity of a single item this rule applies to.</source>
+        <target>Prego specificare una quantità massima di un articolo a cui questa regola è applicata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.0">
+        <source>Quantity calculation mode</source>
+        <target>Modalità quantità calcolo </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Selezionare una modalità calcolo per una quantità minima/massima.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.product_quantity">
+        <source>Quantity of product in cart</source>
+        <target>Quantità di prodotti nel carrello </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_products">
+        <source>Total products in cart</source>
+        <target>Prodotti totali nel carrello </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Quantità totale nel carrello </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.0">
+        <source>Start date</source>
+        <target>Data inizio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.1">
+        <source>If desired, please specify the date this rule will become eligible on.</source>
+        <target>Se lo si desidera, prego specificare la data in cui questa regola diventerà ammissibile.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.0">
+        <source>End date</source>
+        <target>Data di fine </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.1">
+        <source>If desired, please specify the date this rule will no longer be eligible on.</source>
+        <target>Se lo si desidera, specificare la data in cui questa regola non sarà più ammissibile.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.0">
+        <source>Start time</source>
+        <target>Ora di inizio </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.1">
+        <source>If desired, please specify the time this rule will become eligible at.</source>
+        <target>Se lo si desidera, specificare il tempo in cui questa regola diventerà ammissibile a.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.0">
+        <source>End time</source>
+        <target>Fine tempo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.1">
+        <source>If desired, please specify the time this rule will not longer be eligible at.</source>
+        <target>Se lo si desidera, prego specificare il tempo in cui questa regola non sarà più ammissibile a.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configRestrictions.0">
+        <source>Store config restrictions</source>
+        <target>Restrizioni configurazione negozio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.0">
+        <source>Groups</source>
+        <target>Gruppi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
+        <source>Product types</source>
+        <target>Tipi prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.pages">
+        <source>Categories</source>
+        <target>Categorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.products">
+        <source>Products</source>
+        <target>Prodotti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.0">
+        <source>Products</source>
+        <target>Prodotti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.0">
+        <source>Categories</source>
+        <target>Categorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enabled</source>
+        <target>Attivato</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

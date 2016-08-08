@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_maintenance.xlf" source-language="en" target-language="pl">
+    <body>
+      <trans-unit id="tl_maintenance_jobs.iso_productcache.0">
+        <source>Purge Isotope product cache</source>
+        <target>Wyczyść cache produktów Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_productcache.1">
+        <source>Truncates the &lt;em&gt;tl_iso_productcache&lt;/em&gt; table which caches the products found for each product list on your page.</source>
+        <target>Czyści tabelę &lt;em&gt;tl_iso_productcache&lt;/em&gt;, która cacheuje produkty wyświetlone na każdej liście produktów w serwisie.</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_requestcache.0">
+        <source>Purge Isotope request cache</source>
+        <target>Wyczyść cache zapytań Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_requestcache.1">
+        <source>Truncates the &lt;em&gt;tl_iso_requestcache&lt;/em&gt; table which caches information from the filter module for short URLs.</source>
+        <target>Czyści tabelę &lt;em&gt; tl_iso_requestcache &lt;/em&gt;, która cacheuje informacje z modułów filtrów dla krótkich URLi.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

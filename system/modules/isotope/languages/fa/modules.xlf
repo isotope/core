@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="fa">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>مدیریت کالا</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>سبد خرید</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>دفتر نشانی</target>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.0">
+        <source>Integrity Check</source>
+        <target>بررسی درستی</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

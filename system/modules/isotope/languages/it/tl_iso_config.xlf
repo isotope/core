@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Cognome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Ditta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Via</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Per cortesia inserisca il nome e il numero della via.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Via 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Inserisca una seconda informazione per la via se necessario.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Via 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Inserisca una terza informazione per la via se necessario.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>CAP</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Per cortesia inserisca il CAP</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Città</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Stato/Provincia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Paese</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Numero di telefono</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Per cortesia inserisca il numero di telefono.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Per cortesia inserisca un indirizzo di mail valido.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.0">
+        <source>Status for new orders</source>
+        <target>Stato nuovi ordini</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Subtotale minimo </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.config_legend">
+        <source>Configuration</source>
+        <target>Configurazione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Checkout</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Ordini</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Immagini</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Prodotti</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/modules.xlf" source-language="en">
+    <body>
+      <trans-unit id="MOD.isotope_reports.0">
+        <source>Isotope eCommerce: Reports &amp;amp; Statistics</source>
+        <target>Iotope eCommerce: Rapporten en statistieken</target>
+      </trans-unit>
+      <trans-unit id="MOD.reports.0">
+        <source>Reports &amp;amp; Statistics</source>
+        <target>Rapporten en statistieken</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

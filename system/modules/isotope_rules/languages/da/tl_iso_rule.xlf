@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Navn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.0">
+        <source>Label</source>
+        <target>Mærkat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.0">
+        <source>Tax Class</source>
+        <target>Moms klasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.0">
+        <source>Start date</source>
+        <target>Start dato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.0">
+        <source>Groups</source>
+        <target>Grupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.pages">
+        <source>Categories</source>
+        <target>Kategorier</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.products">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.0">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.0">
+        <source>Categories</source>
+        <target>Kategorier</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

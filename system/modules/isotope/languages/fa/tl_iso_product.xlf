@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="fa">
+    <body>
+      <trans-unit id="tl_iso_product.id.0">
+        <source>Product ID</source>
+        <target>شناسه‌ی کالا</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.0">
+        <source>Categories</source>
+        <target>دسته‌بندی‌ها</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>نام</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.0">
+        <source>Move product</source>
+        <target>جابجایی کالا</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.1">
+        <source>Move product ID %s</source>
+        <target>جابجایی کالای شناسه‌ی %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.0">
+        <source>Downloads</source>
+        <target>بارگیری‌ها</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>تعداد</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

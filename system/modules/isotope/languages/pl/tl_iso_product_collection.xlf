@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="pl">
+    <body>
+      <trans-unit id="tl_iso_product_collection.document_number.0">
+        <source>Order ID</source>
+        <target>ID zamówienia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.member.0">
+        <source>Member (empty for guests)</source>
+        <target>Użytkownik (puste dla gości)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.uniqid.0">
+        <source>Unique ID</source>
+        <target>Unikalne ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.0">
+        <source>Order status</source>
+        <target>Status zamówienia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.1">
+        <source>Select the status of this order.</source>
+        <target>Proszę wybrać status tego zamówienia.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.locked.0">
+        <source>Placed</source>
+        <target>Umieszczony</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.0">
+        <source>Payment date</source>
+        <target>Data płatności</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.1">
+        <source>Enter a date when this order has been paid.</source>
+        <target>Proszę wprowadzić datę płatności za to zamówienie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.0">
+        <source>Shipped date</source>
+        <target>Data wysyłki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.1">
+        <source>Enter a date when this order has been shipped.</source>
+        <target>Proszę wprowadzić datę wysyłki tego zamówienia.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.config_id.0">
+        <source>Shop configuration</source>
+        <target>Konfiguracja sklepu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment_id.0">
+        <source>Payment method</source>
+        <target>Metoda płatności</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_id.0">
+        <source>Shipping method</source>
+        <target>Metoda dostawy</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.subtotal.0">
+        <source>Subtotal</source>
+        <target>Podsumowanie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_subtotal.0">
+        <source>Subtotal without tax</source>
+        <target>Podsumowanie bez podatku</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.total.0">
+        <source>Total</source>
+        <target>Suma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_total.0">
+        <source>Total without tax</source>
+        <target>Suma bez podatku</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.currency.0">
+        <source>Currency</source>
+        <target>Waluta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.language.0">
+        <source>Language</source>
+        <target>Język</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.0">
+        <source>Order notes</source>
+        <target>Notatki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.1">
+        <source>If you would like to convey information to other backend users, please do so here.</source>
+        <target>Jeśli chcesz przekazać dodatkowe informacje dla innych użytkowników, zrób to tutaj.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.0">
+        <source>Edit order</source>
+        <target>Edytuj zamówienie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.1">
+        <source>Edit order ID %s</source>
+        <target>Edytuj zamówienie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.0">
+        <source>Copy order</source>
+        <target>Kopiuj zamówienie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.1">
+        <source>Copy order ID %s</source>
+        <target>Kopiuj zamówienie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Usuń zamówienie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Usuń zamówienie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order details</source>
+        <target>Szczegóły zamówienia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
+        <source>Show details of order ID %s</source>
+        <target>Pokaż szczegóły zamówienia ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.0">
+        <source>Payment details</source>
+        <target>Szczegóły płatności</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.1">
+        <source>Show payment details of order ID %s</source>
+        <target>Pokaż szczegóły płatności zamówienia ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.0">
+        <source>Shipping details</source>
+        <target>Szczegóły wysyłki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.1">
+        <source>Show shipping details of order ID %s</source>
+        <target>Pokaż szczegóły wysyłki dla zamówienia ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.0">
+        <source>Print a document</source>
+        <target>Wydrukuj dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.1">
+        <source>Print order ID %s with a document of your choice</source>
+        <target>Wydrukuj zamówienie ID %s z wybranym dokumentem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.0">
+        <source>Document</source>
+        <target>Dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.1">
+        <source>Choose the document you would like to print the data with.</source>
+        <target>Proszę wybrać dokument, z którym chcesz wydrukować dane.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print">
+        <source>Print</source>
+        <target>Drukuj</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
+        <source>The status of your order has been updated.</source>
+        <target>Status twojego zamówienia się zmienił.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
+        <source>Notifications (e.g. email to client) have been sent.</source>
+        <target>Powiadomienia (np. e-mail do klienta) zostały wysłane.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
+        <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
+        <target>Powiadomienia (np. e-mail do klienta) nie mogły zostać wysłane. Sprawdź logi systemowe.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.status_legend">
+        <source>Order status</source>
+        <target>Status zamówienia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details_legend">
+        <source>Order details</source>
+        <target>Szczegóły zamówienia</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.email_legend">
+        <source>Email data</source>
+        <target>Informacje e-mail</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_legend">
+        <source>Billing address data</source>
+        <target>Adres rozliczeniowy</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_legend">
+        <source>Shipping address data</source>
+        <target>Adres dostawy</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

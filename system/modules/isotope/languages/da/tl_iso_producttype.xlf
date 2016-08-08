@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="tl_iso_producttype.name.0">
+        <source>Name</source>
+        <target>Navn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description.0">
+        <source>Description</source>
+        <target>Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.0">
+        <source>Attributes</source>
+        <target>Egenskaber</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.0">
+        <source>Exempt from shipping</source>
+        <target>Udelad fra forsendelse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description_legend">
+        <source>Description</source>
+        <target>Beskrivelse</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

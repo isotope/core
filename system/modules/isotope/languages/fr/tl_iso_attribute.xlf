@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_iso_attribute.name.0">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name.1">
+        <source>Please enter a name for this attribute.</source>
+        <target>Merci d'entrer un nom pour cet attribut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.0">
+        <source>Internal name</source>
+        <target>Nom interne</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.1">
+        <source>Internal name is the database field name and must be unique.</source>
+        <target>Le nom interne est le nom du champ dans la base de données et doit être unique.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.0">
+        <source>Type</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.1">
+        <source>Please select a type for this attribute.</source>
+        <target>Merci de sélectionner un type pour cet attribut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.legend.0">
+        <source>Field Group</source>
+        <target>Groupe de champs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.legend.1">
+        <source>Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.</source>
+        <target>Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.variant_option.0">
+        <source>Add to product variants wizard</source>
+        <target>Ajouter à l'assistant de variantes du produit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.variant_option.1">
+        <source>If selected, this attribute will be added to the product variants wizard for use as a product variant option.</source>
+        <target>Si sélectionné, cet attribut sera ajouté à l'assistant de variantes de produit pour une utilisation comme une option de variante de produit.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customer_defined.0">
+        <source>Defined by customer</source>
+        <target>Défini par le client</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customer_defined.1">
+        <source>Please select if this value defined by the customer (frontend).</source>
+        <target>Merci de choisir si cette valeur doit être définie par le client (front office).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.0">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.1">
+        <source>The description is shown as a hint to the backend user.</source>
+        <target>La description est indiquée par un indice à l'utilisateur back office.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.product">
+        <source>Product</source>
+        <target>Produit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.0">
+        <source>Options</source>
+        <target>Options</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.1">
+        <source>Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!</source>
+        <target>Merci d'entrer une ou plusieurs options. Utilisez les boutons pour ajouter, déplacer ou supprimer une option. Si vous travaillez sans l'aide de JavaScript, vous devez enregistrer vos modifications avant de modifier l'ordre.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.value.0">
+        <source>Value</source>
+        <target>Valeur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.label.0">
+        <source>Label</source>
+        <target>Libellé</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.default.0">
+        <source>Default</source>
+        <target>Taxe par défaut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.group.0">
+        <source>Group</source>
+        <target>Groupe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable.0">
+        <source>Options</source>
+        <target>Options</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.mandatory.0">
+        <source>Mandatory field</source>
+        <target>Champ obligatoire</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.mandatory.1">
+        <source>The field must be filled when editing a product.</source>
+        <target>Le produit ne sera pas ajouté au panier si ce champ est vide.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multiple.0">
+        <source>Multiple selection</source>
+        <target>Sélection multiple</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multiple.1">
+        <source>Allow visitors to select more than one option.</source>
+        <target>Autorise les visiteurs à sélectionner plusieurs options.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extensions.0">
+        <source>Allowed file types</source>
+        <target>Types de champs autorisés</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extensions.1">
+        <source>A comma separated list of valid file extensions.</source>
+        <target>Une liste des extensions de fichier valides séparée par des virgules.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rte.0">
+        <source>Use HTML editor</source>
+        <target>Utiliser l'éditeur HTML</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rte.1">
+        <source>Select a tinyMCE configuration file to enable the rich text editor.</source>
+        <target>Sélectionnez un fichier de configuration tinyMCE pour activer l'éditeur de texte riche.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multilingual.0">
+        <source>Multilingual</source>
+        <target>Multilingue</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multilingual.1">
+        <source>Check here if this field should be translated.</source>
+        <target>Cochez cette case si ce champ doit être traduit.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rgxp.0">
+        <source>Input validation</source>
+        <target>Validation de saisie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rgxp.1">
+        <source>Validate the input against a regular expression.</source>
+        <target>Validez l'entrée avec une expression régulière.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxlength.0">
+        <source>Maximum length</source>
+        <target>Longueur maximale</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxlength.1">
+        <source>Limit the field length to a certain number of characters (text) or bytes (file uploads).</source>
+        <target>Limite la longueur du champ à un certain nombre de caractères (texte) ou octets (téléchargement).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.foreignKey.0">
+        <source>Foreign table &amp; field</source>
+        <target>Table et champ contenant les options</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.foreignKey.1">
+        <source>Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)</source>
+        <target>Au lieu d'ajouter des options vous pouvez entrer une combinaison "table.champ" pour les sélectionner depuis la base de données.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.conditionField.0">
+        <source>Parent field</source>
+        <target>Champ parent</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.conditionField.1">
+        <source>Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</source>
+        <target>Please select the parent field, which must be of type "Select-Menu". For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.files.0">
+        <source>Show files</source>
+        <target>Afficher les fichiers</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.files.1">
+        <source>Show both files and folders.</source>
+        <target>Afficher les fichiers et dossiers.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.filesOnly.0">
+        <source>Files only</source>
+        <target>Files only</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.filesOnly.1">
+        <source>Remove the radio buttons or checkboxes next to folders.</source>
+        <target>Remove the radio buttons or checkboxes next to folders.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fieldType.0">
+        <source>Field type</source>
+        <target>Field type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fieldType.1">
+        <source>Display radio buttons or checkboxes next to folders.</source>
+        <target>Display radio buttons or checkboxes next to folders.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.sortBy.0">
+        <source>Order by</source>
+        <target>Trier par</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.sortBy.1">
+        <source>Please choose the sort order.</source>
+        <target>Choisir un type de tri.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.path.0">
+        <source>Root directory</source>
+        <target>Répertoire racine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.path.1">
+        <source>You can limit the file tree by defining a root directory here.</source>
+        <target>Vous pouvez limiter l'arborescence de fichiers en définissant un répertoire racine ici.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.storeFile.0">
+        <source>Store uploaded files</source>
+        <target>Enregistrer les fichiers envoyés</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.storeFile.1">
+        <source>Move the uploaded files to a folder on the server.</source>
+        <target>Envoyer les fichiers dans un dossier sur le serveur.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.uploadFolder.0">
+        <source>Target folder</source>
+        <target>Dossier de destination</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.uploadFolder.1">
+        <source>Please select the target folder from the files directory.</source>
+        <target>Veuillez, s'il vous plaît, choisir le dossier de destination dans l'arborescence de fichiers.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.useHomeDir.0">
+        <source>Use home directory</source>
+        <target>Utiliser le répertoire personnel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.useHomeDir.1">
+        <source>Store the file in the home directory if there is an authenticated user.</source>
+        <target>Enregistrer le fichier dans le répertoire personnel si l'utilisateur est authentifié.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.doNotOverwrite.0">
+        <source>Preserve existing files</source>
+        <target>Conserver les fichiers existants</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.doNotOverwrite.1">
+        <source>Add a numeric suffix to the new file if the file name already exists.</source>
+        <target>Ajouter un suffixe numérique au nouveau fichier si le nom de fichier existe déjà.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFolder.0">
+        <source>Target folder</source>
+        <target>Dossier de destination</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_sorting.0">
+        <source>Add to "Order By" option list</source>
+        <target>Add to "Order By" option list</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_sorting.1">
+        <source>This field will be sortable in the listing module provided the attribute is visible to customers.</source>
+        <target>This field will be sortable in the listing module provided the attribute is visible to customers.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_filter.0">
+        <source>Backend filterable</source>
+        <target>Peut être filtré en back office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_filter.1">
+        <source>Can this attribute be used in a backend filter?</source>
+        <target>Cet attribut peut-il être filtré en back office ?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_search.0">
+        <source>Backend searchable</source>
+        <target>Peut être recherché en back office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_filter.0">
+        <source>Frontend filterable</source>
+        <target>Peut être filtré en front office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_filter.1">
+        <source>Can this attribute be used in a frontend filter?</source>
+        <target>Cet attribut peut-il être filtré en front office ?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_search.0">
+        <source>Frontend searchable</source>
+        <target>Peut être recherché en front office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_search.1">
+        <source>Should the search engine look in this field for search terms?</source>
+        <target>Le moteur de recherche doit-il inclure ce champ ?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datepicker.0">
+        <source>Date picker</source>
+        <target>Sélecteur de date</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datepicker.1">
+        <source>Show a date picker for this field.</source>
+        <target>Afficher un sélecteur de date pour ce champ.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkbox">
+        <source>Checkbox</source>
+        <target>Case à cocher</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.radio">
+        <source>Radio</source>
+        <target>Radio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.digit.0">
+        <source>Numeric characters</source>
+        <target>Caractères numériques</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.digit.1">
+        <source>Allows numeric characters, minus (-), full stop (.) and space ( ).</source>
+        <target>Autorise les caractères numériques, moins (-), point (.) et espace ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alpha.0">
+        <source>Alphabetic characters</source>
+        <target>Caractères alphabétiques</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alpha.1">
+        <source>Allows alphabetic characters, minus (-), full stop (.) and space ( ).</source>
+        <target>Autorise les caractères alphabétiques, moins (-), point (.) et espace ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alnum.0">
+        <source>Alphanumeric characters</source>
+        <target>Caractères alphanumériques</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alnum.1">
+        <source>Allows alphabetic and numeric characters, minus (-), full stop (.), underscore (_) and space ( ).</source>
+        <target>Autorise les caractères alphanumériques, moins (-), point (.), underscore (_) et espace ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extnd.0">
+        <source>Extended alphanumeric characters</source>
+        <target>Caractères alphanumériques étendus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extnd.1">
+        <source>Allows everything except special characters which are usually encoded for security reasons (#/()&lt;=&gt;).</source>
+        <target>Permet tout sauf les caractères spéciaux qui sont généralement encodés pour des raisons de sécurité (#/()&lt;=&gt;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date.0">
+        <source>Date</source>
+        <target>Date</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date.1">
+        <source>Checks whether the input matches the global date format.</source>
+        <target>Vérifie si l'entrée correspond au format de date.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.time.0">
+        <source>Time</source>
+        <target>Heure</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.time.1">
+        <source>Checks whether the input matches the global time format.</source>
+        <target>Vérifie si l'entrée correspond au format d'heure.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datim.0">
+        <source>Date and time</source>
+        <target>Date et heure</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datim.1">
+        <source>Checks whether the input matches the global date and time format.</source>
+        <target>Vérifie si l'entrée correspond aux formats de date et d'heure.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.0">
+        <source>Phone number</source>
+        <target>Numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.1">
+        <source>Allows numeric characters, plus (+), minus (-), slash (/), parentheses () and space ( ).</source>
+        <target>Autorise les caractères numériques, plus (+), moins (-), slash (/), parenthèses () et espace ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.email.0">
+        <source>E-mail address</source>
+        <target>Adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.email.1">
+        <source>Checks whether the input is a valid e-mail address.</source>
+        <target>Vérifie si l'adresse e-mail est valide.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.url.0">
+        <source>URL format</source>
+        <target>Format d'URL</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.url.1">
+        <source>Checks whether the input is a valid URL.</source>
+        <target>Vérifie si l'URL est valide.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.0">
+        <source>Price</source>
+        <target>Prix</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.1">
+        <source>Checks whether the input is a valid price.</source>
+        <target>Vérifie si le prix est valide.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.0">
+        <source>Discount</source>
+        <target>Remise</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.1">
+        <source>Checks whether the input is a valid discount.&lt;br /&gt;Example: -10%, -10, +10, +10%</source>
+        <target>Vérifie si le format de réduction est valide.&lt;br /&gt;Exemple: -10%, -10, +10, +10%</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.surcharge.0">
+        <source>Surcharge</source>
+        <target>Supplément</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.surcharge.1">
+        <source>Checks whether the input is a valid surcharge.&lt;br /&gt;Example: 10.00, 10%</source>
+        <target>Vérifie si le format de supplément est valide.&lt;br /&gt;Exemple: 10.00, 10%</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.custom">
+        <source>Custom order</source>
+        <target>Ordre personnalisé</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name_asc">
+        <source>File name (ascending)</source>
+        <target>Nom de fichier (ascendant)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name_desc">
+        <source>File name (descending)</source>
+        <target>Nom de fichier (descendant)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date_asc">
+        <source>Date (ascending)</source>
+        <target>Date (ascendant)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date_desc">
+        <source>Date (descending)</source>
+        <target>Date (descendant)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.random">
+        <source>Random order</source>
+        <target>Ordre aléatoire</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
+        <source>##document_number##</source>
+        <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
+        <source>##order_id##</source>
+        <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.new.0">
+        <source>New attribute</source>
+        <target>Nouvel attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.new.1">
+        <source>Create a new attribute.</source>
+        <target>Créer un nouvel attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.edit.0">
+        <source>Edit attribute</source>
+        <target>Éditer un attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.edit.1">
+        <source>Edit attribute ID %s.</source>
+        <target>Éditer l'attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.copy.0">
+        <source>Copy attribute</source>
+        <target>Dupliquer un attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.copy.1">
+        <source>Copy attribute ID %s.</source>
+        <target>Dupliquer l'attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.delete.0">
+        <source>Delete attribute</source>
+        <target>Supprimer un attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.delete.1">
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
+        <target>Supprimer l'attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.show.0">
+        <source>Attribute details</source>
+        <target>Détails de l'attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.show.1">
+        <source>Show details for attribute ID %s.</source>
+        <target>Afficher les détails de l'attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.deleteConfirm">
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
+        <target>Voulez-vous vraiment supprimer l'attribut ID %s ? Le champ de la base de données n'est pas supprimé, vous devez mettre à jour manuellement la base de données en utilisant l'outil d'installation ou le gestionnaire d'extensions.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.attribute_legend">
+        <source>Attribute name &amp; type</source>
+        <target>Nom et type d'attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description_legend">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options_legend">
+        <source>Options</source>
+        <target>Options</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.config_legend">
+        <source>Attribute configuration</source>
+        <target>Configuration d'attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.search_filters_legend">
+        <source>Search &amp; Filtering Settings</source>
+        <target>Paramètres de recherche et de filtre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.store_legend">
+        <source>Store file</source>
+        <target>Store file</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

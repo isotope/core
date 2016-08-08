@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="cs">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <target>Jméno "%s" je již obsazené pro systémové použití . Prosím vyberte jiné jméno.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Konfigurace skladu není dostupná</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Prosím vytvořte výchozí nastavení skladu</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Ještě nemáte umístěny žádné objednávky</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Požadovaná objednávka nebyla nalezena.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Musíte být přihlášen k platbě.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Objednávka neprovedena. Prosím, zkuste to znovu nebo vyberte jinou platební metodu</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Nemáte žádné položky adresáře</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>Minimální objednané množství je % s. Prosím, přidejte další produkty před objednáním.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for "%s" is %s items. Please check your shopping cart.</source>
+        <target>Minimální množství pro "% jsou "% s položky. Zkontrolujte prosím Váš nákupního košíku.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Tento obraz byl již přidělen do nouzového jazyku.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>Vybraná složka je prázdná</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Platba od uživatele není povolena</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Tento produkt již není k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Ve Vašem produktu jsou chyby.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Prosím odstraňte chyby ve Vašem nakupním košíku před platbou.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Pouze ukázat tuto skupinu</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Skupiny</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Stránky</target>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+        <target>Zpět do skupiny výběru</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Ukázat všechn skupiny</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Nejsou zde varianty pro tento produkt</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Vaše platba se zpracovává, Prosíme o chvíli strpení...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Nejsou zde nahrány žádné soubory</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Množství</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>Vyhledání produktů</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>Vaše stáhnutelné produkty</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Detaily</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Produktů na stránku</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Klíčové slova</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Vložte</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Vyčistit filtr</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Aktualizovat</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Přidat do košíku</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Aktualizovat košík</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Seřadit podle:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Žádné produkty nenalezeny</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Zpět</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Pokračovat</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Objednávka</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>ž</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Vložte</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Není žádné zboží ve Vašem košíku.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Vybrané zboží bylo vloženo do nákupního košíku.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Výrobky z vaší poslední návštěvy byly znovu přidány. Zkontrolujte prosím své položky nákupního košíku.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Upravit</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Odstranit</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Odstranit %s z Vašeho košíku.</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Mezisoučet objednávky</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Celková částka:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Žádné platební možnosti nejsou v současné době k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Žádné možnosti dopravy nejsou v současné době k dispozici.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Žádné objednávkové e-maily nenalezeny.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Žádné objednávky nenalezeny</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Nákupní košík</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Pokračovat v objednávce</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Pokračovat v nákupu</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Aktualizovat košík</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Stav objednávky: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Vytvořit novou adresu</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Použijte fakturační adresu</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Použijte zákaznickou adresu.</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Odlišná dodací adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Upravit</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Smazat</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Opravdu chcete smazat tuto adresu? To nelze vrátit zpět.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Faktura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Stav</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Objednací datum</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Číslo objednávky</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Popis</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Množství</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Celkem</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>od A do Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>od Z k A</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Zpracování platby</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Platit nyní</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>Click here to view this PayPal transaction online</source>
+        <target>Klikněte zde pro zobrazení této PayPal transakce on-line</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 produkt</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s produkty</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Vložte dodací adresu nebo vyberte stávající adresu</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Zadejte Vaše fakturační údaje, nebo vyberte existující adresu.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Zadejte své fakturační údaje.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Enter your customer information or select an existing address.</source>
+        <target>Zadejte Vaše zákaznické informace, nebo vyberte existující adresu.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information</source>
+        <target>Zadejte Vaše zákaznické údaje</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Vyberte způsob dopravy</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Prosím, vyberte způsob dopravy.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Vyberte způsob platby.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Prosím, vyberte způsob platby.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Zkontrolujte a potvrďte podrobnosti objednávky.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Doprava</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Platba</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Přezkoumat</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Fakturační adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Dodací adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Fakturační a dodací adresa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Zákaznická adresa</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Způsob dopravy</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Způsob platby</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Přezkoumat objednávku</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Změnit</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Číslo kreditní karty</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Typ kreditní karty</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV číslo (3 nebo 4 místné číslo) </target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Měsíc vypršení platnosti</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Rok vypršení platnosti</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Modul pro platbu nebyl nalezen</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Modul pro dopravu nebyl nalezen</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minuty</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Hodiny</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dny</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Týdny</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Měsíce</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Roky</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="CCT.amex">
+        <source>American Express</source>
+        <target>AmericanExpress</target>
+      </trans-unit>
+      <trans-unit id="CCT.discover">
+        <source>Discover</source>
+        <target>DIscover</target>
+      </trans-unit>
+      <trans-unit id="CCT.jcb">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="CCT.diners">
+        <source>Diner's Club</source>
+        <target>Diner's Club</target>
+      </trans-unit>
+      <trans-unit id="CCT.enroute">
+        <source>EnRoute</source>
+        <target>EnRoute</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_blanche">
+        <source>Carte Blanche</source>
+        <target>Carte Blanche</target>
+      </trans-unit>
+      <trans-unit id="CCT.jal">
+        <source>JAL</source>
+        <target>JAL</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro">
+        <source>Maestro UK</source>
+        <target>Maestro UK</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="CCT.solo">
+        <source>Solo</source>
+        <target>Solo</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa_electron">
+        <source>Visa Electron</source>
+        <target>Visa Electron</target>
+      </trans-unit>
+      <trans-unit id="CCT.dankort">
+        <source>Dankort</source>
+        <target>Dankort</target>
+      </trans-unit>
+      <trans-unit id="CCT.laser">
+        <source>Laser</source>
+        <target>Laser</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_bleue">
+        <source>Carte Bleue</source>
+        <target>Carte Bleue</target>
+      </trans-unit>
+      <trans-unit id="CCT.carta_si">
+        <source>Carta Si</source>
+        <target>Carta Si</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Textové pole</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>Stáhnout</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Nahrát soubor</target>
+      </trans-unit>
+      <trans-unit id="CUR.CZK">
+        <source>CZK - Czech Koruna</source>
+        <target>Kč - Korun českých</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

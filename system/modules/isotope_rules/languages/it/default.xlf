@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ERR.couponCodeDropped">
+        <source>Your coupon code "%s" could not be applied. Please review your order again.</source>
+        <target>Il tuo codice coupon "%s" non può essere applicato. Prego controlla di nuovo il tuo ordine</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponHeadline">
+        <source>Apply Promotional Codes</source>
+        <target>Applica Codici Promozionali </target>
+      </trans-unit>
+      <trans-unit id="MSC.couponLabel">
+        <source>Promotional code</source>
+        <target>Codice promozionale </target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApply">
+        <source>Apply</source>
+        <target>Applica </target>
+      </trans-unit>
+      <trans-unit id="MSC.couponInvalid">
+        <source>Your coupon %s is not valid.</source>
+        <target>Il tuo coupon %s non è valido.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApplied">
+        <source>Your coupon %s has been applied.</source>
+        <target>Il tuo coupon %s è stato applicato.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponDuplicate">
+        <source>Your coupon %s has already been applied.</source>
+        <target>Il tuo coupon %s è stato già applicato.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

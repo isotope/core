@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <target>'%s' is gereserveerd voor gebruik in het systeem. Kies alstublieft een andere naam.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Er is geen Winkelinstellingen beschikbaar!</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Maak een standaard winkelinstellingen aan.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>U heeft nog geen bestellingen geplaatst</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>De gevraagde bestelling is niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>U moet zijn ingelogd om af te kunnen rekenen</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Een variant met deze attributen is al beschikbaar. Selecteer een andere combinatie alstublieft.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Vul hele getallen of decimalen ondertekend met + of - en eventueel met een percentage.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Vul hele getallen of optioneel decimalen met een percentage in.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Afrekenen mislukt, probeer opnieuw of kies een andere wijze van betaling. Onze excuses voor het ongemak.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>U heeft nog geen adressen in uw adresboek.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>Het minimale bestelbedrag is %s. Voeg nog iets toe aan uw winkelwagen voordat u gaat afrekenen.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for "%s" is %s items. Please check your shopping cart.</source>
+        <target>Het minimum aantal voor "%s" is %s producten. Controleer uw winkelwagen.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Deze afbeelding is al toegewezen aan de terugvaltaal. </target>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Kies het gewenste invoertype (datum, tijd, datum en tijd) om de datumkiezer in te schakelen.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>De geselecteerde map is leeg.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Toon alleen deze groep</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Groepen</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Pagina's</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Toon alle groepen</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Geen productvarianten gevonden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Kopie reservepagina</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Ordernummer %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Uw betaling wordt voltooid, een moment geduld alstublieft...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Geen bestanden geüpload.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Het bestand kon wegen onbekende oorzaak niet geüpload worden. Controleer het logbestand van het systeem.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Sleep bestanden hierheen om te uploaden</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Bestanden uploaden</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
+        <target>Nieuwe bestanden worden verwerkt...</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Enkele items konden niet verwijderd worden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Enkele items konden niet verwijderd worden en zijn in plaats daarvan verborgen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Aantal</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>zoek producten</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>Uw te downloaden producten</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class="from"&gt;Van&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Bekijk details</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Producten per pagina</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Keywords</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Verstuur</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Leeg filter</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Verversen</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>In winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Winkelwagen bijwerken</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Sorteren op:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Geen producten gevonden</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Terug</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Verder</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Bestellen</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Er zijn categorieën geassocieerd met dit product.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Verstuur</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Er bevinden zich geen producten in uw winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Het geselecteerde product is toegevoegd aan uw winkelwagen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>De producten van uw vorige bezoek zijn opnieuw toegevoegd. Controleer a.u.b. uw winkelwagen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Wijzigen</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Verwijder</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Verwijder %s uit uw winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Subtotaal bestelling:</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Totaal bestelling:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Momenteel zijn er geen betalings opties beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Momenteel zijn er geen verzend opties beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Geen bestel e-mails gevonden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Geen orders gevonden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsRemaining">
+        <source>&lt;br /&gt;%s downloads remaining</source>
+        <target>&lt;br /&gt;%s downloads over</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Ga verder met afrekenen</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Verder winkelen</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Winkelwagen bijwerken</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Status van de bestelling: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step "%s"</source>
+        <target>Ga terug naar stap "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Maak een nieuw adres aan</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Gebruik het factuur-adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Gebruik het standaard klant-adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Ander aflever adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Wijzigen</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Wilt u dit adres verwijderen? Dit kan niet ongedaan gemaakt worden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Factuur</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Bestel datum</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Ordernummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Aantal</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Totaal</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>laag - hoog</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>hoog - laag</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A - Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z - A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>oud - nieuw</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>nieuw - oud</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Betaling wordt verwerkt</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Nu betalen</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>Click here to view this PayPal transaction online</source>
+        <target>Klik hier om deze PayPal transactie online te bekijken</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 Product</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s Producten</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Vul uw verzendadres in of selecteer een bestaand adres. </target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Vul uw factuuradres in of selecteer een bestaand adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Vul uw factuurinformatie in</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Enter your customer information or select an existing address.</source>
+        <target>Vul u klantinformatie in of kies een bestaand adres.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information</source>
+        <target>Vul uw klantinformatie in</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Kies een verzendmethode.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Kies alstublieft een verzendmethode.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Vul uw betaalgegevens in.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Kies alstublieft een betaalmethode.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Bekijk en bevestig uw bestelling.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Verzending</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Betaling</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Overzicht</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Factuuradres</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Verzendadres</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Factuur- en verzendadres</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Klantadres</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Verzendmethode</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Betaalmethode</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Bestelling controleren</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Aanpassen</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Creditcardnummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Type creditcard</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV nummer (3 of 4 cijffercode)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Vervaldatum maand</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Vervaldatum jaar</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Betaalmethode niet gevonden!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Verzendmethode niet gevonden!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+        <target>Deze betaalmodule verstrekt geen aanvullende informatie.</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+        <target>Deze verzendmodule verstrekt geen aanvullende informatie.</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Gebruik de standaardwaarde</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+        <target>huidige stap:</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheLoading">
+        <source>Loading products...</source>
+        <target>Haalt producten op...</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheNoscript">
+        <source>Your browser does not support JavaScript. Please &lt;a href="%s"&gt;click here&lt;/a&gt; to load the product list.</source>
+        <target>Uw browser ondersteund geen javascript. &lt;a href="%s"&gt;Klik hier&lt;/a&gt; om de productlijst te laden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noFilesInFolder">
+        <source>No files in this folder</source>
+        <target>Geen bestanden in deze map</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportConfirmation">
+        <source>Imported file %s for product "%s"</source>
+        <target>Bestand %s voor product "%s" geïmporteerd</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportNoFilesFound">
+        <source>The folder did not contain any files to be imported.</source>
+        <target>De map bevatte geen bestanden om te importeren.</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Haalt productgegevens op...</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config "%s"</source>
+        <target>Winkelconfiguratie "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+        <target>Gesplitst</target>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status "%s"</source>
+        <target>U heeft %s bestelling(en) met de status "%s" </target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Stap %s van %s (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minuten</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Uur</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dagen</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Weken</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Maanden</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Jaar</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+        <target>Welkom bij Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope is de grootste open-source eCommerce oplossing voor Contao.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
+        <target>Op deze pagina vinden de meeste instellingen plaats. &lt;strong&gt;U kunt het beste van onder naar boven, en rechts naar links werken.&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+        <target>Het Isotope eCommerce team</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
+        <source>by date added (ascending)</source>
+        <target>op datum toegevoegd (oud - nieuw)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
+        <source>by date added (descending)</source>
+        <target>op datum toegevoegd (nieuw - oud)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
+        <source>by date updated (ascending)</source>
+        <target>op datum aangepast (oud - nieuw)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_tstamp">
+        <source>by date updated (descending)</source>
+        <target>op datum aangepast (nieuw - oud)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
+        <source>by product name (ascending)</source>
+        <target>op productnaam (A - Z)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_name">
+        <source>by product name (descending)</source>
+        <target>op productnaam (Z - A)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_price">
+        <source>by price (ascending)</source>
+        <target>op prijs (oplopend)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
+        <source>by price (descending)</source>
+        <target>op prijs (aflopend)</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Vaste verzendkosten</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+        <target>Dit is de standaard verzendmethode voor normale verzending.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+        <target>Verzendgroep</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+        <target>Hiermee kunt u meerder verzendmethoden groepen en de verzendprijs hiermee berekenen.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Contant</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
+        <source>Use this for all offline processed payment.</source>
+        <target>Gebruik dit voor alle offline betalingen.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+        <target>Deze PayPal module ondersteund IPN (Instant Payment Notifications).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+        <target>Standaard</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Standaard gallerij</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.inline.0">
+        <source>Inline gallery</source>
+        <target>Inline gallerij</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.inline.1">
+        <source>Clicking on a gallery image will replace the main image.</source>
+        <target>Op een afbeelding klikken vervangt de hoofdafbeelding.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
+        <source>Standard product</source>
+        <target>Standaard product</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
+        <source>A default product. Select this if nothing else matches.</source>
+        <target>Het standaard product. Gebruik deze als geen andere beter past.</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="CCT.amex">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="CCT.discover">
+        <source>Discover</source>
+        <target>Discover</target>
+      </trans-unit>
+      <trans-unit id="CCT.jcb">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="CCT.diners">
+        <source>Diner's Club</source>
+        <target>Diner's Club</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Tekstveld</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Veld van één regel voor een korte of middellange tekst.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Tekstgebied</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Een invoerveld met meerdere regels voor een middellange of lange tekst.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Selecteermenu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Een enkel- of uit meerdere regels bestaand drop-down menu.&lt;br /&gt;&lt;i&gt;Dit soort veld is geschikt voor productvarianten.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Radiobutton menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Een lijst van meerdere opties waaruit geselecteerd kan worden.&lt;br /&gt;&lt;i&gt;Dit soort veld is geschikt voor productvarianten.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+        <target>Checkbox menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+        <target>Een lijst van meerdere opties waaruit gekozen kan worden.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Media manager</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.1">
+        <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
+        <target>Upload afbeeldingen en overige bestanden naar het Isotope eCommerce bestandsysteem. Output wordt door een IsotopeGallery klasse afgehandeld.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.conditionalselect.0">
+        <source>Conditional Select-Menu</source>
+        <target>Voorwaardelijk selecteermenu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.conditionalselect.1">
+        <source>show select-options based on another select menu.</source>
+        <target>Toon selectie-opties op basis van een ander selecteermenu.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fileTree.0">
+        <source>File tree</source>
+        <target>Bestandsstructuur</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fileTree.1">
+        <source>A file tree for single or multiple files and folders.</source>
+        <target>Een bestandsstructuur van één of meerdere bestanden en mappen.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>Downloads</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.1">
+        <source>Download files from the product, e.g. manuals, data sheets etc.</source>
+        <target>Download bestanden van het product, bijv. handleidingen, data sheets enz.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Bestandsupload</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.1">
+        <source>A single-line input field to upload a local file to the server.</source>
+        <target>Invoerveld van één regel om een lokaal bestand naar de server te laden.</target>
+      </trans-unit>
+      <trans-unit id="CUR.EUR">
+        <source>EUR - Euro</source>
+        <target>EUR - Euro</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.EUR">
+        <source>€</source>
+        <target>€</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.GBP">
+        <source>£</source>
+        <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.JPY">
+        <source>¥</source>
+        <target>¥</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.USD">
+        <source>$</source>
+        <target>$</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

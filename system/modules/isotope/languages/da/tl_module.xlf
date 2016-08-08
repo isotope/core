@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="tl_module.iso_config_id.0">
+        <source>Store configuration</source>
+        <target>Butiksindstilling</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_ids.0">
+        <source>Store configurations</source>
+        <target>Butiksindstillinger</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_payment_modules.0">
+        <source>Payment methods</source>
+        <target>Betalingsmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Forsendelsesmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_related_categories.0">
+        <source>Related categories</source>
+        <target>Relaterede kattegorier</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

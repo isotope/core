@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_payment.name.0">
+        <source>Payment Method Name</source>
+        <target>Naam betaalmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.1">
+        <source>Enter a name for this payment method. This will only be used in the backend.</source>
+        <target>Vul een naam in voor deze betaalmethode. Deze wordt alleen in het backend weergegeven.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.0">
+        <source>Payment Method Label</source>
+        <target>Betaalmethode label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.1">
+        <source>The label will be shown to customers on checkout.</source>
+        <target>Het label wordt weergegeven voor klanten tijdens het afrekenen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.0">
+        <source>Type of Payment Gateway</source>
+        <target>Soort betalingsaanbieder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.1">
+        <source>Select a particular payment gateway</source>
+        <target>Kies een soort betalingsaanbieder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.0">
+        <source>Payment Note</source>
+        <target>Opmerking bij betaalmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.1">
+        <source>This note can be sent in confirmation mails (##payment_note##).</source>
+        <target>Deze opmerking kan meegestuurd worden in bevestigingse-mails (##payment_note##).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new_order_status.0">
+        <source>Status for new orders</source>
+        <target>Status voor nieuwe bestellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new_order_status.1">
+        <source>Choose a matching status for new orders.</source>
+        <target>Kies een status voor nieuwe bestellingen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_total.0">
+        <source>Minimum total</source>
+        <target>Minimum totaal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_total.1">
+        <source>Enter a number greater zero to exclude this payment method for lower priced orders.</source>
+        <target>Vul een getal groter dan nul in om deze betaalmethode te verbergen bij bestellingen met een lager totaalbedrag.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_total.0">
+        <source>Maximum total</source>
+        <target>Maximun totaal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_total.1">
+        <source>Enter a number greater zero to exclude this payment method for higher priced orders.</source>
+        <target>Vul een getal groter dan nul in om deze betaalmethode te verbergen bij bestellingen met een hoger totaalbedrag.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.0">
+        <source>Quantity calculation mode</source>
+        <target>Methode hoeveelheidsberekening</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Kies een berekeningswijze voor min/max hoeveelheid.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Totale hoeveelheid in winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.cart_products">
+        <source>Total products in cart</source>
+        <target>Totaal aantal producten in winkelwagen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.countries.0">
+        <source>Available countries</source>
+        <target>Beperk landen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.countries.1">
+        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+        <target>Kies de landen waarvoor deze betaalmethode gebruikt wordt (gebaseerd op het factuuradres van de klant).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Verzendmethoden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.1">
+        <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
+        <target>U kunt deze betaalmethode beperken tot enkele verzendmethodes (bijv. alleen contant betalen bij afhalen).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Productsoorten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.1">
+        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
+        <target>U kan deze betaalmethode beperken tot bepaalde product soorten. Als de winkelwagen een product soort bevat die niet geselecteerd is, is deze betaalmethode niet beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_ids.0">
+        <source>Store configurations</source>
+        <target>Winkel configuraties</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.1">
+        <source>Enter a price or percent value (e.g. "10" or "10%").</source>
+        <target>Vul een prijs of percentage in (bijv. "10" of "10%").</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.0">
+        <source>Tax Class</source>
+        <target>Belastingklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.1">
+        <source>Please select a tax class for the price.</source>
+        <target>Kies een belastingklasse voor deze prijs.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.trans_type.0">
+        <source>Transaction type</source>
+        <target>Transactiesoort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.trans_type.1">
+        <source>Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).</source>
+        <target>Kies of u meteen wilt doorverwijzen om de betaling te verichten, of de bestelling toestaan (en vasthouden) om later te betalen (bijv. bij verzending).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.0">
+        <source>PayPal Account</source>
+        <target>PayPal account</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_pspid.0">
+        <source>PSPID</source>
+        <target>PSPID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_pspid.1">
+        <source>The PSPID is your unique identification for the payment method.</source>
+        <target>Het PSPID is uw unieke identificatie van de betaalmethode.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_http_method.0">
+        <source>HTTP method</source>
+        <target>HTTP methode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_http_method.1">
+        <source>Type of HTTP data transfer from and to the servers.</source>
+        <target>Type HTTP gebruikt voor data van en naar servers.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.0">
+        <source>Hash method</source>
+        <target>Hashmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.1">
+        <source>Hashing algorithm for data transfer from and to the servers.</source>
+        <target>Hashing methode voor data van en naar servers.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha1">
+        <source>SHA-1</source>
+        <target>SHA-1</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha512">
+        <source>SHA-512</source>
+        <target>SHA-512</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_payment_method.0">
+        <source>Payment method</source>
+        <target>Betaalmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.0">
+        <source>Hash method</source>
+        <target>Hashmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.0">
+        <source>Payment method</source>
+        <target>Betaalmethode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.creditcard">
+        <source>Credit card</source>
+        <target>Creditcard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.maestro">
+        <source>Debig card</source>
+        <target>Debitcard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslpassword.0">
+        <source>Password</source>
+        <target>Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
+        <source>Payment methods</source>
+        <target>Betaalmethoden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_description.0">
+        <source>Description</source>
+        <target>Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_paymentMethods.0">
+        <source>Payment methods</source>
+        <target>Betaalmethoden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.0">
+        <source>Password</source>
+        <target>Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.groups.0">
+        <source>Member groups</source>
+        <target>Ledengroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.groups.1">
+        <source>Restrict this payment method to certain member groups.</source>
+        <target>Beperk deze betaalmethode tot bepaalde ledengroepen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.guests.0">
+        <source>Show to guests only</source>
+        <target>Alleen zichtbaar voor gasten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.0">
+        <source>Enabled</source>
+        <target>Ingeschakeld</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.cc">
+        <source>Credit card</source>
+        <target>Creditcard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.dc">
+        <source>Debit card</source>
+        <target>Debitcard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.vor">
+        <source>Prepayment</source>
+        <target>Voorafbetaling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.rec">
+        <source>Invoice</source>
+        <target>Factuur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type_legend">
+        <source>Name &amp;amp; Type</source>
+        <target>Naam &amp;amp; type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note_legend">
+        <source>Additional notes</source>
+        <target>Aanvullende berichten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_legend">
+        <source>General configuration</source>
+        <target>Algemene configuratie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.gateway_legend">
+        <source>Payment gateway configuration</source>
+        <target>Configuratie betalingsaanbieder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.template_legend">
+        <source>Template</source>
+        <target>Template</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expert_legend">
+        <source>Expert settings</source>
+        <target>Expert instellingen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

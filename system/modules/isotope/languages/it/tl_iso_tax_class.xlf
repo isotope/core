@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+        <target>Dia a questa classe di aliquota un nome rappresentativo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Preimpostato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+        <target>Spunti qui se questa è la classe di aliquota preimpostata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+        <target>Aliquota d'imposta inclusa nel prezzo del prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+        <target>Selezioni se i prezzi dei prodotti in questa classe di aliquota contiene un'aliquota di imposta. Questa aliquota d'imposta sarà sottratta dal prezzo del prodotto se essa non combacia.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+        <target>Includere etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+        <target>In'etichetta per ordini da presentare per aliquote rimosse (se le aliquote non combaciano). Etichetta aliquota d'imposta preimpostata sarà usata se non compilato.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+        <target>Applica aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+        <target>Aggiunge queste aliquote d'imposta ai prodotti che subentrano in questa classe di aliquota.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.0">
+        <source>New tax class</source>
+        <target>Nuova classe di aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.1">
+        <source>Create a new tax class</source>
+        <target>Crea una nuova classe di aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.0">
+        <source>Edit tax class</source>
+        <target>Modifica classe di aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.1">
+        <source>Edit tax class ID %s</source>
+        <target>Modifica la classe ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.0">
+        <source>Copy tax class</source>
+        <target>Copia la classe di aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.1">
+        <source>Copy tax class ID %s</source>
+        <target>Copia la classe di aliquota ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.0">
+        <source>Delete tax class</source>
+        <target>Cancella la classe di aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.1">
+        <source>Delete tax class ID %s</source>
+        <target>Cancella la classe di aliquota ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.0">
+        <source>Tax class details</source>
+        <target>Dettagli Ordini</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.1">
+        <source>Show details of tax class ID %s</source>
+        <target>Mostra i dettagli della classe ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Aliquota d'imposta</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

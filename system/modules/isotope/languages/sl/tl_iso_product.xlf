@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.0">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.0">
+        <source>Images</source>
+        <target>Slike</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmDesc">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.0">
+        <source>Related products</source>
+        <target>Sorodni izdelki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.0">
+        <source>Downloads</source>
+        <target>Prenosi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.expert_legend">
+        <source>Expert settings</source>
+        <target>Napredne nastavitve</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>Količina</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.price">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

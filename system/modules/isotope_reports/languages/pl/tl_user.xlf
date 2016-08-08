@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/tl_user.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_user.iso_reports.0">
+        <source>Isotope Reports</source>
+        <target>Raporty Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_reports.1">
+        <source>Select what reports should be visible to the user.</source>
+        <target>Wybierz jakie raporty mają być widocznę dla użytkownika.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

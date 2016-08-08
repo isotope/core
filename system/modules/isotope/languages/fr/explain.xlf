@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="XPL.mediaManager">
+        <source>&lt;p class="tl_help_table"&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Pour télécharger une nouvelle image, sélectionner le fichier et sauvegarder le produit. Après le téléchargement, un aperçu de l'image, un texte alternatif et une description sont affichés. Si vous avez plusieurs photos, cliquez sur les flèches à droite pour changer leur ordre, l'image du haut est utilisée comme image principale de chaque produit.&lt;/p&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

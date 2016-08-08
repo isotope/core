@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_product.id.0">
+        <source>Product ID</source>
+        <target>Product ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.0">
+        <source>Categories</source>
+        <target>Categoriën</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.1">
+        <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
+        <target>Selecteer een categorie (pagina gebaseerde categoriën maken gebruik van Contao pagina features zoals navigatie automatisering, bescherming, templates en volledige integratie met content elementen)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.0">
+        <source>Product type</source>
+        <target>Product type</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.1">
+        <source>Select your product type. Product types are defined in the store configuration.</source>
+        <target>Product types zoals gedefinieerd in de Product type manager</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.0">
+        <source>Alias</source>
+        <target>Alias</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.1">
+        <source>You can enter a unique alias for this product. It will be automatically generated from the name if empty.</source>
+        <target>Hier kunt u een uniek alias voor dit product invullen. De productnaam wordt gebruikt om automatisch een alias aan te maken indien het alias niet wordt ingevuld.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.1">
+        <source>Please enter the name of this product.</source>
+        <target>Vul de naam in van dit product.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.0">
+        <source>SKU</source>
+        <target>Artikelnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.1">
+        <source>Please enter a unique stock keeping unit for this product.</source>
+        <target>Vul een uniek artikelnummer in voor dit product.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Verzendgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.1">
+        <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
+        <target>Vul het verzendgewicht voor dit product in. Dit kan gebruikt worden om de verzendkosten te berekenen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.0">
+        <source>Teaser</source>
+        <target>Teaser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.1">
+        <source>Please enter the teaser.</source>
+        <target>Vul een teaser in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.0">
+        <source>Description</source>
+        <target>Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.1">
+        <source>Please enter the product description.</source>
+        <target>Vul de omschrijving van het product in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.0">
+        <source>Meta title</source>
+        <target>Meta titel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.1">
+        <source>Meta title is used as page title in the product detail view. If you leave it empty, the product name will be used.</source>
+        <target>Meta titel wordt gebruikt als paginatitel op de productlezerpagina. Prductnaam wordt gebruikt indien dit veld leeg is.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.0">
+        <source>Meta description</source>
+        <target>Meta omschrijving</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.1">
+        <source>Meta description will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Meta omschrijving wordt in de header van de productlezerpagina geplaatst. Dit voor zoekmachine-optimalisatie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.0">
+        <source>Meta keywords</source>
+        <target>Meta trefwoorden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.1">
+        <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Meta trefwoorden wordt in de header van de productlezerpagina geplaatst. Dit voor zoekmachine-optimalisatie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.0">
+        <source>Price &amp;amp; tax class</source>
+        <target>Prijs &amp;amp; belastingklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.1">
+        <source>Please enter the price(s) for this product and select the tax class.</source>
+        <target>Vul de prijzen in voor dit product en kies de belastingklasse.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.0">
+        <source>Exempt from shipping</source>
+        <target>Uitzonderen van verzending</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.1">
+        <source>Check if item is not a shipped item (such as downloadable products).</source>
+        <target>Selecteren als een product niet verzonden wordt (zoals te downloaden producten)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.0">
+        <source>Base price amount</source>
+        <target>Eenheidsprijs hoeveelheid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.1">
+        <source>Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).</source>
+        <target>Vul de hoeveelheid in om de eenheidsprijs mee te berekenen (bijv. "1500" als het product 1500 gram weegt).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.0">
+        <source>Images</source>
+        <target>Afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.1">
+        <source>Upload images to this product. Please save the product after selecting a file.</source>
+        <target>Upload afbeeldingen voor dit product. Sla het product op nadat u een bestand heeft geselecteerd.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.0">
+        <source>Protect product</source>
+        <target>Product afschermen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.1">
+        <source>Restrict product access to certain member groups.</source>
+        <target>Beperk product tot bepaalde ledengroepen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.0">
+        <source>Allowed member groups</source>
+        <target>Toegestane ledengroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.1">
+        <source>These groups will be able to access the product.</source>
+        <target>Hier kunt u toegang geven tot het product aan een of meerdere ledengroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.0">
+        <source>Show to guests only</source>
+        <target>Alleen zichtbaar voor gasten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.1">
+        <source>Hide the product if there is an authenticated user.</source>
+        <target>Verberg het product als een lid is ingelogd.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.0">
+        <source>CSS ID/class</source>
+        <target>CSS ID/class</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.1">
+        <source>Here you can set an ID and one or more classes.</source>
+        <target>Stel hier één ID en één of meerdere of classes in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.0">
+        <source>Publish product</source>
+        <target>Maak product beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.1">
+        <source>Click here to show this product on your website.</source>
+        <target>Klik hier om dit product op de website te laten zien.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.0">
+        <source>Start date</source>
+        <target>Startdatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.1">
+        <source>Do not show this product before the date specified.</source>
+        <target>Laat dit product niet zien voor de aangegeven datum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.0">
+        <source>Stop date</source>
+        <target>Eind-datum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.1">
+        <source>Do not show this product after the date specified.</source>
+        <target>Laat dit product niet zien na de aangegeven datum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.0">
+        <source>Inherited attributes</source>
+        <target>Neem attributen over</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.1">
+        <source>Check the fields you want to inherit from base product.</source>
+        <target>Selecteer de velden van de attributen die u van het basis-product wenst over te nemen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.0">
+        <source>Source folder</source>
+        <target>Source folder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.1">
+        <source>Please choose the folder where product assets are located.</source>
+        <target>Kies een folder waar bestanden voor dit product staan.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmSrc">
+        <source>Preview</source>
+        <target>Voorvertoning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmAlt">
+        <source>Alternate text</source>
+        <target>Alternatieve tekst</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmLink">
+        <source>Link target</source>
+        <target>Koppel aan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmDesc">
+        <source>Description</source>
+        <target>Omschrijving</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslate">
+        <source>Translate</source>
+        <target>Vertalen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.0">
+        <source>None</source>
+        <target>Geen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.1">
+        <source>Do not translate this image.</source>
+        <target>Deze afbeelding niet vertalen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.0">
+        <source>Text</source>
+        <target>Tekst</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.1">
+        <source>Translate alt text and description for this image.</source>
+        <target>Vertaal de alt tekst en omschrijving van deze afbeelding.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.0">
+        <source>All</source>
+        <target>Alle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.1">
+        <source>Do not include this image in translated version.</source>
+        <target>Gebruik deze afbeelding niet in de vertaalde versie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variantValuesLabel">
+        <source>Variant</source>
+        <target>Variant</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.showVariants">
+        <source>Show product variants</source>
+        <target>Toon productvarianten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.0">
+        <source>New product</source>
+        <target>Nieuw product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.1">
+        <source>Create new product</source>
+        <target>Maak een nieuw product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.0">
+        <source>Add variant</source>
+        <target>Voeg variant toe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.1">
+        <source>Add new variant to a given product</source>
+        <target>Voeg een nieuwe variant aan een product toe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.0">
+        <source>Edit product</source>
+        <target>Bewerk product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.1">
+        <source>Edit product ID %s</source>
+        <target>Wijzig product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.0">
+        <source>Copy product</source>
+        <target>Copieer product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.1">
+        <source>Copy product ID %s</source>
+        <target>Copieer product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.0">
+        <source>Move product</source>
+        <target>Verplaats product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.1">
+        <source>Move product ID %s</source>
+        <target>Verplaats product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.0">
+        <source>Delete product</source>
+        <target>Verwijder product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.1">
+        <source>Delete product ID %s</source>
+        <target>Verwijder product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.0">
+        <source>Publish/unpublish product</source>
+        <target>Publiceer/verberg product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.1">
+        <source>Publish/unpublish product ID %s</source>
+        <target>Publiceer/verberg product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.0">
+        <source>Product details</source>
+        <target>Product details</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.1">
+        <source>Show details of product ID %s</source>
+        <target>Laat details van product ID %s zien</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter">
+        <source>Advanced filter:</source>
+        <target>Geavanceerd filter:</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_noimages">
+        <source>Without images</source>
+        <target>Zonder afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_nocategory">
+        <source>Unassigned products</source>
+        <target>Niet toegewezen producten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new">
+        <source>New products</source>
+        <target>Nieuwe producten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_today">
+        <source>Added today</source>
+        <target>Vandaag toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_week">
+        <source>Added this week</source>
+        <target>Deze week toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_month">
+        <source>Added this month</source>
+        <target>Deze maand toegevoegd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sorting">
+        <source>Manually sort products in a page</source>
+        <target>Producten handmatig sorteren op een pagina</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.0">
+        <source>Product groups</source>
+        <target>Productgroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.1">
+        <source>Manage product groups</source>
+        <target>Beheer productgroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.0">
+        <source>Import assets</source>
+        <target>Importeer bestanden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.1">
+        <source>Import images and other media from a folder</source>
+        <target>Importeer afbeeldingen en andere media van een folder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.0">
+        <source>Manage prices</source>
+        <target>Beheer prijzen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.1">
+        <source>Click the button to manage advanced prices for this product.</source>
+        <target>Beheer prijzen voor product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.apply_and_close">
+        <source>Apply and close</source>
+        <target>Toepassen en sluiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.0">
+        <source>Product variants</source>
+        <target>Productvarianten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.1">
+        <source>Show variants for product ID %s</source>
+        <target>Toon varianten voor product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.0">
+        <source>Generate variants</source>
+        <target>Genereer varianten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.1">
+        <source>Generate variants for product ID %s</source>
+        <target>Genereer varianten voor product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.0">
+        <source>Related products</source>
+        <target>Gerelateerde producten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.1">
+        <source>Manage related products for product ID %s</source>
+        <target>Beheer gerelateerde producten voor product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.0">
+        <source>Downloads</source>
+        <target>Downloads</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.1">
+        <source>Edit downloads for product ID %s</source>
+        <target>Wijzig downloads voor product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.0">
+        <source>Move to group</source>
+        <target>Verplaats naar groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.1">
+        <source>Move product ID %s to a group</source>
+        <target>Verplaats product ID %s naar een groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groupSelected">
+        <source>Group</source>
+        <target>Groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.general_legend">
+        <source>General Settings</source>
+        <target>Algemene Instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_legend">
+        <source>Meta data</source>
+        <target>Meta data</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pricing_legend">
+        <source>Pricing Settings</source>
+        <target>Prijs instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inventory_legend">
+        <source>Inventory Settings</source>
+        <target>Voorraad instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_legend">
+        <source>Shipping Settings</source>
+        <target>Verzend instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.options_legend">
+        <source>Product Options Settings</source>
+        <target>Product optie instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.media_legend">
+        <source>Media Management</source>
+        <target>Media Management</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.expert_legend">
+        <source>Expert settings</source>
+        <target>Expert instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.publish_legend">
+        <source>Publishing</source>
+        <target>Publicatie instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>Aantal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min_format">
+        <source>from %s pcs.</source>
+        <target>vanaf %s st.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.price">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

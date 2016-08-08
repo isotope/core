@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <target>Имя `%s` зарезервировано системой. Пожалуйста, выберите другое имя.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Конфигурация магазина недоступна</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Пожалуйста, создайте конфигурацию магазина по-умолчанию.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Вы не разместили ещё ни одного заказа.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Запрашиваемый заказ не найден.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Вы должны войти в систему для оформления заказа.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Вариант с этими атрибутами уже есть.
+Пожалуйста выберите другую комбинацию.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Пожалуйста, введите целые или десятичные со знаком + или - числа, или со знаком процента.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Пожалуйста, введите целые или десятичные числа, или со знаком процента.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Оформление заказа не удалось. Попробуйте еще раз позднее или выберите другой способ оплаты.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Ваша адресная книга пуста.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>Минимальная сумма заказа %s. Пожалуйста добавьте еще товаров перед оформлением заказа.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Других вариантов товара не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Удвоенный запас</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Заказ № %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Ваш платеж обрабатывается. Пожалуйста, подождите...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Файлы не загружены.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Количество</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>Найти товары</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>Ваши товары доступные для загрузки</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class="from"&gt;От&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Подробнее</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Товаров на странице</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Ключевые слова</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Отправить</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Очистить фильтры</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Обновить</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Добавить в корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Обновить корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Сортировать по:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Товаров не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Назад</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Продолжить</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Заказ</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Категории не связаны с этим товаром.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Отправить</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Ваша корзина пуста.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Изменить</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Удалить</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Удалить %s из корзины</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Предварительный итог заказа:</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Итого:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Опций оплаты сейчас недоступны.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Опций доставки сейчас недоступны.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Электронные письма заказов не найдены.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Заказов не найдено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsRemaining">
+        <source>&lt;br /&gt;%s downloads remaining</source>
+        <target>&lt;br /&gt;%s загрузок остается</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Корзина</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Оформить заказ</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Продолжить покупки</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Обновить корзину</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Состояние заказа: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step "%s"</source>
+        <target>Вернуться к шагу "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Создать новый адрес</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Использовать адрес для выставления счета</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Использовать адрес покупателя</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Разные адреса доставки</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Изменить</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Удалить</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Вы действительно хотите удалить этот адрес? Действие не может быть отменено.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Счет</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Состояние</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Дата заказа</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Количество</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>мал. к больш.</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>больш. к мал.</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>А до Я</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Я до А</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>от ранее до поздее</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>от поздее до ранее</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Обработка платежа</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Оплатить сейчас</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Доставка</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Оплата</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

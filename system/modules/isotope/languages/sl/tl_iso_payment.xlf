@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_payment.new_order_status.0">
+        <source>Status for new orders</source>
+        <target>Status novih naročil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_quantity.0">
+        <source>Maximum quantity</source>
+        <target>Največja dovoljena količina</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.cart_products">
+        <source>Total products in cart</source>
+        <target>Skupno število izdelkov v košarici</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Načini dostave</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Vrste izdelkov</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paybyway_private_key.0">
+        <source>Private Key</source>
+        <target>Privatni ključ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha1">
+        <source>SHA-1</source>
+        <target>SHA-1</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha512">
+        <source>SHA-512</source>
+        <target>SHA-512</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_payment_method.0">
+        <source>Payment method</source>
+        <target>Način plačila</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.vads_certificate.0">
+        <source>Certificate</source>
+        <target>Certifikat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.0">
+        <source>Payment method</source>
+        <target>Način plačila</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.creditcard">
+        <source>Credit card</source>
+        <target>Kreditna kartica</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslpassword.0">
+        <source>Password</source>
+        <target>Geslo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
+        <source>Payment methods</source>
+        <target>Načini plačila</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_description.0">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_paymentMethods.0">
+        <source>Payment methods</source>
+        <target>Načini plačila</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.0">
+        <source>Password</source>
+        <target>Geslo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.0">
+        <source>Enabled</source>
+        <target>Omogočeno</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.cc">
+        <source>Credit card</source>
+        <target>Kreditna kartica</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.rec">
+        <source>Invoice</source>
+        <target>Račun</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note_legend">
+        <source>Additional notes</source>
+        <target>Dodatne opombe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.template_legend">
+        <source>Template</source>
+        <target>Predloga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expert_legend">
+        <source>Expert settings</source>
+        <target>Napredne nastavitve</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

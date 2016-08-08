@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_module.iso_list_layout.0">
+        <source>Product list template</source>
+        <target>Шаблон списка товаров</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_reader_layout.0">
+        <source>Product reader template</source>
+        <target>Шаблон считывателя товаров</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_jump_first.0">
+        <source>Redirect to first product</source>
+        <target>Перенаправить на первый товар</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method.0">
+        <source>Checkout method</source>
+        <target>Метод оформления заказа</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cols.0">
+        <source>Columns</source>
+        <target>Колонки</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_id.0">
+        <source>Store configuration</source>
+        <target>Конфигурация магазина</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_ids.0">
+        <source>Store configurations</source>
+        <target>Конфигурации магазинов</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_payment_modules.0">
+        <source>Payment methods</source>
+        <target>Методы оплаты</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Методы доставки</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Включить фильтры</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortField.0">
+        <source>Initial sorting field</source>
+        <target>Исходное поле сортировки</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortDirection.0">
+        <source>Initial sorting direction</source>
+        <target>Исходное направление сортировки</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_buttons.0">
+        <source>Buttons</source>
+        <target>Кнопки</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_buttons.1">
+        <source>Select the buttons you want to show.</source>
+        <target>Выберите кнопки для отображения.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_related_categories.0">
+        <source>Related categories</source>
+        <target>Связанные категории</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.global.0">
+        <source>All Categories</source>
+        <target>Все категории</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_category.0">
+        <source>Current Category</source>
+        <target>Текущая категория</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

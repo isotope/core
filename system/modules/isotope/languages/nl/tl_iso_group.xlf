@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_group.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_group.name.0">
+        <source>Group name</source>
+        <target>Groepnaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.name.1">
+        <source>Please enter a name for this group.</source>
+        <target>Vul een naam voor deze groep in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.product_type.0">
+        <source>Default product type</source>
+        <target>Standaard productsoort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.product_type.1">
+        <source>Here you can specify a default product type for this product group.</source>
+        <target>Hier kunt u een standaard productsoort voor deze groep opgeven.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.new.0">
+        <source>New group</source>
+        <target>Nieuwe groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.new.1">
+        <source>Create a new group</source>
+        <target>Maak een nieuwe groep aan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.edit.0">
+        <source>Edit group</source>
+        <target>Bewerk groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.edit.1">
+        <source>Edit group ID %s</source>
+        <target>Bewerk groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.copy.0">
+        <source>Duplicate group</source>
+        <target>Dupliceer groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.copy.1">
+        <source>Duplicate group ID %s</source>
+        <target>Dupliceer groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.copyChilds.0">
+        <source>Duplicate with subgroups</source>
+        <target>Dupliceer inclusief subgroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.copyChilds.1">
+        <source>Duplicate group ID %s with subgroups</source>
+        <target>Dupliceer groep ID %s inclusief subgroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.cut.0">
+        <source>Move group</source>
+        <target>Verplaats groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.cut.1">
+        <source>Move group ID %s</source>
+        <target>Verplaats groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.delete.0">
+        <source>Delete group</source>
+        <target>Verwijder groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.delete.1">
+        <source>Delete group ID %s</source>
+        <target>Verwijder groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.show.0">
+        <source>Group details</source>
+        <target>Details groep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.show.1">
+        <source>Show details of group ID %s</source>
+        <target>Laat details van groep ID %s zien</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.pasteafter.0">
+        <source>Paste after</source>
+        <target>Invoegen achter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.pasteafter.1">
+        <source>Paste after group ID %s</source>
+        <target>Invoegen achter groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.pasteinto.0">
+        <source>Paste into</source>
+        <target>Invoegen in</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.pasteinto.1">
+        <source>Paste into group ID %s</source>
+        <target>Invoegen in groep ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.group_legend">
+        <source>Product group settings</source>
+        <target>Productgroep instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.label">
+        <source>Product Groups</source>
+        <target>Productgroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.manager">
+        <source>Manage product groups</source>
+        <target>Beheer productgroepen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

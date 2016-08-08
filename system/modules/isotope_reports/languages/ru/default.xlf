@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ISO_REPORT.currency">
+        <source>Currency</source>
+        <target>Валюта</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Состояние</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Дата заказа</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.columns">
+        <source>Columns</source>
+        <target>Колонки</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

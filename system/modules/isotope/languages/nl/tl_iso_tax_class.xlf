@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+        <target>Geef deze belastingcategorie een naam die verklaart waarvoor deze gebruikt wordt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Standaard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+        <target>Selecteer om dit als standaard belastingcategorie te gebruiken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+        <target>Product prijs inclusief BTW</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+        <target>Selecteer als de prijs van de producten met deze belastingklasse een belastingtarief bevatten. Het belastingtarief wordt van het totaal van de productprijs afgetrokken als het niet overeen komt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+        <target>Label toevoegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+        <target>Een label voor in bestellingen voor afgetrokken belastingen. (Wanneer toegevoegde belasting niet overeen komt). Standaard belastingcategorie label wordt gebruikt wanneer u het veld leeg laat.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+        <target>Pas belasting toe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+        <target>Voeg deze belasting tos aan producten met deze belasting categorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.0">
+        <source>Apply rounding increment</source>
+        <target>Pas afronding toe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.1">
+        <source>Check here if you want to apply the rounding increment of your shop config.</source>
+        <target>Selecteer om de afronding van uw winkelconfiguratie toe te passen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.0">
+        <source>Not negative</source>
+        <target>Niet negatief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.1">
+        <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
+        <target>Voorkomt negatieve waarden voor deze belasting (een negatief bedrag wordt 0,00).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.0">
+        <source>New tax class</source>
+        <target>Nieuwe belastingcategorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.1">
+        <source>Create a new tax class</source>
+        <target>Maak een nieuwe belastingcategorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.0">
+        <source>Edit tax class</source>
+        <target>Wijzig belastingcategorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.1">
+        <source>Edit tax class ID %s</source>
+        <target>Wijzig belastingcategorie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.0">
+        <source>Copy tax class</source>
+        <target>Kopieër belastingcategorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.1">
+        <source>Copy tax class ID %s</source>
+        <target>Kopieër belastingcategorie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.0">
+        <source>Delete tax class</source>
+        <target>Verwijder belastingcategorie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.1">
+        <source>Delete tax class ID %s</source>
+        <target>Verwijder belasting categorie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.0">
+        <source>Tax class details</source>
+        <target>Bestel details</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.1">
+        <source>Show details of tax class ID %s</source>
+        <target>Toon details van belasting categorie ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Belastingtarief</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

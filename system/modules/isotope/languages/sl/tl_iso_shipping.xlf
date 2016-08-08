@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_shipping.price.0">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.0">
+        <source>Label</source>
+        <target>Oznaka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.quantity_mode.cart_products">
+        <source>Total products in cart</source>
+        <target>Skupno število izdelkov v košarici</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_quantity.0">
+        <source>Maximum quantity</source>
+        <target>Največja dovoljena količina</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.0">
+        <source>Product types</source>
+        <target>Vrste izdelkov</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.0">
+        <source>Shipping methods</source>
+        <target>Načini dostave</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.0">
+        <source>Enabled</source>
+        <target>Omogočeno</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.expert_legend">
+        <source>Expert settings</source>
+        <target>Napredne nastavitve</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

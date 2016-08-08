@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_tax_rate.name.0">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name.1">
+        <source>Enter a name for this tax rate.</source>
+        <target>Vul de naam in voor dit belatingtarief.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.0">
+        <source>Label</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.1">
+        <source>This label will be used on the front end in the checkout process.</source>
+        <target>Dit label wordt gebruikt in de front-end bij het checkout proces.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.0">
+        <source>Address to use for calculation</source>
+        <target>Adres dat wordt gebruikt voor berekening</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.0">
+        <source>Countries</source>
+        <target>Landen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Provincies/Regio's</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.1">
+        <source>Select the states or regions this tax class applies to.</source>
+        <target>Selecteer de provincies of regio's waarop deze belasting van teopassing is.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.0">
+        <source>Postal codes</source>
+        <target>Postcodes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.1">
+        <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Beperk dit belastingtarief tot een aantal postcodes. U kunt een lijst van postcodes opgeven met een komma ertussen (bijv. 1234,1235,1236-1239,1100-1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.0">
+        <source>Subtotal amount restriction</source>
+        <target>Beperking subtotaal bedragen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.1">
+        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
+        <target>Optioneel: Beperk dit belastingtarief tot specifieke subtotaal bedragen (zoals voor luxe belasting).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.0">
+        <source>Tax rate</source>
+        <target>Belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.1">
+        <source>A rate in percent this tax is set at.</source>
+        <target>Procentueel tarief van deze belasting.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.0">
+        <source>Store configuration</source>
+        <target>Winkelinstellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.1">
+        <source>Select the store configuration that the tax rate applies to.</source>
+        <target>Selecteer de winkel configuratie waarop dit belastingtarief van toepassing is.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.0">
+        <source>Stop calculations on trigger?</source>
+        <target>Stop berekeningen bij het in gang zetten van dit tarief?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.1">
+        <source>Stop other calculations if this tax rate is triggered.</source>
+        <target>Stop andere berekeningen als dit belastingtarief in gang wordt gezet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Member groups</source>
+        <target>Ledengroepen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.1">
+        <source>Restrict this tax rate to certain member groups.</source>
+        <target>Beperk dit belastingtarief tot bepaalde ledengroepen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.0">
+        <source>Protect tax rate</source>
+        <target>Bescherm belastingtrief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.1">
+        <source>Apply the tax rate to certain member groups only.</source>
+        <target>Pas dit belastingtarief alleen toe op bepaalde ledengroepen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.1">
+        <source>Do not apply tax rate if a member is logged in.</source>
+        <target>Pas belastingtarief niet toe als een lid is ingelogd.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.0">
+        <source>New tax rate</source>
+        <target>Nieuw belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.1">
+        <source>Create a new tax rate</source>
+        <target>Creëer een nieuw belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.0">
+        <source>Edit tax rate</source>
+        <target>Wijzig belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.1">
+        <source>Edit tax rate ID %s</source>
+        <target>Wijzig belastingtarief ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.0">
+        <source>Copy tax rate</source>
+        <target>Dupliceer belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.1">
+        <source>Copy tax rate ID %s</source>
+        <target>Dupliceer belastingtarief ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.0">
+        <source>Delete tax rate</source>
+        <target>Verwijder belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.1">
+        <source>Delete tax rate ID %s</source>
+        <target>Verwijder belastingtarief ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.0">
+        <source>Tax rate details</source>
+        <target>Details belastingtarief</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.1">
+        <source>Show details of tax rate ID %s</source>
+        <target>Geef details weer van tarief ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.billing">
+        <source>Billing Address</source>
+        <target>Factuuradres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.shipping">
+        <source>Shipping Address</source>
+        <target>Verzendadres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name_legend">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate_legend">
+        <source>Rate</source>
+        <target>Tarief legenda</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.location_legend">
+        <source>Location</source>
+        <target>Locatie legenda</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.condition_legend">
+        <source>Conditions</source>
+        <target>Voorwaarden legenda</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config_legend">
+        <source>Configuration</source>
+        <target>Configuratie</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

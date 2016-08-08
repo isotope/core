@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_rule.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.product">
+        <source>Product</source>
+        <target>Izdelek</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart">
+        <source>Cart</source>
+        <target>Nakupovalna košarica</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.0">
+        <source>Label</source>
+        <target>Oznaka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.0">
+        <source>Discount</source>
+        <target>Popust</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_products">
+        <source>Total products in cart</source>
+        <target>Skupno število izdelkov v košarici</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.0">
+        <source>Groups</source>
+        <target>Skupine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
+        <source>Product types</source>
+        <target>Vrste izdelkov</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.products">
+        <source>Products</source>
+        <target>Izdelki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.0">
+        <source>Products</source>
+        <target>Izdelki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enabled</source>
+        <target>Omogočeno</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ISO_REPORT.sales">
+        <source>Sales Statistics</source>
+        <target>Verkaufs-Statistiken</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.member">
+        <source>Member Statistics</source>
+        <target>Mitglieder-Statistiken</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules">
+        <source>Rules Statistics</source>
+        <target>Regel-Statistiken</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.custom">
+        <source>Custom Reports</source>
+        <target>Eigene Berichte</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.0">
+        <source>Total</source>
+        <target>Gesamt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.1">
+        <source>Total sales of all products</source>
+        <target>Gesamtverkäufe aller Produkte</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.0">
+        <source>Per product</source>
+        <target>Pro Produkt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.1">
+        <source>Sales per product</source>
+        <target>Verkäufe pro Produkt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.0">
+        <source>Total</source>
+        <target>Gesamt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.1">
+        <source>Sales statistics by member</source>
+        <target>Verkaufs-Statistiken nach Mitglied</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.0">
+        <source>Registrations</source>
+        <target>Registrierungen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.1">
+        <source>Statistics about member registrations</source>
+        <target>Statistiken zu Mitglieder-Registrierungen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.0">
+        <source>vs. Guest</source>
+        <target>gegen Gast</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.1">
+        <source>Sales comparison between members and guests</source>
+        <target>Vergleich der Verkäufe zwischen Gästen und Mitgliedern</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.0">
+        <source>Rules Usage</source>
+        <target>Regel-Nutzung</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.1">
+        <source>Statistics about rules usage</source>
+        <target>Statistiken zur Regel-Nutzung</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.0">
+        <source>Coupons</source>
+        <target>Geschenkgutscheine</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.1">
+        <source>Statistics about coupon usage</source>
+        <target>Statistiken zur Gutschein-Nutzung</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_summary">
+        <source>Sales in the last 24 hours</source>
+        <target>Verkäufe in den letzten 24 Stunden</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_empty">
+        <source>No orders have been placed in the last 24 hours.</source>
+        <target>In den vergangenen 24 Stunden gab es keine Bestellungen.</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.shop_config">
+        <source>Shop configuration</source>
+        <target>Shop-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.currency">
+        <source>Currency</source>
+        <target>Währung</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.orders#">
+        <source>Number of orders</source>
+        <target>Anzahl Bestellungen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.products#">
+        <source>Number of products</source>
+        <target>Anzahl von Produkten</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.items#">
+        <source>Number of items</source>
+        <target>Anzahl der Einträge</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales#">
+        <source>Sales Total</source>
+        <target>Verkäufe gesamt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.filter_config">
+        <source>Shop-Config</source>
+        <target>Shop-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.all">
+        <source>All</source>
+        <target>Alle</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sums">
+        <source>Sums</source>
+        <target>Summen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.show">
+        <source>Show</source>
+        <target>Zeigen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.search">
+        <source>Search</source>
+        <target>Suchen</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sort">
+        <source>Sort</source>
+        <target>Sortieren</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.period">
+        <source>Period</source>
+        <target>Zeitraum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.day">
+        <source>Day</source>
+        <target>Tag</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.week">
+        <source>Week</source>
+        <target>Woche</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.month">
+        <source>Month</source>
+        <target>Monat</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year">
+        <source>Year</source>
+        <target>Jahr</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.from">
+        <source>From</source>
+        <target>Von</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.to">
+        <source>To</source>
+        <target>An</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Bestelldatum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_paid">
+        <source>Payment date</source>
+        <target>Bezahldatum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.total_sales">
+        <source>Total sales</source>
+        <target>Verkäufe gesamt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.product_name">
+        <source>Product name</source>
+        <target>Produktname</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.columns">
+        <source>Columns</source>
+        <target>Spalten</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.variants">
+        <source>Variants</source>
+        <target>Varianten</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

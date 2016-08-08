@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_tax_rate.name.0">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name.1">
+        <source>Enter a name for this tax rate.</source>
+        <target>Inserisca un nome per l'aliquota</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.0">
+        <source>Label</source>
+        <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.1">
+        <source>This label will be used on the front end in the checkout process.</source>
+        <target>Quest'etichetta sarà usata nel frontend nel processo di checkout.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.0">
+        <source>Address to use for calculation</source>
+        <target>Indirizzo usato per il Calcolo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.0">
+        <source>Countries</source>
+        <target>Paesi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.0">
+        <source>Subtotal amount restriction</source>
+        <target>Quantità limite subtotale</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.1">
+        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
+        <target>Opzionale: Limiti questa aliquota d'imposta alla quantità subtotale specifica (ad esempio tassa beni di lusso).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.0">
+        <source>Tax rate</source>
+        <target>Aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.1">
+        <source>A rate in percent this tax is set at.</source>
+        <target>La tariffa fissata in percentuale</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.0">
+        <source>Store configuration</source>
+        <target>Configurazione negozio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.1">
+        <source>Select the store configuration that the tax rate applies to.</source>
+        <target>Selezioni la configurazione negozio al quale la classe di aliquota si applica.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.0">
+        <source>Stop calculations on trigger?</source>
+        <target>Ferma calcolo al verificarsi di un Evento?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.1">
+        <source>Stop other calculations if this tax rate is triggered.</source>
+        <target>Ferma altri calcoli se questa aliquota di imposto si presenta.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Member groups</source>
+        <target>Gruppi Membri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.0">
+        <source>New tax rate</source>
+        <target>Nuova aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.1">
+        <source>Create a new tax rate</source>
+        <target>Crea una nuova aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.0">
+        <source>Edit tax rate</source>
+        <target>Modifica aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.1">
+        <source>Edit tax rate ID %s</source>
+        <target>Modifica aliquota d'imposta %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.0">
+        <source>Copy tax rate</source>
+        <target>Copia aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.1">
+        <source>Copy tax rate ID %s</source>
+        <target>Copia aliquota d'imposta ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.0">
+        <source>Delete tax rate</source>
+        <target>Cancella aliquota d'imposta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.1">
+        <source>Delete tax rate ID %s</source>
+        <target>Cancella aliquota d'imposta %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.0">
+        <source>Tax rate details</source>
+        <target>Dettagli Ordine</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.1">
+        <source>Show details of tax rate ID %s</source>
+        <target>Visualizza i dettagli dell'aliquota d'imposta ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.billing">
+        <source>Billing Address</source>
+        <target>Indirizzo Fattura</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.shipping">
+        <source>Shipping Address</source>
+        <target>Indirizzo Spedizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name_legend">
+        <source>Name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate_legend">
+        <source>Rate</source>
+        <target>Legenda Tariffa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.location_legend">
+        <source>Location</source>
+        <target>Legenda Collocazione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.condition_legend">
+        <source>Conditions</source>
+        <target>Legenda Condizioni</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config_legend">
+        <source>Configuration</source>
+        <target>Configurazione</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

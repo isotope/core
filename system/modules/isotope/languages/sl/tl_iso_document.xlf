@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_document.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+        <target>Galerija</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Razvrščanje</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.template_legend">
+        <source>Template</source>
+        <target>Predloga</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

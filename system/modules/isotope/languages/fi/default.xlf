@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="fi">
+    <body>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Ryhmät</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Sivut</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Vedä ja pudota ladattavat tiedostot tähän</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Lataa tiedostoja</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
+        <target>Käsitellään pudotettuja tiedostoja...</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Joitain </target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Määrä</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>etsi tuotteita</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Näytä lisätietoja</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Tuotteita sivulla</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Avainsanat</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Lähetä</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Tyhjennä</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Päivitä</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Lisää ostoskoriin</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Päivitä ostoskori</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Järjestele:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Yhtään tuotetta ei löytynyt.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Takaisin</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Jatka</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Tilaa</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Tälle tuotteelle ei ole määritetty yhtään kategoriaa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Lähetä</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Ostoskorissasi ei ole yhtään tuotetta.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Tuote on lisätty ostoskoriin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Muokkaa</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Poista</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Välisumma</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Yhteensä</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Ostoskori</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Siirry kassalle</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Jatka ostosten tekemistä</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Päivitä ostoskori</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Tilauksen Tila: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step "%s"</source>
+        <target>Siirry takaisin vaiheeseen "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Luo uusi osoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Käytä laskutusosoitetta</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Eri toimitusosoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Muokkaa</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Poista</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Haluatko varmasti poistaa tämän osoitteen? Tätä ei voi peruuttaa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Lasku</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Tila</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Tilauspäivä</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Tilausnumero</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Määrä</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Yhteensä</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A - Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z - A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>vanhin ensin</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>uusin ensin</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Maksunkäsittely</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Sinut ohjataan nyt maksupalveluntarjoajan verkkosivulle.</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 Tuote</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%S Tuotetta</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Syötä toimitusosoite tai valitse jo olemassa oleva osoite.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Syötä laskutustietosi tai valitse jo olemassaoleva osoite.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Syötä laskutustietosi</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Valitse toimitustapa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Valitse maksutapa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Valitse maksutapa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Valitse maksutapa.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Tarkista ja vahvista tilaus.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Osoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Toimitus</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Maksu</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Esikatselu</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Laskutusosoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Toimitusosoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Laskutus- ja toimitusosoite</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Toimitustapa</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Maksutapa</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Tilauksen esikatselu</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Vaihda</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheLoading">
+        <source>Loading products...</source>
+        <target>Ladataan tuotteita...</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Vaihe %s / %s (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minuuttia</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+        <target>Tervetuloa Isotope eCommerceen</target>
+      </trans-unit>
+      <trans-unit id="MSC.saveAddressButton">
+        <source>Save address</source>
+        <target>Tallenna osoite</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
+        <source>Paybyway</source>
+        <target>Maksukaista</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

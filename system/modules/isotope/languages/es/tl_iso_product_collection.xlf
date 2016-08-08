@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="es">
+    <body>
+      <trans-unit id="tl_iso_product_collection.document_number.0">
+        <source>Order ID</source>
+        <target>ID Pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.uniqid.0">
+        <source>Unique ID</source>
+        <target>ID único</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.0">
+        <source>Order status</source>
+        <target>Estado pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.1">
+        <source>Select the status of this order.</source>
+        <target>Seleccionar el estado de este pedido.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.0">
+        <source>Payment date</source>
+        <target>Fecha de pago</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.1">
+        <source>Enter a date when this order has been paid.</source>
+        <target>Introducir una fecha en que este orden ha sido pagado.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.0">
+        <source>Shipped date</source>
+        <target>Fecha de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.1">
+        <source>Enter a date when this order has been shipped.</source>
+        <target>Introducir una fecha en que este orden ha sido enviado.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.config_id.0">
+        <source>Shop configuration</source>
+        <target>Configuración de la tienda</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment_id.0">
+        <source>Payment method</source>
+        <target>Forma de pago</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_id.0">
+        <source>Shipping method</source>
+        <target>Método de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.subtotal.0">
+        <source>Subtotal</source>
+        <target>Subtotal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.currency.0">
+        <source>Currency</source>
+        <target>Divisa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.language.0">
+        <source>Language</source>
+        <target>Idioma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.0">
+        <source>Order notes</source>
+        <target>Notas de pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.1">
+        <source>If you would like to convey information to other backend users, please do so here.</source>
+        <target>Si desea transmitir información a otros usuarios backend, por favor, hágalo aquí.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.0">
+        <source>Edit order</source>
+        <target>Editar pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.1">
+        <source>Edit order ID %s</source>
+        <target>Editar pedido ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.0">
+        <source>Copy order</source>
+        <target>Copiar pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.1">
+        <source>Copy order ID %s</source>
+        <target>Copiar pedido ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Borrar pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Borrar pedido ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order details</source>
+        <target>Detalles del pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
+        <source>Show details of order ID %s</source>
+        <target>Mostrar los detalles del pedido ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.0">
+        <source>Payment details</source>
+        <target>Detalles del pago</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.1">
+        <source>Show payment details of order ID %s</source>
+        <target>Mostrar los detalles del pedido ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.0">
+        <source>Shipping details</source>
+        <target>Detailles de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.1">
+        <source>Show shipping details of order ID %s</source>
+        <target>Mostrar los detalles del envío ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.status_legend">
+        <source>Order status</source>
+        <target>Estado pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details_legend">
+        <source>Order details</source>
+        <target>Detalles del pedido</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.email_legend">
+        <source>Email data</source>
+        <target>Datos de email</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_legend">
+        <source>Billing address data</source>
+        <target>Datos de direcciones de facturación</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_legend">
+        <source>Shipping address data</source>
+        <target>Datos de direcciones de envío</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

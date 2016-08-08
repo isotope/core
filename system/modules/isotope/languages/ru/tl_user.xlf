@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_user.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_user.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Модули Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Выберите к каким модулям конфигурации магазина этот пользователь может получить доступ.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_product_types.0">
+        <source>Allowed product types</source>
+        <target>Типы товаров</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_product_types.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Пользователи могут видеть и редактировать только те товары и типы товаров, которые вы включили.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Конфиурации магазинов</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Пользователи могут видеть товары из этих конфигураций магазинов.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

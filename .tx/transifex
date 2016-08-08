@@ -141,11 +141,14 @@ class Transifex
 
                 $xliff = $xml->createElement('xliff');
                 $xliff->setAttribute('version', '1.1');
+                $xliff->setAttribute('xmlns', 'urn:oasis:names:tc:xliff:document:1.2');
+                $xliff->setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+                $xliff->setAttribute('xsi:schemaLocation', 'urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd');
                 $xml->appendChild($xliff);
 
                 $xfile = $xml->createElement('file');
-                $xfile->setAttribute('datatype', 'php');
-                $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.php');
+                $xfile->setAttribute('datatype', 'plaintext');
+                $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.xlf');
                 $xfile->setAttribute('source-language', 'en');
                 $xliff->appendChild($xfile);
 
@@ -165,6 +168,11 @@ class Transifex
                                 {
                                     foreach ($text as $j=>$subtext)
                                     {
+                                        if (is_array($subtext))
+                                        {
+                                            die("Too many levels in language file \"$file\"\n");
+                                        }
+
                                         $trans = $xml->createElement('trans-unit');
                                         $trans->setAttribute('id', "$category.$key.$i.$j");
                                         $xbody->appendChild($trans);
@@ -199,6 +207,10 @@ class Transifex
                     }
                 }
 
+                if (!count($xbody->firstChild)) {
+                    continue;
+                }
+
                 // Save the XML document
                 $xml->save(TL_ROOT . '/.tx/source/en/' . $module . '/' . $file . '.xlf');
 
@@ -209,10 +221,10 @@ class Transifex
                 }
 
                 // Add an entry to the .tx/config file
-                fputs($fh, "\n[isotope.{$argv[2]}-$module-$file]");
-                fputs($fh, "\nsource_file = .tx/source/en/$module/$file.xlf");
-                fputs($fh, "\nsource_lang = en");
-                fputs($fh, "\nfile_filter = .tx/source/<lang>/$module/$file.xlf\n");
+                fwrite($fh, "\n[isotope.{$argv[2]}-$module-$file]");
+                fwrite($fh, "\nsource_file = .tx/source/en/$module/$file.xlf");
+                fwrite($fh, "\nsource_lang = en");
+                fwrite($fh, "\nfile_filter = .tx/source/<lang>/$module/$file.xlf\n");
             }
         }
 
@@ -431,8 +443,8 @@ class Transifex
                     $xml->appendChild($xliff);
 
                     $xfile = $xml->createElement('file');
-                    $xfile->setAttribute('datatype', 'php');
-                    $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.php');
+                    $xfile->setAttribute('datatype', 'plaintext');
+                    $xfile->setAttribute('original', 'system/modules/' . $module . '/languages/en/' . $file . '.xlf');
                     $xfile->setAttribute('source-language', 'en');
                     $xliff->appendChild($xfile);
 

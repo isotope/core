@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_document.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_document.logo.0">
+        <source>Logo</source>
+        <target>Logo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.1">
+        <source>Select a logo.</source>
+        <target>Seleziona un logo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.0">
+        <source>Document title</source>
+        <target>Titolo documento.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.0">
+        <source>File title</source>
+        <target>Titolo file</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+        <target>Galleria </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Seleziona una galleria per renderizzare immagini.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Ordinamento </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Definisci in quale ordine gli elementi della raccolta dovrebbero essere elencati.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.new.0">
+        <source>New document</source>
+        <target>Nuovo documento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.new.1">
+        <source>Create a new document</source>
+        <target>Crea un nuovo documento</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.edit.0">
+        <source>Edit document</source>
+        <target>Modifica documento </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.config_legend">
+        <source>General configuration</source>
+        <target>Configurazione Generale</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.template_legend">
+        <source>Template</source>
+        <target>Template</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

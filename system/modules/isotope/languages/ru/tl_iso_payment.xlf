@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Методы доставки</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Типы товаров</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_ids.0">
+        <source>Store configurations</source>
+        <target>Конфигурации магазинов</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
+        <source>Payment methods</source>
+        <target>Методы оплаты</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_description.0">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_paymentMethods.0">
+        <source>Payment methods</source>
+        <target>Методы оплаты</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.rec">
+        <source>Invoice</source>
+        <target>Счет</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

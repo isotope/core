@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="fa">
+    <body>
+      <trans-unit id="tl_iso_attribute.name.0">
+        <source>Name</source>
+        <target>نام</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name.1">
+        <source>Please enter a name for this attribute.</source>
+        <target>لطفا نامی برای این خصوصیت وارد کنید.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.0">
+        <source>Type</source>
+        <target>نوع</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.label.0">
+        <source>Label</source>
+        <target>برچسب</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.default.0">
+        <source>Default</source>
+        <target>پیش‌فرض</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

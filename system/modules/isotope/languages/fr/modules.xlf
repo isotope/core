@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>Produits</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Gérer les produits de votre boutique eCommerce Isotope</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Commandes</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+        <target>Voir et gérer les commandes de votre boutique</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.0">
+        <source>Store configuration</source>
+        <target>Configuration de la boutique</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs</source>
+        <target>Installer et configurer Isotope eCommerce à vos besoins</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Filtre de produit</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Permet de définir les filtres individuels pour Isotope tels que l'arborescence des catégories et les filtres d'attributs des produits.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+        <target>Cumulative Filter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
+        <target>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.0">
+        <source>Product List</source>
+        <target>Liste de produits</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Peut être utilisé pour lister des produits ou des valeurs d'attributs. Peut être combiné avec d'autres modules (ex. : le module de filtrage).</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.0">
+        <source>Product Variant List</source>
+        <target>Liste de variantes d'un produit</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.1">
+        <source>Lists each variant of a product. Make sure you use the iso_list_variants template.</source>
+        <target>Liste de chaque variante d'un produit. Assurez-vous d'utiliser le modèle iso_list_variants.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Détails d'un produit</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Module lecteur de produits. Il est utilisé pour afficher les détails d'un produit.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Panier d'achat</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>Module panier d'achat. En box ou un plein affichage peut être réglé par la sélection de modèle.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Commander</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Permet aux clients de finaliser leur commande.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Carnet d'adresse</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Permet aux clients de gérer leur carnet d'adresses.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Historique des commandes</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Permet aux clients de consulter l'historique de leurs commandes.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Détails des commandes</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Permet aux clients de consulter le détail de leurs commandes dans l'historique.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Changeur de configuration de boutique</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Basculer entre les configurations de boutique pour changer de monnaie et d'autres paramètres.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Produits similaires</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Lister les produits similaires au produit courant.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+        <target>Messages</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+        <target>Affiche tous les messages d'Isotopes s'ils n'ont pas été affichés ailleurs.</target>
+      </trans-unit>
+      <trans-unit id="IMD.config_module">
+        <source>Isotope eCommerce configuration (Version: %s)</source>
+        <target>Configuration du eCommerce Isotope (Version : %s)</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Produits</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Attributs</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.1">
+        <source>Manage and create product attributes such as size, color, etc.</source>
+        <target>Gérer et créer des attributs de produits telles que la taille, la couleur, etc.</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.0">
+        <source>Product types</source>
+        <target>Types de produits</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.1">
+        <source>Manage and create product types from sets of attributes.</source>
+        <target>Gérer et créer des types de produits à partir d'ensembles d'attributs.</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.0">
+        <source>Related categories</source>
+        <target>Catégories similaires</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.1">
+        <source>Define categories for product relations.</source>
+        <target>Choisir des catégories pour définir les relations de produits.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Galeries</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
+        <target>Définir comment les images de votre produit seront rendues.</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.0">
+        <source>Base prices</source>
+        <target>Prix de base</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.1">
+        <source>Define base price.</source>
+        <target>Définir les prix de base.</target>
+      </trans-unit>
+      <trans-unit id="IMD.checkout">
+        <source>Checkout Flow</source>
+        <target>Déroulement de la commande</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.0">
+        <source>Shipping methods</source>
+        <target>Modes de livraison</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.1">
+        <source>Set up shipping methods.</source>
+        <target>Mise en place de modes de livraison tels que UPS, USPS, DHL, etc.</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.0">
+        <source>Payment methods</source>
+        <target>Modes de paiement</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.1">
+        <source>Set up payment methods.</source>
+        <target>Mise en place de modes de paiement tels que Authorize.net, PayPal Pro, et plus encore.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.0">
+        <source>Tax classes</source>
+        <target>Taxes</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.1">
+        <source>Set up Tax classes, which contain sets of Tax rates.</source>
+        <target>Mise en place de taxes, qui contiennent des ensembles de taux de taxe.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.0">
+        <source>Tax rates</source>
+        <target>Taux de taxe</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.1">
+        <source>Set up tax rates based on things like shipping/billing location and order total.</source>
+        <target>Mise en place des taux de taxe basés sur des choses comme le lieu de livraison/facturation et le total de la commande.</target>
+      </trans-unit>
+      <trans-unit id="IMD.config">
+        <source>General settings</source>
+        <target>Paramètres généraux</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.0">
+        <source>Store configurations</source>
+        <target>Configurations de boutique</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.1">
+        <source>Configure general settings for this store.</source>
+        <target>Configurer les paramètres généraux de la boutique.</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>État des commandes</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.1">
+        <source>Define order status.</source>
+        <target>Définir l'état des commandes.</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+        <target>Notifications</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.1">
+        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+        <target>Utiliser le Centre de Notification pour gérer les emails, etc. pour Isotope eCommerce.</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Documents</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+        <target>Définir des documents.</target>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Divers</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+        <target>Traductions</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.1">
+        <source>Replace given labels for certain languages.</source>
+        <target>Remplacez les libellés fournis pour certaines langues.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

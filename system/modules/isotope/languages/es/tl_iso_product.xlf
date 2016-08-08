@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="es">
+    <body>
+      <trans-unit id="tl_iso_product.id.0">
+        <source>Product ID</source>
+        <target>ID producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.0">
+        <source>Categories</source>
+        <target>Categorías</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.1">
+        <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
+        <target>Seleccione una categoría (las categorías basadas en páginas se aprovechan de las funciones de las páginas de Contao como la automatización de la navegación, la protección, plantillas, y la plena integración con los elementos de contenido).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.1">
+        <source>Select your product type. Product types are defined in the store configuration.</source>
+        <target>Seleccione el tipo de producto. Los tipos de productos se definen en la configuración de la tienda.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.0">
+        <source>Alias</source>
+        <target>Alias</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.1">
+        <source>You can enter a unique alias for this product. It will be automatically generated from the name if empty.</source>
+        <target>Puede introducir un alias exclusivo para este producto. Se genera automáticamente a partir del nombre si está vacío.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.1">
+        <source>Please enter the name of this product.</source>
+        <target>Por favor, introduzca un nombre para este producto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.0">
+        <source>SKU</source>
+        <target>Ref.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.1">
+        <source>Please enter a unique stock keeping unit for this product.</source>
+        <target>Por favor, introduzca una referencia única para este producto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Peso del envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.1">
+        <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
+        <target>Por favor introduzca el peso de envío para este producto. Esto se puede utilizar para calcular el coste de envío.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.0">
+        <source>Teaser</source>
+        <target>Anuncio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.1">
+        <source>Please enter the teaser.</source>
+        <target>Por favor, introduzca un anuncio.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.0">
+        <source>Description</source>
+        <target>Descripción</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.1">
+        <source>Please enter the product description.</source>
+        <target>Por favor, introduzca una descripción para este producto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.0">
+        <source>Meta description</source>
+        <target>Meta descripción</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.1">
+        <source>Meta description will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Meta descripción será colocado en la cabecera de la página de detalles del producto, para la optimización del motor de búsqueda.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.0">
+        <source>Meta keywords</source>
+        <target>Palabras clave meta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.1">
+        <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Palabras clave meta serán colocados en la cabecera de la página de detalles del producto, para la optimización de motor de búsqueda.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.0">
+        <source>Exempt from shipping</source>
+        <target>Exento de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.1">
+        <source>Check if item is not a shipped item (such as downloadable products).</source>
+        <target>Marca si el artículo no es un artículo enviado (por ejemplo, productos descargables).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.0">
+        <source>Base price amount</source>
+        <target>Importe de precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.1">
+        <source>Enter the amount to calculate the base price (e.g. "1500" if your product is 1500 grams).</source>
+        <target>Introduzca la cantidad para calcular el precio base (por ejemplo, "1500" si su producto es 1500 gramos).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.0">
+        <source>Images</source>
+        <target>Imágenes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.1">
+        <source>Upload images to this product. Please save the product after selecting a file.</source>
+        <target>Subir imágenes de este producto. Por favor, guarde el producto despues de seleccionar un archivo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.0">
+        <source>Protect product</source>
+        <target>Proteger el producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.1">
+        <source>Restrict product access to certain member groups.</source>
+        <target>Restringir el acceso del producto a ciertos grupos.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.0">
+        <source>Show to guests only</source>
+        <target>Mostrar solo a los invitados.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.1">
+        <source>Hide the product if there is an authenticated user.</source>
+        <target>Ocultar el producto si hay un usuario autentificado.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.0">
+        <source>CSS ID/class</source>
+        <target>CSS ID/class</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.1">
+        <source>Here you can set an ID and one or more classes.</source>
+        <target>Aquí se puede establecer una ID y una o varias clases.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.0">
+        <source>Publish product</source>
+        <target>Publicar el producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.1">
+        <source>Click here to show this product on your website.</source>
+        <target>Haga clic aquí para ver este producto en su sitio web.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.0">
+        <source>Start date</source>
+        <target>Fecha de inicio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.1">
+        <source>Do not show this product before the date specified.</source>
+        <target>No mostrar este producto antes de la fecha especificada.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.0">
+        <source>Stop date</source>
+        <target>Fecha de fin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.1">
+        <source>Do not show this product after the date specified.</source>
+        <target>No mostrar este producto después de la fecha especificada.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.0">
+        <source>Inherited attributes</source>
+        <target>Atributos heredados</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.1">
+        <source>Check the fields you want to inherit from base product.</source>
+        <target>Marcar los campos que desea heredar del producto base.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.0">
+        <source>Source folder</source>
+        <target>Carpeta fuente</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.1">
+        <source>Please choose the folder where product assets are located.</source>
+        <target>Elija la carpeta donde se encuentran los valores del producto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmSrc">
+        <source>Preview</source>
+        <target>Previsualización</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmAlt">
+        <source>Alternate text</source>
+        <target>Texto alternativo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmLink">
+        <source>Link target</source>
+        <target>Enlace de destino</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmDesc">
+        <source>Description</source>
+        <target>Descripción</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslate">
+        <source>Translate</source>
+        <target>Traducir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.0">
+        <source>None</source>
+        <target>Ninguno</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.1">
+        <source>Do not translate this image.</source>
+        <target>No traducir esta imagen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.0">
+        <source>Text</source>
+        <target>Texto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.1">
+        <source>Translate alt text and description for this image.</source>
+        <target>Traducir el texto alternativo y la descripción de esta imagen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.0">
+        <source>All</source>
+        <target>Todos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.1">
+        <source>Do not include this image in translated version.</source>
+        <target>No incluya esta imagen en la versión traducida.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variantValuesLabel">
+        <source>Variant</source>
+        <target>Variante</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.0">
+        <source>New product</source>
+        <target>Nuevo producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.1">
+        <source>Create new product</source>
+        <target>Crear un nuevo producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.0">
+        <source>Add variant</source>
+        <target>Añadir una variante</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.1">
+        <source>Add new variant to a given product</source>
+        <target>Añadir una variante a un producto específico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.0">
+        <source>Edit product</source>
+        <target>Editar producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.1">
+        <source>Edit product ID %s</source>
+        <target>Editar producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.0">
+        <source>Copy product</source>
+        <target>Copiar producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.1">
+        <source>Copy product ID %s</source>
+        <target>Copiar producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.0">
+        <source>Move product</source>
+        <target>Mover producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.1">
+        <source>Move product ID %s</source>
+        <target>Mover producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.0">
+        <source>Delete product</source>
+        <target>Borrar producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.1">
+        <source>Delete product ID %s</source>
+        <target>Borrar producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.0">
+        <source>Publish/unpublish product</source>
+        <target>Publicar/anular la publicación del producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.1">
+        <source>Publish/unpublish product ID %s</source>
+        <target>Publicar/anular la publicación del producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.0">
+        <source>Product details</source>
+        <target>Detalles del producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.1">
+        <source>Show details of product ID %s</source>
+        <target>Mostrar los detalles del producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_nocategory">
+        <source>Unassigned products</source>
+        <target>Productos sin asignar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_today">
+        <source>Added today</source>
+        <target>Añadido hoy</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_week">
+        <source>Added this week</source>
+        <target>Añadido esta semana</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_month">
+        <source>Added this month</source>
+        <target>Añadido este mes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.0">
+        <source>Product groups</source>
+        <target>Grupos del producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.1">
+        <source>Manage product groups</source>
+        <target>Gestionar los grupos del producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.0">
+        <source>Import assets</source>
+        <target>Importar valores</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.1">
+        <source>Import images and other media from a folder</source>
+        <target>Importar imágenes y otros medias desde una carpeta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.0">
+        <source>Manage prices</source>
+        <target>Gestionar los precios</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.0">
+        <source>Generate variants</source>
+        <target>Generar variantes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.1">
+        <source>Generate variants for product ID %s</source>
+        <target>Generar variantes para el producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.0">
+        <source>Related products</source>
+        <target>Productos relacionados</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.1">
+        <source>Manage related products for product ID %s</source>
+        <target>Gestionar los productos relacionados con el producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.0">
+        <source>Downloads</source>
+        <target>Descargas</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.1">
+        <source>Edit downloads for product ID %s</source>
+        <target>Editar descarga del producto ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groupSelected">
+        <source>Group</source>
+        <target>Groupo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.general_legend">
+        <source>General Settings</source>
+        <target>Configuración general</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_legend">
+        <source>Meta data</source>
+        <target>Meta data</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pricing_legend">
+        <source>Pricing Settings</source>
+        <target>Configuración del precio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inventory_legend">
+        <source>Inventory Settings</source>
+        <target>Ajustes de Inventario</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_legend">
+        <source>Shipping Settings</source>
+        <target>Ajustes de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.options_legend">
+        <source>Product Options Settings</source>
+        <target>Ajustes de las opciones del producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.media_legend">
+        <source>Media Management</source>
+        <target>Gestión de medios</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.expert_legend">
+        <source>Expert settings</source>
+        <target>Configuración avanzada</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.publish_legend">
+        <source>Publishing</source>
+        <target>Publicar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>Cantidad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min_format">
+        <source>from %s pcs.</source>
+        <target>desde %s piezas</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.price">
+        <source>Price</source>
+        <target>Precio</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

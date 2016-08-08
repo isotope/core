@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute_option.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_attribute_option.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.1">
+        <source>Select a type for this label.</source>
+        <target>Wähle einen Typ für diese Beschriftung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.option">
+        <source>Option</source>
+        <target>Option</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.group">
+        <source>Group</source>
+        <target>Gruppe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.isDefault.0">
+        <source>Default</source>
+        <target>Standard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.isDefault.1">
+        <source>Check here if this should be the default option.</source>
+        <target>Klicken Sie hier, wenn das die Standard-Option ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label.0">
+        <source>Label</source>
+        <target>Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label.1">
+        <source>Enter the label for this option.</source>
+        <target>Geben Sie die Bezeichnung für diese Auswahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price.0">
+        <source>Price surcharge or deduction</source>
+        <target>Preisaufschläge oder -abschläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price.1">
+        <source>You can enter a positive or negative amount to alter the product price if this option is selected.</source>
+        <target>Sie können einen positiven oder negativen Wert eingeben, um den Produkt-Preis bei Auswahl dieser Option zu ändern.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price_short.0">
+        <source>Price</source>
+        <target>Preis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.published.0">
+        <source>Published</source>
+        <target>Veröffentlicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.published.1">
+        <source>Make this option available in the product.</source>
+        <target>Diese Option im Produkt verfügbar machen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.new.0">
+        <source>New option</source>
+        <target>Neue Option</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.new.1">
+        <source>Create a new option.</source>
+        <target>Neue Option erstellen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.edit.0">
+        <source>Edit option</source>
+        <target>Option bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.edit.1">
+        <source>Edit option ID %s.</source>
+        <target>Option ID %s bearbeiten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.copy.0">
+        <source>Copy option</source>
+        <target>Option kopieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.copy.1">
+        <source>Copy option ID %s.</source>
+        <target>Option ID %s kopieren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.delete.0">
+        <source>Delete option</source>
+        <target>Option löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.delete.1">
+        <source>Delete option ID %s.</source>
+        <target>Option ID %s löschen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.show.0">
+        <source>Option details</source>
+        <target>Option-Details</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.show.1">
+        <source>Show details for option ID %s.</source>
+        <target>Details der Option ID %s anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label_legend">
+        <source>Type &amp;amp; Label</source>
+        <target>Typ und Beschriftung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price_legend">
+        <source>Price change</source>
+        <target>Preisänderung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.publish_legend">
+        <source>Publishing</source>
+        <target>Veröffentlichung</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

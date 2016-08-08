@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_nc_notification.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.0">
+        <source>Product collection template</source>
+        <target>Modulo per la raccolta del prodotto </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.1">
+        <source>Please choose a template to render the products for the notification content.</source>
+        <target>Si prega di scegliere un modello per presentare i prodotti per il contenuto di notifica.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Ordinamento </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Definisci in quale ordine gli elementi della raccolta dovrebbero essere elencati.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.0">
+        <source>Gallery</source>
+        <target>Galleria </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Seleziona una galleria per renderizzare immagini.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_document.0">
+        <source>Document</source>
+        <target>Documento </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_document.1">
+        <source>If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.</source>
+        <target>Se volessi allegare un documento alla notifica, scegline uno qui e usa il simbolo nel centro notifica.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_status_change.0">
+        <source>Order status change</source>
+        <target>Stato ordine cambiato </target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_status_change.1">
+        <source>This notification type can be sent when the order status changes.</source>
+        <target>Questo tipo di notifica può essere inviato quando lo stato ordine cambia. </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

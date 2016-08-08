@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute_option.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="tl_iso_attribute_option.type.0">
+        <source>Type</source>
+        <target>Tipo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.group">
+        <source>Group</source>
+        <target>Gruppo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.isDefault.0">
+        <source>Default</source>
+        <target>Preimpostato</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label.0">
+        <source>Label</source>
+        <target>Etichetta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price_short.0">
+        <source>Price</source>
+        <target>Prezzo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.publish_legend">
+        <source>Publishing</source>
+        <target>Pubblicazione</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

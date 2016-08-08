@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_iso_attribute.name.0">
+        <source>Name</source>
+        <target>Название</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name.1">
+        <source>Please enter a name for this attribute.</source>
+        <target>Пожалуйста, введите имя для этого атрибута.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.0">
+        <source>Internal name</source>
+        <target>Внутреннее имя</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.1">
+        <source>Internal name is the database field name and must be unique.</source>
+        <target>Внутреннее имя представляет собой имя поля базы данных и должно быть уникальным.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.0">
+        <source>Type</source>
+        <target>Тип</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.1">
+        <source>Please select a type for this attribute.</source>
+        <target>Пожалуйста, выберите тип этого атрибута.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.legend.0">
+        <source>Field Group</source>
+        <target>Группа полей</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.variant_option.0">
+        <source>Add to product variants wizard</source>
+        <target>Добавить в мастер вариантов товара</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customer_defined.0">
+        <source>Defined by customer</source>
+        <target>Определено клиентом</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.0">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.0">
+        <source>Options</source>
+        <target>Опции</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.label.0">
+        <source>Label</source>
+        <target>Метка</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable.0">
+        <source>Options</source>
+        <target>Опции</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.mandatory.0">
+        <source>Mandatory field</source>
+        <target>Обязательное поле</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multiple.0">
+        <source>Multiple selection</source>
+        <target>Множественный выбор</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rte.0">
+        <source>Use HTML editor</source>
+        <target>Использовать редактор HTML</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multilingual.0">
+        <source>Multilingual</source>
+        <target>Многоязычный</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxlength.0">
+        <source>Maximum length</source>
+        <target>Максимальная длинна</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.conditionField.0">
+        <source>Parent field</source>
+        <target>Родительское поле</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.0">
+        <source>Phone number</source>
+        <target>Номер телефона</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.email.0">
+        <source>E-mail address</source>
+        <target>Адрес электронной почты</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.0">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.0">
+        <source>Discount</source>
+        <target>Скидка</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.random">
+        <source>Random order</source>
+        <target>Случайный порядок</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
+        <source>##document_number##</source>
+        <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
+        <source>##order_id##</source>
+        <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description_legend">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options_legend">
+        <source>Options</source>
+        <target>Опции</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

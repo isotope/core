@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>ID Магазина</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Используйте разные идентификаторы магазина, чтобы группировать набор конфигураций магазина. Корзина пользователя и адреса будут совместно использоваться в одинаковых ID магазина.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Метка</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+        <target>Обращение</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Пожалуйста, введите обращение (г-н, г-жа, д-р, профессор).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Имя</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.1">
+        <source>Please enter the first name.</source>
+        <target>Введите имя.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Фамилия</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.1">
+        <source>Please enter the last name.</source>
+        <target>Введите фамилию.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Компания</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.1">
+        <source>You can enter a company name here.</source>
+        <target>Вы можете ввести название компании сюда.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Улица</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Введите название улицы и номер улицы.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Улица 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Введитье информацию о улице 2, если есть.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Улица 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Введитье информацию о улице 3, если есть.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Почтовый индекс</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Пожалуйста, введите почтовый индекс.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Город</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.0">
+        <source>State</source>
+        <target>Штат</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Страна</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.1">
+        <source>Please select a country.</source>
+        <target>Выберите страну.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Номер телефона</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Пожалуйста, введите номер телефона.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.0">
+        <source>E-mail address</source>
+        <target>Адрес электронной почты</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Пожалуйста, введите правильный адрес электронной почты.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.0">
+        <source>Default billing address</source>
+        <target>Адрес платежа по-умолчанию</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+        <target>Это ваш адрес платежа по-умолчанию?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.0">
+        <source>Default shipping address</source>
+        <target>Адрес доставки по-умолчанию</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+        <target>Это ваш адрес доставки по-умолчанию?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
+        <target>Магазин</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personal_legend">
+        <source>Personal data</source>
+        <target>Личные данные</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.address_legend">
+        <source>Address details</source>
+        <target>Полный адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contact_legend">
+        <source>Contact details</source>
+        <target>Контактная информация</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.default_legend">
+        <source>Default address</source>
+        <target>Адрес по-умолчанию</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personalData">
+        <source>Personal data</source>
+        <target>Личные данные</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.addressDetails">
+        <source>Address details</source>
+        <target>Полный адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contactDetails">
+        <source>Contact details</source>
+        <target>Контактная информация</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.loginDetails">
+        <source>Default address</source>
+        <target>Адрес по-умолчанию</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.0">
+        <source>New address</source>
+        <target>Новый адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.1">
+        <source>Create a new address</source>
+        <target>Создать новый адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.0">
+        <source>Edit address</source>
+        <target>Изменить адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.1">
+        <source>Edit address ID %s</source>
+        <target>Изменить адрес ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.0">
+        <source>Duplicate address</source>
+        <target>Копировать адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.1">
+        <source>Duplicate address ID %s</source>
+        <target>Копировать адрес ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.0">
+        <source>Delete address</source>
+        <target>Удалить адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.1">
+        <source>Delete address ID %s</source>
+        <target>Удалить адрес ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.0">
+        <source>Address details</source>
+        <target>Полный адрес</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.1">
+        <source>Show details of address ID %s</source>
+        <target>Показать полный адрес ID %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="tl_iso_config.name.0">
+        <source>Configuration Name</source>
+        <target>Navn på indstillingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.1">
+        <source>Please enter a name for your configuration. This is only used for back end reference.</source>
+        <target>Indtast det navn du ønsker at give din indstilling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Mærkat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.1">
+        <source>The label is used in frontend, e.g. for config switcher.</source>
+        <target>Mærkaten bruges i shoppen, f.eks. til at skifte indstillinger med.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.0">
+        <source>Set as default store</source>
+        <target>Sæt som standard butik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Fornavn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.1">
+        <source>Please enter the first name (if applicable).</source>
+        <target>Indtast dit fornavn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Efternavn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.1">
+        <source>Please enter the last name (if applicable).</source>
+        <target>Indtast dit efternavn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Firma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.1">
+        <source>You can enter a company name here (if applicable).</source>
+        <target>Indtast dit firmanavn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>Momsnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Indtast et momsnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Indtast gadenavn og husnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Adresse 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Indtast evt. yderligere adresseinformationer hvis nødvendigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Adresse 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Indtast evt. yderligere adresseinformationer hvis nødvendigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Postnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Indtast postnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>By</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Indtast venligst by.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Region</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Indtast venligst region.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Indtast et telefonnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.0">
+        <source>Shipping email address</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Indtast en gyldig e-mail adresse.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.0">
+        <source>Available shipping countries</source>
+        <target>Fragt til disse lande</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.1">
+        <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
+        <target>Vælg de lande du ønsker skal være tilgængelige for forsendelse.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.1">
+        <source>Choose a formatting for prices.</source>
+        <target>Vælg en formatering for priser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.0">
+        <source>Rounding precision</source>
+        <target>Afrundningsforhold</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.1">
+        <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
+        <target>Hvor mange decimaler skal din afrundning indeholde. Du bør vælge en værdi mellem 0 og 2 for at alle betalingsgateways virker korrekt. Se evt. PHP manual for round().</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.1">
+        <source>Please select a currency for this store.</source>
+        <target>Vælg venligst en valuta for denne butik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.0">
+        <source>Position of currency code/symbol</source>
+        <target>Position af valutasymbol</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.1">
+        <source>Select if you want to show currency on the left or right side of the price.</source>
+        <target>Vælg om du ønsker valutasymbolet vist til højre eller venstre for prisen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.0">
+        <source>Use currency symbol</source>
+        <target>Brug valutasymbol</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.1">
+        <source>Use a currency symbol ($, €) if available.</source>
+        <target>Brug et valutasymbol ($, €, DKK) hvis tilgængeligt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.0">
+        <source>Include blank space</source>
+        <target>Medtag mellemrum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.1">
+        <source>Add space between price and currency symbol.</source>
+        <target>Tilføjer luft mellem valutasymbol og prisen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.0">
+        <source>Price factor</source>
+        <target>Pris faktor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.1">
+        <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
+        <target>Standard er 1. Du kan bruge denne faktor til at konvertere mellem forskellige valutaer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.0">
+        <source>Calculation mode</source>
+        <target>Beregningsmetode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.1">
+        <source>Divide or multiply using this factor.</source>
+        <target>Divider eller multiplicer med denne faktor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.0">
+        <source>Invoice Logo</source>
+        <target>Faktura logo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.1">
+        <source>Select a logo to show up on the invoices for this store.</source>
+        <target>Vælg et logo der skal vises på fakturaer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Navn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Navn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Gå til kassen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency_legend">
+        <source>Currency formatting</source>
+        <target>Valuta formatering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Ordre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Billeder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

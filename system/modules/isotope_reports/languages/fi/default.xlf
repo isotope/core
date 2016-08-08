@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ISO_REPORT.sales_total.0">
+        <source>Total</source>
+        <target>Yhteensä</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.0">
+        <source>Total</source>
+        <target>Yhteensä</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Tila</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Tilauspäivä</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

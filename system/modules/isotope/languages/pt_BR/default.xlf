@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="pt-BR">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <target>Nome "%s" está reservado para uso do sistema. Por favor escolha um nome diferente.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Nenhuma configuração de loja disponível</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Por favor crie uma configuração padrão de loja </target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Você ainda não realizou nenhum pedido.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>O pedido solicitado não foi encontrado.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Você precisa fazer login para finalizar o pedido.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Uma variante com esses atributos já está disponível. Por favor selecione outra combinação.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Por favor digite números inteiros ou decimais assinalados com + ou - e opcionalmente com uma porcentagem.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Por favor digite números inteiros ou decimais opcionalmente com uma porcentagem.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Ocorreu um erro na finalização do pedido. Por favor tente de novo ou escolha outra forma de pagamento.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Você não tem nenhum cadastro no catálogo de endereço.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>O pedido mínimo é %s. Por favor adicione mais produtos antes de finalizar o pedido.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for "%s" is %s items. Please check your shopping cart.</source>
+        <target>A quantidade mínima para "%s" é %s itens. Por favor verifique seu carrinho.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Esta imagem já foi atribuída ao idioma reservado. </target>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Selecione um campo de validação apropriado (data, hora, data e hora) para habilitar o selecionador de data.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>A pasta selecionada está vazia.</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Pedido do usuário não permitido</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Este produto não está mais disponível.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Existem erros nos seus produtos.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Por favor resolva os erros no seu carrinho antes de finalizar o pedido.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Mostrar somente este grupo</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Grupos</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Páginas</target>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+        <target>Voltar ao selecionador de grupo</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Mostrar todos os grupos</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Não há variações para este produto.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Duplicar Recorrente</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Pedido no %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Seu pagamento está sendo processado. Por favor aguarde...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Nenhum arquivo enviado.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Alguns registros não puderam ser apagados.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Alguns registros não puderam ser apagados e ainda não foram publicados.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Quantidade</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>pesquisar produtos</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>Seus produtos para baixar</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class="from"&gt;De&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Ver Detalhes</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Produtos Por Página</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Palavras-chaves</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Enviar</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Limpar Filtros</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Atualizar</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Adicionar ao Carrinho</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Atualizar Carrinho</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Dispor Por:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Nenhum produto foi encontrado.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Voltar</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Continuar</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Pedido</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Não há categorias associadas a este produto.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Enviar</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Não há itens no seu carrinho.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>O produto selecionado foi adicionado ao seu carrinho.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Os produtos da sua última visita foram readicionados. Por favor revise os itens do seu carrinho.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Editar</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Remover</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Remove %s do seu carrinho</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Subtotal do Pedido:</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Total do Pedido:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Não há opções de pagamento no momento</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Não há opções de envio no momento.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Não foram encontrados emails de pedidos.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Nenhum pedido foi encontrado.</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsRemaining">
+        <source>&lt;br /&gt;%s downloads remaining</source>
+        <target>&lt;br /&gt;%s de downloads restantes</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Carrinho</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Finalizar Pedido</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Continuar comprando</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Atualizar Carrinho</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Status do Pedido: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step "%s"</source>
+        <target>Retornar ao passo "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Criar Novo Endereço</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Utilizar endereço de cobrança</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Utilizar endereço do cliente</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Endereço de entrega diferente</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Editar</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Apagar</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Você realmente quer apagar este endereço? Esta operação não pode ser desfeita.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Fatura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Data do Pedido</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Número do Pedido</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Quantidade</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>do menor para o maior</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>do maior para o menor</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>de A para Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>de Z para A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>do mais recente para o mais antigo</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>do mais antigo para o mais recente</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Processando pagamento</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Pagar agora</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>Click here to view this PayPal transaction online</source>
+        <target>Clique aqui para ver esta transação Paypal online</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 Produto</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s Produtos</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Preencha seus dados de entrega ou selecione um endereço existente.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Preencha seus dados de cobrança ou selecione um endereço existente.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Preencha seus dados de cobrança</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Enter your customer information or select an existing address.</source>
+        <target>Preencha seus dados de cliente ou selecione um endereço existente.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information</source>
+        <target>Preencha seus dados de cliente</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Selecione a forma de entrega.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Por favor seleciona a forma de entrega.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Preencha seus dados de pagamento.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Por favor selecione uma forma de pagamento.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Revise e confirme os detalhes do seu pedido.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Endereço</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Envio</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Pagamento</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Revisão</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Enderenço de Cobrança</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Endereço de Entrega</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Endereço de Cobrança e Entrega</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Endereço do Cliente</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Forma de Entrega</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Forma de Pagamento</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Revisão do Pedido</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Alterar</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Número do Cartão de crédito</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Tipo do Cartão de crédito</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>Número de verificação CCV (número de 3 ou 4 dígitos)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Mês de Expiração</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Ano de Expiração</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Módulo de pagamento não foi encontrado!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Módulo de entrega não foi encontrado!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+        <target>Este módulo de pagamento não fornece informação adicional.</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+        <target>Este módulo de entrega não fornece informação adicional.</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Usar valor padrão</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+        <target>passo ativo:</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheLoading">
+        <source>Loading products...</source>
+        <target>Carregando produtos...</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheNoscript">
+        <source>Your browser does not support JavaScript. Please &lt;a href="%s"&gt;click here&lt;/a&gt; to load the product list.</source>
+        <target>Seu navegador não suporta JavaScript. Por favor &lt;a href="%s"&gt;clique aqui&lt;/a&gt;para carregar a lista de produtos.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noFilesInFolder">
+        <source>No files in this folder</source>
+        <target>Não há arquivos nesta pasta</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportConfirmation">
+        <source>Imported file %s for product "%s"</source>
+        <target>Arquivo importado %s para o produto "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportNoFilesFound">
+        <source>The folder did not contain any files to be imported.</source>
+        <target>A pasta não continha nenhum arquivo para ser importado.</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Carregando dados do produto ...</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config "%s"</source>
+        <target>Config da Loja "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+        <target>Dividido</target>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status "%s"</source>
+        <target>Você tem %s pedido(s) com status "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>Passo %s de %s (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minutos</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Horas</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dias</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Semanas</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Meses</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Anos</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+        <target>Bem-vindo ao Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope é a solução número 1 de eCommerce em código aberto para Contao.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
+        <target>Esta é a página onde a maioria da configuração acontecerá. &lt;strong&gt;Você deveria começar a partir do final desta página e subir até o início da direita para a esquerda.&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+        <target>A Equipe do Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>Isotope is a product of %s in association with &lt;a href="http://isotopeecommerce.org/de/team.html" target="_blank"&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
+        <target>Isotope é um produto de %s em associação com &lt;a href="http://isotopeecommerce.org/de/team.html" target="_blank"&gt;a Equipe do Isotope eCommerce&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+        <target>Com esta forma, você pode agrupar várias formas de entrega em uma só forma e calcular o preço baseado nelas.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+        <target>Padrão</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Galeria Padrão</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.1">
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate "moo_" template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a "rel" attribute to the link target by using a pipe (e.g. "tl_files/video.mov|lightbox[400 300]"). If no "rel" attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+        <target>&lt;p&gt;Utiliza o lightbox/mediabox para imagens em tamanho integral. Certifique-se de selecionar o tema "moo_" apropriado na sua configuração de layout de página.&lt;/p&gt;&lt;p&gt;Você pode fornecer um atributo "rel" ao destino do link usando um pipe (p. ex. "tl_files/video.mov|lightbox[400 300]"). Se nenhum atributo "rel" for informado, o link será aberto em uma nova janela.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.inline.1">
+        <source>Clicking on a gallery image will replace the main image.</source>
+        <target>Clicar em uma imagem da galeria substituirá a imagem principal.</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="CCT.amex">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="CCT.discover">
+        <source>Discover</source>
+        <target>Discover</target>
+      </trans-unit>
+      <trans-unit id="CCT.jcb">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="CCT.diners">
+        <source>Diner's Club</source>
+        <target>Diner's Club</target>
+      </trans-unit>
+      <trans-unit id="CCT.enroute">
+        <source>EnRoute</source>
+        <target>EnRoute</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_blanche">
+        <source>Carte Blanche</source>
+        <target>Carte Blanche</target>
+      </trans-unit>
+      <trans-unit id="CCT.jal">
+        <source>JAL</source>
+        <target>JAL</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro">
+        <source>Maestro UK</source>
+        <target>Maestro GB</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="CCT.solo">
+        <source>Solo</source>
+        <target>Solo</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa_electron">
+        <source>Visa Electron</source>
+        <target>Visa Electron</target>
+      </trans-unit>
+      <trans-unit id="CCT.dankort">
+        <source>Dankort</source>
+        <target>Dankort</target>
+      </trans-unit>
+      <trans-unit id="CCT.laser">
+        <source>Laser</source>
+        <target>Laser</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_bleue">
+        <source>Carte Bleue</source>
+        <target>Carte Bleue</target>
+      </trans-unit>
+      <trans-unit id="CCT.carta_si">
+        <source>Carta Si</source>
+        <target>Carta Si</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro_intl">
+        <source>Maestro International</source>
+        <target>Maestro Internacional</target>
+      </trans-unit>
+      <trans-unit id="CCT.ge_money_uk">
+        <source>GE Money UK</source>
+        <target>GE Money UK</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Campo de texto</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Um campo de texto de uma só linha para texto pequeno ou médio.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Área de texto</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Um campo de texto de múltiplas linhas para texto médio ou longo.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Selecionar menu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Um menu drop-down de uma ou múltiplas linhas.&lt;br /&gt;&lt;i&gt;Este tipo de campo é adequado para variantes de produto.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Menu de botão de opção</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Uma lista de múltiplas opções das quais uma delas  pode ser selecionada.&lt;br /&gt;&lt;i&gt;Este tipo de campo é adequado para variantes do produto.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+        <target>Menu caixa de seleção</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+        <target>Uma lista de múltiplas opções das quais qualquer uma das opções podem ser selecionadas.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Gerenciador de Mídia</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>Downloads</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.1">
+        <source>Download files from the product, e.g. manuals, data sheets etc.</source>
+        <target>Baixar arquivos do produto, p. ex. manuais, dados técnicos etc.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Enviar arquivo</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.DKK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.EUR">
+        <source>€</source>
+        <target>€</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.GBP">
+        <source>£</source>
+        <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.JPY">
+        <source>¥</source>
+        <target>¥</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.NOK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.SEK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.USD">
+        <source>$</source>
+        <target>$</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

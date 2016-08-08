@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Prosimo, ustvarite privzete nastavitve trgovine.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Zahtevano naročilo ne obstaja.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>Izbrana mapa je prazna.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Izdelek ni več na voljo.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Prikaži samo to skupino</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Skupine</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Strani</target>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+        <target>Nazaj na izbiro skupine</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Prikaži vse skupine</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Tukaj spustite datoteke za prenos na strežnik</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Naloži datoteke</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Količina</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>poišči izdelek</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Ogled podrobnosti</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Izdelkov na stran</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Ključne besede</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Pošlji</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Odstrani filtre</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Posodobi</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Dodaj v košarico</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Posodobi košarico</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Uredi po:</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Nazaj</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Nadaljuj</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Naroči</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Pošlji</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Nakupovalna košarica je še prazna.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Uredi</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Odstrani</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Nakupovalna košarica</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Nadaljuj z nakupom</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Posodobi košarico</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Status naročila: %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Ustvari nov naslov</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Uredi</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Odstrani</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Račun</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Datum naročila</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Številka naročila</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Opis</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Količina</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Cena</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Skupaj</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A do Ž</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Ž do A</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Plačaj takoj</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 izdelek</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s izdelkov</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Vnesite podatke za račun</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Enter your customer information or select an existing address.</source>
+        <target>Vnesite vaše kontaktne podatke ali izberite obstoječi naslov.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information</source>
+        <target>Vnesite vaše kontaktne podatke</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Izberite način dostave.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Naslov</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Dostava</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Plačilo</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Način dostave</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Način plačila</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Spremeni</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Številka kreditne kartice</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Vrsta kreditne kartice</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Pridobivanje podatkov o izdelku</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>minut</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>ur</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>dni</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>tednov</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>mesecev</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>let</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+        <target>Ekipa Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
+        <source>by product name (ascending)</source>
+        <target>po nazivu izdelka (naraščajoče)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_name">
+        <source>by product name (descending)</source>
+        <target>po nazivu izdelka (padajoče)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_price">
+        <source>by price (ascending)</source>
+        <target>po ceni (naraščajoče)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
+        <source>by price (descending)</source>
+        <target>po ceni (padajoče)</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Enotna cena dostave</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Gotovina</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+        <target>PayPal Standard Checkout</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
+        <source>Sparkasse</source>
+        <target>Sparkasse</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.saferpay.0">
+        <source>Saferpay</source>
+        <target>Saferpay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.sofortueberweisung.0">
+        <source>sofortüberweisung.de</source>
+        <target>sofortüberweisung.de</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.expercash.0">
+        <source>ExperCash</source>
+        <target>ExperCash</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.payone.0">
+        <source>PayOne</source>
+        <target>PayOne</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.worldpay.0">
+        <source>WorldPay</source>
+        <target>WorldPay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Privzeta galerija</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="CCT.amex">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="CCT.diners">
+        <source>Diner's Club</source>
+        <target>Diner's Club</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro">
+        <source>Maestro UK</source>
+        <target>Maestro UK</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa_electron">
+        <source>Visa Electron</source>
+        <target>Visa Electron</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Vnosno polje za kratko besedilo (ena vrstica).</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Polje z besedilom</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Vnosno polje za srednje dolgo ali dolgo besedilo.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Upravljalec datotek</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>Prenosi</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Nalaganje datotek</target>
+      </trans-unit>
+      <trans-unit id="CUR.CHF">
+        <source>CHF - Swiss Franc</source>
+        <target>CHF - Švicarski franki</target>
+      </trans-unit>
+      <trans-unit id="CUR.CZK">
+        <source>CZK - Czech Koruna</source>
+        <target>CZK - Češke krone</target>
+      </trans-unit>
+      <trans-unit id="CUR.EUR">
+        <source>EUR - Euro</source>
+        <target>EUR - evro</target>
+      </trans-unit>
+      <trans-unit id="CUR.HRK">
+        <source>HRK - Croatian Kuna</source>
+        <target>HRK - Hrvaške kune</target>
+      </trans-unit>
+      <trans-unit id="CUR.ISK">
+        <source>ISK - Icelandic Króna</source>
+        <target>ISK - Islandske krone</target>
+      </trans-unit>
+      <trans-unit id="CUR.NOK">
+        <source>NOK - Norwegian Krone</source>
+        <target>NOK - Norveške krone</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.CHF">
+        <source>Fr.</source>
+        <target>Fr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.DKK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.EUR">
+        <source>€</source>
+        <target>€</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.GBP">
+        <source>£</source>
+        <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.JPY">
+        <source>¥</source>
+        <target>¥</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.NOK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.SEK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.USD">
+        <source>$</source>
+        <target>$</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

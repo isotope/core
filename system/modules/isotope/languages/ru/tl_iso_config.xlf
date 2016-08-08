@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Метка</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Имя</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Фамилия</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Компания</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Улица</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Введите название улицы и номер улицы.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Улица 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Введитье информацию о улице 2, если есть.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Улица 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Введитье информацию о улице 3, если есть.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Почтовый индекс</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Пожалуйста, введите почтовый индекс.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Город</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Штат</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Страна</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Номер телефона</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Пожалуйста, введите номер телефона.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Пожалуйста, введите правильный адрес электронной почты.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Валюта</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.0">
+        <source>Calculation mode</source>
+        <target>Режим вычисления</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.0">
+        <source>Templates folder</source>
+        <target>Папка шаблонов</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Название</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Название</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Оформить заказ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Заказы</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Изображения</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Товары</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

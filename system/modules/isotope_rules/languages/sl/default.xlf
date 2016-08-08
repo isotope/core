@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/default.xlf" source-language="en">
+    <body>
+      <trans-unit id="ERR.couponCodeDropped">
+        <source>Your coupon code "%s" could not be applied. Please review your order again.</source>
+        <target>Vašega kupona %s nismo mogli uveljaviti. Prosimo, še enkrat preverite vaše naročilo.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponHeadline">
+        <source>Apply Promotional Codes</source>
+        <target>Uveljavi promocijske kode</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponLabel">
+        <source>Promotional code</source>
+        <target>Promocijska koda</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApply">
+        <source>Apply</source>
+        <target>Uveljavi</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponInvalid">
+        <source>Your coupon %s is not valid.</source>
+        <target>Vaš kupon %s ni veljaven.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApplied">
+        <source>Your coupon %s has been applied.</source>
+        <target>Vaš kupon %s je bil upoštevan.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponDuplicate">
+        <source>Your coupon %s has already been applied.</source>
+        <target>Vaš kupon %s je bil že upoštevan.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

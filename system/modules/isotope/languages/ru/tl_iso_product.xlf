@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_iso_product.id.0">
+        <source>Product ID</source>
+        <target>Идентификатор товара</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.0">
+        <source>Categories</source>
+        <target>Категории</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.0">
+        <source>Product type</source>
+        <target>Тип товара</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.0">
+        <source>Alias</source>
+        <target>Синоним</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>Название</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.0">
+        <source>SKU</source>
+        <target>Учетная единица</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Масса груза</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.0">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.0">
+        <source>Meta description</source>
+        <target>Meta-описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.0">
+        <source>Meta keywords</source>
+        <target>Meta-ключевые слова</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.0">
+        <source>Price &amp;amp; tax class</source>
+        <target>Цена</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.0">
+        <source>Images</source>
+        <target>Изображения</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmDesc">
+        <source>Description</source>
+        <target>Описание</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.0">
+        <source>Related products</source>
+        <target>Сопутствующие товары</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>Количество</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.price">
+        <source>Price</source>
+        <target>Цена</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="it">
+    <body>
+      <trans-unit id="XPL.isoReaderJumpTo">
+        <source>
+&lt;p class="tl_help_table"&gt;
+    Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
+    &lt;br&gt;
+    The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Option 1:&lt;/strong&gt;&lt;br&gt;
+    Do not set a reader page in the site structure. Place the list and reader module on the same page. Tell the list module to hide if a product alias is found (there's a checkbox in the module settings). The reader will automatically be invisible if no reader is found.&lt;br&gt;
+    &lt;u&gt;Advantage:&lt;/u&gt; Pretty simple to set up&lt;br&gt;
+    &lt;u&gt;Disadvantage:&lt;/u&gt; The layout of reader and list will be identical, and you cannot have different article content for the two cases.&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Option 2:&lt;/strong&gt;&lt;br&gt;
+    Set a reader page for every list page (product category) in the site structure. &lt;i&gt;Be aware that the reader setting is not inherited!&lt;/i&gt; Add the reader module to this page as usual.&lt;br&gt;
+    Isotope will now use this page to generate the site if a product alias is found in the URL. The alias will still be the one from the list page though.&lt;br&gt;
+    &lt;u&gt;Advantage:&lt;/u&gt; You can have different page content and layout (e.g. different columns) for the reader page then the list page.&lt;br&gt;
+    &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
+&lt;/p&gt;</source>
+        <target>
+&lt;p class="tl_help_table"&gt;
+A differenza di qualsiasi altro modulo Contao, un utente non viene reindirizzato alla pagina di lettura quando si visualizzano i dettagli del prodotto. Per risolvere il problema di bei alias e per conoscere la pagina di dettaglio di un prodotto, siamo arrivati ​​a una nuova soluzione.&lt;br&gt;
+&lt;br&gt;
+La pagina di lettore (alias) sarà sempre la stessa pagina da voi selezionato come categoria per il prodotto. Ci sono due opzioni per visualizzare i dettagli di un prodotto:&lt;br&gt;
+&lt;br&gt;
+&lt;strong&gt;Opzione 1:&lt;/strong&gt;&lt;br&gt;
+Non impostare una pagina lettore nella struttura del sito. Posizionare la lista e modulo lettore sulla stessa pagina. Dite al modulo elenco di nascondersi se viene trovato un alias di prodotto (c'è una casella di controllo nelle impostazioni del modulo). Il lettore sarà automaticamente visibile se non viene trovato nessun lettore.&lt;br&gt;
+&lt;u&gt;Vantaggio:&lt;/u&gt;Semplice da settare&lt;br&gt;
+&lt;u&gt;Svantaggio:&lt;/u&gt; Il layout del lettore e della lista sarà identico, e non si può avere un contenuto articolo diverso per i due casi.&lt;br&gt;
+&lt;br&gt;
+&lt;strong&gt;Opzione 2:&lt;/strong&gt;&lt;br&gt;
+Impostare una pagina lettore per ogni pagina dell'elenco (categoria prodotto) nella struttura del sito. &lt;i&gt; Essere consapevoli del fatto che l'impostazione del lettore non viene ereditata!&lt;/ i&gt; aggiungere il modulo di lettura a questa pagina, come al solito.&lt;br&gt;
+Isotope ora userà questa pagina per generare il sito se un alias prodotto è trovato nell'URL. L'alias sarà ancora quello della pagina di elenco però.&lt;br&gt;
+&lt;u&gt;Vantaggio:&lt;/u&gt; Si possono avere contenuti  pagina e il layout diversi (ad esempio diverse colonne) per la pagina lettore poi la pagina di elenco.&lt;br&gt;
+&lt;u&gt;Svantaggio:&lt;/u&gt; È NECESSARIO impostare una pagina lettore per ogni pagina di elenco (categoria) che avete. L'impostazione non è ereditata.
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.mediaManager">
+        <source>&lt;p class="tl_help_table"&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Per caricare una nuova immagine selezioni il file e salvi il prodotto. Dopo aver caricato con successo, viene visualizzata un'anteprima del messaggio e vicino ad essa puo' inserire il testo alternativo e una descrizione. Per immagini multipli, puo' fare click sulle frecce e cambiare la loro posizione, l'immagine in cima è quella usata come immagine principale per ogni prodotto.&lt;/p&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

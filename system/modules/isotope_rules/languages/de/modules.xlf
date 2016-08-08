@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/modules.xlf" source-language="en">
+    <body>
+      <trans-unit id="MOD.isotope_rules.0">
+        <source>Isotope eCommerce: Rules &amp;amp; Coupons</source>
+        <target>Isotope eCommerce: Regeln &amp; Gutscheine</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_rules.0">
+        <source>Rules &amp;amp; Coupons</source>
+        <target>Regeln &amp; Gutscheine</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

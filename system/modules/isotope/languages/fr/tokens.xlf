@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tokens.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_subtotal">
+        <source>The order's subtotal.</source>
+        <target>Sous-total de la commande.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_text">
+        <source>Order/Cart as text.</source>
+        <target>Commande/Panier en texte.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_html">
+        <source>Order/Cart as HTML.</source>
+        <target>Commande/Panier en HTML.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_id">
+        <source>Payment method ID.</source>
+        <target>ID du mode de paiement.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_label">
+        <source>Payment method label.</source>
+        <target>Libellé du mode de paiement.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_id">
+        <source>Shipping method ID.</source>
+        <target>ID du mode de livraison.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_label">
+        <source>Shipping method label.</source>
+        <target>Libellé du mode de livraison.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

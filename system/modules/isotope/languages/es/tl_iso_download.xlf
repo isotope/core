@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_download.xlf" source-language="en" target-language="es">
+    <body>
+      <trans-unit id="tl_iso_download.singleSRC.0">
+        <source>Attachement</source>
+        <target>Anexo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.downloads_allowed.0">
+        <source>Downloads allowed</source>
+        <target>Descargas permitidas</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.downloads_allowed.1">
+        <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
+        <target>El número de veces que esto(s) archivo(s) se puede(n) descargar por pedido (multiplicado por la cantidad vendida). Introduce 0 para descargas ilimitadas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.expires.0">
+        <source>Expiration</source>
+        <target>Expiración</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.expires.1">
+        <source>Define if the download(s) expires after a certain time period.</source>
+        <target>Definir si la(s) descarga(s) expira(n) después de un cierto período de tiempo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.new.0">
+        <source>Add download</source>
+        <target>Añadir descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.new.1">
+        <source>Add a new download to this product</source>
+        <target>Añadir una nueva descarga de este producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.edit.0">
+        <source>Edit download</source>
+        <target>Editar descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.edit.1">
+        <source>Edit download ID %s</source>
+        <target>Modificar descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.copy.0">
+        <source>Duplicate download</source>
+        <target>Duplicar descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.copy.1">
+        <source>Duplicate download ID %s</source>
+        <target>Duplicar descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.cut.0">
+        <source>Move download</source>
+        <target>Mover descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.cut.1">
+        <source>Move download ID %s</source>
+        <target>Mover descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.delete.0">
+        <source>Delete download</source>
+        <target>Borrar descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.delete.1">
+        <source>Delete download ID %s</source>
+        <target>Borrar descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.show.0">
+        <source>Download details</source>
+        <target>Detalles descarga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.show.1">
+        <source>Show details of download ID %s</source>
+        <target>Mostrar detalles de la descarga ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.editheader.0">
+        <source>Edit product</source>
+        <target>Editar producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.editheader.1">
+        <source>Edit this product</source>
+        <target>Editar este producto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pasteafter.0">
+        <source>Paste at the top</source>
+        <target>Copiar al principio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pasteafter.1">
+        <source>Paste after download ID %s</source>
+        <target>Pegar despues del archivo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pastenew.0">
+        <source>Add new at the top</source>
+        <target>Añadir nuevo al principio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pastenew.1">
+        <source>Add new after download ID %s</source>
+        <target>Añadir nuevo despues del archivo ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.file_legend">
+        <source>Attachement</source>
+        <target>Anexo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.limit_legend">
+        <source>Limits</source>
+        <target>Límites</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.publish_legend">
+        <source>Publishing</source>
+        <target>Publicar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

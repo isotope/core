@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name "%s" is reserved for system use. Please choose a different name.</source>
+        <target>Navnet "%s" er reserveret til systemet. Vælg venligst et andet navn.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Ingen shop konfiguration fundet</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Opret venligst en standard shop konfiguration</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Du har endnu ikke angivet en ordre</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>Den ønskede ordre blev ikke fundet</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Du skal være logget ind for at afslutte ordren.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>En variant med denne egenskab findes allerede. Brug venligst en anden kombination.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Indtast venligst et helt tal eller decimaler med et + eller - foran og evt. efterfulgt af procent.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Indtast venligst et helt tal eller decimaler evt. efterfulgt af procent.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Betalingen mislykkedes. Prøv igen eller vælg en anden betalingsmetode.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Du har ingen adresser i din adressebog</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>Minimum ordrebeløb er %s. Kontroller venligst din kurv.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for "%s" is %s items. Please check your shopping cart.</source>
+        <target>Minimum antal varer for "%s" er %s. Kontroller venligst din kurv.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Dette foto er allerede tilknyttet standardsproget.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>Den valgte mappe er tom.</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Checkout ikke tilladt</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Dette produkt er ikke længere tilgængeligt.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Der er fejl i dine produkter.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Venligst ret fejlen i din kurv inden du går til betaling.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Vi kun denne gruppe</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Grupper</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Sider</target>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+        <target>TIlbage til gruppevælgeren</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Vis alle grupper</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Ingen varianter fundet.</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Ordre nr. %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Din betaling bliver behandlet. Vent venligst...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Ingen filer blev uploaded</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Filen kunne ikke uploades på grund af en ukendt fejl. Kontroller "Hændelser" for yderligere information.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Træk filer hertil for at uploade</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Upload filer</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
+        <target>Behandler filer...</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Nogle emner kunne ikke slettes.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Nogle emner kunne ikke slettes og er blevet deaktiveret istedet for.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Antal</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>Søg produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>Dine produkter til download</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class="from"&gt;Fra&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Se detaljer</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Produkter pr. side</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Nøgleord</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Nulstil filtre</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Opdater</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Læg i kurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Opdater kurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Sorter efter:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Ingen produkter blev fundet.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Tilbage</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Fortsæt</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Ordre</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Ingen kategorier er knyttet til dette produkt.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Der er ingen emner i din kurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Produktet er nu tilføjet til din indkøbskurv.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Produkterne fra dit seneste besøg er nu igen tilføjet til din kurv.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Rediger</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Fjern</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>Fjern %s fra din kurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Ordre subtotal</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Ordre total</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Der er ingen betalingsmetoder tilgængelig</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Der er ingen leveringsmetoder tilgængelig</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Ingen ordre-email angivet</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Ingen ordre fundet</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsRemaining">
+        <source>&lt;br /&gt;%s downloads remaining</source>
+        <target>&lt;br /&gt;%s downloads tilbage</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Indkøbskurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Gå til kassen</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Køb mere</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Opdater kurv</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Ordre status %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step "%s"</source>
+        <target>Gå tilbage til "%s"</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Opret ny adresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Brug betalingsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Brug kundeadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Anden leveringsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Rediger</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Slet</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Ønsker du virkelig at slette denne adresse? Det kan ikke fortrydes!</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Faktura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Ordre dato</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Ordrenummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Beskrivelse</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Antal</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>lav til høj</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>høj til lav</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A til Z</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z til A</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>tidligere til senere</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>senere til tidligere</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Behandler betaling</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Du bliver omdirigeret til betalingssiden.</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Betal nu</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the "Pay now" button to continue.</source>
+        <target>Klik på "Betal nu" knappen for at fortsætte.</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>Click here to view this PayPal transaction online</source>
+        <target>Klik her for at se denne PayPal transaktion online.</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 produkt</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Indtast leveringsadresse eller vælg en eksisterende adresse.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Indtast betalingsadresse eller vælg en eksisterende adresse.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Indtast betalingsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Vælg en leveringsmetode.</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Vælg venligst en leveringsmetode.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Levering</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Betaling</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Godkend</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Betalingsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Forsendelsesadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Betalings- og leveringsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Leveringsadresse</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Leveringsmetode</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Betalingsmetode</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Godkend ordre</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Rediger</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Kreditkort nummer</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Kreditkort type</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV nummer (3 eller 4 cifret)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Udløbsmåned</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Udløbsår</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Betalingsmetode ikke fundet!</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Brug standard værdi</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheLoading">
+        <source>Loading products...</source>
+        <target>Henter produkter</target>
+      </trans-unit>
+      <trans-unit id="MSC.noFilesInFolder">
+        <source>No files in this folder</source>
+        <target>Ingen filer i denne mappe</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Minutter</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Timer</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Dage</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Uger</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Måneder</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>År</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroductionLegend">
+        <source>Introduction</source>
+        <target>Introduktion</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+        <target>Velkommen til Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+        <target>Isotope eCommerce teamet</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Kontant</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa_electron">
+        <source>Visa Electron</source>
+        <target>Visa Electron</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Tekstfelt</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Tekstboks</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Valgmenu</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>Downloads</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Filupload</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

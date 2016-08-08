@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="fa">
+    <body>
+      <trans-unit id="tl_iso_producttype.name.0">
+        <source>Name</source>
+        <target>نام</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.fallback.0">
+        <source>Default</source>
+        <target>پیش‌فرض</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.default">
+        <source>Default</source>
+        <target>پیش‌فرض</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

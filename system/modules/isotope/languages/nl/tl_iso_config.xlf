@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_config.name.0">
+        <source>Configuration Name</source>
+        <target>Naam van configuratie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.1">
+        <source>Please enter a name for your configuration. This is only used for back end reference.</source>
+        <target>Vul een naam in voor deze configuratie. Dit wordt alleen gebruikt voor verwijzingen in het backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.1">
+        <source>The label is used in frontend, e.g. for config switcher.</source>
+        <target>Het label wordt gebruikt in de frontend, bijv. voor het config switcher.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.0">
+        <source>Set as default store</source>
+        <target>Stel in als standaardwinkel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.1">
+        <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
+        <target>Stel deze als standaard op te slaan voor de back-end munt formattering en andere locale-specifieke informatie.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Voornaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.1">
+        <source>Please enter the first name (if applicable).</source>
+        <target>Vul de voornaam (indien van toepassing).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Achternaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.1">
+        <source>Please enter the last name (if applicable).</source>
+        <target>Vul de achternaam (indien van toepassing).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Bedrijfsnaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.1">
+        <source>You can enter a company name here (if applicable).</source>
+        <target>Hier kunt u uw bedrijfsnaam invoeren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>BTW nr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Vul een BTW nummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Straatnaam + nr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Vul de straatnaam en huisnummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Straatnaam 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Vul een tweede regel voor de straatnaam in, indien van toepassing.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Straatnaam 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Vul een derde regel voor de straatnaam in, indien van toepassing.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Postcode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Vul de postcode in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Plaats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Vul de plaatsnaam in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Provincie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Vul de naam van de provincie in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.1">
+        <source>Please select a country. This is also the default for custom shipping/billing addresses.</source>
+        <target>Selecteer uw land alstublieft.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Telefoonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Vul het telefoonnummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.0">
+        <source>Shipping email address</source>
+        <target>E-mailadres verzending</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Vul een geldig e-mailadres in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.0">
+        <source>Address fields</source>
+        <target>Adresvelden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.1">
+        <source>Select the fields for a billing and shipping address when checking out.</source>
+        <target>Selecteer de velden voor factuur- en leveradressen tijdens het afrekenen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.name.0">
+        <source>Address field</source>
+        <target>Adresveld</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.billing.0">
+        <source>For billing address</source>
+        <target>Voor factuuradres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.shipping.0">
+        <source>For shipping address</source>
+        <target>Voor verzendadres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.disabled">
+        <source>Disabled</source>
+        <target>Uitgeschakeld</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.enabled">
+        <source>Enabled (not mandatory)</source>
+        <target>Ingeschakeld (niet verplicht)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.mandatory">
+        <source>Enabled (mandatory)</source>
+        <target>Ingeschakeld (verplicht)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.0">
+        <source>Default billing country</source>
+        <target>Standaard land voor facturatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.1">
+        <source>Select a default country for new billing addresses.</source>
+        <target>Selecteer het standaard land voor nieuwe factuuradressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.0">
+        <source>Default shipping country</source>
+        <target>Standaard land voor verzending.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.1">
+        <source>Select a default country for new shipping addresses.</source>
+        <target>Selecteer het standaard land voor nieuwe verzendadressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.0">
+        <source>Available billing countries</source>
+        <target>Uitvoerlanden Facturatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.1">
+        <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
+        <target>Selecteer hier de landen waaruit bezoekers mogen afrekenen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.0">
+        <source>Available shipping countries</source>
+        <target>Uitvoerlanden Verzending</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.1">
+        <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
+        <target>Selecteer hier de landen waaruit bezoekers mogen afrekenen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.0">
+        <source>Limit member countries</source>
+        <target>Beperk landen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.1">
+        <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
+        <target>Beperk landen (Registratie, persoonlijke gegevens) aan de gecombineerde lijst van de facturering en verzending landen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.1">
+        <source>Choose a formatting for prices.</source>
+        <target>Kies een opmaak voor de prijzen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.0">
+        <source>Rounding precision</source>
+        <target>Afronding precisie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.1">
+        <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
+        <target>Hoeveel decimale precicion te hebben. Stel je iets tussen 0 en 2 voor alle betalingsmogelijkheden om correct te werken. Zie PHP handleiding voor round().</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.0">
+        <source>Rounding increment</source>
+        <target>Afronding</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.1">
+        <source>Some currencies (e.g. swiss francs) do not support 0.01 precision.</source>
+        <target>Bepaalde valuta (bijvoorbeeld Zwitserse franken) geen ondersteuning voor 0.01</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.1">
+        <source>Please select a currency for this store.</source>
+        <target>Selecteer een valuta voor deze winkel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.0">
+        <source>Position of currency code/symbol</source>
+        <target>Positie van de valuta code / symbool</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.1">
+        <source>Select if you want to show currency on the left or right side of the price.</source>
+        <target>Selecteer deze optie als u wilt munt show op de linker-of rechterkant van de prijs.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.0">
+        <source>Use currency symbol</source>
+        <target>Gebruik valutasymbool</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.1">
+        <source>Use a currency symbol ($, €) if available.</source>
+        <target>Gebruik een valutasymbool ($, €), indien beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.0">
+        <source>Include blank space</source>
+        <target>Spatie toevoegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.1">
+        <source>Add space between price and currency symbol.</source>
+        <target>Voeg een spatie in tussen de prijs en het valutasymbool.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.0">
+        <source>Price factor</source>
+        <target>Prijsfactor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.1">
+        <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
+        <target>Standaardwaarden moeten worden 1. U kunt dit gebruiken om te converteren tussen meerdere valuta's.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.0">
+        <source>Calculation mode</source>
+        <target>Berekeningswijze</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.1">
+        <source>Divide or multiply using this factor.</source>
+        <target>Splitsen of te vermenigvuldigen met deze factor.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.0">
+        <source>Automatic currency conversion</source>
+        <target>Automatische valutaomrekening</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.1">
+        <source>Enable automatic update of price calcuation factors by using an online currency conversion provider.</source>
+        <target>Schakel automatisch updaten van prijsomrekeningfactoren in via een online valuta-omrekeningsleverancier.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.0">
+        <source>Currency origin</source>
+        <target>Bronvaluta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.1">
+        <source>Please select the source currency for calculation.</source>
+        <target>Kies de bronvaluta voor omrekenen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.0">
+        <source>Currency Data Provider</source>
+        <target>Valutagegevens leverancier</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.1">
+        <source>Select an available online provider of currency calculation data.</source>
+        <target>Kies een beschikbare online leverancier van valuta omrekeningsgegevens.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.0">
+        <source>Order number prefix</source>
+        <target>Ordernummer voorvoegsel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.1">
+        <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
+        <target>U kunt een voorvoegsel, bijv. het fiscale jaar toevoegen dat automatische voor het ordernummer wordt geplaatst.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.0">
+        <source>Order number length</source>
+        <target>Lengte ordernummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.1">
+        <source>Select the minimum length of the order number (not including order prefix).</source>
+        <target>Selecteer de minimumlengte van het ordernummer (exclusief voorvoegsel)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.0">
+        <source>Status for new orders</source>
+        <target>Status voor nieuwe bestellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.1">
+        <source>Choose a matching status for new orders. A payment module can override this.</source>
+        <target>Selecteer een status voor nieuwe bestellingen. Een betaalmodule kan dit wijzigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.0">
+        <source>Order status on error</source>
+        <target>Bestelstatus bij fouten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.1">
+        <source>Select an order status if something goes wrong (e.g. payment).</source>
+        <target>Selecteer een orderstatus in het geval er iets mis gaat (bijv. betaling).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.0">
+        <source>Invoice Logo</source>
+        <target>Factuur Logo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.1">
+        <source>Select a logo to show up on the invoices for this store.</source>
+        <target>Selecteer een logo te laten zien op de facturen voor deze winkel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.0">
+        <source>Templates folder</source>
+        <target>Templatemap</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.1">
+        <source>Here you can select a templates folder to search before every other template folder.</source>
+        <target>Hier kunt u een map Sjablonen om te zoeken voor elke andere template map.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Minimum subtotaal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.1">
+        <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
+        <target>Het minimum subtotaal van de winkelwagen wat nodig is om een bestelling te kunnen plaatsen. Vul 0 in om te deactiveren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.0">
+        <source>Duration to mark a product as "new"</source>
+        <target>Tijd dat een product als "nieuw" gemarkeerd wordt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.1">
+        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class "new" to every product everywhere within Isotope eCommerce.</source>
+        <target>Als u nieuwe producten wilt markeren, voer dan hier een tijdperiode in. Hierdoor wordt er overal automatisch een CSS klasse "new" aan ieder product toegevoegd binnen Isotope eCommerce.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.0">
+        <source>Enable Google Analytics</source>
+        <target>Google Analytics inschakelen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.1">
+        <source>Enable e-commerce tracking with Google Analytics.</source>
+        <target>E-commerce tracking met Google Analytics inschakelen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.0">
+        <source>Account</source>
+        <target>Account</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.1">
+        <source>Please provde the account key (UA-XXXXXXX-X).</source>
+        <target>Vul het Google Tracking-ID in (UA-XXXXXXX-X).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.0">
+        <source>Track member</source>
+        <target>Bezoeker volgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.1">
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <target>Voer tokens in om de bezoeker mee te volgen (bijv. ##firstname## ##lastname##). LET OP: ga na of dit in uw situatie toe is gestaan.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.left">
+        <source>To the left of price</source>
+        <target>Aan de linkerkant van de prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.right">
+        <source>To the right of price</source>
+        <target>Aan de rechterkant van de prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.div">
+        <source>Divide</source>
+        <target>verdelen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.mul">
+        <source>Multiply</source>
+        <target>Vermenigvuldigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWidth.0">
+        <source>Width</source>
+        <target>Breedte</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwHeight.0">
+        <source>Height</source>
+        <target>Hoogte</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwMode.0">
+        <source>Mode</source>
+        <target>Mode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWatermark.0">
+        <source>Watermark image</source>
+        <target>Watermerk afbeelding</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwPosition.0">
+        <source>Position</source>
+        <target>Positie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ecb.int">
+        <source>European Central Bank</source>
+        <target>Europese centrale bank</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.admin.ch">
+        <source>Swiss Federal Department of Finance</source>
+        <target>Zwitsers departement van financiën </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.0">
+        <source>New configuration</source>
+        <target>Nieuwe instelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.1">
+        <source>Create a new store configuration.</source>
+        <target>Maak een nieuwe winkelinstelling aan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.0">
+        <source>Edit configuration</source>
+        <target>Bewerk instelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.1">
+        <source>Edit store configuration ID %s.</source>
+        <target>Bewerk instelling ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.0">
+        <source>Copy configuration</source>
+        <target>Kopier instelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.1">
+        <source>Copy store configuration ID %s.</source>
+        <target>Kopier instelling ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.0">
+        <source>Delete configuration</source>
+        <target>Verwijder instelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.1">
+        <source>Delete store configuration ID %s.</source>
+        <target>Verwijder instelling ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.0">
+        <source>Show configuration details</source>
+        <target>Toon details instelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.1">
+        <source>Show details for store configuration ID %s.</source>
+        <target>Toon details voor instelling ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Naam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_legend">
+        <source>Address configuration</source>
+        <target>Adresinstellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.config_legend">
+        <source>Configuration</source>
+        <target>Configuratie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Afrekenen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency_legend">
+        <source>Currency formatting</source>
+        <target>Valutaopmaak</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.converter_legend">
+        <source>Currency conversion</source>
+        <target>Valutaomrekening</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Bestellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Afbeeldingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.url_legend">
+        <source>URL settings</source>
+        <target>URL instellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Producten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.analytics_legend">
+        <source>Analytics</source>
+        <target>Analytics</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
