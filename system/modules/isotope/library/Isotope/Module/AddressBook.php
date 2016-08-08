@@ -57,7 +57,7 @@ class AddressBook extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ADDRESS BOOK ###';
@@ -76,7 +76,7 @@ class AddressBook extends Module
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (empty($this->arrFields)) {
+        if (0 === count($this->arrFields)) {
             return '';
         }
 
@@ -158,7 +158,7 @@ class AddressBook extends Module
             }
         }
 
-        if (empty($arrAddresses)) {
+        if (0 === count($arrAddresses)) {
             $this->Template->mtype   = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
@@ -207,7 +207,7 @@ class AddressBook extends Module
             function(Form $objForm) {
                 return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
             },
-            isset($this->tableless) ? (boolean) $this->tableless : true
+            isset($this->tableless) ? (bool) $this->tableless : true
         );
 
         $objForm->bindModel($objAddress);

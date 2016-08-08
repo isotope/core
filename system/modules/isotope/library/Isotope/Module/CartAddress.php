@@ -94,7 +94,7 @@ class CartAddress extends Module
             function(Form $objHaste) {
                 return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
             },
-            isset($this->tableless) ? (boolean) $this->tableless : true
+            isset($this->tableless) ? (bool) $this->tableless : true
         );
 
         $objForm->bindModel($objAddress);
