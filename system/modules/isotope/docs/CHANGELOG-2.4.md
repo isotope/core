@@ -22,12 +22,15 @@ Version 2.4.0-rc1 (2016-08-??)
 - Now uses Contao block templates for template inheritance
 - Correctly handle tableless forms in Contao 4
 - Language files are now stored as XLIFF
+- Products on the home page no longer generates empty action attribute (#1672)
 
 
 ### Fixed
 
 - Fixed live payment validation for Open Payment Platform
 - Variant attributes must always have a blank option
+- Canonical tags generated link to unpublished pages (#1671)
+- Subdivision validation failed for certain countries (e.g. great britain) (#1678)
 
 
 
