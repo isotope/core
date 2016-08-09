@@ -687,7 +687,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->hasOptions       = !empty($arrProductOptions);
         $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId           = $this->getFormId();
-        $objTemplate->action           = ampersand(\Environment::get('request'), true);
+        $objTemplate->action           = ampersand(\Environment::get('request') ?: \Environment::get('base'), true);
         $objTemplate->formSubmit       = $this->getFormId();
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
