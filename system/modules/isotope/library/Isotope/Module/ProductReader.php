@@ -164,8 +164,9 @@ class ProductReader extends Module
                 break;
             }
 
-            if (($objJumpTo = \PageModel::findWithDetails($intPage)) !== null) {
+            if (($objJumpTo = \PageModel::findPublishedById($intPage)) !== null) {
 
+                $objJumpTo->loadDetails();
                 $strDomain = \Environment::get('base');
 
                 // Overwrite the domain
