@@ -203,7 +203,21 @@ class Address extends \Model
 
                 list($country, $subdivion) = explode('-', $this->subdivision);
 
-                $arrTokens['subdivision']      = $arrSubdivisions[strtolower($country)][$this->subdivision];
+                foreach ($arrSubdivisions[strtolower($country)] as $v) {
+                    // Support multi-dimensional arrays (e.g. subdivisions of United Kingdom)
+                    if (is_array($v)) {
+                        foreach ($v as $vv) {
+                            if ($vv[$this->subdivision]) {
+                                $arrTokens['subdivision'] = $vv[$this->subdivision];
+                                break;
+                            }
+                        }
+                    } else {
+                        $arrTokens['subdivision'] = $arrSubdivisions[strtolower($country)][$this->subdivision];
+                        break;
+                    }
+                }
+
                 $arrTokens['subdivision_abbr'] = $subdivion;
 
                 continue;

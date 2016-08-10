@@ -18,7 +18,7 @@
         "php": ">=5.3.2",
         "contao/core-bundle": "^3.5.2 || ~4.1",
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
-        "terminal42/contao-conditionalselectmenu": "~3.0",
+        "terminal42/contao-conditionalselectmenu":"^3.0.3",
         "terminal42/dcawizard": "~2.3",
         "codefog/contao-haste": "~4.12",
         "menatwork/contao-multicolumnwizard": "~3.2",
