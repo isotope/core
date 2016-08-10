@@ -37,9 +37,6 @@ class ElevateZoom extends Inline
     {
         parent::addImageToTemplate($objTemplate, $strType, $arrFile, $blnWatermark);
 
-        // Make sure ID is unique so the gallery can be used on product list (#1674)
-        $objTemplate->uid .= $this->product_id;
-
         if ($blnWatermark) {
             if ('main' === $strType) {
                 $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/isotope/assets/plugins/elevatezoom/jquery.elevateZoom-3.0.8.min.js';

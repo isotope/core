@@ -68,7 +68,7 @@ class Inline extends Standard
     {
         parent::addImageToTemplate($objTemplate, $strType, $arrFile, $blnWatermark);
 
-        $objTemplate->uid = spl_object_hash($this);
+        $objTemplate->uid = uniqid($this->id . $this->product_id);
 
         if ($strType == 'gallery') {
             $image = $this->getImageForType('main', $arrFile, $blnWatermark);
