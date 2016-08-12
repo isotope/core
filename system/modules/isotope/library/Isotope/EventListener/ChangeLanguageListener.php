@@ -69,7 +69,7 @@ class ChangeLanguageListener
     {
         $step = (string) Input::getAutoItem('step', false, true);
 
-        return ('' !== $step && array_key_exists($step, $GLOBALS['ISO_CHECKOUT_STEP'])) ? $step : null;
+        return ('' !== $step && array_key_exists($step, $GLOBALS['ISO_CHECKOUT_STEPS'])) ? $step : null;
     }
 
     /**
