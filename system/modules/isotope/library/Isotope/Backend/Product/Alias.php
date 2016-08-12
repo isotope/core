@@ -30,7 +30,7 @@ class Alias extends \Backend
         // Generate alias if there is none
         if ('' === $varValue) {
             $autoAlias = true;
-            $act       = \Input::get('mode');
+            $act       = \Input::get('act');
 
             if ('edit' === $act || 'overrideAll' === $act) {
                 $varValue = (string) (\Input::post('name') ?: \Input::post('sku'));
