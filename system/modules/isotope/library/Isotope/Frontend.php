@@ -637,27 +637,30 @@ class Frontend extends \Frontend
 
                 /** @var \PageModel $objPage */
                 global $objPage;
-                global $objIsotopeListPage;
 
-                $last = count($arrItems) - 1;
+                if ($objPage->type !== 'error_404') {
+                    global $objIsotopeListPage;
 
-                // If we have a reader page, rename the last item (the reader) to the product title
-                if (null !== $objIsotopeListPage) {
-                    $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
-                    $arrItems[$last]['link']  = $objProduct->name;
-                } // Otherwise we add a new item for the product at the last position
-                else {
-                    $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
-                    $arrItems[$last]['isActive'] = false;
+                    $last = count($arrItems) - 1;
 
-                    $arrItems[] = array(
-                        'isRoot'   => false,
-                        'isActive' => true,
-                        'href'     => $objProduct->generateUrl($objPage),
-                        'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
-                        'link'     => $objProduct->name,
-                        'data'     => $objPage->row(),
-                    );
+                    // If we have a reader page, rename the last item (the reader) to the product title
+                    if (null !== $objIsotopeListPage) {
+                        $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
+                        $arrItems[$last]['link']  = $objProduct->name;
+                    } // Otherwise we add a new item for the product at the last position
+                    else {
+                        $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
+                        $arrItems[$last]['isActive'] = false;
+
+                        $arrItems[] = array(
+                            'isRoot'   => false,
+                            'isActive' => true,
+                            'href'     => $objProduct->generateUrl($objPage),
+                            'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                            'link'     => $objProduct->name,
+                            'data'     => $objPage->row(),
+                        );
+                    }
                 }
             }
         }
