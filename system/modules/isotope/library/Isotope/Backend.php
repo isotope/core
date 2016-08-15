@@ -88,6 +88,34 @@ class Backend extends Contao_Backend
     }
 
     /**
+     * Returns the label for a subdivision of a country.
+     *
+     * @param string $country
+     * @param string $subdivision
+     *
+     * @return string
+     */
+    public static function getLabelForSubdivision($country, $subdivision)
+    {
+        $country = strtolower($country);
+        $arrSubdivisions = Backend::getSubdivisions();
+
+        if (isset($arrSubdivisions[$country][$subdivision])) {
+            return $arrSubdivisions[$country][$subdivision];
+        } else {
+            foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
+                foreach ($regionGroup as $groupLabel => $regions) {
+                    if (isset($regions[$subdivision])) {
+                        return $regions[$subdivision];
+                    }
+                }
+            }
+        }
+
+        return '';
+    }
+
+    /**
      * DCA for setup module tables is "closed" to hide the "new" button. Re-enable it when clicking on a button
      *
      * @param \DataContainer $dc

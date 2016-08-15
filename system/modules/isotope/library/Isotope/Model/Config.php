@@ -143,7 +143,8 @@ class Config extends \Model
 
     /**
      * Return raw billing field data
-     * @return  array
+     *
+     * @return array
      */
     public function getBillingFieldsConfig()
     {

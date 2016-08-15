@@ -199,26 +199,10 @@ class Address extends \Model
             }
 
             if ('subdivision' === $strField && $this->subdivision != '') {
-                $arrSubdivisions = Backend::getSubdivisions();
+                list($country, $subdivision) = explode('-', $this->subdivision);
 
-                list($country, $subdivion) = explode('-', $this->subdivision);
-
-                foreach ($arrSubdivisions[strtolower($country)] as $v) {
-                    // Support multi-dimensional arrays (e.g. subdivisions of United Kingdom)
-                    if (is_array($v)) {
-                        foreach ($v as $vv) {
-                            if ($vv[$this->subdivision]) {
-                                $arrTokens['subdivision'] = $vv[$this->subdivision];
-                                break;
-                            }
-                        }
-                    } else {
-                        $arrTokens['subdivision'] = $arrSubdivisions[strtolower($country)][$this->subdivision];
-                        break;
-                    }
-                }
-
-                $arrTokens['subdivision_abbr'] = $subdivion;
+                $arrTokens['subdivision_abbr'] = $subdivision;
+                $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $subdivision);
 
                 continue;
             }
