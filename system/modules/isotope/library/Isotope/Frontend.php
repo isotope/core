@@ -630,16 +630,13 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        if (!($alias = Input::getAutoItem('product', false, true))
-            || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
-        ) {
-            return $arrItems;
-        }
-
         /** @var \PageModel $objPage */
         global $objPage;
 
-        if ($objPage->type === 'error_404') {
+        if ($objPage->type === 'error_404'
+            || !($alias = Input::getAutoItem('product', false, true))
+            || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
+        ) {
             return $arrItems;
         }
 
