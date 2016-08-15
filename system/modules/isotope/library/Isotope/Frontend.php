@@ -630,39 +630,39 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        if (Input::getAutoItem('product', false, true) != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+        if (!($alias = Input::getAutoItem('product', false, true))
+            || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
+        ) {
+            return $arrItems;
+        }
 
-            if (null !== $objProduct) {
+        /** @var \PageModel $objPage */
+        global $objPage;
 
-                /** @var \PageModel $objPage */
-                global $objPage;
+        if ($objPage->type === 'error_404') {
+            return $arrItems;
+        }
 
-                if ($objPage->type !== 'error_404') {
-                    global $objIsotopeListPage;
+        global $objIsotopeListPage;
+        $last = count($arrItems) - 1;
 
-                    $last = count($arrItems) - 1;
+        // If we have a reader page, rename the last item (the reader) to the product title
+        if (null !== $objIsotopeListPage) {
+            $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
+            $arrItems[$last]['link']  = $objProduct->name;
+        } // Otherwise we add a new item for the product at the last position
+        else {
+            $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
+            $arrItems[$last]['isActive'] = false;
 
-                    // If we have a reader page, rename the last item (the reader) to the product title
-                    if (null !== $objIsotopeListPage) {
-                        $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
-                        $arrItems[$last]['link']  = $objProduct->name;
-                    } // Otherwise we add a new item for the product at the last position
-                    else {
-                        $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
-                        $arrItems[$last]['isActive'] = false;
-
-                        $arrItems[] = array(
-                            'isRoot'   => false,
-                            'isActive' => true,
-                            'href'     => $objProduct->generateUrl($objPage),
-                            'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
-                            'link'     => $objProduct->name,
-                            'data'     => $objPage->row(),
-                        );
-                    }
-                }
-            }
+            $arrItems[] = array(
+                'isRoot'   => false,
+                'isActive' => true,
+                'href'     => $objProduct->generateUrl($objPage),
+                'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                'link'     => $objProduct->name,
+                'data'     => $objPage->row(),
+            );
         }
 
         return $arrItems;
