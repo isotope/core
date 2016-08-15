@@ -199,12 +199,10 @@ class Address extends \Model
             }
 
             if ('subdivision' === $strField && $this->subdivision != '') {
-                $arrSubdivisions = Backend::getSubdivisions();
+                list($country, $subdivision) = explode('-', $this->subdivision);
 
-                list($country, $subdivion) = explode('-', $this->subdivision);
-
-                $arrTokens['subdivision']      = $arrSubdivisions[strtolower($country)][$this->subdivision];
-                $arrTokens['subdivision_abbr'] = $subdivion;
+                $arrTokens['subdivision_abbr'] = $subdivision;
+                $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $subdivision);
 
                 continue;
             }
