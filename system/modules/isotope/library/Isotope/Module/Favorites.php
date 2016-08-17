@@ -14,17 +14,12 @@ namespace Isotope\Module;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionItem;
-use Isotope\Template;
 
 /**
- * @property int    $iso_cart_jumpTo
- * @property int    $iso_gallery
- * @property string $iso_collectionTpl
- * @property string $iso_orderCollectionBy
+ * @property bool $iso_use_quantity
  */
-class Favorites extends Module
+class Favorites extends AbstractProductCollection
 {
 
     /**
@@ -34,33 +29,11 @@ class Favorites extends Module
     protected $strTemplate = 'mod_iso_favorites';
 
     /**
-     * Disable caching of the frontend page if this module is in use
-     * @var boolean
-     */
-    protected $blnDisableCache = true;
-
-
-    /**
-     * Display a wildcard in the back end
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: FAVORITES ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
-        }
-
-        if (true !== FE_USER_LOGGED_IN) {
+        if ('FE' === TL_MODE && true !== FE_USER_LOGGED_IN) {
             return '';
         }
 
@@ -68,76 +41,82 @@ class Favorites extends Module
     }
 
     /**
-     * Generate the module
+     * @inheritdoc
      */
-    protected function compile()
+    protected function getCollection()
     {
-        $collection = Isotope::getFavorites();
+        return Isotope::getFavorites();
+    }
 
-        if ($collection->isEmpty()) {
-            $this->Template->empty   = true;
-            $this->Template->type    = 'empty';
-            $this->Template->message = $this->iso_emptyMessage ? $this->iso_noProducts : $GLOBALS['TL_LANG']['MSC']['noItemsInFavorites'];
+    /**
+     * @inheritdoc
+     */
+    protected function getEmptyMessage()
+    {
+        return $GLOBALS['TL_LANG']['MSC']['noItemsInFavorites'];
+    }
 
-            return;
-        }
+    /**
+     * @inheritdoc
+     */
+    protected function canEditQuantity()
+    {
+        return (bool) $this->iso_use_quantity;
+    }
 
-        $addToCart = (string) \Input::get('add_to_cart');
+    /**
+     * @inheritdoc
+     */
+    protected function canRemoveProducts()
+    {
+        return true;
+    }
 
-        if ('all' === $addToCart) {
-            Isotope::getCart()->copyItemsFrom($collection);
+    /**
+     * @inheritdoc
+     */
+    protected function updateItemTemplate(
+        IsotopeProductCollection $collection,
+        ProductCollectionItem $item,
+        array $data,
+        array $quantity,
+        &$hasChanges
+    ) {
+        $data = parent::updateItemTemplate($collection, $item, $data, $quantity, $hasChanges);
+
+        $data['cart_href'] = Url::addQueryString('add_to_cart=' . $item->id);
+
+        if ((int) \Input::get('add_to_cart') === $item->id && $item->hasProduct()) {
+            Isotope::getCart()->addProduct(
+                $item->getProduct(),
+                $item->quantity,
+                ['jumpTo' => $item->getRelated('jumpTo')]
+            );
+
             \Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
-        /** @var Template|\stdClass $collectionTemplate */
-        $collectionTemplate = new Template($this->iso_collectionTpl);
-        $collectionTemplate->linkProducts = true;
-
-        $collection->addToTemplate(
-            $collectionTemplate,
-            array(
-                'gallery' => $this->iso_gallery,
-                'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
-            )
-        );
-
-        $collectionTemplate->items = $this->updateTemplate(
-            $collection,
-            $collectionTemplate->items,
-            (int) \Input::get('remove'),
-            (int) $addToCart
-        );
-
-        $collectionTemplate->cart_all_href = \Haste\Util\Url::addQueryString('add_to_cart=all');
-
-        $this->Template->collection = $collection;
-        $this->Template->products   = $collectionTemplate->parse();
+        return $data;
     }
 
-    private function updateTemplate(IsotopeProductCollection $collection, array $data, $removeId, $addToCart)
+    /**
+     * @inheritdoc
+     */
+    protected function generateButtons(array $buttons = [])
     {
-        foreach ($data as $k => &$row) {
-            /** @var ProductCollectionItem $item */
-            $item = $row['item'];
-            $itemId = (int) $item->id;
-
-            // Remove from collection
-            if ($removeId > 0 && $removeId === $itemId) {
-                $collection->deleteItemById($itemId);
-                \Controller::redirect(Url::removeQueryString(['remove']));
-            } elseif ($addToCart > 0 && $addToCart === $itemId) {
-                if ($item->hasProduct()) {
-                    Isotope::getCart()->addProduct($item->getProduct(), 1, ['jumpTo' => $item->getRelated('jumpTo')]);
-                    \Controller::redirect(Url::removeQueryString(['add_to_cart']));
-                }
-            }
-
-            $row['remove_href']  = Url::addQueryString('remove=' . $itemId);
-            $row['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $row['name']));
-            $row['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
-            $row['cart_href']    = Url::addQueryString('add_to_cart=' . $itemId);
+        if ($this->canEditQuantity()) {
+            $this->addButton($buttons, 'save', $GLOBALS['TL_LANG']['MSC']['save']);
         }
 
-        return $data;
+        $this->addButton(
+            $buttons,
+            'add_to_cart',
+            $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart'],
+            function () {
+                Isotope::getCart()->copyItemsFrom($this->getCollection());
+            }
+        );
+
+        return $buttons;
     }
 }

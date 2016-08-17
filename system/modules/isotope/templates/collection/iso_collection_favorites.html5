@@ -1,3 +1,9 @@
+<?php if(!empty($this->buttons)): ?>
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<?php endif; ?>
 
 <?php if ($this->collection->hasErrors()): ?>
 <p class="error"><?php echo implode('</p><p class="error">', $this->collection->getErrors()); ?></p>
@@ -18,6 +24,11 @@
             </ul>
             <?php endif; ?>
         </td>
+        <?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> quantity">
+            <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="<?php echo $item['quantity']; ?>" maxlength="10">
+        </td>
+        <?php endif; ?>
         <td class="col_<?php echo $i++; ?> col_last actions">
             <a href="<?php echo $item['cart_href']; ?>" class="add_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] ?></a>
             <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
@@ -31,4 +42,12 @@
 </tbody>
 </table>
 
-<a href="<?= $this->cart_all_href ?>" class="add_all_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart'] ?></a>
+<?php if(!empty($this->buttons)): ?>
+</div>
+<div class="submit_container">
+<?php foreach($this->buttons as $button): ?>
+<input type="<?php echo $button['type']; ?>" class="<?php echo $button['type']; ?> <?php echo $button['name']; ?>" name="<?php echo $button['name']; ?>" id="ctrl_<?php echo $button['name']; ?>_<?php echo $this->id; ?>" value="<?php echo $button['label']; ?>">
+<?php endforeach; ?>
+</div>
+</form>
+<?php endif; ?>
