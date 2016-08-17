@@ -4,7 +4,6 @@
 
 <h2><?php echo $this->orderDetailsHeadline; ?></h2>
 <div class="order_status <?php echo $this->orderStatusKey; ?>"><?php echo $this->orderStatus; ?></div>
-<?php if ($this->reorder): ?><a href="<?php echo $this->reorder; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['reorderLabel']; ?></a><?php endif; ?>
 
 <?php foreach ($this->info as $type => $data): ?>
 <div class="info_container <?php echo $type . ' ' . $data['class']; ?>">
