@@ -14,7 +14,7 @@
 <?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?>: <?php echo $this->total; ?>
 <?php else: ?>
 <?php ### THIS IS HTML EMAILS AND EVERYTHING ELSE ### ?>
-<?php if($this->isEditable): ?>
+<?php if(!empty($this->buttons)): ?>
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
@@ -98,15 +98,13 @@
 </tfoot>
 </table>
 
-<?php if($this->isEditable): ?>
-</div>
 <?php if(!empty($this->buttons)): ?>
+</div>
 <div class="submit_container">
 <?php foreach($this->buttons as $button): ?>
 <input type="<?php echo $button['type']; ?>" class="<?php echo $button['type']; ?> <?php echo $button['name']; ?>" name="<?php echo $button['name']; ?>" id="ctrl_<?php echo $button['name']; ?>_<?php echo $this->id; ?>" value="<?php echo $button['label']; ?>">
 <?php endforeach; ?>
 </div>
-<?php endif; ?>
 </form>
 <?php endif; ?>
 
