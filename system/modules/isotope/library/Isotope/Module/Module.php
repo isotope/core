@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Frontend\AbstractFrontendModule;
 use Haste\Haste;
 use Haste\Input\Input;
 use Haste\Util\Debug;
@@ -19,7 +20,6 @@ use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
-use Module as Contao_Module;
 use PageModel;
 
 
@@ -41,7 +41,7 @@ use PageModel;
  * @property bool   $defineRoot
  * @property int    $rootPage
  */
-abstract class Module extends Contao_Module
+abstract class Module extends AbstractFrontendModule
 {
 
     /**
@@ -81,7 +81,7 @@ abstract class Module extends Contao_Module
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if (TL_MODE == 'FE') {
+        if ('FE' === TL_MODE) {
             $version = RepositoryVersion::encode(Isotope::VERSION);
 
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
@@ -111,7 +111,7 @@ abstract class Module extends Contao_Module
         $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        if ($this->iso_includeMessages) {
+        if ('BE' !== TL_MODE && $this->iso_includeMessages) {
             $strBuffer = Message::generate() . $strBuffer;
         }
 
