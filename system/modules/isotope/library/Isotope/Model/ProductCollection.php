@@ -1438,12 +1438,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add the collection to a template
-     *
-     * @param \Template $objTemplate
-     * @param array     $arrConfig
+     * @inheritdoc
      */
-    public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
+    public function addToTemplate(\Template $objTemplate, array $arrConfig = [])
     {
         $arrGalleries = array();
         $objConfig    = $this->getRelated('config_id') ?: Isotope::getConfig();
@@ -1546,19 +1543,15 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add an error message
-     *
-     * @param string
+     * @inheritdoc
      */
-    public function addError($strError)
+    public function addError($message)
     {
-        $this->arrErrors[] = $strError;
+        $this->arrErrors[] = $message;
     }
 
     /**
-     * Check if collection or any item has errors
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function hasErrors()
     {
@@ -1576,9 +1569,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Return the errors array
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getErrors()
     {

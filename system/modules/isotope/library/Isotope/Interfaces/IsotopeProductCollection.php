@@ -189,7 +189,7 @@ interface IsotopeProductCollection
      *
      * @return ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array());
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = []);
 
     /**
      * Update a product collection item
@@ -246,14 +246,29 @@ interface IsotopeProductCollection
     public function addToScale(Scale $objScale = null);
 
     /**
-     * Check if minimum order amount is reached
+     * Add the collection to a template
+     *
+     * @param \Template $objTemplate
+     * @param array     $arrConfig
+     */
+    public function addToTemplate(\Template $objTemplate, array $arrConfig = []);
+
+    /**
+     * Add an error message
+     *
+     * @param string
+     */
+    public function addError($message);
+
+    /**
+     * Check if collection or any item has errors
      *
      * @return bool
      */
     public function hasErrors();
 
     /**
-     * Get error messages for the cart
+     * Return the errors array
      *
      * @return array
      */
