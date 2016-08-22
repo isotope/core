@@ -15,7 +15,6 @@ namespace Isotope\Model\Payment;
 use Haste\Http\Response\RedirectResponse;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
-use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 
 class PaypalPlus extends PaypalApi
@@ -41,8 +40,20 @@ class PaypalPlus extends PaypalApi
             }
         }
 
-        // TODO add real error message
-        return 'Error';
+        \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
+        log_message(
+            sprintf(
+                "PayPal API Error! (HTTP %s %s)\n\nRequest:\n%s\n\nResponse:\n%s",
+                $request->code,
+                $request->error,
+                $request->request,
+                $request->response
+            ),
+            'paypal.log'
+        );
+
+        $response = new RedirectResponse(Checkout::redirectToStep(Checkout::STEP_FAILED), 303);
+        $response->send();
     }
 
     /**
