@@ -12,7 +12,8 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Request;
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
@@ -24,7 +25,11 @@ use Isotope\Module\Checkout;
  */
 abstract class PaypalApi extends Payment
 {
-
+    /**
+     * @param IsotopePurchasableCollection $order
+     *
+     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     */
     public function createPayment(IsotopePurchasableCollection $order)
     {
         $items = [];
@@ -74,9 +79,15 @@ abstract class PaypalApi extends Payment
             ],
         ];
 
-        return $this->sendRequest('/payments/payment', json_encode($data), 'POST');
+        return $this->sendRequest('/payments/payment', $data, 'POST');
     }
 
+    /**
+     * @param IsotopePurchasableCollection $order
+     * @param string                       $paymentId
+     *
+     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
         $billingAddress = $order->getBillingAddress();
@@ -104,18 +115,28 @@ abstract class PaypalApi extends Payment
             ],
         ];
 
-        return $this->sendRequest('/payments/payment/' . $paymentId, json_encode($data), 'PATCH');
+        return $this->sendRequest('/payments/payment/' . $paymentId, $data, 'PATCH');
     }
 
+    /**
+     * @param string $paymentId
+     * @param string $payerId
+     *
+     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     */
     public function executePayment($paymentId, $payerId)
     {
         $data = [
             'payer_id' => $payerId,
         ];
 
-        return $this->sendRequest('/payments/payment/' . $paymentId . '/execute', json_encode($data), 'POST');
+        return $this->sendRequest('/payments/payment/' . $paymentId . '/execute', $data, 'POST');
     }
 
+    /**
+     * @param IsotopeProductCollection $collection
+     * @param array                    $paypalData
+     */
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = deserialize($collection->payment_data, true);
@@ -125,6 +146,11 @@ abstract class PaypalApi extends Payment
         $collection->save();
     }
 
+    /**
+     * @param IsotopeProductCollection $collection
+     *
+     * @return array
+     */
     protected function retrievePayment(IsotopeProductCollection $collection)
     {
         $paymentData = deserialize($collection->payment_data, true);
@@ -138,50 +164,113 @@ abstract class PaypalApi extends Payment
     private function getApiToken()
     {
         $request = $this->prepareRequest();
-        $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-        $request->username = $this->paypal_plus_client;
-        $request->password = $this->paypal_plus_secret;
 
-        $request->send(
-            $this->getApiUrl('/oauth2/token'),
-            'grant_type=client_credentials',
-            'POST'
-        );
+        if ($request instanceof Client) {
+            $response = $request->post(
+                $this->getApiUrl('/oauth2/token'),
+                [
+                    RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
+                    RequestOptions::HEADERS     => [
+                        'Authorization' => 'Basic ' . base64_encode($this->paypal_plus_client . ':' . $this->paypal_plus_secret),
+                    ],
+                ]
+            );
 
-        if ($request->code != 200) {
-            return null;
+            if ($response->getStatusCode() != 200) {
+                return null;
+            }
+
+            $response = json_decode($response->getBody()->getContents(), true);
+
+        } else {
+            $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+            $request->setHeader('Authorization', 'Basic ' . base64_encode($this->paypal_plus_client . ':' . $this->paypal_plus_secret));
+
+            $request->send(
+                $this->getApiUrl('/oauth2/token'),
+                'grant_type=client_credentials',
+                'POST'
+            );
+
+            if ($request->code != 200) {
+                return null;
+            }
+
+            $response = json_decode($request->response, true);
         }
-
-        $response = json_decode($request->response, true);
 
         return array_key_exists('access_token', $response) ? $response : null;
     }
 
-    private function sendRequest($path, $data = null, $method = null, $renewToken = false)
+    /**
+     * @param      $path
+     * @param null $data
+     * @param null $method
+     * @param bool $renewToken
+     *
+     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     */
+    private function sendRequest($path, array $data = null, $method = null, $renewToken = false)
     {
         $request = $this->prepareRequest();
 
         // TODO store and reuse token
         $token = $this->getApiToken();
-        $request->setHeader('Authorization', $token['token_type'] . ' ' . $token['access_token']);
-        $request->setHeader('Content-Type', 'application/json');
 
-        $request->send($this->getApiUrl($path), $data, $method);
+        if ($request instanceof Client) {
+            $response = $request->request(
+                $method,
+                $this->getApiUrl($path),
+                [
+                    RequestOptions::JSON    => $data,
+                    RequestOptions::HEADERS => [
+                        'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+                    ],
+                ]
+            );
+
+            $responseCode = $response->getStatusCode();
+
+        } else {
+            $request->setHeader('Authorization', $token['token_type'] . ' ' . $token['access_token']);
+            $request->setHeader('Content-Type', 'application/json');
+
+            $request->send($this->getApiUrl($path), json_encode($data), $method);
+
+            $responseCode = $request->code;
+            $response     = $request;
+        }
 
         // Token probably expired, try again with a new token
-        if (401 === $request->code && !$renewToken) {
+        if (401 === $responseCode && !$renewToken) {
             return $this->sendRequest($path, $data, $method, true);
         }
 
-        return $request;
+        return $response;
     }
 
-
+    /**
+     * @return Client|\RequestExtended
+     */
     private function prepareRequest()
     {
-        $request = new Request();
-        $request->setHeader('Accept', 'application/json');
-        $request->setHeader('Accept-Language', 'en_US');
+        if (class_exists('GuzzleHttp\Client')) {
+            $request = new Client(
+                [
+                    RequestOptions::TIMEOUT         => 5,
+                    RequestOptions::CONNECT_TIMEOUT => 5,
+                    RequestOptions::HTTP_ERRORS     => false,
+                    RequestOptions::HEADERS         => [
+                        'Accept'          => 'application/json',
+                        'Accept-Language' => 'en_US',
+                    ],
+                ]
+            );
+        } else {
+            $request = new \RequestExtended();
+            $request->setHeader('Accept', 'application/json');
+            $request->setHeader('Accept-Language', 'en_US');
+        }
 
         return $request;
     }

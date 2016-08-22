@@ -12,6 +12,7 @@
 
 namespace Isotope\Model\Payment;
 
+use GuzzleHttp\Psr7\Response;
 use Haste\Http\Response\RedirectResponse;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -28,8 +29,16 @@ class PaypalPlus extends PaypalApi
 
         $request = $this->createPayment($objOrder);
 
-        if (201 === $request->code) {
-            $paypalData = json_decode($request->response, true);
+        if ($request instanceof Response) {
+            $responseCode = (int) $request->getStatusCode();
+            $responseData = $request->getBody()->getContents();
+        } else {
+            $responseCode = (int) $request->code;
+            $responseData = $request->response;
+        }
+
+        if (201 === $responseCode) {
+            $paypalData = json_decode($responseData, true);
             $this->storePayment($objOrder, $paypalData);
 
             foreach ($paypalData['links'] as $link) {
@@ -41,16 +50,29 @@ class PaypalPlus extends PaypalApi
         }
 
         \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
-        log_message(
-            sprintf(
-                "PayPal API Error! (HTTP %s %s)\n\nRequest:\n%s\n\nResponse:\n%s",
-                $request->code,
-                $request->error,
-                $request->request,
-                $request->response
-            ),
-            'paypal.log'
-        );
+
+        if ($request instanceof Response) {
+            log_message(
+                sprintf(
+                    "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
+                    $request->getStatusCode(),
+                    $request->getReasonPhrase(),
+                    $request->getBody()->getContents()
+                ),
+                'paypal.log'
+            );
+        } else {
+            log_message(
+                sprintf(
+                    "PayPal API Error! (HTTP %s %s)\n\nRequest:\n%s\n\nResponse:\n%s",
+                    $request->code,
+                    $request->error,
+                    $request->request,
+                    $request->response
+                ),
+                'paypal.log'
+            );
+        }
 
         $response = new RedirectResponse(Checkout::redirectToStep(Checkout::STEP_FAILED), 303);
         $response->send();
@@ -83,7 +105,13 @@ class PaypalPlus extends PaypalApi
 
         $request = $this->executePayment($paypalData['id'], \Input::get('PayerID'));
 
-        if (200 !== $request->code) {
+        if ($request instanceof Response) {
+            $responseCode = (int) $request->getStatusCode();
+        } else {
+            $responseCode = (int) $request->code;
+        }
+
+        if (200 !== $responseCode) {
             return false;
         }
 
