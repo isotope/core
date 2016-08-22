@@ -16,7 +16,6 @@ use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
 
 
@@ -320,7 +319,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if (0 === (int) $this->getPrice()) {
+        if ($this->getPrice() == 0) {
             return null;
         }
 

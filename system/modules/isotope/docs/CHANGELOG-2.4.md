@@ -31,6 +31,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Variant attributes must always have a blank option
 - Canonical tags generated link to unpublished pages (#1671)
 - Subdivision validation failed for certain countries (e.g. great britain) (#1678)
+- Shipping and payment method was not displayed if amount was between 0 and 1
 
 
 

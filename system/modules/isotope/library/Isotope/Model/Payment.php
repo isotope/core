@@ -14,7 +14,6 @@ namespace Isotope\Model;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
 
 /**
@@ -359,7 +358,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if (0 === (int) $this->getPrice()) {
+        if ($this->getPrice() == 0) {
             return null;
         }
 
