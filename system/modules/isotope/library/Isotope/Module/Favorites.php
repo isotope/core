@@ -16,9 +16,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 
-/**
- * @property bool $iso_use_quantity
- */
 class Favorites extends AbstractProductCollection
 {
 
@@ -61,7 +58,7 @@ class Favorites extends AbstractProductCollection
      */
     protected function canEditQuantity()
     {
-        return (bool) $this->iso_use_quantity;
+        return false;
     }
 
     /**
@@ -70,6 +67,18 @@ class Favorites extends AbstractProductCollection
     protected function canRemoveProducts()
     {
         return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getCollectionTemplate()
+    {
+        $template = parent::getCollectionTemplate();
+
+        $template->isEditable = true;
+
+        return $template;
     }
 
     /**
@@ -86,6 +95,7 @@ class Favorites extends AbstractProductCollection
 
         $data['cart_href'] = Url::addQueryString('add_to_cart=' . $item->id);
 
+        // Add single item to cart
         if ((int) \Input::get('add_to_cart') === $item->id && $item->hasProduct()) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),
@@ -96,6 +106,20 @@ class Favorites extends AbstractProductCollection
             \Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
+        // Add all items to cart based on quantity field and global button
+        if (\Input::post('FORM_SUBMIT') === $this->strFormId
+            && '' !== (string) \Input::post('button_add_to_cart')
+            && (0 === count($quantity) || $quantity[$item->id] > 0)
+        ) {
+            Isotope::getCart()->addProduct(
+                $item->getProduct(),
+                $quantity[$item->id] > 0 ? $quantity[$item->id] : 1,
+                ['jumpTo' => $item->getRelated('jumpTo')]
+            );
+
+            $hasChanges = true;
+        }
+
         return $data;
     }
 
@@ -104,17 +128,10 @@ class Favorites extends AbstractProductCollection
      */
     protected function generateButtons(array $buttons = [])
     {
-        if ($this->canEditQuantity()) {
-            $this->addButton($buttons, 'save', $GLOBALS['TL_LANG']['MSC']['save']);
-        }
-
         $this->addButton(
             $buttons,
             'add_to_cart',
-            $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart'],
-            function () {
-                Isotope::getCart()->copyItemsFrom($this->getCollection());
-            }
+            $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart']
         );
 
         return $buttons;

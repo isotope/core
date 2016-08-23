@@ -74,7 +74,7 @@ abstract class AbstractProductCollection extends Module
 
         Isotope::setConfig($collection->getConfig());
 
-        $objTemplate = new Template($this->iso_collectionTpl);
+        $objTemplate = $this->getCollectionTemplate();
 
         $collection->addToTemplate(
             $objTemplate,
@@ -90,7 +90,15 @@ abstract class AbstractProductCollection extends Module
 
         if (!is_array($arrQuantity)) {
             $arrQuantity = [];
+        } else {
+            $arrQuantity = array_filter(
+                $arrQuantity,
+                function ($v) {
+                    return '' !== $v;
+                }
+            );
         }
+
 
         foreach ($arrItems as $k => $data) {
             /** @var ProductCollectionItem $item */
@@ -119,11 +127,6 @@ abstract class AbstractProductCollection extends Module
         }
 
         $objTemplate->items         = $arrItems;
-        $objTemplate->isEditable    = $this->canEditQuantity();
-        $objTemplate->linkProducts  = true;
-        $objTemplate->formId        = $this->strFormId;
-        $objTemplate->formSubmit    = $this->strFormId;
-        $objTemplate->action        = \Environment::get('request');
         $objTemplate->buttons       = $buttons;
 
         $this->Template->empty      = false;
@@ -150,6 +153,22 @@ abstract class AbstractProductCollection extends Module
      * @return bool
      */
     abstract protected function canRemoveProducts();
+
+    /**
+     * @return Template
+     */
+    protected function getCollectionTemplate()
+    {
+        $template = new Template($this->iso_collectionTpl);
+
+        $template->isEditable    = $this->canEditQuantity();
+        $template->linkProducts  = true;
+        $template->formId        = $this->strFormId;
+        $template->formSubmit    = $this->strFormId;
+        $template->action        = \Environment::get('request');
+
+        return $template;
+    }
 
     /**
      * @param IsotopeProductCollection $collection

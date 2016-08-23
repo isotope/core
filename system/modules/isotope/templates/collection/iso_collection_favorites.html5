@@ -26,7 +26,7 @@
         </td>
         <?php if($this->isEditable): ?>
         <td class="col_<?php echo $i++; ?> quantity">
-            <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="<?php echo $item['quantity']; ?>" maxlength="10">
+            <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="" placeholder="1" maxlength="10">
         </td>
         <?php endif; ?>
         <td class="col_<?php echo $i++; ?> col_last actions">
