@@ -14,10 +14,8 @@ namespace Isotope\Module;
 use Contao\PageError403;
 use Haste\Util\Format;
 use Haste\Util\Url;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Message;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
@@ -59,6 +57,8 @@ class OrderDetails extends AbstractProductCollection
     protected function compile()
     {
         $order = $this->getCollection();
+
+        parent::compile();
 
         $this->Template->info                 = deserialize($order->checkout_info, true);
         $this->Template->date                 = Format::date($order->locked);
@@ -138,7 +138,7 @@ class OrderDetails extends AbstractProductCollection
     /**
      * @inheritdoc
      */
-    protected function generateButtons(array $buttons)
+    protected function generateButtons(array $buttons = [])
     {
         if ($this->iso_cart_jumpTo > 0) {
             $this->addButton(
