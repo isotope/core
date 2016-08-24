@@ -28,8 +28,7 @@ use Isotope\Template;
  * @property array $iso_payment_modules
  * @property array $iso_shipping_modules
  * @property bool  $iso_forward_review
- * @property bool  $iso_skip_shipping
- * @property bool  $iso_skip_payment
+ * @property array $iso_checkout_skippable
  */
 class Checkout extends Module
 {
@@ -534,6 +533,20 @@ class Checkout extends Module
     }
 
     /**
+     * Returns whether the checkout step by given name can be skipped.
+     *
+     * @param string $step
+     *
+     * @return bool
+     */
+    public function canSkipStep($step)
+    {
+        $skippable = deserialize($this->iso_checkout_skippable, true);
+
+        return in_array($step, $skippable, true);
+    }
+
+    /**
      * Return array of instantiated checkout step modules
      *
      * @return array
@@ -637,7 +650,7 @@ class Checkout extends Module
         $strUrl = \Controller::generateFrontendUrl($objTarget->row(), '/' . $strStep, $objTarget->language);
 
         if (null !== $objCollection) {
-            $strUrl = Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);
+            $strUrl = Url::addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);
         }
 
         return $strUrl;

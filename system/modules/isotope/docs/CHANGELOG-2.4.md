@@ -12,6 +12,8 @@ Version 2.4.0-rc1 (2016-08-??)
 - Cart rules can be limited to the weight of products in cart
 - Added insert tag {{cart::weight::kg}} to output weight of product collection
 - Added support for ChangeLanguage v3
+- Can skip billing address to always use the member address
+- Can skip shipping address to always use billing address
 
 
 ### Improved

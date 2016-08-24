@@ -1,7 +1,8 @@
 <h2><?php echo $this->headline; ?></h2>
-<p><?php echo $this->message; ?></p>
+<?php if($this->message): ?><p><?php echo $this->message; ?></p><?php endif; ?>
 <?php echo $this->options; ?>
 
+<?php if ($this->fields): ?>
 <div id="<?php echo $this->class; ?>_new" class="address_new"<?php if($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 <?php if($this->tableless): ?>
 <?php echo $this->fields; ?>
@@ -11,3 +12,4 @@
 </table>
 <?php endif; ?>
 </div>
+<?php endif; ?>

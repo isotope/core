@@ -50,7 +50,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function isSkippable()
     {
-        if (!$this->objModule->iso_skip_payment) {
+        if (!$this->objModule->canSkipStep('payment_method')) {
             return false;
         }
 

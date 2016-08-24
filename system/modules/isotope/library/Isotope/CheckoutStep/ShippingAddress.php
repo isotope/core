@@ -36,8 +36,22 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     /**
      * @inheritdoc
      */
+    public function isSkippable()
+    {
+        return $this->objModule->canSkipStep('shipping_address');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function generate()
     {
+        if ($this->isSkippable()) {
+            Isotope::getCart()->setShippingAddress(Isotope::getCart()->getBillingAddress());
+
+            return '';
+        }
+
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         $this->Template->message  = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
@@ -59,7 +73,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'     => Checkout::generateUrlForStep('address'),
+            'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('address'),
         ));
     }
 

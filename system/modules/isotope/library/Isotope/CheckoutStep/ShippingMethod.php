@@ -52,7 +52,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function isSkippable()
     {
-        if (!$this->objModule->iso_skip_shipping) {
+        if (!$this->objModule->canSkipStep('shipping_method')) {
             return false;
         }
 

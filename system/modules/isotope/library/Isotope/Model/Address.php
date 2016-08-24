@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\MemberModel;
 use Database\Result;
 use Haste\Util\Format;
 use Isotope\Backend;
@@ -363,22 +364,7 @@ class Address extends \Model
         );
 
         if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
-
-            // Generate address data from tl_member, limit to fields enabled in the shop configuration
-            $arrMember = array_intersect_key(
-                array_merge(
-                    $objMember->row(),
-                    array(
-                         'street_1'    => $objMember->street,
-
-                         // Trying to guess subdivision by country and state
-                         'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
-                    )
-                ),
-                array_flip($arrFill)
-            );
-
-            $arrData = array_merge($arrMember, $arrData);
+            $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
         $objAddress->setRow($arrData);
@@ -413,25 +399,8 @@ class Address extends \Model
             'isDefaultShipping' => $blnDefaultShipping ? '1' : '',
         );
 
-        if (!empty($arrFill)
-            && is_array($arrFill)
-            && ($objMember = $objCollection->getMember()) !== null
-        ) {
-            // Generate address data from tl_member, limit to fields enabled in the shop configuration
-            $arrMember = array_intersect_key(
-                array_merge(
-                    $objMember->row(),
-                    array(
-                        'street_1'    => $objMember->street,
-
-                        // Trying to guess subdivision by country and state
-                        'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
-                    )
-                ),
-                array_flip($arrFill)
-            );
-
-            $arrData = array_merge($arrMember, $arrData);
+        if (!empty($arrFill) && is_array($arrFill) && ($objMember = $objCollection->getMember()) !== null) {
+            $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
         if ($arrData['country'] == '' && null !== ($objConfig = $objCollection->getConfig())) {
@@ -445,5 +414,24 @@ class Address extends \Model
         $objAddress->setRow($arrData);
 
         return $objAddress;
+    }
+
+    /**
+     * Generate address data from tl_member, limit to fields enabled in the shop configuration
+     */
+    public static function getAddressDataForMember(MemberModel $member, array $fields)
+    {
+        return array_intersect_key(
+            array_merge(
+                $member->row(),
+                array(
+                    'street_1'    => $member->street,
+
+                    // Trying to guess subdivision by country and state
+                    'subdivision' => strtoupper($member->country . '-' . $member->state)
+                )
+            ),
+            array_flip($fields)
+        );
     }
 }
