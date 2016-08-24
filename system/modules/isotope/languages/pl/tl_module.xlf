@@ -154,17 +154,23 @@
         <source>Forward the user to the review page if no data is required on any step.</source>
         <target>Przekieruj użytkownika do strony przeglądu, jeśli żadne informacje nie są wymagane w żadnym z kroków.</target>
       </trans-unit>
-      <trans-unit id="tl_module.iso_skip_shipping.0">
-        <source>Skip shipping step</source>
+      <trans-unit id="tl_module.iso_checkout_skippable.0">
+        <source>Skip checkout steps</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_skip_shipping.1">
-        <source>Skips the shipping step if only one shippig method is available.</source>
+      <trans-unit id="tl_module.iso_checkout_skippable.1">
+        <source>Enable individual options to skip certain checkout steps if possible</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_skip_payment.0">
-        <source>Skip payment step</source>
+      <trans-unit id="tl_module.iso_checkout_skippable.billing_address">
+        <source>Use member address as billing address if user is logged in</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_skip_payment.1">
-        <source>Skips the payment step if only one payment method is available.</source>
+      <trans-unit id="tl_module.iso_checkout_skippable.shipping_address">
+        <source>Always use billing address as shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.shipping_method">
+        <source>Skip shipping step if only one shippig method is available</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.payment_method">
+        <source>Skip payment step if only one payment method is available</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>

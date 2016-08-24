@@ -7,11 +7,11 @@
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
-        <target>Il n'existe pas de configuration pour cette boutique</target>
+        <target>Il n'existe pas de configuration pour cette entrepot</target>
       </trans-unit>
       <trans-unit id="ERR.noDefaultStoreConfiguration">
         <source>Please create a default store configuration.</source>
-        <target>Créez d'abord une configuration de boutique.</target>
+        <target>Créez d'abord une configuration de l'entrepot.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyOrderHistory">
         <source>You have not yet placed any orders.</source>

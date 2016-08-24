@@ -175,6 +175,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>
+        <target>Erneut bestellen</target>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -202,6 +203,7 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_all_to_cart">
         <source>Add All To Cart</source>
+        <target>In den Warenkorb übernehmen</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
@@ -209,9 +211,11 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_favorites">
         <source>Add To Favorites</source>
+        <target>Zu Favoriten hinzufügen</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
+        <target>Aus Favoriten entfernen</target>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -243,6 +247,7 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInFavorites">
         <source>There are no items in your favorites list.</source>
+        <target>Ihre Favoritenliste ist leer.</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
@@ -250,9 +255,11 @@
       </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
+        <target>Der ausgewählte Artikel wurde zu Ihrer Favoritenliste hinzugefügt.</target>
       </trans-unit>
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
+        <target>Der ausgewählte Artikel wurde von Ihrer Favoritenliste entfernt.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
@@ -264,9 +271,11 @@
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products of the selected order have been added to your shopping cart.</source>
+        <target>Die Artikel der gewählten Bestellung wurden in Ihren Warenkorb übernommen.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
+        <target>%s bearbeiten</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkText">
         <source>Edit</source>
@@ -286,9 +295,11 @@
       </trans-unit>
       <trans-unit id="MSC.shippingLabel">
         <source>Shipping (%s)</source>
+        <target>Versand (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.paymentLabel">
         <source>Payment (%s)</source>
+        <target>Bezahlung (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.grandTotalLabel">
         <source>Order Total: </source>
@@ -851,6 +862,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.0">
         <source>Open Payment Platform</source>
+        <target>Open Payment Platform</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
@@ -1069,6 +1081,7 @@
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
+        <target>Fine Uploader</target>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.1">
         <source>A javascript file uploader to upload a local file to the server.</source>
