@@ -30,10 +30,12 @@ class PaypalPlus extends PaypalApi
         $request = $this->createPayment($objOrder);
 
         if ($request instanceof Response) {
-            $responseCode = (int) $request->getStatusCode();
-            $responseData = $request->getBody()->getContents();
+            $responseCode  = (int) $request->getStatusCode();
+            $responseError = $request->getReasonPhrase();
+            $responseData  = $request->getBody()->getContents();
         } else {
             $responseCode = (int) $request->code;
+            $responseError = $request->error;
             $responseData = $request->response;
         }
 
@@ -51,31 +53,19 @@ class PaypalPlus extends PaypalApi
 
         \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
 
-        if ($request instanceof Response) {
-            log_message(
-                sprintf(
-                    "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
-                    $request->getStatusCode(),
-                    $request->getReasonPhrase(),
-                    $request->getBody()->getContents()
-                ),
-                'paypal.log'
-            );
-        } else {
-            log_message(
-                sprintf(
-                    "PayPal API Error! (HTTP %s %s)\n\nRequest:\n%s\n\nResponse:\n%s",
-                    $request->code,
-                    $request->error,
-                    $request->request,
-                    $request->response
-                ),
-                'paypal.log'
-            );
-        }
+        log_message(
+            sprintf(
+                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
+                $responseCode,
+                $responseError,
+                $responseData
+            ),
+            'paypal.log'
+        );
 
         $response = new RedirectResponse(Checkout::redirectToStep(Checkout::STEP_FAILED), 303);
         $response->send();
+        exit;
     }
 
     /**
