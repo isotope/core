@@ -17,6 +17,7 @@ use Haste\Http\Response\RedirectResponse;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 
 class PaypalPlus extends PaypalApi
 {
@@ -42,6 +43,10 @@ class PaypalPlus extends PaypalApi
         if (201 === $responseCode) {
             $paypalData = json_decode($responseData, true);
             $this->storePayment($objOrder, $paypalData);
+
+            $request = $this->patchPayment($objOrder, $paypalData['id']);
+
+            #dump($request->getBody()->getContents());exit;
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
@@ -93,11 +98,11 @@ class PaypalPlus extends PaypalApi
             return false;
         }
 
-        $request = $this->patchPayment($objOrder, $paypalData['id']);
+        /*$request = $this->patchPayment($objOrder, $paypalData['id']);
 
         if (200 !== $request->code) {
             return false;
-        }
+        }*/
 
         $request = $this->executePayment($paypalData['id'], \Input::get('PayerID'));
 

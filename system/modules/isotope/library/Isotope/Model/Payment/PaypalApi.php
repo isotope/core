@@ -56,6 +56,9 @@ abstract class PaypalApi extends Payment
             ];
         }
 
+        $billingAddress = $order->getBillingAddress();
+        $shippingAddress = $order->getShippingAddress();
+
         $data = [
             'intent'        => 'sale',
             'redirect_urls' => [
@@ -64,20 +67,62 @@ abstract class PaypalApi extends Payment
             ],
             'payer'         => [
                 'payment_method' => 'paypal',
+                'payer_info' => [
+                    'email'            => $billingAddress->email,
+                    #'salutation'       => $billingAddress->salutation,
+                    'first_name'       => $billingAddress->firstname,
+                    'last_name'        => $billingAddress->lastname,
+                    #'phone'            => $billingAddress->phone,
+                    #'birth_date'       => $billingAddress->dateOfBirth ? date('Y-m-d', $billingAddress->dateOfBirth) : '',
+                    'billing_address'  => [
+                        #'recipient_name' => $billingAddress->firstname . ' ' . $billingAddress->lastname,
+                        'line1'          => $billingAddress->street_1,
+                        #'line2'          => $billingAddress->street_2,
+                        'city'           => $billingAddress->city,
+                        #'state'          => $billingAddress->subdivision,
+                        #'phone'          => $billingAddress->phone,
+                        'postal_code'    => $billingAddress->postal,
+                        'country_code'   => strtoupper($billingAddress->country),
+                    ],
+                    /*'shipping_address' => [
+                        'recipient_name' => $shippingAddress->firstname . ' ' . $shippingAddress->lastname,
+                        'line1'          => $shippingAddress->street_1,
+                        #'line2'          => $shippingAddress->street_2,
+                        'city'           => $shippingAddress->city,
+                        #'state'          => $shippingAddress->subdivision,
+                        #'phone'          => $shippingAddress->phone,
+                        'postal_code'    => $shippingAddress->postal,
+                        'country_code'   => strtoupper($shippingAddress->country),
+                    ],*/
+                ]
+            ],
+            'potential_payer_info' => [
+                'billing_address'  => [
+                    #'recipient_name' => $billingAddress->firstname . ' ' . $billingAddress->lastname,
+                    'line1'          => $billingAddress->street_1,
+                    'line2'          => $billingAddress->street_2,
+                    'city'           => $billingAddress->city,
+                    'state'          => $billingAddress->subdivision,
+                    #'phone'          => $billingAddress->phone,
+                    'postal_code'    => $billingAddress->postal,
+                    'country_code'   => strtoupper($billingAddress->country),
+                ]
             ],
             'transactions'  => [
                 [
                     'amount'      => [
-                        'total'    => $order->getTotal(),
+                        'total'    => number_format($order->getTotal(), 2),
                         'currency' => $order->getCurrency(),
                     ],
-                    'description' => 'This is the payment transaction description.',
+                    #'description' => 'This is the payment transaction description.',
                     'item_list' => [
                         'items' => $items
                     ]
                 ],
             ],
         ];
+
+        log_message(print_r($data, true), 'paypal.log');
 
         return $this->sendRequest('/payments/payment', $data, 'POST');
     }
@@ -95,22 +140,17 @@ abstract class PaypalApi extends Payment
 
         $data = [
             [
-                'op'    => 'replace',
-                'path'  => '/payer/payer_info',
+                'op'    => 'add',
+                'path'  => '/transactions/0/item_list/shipping_address',
                 'value' => [
-                    'email'            => $billingAddress->email,
-                    'first_name'       => $billingAddress->firstname,
-                    'last_name'        => $billingAddress->lastname,
-                    'shipping_address' => [
-                        'recipient_name' => $shippingAddress->firstname . ' ' . $shippingAddress->lastname,
-                        'line1'          => $shippingAddress->street_1,
-                        'line2'          => $shippingAddress->street_2,
-                        'city'           => $shippingAddress->city,
-                        'state'          => $shippingAddress->subdivision,
-                        'phone'          => $shippingAddress->phone,
-                        'postal_code'    => $shippingAddress->postal,
-                        'country_code'   => $shippingAddress->country,
-                    ],
+                    'recipient_name' => $shippingAddress->firstname . ' ' . $shippingAddress->lastname,
+                    'line1'          => $shippingAddress->street_1,
+                    #'line2'          => $shippingAddress->street_2,
+                    'city'           => $shippingAddress->city,
+                    'state'          => $shippingAddress->subdivision,
+                    #'phone'          => $shippingAddress->phone,
+                    'postal_code'    => $shippingAddress->postal,
+                    'country_code'   => strtoupper($shippingAddress->country),
                 ],
             ],
         ];
