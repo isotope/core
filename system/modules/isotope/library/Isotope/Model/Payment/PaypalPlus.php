@@ -45,8 +45,14 @@ class PaypalPlus extends PaypalApi
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
-                    $response = new RedirectResponse($link['href'], 303);
-                    $response->send();
+
+                    $template = new Template('iso_payment_paypal_plus');
+                    $template->setData($this->arrData);
+                    $template->approval_url = $link['href'];
+                    $template->mode = $this->debug ? 'sandbox' : 'live';
+                    $template->country = strtoupper($objOrder->getBillingAddress()->country);
+
+                    return $template->parse();
                 }
             }
         }

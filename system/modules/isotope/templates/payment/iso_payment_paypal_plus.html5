@@ -1,0 +1,12 @@
+<div id="paypal_plus<?= $this->id ?>"></div>
+<script src="https://www.paypalobjects.com/webstatic/ppplus/ppplus.min.js" type="text/javascript"></script>
+<script type="application/javascript">
+    var ppp = PAYPAL.apps.PPP({
+        "approvalUrl": "<?= $this->approval_url ?>",
+        "placeholder": "paypal_plus<?= $this->id ?>",
+        "mode": "<?= $this->mode ?>",
+        "country": "<?= $this->country ?>",
+        "language": "<?= $GLOBALS['TL_LANGUAGE'] ?>"<?php if ($this->debug): ?>,
+        "showPuiOnSandbox": true<?php endif; ?>
+    });
+</script>
