@@ -633,8 +633,7 @@ class Frontend extends \Frontend
         /** @var \PageModel $objPage */
         global $objPage;
 
-        if ($objPage->type === 'error_404'
-            || $objPage->type === 'error_403'
+        if (!($objPage->type instanceof \PageRegular)
             || !($alias = Input::getAutoItem('product', false, true))
             || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
         ) {
