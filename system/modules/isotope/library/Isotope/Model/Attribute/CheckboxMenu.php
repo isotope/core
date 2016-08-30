@@ -66,7 +66,7 @@ class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttrib
         $options = parent::getOptionsForWidget($objProduct);
 
         // Make sure that the option value for single checkbox in backend is always "1" (#1658)
-        if (TL_MODE === 'BE' && !$this->multiple) {
+        if (!$this->isVariantOption() && !$this->isCustomerDefined() && !$this->multiple) {
             $options[0]['value'] = 1;
         }
 
