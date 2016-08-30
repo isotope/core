@@ -13,6 +13,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeProduct;
 
 
 /**
@@ -48,5 +49,27 @@ class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttrib
         } else {
             $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";
         }
+    }
+
+    /**
+     * Get options of attribute from database
+     *
+     * @param IsotopeProduct $objProduct
+     *
+     * @return array|mixed
+     *
+     * @throws \InvalidArgumentException when optionsSource=product but product is null
+     * @throws \UnexpectedValueException for unknown optionsSource
+     */
+    public function getOptionsForWidget(IsotopeProduct $objProduct = null)
+    {
+        $options = parent::getOptionsForWidget($objProduct);
+
+        // Make sure that the option value for single checkbox in backend is always "1" (#1658)
+        if (!$this->isVariantOption() && !$this->isCustomerDefined() && !$this->multiple) {
+            $options[0]['value'] = 1;
+        }
+
+        return $options;
     }
 }
