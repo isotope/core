@@ -34,6 +34,8 @@ Version 2.4.0-rc1 (2016-08-??)
 - Canonical tags generated link to unpublished pages (#1671)
 - Subdivision validation failed for certain countries (e.g. great britain) (#1678)
 - Shipping and payment method was not displayed if amount was between 0 and 1
+- Backend filter options were IDs instead of labels when using foreignKey options (#1683)
+- Product alias was not correctly generated when duplicating product (#1659)
 
 
 
