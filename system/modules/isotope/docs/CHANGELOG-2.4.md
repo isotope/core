@@ -25,6 +25,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Correctly handle tableless forms in Contao 4
 - Language files are now stored as XLIFF
 - Products on the home page no longer generates empty action attribute (#1672)
+- Remove unsupported characters from phone number in Postfinance payment method (#1662)
 
 
 ### Fixed
