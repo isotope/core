@@ -188,7 +188,7 @@ class AddressBook extends Module
         $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
         if ($intAddressId === 0) {
-            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
+            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, ['country']);
         } else {
             $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
         }

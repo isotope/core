@@ -28,6 +28,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Remove unsupported characters from phone number in Postfinance payment method (#1662)
 - Correctly handle empty cart in shipping calculator (#1697)
 - Removed remaining MooTools dependencies (#1694)
+- Pre-fill country from member for new address book entries
 
 
 ### Fixed
