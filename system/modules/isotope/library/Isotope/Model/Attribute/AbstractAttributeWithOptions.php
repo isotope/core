@@ -345,7 +345,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         $this->fe_search = false;
 
-        if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
+        if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
             $this->be_filter = false;
             $this->fe_filter = false;
         }
@@ -361,11 +361,14 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         parent::saveToDCA($arrData);
 
         if ('BE' === TL_MODE) {
-            if ($this->be_filter && \Input::get('act') == '') {
+            if ($this->be_filter
+                && \Input::get('act') == ''
+                && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+            ) {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
-            if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
+            if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 
