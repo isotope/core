@@ -27,6 +27,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Products on the home page no longer generates empty action attribute (#1672)
 - Remove unsupported characters from phone number in Postfinance payment method (#1662)
 - Correctly handle empty cart in shipping calculator (#1697)
+- Removed remaining MooTools dependencies (#1694)
 
 
 ### Fixed
