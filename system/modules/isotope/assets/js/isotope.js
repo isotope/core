@@ -111,6 +111,21 @@
             jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
 
             return false;
+        },
+
+        checkoutButton: function (form) {
+            addEventListener(form, 'submit', function () {
+                try {
+                    document.getElementsByName('nextStep')[0].disabled = true;
+                } catch (e) {}
+                try {
+                    document.getElementsByName('previousStep')[0].disabled = true;
+                } catch (e) {}
+
+                setTimeout(function () {
+                    window.location.reload()
+                }, 30000);
+            });
         }
     };
 
