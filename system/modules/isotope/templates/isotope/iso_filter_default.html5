@@ -66,27 +66,7 @@ $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isoto
 ?>
 <script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js'); ?>"></script>
 <script>
-window.addEvent('domready', function() {
-    var requested = false;
-    var searchField = document.id('ctrl_keywords_<?php echo $this->id; ?>').addEvent('keyup', function(e) {
-        if (requested)
-            return false;
-
-        requested = true;
-
-        new Request.JSON({
-            'url': '<?php echo \Environment::get('request'); ?>',
-            'method': 'get',
-            'data': {
-                'iso_autocomplete': '<?php echo $this->id; ?>'
-            },
-            onComplete: function(json) {
-                awesomplete.list = json;
-            }
-        }).send();
-    });
-    var awesomplete = new Awesomplete(searchField);
-});
+    Isotope.initAwesomplete(<?= $this->id ?>, document.getElementById('ctrl_keywords_<?php echo $this->id; ?>'));
 </script>
 <?php endif; ?>
 
