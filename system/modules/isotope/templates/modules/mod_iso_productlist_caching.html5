@@ -9,18 +9,25 @@
 </noscript>
 
 <script>
-window.addEvent('domready', function() {
-    Isotope.displayBox('<?php echo $this->message; ?>')
-    new Request({
-        url: window.location.href,
-        method: 'get',
-        data: {
-            'buildCache': '1'
-        },
-        onComplete: function() {
-            window.location.reload();
-        }
-    }).send();
-});
+    (function() {
+        Isotope.displayBox('<?php echo $this->message; ?>');
+
+        var url = window.location.href + (document.location.search ? '&' : '?') + '&buildCache=1',
+            xhr = new XMLHttpRequest();
+
+        xhr.open('GET', encodeURI(url));
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            Isotope.hideBox();
+            if (xhr.status === 200) {
+                document.body.innerHTML = xhr.responseText;
+            } else {
+                window.location.href = url;
+            }
+        };
+
+        xhr.send();
+    })();
 </script>
 <?php $this->endblock(); ?>
