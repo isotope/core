@@ -41,13 +41,13 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         if (($minWeight = Weight::createFromTimePeriod($objRule->minWeight)) !== null
             && $objScale->isLessThan($minWeight)
         ) {
-            return false;
+            return null;
         }
 
         if (($maxWeight = Weight::createFromTimePeriod($objRule->maxWeight)) !== null
             && $objScale->isMoreThan($maxWeight)
         ) {
-            return false;
+            return null;
         }
 
         $arrCollectionItems = $objCollection->getItems();
