@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\Payment;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -46,21 +48,7 @@ class Paypal extends Postsale
             return;
         }
 
-        $objRequest = new \Request();
-        $objRequest->send(
-            'https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate',
-            file_get_contents('php://input'),
-            'post'
-        );
-
-        if ($objRequest->hasError()) {
-            \System::log('PayPal IPN: Request Error (' . $objRequest->error . ')', __METHOD__, TL_ERROR);
-            $response = new Response('', 500);
-            $response->send();
-        }
-
-        if ('VERIFIED' !== $objRequest->response) {
-            \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
+        if (!$this->validateInput()) {
             return;
         }
 
@@ -249,5 +237,59 @@ class Paypal extends Postsale
 </div>';
 
         return $strBuffer;
+    }
+
+    /**
+     * Validate PayPal request data by sending it back to the PayPal servers.
+     *
+     * @return bool
+     */
+    private function validateInput()
+    {
+        try {
+            $body = file_get_contents('php://input');
+            $url  = 'https://ipnpb.'.($this->debug ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
+
+            if (class_exists('GuzzleHttp\Client')) {
+                $request = new Client(
+                    [
+                        RequestOptions::TIMEOUT         => 5,
+                        RequestOptions::CONNECT_TIMEOUT => 5,
+                        RequestOptions::HTTP_ERRORS     => false,
+                    ]
+                );
+
+                $response = $request->post($url, [RequestOptions::BODY => $body]);
+
+                if ($response->getStatusCode() != 200) {
+                    throw new \RuntimeException($response->getReasonPhrase());
+                }
+
+                if ('VERIFIED' !== $response->getBody()->getContents()) {
+                    throw new \UnexpectedValueException($response->getBody()->getContents());
+                }
+
+            } else {
+                $request = new \RequestExtended();
+                $request->send($url, $body, 'post');
+
+                if ($request->hasError()) {
+                    throw new \RuntimeException($request->error);
+                }
+
+                if ('VERIFIED' !== $request->response) {
+                    throw new \UnexpectedValueException($request->response);
+                }
+            }
+        } catch (\UnexpectedValueException $e) {
+            \System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+            return false;
+        } catch (\RuntimeException $e) {
+            \System::log('PayPal IPN: Request Error (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+            $response = new Response('', 500);
+            $response->send();
+        }
+
+        return true;
     }
 }

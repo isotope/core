@@ -29,6 +29,8 @@ Version 2.4.0-rc1 (2016-08-??)
 - Correctly handle empty cart in shipping calculator (#1697)
 - Removed remaining MooTools dependencies (#1694)
 - Pre-fill country from member for new address book entries
+- Use Guzzle or HttpRequestExtended to support HTTP/1.1 for PayPal
+- Use ipnpb.paypal.com URL if request uses TLS (#1657)
 
 
 ### Fixed
