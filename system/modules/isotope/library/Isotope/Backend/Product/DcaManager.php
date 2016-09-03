@@ -232,6 +232,10 @@ class DcaManager extends \Backend
      */
     public function addBreadcrumb()
     {
+        if (\Input::get('table') === 'tl_iso_product') {
+            return;
+        }
+
         $strBreadcrumb = Breadcrumb::generate(\Session::getInstance()->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
