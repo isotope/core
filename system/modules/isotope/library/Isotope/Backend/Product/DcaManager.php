@@ -232,7 +232,8 @@ class DcaManager extends \Backend
      */
     public function addBreadcrumb()
     {
-        if (\Input::get('table') === 'tl_iso_product') {
+        // Avoid the page node trap (#1701)
+        if (defined('TL_SCRIPT') && TL_SCRIPT === 'contao/page.php') {
             return;
         }
 
