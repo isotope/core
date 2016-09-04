@@ -67,9 +67,10 @@ class Inline extends Standard
     {
         parent::addImageToTemplate($objTemplate, $strType, $arrFile, $blnWatermark);
 
-        $objTemplate->uid = spl_object_hash($this);
+        // Backwards compatibility
+        $objTemplate->uid = $this->getName();
 
-        if ($strType == 'gallery') {
+        if ('gallery' === $strType) {
             $image = $this->getImageForType('main', $arrFile, $blnWatermark);
 
             $objTemplate->link = $image['main'];

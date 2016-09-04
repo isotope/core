@@ -79,6 +79,7 @@ abstract class AbstractProductCollection extends Module
         $collection->addToTemplate(
             $objTemplate,
             array(
+                'module'  => $this,
                 'gallery' => $this->iso_gallery,
                 'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
             )

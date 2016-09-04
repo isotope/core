@@ -264,6 +264,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
+        $objTemplate->name       = $this->getName();
         $objTemplate->product_id = $this->product_id;
         $objTemplate->file       = $arrFile;
         $objTemplate->src        = $arrFile[$strType];

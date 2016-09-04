@@ -42,6 +42,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Shipping and payment method was not displayed if amount was between 0 and 1
 - Backend filter options were IDs instead of labels when using foreignKey options (#1683)
 - Product alias was not correctly generated when duplicating product (#1659)
+- Inline and ElevateZoom gallery only worked once per page due to duplicate CSS ID (#1674)
 
 
 
