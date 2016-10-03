@@ -20,7 +20,7 @@
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3",
         "terminal42/dcawizard": "~2.3",
-        "codefog/contao-haste": "~4.13",
+        "codefog/contao-haste": "~4.14",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",

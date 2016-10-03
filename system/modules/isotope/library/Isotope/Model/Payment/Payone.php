@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
@@ -142,9 +143,9 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = specialchars(
-                \StringUtil::restoreBasicEntities($objItem->getName() . $strConfig),
-                true
+            $arrData['de[' . $i . ']']   = StringUtil::convertToText(
+                $objItem->getName() . $strConfig,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
             );
         }
 
@@ -157,9 +158,11 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
             $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
             $arrData['no[' . $i . ']']   = '1';
-            $arrData['de[' . $i . ']']   = $objSurcharge->label;
+            $arrData['de[' . $i . ']']   = StringUtil::convertToText(
+                $objSurcharge->label,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
         }
-
 
         ksort($arrData);
         // Do not urlencode values because Payone does not properly decode POST values (whatever...)

@@ -1,32 +1,32 @@
-<h2><?php echo $this->headline; ?></h2>
-<p class="message"><?php echo $this->message; ?></p>
-<form id="worldpay<?php echo $this->id; ?>" action="<?php echo $this->action; ?>" method="post">
-<input type="hidden" name="instId" value="<?php echo $this->instId; ?>">
-<input type="hidden" name="cartId" value="<?php echo $this->cartId; ?>">
-<input type="hidden" name="amount" value="<?php echo $this->amount; ?>">
-<input type="hidden" name="currency" value="<?php echo $this->currency; ?>">
-<input type="hidden" name="desc" value="<?php echo $this->description; ?>">
+<h2><?= $this->headline ?></h2>
+<p class="message"><?= $this->message ?></p>
+<form id="worldpay<?= $this->id ?>" action="<?= $this->action ?>" method="post">
+<input type="hidden" name="instId" value="<?= $this->instId ?>">
+<input type="hidden" name="cartId" value="<?= $this->cartId ?>">
+<input type="hidden" name="amount" value="<?= $this->amount ?>">
+<input type="hidden" name="currency" value="<?= $this->currency ?>">
+<input type="hidden" name="desc" value="<?= specialchars($this->description) ?>">
 <input type="hidden" name="fixContact" value="1">
 <input type="hidden" name="hideContact" value="1">
-<input type="hidden" name="name" value="<?php echo $this->name; ?>">
-<input type="hidden" name="address1" value="<?php echo $this->address1; ?>">
-<input type="hidden" name="address2" value="<?php echo $this->address2; ?>">
-<input type="hidden" name="address3" value="<?php echo $this->address3; ?>">
-<input type="hidden" name="town" value="<?php echo $this->town; ?>">
-<input type="hidden" name="region" value="<?php echo $this->region; ?>">
-<input type="hidden" name="postcode" value="<?php echo $this->postcode; ?>">
-<input type="hidden" name="country" value="<?php echo $this->country; ?>">
-<input type="hidden" name="tel" value="<?php echo $this->tel; ?>">
-<input type="hidden" name="email" value="<?php echo $this->email; ?>">
-<input type="hidden" name="lang" value="<?php echo $GLOBALS['TL_LANGUAGE']; ?>">
-<input type="hidden" name="testMode" value="<?php echo ($this->debug ? '100' : '0'); ?>">
-<input type="hidden" name="signature" value="<?php echo $this->signature; ?>">
-<input type="hidden" name="M_pageId" value="<?php echo $this->pageId; ?>">
+<input type="hidden" name="name" value="<?= specialchars($this->name) ?>">
+<input type="hidden" name="address1" value="<?= specialchars($this->address1) ?>">
+<input type="hidden" name="address2" value="<?= specialchars($this->address2) ?>">
+<input type="hidden" name="address3" value="<?= specialchars($this->address3) ?>">
+<input type="hidden" name="town" value="<?= specialchars($this->town) ?>">
+<input type="hidden" name="region" value="<?= specialchars($this->region) ?>">
+<input type="hidden" name="postcode" value="<?= specialchars($this->postcode) ?>">
+<input type="hidden" name="country" value="<?= $this->country ?>">
+<input type="hidden" name="tel" value="<?= specialchars($this->tel) ?>">
+<input type="hidden" name="email" value="<?= specialchars($this->email) ?>">
+<input type="hidden" name="lang" value="<?= $GLOBALS['TL_LANGUAGE'] ?>">
+<input type="hidden" name="testMode" value="<?= ($this->debug ? '100' : '0') ?>">
+<input type="hidden" name="signature" value="<?= $this->signature ?>">
+<input type="hidden" name="M_pageId" value="<?= $this->pageId ?>">
 <noscript>
-<p><?php echo $this->noscript; ?></p>
-<input type="submit" value="<?php echo $this->slabel; ?>">
+<p><?= $this->noscript ?></p>
+<input type="submit" value="<?= $this->slabel ?>">
 </noscript>
 </form>
 <script>
-document.getElementById('worldpay<?php echo $this->id; ?>').submit();
+document.getElementById('worldpay<?= $this->id ?>').submit();
 </script>

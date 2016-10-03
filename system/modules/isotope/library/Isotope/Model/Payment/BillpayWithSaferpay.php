@@ -12,9 +12,11 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Form\Form;
+use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
@@ -45,9 +47,8 @@ class BillpayWithSaferpay extends Saferpay
      * Automatically add Billpay conditions to checkout form
      *
      * @param Form    $objForm
-     * @param \Module $objModule
      */
-    public static function addOrderCondition(Form $objForm, \Module $objModule)
+    public static function addOrderCondition(Form $objForm)
     {
         if (Isotope::getCart()->hasPayment() && Isotope::getCart()->getPaymentMethod() instanceof BillpayWithSaferpay) {
 
@@ -73,9 +74,8 @@ class BillpayWithSaferpay extends Saferpay
      *
      * @param \Template                $objTemplate
      * @param IsotopeProductCollection $objCollection
-     * @param IsotopeDocument          $objDocument
      */
-    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection, IsotopeDocument $objDocument)
+    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection)
     {
         $objTemplate->billpay = false;
 
@@ -117,30 +117,14 @@ class BillpayWithSaferpay extends Saferpay
 
         // Billing address
         $objBillingAddress = $objOrder->getBillingAddress();
-        $arrData['GENDER'] = (string) substr((string) $objBillingAddress->gender, 0, 1);
-        $arrData['FIRSTNAME'] = (string) $objBillingAddress->firstname;
-        $arrData['LASTNAME'] = (string) $objBillingAddress->lastname;
-        $arrData['STREET'] = (string) $objBillingAddress->street_1;
-        $arrData['ADDRESSADDITION'] = (string) $objBillingAddress->street_2;
-        $arrData['ZIP'] = (string) $objBillingAddress->postal;
-        $arrData['CITY'] = (string) $objBillingAddress->city;
-        $arrData['COUNTRY'] = strtoupper((string) $objBillingAddress->country);
-        $arrData['EMAIL'] = (string) $objBillingAddress->email;
-        $arrData['PHONE'] = (string) $objBillingAddress->phone;
+        $this->addAddress($arrData, $objBillingAddress);
+        $arrData['EMAIL']       = (string) $objBillingAddress->email;
         $arrData['DATEOFBIRTH'] = ($objBillingAddress->dateOfBirth ? date('Ymd', $objBillingAddress->dateOfBirth) : '');
-        $arrData['COMPANY'] = (string) $objBillingAddress->company;
+        $arrData['COMPANY']     = (string) $objBillingAddress->company;
 
         // Shipping address
         $objShippingAddress = $objOrder->getShippingAddress();
-        $arrData['DELIVERY_GENDER'] = (string) substr((string) $objShippingAddress->gender, 0, 1);
-        $arrData['DELIVERY_FIRSTNAME'] = (string) $objShippingAddress->firstname;
-        $arrData['DELIVERY_LASTNAME'] = (string) $objShippingAddress->lastname;
-        $arrData['DELIVERY_STREET'] = (string) $objShippingAddress->street_1;
-        $arrData['DELIVERY_ADDRESSADDITION'] = (string) $objShippingAddress->street_2;
-        $arrData['DELIVERY_ZIP'] = (string) $objShippingAddress->postal;
-        $arrData['DELIVERY_CITY'] = (string) $objShippingAddress->city;
-        $arrData['DELIVERY_COUNTRY'] = strtoupper((string) $objShippingAddress->country);
-        $arrData['DELIVERY_PHONE'] = (string) $objShippingAddress->phone;
+        $this->addAddress($arrData, $objShippingAddress, 'DELIVERY_');
 
         // Cart items and total
         $arrData['BASKETDATA'] = $this->getCollectionItemsAsXML($objOrder);
@@ -176,7 +160,10 @@ class BillpayWithSaferpay extends Saferpay
             $article->appendChild($quantity);
 
             $name = $xml->createAttribute('articlename');
-            $name->value = $objItem->getName();
+            $name->value = StringUtil::convertToText(
+                $objItem->getName(),
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
             $article->appendChild($name);
 
             $price = $xml->createAttribute('articleprice');
@@ -201,7 +188,10 @@ class BillpayWithSaferpay extends Saferpay
                 $article->appendChild($quantity);
 
                 $name = $xml->createAttribute('articlename');
-                $name->value = $objSurcharge->label;
+                $name->value = StringUtil::convertToText(
+                    $objSurcharge->label,
+                    StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                );
                 $article->appendChild($name);
 
                 $price = $xml->createAttribute('articleprice');
@@ -246,7 +236,10 @@ class BillpayWithSaferpay extends Saferpay
 
         if ($intShippingPrice != 0 || $intShippingPriceGross != 0) {
             $shippingName = $xml->createAttribute('shippingname');
-            $shippingName->value = $strShippingName;
+            $shippingName->value = StringUtil::convertToText(
+                $strShippingName,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
             $total->appendChild($shippingName);
 
             $shippingPrice = $xml->createAttribute('shippingprice');
@@ -283,5 +276,18 @@ class BillpayWithSaferpay extends Saferpay
         $xml->appendChild($total);
 
         return $xml->saveXML($xml->documentElement);
+    }
+
+    private function addAddress(&$data, Address $address, $prefix = '')
+    {
+        $data[$prefix . 'GENDER']          = substr((string) $address->gender, 0, 1);
+        $data[$prefix . 'FIRSTNAME']       = (string) $address->firstname;
+        $data[$prefix . 'LASTNAME']        = (string) $address->lastname;
+        $data[$prefix . 'STREET']          = (string) $address->street_1;
+        $data[$prefix . 'ADDRESSADDITION'] = (string) $address->street_2;
+        $data[$prefix . 'ZIP']             = (string) $address->postal;
+        $data[$prefix . 'CITY']            = (string) $address->city;
+        $data[$prefix . 'COUNTRY']         = strtoupper((string) $address->country);
+        $data[$prefix . 'PHONE']           = (string) $address->phone;
     }
 }

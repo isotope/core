@@ -11,10 +11,9 @@
 
 namespace Isotope\Model\Payment;
 
+use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
-use Isotope\Model\Payment;
-
 
 /**
  * Handle Postfinance (Swiss Post) payments
@@ -188,16 +187,23 @@ class Postfinance extends PSP
             $objPrice = $objItem->getProduct()->getPrice();
             $fltVat = Isotope::roundPrice((100 / $objPrice->getNetAmount() * $objPrice->getGrossAmount()) - 100, false);
 
-            $arrOrder['ITEMID' . $i]        = $objItem->id;
-            $arrOrder['ITEMNAME' . $i]      = substr(\StringUtil::restoreBasicEntities(
-                $objItem->getName()
-            ), 40);
-            $arrOrder['ITEMPRICE' . $i]     = $objPrice->getNetAmount();
-            $arrOrder['ITEMQUANT' . $i]     = $objItem->quantity;
-            $arrOrder['ITEMVATCODE' . $i]   = $fltVat . '%';
-            $arrOrder['ITEMVAT' . $i]       = Isotope::roundPrice($objPrice->getGrossAmount() - $objPrice->getNetAmount(), false);
-            $arrOrder['FACEXCL' . $i]       = $objPrice->getNetAmount();
-            $arrOrder['FACTOTAL' . $i]      = $objPrice->getGrossAmount();
+            $arrOrder['ITEMID' . $i]   = $objItem->id;
+            $arrOrder['ITEMNAME' . $i] = substr(
+                StringUtil::convertToText(
+                    $objItem->getName(),
+                    StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                ),
+                40
+            );
+            $arrOrder['ITEMPRICE' . $i]   = $objPrice->getNetAmount();
+            $arrOrder['ITEMQUANT' . $i]   = $objItem->quantity;
+            $arrOrder['ITEMVATCODE' . $i] = $fltVat . '%';
+            $arrOrder['ITEMVAT' . $i]     = Isotope::roundPrice(
+                $objPrice->getGrossAmount() - $objPrice->getNetAmount(),
+                false
+            );
+            $arrOrder['FACEXCL' . $i]     = $objPrice->getNetAmount();
+            $arrOrder['FACTOTAL' . $i]    = $objPrice->getGrossAmount();
 
             ++$i;
         }

@@ -1,14 +1,14 @@
-<h2><?php echo $this->headline; ?></h2>
-<p class="message"><?php echo $this->message; ?></p>
-<form id="psp<?php echo $this->id; ?>" action="https://e-payment.postfinance.ch/ncol/<?php echo ($this->debug ? 'test' : 'prod'); ?>/orderstandard_utf8.asp" method="post">
+<h2><?= $this->headline ?></h2>
+<p class="message"><?= $this->message ?></p>
+<form id="psp<?= $this->id ?>" action="https://e-payment.postfinance.ch/ncol/<?= ($this->debug ? 'test' : 'prod') ?>/orderstandard_utf8.asp" method="post">
 <?php foreach( $this->params as $k => $v ): ?>
-<input type="hidden" name="<?php echo $k; ?>" value="<?php echo $v; ?>">
+<input type="hidden" name="<?= $k ?>" value="<?= specialchars($v) ?>">
 <?php endforeach; ?>
 <noscript>
-<p><?php echo $this->noscript; ?></p>
-<input type="submit" value="<?php echo $this->slabel; ?>">
+<p><?= $this->noscript ?></p>
+<input type="submit" value="<?= specialchars($this->slabel) ?>">
 </noscript>
 </form>
 <script>
-document.getElementById('psp<?php echo $this->id; ?>').submit();
+document.getElementById('psp<?= $this->id ?>').submit();
 </script>
