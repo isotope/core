@@ -33,7 +33,7 @@ class Automator extends \Controller
     {
         $t = Cart::getTable();
         $objCarts = Cart::findBy(
-            ["($t.member=0 AND $t.tstamp<?) OR $t.member NOT IN (SELECT id FROM tl_member)"],
+            ["($t.member=0 AND $t.tstamp<?) OR ($t.member > 0 AND $t.member NOT IN (SELECT id FROM tl_member))"],
             [time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']]
         );
 
