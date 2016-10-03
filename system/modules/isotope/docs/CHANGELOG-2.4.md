@@ -32,6 +32,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Use Guzzle or HttpRequestExtended to support HTTP/1.1 for PayPal
 - Use ipnpb.paypal.com URL for PayPal data confirmation (#1657)
 - Do not display product in breadcrumb for 404 and 403 page types (#1690)
+- Correctly handle single checkbox options in the backend (#1658)
 
 
 ### Fixed

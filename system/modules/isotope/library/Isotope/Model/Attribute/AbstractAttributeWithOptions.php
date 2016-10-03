@@ -66,6 +66,10 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         switch ($this->optionsSource) {
 
+            // Single checkbox in the backend does not have options
+            case IsotopeAttributeWithOptions::SOURCE_NAME:
+                return [['value' => 1, 'label' => $this->name]];
+
             // @deprecated remove in Isotope 3.0
             case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $options = deserialize($this->options);
@@ -178,9 +182,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     );
                 }
 
-                $productId = $objProduct->id;
+                $productId = $objProduct->getId();
 
-                if ($objProduct->isVariant() && !in_array($this->field_name, $objProduct->getVariantAttributes())) {
+                if ($objProduct->isVariant()
+                    && !in_array($this->field_name, $objProduct->getVariantAttributes(), true)
+                ) {
                     $productId = $objProduct->getProductId();
                 }
 
@@ -215,6 +221,19 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         switch ($this->optionsSource) {
 
+            case IsotopeAttributeWithOptions::SOURCE_NAME:
+                $arrOptions = [];
+
+                if (array_key_exists('1', $arrValues)) {
+                    $arrOptions['1'] = $GLOBALS['TL_LANG']['MSC']['yes'];
+                }
+
+                if (array_key_exists('', $arrValues)) {
+                    $arrOptions[''] = $GLOBALS['TL_LANG']['MSC']['no'];
+                }
+
+                return $arrOptions;
+
             // @deprecated remove in Isotope 3.0
             case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $arrOptions = array();
@@ -230,7 +249,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
 
                 return $arrOptions;
-                break;
 
             case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                 list($table, $field) = explode('.', $this->foreignKey, 2);
@@ -241,7 +259,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 ");
 
                 return $result->fetchAllAssoc();
-                break;
 
             case IsotopeAttributeWithOptions::SOURCE_TABLE:
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
@@ -249,7 +266,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $objOptions = AttributeOption::findPublishedByIds($arrValues);
 
                 return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
-                break;
 
             default:
                 throw new \UnexpectedValueException(
