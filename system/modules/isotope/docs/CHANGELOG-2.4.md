@@ -34,6 +34,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Do not display product in breadcrumb for 404 and 403 page types (#1690)
 - Correctly handle single checkbox options in the backend (#1658)
 - Sanitize product names and address data for payment providers (#1256)
+- Placeholder for text attributes is now translatable (#1707)
 
 
 ### Fixed
