@@ -30,7 +30,8 @@ Version 2.4.0-rc1 (2016-08-??)
 - Removed remaining MooTools dependencies (#1694)
 - Pre-fill country from member for new address book entries
 - Use Guzzle or HttpRequestExtended to support HTTP/1.1 for PayPal
-- Use ipnpb.paypal.com URL if request uses TLS (#1657)
+- Use ipnpb.paypal.com URL for PayPal data confirmation (#1657)
+- Do not display product in breadcrumb for 404 and 403 page types (#1690)
 
 
 ### Fixed
@@ -44,6 +45,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Product alias was not correctly generated when duplicating product (#1659)
 - Inline and ElevateZoom gallery only worked once per page due to duplicate CSS ID (#1674)
 - Guest carts were deleted every day (#1709)
+- Page picker was filtered if the product category filter is active (#1701)
 
 
 
