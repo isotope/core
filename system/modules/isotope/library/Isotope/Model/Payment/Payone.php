@@ -142,10 +142,7 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
             $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
             $arrData['no[' . $i . ']']   = $objItem->quantity;
-            $arrData['de[' . $i . ']']   = specialchars(
-                \StringUtil::restoreBasicEntities($objItem->getName() . $strConfig),
-                true
-            );
+            $arrData['de[' . $i . ']']   = $this->escapeParameterValue($objItem->getName().$strConfig);
         }
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {
@@ -157,9 +154,8 @@ class Payone extends Postsale
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
             $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
             $arrData['no[' . $i . ']']   = '1';
-            $arrData['de[' . $i . ']']   = $objSurcharge->label;
+            $arrData['de[' . $i . ']']   = $this->escapeParameterValue($objSurcharge->label);
         }
-
 
         ksort($arrData);
         // Do not urlencode values because Payone does not properly decode POST values (whatever...)
@@ -177,5 +173,23 @@ class Payone extends Postsale
         $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
+    }
+
+    /**
+     * Escape the parameter value so it's correctly handled by Payone
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function escapeParameterValue($value)
+    {
+        $value = strip_insert_tags(strip_tags($value));
+        $value = \StringUtil::restoreBasicEntities($value);
+        $value = html_entity_decode($value);
+        $value = str_replace("\xC2\xA0", ' ', $value); // strip &nbsp;
+        $value = str_replace('"', '\'', $value); // replace double quotes with single quotes
+
+        return $value;
     }
 }
