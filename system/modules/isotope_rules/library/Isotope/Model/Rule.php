@@ -24,6 +24,7 @@ use Isotope\Translation;
  * @property string $discount
  * @property int    $tax_class
  * @property string $applyTo
+ * @property string $rounding
  * @property bool   $enableCode
  * @property string $code
  * @property int    $limitPerMember
@@ -52,6 +53,9 @@ use Isotope\Translation;
  */
 class Rule extends \Model
 {
+    const ROUND_NORMAL = 'normal';
+    const ROUND_UP = 'up';
+    const ROUND_DOWN = 'down';
 
     /**
      * Name of the current table

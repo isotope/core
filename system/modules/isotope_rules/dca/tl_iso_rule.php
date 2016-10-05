@@ -105,9 +105,9 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
     (
         '__selector__'                      => array('type', 'applyTo', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
         'default'                           => '{basic_legend},type',
-        'product'                           => '{basic_legend},type,name,discount;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cart'                              => '{basic_legend},type,applyTo,name,label,discount;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'product'                           => '{basic_legend},type,name,discount,rounding;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'cart'                              => '{basic_legend},type,applyTo,name,label,discount,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
     ),
 
     // Subpalettes
@@ -196,6 +196,16 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'options'                       => array('products', 'items', 'subtotal'),
             'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['applyTo'],
             'eval'                          => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "varchar(8) NOT NULL default ''",
+        ),
+        'rounding' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['rounding'],
+            'exclude'                       => true,
+            'inputType'                     => 'radio',
+            'options'                       => array('normal', 'down', 'up'),
+            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['rounding'],
+            'eval'                          => array('mandatory'=>true, 'tl_class'=>'clr'),
             'sql'                           => "varchar(8) NOT NULL default ''",
         ),
         'enableCode' => array

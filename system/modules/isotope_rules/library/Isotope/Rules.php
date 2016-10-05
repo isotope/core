@@ -111,7 +111,26 @@ class Rules extends \Controller
                     if ($objRules->current()->isPercentage()) {
                         $fltDiscount = 100 + $objRules->current()->getPercentage();
                         $fltDiscount = round($fltPrice - ($fltPrice / 100 * $fltDiscount), 10);
-                        $fltDiscount = $fltDiscount > 0 ? (floor($fltDiscount * 100) / 100) : (ceil($fltDiscount * 100) / 100);
+
+                        $precision = Isotope::getConfig()->priceRoundPrecision;
+                        $factor    = pow(10, 2);
+                        $up        = $fltDiscount > 0 ? 'ceil' : 'floor';
+                        $down      = $fltDiscount > 0 ? 'floor' : 'ceil';
+
+                        switch ($objRules->rounding) {
+                            case Rule::ROUND_NORMAL:
+                                $fltDiscount = round($fltDiscount, $precision);
+                                break;
+
+                            case Rule::ROUND_UP:
+                                $fltDiscount = $up($fltDiscount * $factor) / $factor;
+                                break;
+
+                            case Rule::ROUND_DOWN:
+                            default:
+                                $fltDiscount = $down($fltDiscount * $factor) / $factor;
+                                break;
+                        }
 
                         $fltPrice = $fltPrice - $fltDiscount;
                     } else {

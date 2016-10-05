@@ -14,6 +14,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Added support for ChangeLanguage v3
 - Can skip billing address to always use the member address
 - Can skip shipping address to always use billing address
+- Rule discount can now be configured to always round up, down or commercially
 
 
 ### Improved
