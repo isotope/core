@@ -50,6 +50,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Inline and ElevateZoom gallery only worked once per page due to duplicate CSS ID (#1674)
 - Guest carts were deleted every day (#1709)
 - Page picker was filtered if the product category filter is active (#1701)
+- Rounding issues in product quantity summary and net price on gross shop config
 
 
 

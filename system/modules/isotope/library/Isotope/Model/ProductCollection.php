@@ -26,6 +26,7 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
+use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Model\Registry;
 
 /**
@@ -736,7 +737,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $arrItems  = $this->getItems();
 
             foreach ($arrItems as $objItem) {
-                $varPrice = $objItem->getPrice() * $objItem->quantity;
+                $varPrice = $objItem->getTotalPrice();
 
                 if ($varPrice !== null) {
                     $fltAmount += $varPrice;
@@ -765,7 +766,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $arrItems  = $this->getItems();
 
             foreach ($arrItems as $objItem) {
-                $varPrice = $objItem->getTaxFreePrice() * $objItem->quantity;
+                $varPrice = $objItem->getTaxFreeTotalPrice();
 
                 if ($varPrice !== null) {
                     $fltAmount += $varPrice;
@@ -817,16 +818,29 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         }
 
         if (!isset($this->arrCache['taxFreeTotal'])) {
-            $fltAmount     = $this->getTaxFreeSubtotal();
             $arrSurcharges = $this->getSurcharges();
 
-            foreach ($arrSurcharges as $objSurcharge) {
-                if ($objSurcharge->addToTotal) {
-                    $fltAmount += $objSurcharge->tax_free_total_price;
+            if (Config::PRICE_DISPLAY_GROSS === $this->getConfig()->priceDisplay) {
+                $fltAmount = $this->getTotal();
+
+                foreach ($arrSurcharges as $objSurcharge) {
+                    if ($objSurcharge instanceof Tax) {
+                        $fltAmount -= $objSurcharge->total_price;
+                    } else {
+                        $fltAmount += $objSurcharge->total_price;
+                    }
+                }
+            } else {
+                $fltAmount = $this->getTaxFreeSubtotal();
+
+                foreach ($arrSurcharges as $objSurcharge) {
+                    if ($objSurcharge->addToTotal) {
+                        $fltAmount += $objSurcharge->tax_free_total_price;
+                    }
                 }
             }
 
-            $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? $fltAmount : 0;
+            $this->arrCache['taxFreeTotal'] = $fltAmount > 0 ? Isotope::roundPrice($fltAmount) : 0;
         }
 
         return $this->arrCache['taxFreeTotal'];
@@ -1273,7 +1287,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     {
         if (null === $this->arrSurcharges) {
             if ($this->isLocked()) {
-                $this->arrSurcharges = array();
+                $this->arrSurcharges = [];
 
                 if (($objSurcharges = ProductCollectionSurcharge::findBy('pid', $this->id)) !== null) {
                     $this->arrSurcharges = $objSurcharges->getModels();

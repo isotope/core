@@ -274,8 +274,6 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
         }
 
-        $arrTaxes     = array();
-
         static::addTaxesForItems($arrTaxes, $objCollection, $arrPreTax);
 
         static::addTaxesForSurcharges(

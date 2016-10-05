@@ -267,7 +267,7 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return $fltPrice;
+        return static::roundPrice($fltPrice);
     }
 
     /**
@@ -282,7 +282,7 @@ class Isotope extends \Controller
     {
         $objConfig = static::getConfig();
 
-        if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
+        if ($blnApplyRoundingIncrement && '0.05' === $objConfig->priceRoundIncrement) {
             $fltValue = round(20 * $fltValue) / 20;
         }
 
