@@ -80,7 +80,7 @@ class Rules extends \Controller
      */
     public function calculatePrice($fltPrice, $objSource, $strField, $intTaxClass)
     {
-        if ($objSource instanceof IsotopePrice && ($strField == 'price' || $strField == 'low_price' || $strField == 'net_price' || $strField == 'gross_price')) {
+        if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
 
             // @todo try not to use getRelated() because it loads variants
             $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
@@ -89,9 +89,9 @@ class Rules extends \Controller
                 while ($objRules->next()) {
                     // Check cart quantity
                     if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0) {
-                        if ($objRules->quantityMode == 'cart_products') {
+                        if ('cart_products' === $objRules->quantityMode) {
                             $intTotal = Isotope::getCart()->countItems();
-                        } elseif ($objRules->quantityMode == 'cart_items') {
+                        } elseif ('cart_items' === $objRules->quantityMode) {
                             $intTotal = Isotope::getCart()->sumItemsQuantity();
                         } else {
                             $objItem = Isotope::getCart()->getItemForProduct($objSource->getRelated('pid'));
@@ -104,7 +104,7 @@ class Rules extends \Controller
                     }
 
                     // We're unable to apply variant price rules to low_price (see #3189)
-                    if ($strField == 'low_price' && $objRules->productRestrictions == 'variants') {
+                    if ('low_price' === $strField && 'variants' === $objRules->productRestrictions) {
                         continue;
                     }
 
@@ -213,7 +213,7 @@ class Rules extends \Controller
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
             } else {
 
-                if (in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons))) {
+                if (in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons), true)) {
                     $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
                 } else {
                     $arrCoupons[] = $objRule->code;

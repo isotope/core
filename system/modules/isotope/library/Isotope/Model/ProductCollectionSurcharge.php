@@ -249,8 +249,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     public static function findForCollection(IsotopeProductCollection $objCollection)
     {
-        $arrPreTax  = array();
-        $arrPostTax = array();
+        $arrPreTax  = [];
+        $arrPostTax = [];
+        $arrTaxes   = [];
 
         // !HOOK: get collection surcharges
         if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
@@ -280,10 +281,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         static::addTaxesForSurcharges(
             $arrTaxes,
             $arrPreTax,
-            array(
+            [
                 'billing'  => $objCollection->getBillingAddress(),
-                'shipping' => $objCollection->getShippingAddress()
-            )
+                'shipping' => $objCollection->getShippingAddress(),
+            ]
         );
 
         return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
@@ -395,7 +396,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 continue;
             }
 
-            $arrTaxIds = array();
+            $arrTaxIds = [];
             $fltPrice  = $objItem->getTotalPrice();
 
             /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
