@@ -106,7 +106,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
                 $intStatus = $objConfig->orderstatus_error;
                 break;
 
-            case 0:  // Ungültig / Unvollständig
+            case 0:  // Ungültig / Unvollständig
             case 1:  // Zahlungsvorgang abgebrochen
             case 2:  // Genehmigung verweigert
             case 4:  // Gespeichert
@@ -119,7 +119,22 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
-        
+ 
+        // HOOK: to be able to check other PSP Feedback Parameters
+        if (isset($GLOBALS['ISO_HOOKS']['processPostsale']) && is_array($GLOBALS['ISO_HOOKS']['processPostsale']))
+        {
+            foreach ($GLOBALS['ISO_HOOKS']['processPostsale'] as $callback)
+            {
+                $objCallback = \System::importStatic($callback[0]);
+                $return = $objCallback->{$callback[1]}($objOrder,$this->getRawRequestData());
+                
+                // If return false  exit function
+                if (false === $return) {
+                    return false;
+                }
+            }
+        }
+
         $objOrder->payment_data = json_encode($this->getRawRequestData());
 
         $objOrder->updateOrderStatus($intStatus);
@@ -204,8 +219,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
     {
         $objBillingAddress = $objOrder->getBillingAddress();
 
-        return array
-        (
+        $arrParams = array(
             'PSPID'         => $this->psp_pspid,
             'ORDERID'       => $objOrder->id,
             'AMOUNT'        => round(($objOrder->getTotal() * 100)),
@@ -225,6 +239,18 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );
+        
+        // HOOK: check other PSP Parameters, like AlIAS
+        if (isset($GLOBALS['ISO_HOOKS']['preparePSPParams']) && is_array($GLOBALS['ISO_HOOKS']['preparePSPParams']))
+        {
+            foreach ($GLOBALS['ISO_HOOKS']['preparePSPParams'] as $callback)
+            {
+                $objCallback	= \System::importStatic($callback[0]);
+                $arrParams		= $objCallback->{$callback[1]}($objOrder,$objModule, $arrParams);
+            }
+        }
+
+        return $arrParams;
     }
 
     /**
