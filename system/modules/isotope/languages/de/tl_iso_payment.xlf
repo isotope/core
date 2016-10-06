@@ -322,9 +322,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.1">
         <source>Please select the hashing method configured in your Datatrans control panel.</source>
+        <target>Wählen Sie die Hashing-Methode wie sie im Datatrans Control Panel konfiguriert ist.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.md5">
         <source>MD5 (outdated)</source>
+        <target>MD5 (veraltet)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
         <source>SHA-256</source>
@@ -332,9 +334,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_convert.0">
         <source>Convert hash to binary</source>
+        <target>Hash in Binär konvertieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_convert.1">
         <source>Check here if the hash key needs to be converted to binary.</source>
+        <target>Klicken Sie hier wenn der Hash-Key in Binärdaten konvertiert werden soll.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_site_id.0">
         <source>Site Identifier</source>
@@ -658,9 +662,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.0">
         <source>User ID</source>
+        <target>Benutzer-ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.1">
         <source>Please enter your user ID.</source>
+        <target>Geben Sie ihre Benutzer-ID ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.0">
         <source>Password</source>
@@ -668,12 +674,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.1">
         <source>Please enter your user password.</source>
+        <target>Geben Sie ihr Benutzerpasswort ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_entity_id.0">
         <source>Entity/Channel ID</source>
+        <target>Entity/Channel ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_entity_id.1">
         <source>Please enter your entity or channel ID</source>
+        <target>Geben Sie ihre Entity oder Channel ID ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>

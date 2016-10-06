@@ -163,21 +163,27 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
+        <target>Bestell-Schritte überspringen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.1">
         <source>Enable individual options to skip certain checkout steps if possible</source>
+        <target>Wählen Sie die gewünschten Optionen um Bestellschritte zu überspringen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.billing_address">
         <source>Use member address as billing address if user is logged in</source>
+        <target>Mitglied-Adresse als Rechnungsadresse verwenden, wenn Mitglied angemeldet ist</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.shipping_address">
         <source>Always use billing address as shipping address</source>
+        <target>Rechnungsadresse als Versandadresse verwenden</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.shipping_method">
         <source>Skip shipping step if only one shippig method is available</source>
+        <target>Versandschritt überspringen wenn nur eine Versandmethode verfügbar ist</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.payment_method">
         <source>Skip payment step if only one payment method is available</source>
+        <target>Bezahlschritt überspringen wenn nur eine Bezahlmethode verfügbar ist</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>

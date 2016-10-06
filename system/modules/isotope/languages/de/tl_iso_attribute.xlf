@@ -65,6 +65,10 @@
         <source>Choose where the options for this field should be loaded from.</source>
         <target>Wählen Sie aus, woher die Optionen für dieses Feld genommen werden sollen.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.name">
+        <source>Attribute Name (Single Option)</source>
+        <target>Attribut-Name (Einzelauswahl)</target>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.table">
         <source>Options Manager</source>
         <target>Optionen-Manager</target>
@@ -531,78 +535,100 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
         <source>##order_id##</source>
+        <target>##order_id##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.1">
         <source>Database ID of the order record.</source>
+        <target>Datenbank-ID der Bestellung.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.0">
         <source>##order_date##</source>
+        <target>##order_date##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.1">
         <source>Date of the order as timestamp. Use insert tags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt; to convert timestamp to formatted date.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.0">
         <source>##product_id##</source>
+        <target>##product_id##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.1">
         <source>Database ID of the product.</source>
+        <target>Datenbank-ID des Produkts.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.0">
         <source>##product_sku##</source>
+        <target>##product_sku##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
         <source>SKU of the product.</source>
+        <target>Artikelnummer des Produkt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
         <source>##product_name##</source>
+        <target>##product_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.1">
         <source>Name of the product.</source>
+        <target>Name des Produkts.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.7.0">
         <source>##product_position##</source>
+        <target>##product_position##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.7.1">
         <source>Position of the product on the order document, starting from 1.</source>
+        <target>Position des Produkts auf der Bestellung, beginnend bei 1.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.8.0">
         <source>##attribute_field##</source>
+        <target>##attribute_field##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.8.1">
         <source>Database field name of the attribute.</source>
+        <target>Datenbank-Feldname des Attributs.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.9.0">
         <source>##attribute_name##</source>
+        <target>##attribute_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.9.1">
         <source>Name of the attribute.</source>
+        <target>Name des Attributs.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.10.0">
         <source>##file_name##</source>
+        <target>##file_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.10.1">
         <source>Full file name and extension as uploaded by the user.</source>
+        <target>Vollständiger Dateiname und -erweiterung gemäss Benutzer-Upload.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.0">
         <source>##file_target##</source>
+        <target>##file_target##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.1">
         <source>Full file name and extension as uploaded by the user, but renamed if &quot;Preserve existing files&quot; is enabled and a file with same name exists in target folder. &lt;br&gt;&lt;strong&gt;Only available for the file name, not for the folder!&lt;/strong&gt;</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.12.0">
         <source>##file_extension##</source>
+        <target>##file_extension##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.12.1">
         <source>The original file extension.</source>
+        <target>Die Original Dateiendung</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.13.0">
         <source>##has_member##</source>
+        <target>##has_member##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.13.1">
         <source>1 if a member is signed in to the frontend, 0 if not.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.14.0">
         <source>##member_*##</source>
+        <target>##member_*##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.14.1">
         <source>If a user is logged in, all member fields are available as tokens.</source>

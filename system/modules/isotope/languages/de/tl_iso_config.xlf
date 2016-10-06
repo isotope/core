@@ -347,9 +347,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.0">
         <source>Module for backend view</source>
+        <target>Modul für Backend-Ansicht</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDetailsModule.1">
         <source>Select a order details module that is used to show the order in the backend.</source>
+        <target>Wählen Sie ein Bestelldetails-Modul das verwendet werden soll um Bestellungen im Backend anzuzeigen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.invoiceLogo.0">
         <source>Invoice Logo</source>

@@ -83,9 +83,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.0">
         <source>CSS class</source>
+        <target>CSS-Klasse</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.1">
         <source>The class(es) will be added to the product list and reader templates.</source>
+        <target>Die Klasse(n) werden zur Produktliste und Produktleser hinzugefügt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.0">
         <source>Attributes</source>
@@ -237,6 +239,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.singularAttributes">
         <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
+        <target>Das Attribut &quot;%s&quot; kann nicht für Produkt und Varianten aktiviert werden.</target>
       </trans-unit>
     </body>
   </file>

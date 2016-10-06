@@ -675,6 +675,7 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <target>Besuchen Sie die offizielle &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce Website&lt;/a&gt; für aktuelle News, Konfigurationsanleitungen und unsere Spendenkampagnen. Vielen Dank dass Sie uns etwas zurückgeben!</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.4">
         <source>The Isotope eCommerce Team</source>
@@ -866,6 +867,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
+        <target>Eine Zahlungsmethode für verschiedene Anbieter (z.B. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
@@ -1085,6 +1087,7 @@
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.1">
         <source>A javascript file uploader to upload a local file to the server.</source>
+        <target>Ein Javascript-Uploader um lokale Dateien auf den Server hochzuladen.</target>
       </trans-unit>
       <trans-unit id="CUR.AED">
         <source>AED - United Arab Emirates Dirham</source>
