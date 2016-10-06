@@ -13,7 +13,7 @@ namespace Isotope\Model\Payment;
 
 use Haste\Form\Form;
 use Haste\Util\StringUtil;
-use Isotope\Interfaces\IsotopeDocument;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -46,7 +46,7 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Automatically add Billpay conditions to checkout form
      *
-     * @param Form    $objForm
+     * @param Form $objForm
      */
     public static function addOrderCondition(Form $objForm)
     {
@@ -105,15 +105,16 @@ class BillpayWithSaferpay extends Saferpay
      * Add BillPay-specific data to POST values
      *
      * @param IsotopeProductCollection $objOrder
-     * @param \Module                  $objModule
      *
      * @return array
      */
-    protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
+    protected function generatePaymentPostData(IsotopeProductCollection $objOrder)
     {
-        /** @var \Isotope\Model\ProductCollection\Order $objOrder */
-
         $arrData = parent::generatePaymentPostData($objOrder);
+
+        if (!$objOrder instanceof IsotopeOrderableCollection) {
+            return $arrData;
+        }
 
         // Billing address
         $objBillingAddress = $objOrder->getBillingAddress();
@@ -139,11 +140,11 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Generate XML data for collection items
      *
-     * @param IsotopeProductCollection $objCollection
+     * @param IsotopeOrderableCollection $objCollection
      *
      * @return string
      */
-    private function getCollectionItemsAsXML(IsotopeProductCollection $objCollection)
+    private function getCollectionItemsAsXML(IsotopeOrderableCollection $objCollection)
     {
         $xml = new \DOMDocument();
         $articleData = $xml->createElement('article_data');
@@ -212,7 +213,12 @@ class BillpayWithSaferpay extends Saferpay
     }
 
 
-    private function getCollectionTotalAsXML(IsotopeProductCollection $objCollection)
+    /**
+     * @param IsotopeOrderableCollection $objCollection
+     *
+     * @return string
+     */
+    private function getCollectionTotalAsXML(IsotopeOrderableCollection $objCollection)
     {
         $intRebate = 0;
         $intRebateGross = 0;
