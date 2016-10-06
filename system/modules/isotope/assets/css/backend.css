@@ -1,6 +1,7 @@
 
 #tl_navigation .tl_level_1_group .group-isotope {
-    background: url(../images/store-open.png) 8px center no-repeat;
+    background: url(../images/module.svg) 8px center no-repeat;
+    background-size: 16px 16px;
 }
 
 .header_import_assets
