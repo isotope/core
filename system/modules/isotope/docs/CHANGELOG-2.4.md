@@ -51,6 +51,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Guest carts were deleted every day (#1709)
 - Page picker was filtered if the product category filter is active (#1701)
 - Rounding issues in product quantity summary and net price on gross shop config
+- Default sorting field in product filter module was not applied to dropdown
 
 
 
