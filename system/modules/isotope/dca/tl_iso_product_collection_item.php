@@ -77,7 +77,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         ),
         'quantity' => array
         (
-            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+            'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'price' => array
         (

@@ -16,6 +16,7 @@
 $GLOBALS['TL_LANG']['tl_iso_producttype']['name']                  = array('Name', 'Please enter a name for this product type.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['class']                 = array('Product Class', 'Please select a product class. Different product classes will handle products differently.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['fallback']              = array('Default', 'Check here if this is the default product type.');
+$GLOBALS['TL_LANG']['tl_iso_producttype']['integer_only']          = array('Cart-Quanty is Integer only', 'Check here if Cart-Quanty should be only type integer.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['description']           = array('Description', 'A hint to product managers what this product type is for.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['prices']                = array('Advanced pricing', 'Allow to define multiple prices per product, e.g. for different store configs, member groups or dates.');
 $GLOBALS['TL_LANG']['tl_iso_producttype']['show_price_tiers']      = array('Show price tiers', 'Show highest tier as lowest product price.');
