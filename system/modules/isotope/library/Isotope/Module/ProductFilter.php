@@ -52,16 +52,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            /** @var \BackendTemplate|object $objTemplate */
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
         $this->generateAjax();
