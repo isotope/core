@@ -57,6 +57,7 @@ TemplateLoader::addFiles(array
     'iso_gallery_elevatezoom'           => 'system/modules/isotope/templates/gallery',
     'iso_list_default'                  => 'system/modules/isotope/templates/isotope',
     'iso_list_variants'                 => 'system/modules/isotope/templates/isotope',
+    'iso_payment_concardis'             => 'system/modules/isotope/templates/payment',
     'iso_payment_datatrans'             => 'system/modules/isotope/templates/payment',
     'iso_payment_innopay'               => 'system/modules/isotope/templates/payment',
     'iso_payment_epay'                  => 'system/modules/isotope/templates/payment',
