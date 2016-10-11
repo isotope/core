@@ -14,8 +14,10 @@ namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Haste\Util\Url;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
 
 /**
@@ -90,7 +92,7 @@ class OrderHistory extends Module
 
         // No orders found, just display an "empty" message
         if (null === $objOrders) {
-            $this->Template          = new \Isotope\Template('mod_message');
+            $this->Template          = new Template('mod_message');
             $this->Template->type    = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['emptyOrderHistory'];
 
@@ -99,7 +101,7 @@ class OrderHistory extends Module
 
         /** @type Order $objOrder */
         foreach ($objOrders as $objOrder) {
-            Isotope::setConfig($objOrder->getRelated('config_id'));
+            Isotope::setConfig($objOrder->getConfig());
 
             $arrOrders[] = array
             (
@@ -110,7 +112,7 @@ class OrderHistory extends Module
                 'datime'     => Format::datim($objOrder->locked),
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
-                'link'       => ($this->jumpTo ? (\Haste\Util\Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : ''),
+                'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',
                 'class'      => $objOrder->getStatusAlias(),
             );
         }

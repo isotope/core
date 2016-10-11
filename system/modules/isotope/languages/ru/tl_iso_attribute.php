@@ -38,5 +38,7 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['email'][0] = 'Адрес электро
 $GLOBALS['TL_LANG']['tl_iso_attribute']['price'][0] = 'Цена';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['discount'][0] = 'Скидка';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['random'] = 'Случайный порядок';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][1][0] = '##order_id##';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][2][0] = '##order_id##';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description_legend'] = 'Описание';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options_legend'] = 'Опции';

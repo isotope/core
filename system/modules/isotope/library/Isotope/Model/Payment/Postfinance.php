@@ -12,17 +12,13 @@
 
 namespace Isotope\Model\Payment;
 
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 
 
 /**
- * Class Postfinance
- *
  * Handle Postfinance (Swiss Post) payments
- * @copyright  Isotope eCommerce Workgroup 2009-2013
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Postfinance extends PSP
 {
@@ -122,11 +118,13 @@ class Postfinance extends PSP
 
     /**
      * Prepare PSP params
-     * @param   Order
-     * @param   Module
-     * @return  array
+     *
+     * @param IsotopePurchasableCollection $objOrder
+     * @param \Module                      $objModule
+     *
+     * @return array
      */
-    protected function preparePSPParams($objOrder, $objModule)
+    protected function preparePSPParams(IsotopePurchasableCollection $objOrder, $objModule)
     {
         $arrParams = parent::preparePSPParams($objOrder, $objModule);
 
@@ -151,10 +149,12 @@ class Postfinance extends PSP
 
     /**
      * Prepare FIS params
-     * @param   Order
-     * @return  array
+     *
+     * @param IsotopePurchasableCollection $objOrder
+     *
+     * @return array
      */
-    private function prepareFISParams($objOrder)
+    private function prepareFISParams(IsotopePurchasableCollection $objOrder)
     {
         $objBillingAddress  = $objOrder->getBillingAddress();
         $objShippingAddress = $objOrder->getShippingAddress();
@@ -170,10 +170,10 @@ class Postfinance extends PSP
             'ECOM_SHIPTO_POSTAL_COUNTRYCODE'    => strtoupper($objShippingAddress->country),
             'ECOM_SHIPTO_DOB'                   => date('d/m/Y', $objShippingAddress->dateOfBirth),
             // This key is mandatory and just has to be unique (17 chars)
-            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->id . '_' . $objOrder->uniqid, 0, 17),
+            'REF_CUSTOMERID'                    => substr('psp_' . $this->id . '_' . $objOrder->getId() . '_' . $objOrder->getUniqueId(), 0, 17),
 
             // Additional fields, not mandatory
-            'ECOM_CONSUMER_GENDER'              => $objBillingAddress->gender == 'male' ? 'M' : 'F',
+            'ECOM_CONSUMER_GENDER'              => 'male' === $objBillingAddress->gender ? 'M' : 'F',
 
             // We do not add "ECOM_SHIPTO_COMPANY" here because B2B sometimes may require up to 24 hours
             // to check solvency which is not acceptable for an online shop

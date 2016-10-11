@@ -1,7 +1,7 @@
 <?php if ($this->textOnly): ?>
 <?php ### THIS IS FOR TEXT ONLY EMAILS ### ?>
 <?php foreach ($this->items as $item ): ?>
-<?php echo $item['name']; ?><?php if (!empty($item['configuration'])): ?> (<?php $i=0; foreach ($item['configuration'] as $value): ?><?php echo ($i++==0 ? '' : ', ').$value['label']; ?>: <?php echo (string) $value; ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
+<?php echo $item['name']; ?><?php if (!empty($item['attributes'])): ?> (<?php $i=0; foreach ($item['attributes'] as $name => $value): ?><?php echo ($i++==0 ? '' : ', ').$this->attributeLabel($name); ?>: <?= $this->attributeValue($name, $value) ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
 
 <?php endforeach; ?>
 --------------------
@@ -32,10 +32,10 @@
         <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
         <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
             <?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
-            <?php if(!empty($item['configuration'])): ?>
+            <?php if(!empty($item['attributes'])): ?>
             <ul>
-                <?php foreach($item['configuration'] as $value): ?>
-                <li><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?></li>
+                <?php foreach($item['attributes'] as $name => $value): ?>
+                <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
@@ -50,7 +50,10 @@
         <td class="col_<?php echo $i++; ?> price"><?php echo $item['price']; ?></td>
         <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $item['total']; ?></td><?php if ($this->total_tax_ids > 1): ?>
         <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $item['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?> col_last actions">
+            <?php if ($item['edit_href']): ?><a href="<?php echo $item['edit_href']; ?>" class="edit" title="<?php echo $item['edit_title']; ?>"><?php echo $item['edit_link']; ?></a><?php endif; ?>
+            <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
+        </td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
     <tr class="<?php echo $item['rowClass']; ?>">
         <td colspan="<?php echo $i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>

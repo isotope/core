@@ -16,3 +16,4 @@
 
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'][0] = 'Tip';
 $GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'][0] = 'Oznaka';
+$GLOBALS['TL_LANG']['tl_iso_attribute_option']['price_short'][0] = 'Cena';

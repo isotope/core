@@ -3,10 +3,8 @@
 namespace Isotope\Model\Payment;
 
 use Contao\Request;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
-use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
@@ -17,15 +15,10 @@ use Isotope\Template;
  * @property string $opp_password
  * @property string $opp_entity_id
  */
-class OpenPaymentPlatform extends Payment implements IsotopePayment
+class OpenPaymentPlatform extends Payment
 {
     /**
-     * Return the checkout form.
-     *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module|Checkout               $objModule The checkout module instance
-     *
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -38,32 +31,30 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
 
         if ('000.200.100' !== $response['result']['code']) {
             \System::log(
-                sprintf('Payment for order ID %s could not be initialized. See log files for more information.', $objOrder->id),
+                sprintf(
+                    'Payment for order ID %s could not be initialized. See log files for more information.',
+                    $objOrder->getId()
+                ),
                 __METHOD__,
                 TL_ERROR
             );
 
             log_message(print_r($response, true), 'open_payment.log');
 
-            $objModule->redirectToStep('failed');
+            Checkout::redirectToStep('failed');
         }
 
         /** @var Template|object $template */
         $template = new Template('iso_payment_opp');
         $template->base   = $base;
-        $template->action = $objModule->generateUrlForStep('complete', $objOrder);
+        $template->action = Checkout::generateUrlForStep('complete', $objOrder);
         $template->checkoutId = $response['id'];
 
         return $template->parse();
     }
 
     /**
-     * Process payment on checkout confirmation page.
-     *
-     * @param   IsotopeProductCollection|Order $objOrder  The order being places
-     * @param   \Module                        $objModule The checkout module instance
-     *
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -79,10 +70,13 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
             || 'PA' !== $response['paymentType']
             || $ndc !== $response['ndc']
             || $objOrder->getTotal() != $response['amount']
-            || $objOrder->currency != $response['currency']
+            || $objOrder->getCurrency() != $response['currency']
         ) {
             \System::log(
-                sprintf('Payment data for order ID %s could not be verified. See log files for more information.', $objOrder->id),
+                sprintf(
+                    'Payment data for order ID %s could not be verified. See log files for more information.',
+                    $objOrder->getId()
+                ),
                 __METHOD__,
                 TL_ERROR
             );
@@ -104,12 +98,12 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
             if ('000.100.110' !== $response['result']['code']
                 || 'CP' !== $response['paymentType']
                 || $objOrder->getTotal() != $response['amount']
-                || $objOrder->currency != $response['currency']
+                || $objOrder->getCurrency() != $response['currency']
             ) {
                 \System::log(
                     sprintf(
                         'Payment for order ID %s could not be captured. See log files for more information.',
-                        $objOrder->id
+                        $objOrder->getId()
                     ),
                     __METHOD__,
                     TL_ERROR
@@ -128,8 +122,8 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
     }
 
     /**
-     * @param string                         $type
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param string                   $type
+     * @param IsotopeProductCollection $objOrder
      *
      * @return Request
      */
@@ -140,7 +134,7 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
             'authentication.password' => $this->opp_password,
             'authentication.entityId' => $this->opp_entity_id,
             'amount'                  => number_format($objOrder->getTotal(), 2, '.', ''),
-            'currency'                => $objOrder->currency,
+            'currency'                => $objOrder->getCurrency(),
             'paymentType'             => $type
         ];
 
@@ -153,8 +147,8 @@ class OpenPaymentPlatform extends Payment implements IsotopePayment
     }
 
     /**
-     * @param array                          $data
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param array                    $data
+     * @param IsotopeProductCollection $objOrder
      */
     private function storeApiResponse(array $data, IsotopeProductCollection $objOrder)
     {

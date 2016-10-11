@@ -16,6 +16,17 @@ use Isotope\Collection\AttributeOption;
 
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
 {
+    const SOURCE_TABLE      = 'table';
+    const SOURCE_FOREIGNKEY = 'foreignKey';
+    const SOURCE_ATTRIBUTE  = 'attribute';
+    const SOURCE_PRODUCT    = 'product';
+
+    /**
+     * Returns the options source
+     *
+     * @return string
+     */
+    public function getOptionsSource();
 
     /**
      * Adjust the attribute option wizard for this widget

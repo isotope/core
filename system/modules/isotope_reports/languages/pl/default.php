@@ -20,4 +20,6 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Konfiguracja sklepu';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Waluta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Wszystko';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Data zamówienia';
+$GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'] = 'Data płatności';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Kolumny';

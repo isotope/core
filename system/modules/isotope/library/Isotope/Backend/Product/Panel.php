@@ -12,8 +12,7 @@
 
 namespace Isotope\Backend\Product;
 
-use Isotope\Model\ProductCategory;
-
+use Isotope\Model\Group;
 
 class Panel extends \Backend
 {
@@ -28,28 +27,48 @@ class Panel extends \Backend
             return '';
         }
 
+        $user      = \BackendUser::getInstance();
         $session   = \Session::getInstance()->getData();
         $intPage   = $session['filter']['tl_iso_product']['iso_page'];
-        $blnGroups = true;
+        $buttons   = [];
 
-        // Check permission
-        if (!\BackendUser::getInstance()->isAdmin) {
-            $groups = deserialize(\BackendUser::getInstance()->iso_groups);
-
-            if (!is_array($groups) || empty($groups)) {
-                $blnGroups = false;
-            }
-
-            // Allow to manage groups
-            if (is_array(\BackendUser::getInstance()->iso_groupp) && !empty(\BackendUser::getInstance()->iso_groupp)) {
-                $blnGroups = true;
-            }
+        // Check if user can manage groups
+        if ($user->isAdmin
+            || (is_array($user->iso_groups)
+                && 0 !== count($user->iso_groups)
+                && is_array($user->iso_groupp)
+                && 0 !== count($user->iso_groupp)
+            )
+        ) {
+            $buttons[] = sprintf(
+                '<input type="button" id="groupFilter" class="tl_submit%s" onclick="%s" value="%s">',
+                ($session['iso_products_gid'] ? ' active' : ''),
+                sprintf(
+                    "Backend.getScrollOffset();Isotope.openModalGroupSelector({'width':765,'title':'%s','url':'system/modules/isotope/group.php?do=%s&amp;table=%s&amp;field=gid&amp;value=%s','action':'filterGroups'});return false",
+                    specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]),
+                    \Input::get('do'),
+                    Group::getTable(),
+                    $session['iso_products_gid']
+                ),
+                specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups'])
+            );
         }
+
+        $buttons[] = sprintf(
+            '<input type="button" id="pageFilter" class="tl_submit%s" onclick="%s" value="%s">',
+            ($intPage > 0 ? ' active' : ''),
+            sprintf(
+                "Backend.getScrollOffset();Isotope.openModalPageSelector({'width':765,'title':'%s','url':'contao/page.php?do=%s&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=%s','action':'filterPages'});return false",
+                specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]),
+                \Input::get('do'),
+                $intPage
+            ),
+            specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages'])
+        );
 
         return '
 <div class="tl_filter iso_filter tl_subpanel">
-' . ($blnGroups ? '<input type="button" id="groupFilter" class="tl_submit' . (\Session::getInstance()->get('iso_products_gid') ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':\'system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . \Isotope\Model\Group::getTable() . '&amp;field=gid&amp;value=' . \Session::getInstance()->get('iso_products_gid') . '\',\'action\':\'filterGroups\'});return false" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups']) . '">' : '') . '
-<input type="button" id="pageFilter" class="tl_submit' . ($intPage > 0 ? ' active' : '') . '" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=' . $intPage . '\',\'action\':\'filterPages\'});return false" value="' . specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages']) . '">
+' . implode("\n", $buttons) . '
 </div>';
     }
 
@@ -66,27 +85,27 @@ class Panel extends \Backend
         $session = \Session::getInstance()->getData();
 
         // Filters
-        $arrFilters = array
-        (
-            'iso_noimages'   => array
-            (
+        $arrFilters = [
+            'iso_noimages'   => [
                 'name'    => 'iso_noimages',
                 'label'   => $GLOBALS['TL_LANG']['tl_iso_product']['filter_noimages'],
-                'options' => array('' => $GLOBALS['TL_LANG']['MSC']['no'], 1 => $GLOBALS['TL_LANG']['MSC']['yes'])
-            ),
-            'iso_nocategory' => array
-            (
+                'options' => ['' => $GLOBALS['TL_LANG']['MSC']['no'], 1 => $GLOBALS['TL_LANG']['MSC']['yes']],
+            ],
+            'iso_nocategory' => [
                 'name'    => 'iso_nocategory',
                 'label'   => $GLOBALS['TL_LANG']['tl_iso_product']['filter_nocategory'],
-                'options' => array('' => $GLOBALS['TL_LANG']['MSC']['no'], 1 => $GLOBALS['TL_LANG']['MSC']['yes'])
-            ),
-            'iso_new'        => array
-            (
+                'options' => ['' => $GLOBALS['TL_LANG']['MSC']['no'], 1 => $GLOBALS['TL_LANG']['MSC']['yes']],
+            ],
+            'iso_new'        => [
                 'name'    => 'iso_new',
                 'label'   => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new'],
-                'options' => array('new_today' => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_today'], 'new_week' => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_week'], 'new_month' => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_month'])
-            )
-        );
+                'options' => [
+                    'new_today' => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_today'],
+                    'new_week'  => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_week'],
+                    'new_month' => $GLOBALS['TL_LANG']['tl_iso_product']['filter_new_month'],
+                ],
+            ],
+        ];
 
         $strBuffer = '
 <div class="tl_filter iso_filter tl_subpanel">
@@ -121,7 +140,7 @@ class Panel extends \Backend
         }
 
         return '
-<div class="tl_sorting tl_subpanel" style="padding:3px 0 0 8px">
+<div class="tl_sorting tl_subpanel tl_iso_category_sorting">
 <a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
 </div>';
     }
@@ -132,7 +151,7 @@ class Panel extends \Backend
      */
     public function applyAdvancedFilters()
     {
-        $session = $this->Session->getData();
+        $session = \Session::getInstance()->getData();
 
         // Store filter values in the session
         foreach ($_POST as $k => $v) {
@@ -149,7 +168,7 @@ class Panel extends \Backend
             }
         }
 
-        $this->Session->setData($session);
+        \Session::getInstance()->setData($session);
 
         if (\Input::get('id') > 0 || !isset($session['filter']['tl_iso_product'])) {
             return;
@@ -166,13 +185,13 @@ class Panel extends \Backend
             switch ($k) {
                 // Show products with or without images
                 case 'iso_noimages':
-                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product WHERE language='' AND images " . ($v ? "IS NULL" : "IS NOT NULL"));
+                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product WHERE language='' AND images " . ($v ? 'IS NULL' : 'IS NOT NULL'));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
                 // Show products with or without category
                 case 'iso_nocategory':
-                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id)" . ($v ? "=0" : ">0"));
+                    $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_category c WHERE c.pid=p.id)" . ($v ? '=0' : '>0'));
                     $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
@@ -201,7 +220,7 @@ class Panel extends \Backend
                 case 'iso_page':
                     // Filter the products by pages
                     if ($v > 0) {
-                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM " . ProductCategory::getTable() . " c WHERE c.pid=p.id AND c.page_id=" . (int) $v . ")");
+                        $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_category c WHERE c.pid=p.id AND c.page_id=" . (int) $v . ')');
                         $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
                     break;

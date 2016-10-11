@@ -121,23 +121,23 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'optionsSource', 'includeBlankOption', 'variant_option', 'storeFile', 'files'),
+        '__selector__'              => array('type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'storeFile', 'files', 'checkoutRelocate', 'chunking'),
         'default'                   => '{attribute_legend},name,field_name,type,legend',
-        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search',
+        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search,be_filter',
         'textarea'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
-        'select'                    => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,size;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'selectproduct'             => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,size;{search_filters_legend},fe_sorting',
+        'select'                    => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
+        'selectproduct'             => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple;{search_filters_legend},fe_sorting',
         'selectvariant_option'      => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'radio'                     => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting',
+        'radio'                     => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'radioproduct'              => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory;{search_filters_legend},fe_sorting',
         'radiovariant_option'       => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting',
+        'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'checkboxproduct'           => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_sorting',
-        'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,size,conditionField;{search_filters_legend},fe_filter,fe_sorting',
+        'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
-        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,path,mandatory,files',
-        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files',
-        'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},storeFile',
+        'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files,isGallery',
+        'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,files,isGallery',
+        'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},checkoutRelocate',
         'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory',
     ),
 
@@ -149,7 +149,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'optionsSource_attribute'   => 'options',
         'optionsSource_table'       => 'optionsTable',
         'optionsSource_foreignKey'  => 'foreignKey',
+        'multiple'                  => 'size',
         'includeBlankOption'        => 'blankOptionLabel',
+        'checkoutRelocate'          => 'checkoutTargetFolder,checkoutTargetFile',
+        'chunking'                  => 'chunkSize',
     ),
 
     // Fields
@@ -220,10 +223,19 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'radio',
             'options_callback'      => function($dc) {
-                $arrOptions = array('table', 'foreignKey', 'attribute');
+                $arrOptions = [
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_TABLE,
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
+                    \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                ];
 
-                if ($dc->activeRecord->variant_option == '' && $dc->activeRecord->customer_defined == '1') {
-                    $arrOptions = array('table', 'product', 'foreignKey', 'attribute');
+                if (!$dc->activeRecord->variant_option && $dc->activeRecord->customer_defined) {
+                    $arrOptions = [
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_TABLE,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_PRODUCT,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
+                        \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
+                    ];
                 }
 
                 return $arrOptions;
@@ -352,7 +364,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['multiple'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'size' => array
@@ -460,12 +472,21 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval'                  => array('tl_class'=>'w50 m12'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
+        'isGallery' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['isGallery'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
         'sortBy' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['sortBy'],
+            'default'               => 'name_asc',
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('custom', 'name_asc', 'name_desc', 'date_asc', 'date_desc', 'random'),
+            'options'               => array('name_asc', 'name_desc', 'date_asc', 'date_desc', 'random', 'custom'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
@@ -478,6 +499,51 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
             'sql'                   =>  "binary(16) NULL",
         ),
+        'checkoutRelocate' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutRelocate'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'checkoutTargetFolder' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFolder'],
+            'exclude'               => true,
+            'default'               => 'files/orders/##document_number##/##product_position##__{{flag::##product_name##|standardize}}/##attribute_field##',
+            'inputType'             => 'text',
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'checkoutTargetFile' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkoutTargetFile'],
+            'exclude'               => true,
+            'default'               => '##file_target##',
+            'inputType'             => 'text',
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'],
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'datepicker' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['datepicker'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('Isotope\Backend\Attribute\Callback', 'validateDatepicker'),
+            ),
+        ),
+
+
+        /**
+         * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
+         */
         'storeFile' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['storeFile'],
@@ -510,17 +576,29 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
-        'datepicker' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['datepicker'],
-            'exclude'               => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
-            'sql'                   => "char(1) NOT NULL default ''",
-            'save_callback' => array
-            (
-                array('Isotope\Backend\Attribute\Callback', 'validateDatepicker'),
-            ),
-        ),
     ),
 );
+
+
+if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},mandatory,extensions,minlength,maxlength,chunking,multiple;{store_legend:hide},checkoutRelocate';
+
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunking'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
+        'sql'                     => "char(1) NOT NULL default ''"
+    );
+
+    $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] = array
+    (
+        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunkSize'],
+        'default'                 => 2000000,
+        'exclude'                 => true,
+        'inputType'               => 'text',
+        'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+        'sql'                     => "varchar(16) NOT NULL default ''"
+    );
+}

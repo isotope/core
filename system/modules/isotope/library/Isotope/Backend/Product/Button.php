@@ -118,7 +118,7 @@ class Button extends \Backend
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
     {
         if (strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
             \Controller::redirect(\System::getReferer());
         }
 
@@ -146,6 +146,29 @@ class Button extends \Backend
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
         return '<a href="' . \Backend::addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+    }
+
+    /**
+     * Return the "toggle fallback" button
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
+     */
+    public function forFallbackToggle($row, $href, $label, $title, $icon, $attributes)
+    {
+        if ($row['pid'] < 1) {
+            return '';
+        }
+
+        $icon = $row['fallback'] ? 'featured.gif' : 'featured_.gif';
+
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -267,7 +290,7 @@ window.addEvent('domready', function() {
             Isotope.openModalGroupSelector({
                 'width':    765,
                 'title':    '" . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "',
-                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . "&amp;table=" . Group::getTable() . "&amp;field=gid&amp;value=" . \Session::getInstance()->get('iso_products_gid') . "',
+                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . \Session::getInstance()->get('iso_products_gid') . "',
                 'action':   'moveProducts',
                 'trigger':  $(this)
             });
@@ -323,7 +346,7 @@ window.addEvent('domready', function() {
         \Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
     }
 
 
@@ -340,9 +363,9 @@ window.addEvent('domready', function() {
         static $arrDownloads;
 
         if (null === $arrDownloads) {
-            $objDownloads = \Database::getInstance()->query("
-                SELECT pid, COUNT(id) AS total FROM " . Download::getTable() . " GROUP BY pid
-            ");
+            $objDownloads = \Database::getInstance()->query(
+                'SELECT pid, COUNT(id) AS total FROM tl_iso_download GROUP BY pid'
+            );
 
             while ($objDownloads->next()) {
                 $arrDownloads[$objDownloads->pid] = $objDownloads->total;

@@ -121,7 +121,7 @@ class ProductCache extends \Model
         $time = time();
 
         \Database::getInstance()->prepare("
-            DELETE FROM " . static::$strTable . "
+            DELETE FROM tl_iso_productcache
             WHERE
                 (uniqid=? AND groups=? AND (keywords='' OR keywords=?))
                 OR (expires>0 AND expires<$time)
@@ -208,7 +208,7 @@ class ProductCache extends \Model
         $time = time();
 
         \Database::getInstance()->prepare("
-            DELETE FROM " . static::$strTable . "
+            DELETE FROM tl_iso_productcache
             WHERE
                 (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?)
                 OR (expires>0 AND expires<$time)
@@ -265,8 +265,8 @@ class ProductCache extends \Model
      */
     public static function isWritable()
     {
-        return \Database::getInstance()->query("
-            SHOW OPEN TABLES FROM `" . $GLOBALS['TL_CONFIG']['dbDatabase'] . "` LIKE '" . static::$strTable . "'
+        return \Database::getInstance()->query('
+            SHOW OPEN TABLES FROM `' . $GLOBALS['TL_CONFIG']['dbDatabase'] . "` LIKE '" . static::$strTable . "'
         ")->In_use == 0;
     }
 }

@@ -30,16 +30,7 @@ define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 define('TL_MODE', 'FE');
 define('BYPASS_TOKEN_CHECK', true);
 
-// Include the Contao initialization script
-if (file_exists('../../initialize.php')) {
-    // Regular way
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../initialize.php');
-} else {
-    // Try composer location (see #1136)
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../../../../../../system/initialize.php');
-}
+require_once('initialize.php');
 
 
 class PostSale extends \Frontend
@@ -63,12 +54,7 @@ class PostSale extends \Frontend
     {
         parent::__construct();
 
-        // Contao Hooks are not save to be run on the postsale script (e.g. parseFrontendTemplate)
-        unset($GLOBALS['TL_HOOKS']);
-
-        // Need to load our own Hooks (e.g. loadDataContainer)
-        /** @noinspection PhpIncludeInspection */
-        include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+        $this->removeUnsupportedHooks();
 
         // Default parameters
         $this->setModule((string) (\Input::post('mod') ?: \Input::get('mod')));
@@ -228,6 +214,21 @@ class PostSale extends \Frontend
                 file_get_contents("php://input")
             ),
             'isotope_postsale.log'
+        );
+    }
+
+    private function removeUnsupportedHooks()
+    {
+        $GLOBALS['TL_HOOKS'] = array_intersect_key(
+            $GLOBALS['TL_HOOKS'],
+            array_flip(
+                [
+                    'addCustomRegexp',
+                    'getAttributesFromDca',
+                    'loadDataContainer',
+                    'replaceInsertTags',
+                ]
+            )
         );
     }
 }

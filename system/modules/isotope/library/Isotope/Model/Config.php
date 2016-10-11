@@ -154,11 +154,11 @@ class Config extends \Model
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-                    $this->arrCache['billingFieldsConfig'][] = array(
+                    $this->arrCache['billingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['billing'] != 'disabled'),
-                        'mandatory' => ($arrField['billing'] == 'mandatory'),
-                    );
+                        'enabled'   => 'disabled' !== $arrField['billing'],
+                        'mandatory' => 'mandatory' === $arrField['billing'],
+                    ];
                 }
             }
         }
@@ -198,11 +198,11 @@ class Config extends \Model
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-                    $this->arrCache['shippingFieldsConfig'][] = array(
+                    $this->arrCache['shippingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['shipping'] != 'disabled'),
-                        'mandatory' => ($arrField['shipping'] == 'mandatory'),
-                    );
+                        'enabled'   => 'disabled' !== $arrField['shipping'],
+                        'mandatory' => 'mandatory' === $arrField['shipping'],
+                    ];
                 }
             }
         }
@@ -284,7 +284,7 @@ class Config extends \Model
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );
             } else {
-                $this->arrCache['newProductLimit'] = time();
+                $this->arrCache['newProductLimit'] = \Date::floorToMinute();
             }
         }
 

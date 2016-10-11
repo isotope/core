@@ -20,4 +20,6 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Winkelconfiguratie';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Alle';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Bestel datum';
+$GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'] = 'Betaal-datum';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Kolommen';

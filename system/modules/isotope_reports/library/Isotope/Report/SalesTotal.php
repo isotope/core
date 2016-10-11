@@ -15,9 +15,7 @@ namespace Isotope\Report;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 
@@ -34,7 +32,6 @@ class SalesTotal extends Sales
 
     protected function compile()
     {
-        $periodFactory = new PeriodFactory();
         $arrSession    = \Session::getInstance()->get('iso_reports');
 
         $intConfig = (int) $arrSession[$this->name]['iso_config'];
@@ -43,11 +40,17 @@ class SalesTotal extends Sales
         $intStop   = (int) $arrSession[$this->name]['stop'];
         $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
-        $period   = $periodFactory->create($strPeriod);
+        $period   = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
         $intStop  = $period->getPeriodEnd($intStop);
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey($intStop);
+
+        if ('locked' === $this->strDateField) {
+            $this->strDateField = $arrSession[$this->name]['date_field'];
+        }
+
+        $dateGroup = $period->getSqlField('o.' . $this->strDateField);
 
         $objData = \Database::getInstance()->query("
             SELECT
@@ -60,16 +63,16 @@ class SalesTotal extends Sales
                 COUNT(DISTINCT i.id) AS total_products,
                 SUM(i.quantity) AS total_items,
                 SUM(i.tax_free_price * i.quantity) AS total_sales,
-                " . $period->getSqlField('o.'.$this->strDateField) . " AS dateGroup
-            FROM " . ProductCollection::getTable() . " o
-            LEFT JOIN " . ProductCollectionItem::getTable() . " i ON o.id=i.pid
-            LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
-            LEFT OUTER JOIN " . Config::getTable() . " c ON o.config_id=c.id
-            WHERE o.type='order' AND o.order_status>0 AND o.locked!=''
+                $dateGroup AS dateGroup
+            FROM tl_iso_product_collection o
+            LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+            LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
+            LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
+            WHERE o.type='order' AND o.order_status>0 AND o.{$this->strDateField} IS NOT NULL
             " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-            " . $this->getProductProcedure('i', 'product_id') . "
+            " . static::getProductProcedure('i', 'product_id') . "
             " . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
-            " . $this->getConfigProcedure('c') . "
+            " . static::getConfigProcedure('c') . "
             GROUP BY config_id, dateGroup
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
         ");
@@ -112,97 +115,77 @@ class SalesTotal extends Sales
 
     protected function initializeData(PeriodInterface $period, $intStart, $intStop)
     {
-        $arrData = array('rows'=>array());
+        $arrData = ['rows' => []];
 
-        $arrData['header'] = array
-        (
-            array
-            (
+        $arrData['header'] = [
+            [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
                 'header'        => true,
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
                 'attributes'    => ' style="text-align:right"',
-            ),
-        );
+            ],
+        ];
 
-        $arrData['footer']      = array
-        (
-            array
-            (
+        $arrData['footer'] = [
+            [
                 'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
+            ],
+            [
                 'value'         => 0,
                 'attributes'    => ' style="text-align:right"',
-            ),
-            array
-            (
-                'value'         => array(),
+            ],
+            [
+                'value'         => [],
                 'attributes'    => ' style="text-align:right"',
-            ),
-        );
+            ],
+        ];
 
-        while ($intStart <= $intStop)
-        {
-            $arrData['rows'][$period->getKey($intStart)] = array
-            (
-                'columns' => array
-                (
-                    array
-                    (
+        while ($intStart <= $intStop) {
+            $arrData['rows'][$period->getKey($intStart)] = [
+                'columns' => [
+                    [
                         'value'         => $period->format($intStart),
-                    ),
-                    array
-                    (
+                    ],
+                    [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
-                    ),
-                    array
-                    (
+                    ],
+                    [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
-                    ),
-                    array
-                    (
+                    ],
+                    [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
-                    ),
-                    array
-                    (
+                    ],
+                    [
                         'value'         => 0,
                         'attributes'    => ' style="text-align:right"',
-                    ),
-                ),
-            );
+                    ],
+                ],
+            ];
 
             $intStart = $period->getNext($intStart);
         }
@@ -222,20 +205,17 @@ class SalesTotal extends Sales
         $arrData = array();
         $arrCurrencies = \Database::getInstance()->execute("
             SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''
-            " . $this->getConfigProcedure() . "
+            " . static::getConfigProcedure() . "
             " . ($intConfig > 0 ? ' AND id='.$intConfig : '') . "
         ")->fetchEach('currency');
 
-        foreach ($arrCurrencies as $currency)
-        {
+        foreach ($arrCurrencies as $currency) {
             $arrData[$currency]['label'] = $currency;
             $arrData[$currency]['className'] = '.'.strtolower($currency);
         }
 
-        while ($intStart <= $intStop)
-        {
-            foreach ($arrCurrencies as $currency)
-            {
+        while ($intStart <= $intStop) {
+            foreach ($arrCurrencies as $currency) {
                 $arrData[$currency]['data'][$period->getKey($intStart)]['x'] = $intStart;
                 $arrData[$currency]['data'][$period->getKey($intStart)]['y'] = 0;
             }
@@ -250,12 +230,9 @@ class SalesTotal extends Sales
     protected function formatValues($arrData, $arrCurrencies)
     {
         // Format row totals
-        foreach ($arrData['rows'] as $dateGroup => $arrRow)
-        {
-            if (is_array($arrRow['columns'][4]['value']))
-            {
-                foreach ($arrRow['columns'][4]['value'] as $currency => $varValue)
-                {
+        foreach ($arrData['rows'] as $dateGroup => $arrRow) {
+            if (is_array($arrRow['columns'][4]['value'])) {
+                foreach ($arrRow['columns'][4]['value'] as $currency => $varValue) {
                     /** @type Config $objConfig */
                     $objConfig = Config::findByPk($arrCurrencies[$currency]);
                     Isotope::setConfig($objConfig);
@@ -266,8 +243,7 @@ class SalesTotal extends Sales
         }
 
         // Format footer totals
-        foreach ($arrData['footer'][4]['value'] as $currency => $varValue)
-        {
+        foreach ($arrData['footer'][4]['value'] as $currency => $varValue) {
             /** @type Config $objConfig */
             $objConfig = Config::findByPk($arrCurrencies[$currency]);
             Isotope::setConfig($objConfig);
@@ -275,8 +251,7 @@ class SalesTotal extends Sales
             $arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }
 
-        if (empty($arrData['footer'][4]['value']))
-        {
+        if (empty($arrData['footer'][4]['value'])) {
             $arrData['footer'][4]['value'] = 0;
         }
 
@@ -289,17 +264,13 @@ class SalesTotal extends Sales
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '')
-        {
+        if ($arrSession[$this->name]['period'] == '') {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['stop'] == '')
-        {
+        if ($arrSession[$this->name]['stop'] == '') {
             $arrSession[$this->name]['stop'] = time();
-        }
-        elseif (!is_numeric($arrSession[$this->name]['stop']))
-        {
+        } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
             try {
                 $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
@@ -310,12 +281,9 @@ class SalesTotal extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '')
-        {
+        if ($arrSession[$this->name]['start'] == '') {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
-        }
-        elseif (!is_numeric($arrSession[$this->name]['start']))
-        {
+        } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps
             try {
                 $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
@@ -331,4 +299,3 @@ class SalesTotal extends Sales
         parent::initializeDefaultValues();
     }
 }
-

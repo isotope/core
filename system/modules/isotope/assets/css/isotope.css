@@ -15,8 +15,8 @@
 #iso_ajaxBox {
     width:20%;
     padding:9px 50px 9px 24px;
-    position:absolute;
-    top:30px;
+    position:fixed;
+    top:10%;
     left:40%;
     background:#fff url("../../../../themes/default/images/loading.gif") no-repeat right center;
     border:2px solid #000;

@@ -12,6 +12,8 @@
 
 namespace Isotope\Interfaces;
 
+use Contao\MemberModel;
+use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
@@ -21,6 +23,41 @@ use Isotope\Model\ProductCollectionSurcharge;
  */
 interface IsotopeProductCollection
 {
+    /**
+     * Returns the ID of the product collection.
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * Returns an unguessable unique string to represent this collection (e.g. for secure URLs).
+     *
+     * @return string
+     */
+    public function getUniqueId();
+
+    /**
+     * Gets the member association with this collection, or null if it belongs to a guest.
+     *
+     * @return MemberModel|null
+     */
+    public function getMember();
+
+    /**
+     * Returns the store ID.
+     * The store ID is used to share or separate collections (e.g. the cart) across multiple shops or root pages.
+     *
+     * @return int
+     */
+    public function getStoreId();
+
+    /**
+     * Returns the shop config associated with this collection.
+     *
+     * @return Config|null
+     */
+    public function getConfig();
 
     /**
      * Return true if collection is locked
@@ -28,6 +65,13 @@ interface IsotopeProductCollection
      * @return bool
      */
     public function isLocked();
+
+    /**
+     * Returns timestamp when the collection was locked
+     *
+     * @return int|null
+     */
+    public function getLockTime();
 
     /**
      * Return true if collection has no items
@@ -56,9 +100,14 @@ interface IsotopeProductCollection
     public function purge();
 
     /**
-     * Lock collection from begin modified
+     * Lock collection from being modified
      */
     public function lock();
+
+    /**
+     * Save changes to the collection.
+     */
+    public function save();
 
     /**
      * Sum price of all items in the collection
@@ -87,6 +136,13 @@ interface IsotopeProductCollection
      * @return float
      */
     public function getTaxFreeTotal();
+
+    /**
+     * Returns the ISO 4217 3-character currency code
+     *
+     * @return string
+     */
+    public function getCurrency();
 
     /**
      * Return the item with the latest timestamp (e.g. the latest added item)

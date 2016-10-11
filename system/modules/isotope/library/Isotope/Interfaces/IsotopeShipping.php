@@ -12,12 +12,20 @@
 
 namespace Isotope\Interfaces;
 
+use Isotope\Model\ProductCollectionSurcharge\Shipping;
+
 
 /**
  * IsotopeShipping interface defines an Isotope shipping method
  */
 interface IsotopeShipping
 {
+    /**
+     * Returns the ID of this shipping method.
+     *
+     * @return int
+     */
+    public function getId();
 
     /**
      * Return boolean flag if the shipping method is available
@@ -42,6 +50,13 @@ interface IsotopeShipping
      * @return  string
      */
     public function getLabel();
+
+    /**
+     * Returns the shipping note.
+     *
+     * @return string
+     */
+    public function getNote();
 
     /**
      * Return percentage label if price is percentage
@@ -74,6 +89,10 @@ interface IsotopeShipping
 
     /**
      * Get the checkout surcharge for this shipping method
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping|null
      */
     public function getSurcharge(IsotopeProductCollection $objCollection);
 }

@@ -16,8 +16,12 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
-
+/**
+ * ShippingMethod checkout step lets the user choose a shipping method.
+ */
 class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 {
     /**
@@ -34,7 +38,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Returns true if the current cart has shipping
-     * @return  bool
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -43,7 +48,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Skip the checkout step if only one option is available
-     * @return bool
+     *
+     * @inheritdoc
      */
     public function isSkippable()
     {
@@ -57,8 +63,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     * @return  string
+     * @inheritdoc
      */
     public function generate()
     {
@@ -69,7 +74,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
             \System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
 
-            $objTemplate           = new \Isotope\Template('mod_message');
+            /** @var Template|\stdClass $objTemplate */
+            $objTemplate           = new Template('mod_message');
             $objTemplate->class    = 'shipping_method';
             $objTemplate->hl       = 'h2';
             $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
@@ -79,19 +85,21 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             return $objTemplate->parse();
         }
 
-        $strClass  = $GLOBALS['TL_FFL']['radio'];
-        $objWidget = new $strClass(array(
-                                        'id'          => $this->getStepClass(),
-                                        'name'        => $this->getStepClass(),
-                                        'mandatory'   => true,
-                                        'options'     => $this->options,
-                                        'value'       => Isotope::getCart()->shipping_id,
-                                        'storeValues' => true,
-                                        'tableless'   => true,
-                                   ));
+        /** @var \Widget $objWidget */
+        $objWidget = new $GLOBALS['TL_FFL']['radio'](
+            [
+                'id'          => $this->getStepClass(),
+                'name'        => $this->getStepClass(),
+                'mandatory'   => true,
+                'options'     => $this->options,
+                'value'       => Isotope::getCart()->shipping_id,
+                'storeValues' => true,
+                'tableless'   => true,
+            ]
+        );
 
         // If there is only one shipping method, mark it as selected by default
-        if (count($this->modules) == 1) {
+        if (count($this->modules) === 1) {
             $objModule        = reset($this->modules);
             $objWidget->value = $objModule->id;
             Isotope::getCart()->setShippingMethod($objModule);
@@ -105,12 +113,12 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             }
         }
 
-        $objTemplate = new \Isotope\Template('iso_checkout_shipping_method');
-
         if (!Isotope::getCart()->hasShipping() || !isset($this->modules[Isotope::getCart()->shipping_id])) {
             $this->blnError = true;
         }
 
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate                  = new Template('iso_checkout_shipping_method');
         $objTemplate->headline        = $GLOBALS['TL_LANG']['MSC']['shipping_method'];
         $objTemplate->message         = $GLOBALS['TL_LANG']['MSC']['shipping_method_message'];
         $objTemplate->options         = $objWidget->parse();
@@ -120,8 +128,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return review information for last page of checkout
-     * @return  string
+     * @inheritdoc
      */
     public function review()
     {
@@ -129,16 +136,14 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             'shipping_method' => array(
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->note,
-                'edit'     => ($this->isSkippable() ? '' : \Isotope\Module\Checkout::generateUrlForStep('shipping')),
+                'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->getNote(),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping'),
             ),
         );
     }
 
     /**
-     * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
@@ -162,7 +167,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (true !== BE_USER_LOGGED_IN) {
                 $arrColumns[] = "enabled='1'";
             }
 

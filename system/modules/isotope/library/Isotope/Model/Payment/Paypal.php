@@ -13,41 +13,46 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
-
+use Isotope\Template;
 
 /**
- * Class Paypal
+ * PayPal Standard payment method
  *
- * Handle Paypal payments
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
+ * @property string $paypal_account
  *
  * @see https://www.paypalobjects.com/webstatic/en_US/developer/docs/pdf/ipnguide.pdf
  */
-class Paypal extends Postsale implements IsotopePayment
+class Paypal extends Postsale
 {
 
     /**
      * Process PayPal Instant Payment Notifications (IPN)
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        if (\Input::post('payment_status') != 'Completed') {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        if ('Completed' !== \Input::post('payment_status')) {
             \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
             return;
         }
 
         $objRequest = new \Request();
-        $objRequest->send(('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate'), file_get_contents("php://input"), 'post');
+        $objRequest->send(
+            'https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate',
+            file_get_contents('php://input'),
+            'post'
+        );
 
         if ($objRequest->hasError()) {
             \System::log('PayPal IPN: Request Error (' . $objRequest->error . ')', __METHOD__, TL_ERROR);
@@ -55,18 +60,20 @@ class Paypal extends Postsale implements IsotopePayment
             $response->send();
         }
 
-        if ($objRequest->response != 'VERIFIED') {
+        if ('VERIFIED' !== $objRequest->response) {
             \System::log('PayPal IPN: data rejected (' . $objRequest->response . ')', __METHOD__, TL_ERROR);
             return;
         }
 
-        if ((\Input::post('receiver_email', true) != $this->paypal_account && !$this->debug)) {
+        if (!$this->debug && \Input::post('receiver_email', true) != $this->paypal_account) {
             \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return;
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->currency != \Input::post('mc_currency') || $objOrder->getTotal() != \Input::post('mc_gross')) {
+        if ($objOrder->getCurrency() !== \Input::post('mc_currency')
+            || $objOrder->getTotal() != \Input::post('mc_gross')
+        ) {
             \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
             return;
         }
@@ -81,7 +88,7 @@ class Paypal extends Postsale implements IsotopePayment
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data = $arrPayment;
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -101,13 +108,18 @@ class Paypal extends Postsale implements IsotopePayment
     /**
      * Return the PayPal form.
      *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module|Checkout               $objModule The checkout module instance
+     * @param IsotopeProductCollection $objOrder  The order being places
+     * @param \Module                  $objModule The checkout module instance
      *
-     * @return  string
+     * @return string
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $arrData     = array();
         $fltDiscount = 0;
         $i           = 0;
@@ -158,18 +170,19 @@ class Paypal extends Postsale implements IsotopePayment
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 
-        $objTemplate = new \Isotope\Template('iso_payment_paypal');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_paypal');
         $objTemplate->setData($this->arrData);
 
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
-        $objTemplate->invoice       = $objOrder->id;
+        $objTemplate->invoice       = $objOrder->getId();
         $objTemplate->data          = array_map('specialchars', $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
-        $objTemplate->currency      = $objOrder->currency;
-        $objTemplate->return        = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return = \Environment::get('base') . $objModule->generateUrlForStep('failed');
+        $objTemplate->currency      = $objOrder->getCurrency();
+        $objTemplate->return        = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancel_return = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->headline      = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
         $objTemplate->message       = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
@@ -219,8 +232,9 @@ class Paypal extends Postsale implements IsotopePayment
   <tbody>';
 
         foreach ($arrPayment as $k => $v) {
-            if (is_array($v))
+            if (is_array($v)) {
                 continue;
+            }
 
             $strBuffer .= '
   <tr>

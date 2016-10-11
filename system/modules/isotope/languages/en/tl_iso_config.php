@@ -53,6 +53,7 @@ $GLOBALS['TL_LANG']['tl_iso_config']['orderPrefix']                 = array('Ord
 $GLOBALS['TL_LANG']['tl_iso_config']['orderDigits']                 = array('Order number length', 'Select the minimum length of the order number (not including order prefix).');
 $GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_new']             = array('Status for new orders', 'Choose a matching status for new orders. A payment module can override this.');
 $GLOBALS['TL_LANG']['tl_iso_config']['orderstatus_error']           = array('Order status on error', 'Select an order status if something goes wrong (e.g. payment).');
+$GLOBALS['TL_LANG']['tl_iso_config']['orderDetailsModule']          = array('Module for backend view', 'Select a order details module that is used to show the order in the backend.');
 $GLOBALS['TL_LANG']['tl_iso_config']['invoiceLogo']                 = array('Invoice Logo', 'Select a logo to show up on the invoices for this store.');
 $GLOBALS['TL_LANG']['tl_iso_config']['templateGroup']               = array('Templates folder', 'Here you can select a templates folder to search before every other template folder.');
 $GLOBALS['TL_LANG']['tl_iso_config']['cartMinSubtotal']             = array('Minimum subtotal', 'The minimum cart subtotal required to order. Enter 0 to disable.');

@@ -12,6 +12,8 @@
 
 namespace Isotope\Widget;
 
+use Haste\Util\Debug;
+
 
 /**
  * Class ProductGroupSelector
@@ -70,7 +72,7 @@ class ProductGroupSelector extends \Widget
     {
         parent::__construct($arrAttributes);
 
-        $this->loadDataContainer('tl_iso_group');
+        \Controller::loadDataContainer('tl_iso_group');
         \System::loadLanguageFile('tl_iso_group');
 
         $this->import('Database');
@@ -110,14 +112,12 @@ class ProductGroupSelector extends \Widget
         }
 
         // Check if there is at least one value
-        if ($this->fieldType == 'text') {
-            if (is_array($varInput)) {
-                foreach ($varInput as $k => $option) {
-                    if ($this->mandatory && $option != '') {
-                        $this->mandatory = false;
-                    } elseif ($option == '') {
-                        unset($varInput[$k]);
-                    }
+        if ('text' === $this->fieldType && is_array($varInput)) {
+            foreach ($varInput as $k => $option) {
+                if ($this->mandatory && $option != '') {
+                    $this->mandatory = false;
+                } elseif ($option == '') {
+                    unset($varInput[$k]);
                 }
             }
         }
@@ -132,7 +132,7 @@ class ProductGroupSelector extends \Widget
      */
     public function generate()
     {
-        $GLOBALS['TL_JAVASCRIPT'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js');
+        $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js');
 
         // Open the tree if there is an error
         if ($this->hasErrors()) {
@@ -140,9 +140,9 @@ class ProductGroupSelector extends \Widget
         }
 
         // Store the keyword
-        if (\Input::post('FORM_SUBMIT') == 'item_selector') {
+        if ('item_selector' === \Input::post('FORM_SUBMIT')) {
             $this->Session->set('product_group_selector_search', \Input::post('keyword'));
-            $this->reload();
+            \Controller::reload();
         }
 
         $tree = '';
@@ -153,7 +153,7 @@ class ProductGroupSelector extends \Widget
         // Search for a specific group
         if ($for != '') {
             // The keyword must not start with a wildcard (see #4910)
-            if (strncmp($for, '*', 1) === 0) {
+            if (0 === strpos($for, '*')) {
                 $for = substr($for, 1);
             }
 
@@ -217,7 +217,7 @@ class ProductGroupSelector extends \Widget
         }
 
         // Select all checkboxes
-        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType'] == 'checkbox') {
+        if ('checkbox' === $GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType']) {
             $strReset = "\n" . '    <li class="tl_folder"><div class="tl_left">&nbsp;</div> <div class="tl_right"><label for="check_all_' . $this->strId . '" class="tl_change_selected">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="check_all_' . $this->strId . '" class="tl_tree_checkbox" value="" onclick="Backend.toggleCheckboxGroup(this,\'' . $this->strName . '\')"></div><div style="clear:both"></div></li>';
         } // Reset radio button selection
         else {
@@ -245,7 +245,7 @@ class ProductGroupSelector extends \Widget
         }
 
         $this->strField = $strField;
-        $this->loadDataContainer($this->strTable);
+        \Controller::loadDataContainer($this->strTable);
 
         // Load current values
         switch ($GLOBALS['TL_DCA'][$this->strTable]['config']['dataContainer']) {
@@ -373,7 +373,7 @@ class ProductGroupSelector extends \Widget
             $return .= '<li class="parent" id="' . $node . '_' . $id . '"><ul class="level_' . $level . '">';
 
             for ($k = 0, $c = count($childs); $k < $c; $k++) {
-                $return .= $this->renderGrouptree($childs[$k], ($intMargin + $intSpacing));
+                $return .= $this->renderGrouptree($childs[$k], $intMargin + $intSpacing);
             }
 
             $return .= '</ul></li>';

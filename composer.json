@@ -15,25 +15,47 @@
         }
     ],
     "require":{
-        "php":">=5.3.2",
-        "contao/core":">=3.5.2,<5.0",
-        "contao-community-alliance/composer-plugin":"2.*",
-        "terminal42/contao-conditionalselectmenu":"~3.0",
-        "terminal42/contao-namespace-class-loader":"~1.0",
-        "terminal42/dcawizard":"~2.3",
-        "codefog/contao-haste":"~4.8",
+        "php": ">=5.3.2",
+        "contao/core-bundle": "^3.5.2 || ~4.1",
+        "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
+        "terminal42/contao-conditionalselectmenu": "~3.0",
+        "terminal42/dcawizard": "~2.3",
+        "codefog/contao-haste": "~4.12",
         "menatwork/contao-multicolumnwizard": "~3.2",
-        "terminal42/contao-tablelookupwizard":"~2.0",
-        "terminal42/notification_center":"~1.0",
-        "terminal42/dc_multilingual":"~2.0"
+        "terminal42/contao-tablelookupwizard": "~3.2",
+        "terminal42/notification_center": "~1.0",
+        "terminal42/dc_multilingual": "~2.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
     },
+    "suggest": {
+        "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader"
+    },
+    "autoload": {
+        "psr-0": {
+            "Isotope\\": [
+                "system/modules/isotope/library",
+                "system/modules/isotope_reports/library",
+                "system/modules/isotope_rules/library"
+            ],
+            "UnitedPrototype\\": [
+                "system/modules/isotope/library"
+            ]
+        },
+        "classmap": [
+            "system/modules/isotope/drivers/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Isotope\\Test\\": "system/modules/isotope/test/tests"
+        }
+    },
     "extra":{
         "branch-alias": {
-            "dev-master": "2.2.x-dev",
-            "dev-develop": "2.3.x-dev",
+            "dev-master": "2.3.x-dev",
+            "dev-develop": "2.4.x-dev",
             "dev-support/2.1": "2.1.x-dev"
         },
         "contao": {

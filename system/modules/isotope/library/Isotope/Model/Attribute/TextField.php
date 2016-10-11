@@ -12,19 +12,16 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Model\Attribute;
 
-
 /**
- * Attribute to impelement TextField widget
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * Attribute to implement TextField widget
  */
-class TextField extends Attribute implements IsotopeAttribute
+class TextField extends Attribute
 {
-
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);

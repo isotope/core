@@ -40,7 +40,7 @@ class Week implements PeriodInterface
 
     public function getSqlField($fieldName)
     {
-        return "CONCAT(FLOOR(YEARWEEK(FROM_UNIXTIME($fieldName), 3) / 100), WEEKOFYEAR(FROM_UNIXTIME($fieldName)))";
+        return "YEARWEEK(FROM_UNIXTIME($fieldName))";
     }
 
     public function getJavascriptClosure()

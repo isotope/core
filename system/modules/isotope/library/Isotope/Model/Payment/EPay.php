@@ -13,16 +13,24 @@
 namespace Isotope\Model\Payment;
 
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
-
-class EPay extends Payment implements IsotopePayment, IsotopePostsale
+/**
+ * EPay payment method
+ *
+ * @property string $epay_windowstate
+ * @property string $epay_merchantnumber
+ * @property string $epay_secretkey
+ */
+class EPay extends Payment implements IsotopePostsale
 {
 
     /**
@@ -59,25 +67,25 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Process payment on the confirmation page
-     *
-     * @param IsotopeProductCollection|Order $objOrder
-     * @param \Module                        $objModule
-     *
-     * @return bool|mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         if (!$this->validatePayment($objOrder)) {
             return false;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -85,21 +93,25 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
         return true;
     }
 
-
     /**
      * Process ePay callback
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if ($this->validatePayment($objOrder)) {
             if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 return;
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->save();
@@ -107,9 +119,7 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return  IsotopeProductCollection|null
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -117,26 +127,22 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the ePay form
-     *
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_epay');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_epay');
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->currency = $objOrder->currency;
-        $objTemplate->amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
-        $objTemplate->orderid = $objOrder->id;
-        $objTemplate->instantcapture = ($this->trans_type == 'capture' ? '1' : '0');
-        $objTemplate->callbackurl = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->accepturl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancelurl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
-        $objTemplate->language = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
+        $objTemplate->currency       = $objOrder->getCurrency();
+        $objTemplate->amount         = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency());
+        $objTemplate->orderid        = $objOrder->getId();
+        $objTemplate->instantcapture = 'capture' === $this->trans_type ? '1' : '0';
+        $objTemplate->callbackurl    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->accepturl      = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancelurl      = \Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $objTemplate->language       = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
 
         return $objTemplate->parse();
     }
@@ -144,19 +150,23 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */
     protected function validatePayment(IsotopeProductCollection $objOrder)
     {
         $arrValues = $_GET;
-        unset($arrValues['hash']);
-        unset($arrValues['auto_item']);
-        unset($arrValues['step']);
 
-        $strHash = md5(implode('', $arrValues) . $this->epay_secretkey);
-        $intAmount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
+        unset(
+            $arrValues['hash'],
+            $arrValues['auto_item'],
+            $arrValues['step']
+        );
+
+        $strHash       = md5(implode('', $arrValues) . $this->epay_secretkey);
+        $orderCurrency = $objOrder->getCurrency();
+        $orderAmount   = Currency::getAmountInMinorUnits($objOrder->getTotal(), $orderCurrency);
 
         if ($strHash != \Input::get('hash')) {
             \System::log('Invalid hash for ePay payment. See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
@@ -174,17 +184,19 @@ class EPay extends Payment implements IsotopePayment, IsotopePostsale
             return false;
         }
 
-        if (Currency::getIsoNumber($objOrder->currency) != \Input::get('currency') || $intAmount != \Input::get('amount')) {
+        if (Currency::getIsoNumber($orderCurrency) != \Input::get('currency')
+            || $orderAmount != \Input::get('amount')
+        ) {
             \System::log('Currency or amount does not match order.  See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
 
             log_message(
                 sprintf(
                     "Currency or amount does not match order:\nCurrency: got %s (%s), expected %s\nAmount: got %s, expected %s\n\n",
                     \Input::get('currency'),
-                    Currency::getIsoNumber($objOrder->currency),
-                    $objOrder->currency,
+                    Currency::getIsoNumber($orderCurrency),
+                    $orderCurrency,
                     \Input::get('amount'),
-                    $intAmount
+                    $orderAmount
                 ),
                 'isotope_epay.log'
             );

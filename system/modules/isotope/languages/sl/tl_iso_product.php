@@ -15,7 +15,11 @@
  */
 
 $GLOBALS['TL_LANG']['tl_iso_product']['name'][0] = 'Naziv';
+$GLOBALS['TL_LANG']['tl_iso_product']['description'][0] = 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_product']['images'][0] = 'Slike';
+$GLOBALS['TL_LANG']['tl_iso_product']['mmDesc'] = 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_product']['related'][0] = 'Sorodni izdelki';
 $GLOBALS['TL_LANG']['tl_iso_product']['downloads'][0] = 'Prenosi';
+$GLOBALS['TL_LANG']['tl_iso_product']['expert_legend'] = 'Napredne nastavitve';
 $GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['min'] = 'Količina';
+$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['price'] = 'Cena';

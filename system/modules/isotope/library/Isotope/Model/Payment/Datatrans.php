@@ -12,41 +12,42 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
-
+use Isotope\Module\Checkout;
 
 /**
- * Class Datatrans
+ * Datatrans payment method
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
- * @author     Leo Unglaub <leo@leo-unglaub.net>
+ * @property string $datatrans_id
+ * @property string $datatrans_sign
+ * @property string $datatrans_hash_method
+ * @property string $datatrans_hash_convert
  */
-class Datatrans extends Postsale implements IsotopePayment
+class Datatrans extends Postsale
 {
-
     /**
      * Perform server to server data check
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         // Verify payment status
-        if (\Input::post('status') != 'success') {
+        if (\Input::post('status') !== 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
 
             return;
         }
 
         // Validate HMAC sign
-        $hash = hash_hmac(
-            'md5',
-            $this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'),
-            $this->datatrans_sign
-        );
+        $hash = $this->createHash($this->datatrans_id . \Input::post('amount') . \Input::post('currency') . \Input::post('uppTransactionId'));
 
         if (\Input::post('sign2') != $hash) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
@@ -55,12 +56,14 @@ class Datatrans extends Postsale implements IsotopePayment
         }
 
         // For maximum security, also validate individual parameters
-        if (!$this->validateParameters(array(
-            'refno'         => $objOrder->id,
-            'currency'      => $objOrder->currency,
-            'amount'        => round($objOrder->getTotal() * 100),
-            'reqtype'       => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
-        ))) {
+        if (!$this->validateParameters(
+            [
+                'refno'    => $objOrder->getId(),
+                'currency' => $objOrder->getCurrency(),
+                'amount'   => round($objOrder->getTotal() * 100),
+                'reqtype'  => 'auth' === $this->trans_type ? 'NOA' : 'CAA',
+            ]
+        )) {
             return;
         }
 
@@ -70,15 +73,14 @@ class Datatrans extends Postsale implements IsotopePayment
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -86,25 +88,25 @@ class Datatrans extends Postsale implements IsotopePayment
     }
 
     /**
-     * Generate the submit form for datatrans and if javascript is enabled redirect automaticly
-     *
-     * @param   IsotopeProductCollection|Order   $objOrder  The order being places
-     * @param   \Module|\Isotope\Module\Checkout $objModule The checkout module instance
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $objAddress = $objOrder->getBillingAddress();
 
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
             'amount'                => round($objOrder->getTotal() * 100),
-            'currency'              => $objOrder->currency,
-            'refno'                 => $objOrder->id,
+            'currency'              => $objOrder->getCurrency(),
+            'refno'                 => $objOrder->getId(),
             'language'              => $objOrder->language,
-            'reqtype'               => ($this->trans_type == 'auth' ? 'NOA' : 'CAA'),
+            'reqtype'               => 'auth' === $this->trans_type ? 'NOA' : 'CAA',
             'uppCustomerDetails'    => 'yes',
             'uppCustomerTitle'      => $objAddress->salutation,
             'uppCustomerFirstName'  => $objAddress->firstname,
@@ -116,15 +118,15 @@ class Datatrans extends Postsale implements IsotopePayment
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder)),
-            'errorUrl'              => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
-            'cancelUrl'             => ampersand(\Environment::get('base') . $objModule->generateUrlForStep('failed')),
+            'successUrl'            => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder)),
+            'errorUrl'              => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('failed')),
+            'cancelUrl'             => ampersand(\Environment::get('base') . Checkout::generateUrlForStep('failed')),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
 
         // Security signature (see Security Level 2)
-        $arrParams['sign'] = hash_hmac('md5', $arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno'], $this->datatrans_sign);
+        $arrParams['sign'] = $this->createHash($arrParams['merchantId'] . $arrParams['amount'] . $arrParams['currency'] . $arrParams['refno']);
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id       = $this->id;
@@ -159,5 +161,23 @@ class Datatrans extends Postsale implements IsotopePayment
         }
 
         return true;
+    }
+
+    /**
+     * Create hash based on module config for given value.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    private function createHash($value)
+    {
+        $algo = 'sha256' === $this->datatrans_hash_method ? 'sha256' : 'md5';
+
+        return hash_hmac(
+            $algo,
+            $value,
+            $this->datatrans_hash_convert ? hex2bin($this->datatrans_sign) : $this->datatrans_sign
+        );
     }
 }

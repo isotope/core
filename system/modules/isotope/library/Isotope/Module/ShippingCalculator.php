@@ -16,7 +16,9 @@ use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 
-
+/**
+ * ShippingCalculator frontend module calculates the shipping price for the current cart.
+ */
 class ShippingCalculator extends Module
 {
 

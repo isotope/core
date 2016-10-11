@@ -6,11 +6,8 @@ use Isotope\Interfaces\IsotopeIntegrityCheck;
 
 abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
 {
-
     /**
-     * Generate an ID for this integrity check
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getId()
     {
@@ -23,17 +20,21 @@ abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
         return standardize($className);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][0];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getDescription()
     {
-        if ($this->hasError()) {
-            return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][1];
-        } else {
-            return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][2];
-        }
+        $key = $this->hasError() ? 1 : 2;
+
+        return $GLOBALS['TL_LANG']['tl_iso_integrity'][$this->getId()][$key];
     }
 }

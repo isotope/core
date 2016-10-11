@@ -22,6 +22,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\ProductType;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
+use Isotope\Template;
 
 /**
  * @property string $iso_list_layout
@@ -52,10 +53,7 @@ class ProductList extends Module
     protected $blnCacheProducts = true;
 
     /**
-     * Constructor.
-     *
-     * @param object $objModule
-     * @param string $strColumn
+     * @inheritdoc
      */
     public function __construct($objModule, $strColumn = 'main')
     {
@@ -79,7 +77,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             /** @var \BackendTemplate|object $objTemplate */
             $objTemplate = new \BackendTemplate('be_wildcard');
 
@@ -124,7 +122,7 @@ class ProductList extends Module
     {
         // return message if no filter is set
         if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
-            $this->Template->message  = $this->replaceInsertTags($this->iso_noFilter);
+            $this->Template->message  = \Controller::replaceInsertTags($this->iso_noFilter);
             $this->Template->type     = 'noFilter';
             $this->Template->products = array();
 
@@ -132,9 +130,9 @@ class ProductList extends Module
         }
 
         global $objPage;
-        $cacheKey    = $this->getCacheKey();
-        $arrProducts = null;
-        $arrCacheIds = null;
+        $cacheKey      = $this->getCacheKey();
+        $arrProducts   = null;
+        $arrCacheIds   = null;
 
         // Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findByUniqid($cacheKey)) !== null) {
@@ -168,7 +166,7 @@ class ProductList extends Module
                     $objPage->noSearch = 1;
                     $objPage->cache    = 0;
 
-                    $this->Template          = new \Isotope\Template('mod_iso_productlist_caching');
+                    $this->Template          = new Template('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;
@@ -189,7 +187,7 @@ class ProductList extends Module
                     $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
 
                     \Database::getInstance()
-                        ->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")
+                        ->prepare('UPDATE tl_module SET iso_productcache=? WHERE id=?')
                         ->execute(serialize($arrCacheMessage), $this->id)
                     ;
                 }
@@ -241,8 +239,8 @@ class ProductList extends Module
 
             $arrConfig = array(
                 'module'        => $this,
-                'template'      => ($this->iso_list_layout ?: $type->list_template),
-                'gallery'       => ($this->iso_gallery ?: $type->list_gallery),
+                'template'      => $this->iso_list_layout ?: $type->list_template,
+                'gallery'       => $this->iso_gallery ?: $type->list_gallery,
                 'buttons'       => $this->iso_buttons,
                 'useQuantity'   => $this->iso_use_quantity,
                 'jumpTo'        => $this->findJumpToPage($objProduct),
@@ -317,9 +315,9 @@ class ProductList extends Module
         }
 
         // Apply new/old product filter
-        if ($this->iso_newFilter == 'show_new') {
+        if ('show_new' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($this->iso_newFilter == 'show_old') {
+        } elseif ('show_old' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
@@ -334,7 +332,7 @@ class ProductList extends Module
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ('DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending());
             $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
@@ -391,7 +389,9 @@ class ProductList extends Module
             $limit = $this->numberOfItems;
         }
 
-        $total = count($arrItems);
+        $pagination = '';
+        $page       = 1;
+        $total      = count($arrItems);
 
         // Split the results
         if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
@@ -402,7 +402,7 @@ class ProductList extends Module
 
             // Get the current page
             $id   = 'page_iso' . $this->id;
-            $page = \Input::get($id) ? : 1;
+            $page = \Input::get($id) ?: 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
@@ -425,8 +425,15 @@ class ProductList extends Module
 
             // Add the pagination menu
             $objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
-            $this->Template->pagination = $objPagination->generate("\n  ");
+
+            $pagination = $objPagination->generate("\n  ");
         }
+
+        $this->Template->pagination = $pagination;
+        $this->Template->total      = count($arrItems);
+        $this->Template->page       = $page;
+        $this->Template->offset     = $offset;
+        $this->Template->limit      = $limit;
 
         if (isset($limit)) {
             $arrItems = array_slice($arrItems, $offset, $limit);
@@ -452,7 +459,7 @@ class ProductList extends Module
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ('DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending());
             $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
@@ -487,7 +494,7 @@ class ProductList extends Module
 
         foreach ($arrFilters as $arrConfig) {
             if (in_array($arrConfig['attribute'], $arrFields)
-                && ($arrConfig['operator'] == '=' || $arrConfig['operator'] == '==' || $arrConfig['operator'] == 'eq')
+                && ('=' === $arrConfig['operator'] || '==' === $arrConfig['operator'] || 'eq' === $arrConfig['operator'])
             ) {
                 $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
             }
@@ -533,7 +540,7 @@ class ProductList extends Module
         ;
 
         // Find
-        if ($this->iso_newFilter == 'show_new' || $this->iso_newFilter == 'show_old') {
+        if ('show_new' === $this->iso_newFilter || 'show_old' === $this->iso_newFilter) {
             $added = \Database::getInstance()
                 ->execute("
                     SELECT MIN(dateAdded)

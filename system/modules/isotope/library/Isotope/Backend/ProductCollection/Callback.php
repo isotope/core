@@ -85,15 +85,17 @@ class Callback extends \Backend
         $GLOBALS['TL_CSS'][] = Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
 
         // Try to find a order details module or create a dummy FE module model
-        if (($objModuleModel = \ModuleModel::findOneBy('type', 'iso_orderdetails')) === null) {
-            $objModuleModel = new \ModuleModel();
-            $objModuleModel->type = 'iso_orderdetails';
-            $objModuleModel->iso_collectionTpl = 'iso_collection_default';
+        if (($config = $objOrder->getRelated('config_id')) === null
+            || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
+        ) {
+            $moduleModel = new \ModuleModel();
+            $moduleModel->type = 'iso_orderdetails';
+            $moduleModel->iso_collectionTpl = 'iso_collection_default';
         }
 
         // Generate a regular order details module
         \Input::setGet('uid', $objOrder->uniqid);
-        $objModule = new OrderDetails($objModuleModel);
+        $objModule = new OrderDetails($moduleModel);
 
         return Haste::getInstance()->call('replaceInsertTags', $objModule->generate(true));
     }
@@ -104,6 +106,7 @@ class Callback extends \Backend
      * @param object $dc
      *
      * @return string
+     *
      * @deprecated  we should probably remove this in 3.0 as it does no longer make sense
      */
     public function generateEmailData($dc)
@@ -138,7 +141,7 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . $k . ': </span></td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': </span></td>
     <td' . $strClass . '>' . $strValue . '</td>
   </tr>';
         }
@@ -193,8 +196,8 @@ class Callback extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        \System::loadLanguageFile($objAddress->getTable());
-        $this->loadDataContainer($objAddress->getTable());
+        \System::loadLanguageFile(Address::getTable());
+        \Controller::loadDataContainer(Address::getTable());
 
         $strBuffer = '
 <div>
@@ -203,7 +206,7 @@ class Callback extends \Backend
 
         $i = 0;
 
-        foreach ($GLOBALS['TL_DCA'][$objAddress->getTable()]['fields'] as $k => $v) {
+        foreach ($GLOBALS['TL_DCA'][Address::getTable()]['fields'] as $k => $v) {
             if (!isset($objAddress->$k)) {
                 continue;
             }
@@ -213,8 +216,8 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel($objAddress->getTable(), $k) . ': </span></td>
-    <td' . $strClass . '>' . Format::dcaValue($objAddress->getTable(), $k, $v) . '</td>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel(Address::getTable(), $k) . ': </span></td>
+    <td' . $strClass . '>' . Format::dcaValue(Address::getTable(), $k, $v) . '</td>
   </tr>';
         }
 
@@ -238,7 +241,7 @@ class Callback extends \Backend
 
         // Only admins can delete orders. Others should set the order_status to cancelled.
         unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
-        if (\Input::get('act') == 'delete' || \Input::get('act') == 'deleteAll') {
+        if ('delete' === \Input::get('act') || 'deleteAll' === \Input::get('act')) {
             \System::log('Only admin can delete orders!', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
@@ -247,7 +250,9 @@ class Callback extends \Backend
         $arrConfigs = $this->User->iso_configs;
 
         if (is_array($arrConfigs) && !empty($arrConfigs)) {
-            $objOrders = \Database::getInstance()->query("SELECT id FROM tl_iso_product_collection WHERE config_id IN (" . implode(',', $arrConfigs) . ")");
+            $objOrders = \Database::getInstance()->query(
+                'SELECT id FROM tl_iso_product_collection WHERE config_id IN (' . implode(',', $arrConfigs) . ')'
+            );
 
             if ($objOrders->numRows) {
                 $arrIds = $objOrders->fetchEach('id');
@@ -276,7 +281,7 @@ class Callback extends \Backend
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['payment_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return $row['payment_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -317,7 +322,7 @@ class Callback extends \Backend
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['shipping_id'] > 0 ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return $row['shipping_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -357,7 +362,7 @@ class Callback extends \Backend
     {
         $strRedirectUrl = str_replace('&key=print_document', '', \Environment::get('request'));
 
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_print_document') {
+        if ('tl_iso_print_document' === \Input::post('FORM_SUBMIT')) {
             if (($objOrder = Order::findByPk($dc->id)) === null) {
                 \Message::addError('Could not find order id.');
                 \Controller::redirect($strRedirectUrl);

@@ -12,6 +12,7 @@
 
 namespace Isotope\Backend;
 
+use Database\Result;
 use Isotope\Model\ProductType;
 
 
@@ -27,28 +28,31 @@ class PasteButton extends \Backend
 
     /**
      * Handle the paste button callback for tl_iso_product
-     * @param DataContainer
-     * @param array
-     * @param string
-     * @param bool
-     * @param array
+     *
+     * @param \DataContainer $dc
+     * @param array          $row
+     * @param string         $table
+     * @param bool           $cr
+     * @param array|bool     $arrClipboard
+     *
      * @return string
+     *
      * @link http://www.contao.org/callbacks.html#paste_button_callback
      */
     public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
     {
         // Disable all buttons if there is a circular reference
-        if ($arrClipboard !== false && ($arrClipboard['mode'] == 'cut' && ($cr == 1 || $arrClipboard['id'] == $row['id']) || $arrClipboard['mode'] == 'cutAll' && ($cr == 1 || in_array($row['id'], $arrClipboard['id'])))) {
+        if ($arrClipboard !== false && ('cut' === $arrClipboard['mode'] && ($cr == 1 || $arrClipboard['id'] == $row['id']) || 'cutAll' === $arrClipboard['mode'] && ($cr == 1 || in_array($row['id'], $arrClipboard['id'])))) {
             return '';
         }
 
-        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM " . \Isotope\Model\Product::getTable() . " p LEFT JOIN " . ProductType::getTable() . " t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
+        $objProduct = \Database::getInstance()->prepare("SELECT p.*, t.variants FROM tl_iso_product p LEFT JOIN tl_iso_producttype t ON p.type=t.id WHERE p.id=?")->execute($arrClipboard['id']);
 
         // Copy or cut a single product or variant
-        if ($arrClipboard['mode'] == 'cut' || $arrClipboard['mode'] == 'copy') {
+        if ('cut' === $arrClipboard['mode'] || 'copy' === $arrClipboard['mode']) {
             return $this->pasteVariant($objProduct, $table, $row, $arrClipboard);
         } // Cut or copy multiple variants
-        elseif ($arrClipboard['mode'] == 'cutAll' || $arrClipboard['mode'] == 'copyAll') {
+        elseif ('cutAll' === $arrClipboard['mode'] || 'copyAll' === $arrClipboard['mode']) {
             return $this->pasteAll($objProduct, $table, $row, $arrClipboard);
         }
 
@@ -59,15 +63,21 @@ class PasteButton extends \Backend
 
     /**
      * Copy or paste a single variant
+     *
+     * @param Result $objProduct
+     * @param string $table
+     * @param array  $row
+     * @param array  $arrClipboard
+     *
      * @return string
      */
     protected function pasteVariant($objProduct, $table, $row, $arrClipboard)
     {
         // Can't copy variant into it's current product
-        if ($table == 'tl_iso_product' && $objProduct->pid == $row['id'] && $arrClipboard['mode'] == 'copy') {
+        if ('tl_iso_product' === $table && $objProduct->pid == $row['id'] && 'copy' === $arrClipboard['mode']) {
             return $this->getPasteButton(false);
         } // Disable paste button for products without variant data
-        elseif ($table == 'tl_iso_product' && $row['id'] > 0) {
+        elseif ('tl_iso_product' === $table && $row['id'] > 0) {
             $objType = ProductType::findByPk($row['type']);
 
             if (null === $objType || !$objType->hasVariants()) {
@@ -75,7 +85,7 @@ class PasteButton extends \Backend
             }
         }
 
-        return $this->getPasteButton(true, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $row['id']), $table, $row['id']);
+        return $this->getPasteButton(true, \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $row['id']), $table, $row['id']);
     }
 
 
@@ -86,11 +96,11 @@ class PasteButton extends \Backend
     protected function pasteAll($objProduct, $table, $row, $arrClipboard)
     {
         // Can't paste products in product or variant
-        if ($table == 'tl_iso_product' && $row['id'] > 0) {
+        if ('tl_iso_product' === $table && $row['id'] > 0) {
             return '';
         }
 
-        return $this->getPasteButton(true, $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=1&amp;childs=1&amp;gid=' . $row['id']), $table, $row['id']);
+        return $this->getPasteButton(true, \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=1&amp;childs=1&amp;gid=' . $row['id']), $table, $row['id']);
     }
 
 

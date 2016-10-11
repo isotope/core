@@ -14,18 +14,20 @@ namespace Isotope\Model\Payment;
 
 use Haste\DateTime\DateTime;
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
 /**
  * Class VADS
  *
- * @property string vads_site_id
- * @property string vads_certificate
+ * @property string $vads_site_id
+ * @property string $vads_certificate
  */
-abstract class VADS extends Postsale implements IsotopePayment
+abstract class VADS extends Postsale
 {
     /**
      * List of parameters to validate on inbound data
@@ -45,45 +47,47 @@ abstract class VADS extends Postsale implements IsotopePayment
     );
 
     /**
-     * Perform server to server data check
-     *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         // Verify payment status
         if (\Input::post('vads_result') != '00') {
-            \System::log('Payment for order ID "' . $objOrder->id . '" failed.', __METHOD__, TL_ERROR);
+            \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
             return;
         }
 
         // Validate HMAC sign
         if (\Input::post('signature') != $this->calculateSignature($_POST, $this->vads_certificate)) {
-            \System::log('Invalid signature for Order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \System::log('Invalid signature for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         // For maximum security, also validate individual parameters
         if (!$this->validateInboundParameters($objOrder)) {
-            \System::log('Parameter mismatch for Order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+            \System::log('Parameter mismatch for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -93,17 +97,20 @@ abstract class VADS extends Postsale implements IsotopePayment
     /**
      * Generate the submit form for Innopay and if javascript is enabled redirect automatically
      *
-     * @param   IsotopeProductCollection|Order   $objOrder  The order being placed
-     * @param   \Module|\Isotope\Module\Checkout $objModule The checkout module instance
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $parameters = $this->getOutboundParameters($objOrder, $objModule);
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $parameters = $this->getOutboundParameters($objOrder);
         $parameters['signature'] = $this->calculateSignature($parameters, $this->vads_certificate);
 
-        $objTemplate           = new \Isotope\Template($this->strTemplate);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate           = new Template($this->strTemplate);
         $objTemplate->id       = $this->id;
         $objTemplate->params   = $parameters;
         $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
@@ -115,47 +122,42 @@ abstract class VADS extends Postsale implements IsotopePayment
     }
 
     /**
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
+     * @param IsotopePurchasableCollection $objOrder
      *
      * @return array
      */
-    protected function getOutboundParameters(IsotopeProductCollection $objOrder, \Module $objModule = null)
+    protected function getOutboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $objAddress = $objOrder->getBillingAddress();
-        $successUrl = '';
-        $failureUrl = '';
+        $successUrl = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $failureUrl = \Environment::get('base') . Checkout::generateUrlForStep('failed');
+
         $transDate  = new DateTime();
         $transDate->setTimezone(new \DateTimeZone('UTC'));
 
-        if (null !== $objModule) {
-            $successUrl = \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder);
-            $failureUrl = \Environment::get('base') . $objModule->generateUrlForStep('failed');
-        }
-
         return array(
             'vads_action_mode'    => 'INTERACTIVE',
-            'vads_amount'         => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency),
+            'vads_amount'         => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'vads_contrib'        => 'Isotope eCommerce ' . Isotope::VERSION,
-            'vads_ctx_mode'       => ($this->debug ? 'TEST' : 'PRODUCTION'),
-            'vads_currency'       => Currency::getIsoNumber($objOrder->currency),
+            'vads_ctx_mode'       => $this->debug ? 'TEST' : 'PRODUCTION',
+            'vads_currency'       => Currency::getIsoNumber($objOrder->getCurrency()),
             'vads_cust_address'   => $objAddress->street_1,
             'vads_cust_city'      => $objAddress->city,
             'vads_cust_country'   => $objAddress->country,
             'vads_cust_email'     => $objAddress->email,
-            'vads_cust_id'        => ($objOrder->member ?: ''),
-            'vads_cust_name'      => ($objAddress->firstname . ' ' . $objAddress->lastname),
+            'vads_cust_id'        => null === $objOrder->getMember() ? 0 : $objOrder->getMember()->id,
+            'vads_cust_name'      => $objAddress->firstname . ' ' . $objAddress->lastname,
             'vads_cust_phone'     => $objAddress->phone,
             'vads_cust_title'     => $objAddress->salutation,
             'vads_cust_zip'       => $objAddress->postal,
             'vads_language'       => $objOrder->language,
-            'vads_order_id'       => $objOrder->id,
+            'vads_order_id'       => $objOrder->getId(),
             'vads_page_action'    => 'PAYMENT',
             'vads_payment_config' => 'SINGLE',
             'vads_return_mode'    => 'NONE',
             'vads_site_id'        => $this->vads_site_id,
             'vads_trans_date'     => $transDate->format('YmdHis'),
-            'vads_trans_id'       => str_pad($objOrder->id, 6, '0', STR_PAD_LEFT),
+            'vads_trans_id'       => str_pad($objOrder->getId(), 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
             'vads_url_check'      => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'vads_url_error'      => $failureUrl,
@@ -194,11 +196,11 @@ abstract class VADS extends Postsale implements IsotopePayment
     /**
      * Validate input parameters to prevent payment manipulation
      *
-     * @param IsotopeProductCollection $objOrder
+     * @param IsotopePurchasableCollection $objOrder
      *
      * @return bool
      */
-    protected function validateInboundParameters(IsotopeProductCollection $objOrder)
+    protected function validateInboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $parameters = $this->getOutboundParameters($objOrder);
 

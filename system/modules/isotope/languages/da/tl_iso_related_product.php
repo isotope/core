@@ -17,7 +17,7 @@
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] = 'Kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][1] = 'Vælg en kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['products'][0] = 'Produkter';
-$GLOBALS['TL_LANG']['tl_iso_related_product']['products'][1] = 'Indtast en kommasepareret liste af produkter eller variant-ID\'er der skal vises som relaterede produkter.';
+$GLOBALS['TL_LANG']['tl_iso_related_product']['products'][1] = 'Indtast en kommasepareret liste med produkter eller variant-ID\'er, der skal vises som relaterede produkter.';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][0] = 'Tilføj kategori';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['new'][1] = 'Tilføj en ny kategori med produkter';
 $GLOBALS['TL_LANG']['tl_iso_related_product']['edit'][0] = 'Rediger kategori';

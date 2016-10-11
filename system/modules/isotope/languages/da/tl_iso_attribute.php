@@ -21,4 +21,5 @@ $GLOBALS['TL_LANG']['tl_iso_attribute']['date'][0] = 'Dato';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['phone'][0] = 'Telefonnummer';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['email'][0] = 'E-mail adresse';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['price'][0] = 'Pris';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['checkout_tokens'][2][0] = '##ordre_id##';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['description_legend'] = 'Beskrivelse';

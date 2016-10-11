@@ -16,7 +16,10 @@
 
 $GLOBALS['TL_LANG']['tl_iso_attribute']['name'][0] = 'Naziv';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['type'][0] = 'Tip';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['description'][0] = 'Opis';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource']['product'] = 'Izdelek';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['options']['label'][0] = 'Oznaka';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['phone'][0] = 'Telefonska številka';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['price'][0] = 'Cena';
 $GLOBALS['TL_LANG']['tl_iso_attribute']['discount'][0] = 'Popust';
+$GLOBALS['TL_LANG']['tl_iso_attribute']['description_legend'] = 'Opis';

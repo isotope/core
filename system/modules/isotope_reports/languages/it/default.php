@@ -19,4 +19,6 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Totale';
 $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Configurazione negozio';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Stato';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Data dell\'ordine';
+$GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'] = 'Data pagamento';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Colonne';

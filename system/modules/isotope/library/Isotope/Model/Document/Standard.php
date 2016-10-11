@@ -16,6 +16,8 @@ use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
+use Isotope\Model\ProductCollection;
+use Isotope\Template;
 
 class Standard extends Document implements IsotopeDocument
 {
@@ -128,25 +130,26 @@ class Standard extends Document implements IsotopeDocument
     {
         $objPage = \PageModel::findWithDetails($objCollection->page_id);
 
-        $objTemplate = new \Isotope\Template($this->documentTpl);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
         $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
-        $objTemplate->config        = $objCollection->getRelated('config_id');
+        $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
         $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
         $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
         $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
-        $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
+        $objCollectionTemplate = new Template($this->collectionTpl);
 
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
                 'gallery' => $this->gallery,
-                'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
@@ -177,7 +180,7 @@ class Standard extends Document implements IsotopeDocument
         // Make image paths absolute
         $strBuffer = preg_replace_callback('@(src=")([^"]+)(")@', function ($args) {
             if (preg_match('@^(http://|https://)@', $args[2])) {
-                return $args[2];
+                return $args[1] . $args[2] . $args[3];
             }
             return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
         }, $strBuffer);

@@ -17,3 +17,4 @@
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Yhteensä';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Yhteensä';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Tila';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Tilauspäivä';

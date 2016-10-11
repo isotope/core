@@ -18,4 +18,5 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Skupaj';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Skupaj';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Datum naročila';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Stolpci';

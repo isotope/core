@@ -16,29 +16,26 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
 
-
+/**
+ * ShippingAddress checkout step lets the user enter a shipping address
+ */
 class ShippingAddress extends Address implements IsotopeCheckoutStep
 {
 
     /**
      * Returns true if the current cart has shipping
      *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if (!Isotope::getCart()->requiresShipping() || count(Isotope::getConfig()->getShippingFields()) == 0) {
-            return false;
-        }
-
-        return true;
+        return Isotope::getCart()->requiresShipping() && count(Isotope::getConfig()->getShippingFields()) > 0;
     }
 
     /**
-     * Generate the checkout step
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
@@ -49,9 +46,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Return review information for last page of checkout
-     *
-     * @return string
+     * @inheritdoc
      */
     public function review()
     {
@@ -65,16 +60,12 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'edit'     => Checkout::generateUrlForStep('address'),
         ));
     }
 
     /**
-     * Return array of tokens for notification
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
@@ -92,17 +83,20 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     {
         $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getShippingFieldsConfig());
 
-        array_insert($arrOptions, 0, array(array(
-            'value'     => '-1',
-            'label'     => (Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress']),
-            'default'   => '1',
-        )));
+        array_unshift(
+            $arrOptions,
+            [
+               'value'     => '-1',
+               'label'     => Isotope::getCart()->requiresPayment() ? $GLOBALS['TL_LANG']['MSC']['useBillingAddress'] : $GLOBALS['TL_LANG']['MSC']['useCustomerAddress'],
+               'default'   => '1',
+            ]
+        );
 
-        $arrOptions[] = array(
+        $arrOptions[] = [
             'value'     => '0',
             'label'     => $GLOBALS['TL_LANG']['MSC']['differentShippingAddress'],
-            'default'   => ($this->getDefaultAddress()->id == Isotope::getCart()->shipping_address_id),
-        );
+            'default'   => $this->getDefaultAddress()->id == Isotope::getCart()->shipping_address_id,
+        ];
 
         return $arrOptions;
     }

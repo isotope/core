@@ -83,4 +83,12 @@ class Viveum extends PSP
         'TRXDATE',
         'VC'
     );
+
+    /**
+     * @inheritdoc
+     */
+    public function getPaymentMethods()
+    {
+        return [];
+    }
 }

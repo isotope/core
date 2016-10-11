@@ -12,77 +12,27 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-
 
 /**
  * Attribute to provide downloads in the product details
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Christoph Wiechert <cw@4wardmedia.de>
+ * @author Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @author Christoph Wiechert <cw@4wardmedia.de>
  */
-class Downloads extends Attribute implements IsotopeAttribute
+class Downloads extends FileTree
 {
-    public function saveToDCA(array &$arrData)
-    {
-        parent::saveToDCA($arrData);
-
-        $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-
-        if ($this->fieldType == 'checkbox') {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
-
-            // Custom sorting
-            if ($this->sortBy == 'custom') {
-                $strOrderField = $this->field_name . '_order';
-                $arrData['fields'][$this->field_name]['eval']['orderField'] = $strOrderField;
-                $arrData['fields'][$strOrderField]['sql'] = "blob NULL";
-            }
-        } else {
-            $arrData['fields'][$this->field_name]['sql'] = "binary(16) NULL";
-            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
-        }
-    }
-
     /**
-     * Return class name for the backend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
         return $GLOBALS['BE_FFL']['fileTree'];
     }
 
-
     /**
-     * Make sure array values are unserialized.
-     *
-     * @param IsotopeProduct $product
-     *
-     * @return mixed
-     */
-    public function getValue(IsotopeProduct $product)
-    {
-        $value = parent::getValue($product);
-
-        if ('checkbox' === $this->fieldType) {
-            $value = deserialize($value);
-        }
-
-        return (array) $value;
-    }
-
-
-    /**
-     * Generate download attributes
-     *
-     * @param \Isotope\Interfaces\IsotopeProduct $objProduct
-     * @param array $arrOptions
-     * @return string
+     * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {

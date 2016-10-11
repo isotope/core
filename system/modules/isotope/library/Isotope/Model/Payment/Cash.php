@@ -12,8 +12,8 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 
 
@@ -25,17 +25,17 @@ use Isotope\Model\Payment;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Cash extends Payment implements IsotopePayment
+class Cash extends Payment
 {
-
     /**
-     * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            return false;
+        }
+
         $objOrder->checkout();
         $objOrder->updateOrderStatus($this->new_order_status);
 

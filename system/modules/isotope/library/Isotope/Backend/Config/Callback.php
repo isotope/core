@@ -12,22 +12,19 @@
 
 namespace Isotope\Backend\Config;
 
-
 use Isotope\Automator;
 use Isotope\Backend\Permission;
 use Isotope\Model\Config;
 
 class Callback extends Permission
 {
-
     /**
      * Check permissions to edit table tl_iso_config
-     * @return void
      */
     public function checkPermission()
     {
         // Do not run the permission check on other Isotope modules
-        if (\Input::get('mod') != 'configs') {
+        if ('configs' !== \Input::get('mod')) {
             return;
         }
 
@@ -46,8 +43,7 @@ class Callback extends Permission
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1) // Can't use empty() because its an object property (using __get)
-        {
+        if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1) {
             $root = array(0);
         } else {
             $root = $this->User->iso_configs;
@@ -78,12 +74,12 @@ class Callback extends Permission
                     $root[] = \Input::get('id');
                     $this->User->iso_configs = $root;
                 }
-            // No break;
+                // No break;
 
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$this->User->hasAccess('delete', 'iso_configp'))) {
+                if (!in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' store configuration ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -93,7 +89,7 @@ class Callback extends Permission
             case 'deleteAll':
             case 'overrideAll':
                 $session = $this->Session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_configp')) {
+                if ('deleteAll' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
@@ -110,11 +106,12 @@ class Callback extends Permission
         }
     }
 
-
     /**
      * Add an image to each record
-     * @param array
-     * @param string
+     *
+     * @param array  $row
+     * @param string $label
+     *
      * @return string
      */
     public function addIcon($row, $label)
@@ -191,54 +188,57 @@ class Callback extends Permission
         return sprintf('<div class="list_icon" style="%s" title="%s">%s</div>', $style, $GLOBALS['TL_LANG']['CUR'][$row['currency']], $label);
     }
 
-
     /**
      * Return the copy config button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function copyConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
-
 
     /**
      * Return the delete config button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
-
 
     /**
      * Return the file picker wizard
-     * @param DataContainer
+     *
+     * @param \DataContainer $dc
+     *
      * @return string
      */
     public function filePicker(\DataContainer $dc)
     {
-        $strField = 'ctrl_' . $dc->field . ((\Input::get('act') == 'editAll') ? '_' . $dc->id : '');
+        $strField = 'ctrl_' . $dc->field . (('editAll' === \Input::get('act')) ? '_' . $dc->id : '');
 
         return ' ' . \Image::getHtml('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
     }
 
-
     /**
      * Return all template folders as array
+     *
      * @return array
      */
     public function getTemplateFolders()
@@ -246,11 +246,35 @@ class Callback extends Permission
         return $this->doGetTemplateFolders('templates');
     }
 
+    /**
+     * Generate an options list of order details frontend modules
+     *
+     * @return array
+     */
+    public function getOrderDetailsModules()
+    {
+        $modules = [];
+        $result  = \Database::getInstance()->query("
+            SELECT m.id, m.name, t.name AS theme
+            FROM tl_module m
+            JOIN tl_theme t ON t.id=m.pid
+            WHERE m.type='iso_orderdetails'
+            ORDER BY theme, name
+        ");
+
+        while ($result->next()) {
+            $modules[$result->theme][$result->id] = $result->name;
+        }
+
+        return $modules;
+    }
 
     /**
      * Return all template folders as array
-     * @param string
-     * @param integer
+     *
+     * @param string $path
+     * @param int    $level
+     *
      * @return array
      */
     protected function doGetTemplateFolders($path, $level = 0)
@@ -269,8 +293,11 @@ class Callback extends Permission
 
     /**
      * Store if we need to update the currencies
-     * @param   mixed
-     * @param   \DataContainer
+     *
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
+     *
+     * @return mixed
      */
     public function checkNeedToConvertCurrencies($varValue, \DataContainer $dc)
     {
@@ -284,7 +311,8 @@ class Callback extends Permission
 
     /**
      * Convert currencies if the settings have changed
-     * @param   \DataContainer
+     *
+     * @param \DataContainer $dc
      */
     public function convertCurrencies(\DataContainer $dc)
     {

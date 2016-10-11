@@ -12,9 +12,7 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
-
 
 /**
  * Attribute to impelement RadioButton widget
@@ -22,12 +20,10 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
+class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttributeForVariants
 {
-
     /**
-     * Adjust the options wizard for this attribute
-     * @return  array
+     * @inheritdoc
      */
     public function prepareOptionsWizard($objWidget, $arrColumns)
     {
@@ -41,8 +37,7 @@ class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttribu
     }
 
     /**
-     * Set SQL field for this attribute
-     * @param   arary
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {

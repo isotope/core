@@ -13,7 +13,6 @@
 namespace Isotope\Model\Shipping;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
 /**
@@ -22,7 +21,7 @@ use Isotope\Model\Shipping;
  * @property array  group_methods
  * @property string group_calculation
  */
-class Group extends Shipping implements IsotopeShipping
+class Group extends Shipping
 {
 
     /**
@@ -124,6 +123,7 @@ class Group extends Shipping implements IsotopeShipping
                 unset($arrMethods[$key]);
             }
 
+            /** @var Shipping[] $objMethods */
             if (($objMethods = Shipping::findMultipleByIds($arrMethods)) !== null) {
                 foreach ($objMethods as $objMethod) {
                     if ($objMethod->isAvailable()) {

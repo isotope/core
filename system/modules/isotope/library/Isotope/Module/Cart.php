@@ -12,7 +12,9 @@
 
 namespace Isotope\Module;
 
+use Haste\Util\Url;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
 
 
 /**
@@ -52,7 +54,7 @@ class Cart extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ###';
@@ -95,7 +97,7 @@ class Cart extends Module
             $objTemplate,
             array(
                 'gallery' => $this->iso_gallery,
-                'sorting' => Isotope::getCart()->getItemsSortingCallable($this->iso_orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->iso_orderCollectionBy),
             )
         );
 
@@ -112,8 +114,14 @@ class Cart extends Module
                 continue; // no need to generate $arrProductData, we reload anyway
             }
 
+            if ($arrItem['configuration']) {
+                list($baseUrl,) = explode('?', $arrItem['href'], 2);
+                $arrItem['edit_href']  = Url::addQueryString('collection_item=' . $arrItem['id'], $baseUrl);
+                $arrItem['edit_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['editProductLinkTitle'], $arrItem['name']));
+                $arrItem['edit_link']  = $GLOBALS['TL_LANG']['MSC']['editProductLinkText'];
+            }
 
-            $arrItem['remove_href']  = \Haste\Util\Url::addQueryString('remove=' . $arrItem['id']);
+            $arrItem['remove_href']  = Url::addQueryString('remove=' . $arrItem['id']);
             $arrItem['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $arrItem['name']));
             $arrItem['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
 
@@ -212,15 +220,15 @@ class Cart extends Module
             }
         }
 
-        if ($this->iso_continueShopping && $this->Input->get('continue') != '') {
+        if ($this->iso_continueShopping && \Input::get('continue') != '') {
             $arrButtons['continue'] = array(
                 'type'      => 'submit',
                 'name'      => 'button_continue',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'],
-                'href'      => ampersand(base64_decode($this->Input->get('continue', true))),
+                'href'      => ampersand(base64_decode(\Input::get('continue', true))),
             );
 
-            if (\Input::post('FORM_SUBMIT') == $this->strFormId && \Input::post('button_continue') != '') {
+            if (\Input::post('FORM_SUBMIT') === $this->strFormId && \Input::post('button_continue') != '') {
                 \Controller::redirect($arrButtons['continue']['href']);
             }
         }

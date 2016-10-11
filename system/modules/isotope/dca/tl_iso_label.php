@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
             'label'                     => &$GLOBALS['TL_LANG']['tl_iso_label']['replacement'],
             'search'                    => true,
             'inputType'                 => 'text',
-            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'long'),
+            'eval'                      => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),
             'sql'                       => "varchar(255) NOT NULL default ''"
         )
     )

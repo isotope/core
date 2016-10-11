@@ -15,9 +15,11 @@ namespace Isotope\Interfaces;
 use Isotope\Model\Address;
 use Isotope\Model\ProductCollectionSurcharge;
 
-interface IsotopeOrderableCollection
+/**
+ * IsotopeOrderableCollection describes a product collection that can have order information.
+ */
+interface IsotopeOrderableCollection extends IsotopeProductCollection
 {
-
     /**
      * Return boolean whether collection has payment
      *
@@ -115,4 +117,11 @@ interface IsotopeOrderableCollection
      * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null);
+
+    /**
+     * Returns the generated document number or empty string if not available.
+     *
+     * @return string
+     */
+    public function getDocumentNumber();
 }

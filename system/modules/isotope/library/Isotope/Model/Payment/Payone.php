@@ -12,41 +12,52 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 
-
-class Payone extends Postsale implements IsotopePayment
+/**
+ * PayOne payment method
+ *
+ * @property string $payone_clearingtype
+ * @property string $payone_aid
+ * @property string $payone_portalid
+ * @property string $payone_key
+ */
+class Payone extends Postsale
 {
 
     /**
-     * Process Transaction URL notification
-     *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $mode     = (string) \Input::post('mode');
+        $txaction = (string) \Input::post('txaction');
+
         if (\Input::post('aid') != $this->payone_aid
             || \Input::post('portalid') != $this->payone_portalid
-            || (\Input::post('mode') == 'test' && !$this->debug)
-            || (\Input::post('mode') == 'live' && $this->debug)
+            || (!$this->debug && 'test' === $mode)
+            || ($this->debug && 'live' === $mode)
         ) {
             \System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
-        // Ignore  all except these actions
-        if (\Input::post('txaction') != 'appointed'
-            && \Input::post('txaction') != 'capture'
-            && \Input::post('txaction') != 'paid'
-        ) {
+        // Ignore all except these actions
+        if ('appointed' !== $txaction && 'capture' !== $txaction && 'paid' !== $txaction) {
             die('TSOK');
         }
 
-        if (\Input::post('currency') != $objOrder->currency || $objOrder->getTotal() != \Input::post('price')) {
+        if (\Input::post('currency') != $objOrder->getCurrency() || $objOrder->getTotal() != \Input::post('price')) {
             \System::log('PayOne order data mismatch for Order ID "' . \Input::post('reference') . '"', __METHOD__, TL_ERROR);
             die('TSOK');
         }
@@ -56,8 +67,8 @@ class Payone extends Postsale implements IsotopePayment
             die('TSOK');
         }
 
-        if (\Input::post('txaction') == 'paid' && \Input::post('balance') == 0) {
-            $objOrder->date_paid = time();
+        if ('paid' === \Input::post('txaction') && \Input::post('balance') == 0) {
+            $objOrder->setDatePaid(time());
         }
 
         $objOrder->updateOrderStatus($this->new_order_status);
@@ -69,8 +80,7 @@ class Payone extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -78,36 +88,35 @@ class Payone extends Postsale implements IsotopePayment
     }
 
     /**
-     * HTML form for checkout
-     *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module|Checkout               $objModule The checkout module instance
-     *
-     * @return  mixed
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $i = 0;
 
-        $arrData = array
-        (
+        $arrData = [
             'aid'               => $this->payone_aid,
             'portalid'          => $this->payone_portalid,
-            'mode'              => ($this->debug ? 'test' : 'live'),
-            'request'           => ($this->trans_type=='auth' ? 'preauthorization' : 'authorization'),
+            'mode'              => $this->debug ? 'test' : 'live',
+            'request'           => 'auth' === $this->trans_type ? 'preauthorization' : 'authorization',
             'encoding'          => 'UTF-8',
             'clearingtype'      => $this->payone_clearingtype,
-            'reference'         => $objOrder->id,
+            'reference'         => $objOrder->getId(),
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'backurl'           => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
-            'amount'            => ($objOrder->getTotal() * 100),
-            'currency'          => $objOrder->currency,
+            'successurl'        => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'backurl'           => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'amount'            => $objOrder->getTotal() * 100,
+            'currency'          => $objOrder->getCurrency(),
 
             // Custom parameter to recognize payone in postsale request (only alphanumeric is allowed)
             'param'             => 'paymentMethodPayone' . $this->id
-        );
+        ];
 
         foreach ($objOrder->getItems() as $objItem) {
 
@@ -142,8 +151,9 @@ class Payone extends Postsale implements IsotopePayment
 
         foreach ($objOrder->getSurcharges() as $k => $objSurcharge) {
 
-            if (!$objSurcharge->addToTotal)
+            if (!$objSurcharge->addToTotal) {
                 continue;
+            }
 
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
             $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
@@ -156,7 +166,8 @@ class Payone extends Postsale implements IsotopePayment
         // Do not urlencode values because Payone does not properly decode POST values (whatever...)
         $strHash = md5(implode('', $arrData) . $this->payone_key);
 
-        $objTemplate                  = new \Isotope\Template('iso_payment_payone');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate                  = new Template('iso_payment_payone');
         $objTemplate->id              = $this->id;
         $objTemplate->data            = $arrData;
         $objTemplate->hash            = $strHash;

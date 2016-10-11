@@ -17,3 +17,4 @@
 $GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0] = 'Total';
 $GLOBALS['TL_LANG']['ISO_REPORT']['members_total'][0] = 'Total';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Data do Pedido';

@@ -16,4 +16,5 @@
 
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Валюта';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Состояние';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Дата заказа';
 $GLOBALS['TL_LANG']['ISO_REPORT']['columns'] = 'Колонки';

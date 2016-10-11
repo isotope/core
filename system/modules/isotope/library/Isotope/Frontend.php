@@ -12,7 +12,10 @@
 
 namespace Isotope;
 
+use Haste\Input\Input;
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -22,6 +25,7 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
@@ -47,12 +51,17 @@ class Frontend extends \Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection|Order $objCollection
+     * @param IsotopeProductCollection $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        if (!$objCollection instanceof IsotopeOrderableCollection) {
+            \System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // Do not add shipping and payment surcharge to cart,
         // they should only appear in the order review
         if ($objCollection instanceof Cart) {
@@ -97,12 +106,43 @@ class Frontend extends \Frontend
             }
 
             \Controller::redirect(
-                \Haste\Util\Url::addQueryString(
+                Url::addQueryString(
                     'continue=' . base64_encode(\Environment::get('request')),
                     $objModule->iso_addProductJumpTo
                 )
             );
         }
+    }
+
+    /**
+     * Callback for add_to_cart button if a product is being edited.
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     */
+    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        if (\Input::get('collection_item') < 1
+            || ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) === null
+            || $item->pid != Isotope::getCart()->id
+            || !$item->hasProduct()
+            || $item->getProduct()->getProductId() != $objProduct->getProductId()
+        ) {
+            return;
+        }
+
+        Isotope::getCart()->updateProduct($objProduct, $item);
+
+        if (!$arrConfig['module']->iso_addProductJumpTo) {
+            \Controller::reload();
+        }
+
+        \Controller::redirect(
+            Url::addQueryString(
+                'continue=' . base64_encode(\Environment::get('request')),
+                $arrConfig['module']->iso_addProductJumpTo
+            )
+        );
     }
 
     /**
@@ -118,7 +158,7 @@ class Frontend extends \Frontend
         $strAlias = '';
 
         // Find products alias. Can't use Input because they're not yet initialized
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strKey = 'auto_item';
         }
 
@@ -234,10 +274,10 @@ class Frontend extends \Frontend
      */
     public function translateProductUrls($arrGet)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
-        } elseif (\Haste\Input\Input::getAutoItem('step', false, true) != '') {
-            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step', false, true);
+        if (Input::getAutoItem('product', false, true) != '') {
+            $arrGet['url']['product'] = Input::getAutoItem('product', false, true);
+        } elseif (Input::getAutoItem('step', false, true) != '') {
+            $arrGet['url']['step'] = Input::getAutoItem('step', false, true);
         } elseif (\Input::get('uid', false, true) != '') {
             $arrGet['get']['uid'] = \Input::get('uid', false, true);
         }
@@ -424,6 +464,8 @@ class Frontend extends \Frontend
      * @param \Widget        $objWidget
      *
      * @return mixed
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
@@ -491,10 +533,11 @@ class Frontend extends \Frontend
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
-        if (empty($arrPages)) {
+        if (0 === count($arrPages)) {
             return $arrPages;
         }
 
+        /** @var \PageModel $objPage */
         global $objPage;
 
         // $objPage not available, we don't know if the page is allowed
@@ -506,6 +549,8 @@ class Frontend extends \Frontend
         static $arrUnavailable = array();
 
         $intMember = 0;
+        $arrGroups = [];
+
         if (null !== $objMember) {
             $intMember = $objMember->id;
             $arrGroups = deserialize($objMember->groups, true);
@@ -570,8 +615,8 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
+        if (Input::getAutoItem('product', false, true) != '') {
+            $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
 
             if (null !== $objProduct) {
 
@@ -590,8 +635,7 @@ class Frontend extends \Frontend
                     $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
                     $arrItems[$last]['isActive'] = false;
 
-                    $arrItems[] = array
-                    (
+                    $arrItems[] = array(
                         'isRoot'   => false,
                         'isActive' => true,
                         'href'     => $objProduct->generateUrl($objPage),
@@ -733,8 +777,8 @@ class Frontend extends \Frontend
             $arrAttributes = array_intersect(
                 Attribute::getPricedFields(),
                 array_merge(
-                    $objProduct->getAttributes(),
-                    $objProduct->getVariantAttributes()
+                    $objProduct->getType()->getAttributes(),
+                    $objProduct->getType()->getVariantAttributes()
                 )
             );
 

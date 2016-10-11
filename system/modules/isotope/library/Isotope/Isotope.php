@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -41,7 +42,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.4.0-dev';
+    const VERSION = '2.4.0-beta1';
 
     /**
      * True if the system has been initialized
@@ -97,7 +98,7 @@ class Isotope extends \Controller
                         preg_replace(
                             '/\?.*$/i',
                             '',
-                            (\Environment::get('request')) . (($strQuery) ? '?' . $strQuery : '')
+                            \Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
                         )
                     );
                 }
@@ -246,7 +247,7 @@ class Isotope extends \Controller
 
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => ($product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress()),
+                'shipping' => $product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
             );
         }
 
@@ -272,7 +273,7 @@ class Isotope extends \Controller
         $objConfig = static::getConfig();
 
         if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
-            $fltValue = (round(20 * $fltValue)) / 20;
+            $fltValue = round(20 * $fltValue) / 20;
         }
 
         return round($fltValue, $objConfig->priceRoundPrecision);
@@ -321,20 +322,27 @@ class Isotope extends \Controller
         }
 
         $objConfig   = static::getConfig();
-        $strCurrency = ($strCurrencyCode != '' ? $strCurrencyCode : $objConfig->currency);
+        $strCurrency = $strCurrencyCode ?: $objConfig->currency;
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
+        $space       = $blnHtml ? '&nbsp;' : ' ';
 
         if ($objConfig->currencySymbol && $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] != '') {
-            $strCurrency = (('right' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency] . ($blnHtml ? '</span>' : '') . (('left' === $objConfig->currencyPosition && $objConfig->currencySpace) ? ' ' : '');
-        } else {
-            $strCurrency = ('right' === $objConfig->currencyPosition ? ' ' : '') . ($blnHtml ? '<span class="currency">' : '') . $strCurrency . ($blnHtml ? '</span>' : '') . ('left' === $objConfig->currencyPosition ? ' ' : '');
+            $strCurrency = $GLOBALS['TL_LANG']['CUR_SYMBOL'][$strCurrency];
+
+            if (!$objConfig->currencySpace) {
+                $space = '';
+            }
+        }
+
+        if ($blnHtml) {
+            $strCurrency = '<span class="currency">' . $strCurrency . '</span>';
         }
 
         if ('right' === $objConfig->currencyPosition) {
-            return $strPrice . $strCurrency;
+            return $strPrice . $space . $strCurrency;
         }
 
-        return $strCurrency . $strPrice;
+        return $strCurrency . $space . $strPrice;
     }
 
     /**
@@ -347,7 +355,7 @@ class Isotope extends \Controller
     public static function formatItemsString($intItems)
     {
         if ($intItems == 1) {
-            return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+            return $GLOBALS['TL_LANG']['MSC']['productSingle'];
         } else {
             $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
@@ -355,27 +363,42 @@ class Isotope extends \Controller
                 $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
             }
 
-            return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+            return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
         }
     }
 
     /**
      * Callback for isoButton Hook
      *
-     * @param array $arrButtons
+     * @param array          $arrButtons
+     * @param IsotopeProduct $objProduct
      *
      * @return array
      */
-    public static function defaultButtons($arrButtons)
+    public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
     {
         $arrButtons['update'] = array(
             'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']
         );
 
-        $arrButtons['add_to_cart'] = array(
-            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
-            'callback' => array('\Isotope\Frontend', 'addToCart')
-        );
+        if (null !== $objProduct
+            && \Input::get('collection_item') > 0
+            && ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) !== null
+            && $item->pid == Isotope::getCart()->id
+            && $item->hasProduct()
+            && $item->getProduct()->getProductId() == $objProduct->getProductId()
+        ) {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart'],
+                'callback' => array('\Isotope\Frontend', 'updateCart')
+            );
+        } else {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
+                'callback' => array('\Isotope\Frontend', 'addToCart')
+            );
+        }
+
 
         return $arrButtons;
     }
@@ -428,14 +451,17 @@ class Isotope extends \Controller
      * @param bool   $blnSkipEmpty
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {
         $arrOptions = array();
 
         foreach ($arrData as $field => $value) {
-            if ($blnSkipEmpty && ($value == '' || $value == '-'))
+            if ($blnSkipEmpty && ($value == '' || $value == '-')) {
                 continue;
+            }
 
             $arrOptions[$field] = array
             (
@@ -454,12 +480,14 @@ class Isotope extends \Controller
      * @param IsotopeProduct|Product $objProduct
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
     {
         Product::setActive($objProduct);
 
-        $strTable = $objProduct->getTable();
+        $strTable = Product::getTable();
 
         foreach ($arrConfig as $k => $v) {
 

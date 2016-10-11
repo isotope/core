@@ -21,6 +21,8 @@ interface IsotopeVatNoValidator
     /**
      * Return true if vat number could be validated, false if not
      *
+     * @param Address $objAddress
+     *
      * @return bool
      * @throws \RuntimeException to add a custom error message (e.g. to the form field)
      */

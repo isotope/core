@@ -12,6 +12,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -110,7 +111,7 @@ class TaxRate extends \Model
 
                 // Check if address has a valid postal code
                 if ($this->postalCodes != '') {
-                    $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
+                    $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
 
                     if (!in_array($objAddress->postal, $arrCodes)) {
                         continue;
@@ -140,7 +141,7 @@ class TaxRate extends \Model
                             $service = new $GLOBALS['ISO_VAT'][$type]();
 
                             if ($service->exemptTax($objAddress, $this)) {
-                                continue(2);
+                                continue 2;
                             }
                         }
                     }

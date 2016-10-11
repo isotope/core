@@ -12,21 +12,21 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 
-
 /**
- * Attribute to impelement base price calculation
+ * Attribute to implement base price calculation
  *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class BasePrice extends Attribute implements IsotopeAttribute
+class BasePrice extends Attribute
 {
-
+    /**
+     * @inheritdoc
+     */
     public function __construct(\Database\Result $objResult = null)
     {
         // This class should not be registered
@@ -36,6 +36,9 @@ class BasePrice extends Attribute implements IsotopeAttribute
         parent::__construct($objResult);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
@@ -43,6 +46,9 @@ class BasePrice extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
     }
 
+    /**
+     * @inheritdoc
+     */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $arrData = deserialize($objProduct->{$this->field_name});

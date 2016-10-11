@@ -16,6 +16,7 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
 
 
 class BillingAddress extends Address implements IsotopeCheckoutStep
@@ -73,7 +74,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $strHeadline,
             'info'     => $objBillingAddress->generate(Isotope::getConfig()->getBillingFieldsConfig()),
-            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'edit'     => Checkout::generateUrlForStep('address'),
         ));
     }
 
@@ -101,11 +102,11 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getBillingFieldsConfig());
 
         if (!empty($arrOptions)) {
-            $arrOptions[] = array(
+            $arrOptions[] = [
                 'value'   => '0',
                 'label'   => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
-                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id),
-            );
+                'default' => $this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id,
+            ];
         }
 
         return $arrOptions;
@@ -142,7 +143,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     /**
      * Get default address for this collection and address type
      *
-     * @return Address
+     * @return AddressModel
      */
     protected function getDefaultAddress()
     {

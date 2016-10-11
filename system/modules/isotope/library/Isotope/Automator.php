@@ -27,7 +27,9 @@ use Isotope\Model\ProductCollection\Order;
  */
 class Automator extends \Controller
 {
-
+    /**
+     * Make the constructor public.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -84,17 +86,18 @@ class Automator extends \Controller
             $arrValues[]    = $intId;
         }
 
-        $objConfigs = Config::findBy($arrColumns, $arrValues);
+        /** @var Config[] $configs */
+        $configs = Config::findBy($arrColumns, $arrValues);
 
-        if (null === $objConfigs) {
+        if (null === $configs) {
             return;
         }
 
-        while ($objConfigs->next()) {
-            switch ($objConfigs->currencyProvider) {
+        foreach ($configs as $config) {
+            switch ($config->currencyProvider) {
                 case 'ecb.int':
-                    $fltCourse       = ($objConfigs->currency == 'EUR') ? 1 : 0;
-                    $fltCourseOrigin = ($objConfigs->currencyOrigin == 'EUR') ? 1 : 0;
+                    $fltCourse       = ('EUR' === $config->currency) ? 1 : 0;
+                    $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
                     $objRequest = new \Request();
                     $objRequest->send('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
@@ -108,12 +111,12 @@ class Automator extends \Controller
                     $objXml = new \SimpleXMLElement($objRequest->response);
 
                     foreach ($objXml->Cube->Cube->Cube as $currency) {
-                        if (!$fltCourse && strtolower($currency['currency']) == strtolower($objConfigs->currency)) {
+                        if (!$fltCourse && strtolower($currency['currency']) == strtolower($config->currency)) {
                             $fltCourse = (float) $currency['rate'];
                         }
 
                         if (!$fltCourseOrigin
-                            && strtolower($currency['currency']) == strtolower($objConfigs->currencyOrigin)
+                            && strtolower($currency['currency']) == strtolower($config->currencyOrigin)
                         ) {
                             $fltCourseOrigin = (float) $currency['rate'];
                         }
@@ -126,13 +129,13 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $objConfigs->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
-                    $objConfigs->save();
+                    $config->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
+                    $config->save();
                     break;
 
                 case 'admin.ch':
-                    $fltCourse       = ($objConfigs->currency == 'CHF') ? 1 : 0;
-                    $fltCourseOrigin = ($objConfigs->currencyOrigin == 'CHF') ? 1 : 0;
+                    $fltCourse       = ('CHF' === $config->currency) ? 1 : 0;
+                    $fltCourseOrigin = ('CHF' === $config->currencyOrigin) ? 1 : 0;
 
                     $objRequest = new \Request();
                     $objRequest->send('http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php');
@@ -146,11 +149,11 @@ class Automator extends \Controller
                     $objXml = new \SimpleXMLElement($objRequest->response);
 
                     foreach ($objXml->devise as $currency) {
-                        if (!$fltCourse && $currency['code'] == strtolower($objConfigs->currency)) {
+                        if (!$fltCourse && $currency['code'] == strtolower($config->currency)) {
                             $fltCourse = (float) $currency->kurs;
                         }
 
-                        if (!$fltCourseOrigin && $currency['code'] == strtolower($objConfigs->currencyOrigin)) {
+                        if (!$fltCourseOrigin && $currency['code'] == strtolower($config->currencyOrigin)) {
                             $fltCourseOrigin = (float) $currency->kurs;
                         }
                     }
@@ -162,8 +165,8 @@ class Automator extends \Controller
                         return;
                     }
 
-                    $objConfigs->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
-                    $objConfigs->save();
+                    $config->priceCalculateFactor = ($fltCourse / $fltCourseOrigin);
+                    $config->save();
                     break;
 
                 default:
@@ -173,7 +176,7 @@ class Automator extends \Controller
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
                             $objCallback = \System::importStatic($callback[0]);
-                            $objCallback->{$callback[1]}($objConfigs->current());
+                            $objCallback->{$callback[1]}($config);
                         }
                     }
             }
@@ -196,7 +199,7 @@ class Automator extends \Controller
             foreach ($objCollections as $objCollection) {
                 if (!$objCollection->isLocked()) {
                     $objCollection->delete();
-                    $intPurged += 1;
+                    ++$intPurged;
                 }
             }
         }

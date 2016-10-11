@@ -19,6 +19,13 @@ namespace Isotope\RequestCache;
  */
 class CsvFilter extends Filter
 {
+    /**
+     * Adds a filter to validate if attribute contains given value.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
     public function contains($value)
     {
         $this->filter('FIND_IN_SET', $value);
@@ -26,16 +33,25 @@ class CsvFilter extends Filter
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function sqlWhere()
     {
         return 'FIND_IN_SET(?, ' . $this->getFieldForSQL() . ')';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getOperatorForSQL()
     {
         throw new \BadMethodCallException('The CsvFilter class cannot return an SQL operator.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function filter($operator, $value)
     {
         if ($operator !== 'FIND_IN_SET') {

@@ -6,8 +6,8 @@
     <div class="info">
         <?php if(!empty($item['configuration'])): ?>
         <ul>
-        <?php foreach($item['configuration'] as $value): ?>
-            <li><strong><?php echo $value['label']; ?>:</strong> <?php echo (string) $value; ?></li>
+        <?php foreach($item['configuration'] as $name => $value): ?>
+            <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
         <?php endforeach; ?>
         </ul>
         <?php endif; ?>

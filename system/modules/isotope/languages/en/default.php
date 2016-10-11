@@ -66,6 +66,7 @@ $GLOBALS['TL_LANG']['MSC']['submitLabel']                       = 'Submit';
 $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel']                 = 'Clear Filters';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']             = 'Update';
 $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart']        = 'Add To Cart';
+$GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart']        = 'Update Cart';
 $GLOBALS['TL_LANG']['MSC']['orderByLabel']                      = 'Order By:';
 $GLOBALS['TL_LANG']['MSC']['noProducts']                        = 'No products have been found.';
 $GLOBALS['TL_LANG']['MSC']['previousStep']                      = 'Back';
@@ -73,10 +74,12 @@ $GLOBALS['TL_LANG']['MSC']['nextStep']                          = 'Continue';
 $GLOBALS['TL_LANG']['MSC']['confirmOrder']                      = 'Order';
 $GLOBALS['TL_LANG']['MSC']['noCategoriesAssociated']            = 'No categories are associated with this product.';
 $GLOBALS['TL_LANG']['MSC']['labelSubmit']                       = 'Submit';
-$GLOBALS['TL_LANG']['MSC']['removeProductLinkText']             = 'Remove';
 $GLOBALS['TL_LANG']['MSC']['noItemsInCart']                     = 'There are no items in your cart.';
 $GLOBALS['TL_LANG']['MSC']['addedToCart']                       = 'The selected product has been added to your shopping cart.';
 $GLOBALS['TL_LANG']['MSC']['cartMerged']                        = 'The products from your last visit have been readded. Please review your shopping cart items.';
+$GLOBALS['TL_LANG']['MSC']['editProductLinkTitle']              = 'Edit %s';
+$GLOBALS['TL_LANG']['MSC']['editProductLinkText']               = 'Edit';
+$GLOBALS['TL_LANG']['MSC']['removeProductLinkText']             = 'Remove';
 $GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle']            = 'Remove %s from your cart';
 $GLOBALS['TL_LANG']['MSC']['subTotalLabel']                     = 'Order Subtotal: ';
 $GLOBALS['TL_LANG']['MSC']['shippingLabel']                     = 'Shipping (%s)';
@@ -174,7 +177,7 @@ $GLOBALS['TL_LANG']['MSC']['isotopeIntroductionLegend']         = 'Introduction'
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0]            = 'Welcome to Isotope eCommerce';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]            = 'Isotope is the premier open source eCommerce solution for Contao.';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]            = 'This is the page where most of the configuration will take place. <strong>You should start from the bottom of this page and work your way upward from right to left.</strong>';
-$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]            = 'Visit the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a> for the latest news, configuration manuals and our fundraising campaigns. Thank you so much for considering giving something back!';
+$GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]            = 'Visit the official <a href="http://isotopeecommerce.org" target="_blank">Isotope eCommerce website</a> for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]            = 'The Isotope eCommerce Team';
 $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5]            = 'Isotope is a product of %s in association with <a href="http://isotopeecommerce.org/de/team.html" target="_blank">the Isotope eCommerce Team</a>.';
 
@@ -289,6 +292,7 @@ $GLOBALS['TL_LANG']['ATTR']['fileTree']             = array('File tree', 'A file
 $GLOBALS['TL_LANG']['ATTR']['downloads']            = array('Downloads', 'Download files from the product, e.g. manuals, data sheets etc.');
 $GLOBALS['TL_LANG']['ATTR']['upload']               = array('File upload', 'A single-line input field to upload a local file to the server.');
 $GLOBALS['TL_LANG']['ATTR']['media']                = array('Video/Audio', 'Generates a video or audio player.');
+$GLOBALS['TL_LANG']['ATTR']['fineUploader']         = array('Fine Uploader', 'A javascript file uploader to upload a local file to the server.');
 
 /**
  * Currencies

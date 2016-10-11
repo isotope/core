@@ -12,7 +12,6 @@
 
 namespace Isotope\Upgrade;
 
-use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
 class To0020030029 extends Base

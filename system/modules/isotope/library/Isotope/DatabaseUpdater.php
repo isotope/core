@@ -12,16 +12,13 @@
 
 namespace Isotope;
 
+use Database\Installer;
 
 /**
- * Class Isotope\DatabaseUpdater
- *
- * Provide methods to send Isotope e-mails.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * DatabaseUpdater automatically performs safe or necessary database updates on config changes.
+ * Safe changes include adding new fields, altering field config and dropping indexes.
  */
-class DatabaseUpdater extends \Database\Installer
+class DatabaseUpdater extends Installer
 {
 
     /**

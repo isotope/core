@@ -384,11 +384,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $filters = array_filter(
                 $filters,
                 function ($filter) use ($attribute) {
-                    if ($filter['attribute'] == $attribute) {
-                        return false;
-                    }
-
-                    return true;
+                    return $filter['attribute'] != $attribute;
                 }
             );
         }

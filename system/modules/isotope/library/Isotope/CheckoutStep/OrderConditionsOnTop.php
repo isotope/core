@@ -14,17 +14,17 @@ namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
 
-
+/**
+ * OrderConditionsOnTop checkout step shows conditions form before info like address and payment/shipping methods.
+ */
 class OrderConditionsOnTop extends OrderConditions implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true if order conditions should be above everything
-     * @return  bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if ($this->objModule->iso_order_conditions_position != 'top') {
+        if ('top' !== $this->objModule->iso_order_conditions_position) {
             return false;
         }
 

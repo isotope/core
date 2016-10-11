@@ -26,7 +26,7 @@ class Callback extends \Backend
     {
         parent::__construct();
 
-        $this->loadDataContainer('tl_iso_product');
+        \Controller::loadDataContainer('tl_iso_product');
         \System::loadLanguageFile('tl_iso_product');
     }
 

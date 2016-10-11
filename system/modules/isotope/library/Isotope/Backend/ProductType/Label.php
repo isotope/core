@@ -14,9 +14,6 @@ namespace Isotope\Backend\ProductType;
 
 use Haste\Util\Format;
 use Isotope\Model\Product;
-use Isotope\Model\ProductPrice;
-use Isotope\Model\ProductType;
-
 
 class Label extends \Backend
 {

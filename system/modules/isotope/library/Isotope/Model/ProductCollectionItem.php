@@ -13,6 +13,8 @@
 namespace Isotope\Model;
 
 use Haste\Data\Plain;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 
 
@@ -44,7 +46,7 @@ class ProductCollectionItem extends \Model
 
     /**
      * Cache the current product
-     * @var \Isotope\Interfaces\IsotopeProduct|false
+     * @var IsotopeProduct|IsotopeProductWithOptions|false
      */
     protected $objProduct = false;
 
@@ -58,7 +60,7 @@ class ProductCollectionItem extends \Model
      * Errors
      * @var array
      */
-    protected $arrErrors = array();
+    protected $arrErrors = [];
 
     /**
      * True if product collection is locked
@@ -143,7 +145,7 @@ class ProductCollectionItem extends \Model
      *
      * @param bool $blnNoCache
      *
-     * @return \Isotope\Interfaces\IsotopeProduct|null
+     * @return IsotopeProduct|null
      */
     public function getProduct($blnNoCache = false)
     {
@@ -151,7 +153,7 @@ class ProductCollectionItem extends \Model
 
             $this->objProduct = null;
 
-            /** @var \Isotope\Model\Product $strClass */
+            /** @var string|\Isotope\Model\Product $strClass */
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
@@ -161,6 +163,16 @@ class ProductCollectionItem extends \Model
             }
 
             $this->objProduct = $strClass::findByPk($this->product_id);
+            
+            if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
+                if ($this->objProduct instanceof \Model) {
+                    $this->objProduct = clone $this->objProduct;
+                    $this->objProduct->preventSaving(false);
+                    $this->objProduct->id = $this->product_id;
+                }
+
+                $this->objProduct->setOptions($this->getOptions());
+            }
         }
 
         return $this->objProduct;
@@ -183,7 +195,7 @@ class ProductCollectionItem extends \Model
      */
     public function getSku()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->sku;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->sku : $this->getProduct()->getSku();
     }
 
     /**
@@ -193,25 +205,39 @@ class ProductCollectionItem extends \Model
      */
     public function getName()
     {
-        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->name;
+        return (string) ($this->isLocked() || !$this->hasProduct()) ? $this->name : $this->getProduct()->getName();
     }
 
     /**
-     * Get product options
+     * Returns key-value array for variant-enabled and customer editable attributes.
+     *
+     * @return array
+     *
+     * @deprecated Use getOptions()
+     */
+    public function getAttributes()
+    {
+        return $this->getOptions();
+    }
+
+    /**
+     * Returns key-value array for variant-enabled and customer editable attributes.
+     *
      * @return  array
-     * @deprecated use getConfiguration
      */
     public function getOptions()
     {
         $arrConfig = deserialize($this->configuration);
 
-        return is_array($arrConfig) ? $arrConfig : array();
+        return is_array($arrConfig) ? $arrConfig : [];
     }
 
     /**
      * Get product configuration
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
      */
     public function getConfiguration()
     {
@@ -326,10 +352,17 @@ class ProductCollectionItem extends \Model
     {
         $time = time();
 
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+        \Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item 
+            SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ') 
+            WHERE id=' . $this->id
+        );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+        $this->quantity = \Database::getInstance()
+            ->query("SELECT quantity FROM tl_iso_product_collection_item WHERE id=" . $this->id)
+            ->quantity
+        ;
 
         return $this;
     }
@@ -349,10 +382,17 @@ class ProductCollectionItem extends \Model
 
         $time = time();
 
-        \Database::getInstance()->query("UPDATE " . static::$strTable . " SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ") WHERE " . static::$strPk . "=" . $this->{static::$strPk});
+        \Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item 
+            SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ') 
+            WHERE id=' . $this->id
+        );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()->query("SELECT quantity FROM " . static::$strTable . " WHERE " . static::$strPk . "=" . $this->{static::$strPk})->quantity;
+        $this->quantity = \Database::getInstance()
+            ->query('SELECT quantity FROM tl_iso_product_collection_item WHERE id=' . $this->id)
+            ->quantity
+        ;
 
         return $this;
     }
@@ -368,14 +408,10 @@ class ProductCollectionItem extends \Model
      */
     public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
-        if (static::$strTable == '') {
-            return 0;
-        }
-
-        $strQuery = "SELECT SUM(" . $strField . ") AS sum FROM " . static::$strTable;
+        $strQuery = "SELECT SUM($strField) AS sum FROM tl_iso_product_collection_item";
 
         if ($strColumn !== null) {
-            $strQuery .= " WHERE " . (is_array($strColumn) ? implode(" AND ", $strColumn) : static::$strTable . '.' . $strColumn . "=?");
+            $strQuery .= ' WHERE ' . (is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 
         return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
@@ -398,7 +434,7 @@ class ProductCollectionItem extends \Model
      */
     public function hasErrors()
     {
-        return !empty($this->arrErrors);
+        return 0 !== count($this->arrErrors);
     }
 
     /**

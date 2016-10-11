@@ -14,6 +14,9 @@ namespace Isotope\CheckoutStep;
 
 use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
+use Isotope\Template;
+use Model\Registry;
 
 abstract class Address extends CheckoutStep
 {
@@ -26,32 +29,33 @@ abstract class Address extends CheckoutStep
 
     /**
      * Frontend template instance
-     * @var object
+     * @var Template|\stdClass
      */
     protected $Template;
 
-
     /**
      * Load data container and create template
-     * @param   object
+     *
+     * @param Checkout $objModule
      */
-    public function __construct($objModule)
+    public function __construct(Checkout $objModule)
     {
         parent::__construct($objModule);
 
-        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
-        $this->loadDataContainer(\Isotope\Model\Address::getTable());
+        \System::loadLanguageFile(AddressModel::getTable());
+        \Controller::loadDataContainer(AddressModel::getTable());
 
-        $this->Template = new \Isotope\Template('iso_checkout_address');
+        $this->Template = new Template('iso_checkout_address');
     }
 
     /**
      * Generate the checkout step
-     * @return  string
+     *
+     * @return string
      */
     public function generate()
     {
-        $blnValidate = \Input::post('FORM_SUBMIT') == $this->objModule->getFormId();
+        $blnValidate = \Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
         $this->Template->tableless = $this->objModule->tableless;
@@ -63,7 +67,9 @@ abstract class Address extends CheckoutStep
 
     /**
      * Generate address options and return it as HTML string
-     * @param string
+     *
+     * @param bool $blnValidate
+     *
      * @return string
      */
     protected function generateOptions($blnValidate = false)
@@ -123,10 +129,7 @@ abstract class Address extends CheckoutStep
 
         $objAddress = $this->getAddressForOption($varValue, $blnValidate);
 
-        /** @type \Model\Registry $objModelRegistry */
-        $objModelRegistry = \Model\Registry::getInstance();
-
-        if (null === $objAddress || !$objModelRegistry->isRegistered($objAddress)) {
+        if (null === $objAddress || !Registry::getInstance()->isRegistered($objAddress)) {
             $this->blnError = true;
         }  elseif ($blnValidate) {
             $this->setAddress($objAddress);
@@ -157,7 +160,10 @@ abstract class Address extends CheckoutStep
 
     /**
      * Validate input and return address data
-     * @return  array
+     *
+     * @param bool $blnValidate
+     *
+     * @return array
      */
     protected function validateFields($blnValidate)
     {
@@ -165,7 +171,7 @@ abstract class Address extends CheckoutStep
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
-            $arrData = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName];
+            $arrData = &$GLOBALS['TL_DCA']['tl_iso_address']['fields'][$strName];
 
             // Validate input
             if ($blnValidate) {
@@ -174,7 +180,7 @@ abstract class Address extends CheckoutStep
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
+                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
                     try {
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
@@ -237,16 +243,18 @@ abstract class Address extends CheckoutStep
                     continue;
                 }
 
-                /** @type \Widget $strClass */
-                $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
-
                 // Continue if the class is not defined
-                if ($strClass == '' || !class_exists($strClass)) {
+                if (!array_key_exists($arrData['inputType'], $GLOBALS['TL_FFL'])
+                    || !class_exists($GLOBALS['TL_FFL'][$arrData['inputType']])
+                ) {
                     continue;
                 }
 
+                /** @type \Widget $strClass */
+                $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+
                 // Special field "country"
-                if ($field['value'] == 'country') {
+                if ('country' === $field['value']) {
                     $arrCountries = $this->getAddressCountries();
                     $arrData['reference'] = $arrData['options'];
                     $arrData['options'] = array_values(array_intersect(array_keys($arrData['options']), $arrCountries));
@@ -291,14 +299,14 @@ abstract class Address extends CheckoutStep
 
                 foreach ($arrAddresses as $objAddress) {
 
-                    if (!in_array($objAddress->country, $arrCountries)) {
+                    if (!in_array($objAddress->country, $arrCountries, true)) {
                         continue;
                     }
 
                     $arrOptions[] = array(
                         'value'   => $objAddress->id,
                         'label'   => $objAddress->generate($arrFields),
-                        'default' => ($objAddress->id == $objDefault->id ? '1' : ''),
+                        'default' => $objAddress->id == $objDefault->id ? '1' : '',
                     );
                 }
             }

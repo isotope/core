@@ -13,10 +13,8 @@
 namespace Isotope\Report;
 
 use Isotope\Isotope;
-use Isotope\Model\OrderStatus;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductType;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
@@ -29,8 +27,8 @@ class SalesProduct extends Sales
     {
         $this->initializeDefaultValues();
 
-        $this->loadLanguageFile('tl_iso_product');
-        $this->loadDataContainer('tl_iso_product');
+        static::loadLanguageFile('tl_iso_product');
+        static::loadDataContainer('tl_iso_product');
 
         return parent::generate();
     }
@@ -38,7 +36,6 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $periodFactory = new PeriodFactory();
         $arrSession    = \Session::getInstance()->get('iso_reports');
 
         $strPeriod   = (string) $arrSession[$this->name]['period'];
@@ -52,15 +49,20 @@ class SalesProduct extends Sales
             $intStart = (int) $arrSession[$this->name]['from'];
         }
 
-        $period   = $periodFactory->create($strPeriod);
+        $period   = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey(strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
+
+        if ('locked' === $this->strDateField) {
+            $this->strDateField = $arrSession[$this->name]['date_field'];
+        }
 
         $arrData = array('rows'=>array());
         $arrData['header'] = $this->getHeader($period, $intStart, $intColumns);
 
         $groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
+        $dateGroup = $period->getSqlField('o.' . $this->strDateField);
 
         $objProducts = \Database::getInstance()->query("
             SELECT
@@ -73,16 +75,16 @@ class SalesProduct extends Sales
                 i.configuration AS product_configuration,
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
-                " . $period->getSqlField($this->strDateField) . " AS dateGroup
-            FROM " . ProductCollectionItem::getTable() . " i
-            LEFT JOIN " . ProductCollection::getTable() . " o ON i.pid=o.id
-            LEFT JOIN " . OrderStatus::getTable() . " os ON os.id=o.order_status
-            LEFT OUTER JOIN " . Product::getTable() . " p1 ON i.product_id=p1.id
-            LEFT OUTER JOIN " . Product::getTable() . " p2 ON p1.pid=p2.id
-            WHERE o.type='order' AND o.order_status>0 AND o.locked!=''
+                $dateGroup AS dateGroup
+            FROM tl_iso_product_collection_item i
+            LEFT JOIN tl_iso_product_collection o ON i.pid=o.id
+            LEFT JOIN tl_iso_orderstatus os ON os.id=o.order_status
+            LEFT OUTER JOIN tl_iso_product p1 ON i.product_id=p1.id
+            LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
+            WHERE o.type='order' AND o.order_status>0 AND o.{$this->strDateField} IS NOT NULL
                 " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-                " . $this->getProductProcedure('p1') . "
-                " . $this->getConfigProcedure('o', 'config_id') . "
+                " . static::getProductProcedure('p1') . "
+                " . static::getConfigProcedure('o', 'config_id') . "
             GROUP BY dateGroup, product_id
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
         ");
@@ -111,17 +113,17 @@ class SalesProduct extends Sales
             $arrOptions = array('name'=>$objProducts->variant_name);
 
             // Use product title if name is not a variant attribute
-            if ($blnHasVariants && !in_array('name', $arrVariantAttributes)) {
+            if ($blnHasVariants && !in_array('name', $arrVariantAttributes, true)) {
                 $arrOptions['name'] = $objProducts->product_name;
             }
 
             $strSku = ($blnHasVariants ? $objProducts->variant_sku : $objProducts->product_sku);
-            if (in_array('sku', $arrAttributes) && $strSku != '') {
+            if (in_array('sku', $arrAttributes, true) && $strSku != '') {
                 $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $strSku);
             }
 
             if ($blnVariants && $blnHasVariants) {
-                if (in_array('sku', $arrVariantAttributes) && $objProducts->product_sku != '') {
+                if (in_array('sku', $arrVariantAttributes, true) && $objProducts->product_sku != '') {
                     $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
                 }
 
@@ -155,7 +157,7 @@ class SalesProduct extends Sales
         $arrFooter = array();
 
         // Sort the data
-        if ($arrSession[$this->name]['tl_sort'] == 'product_name') {
+        if ('product_name' === $arrSession[$this->name]['tl_sort']) {
             usort($arrRaw, function ($a, $b) {
                 return strcasecmp($a['name'], $b['name']);
             });

@@ -20,3 +20,5 @@ $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] = 'Butiksindstilling';
 $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] = 'Valuta';
 $GLOBALS['TL_LANG']['ISO_REPORT']['all'] = 'Alle';
 $GLOBALS['TL_LANG']['ISO_REPORT']['status'] = 'Status';
+$GLOBALS['TL_LANG']['ISO_REPORT']['locked'] = 'Ordre dato';
+$GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'] = 'Betalt den';

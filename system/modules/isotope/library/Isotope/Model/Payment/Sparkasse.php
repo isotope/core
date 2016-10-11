@@ -13,27 +13,32 @@
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 
 /**
- * Class Sparkasse
+ * Sparkasse payment method.
  *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas@schempp.ch>
+ * @property string $sparkasse_paymentmethod
+ * @property string $sparkasse_sslmerchant
+ * @property string $sparkasse_sslpassword
+ * @property string $sparkasse_merchantref
  */
-class Sparkasse extends Postsale implements IsotopePayment
+class Sparkasse extends Postsale
 {
-
     /**
-     * Server to server communication
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         $arrData = array();
 
         foreach (array('aid', 'amount', 'basketid', 'currency', 'directPosErrorCode', 'directPosErrorMessage', 'orderid', 'rc', 'retrefnum', 'sessionid', 'trefnum') as $strKey) {
@@ -55,8 +60,8 @@ class Sparkasse extends Postsale implements IsotopePayment
         $arrData['amount'] = str_replace(',', '.', preg_replace('/[^0-9,]/', '', $arrData['amount']));
 
         // Validate payment data
-        if ($objOrder->currency != $arrData['currency']) {
-            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->currency, $arrData['currency']), __METHOD__, TL_ERROR);
+        if ($objOrder->getCurrency() !== $arrData['currency']) {
+            \System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->getCurrency(), $arrData['currency']), __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         } elseif ($objOrder->getTotal() != $arrData['amount']) {
             \System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
@@ -64,7 +69,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             $this->redirectError($arrData);
         }
 
@@ -73,7 +78,7 @@ class Sparkasse extends Postsale implements IsotopePayment
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data   = $arrPayment;
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -86,8 +91,7 @@ class Sparkasse extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -95,33 +99,31 @@ class Sparkasse extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         global $objPage;
 
+        /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_sparkasse');
 
         $objTemplate->amount = number_format($objOrder->getTotal(), 2, ',', '');
         $objTemplate->basketid = $objOrder->source_collection_id;
-        $objTemplate->currency = $objOrder->currency;
+        $objTemplate->currency = $objOrder->getCurrency();
         $objTemplate->locale = $objOrder->language;
-        $objTemplate->orderid = $objOrder->id;
+        $objTemplate->orderid = $objOrder->getId();
         $objTemplate->sessionid = $objPage->id;
-        $objTemplate->transactiontype = ($this->trans_type == 'auth' ? 'preauthorization' : 'authorization');
+        $objTemplate->transactiontype = ('auth' === $this->trans_type ? 'preauthorization' : 'authorization');
         $objTemplate->merchantref = '';
 
         if ($this->sparkasse_merchantref != '') {
-            $objTemplate->merchantref = substr($this->replaceInsertTags($this->sparkasse_merchantref), 0, 30);
+            $objTemplate->merchantref = substr(\Controller::replaceInsertTags($this->sparkasse_merchantref), 0, 30);
         }
 
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0];
-        $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
-        $objTemplate->link = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
+        $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1];
+        $objTemplate->link     = $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2];
 
         // Unfortunately we can't use the class method for this
         // @todo change when PHP 5.4 is compulsory
@@ -134,10 +136,11 @@ class Sparkasse extends Postsale implements IsotopePayment
         return $objTemplate->parse();
     }
 
-
     /**
      * Calculate hash
-     * @param  array
+     *
+     * @param  array $arrData
+     *
      * @return string
      */
     private function calculateHash($arrData)
@@ -147,10 +150,10 @@ class Sparkasse extends Postsale implements IsotopePayment
         return hash_hmac('sha1', implode('', $arrData), $this->sparkasse_sslpassword);
     }
 
-
     /**
      * Redirect the Sparkasse server to our error page
-     * @param array
+     *
+     * @param array $arrData
      */
     private function redirectError($arrData)
     {

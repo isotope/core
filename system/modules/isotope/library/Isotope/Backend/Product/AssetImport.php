@@ -85,7 +85,7 @@ class AssetImport extends \Backend
 
         $blnEmpty    = true;
         $arrDelete   = array();
-        $objProducts = \Database::getInstance()->prepare("SELECT * FROM tl_iso_product WHERE pid=0")->execute();
+        $objProducts = \Database::getInstance()->prepare('SELECT * FROM tl_iso_product WHERE pid=0')->execute();
 
         while ($objProducts->next()) {
             $arrImageNames = array();
@@ -103,7 +103,7 @@ class AssetImport extends \Backend
 
             $arrPattern   = array();
             $arrPattern[] = $objProducts->alias ? standardize($objProducts->alias) : null;
-            $arrPattern[] = $objProducts->sku ? $objProducts->sku : null;
+            $arrPattern[] = $objProducts->sku ?: null;
             $arrPattern[] = $objProducts->sku ? standardize($objProducts->sku) : null;
             $arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
@@ -128,7 +128,7 @@ class AssetImport extends \Backend
 
                         if (!empty($arrSubfiles)) {
                             foreach ($arrSubfiles as $subfile) {
-                                if (is_file($strPath . '/' . $file . '/' . $subfile)) {
+                                if (is_file(TL_ROOT . '/' . $strPath . '/' . $file . '/' . $subfile)) {
                                     $objFile = new \File($strPath . '/' . $file . '/' . $subfile);
 
                                     if ($objFile->isGdImage) {
@@ -148,10 +148,10 @@ class AssetImport extends \Backend
 
                 if (!empty($arrNewImages)) {
                     foreach ($arrNewImages as $strFile) {
-                        $pathinfo = pathinfo(TL_ROOT . '/' . $strFile);
+                        $pathinfo = pathinfo(TL_ROOT . '/' . strtolower($strFile));
 
                         // Will recursively create the folder
-                        $objFolder = new \Folder('isotope/' . strtolower(substr($pathinfo['filename'], 0, 1)));
+                        $objFolder = new \Folder('isotope/' . substr($pathinfo['filename'], 0, 1));
 
                         $strCacheName = $pathinfo['filename'] . '-' . substr(md5_file(TL_ROOT . '/' . $strFile), 0, 8) . '.' . $pathinfo['extension'];
 
@@ -163,7 +163,7 @@ class AssetImport extends \Backend
                         $blnEmpty = false;
                     }
 
-                    \Database::getInstance()->prepare("UPDATE tl_iso_product SET images=? WHERE id=?")->execute(serialize($arrImages), $objProducts->id);
+                    \Database::getInstance()->prepare('UPDATE tl_iso_product SET images=? WHERE id=?')->execute(serialize($arrImages), $objProducts->id);
                 }
             }
         }

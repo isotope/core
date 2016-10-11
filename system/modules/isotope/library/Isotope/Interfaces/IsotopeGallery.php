@@ -12,7 +12,6 @@
 
 namespace Isotope\Interfaces;
 
-
 /**
  * IsotopeGallery interface describes an Isotope gallery object
  */
@@ -21,15 +20,16 @@ interface IsotopeGallery
 
     /**
      * Generate main image and return it as HTML string
-     * @param string
+     *
      * @return string
      */
     public function generateMainImage();
 
     /**
      * Generate gallery and return it as HTML string
-     * @param string
-     * @param integer
+     *
+     * @param int $intSkip Number of pictures that should not be shown in the gallery.
+     *
      * @return string
      */
     public function generateGallery($intSkip = 1);

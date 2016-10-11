@@ -66,7 +66,13 @@ class ConfigSwitcher extends Module
                 Isotope::getCart()->save();
             }
 
-            \Controller::redirect(preg_replace(('@[?|&]config=' . \Input::get('config') . '@'), '', \Environment::get('request')));
+            \Controller::redirect(
+                preg_replace(
+                    '@[?|&]config=' . \Input::get('config') . '@',
+                    '',
+                    \Environment::get('request')
+                )
+            );
         }
 
         return parent::generate();
@@ -86,18 +92,17 @@ class ConfigSwitcher extends Module
 
         if (null !== $objConfigs) {
             foreach ($objConfigs as $objConfig) {
-
                 $arrConfigs[] = array (
                     'config'    => $objConfig,
                     'label'     => $objConfig->getLabel(),
-                    'active'    => (Isotope::getConfig()->id == $objConfig->id ? true : false),
-                    'href'      => (\Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id),
+                    'active'    => Isotope::getConfig()->id == $objConfig->id ? true : false,
+                    'href'      => \Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id,
                 );
             }
         }
 
         RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
 
-        $this->Template->configs    = $arrConfigs;
+        $this->Template->configs = $arrConfigs;
     }
 }

@@ -14,16 +14,57 @@ namespace Isotope\Interfaces;
 
 use Isotope\Model\ProductCollectionSurcharge;
 
-interface IsotopePurchasableCollection
+/**
+ * IsotopePurchasableCollection describes a product collection that can be bought.
+ */
+interface IsotopePurchasableCollection extends IsotopeOrderableCollection
 {
 
     /**
-     * Return true if order has been paid.
-     * This is the case if either payment date is set or order status has the paid flag
+     * Returns true if order has been paid.
+     * This is the case if either payment date is set or order status has the paid flag.
      *
      * @return bool
      */
     public function isPaid();
+
+    /**
+     * Returns the payment date for this collection.
+     *
+     * @return int|null
+     */
+    public function getDatePaid();
+
+    /**
+     * Sets payment date as timestamp or null if not paid.
+     *
+     * @param int|null $timestamp
+     *
+     * @return mixed
+     */
+    public function setDatePaid($timestamp = null);
+
+    /**
+     * Returns true if order has been shipped.
+     * This is the case if a shipping date is set.
+     *
+     * @return bool
+     */
+    public function isShipped();
+
+    /**
+     * Returns the shipping date or null if not shipped.
+     *
+     * @return int|null
+     */
+    public function getDateShipped();
+
+    /**
+     * Set shipping date as timestamp or null if not shipped.
+     *
+     * @param int|null $timestamp
+     */
+    public function setDateShipped($timestamp = null);
 
     /**
      * Returns true if checkout has been completed

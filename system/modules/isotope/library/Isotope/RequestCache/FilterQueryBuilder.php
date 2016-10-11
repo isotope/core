@@ -15,7 +15,7 @@ class FilterQueryBuilder
     /**
      * @var string
      */
-    private $sqlWhere;
+    private $sqlWhere = '';
 
     /**
      * @var array
@@ -26,6 +26,8 @@ class FilterQueryBuilder
      * Constructor.
      *
      * @param array $filters
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(array $filters)
     {
@@ -45,7 +47,7 @@ class FilterQueryBuilder
      */
     public function hasSqlCondition()
     {
-        return $this->sqlWhere != '';
+        return '' !== $this->sqlWhere;
     }
 
     /**
@@ -109,7 +111,7 @@ class FilterQueryBuilder
             }
         }
 
-        if (!empty($arrGroups)) {
+        if (0 !== count($arrGroups)) {
             foreach ($arrGroups as $arrGroup) {
                 $arrGroupWhere = array();
 
@@ -130,7 +132,7 @@ class FilterQueryBuilder
             }
         }
 
-        if (!empty($arrWhere)) {
+        if (0 !== count($arrWhere)) {
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {

@@ -38,11 +38,13 @@ class Callback extends \Backend
 
     /**
      * Return the paste button
-     * @param object
-     * @param array
-     * @param string
-     * @param boolean
-     * @param array
+     *
+     * @param \DataContainer $dc
+     * @param array          $row
+     * @param string         $table
+     * @param boolean        $cr
+     * @param array|bool     $arrClipboard
+     *
      * @return string
      */
     public function pasteButton(\DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
@@ -50,12 +52,12 @@ class Callback extends \Backend
         if ($row['id'] == 0) {
             $imagePasteInto = \Image::getHtml('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
 
-            return $cr ? \Image::getHtml('pasteinto_.gif') . ' ' : '<a href="' . $this->addToUrl('act=' . $arrClipboard['mode'] . '&mode=2&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteInto . '</a> ';
+            return $cr ? \Image::getHtml('pasteinto_.gif') . ' ' : '<a href="' . \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=2&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteInto . '</a> ';
         }
 
         $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
 
-        return (($arrClipboard['mode'] == 'cut' && $arrClipboard['id'] == $row['id']) || $cr) ? \Image::getHtml('pasteafter_.gif') . ' ' : '<a href="' . $this->addToUrl('act=' . $arrClipboard['mode'] . '&mode=1&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteAfter . '</a> ';
+        return (('cut' === $arrClipboard['mode'] && $arrClipboard['id'] == $row['id']) || $cr) ? \Image::getHtml('pasteafter_.gif') . ' ' : '<a href="' . \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=1&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteAfter . '</a> ';
     }
 
     /**

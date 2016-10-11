@@ -1,6 +1,40 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.3.5-stable (2016-04-27)
+---------------------------------
+
+### Improved
+- Alias was not generated from product name in override-all mode (#1638)
+- Prevent umlauts and other special chars in coupon code (#1608)
+- Use non-breaking space between price and currency (#1634)
+
+### Fixed
+- The external image paths in documents did not work (#1616)
+- Installation on Contao 4 failed due to invalid dependency (#1633)
+- Problem with custom media attributes when upgrading from Isotope 2.0 (#1632)
+- Multilingual attribute options from foreignKey did not work for variants (#1631)
+- Variant selection resulted in empty page if debug bar is enabled (#1639)
+- The customer defined attribute options set in base product were not available in the variants
+- Saferpay payment method dumped empty amount to postsale debug file
+- Translation labels with special characters were not replaces (#1637)
+- Protecting variants of a product for member groups did not work
+- Product sub-groups could not be moved by non-admins (#1618)
+
+
+Version 2.3.4-stable (2016-03-09)
+---------------------------------
+
+### Improved
+- Added support for installation on Contao 4
+ 
+### Fixed
+- Potential backend error message when saving prices
+- Issue when inheriting mandatory fields in the backend (#1600)
+- Weekly report for first weeks of the year did not work as expected (#1610)
+- Product filter did not support multiple choice attributes (##1538)
+
+
 Version 2.3.3-stable (2016-01-27)
 ---------------------------------
 

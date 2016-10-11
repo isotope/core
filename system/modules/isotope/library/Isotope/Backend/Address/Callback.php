@@ -24,7 +24,7 @@ class Callback extends \Backend
      */
     public function renderLabel($arrAddress)
     {
-        $objAddress = new \Isotope\Model\Address();
+        $objAddress = new Address();
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generate();
 
@@ -54,9 +54,10 @@ class Callback extends \Backend
     public function updateDefault($varValue, $dc)
     {
         if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
-            \Database::getInstance()->prepare("
-                UPDATE " . Address::getTable() . " SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?
-            ")->execute($dc->activeRecord->pid, $dc->activeRecord->ptable, $dc->activeRecord->store_id);
+            \Database::getInstance()
+                ->prepare("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?")
+                ->execute($dc->activeRecord->pid, $dc->activeRecord->ptable, $dc->activeRecord->store_id)
+            ;
         }
 
         return $varValue;

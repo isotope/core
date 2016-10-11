@@ -12,10 +12,8 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-
 
 /**
  * Attribute to provide an audio/video player in the product details
@@ -23,8 +21,11 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2014
  * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
-class Media extends Attribute implements IsotopeAttribute
+class Media extends Attribute
 {
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
@@ -38,21 +39,15 @@ class Media extends Attribute implements IsotopeAttribute
     }
 
     /**
-     * Return class name for the backend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
         return $GLOBALS['BE_FFL']['fileTree'];
     }
 
-
     /**
-     * Generate media attribute
-     *
-     * @param \Isotope\Interfaces\IsotopeProduct $objProduct
-     * @param array $arrOptions
-     * @return string
+     * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {

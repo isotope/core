@@ -19,7 +19,8 @@ class Help extends \Backend
 
     public function initializeWizard($strName, $strLanguage)
     {
-        if ($strName == 'explain') {
+        if ('explain' === $strName) {
+            /** @var ProductType[] $objTypes */
             $objTypes = ProductType::findAll();
 
             if (null !== $objTypes) {

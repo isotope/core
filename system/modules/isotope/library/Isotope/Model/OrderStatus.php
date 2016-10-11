@@ -16,10 +16,16 @@ use Isotope\Translation;
 
 
 /**
- * ProductType defines a product configuration
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property int    $sorting
+ * @property string $name
+ * @property string $color
+ * @property bool   $paid
+ * @property bool   $welcomescreen
+ * @property int    $notification
+ * @property string $saferpay_status
  */
 class OrderStatus extends \Model
 {
