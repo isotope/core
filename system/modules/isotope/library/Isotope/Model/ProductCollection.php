@@ -912,7 +912,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                     }
 
                     // Add error message for items no longer available
-                    if (!$objItem->isAvailable()) {
+                    if (!$objItem->isAvailable() && !$objItem->hasErrors()) {
                         $objItem->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
                     }
 
