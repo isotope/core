@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -101,7 +100,7 @@ class AttributeOption extends \MultilingualModel
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
-            /** @type ProductPrice[] $objPrice */
+            /** @var ProductPrice[] $objPrice */
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice && $objPrice instanceof ProductPriceCollection) {
@@ -147,7 +146,7 @@ class AttributeOption extends \MultilingualModel
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
-            /** @type ProductPrice|ProductPrice[] $objPrice */
+            /** @var ProductPrice|ProductPrice[] $objPrice */
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice) {
@@ -170,7 +169,7 @@ class AttributeOption extends \MultilingualModel
             }
         } else {
 
-            /** @type ProductPrice|ProductPrice[] $objPrice */
+            /** @var ProductPrice|ProductPrice[] $objPrice */
             if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
                 return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
             } else {
@@ -210,7 +209,7 @@ class AttributeOption extends \MultilingualModel
         $strLabel    = $this->label;
         $priceFormat = '%s (%s)';
 
-        /** @type Attribute $objAttribute */
+        /** @var Attribute $objAttribute */
         $objAttribute = null;
 
         switch ($this->ptable) {

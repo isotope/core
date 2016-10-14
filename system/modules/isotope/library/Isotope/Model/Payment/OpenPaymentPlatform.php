@@ -1,4 +1,12 @@
 <?php
+/**
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ *
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
+ */
 
 namespace Isotope\Model\Payment;
 
@@ -66,7 +74,7 @@ class OpenPaymentPlatform extends Payment
         $response = json_decode($request->response, true);
         $this->storeApiResponse($response, $objOrder);
 
-        if ('000.100.110' !== $response['result']['code']
+        if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
             || 'PA' !== $response['paymentType']
             || $ndc !== $response['ndc']
             || $objOrder->getTotal() != $response['amount']

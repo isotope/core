@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\ProductType;
@@ -47,7 +46,7 @@ class AttributeWizard extends \Backend
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
-                /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+                /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
@@ -114,7 +113,7 @@ class AttributeWizard extends \Backend
         $strName  = $arrField['name'];
         $style = '';
 
-        /** @type IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+        /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
 
         if (null !== $objAttribute && $objAttribute->isVariantOption()) {

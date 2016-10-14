@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Gallery;
@@ -68,9 +67,10 @@ class Inline extends Standard
     {
         parent::addImageToTemplate($objTemplate, $strType, $arrFile, $blnWatermark);
 
-        $objTemplate->uid = spl_object_hash($this);
+        // Backwards compatibility
+        $objTemplate->uid = $this->getName();
 
-        if ($strType == 'gallery') {
+        if ('gallery' === $strType) {
             $image = $this->getImageForType('main', $arrFile, $blnWatermark);
 
             $objTemplate->link = $image['main'];

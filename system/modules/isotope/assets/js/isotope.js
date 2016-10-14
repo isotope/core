@@ -111,6 +111,47 @@
             jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
 
             return false;
+        },
+
+        checkoutButton: function (form) {
+            addEventListener(form, 'submit', function () {
+                try {
+                    document.getElementsByName('nextStep')[0].disabled = true;
+                } catch (e) {}
+                try {
+                    document.getElementsByName('previousStep')[0].disabled = true;
+                } catch (e) {}
+
+                setTimeout(function () {
+                    window.location.reload()
+                }, 30000);
+            });
+        },
+
+        initAwesomplete: function (id, searchField) {
+            var requested = false;
+            addEventListener(searchField, 'focus', function() {
+                if (requested) return false;
+
+                requested = true;
+
+                var url = url = window.location.href + (document.location.search ? '&' : '?') + '&iso_autocomplete=' + id,
+                    xhr = new XMLHttpRequest();
+
+                xhr.open('GET', encodeURI(url));
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        new Awesomplete(searchField, {
+                            list: JSON.parse(xhr.responseText)
+                        });
+                        searchField.focus();
+                    }
+                };
+
+                xhr.send();
+            });
         }
     };
 

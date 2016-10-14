@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -17,7 +16,6 @@ use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
 
 
@@ -321,7 +319,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if (0 === (int) $this->getPrice()) {
+        if ($this->getPrice() == 0) {
             return null;
         }
 

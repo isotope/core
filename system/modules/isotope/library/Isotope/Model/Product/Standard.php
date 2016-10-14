@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Product;
@@ -262,7 +261,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
             }
 
-            /** @type object $objVariants */
+            /** @var object $objVariants */
             $objVariants = \Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
@@ -416,7 +415,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objProduct->generate($arrConfig);
         }
 
-        /** @type Template|\stdClass $objTemplate */
+        /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
@@ -441,7 +440,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->generatePrice = function() use ($objProduct) {
             $objPrice = $objProduct->getPrice();
 
-            /** @type ProductType $objType */
+            /** @var ProductType $objType */
             $objType = $objProduct->getRelated('type');
 
             if (null === $objPrice) {
@@ -529,7 +528,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->hasOptions       = count($arrProductOptions) > 0;
         $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId           = $this->getFormId();
-        $objTemplate->action           = ampersand(\Environment::get('request'), true);
+        $objTemplate->action           = ampersand(\Environment::get('request') ?: \Environment::get('base'), true);
         $objTemplate->formSubmit       = $this->getFormId();
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
@@ -592,10 +591,19 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             // Remove options not available in any product variant
             if (is_array($arrField['options'])) {
-                foreach ($arrField['options'] as $k => $option) {
+                $blankOption = null;
 
+                foreach ($arrField['options'] as $k => $option) {
                     // Keep groups and blankOptionLabels
-                    if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '') {
+                    if ($option['value'] == '') {
+                        if (null !== $blankOption) {
+                            // Last blank option wins
+                            $arrField['options'][$blankOption] = $option;
+                            unset($arrField['options'][$k]);
+                        } else {
+                            $blankOption = $k;
+                        }
+                    } elseif (!in_array($option['value'], $arrOptions) && !$option['group']) {
                         unset($arrField['options'][$k]);
                     }
                 }
@@ -603,18 +611,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 $arrField['options'] = array_values($arrField['options']);
             }
 
-            $arrField['value']   = $this->$strField;
+            $arrField['value'] = $this->$strField;
 
         } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
             return '';
         }
 
         if ($objAttribute->isVariantOption()
-            || (
-                $objAttribute instanceof IsotopeAttributeWithOptions
-                && $objAttribute->canHavePrices()
-            )
-            || $arrField['attributes']['ajax_option']) {
+            || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
+            || $arrField['attributes']['ajax_option']
+        ) {
             $arrAjaxOptions[] = $strField;
         }
 
@@ -670,7 +676,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 // Convert date formats into timestamps
                 if ($varValue != '' && in_array($arrData['eval']['rgxp'], ['date', 'time', 'datim'], true)) {
                     try {
-                        /** @type \Date|object $objDate */
+                        /** @var \Date|object $objDate */
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
 
@@ -783,7 +789,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
         foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
-            /** @type IsotopeAttribute|Attribute $objAttribute */
+            /** @var IsotopeAttribute|Attribute $objAttribute */
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
@@ -825,7 +831,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
             // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-            /** @type object $objParent */
+            /** @var object $objParent */
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {

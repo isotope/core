@@ -1,0 +1,242 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>Winkel ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Verschillende winkel ID's groeperen een set van configuraties. Een gebruikers winkelwagen en adressen worden gedeeld tussen de gezamenlijke winkel ID's. </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.1">
+        <source>Please enter a custom label for this address.</source>
+        <target>Vul een eigen label in voor dit adres.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.0">
+        <source>Gender</source>
+        <target>Geslacht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.1">
+        <source>Please choose the gender.</source>
+        <target>Voer alstublieft uw geslacht in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+        <target>Aanhef</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Vul de titel in (Dhr., Mevr., Dr., Prof.). </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Voornaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.1">
+        <source>Please enter the first name.</source>
+        <target>Vul de voornaam in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Achternaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.1">
+        <source>Please enter the last name.</source>
+        <target>Vul de achternaam in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.0">
+        <source>Date of birth</source>
+        <target>Geboortedatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
+        <target>Vul de geboortedatum in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Bedrijfsnaam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.1">
+        <source>You can enter a company name here.</source>
+        <target>Hier kunt u een bedrijfsnaam invoeren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+        <target>BTW nr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Vul een BTW nummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Straatnaam + nr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Vul de straatnaam en huisnummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Straatnaam 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Vul een tweede regel voor de straatnaam in, indien van toepassing.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Straatnaam 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Vul een derde regel voor de straatnaam in, indien van toepassing.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Postcode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Vul de postcode in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Plaats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Vul de plaatsnaam in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.0">
+        <source>State</source>
+        <target>Provincie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Vul de naam van de provincie in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.1">
+        <source>Please select a country.</source>
+        <target>Selecteer uw land alstublieft.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Telefoonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Vul het telefoonnummer in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.0">
+        <source>E-mail address</source>
+        <target>E-mailadres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Vul een geldig e-mailadres in.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.0">
+        <source>Default billing address</source>
+        <target>Standaard factuuradres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+        <target>Is dit uw standaard factuuradres?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.0">
+        <source>Default shipping address</source>
+        <target>Standaard verzendadres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+        <target>Is dit uw standaard verzendadres?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
+        <target>Winkel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personal_legend">
+        <source>Personal data</source>
+        <target>Persoonlijke gegevens</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.address_legend">
+        <source>Address details</source>
+        <target>Adresinformatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contact_legend">
+        <source>Contact details</source>
+        <target>Contactinformatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.default_legend">
+        <source>Default address</source>
+        <target>Standaard adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personalData">
+        <source>Personal data</source>
+        <target>Persoonlijke gegevens</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.addressDetails">
+        <source>Address details</source>
+        <target>Adresinformatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contactDetails">
+        <source>Contact details</source>
+        <target>Contactinformatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.loginDetails">
+        <source>Default address</source>
+        <target>Standaard adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.0">
+        <source>New address</source>
+        <target>Nieuw adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.1">
+        <source>Create a new address</source>
+        <target>Maak een nieuw adres aan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.0">
+        <source>Edit address</source>
+        <target>Bewerk adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.1">
+        <source>Edit address ID %s</source>
+        <target>Bewerk adres id %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.0">
+        <source>Duplicate address</source>
+        <target>Kopier adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.1">
+        <source>Duplicate address ID %s</source>
+        <target>Kopier adres id %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.0">
+        <source>Delete address</source>
+        <target>Verwijder adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.1">
+        <source>Delete address ID %s</source>
+        <target>Verwijder adres id %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.0">
+        <source>Address details</source>
+        <target>Adresinformatie</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.1">
+        <source>Show details of address ID %s</source>
+        <target>Toon informatie van adres id %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

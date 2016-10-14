@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -88,10 +87,14 @@ class CartAddress extends Module
         $useBilling = in_array('billing', $this->iso_address, true);
         $objAddress = $this->getDefaultAddress($useBilling);
 
-        $objForm = new Form('iso_cart_address_' . $this->id, 'POST', function($objHaste) {
-            /** @type Form $objHaste */
-            return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
-        }, (boolean) $this->tableless);
+        $objForm = new Form(
+            'iso_cart_address_' . $this->id,
+            'POST',
+            function(Form $objHaste) {
+                return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
+            },
+            isset($this->tableless) ? (bool) $this->tableless : true
+        );
 
         $objForm->bindModel($objAddress);
 

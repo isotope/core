@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
@@ -30,7 +29,7 @@ class BillpayWithSaferpay extends Saferpay
         $objBillingAddress = Isotope::getCart()->getBillingAddress();
         $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
-        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'))) {
+        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'), true)) {
             return false;
         }
 
@@ -80,7 +79,7 @@ class BillpayWithSaferpay extends Saferpay
     {
         $objTemplate->billpay = false;
 
-        /** @type Order $objCollection */
+        /** @var Order $objCollection */
         if ($objCollection instanceof Order
             && $objCollection->hasPayment()
             && $objCollection->getPaymentMethod() instanceof BillpayWithSaferpay
@@ -112,9 +111,9 @@ class BillpayWithSaferpay extends Saferpay
      */
     protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        /** @type \Isotope\Model\ProductCollection\Order $objOrder */
+        /** @var \Isotope\Model\ProductCollection\Order $objOrder */
 
-        $arrData = parent::generatePaymentPostData($objOrder, $objModule);
+        $arrData = parent::generatePaymentPostData($objOrder);
 
         // Billing address
         $objBillingAddress = $objOrder->getBillingAddress();

@@ -1,0 +1,338 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_shipping.name.0">
+        <source>Shipping Method Name</source>
+        <target>Versandart-Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.name.1">
+        <source>Please enter a name for this shipping method.</source>
+        <target>Bitte geben Sie einen Namen für die Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.0">
+        <source>Shipping Method Type</source>
+        <target>Versandart-Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.type.1">
+        <source>Please select the type of this shipping method</source>
+        <target>Wählen Sie einen Versandart-Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.0">
+        <source>Price</source>
+        <target>Preis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price.1">
+        <source>Optionally enter a price for this shipping method.</source>
+        <target>Geben Sie hier optional einen Preis für diese Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.0">
+        <source>Shipping Method Notes</source>
+        <target>Versandart-Hinweise</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note.1">
+        <source>These will be displayed on the front end in association with this shipping option.</source>
+        <target>Diese werden im Frontend in Verbindung mit der Versandoption angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.0">
+        <source>Tax Class</source>
+        <target>Steuerklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.tax_class.1">
+        <source>Select a tax class that applies to the shipping price.</source>
+        <target>Wählen Sie eine Steuerklasse aus, die dem Versandpreis hinzugefügt wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.0">
+        <source>Label</source>
+        <target>Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.label.1">
+        <source>This is displayed on the front end in association with the shipping option.</source>
+        <target>Wird im Frontend in Verbindung mit der Versandoption angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.0">
+        <source>Flat calculation</source>
+        <target>Pauschalpreis-Berechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatCalculation.1">
+        <source>Select the mode of price calculation.</source>
+        <target>Wählen Sie den Modus der Preisberechnung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.countries.0">
+        <source>Countries</source>
+        <target>Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.countries.1">
+        <source>Select the countries this shipping method applies to. If you don't select anything, the shipping method will be applied to all countries.</source>
+        <target>Wählen Sie die Länder für die diese Versandart zur Verfügung steht. Wenn Sie kein Land wählen, gilt die Versandart für alle Länder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.subdivisions.0">
+        <source>State/Regions</source>
+        <target>Bundesländer/Staaten/Regionen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.subdivisions.1">
+        <source>Select the states/regions this shipping method applies to. If you don't select anything, the shipping method will be applied to all states/regions.</source>
+        <target>Wählen Sie die Bundesländer/Staaten/Regionen für die diese Versandart zur Verfügung steht. Wenn Sie nichts auswählen, gilt die Versandart für alle Bundesländer/Staaten/Regionen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.postalCodes.0">
+        <source>Postal codes</source>
+        <target>Postleitzahlen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.postalCodes.1">
+        <source>Limit this shipping module to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Limitieren Sie dieses Versandmodul auf bestimmte Postleitzahlen. Sie können eine komma-getrennte Liste und Bereiche eingeben (z. B. 1234,1235,1236-1239,1100-1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_total.0">
+        <source>Minimum subtotal</source>
+        <target>Mindestbetrag Zwischensumme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_total.1">
+        <source>Enter a minimum amount to control availability based on the cart subtotal.</source>
+        <target>Geben Sie den Minimalbetrag der Zwischensumme für die Verfügbarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_total.0">
+        <source>Maximum subtotal</source>
+        <target>Höchstbetrag Zwischensumme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_total.1">
+        <source>Enter a maximum amount to control availability based on the cart subtotal.</source>
+        <target>Geben Sie den Maximalbetrag der Zwischensumme für die Verfübarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.0">
+        <source>Minimum weight</source>
+        <target>Mindestgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_weight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Geben Sie ein Mindestgewicht für die Verfügbarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.0">
+        <source>Maximum weight</source>
+        <target>Höchstgewicht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_weight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Geben Sie ein Maximalgewicht für die Verfügbarkeit dieser Versandart ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.quantity_mode.0">
+        <source>Quantity calculation mode</source>
+        <target>Mengen-Berechnungsmodus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.quantity_mode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Wählen Sie einen Berechnungsmodus für die minimale/maximale Menge.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.quantity_mode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Gesamtmenge im Warenkorb</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.quantity_mode.cart_products">
+        <source>Total products in cart</source>
+        <target>Menge der verschiedenen Produkte im Warenkorb</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_quantity.0">
+        <source>Minimum quantity</source>
+        <target>Mindestmenge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.minimum_quantity.1">
+        <source>Enter a number greater zero to exclude this shipping method for orders with lower quantity.</source>
+        <target>Geben Sie eine Zahl grösser als Null ein, um diese Versandart bei Bestellungen mit niedridger Menge auszuschliessen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_quantity.0">
+        <source>Maximum quantity</source>
+        <target>Höchstmenge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.maximum_quantity.1">
+        <source>Enter a number greater zero to exclude this shipping method for orders with higher quantity.</source>
+        <target>Geben Sie eine Zahl grösser als Null ein, um diese Versandart bei Bestellungen mit höherer Menge auszuschliessen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.0">
+        <source>Product types</source>
+        <target>Produkttypen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types.1">
+        <source>You can restrict this shipping method to certain product types. If the cart contains a product type you have not selected, the shipping module is not available.</source>
+        <target>Sie können diese Versandart auf bestimmte Produkttypen einschränken. Wenn der Warenkorb einen Produkttyp enthält, den Sie hier nicht ausgewählt haben, steht das Versandmodul nicht zur Verfügung.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Produkttyp-Bedingungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Wählen Sie aus, wie der Produkttyp-Filter angewandt werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_ids.0">
+        <source>Store configurations</source>
+        <target>Konfigurationen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_ids.1">
+        <source>You can restrict this shipping method to certain shop configurations.</source>
+        <target>Diese Versandmethode kann auf bestimmte Shopkonfigurationen beschränkt werden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.0">
+        <source>Shipping methods</source>
+        <target>Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_methods.1">
+        <source>Select the shipping methods to group in this method.</source>
+        <target>Wählen Sie die Versandarten aus, die gruppiert werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.0">
+        <source>Group calculation</source>
+        <target>Gruppen-Berechnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.group_calculation.1">
+        <source>Select how the price of this shipping method should be calculated.</source>
+        <target>Wählen Sie wie der Preis dieser Versandart berechnet werden soll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.groups.0">
+        <source>Member Groups</source>
+        <target>Mitgliedergruppen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.groups.1">
+        <source>Restrict this shipping option to certain member groups.</source>
+        <target>Schränken Sie die Versandoptionen auf bestimmte Mitgliedergruppen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.protected.0">
+        <source>Protect module</source>
+        <target>Modul schützen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.protected.1">
+        <source>Show the module to certain member groups only.</source>
+        <target>Modul nur für bestimmte Mitgliedergruppen anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.guests.0">
+        <source>Show to guests only</source>
+        <target>Nur für Gäste anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.guests.1">
+        <source>Hide the module if a member is logged in.</source>
+        <target>Modul für eingeloggte Mitglieder nicht anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled.1">
+        <source>Is the module available for use in the store?</source>
+        <target>Wählen Sie ob dieses Modul für den Shop verfügbar ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.title_legend">
+        <source>Title and type</source>
+        <target>Titel und Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.note_legend">
+        <source>Shipping note</source>
+        <target>Versandhinweis</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.price_legend">
+        <source>Pricing threshold and tax class applicability</source>
+        <target>Preis-Grenzwert und Steuerklassen-Anwendbarkeit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.expert_legend">
+        <source>Expert settings</source>
+        <target>Experten-Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.enabled_legend">
+        <source>Approval</source>
+        <target>Freigabe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.new.0">
+        <source>New shipping method</source>
+        <target>Neue Versandart</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.new.1">
+        <source>Create a New shipping method</source>
+        <target>Eine neue Versandart erstellen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.edit.0">
+        <source>Edit shipping method</source>
+        <target>Versandart bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.edit.1">
+        <source>Edit shipping method ID %s</source>
+        <target>Versandart ID %s bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.copy.0">
+        <source>Copy shipping method</source>
+        <target>Versandart duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.copy.1">
+        <source>Copy shipping method ID %s</source>
+        <target>Versandart ID %s duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.delete.0">
+        <source>Delete shipping method</source>
+        <target>Versandart löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.delete.1">
+        <source>Delete shipping method ID %s</source>
+        <target>Versandart ID %s löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.toggle.0">
+        <source>Enable/disable shipping method</source>
+        <target>Versandart aktivieren/deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.toggle.1">
+        <source>Enable/disable shipping method ID %s</source>
+        <target>Versandart mit ID %s aktivieren/deaktivieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.show.0">
+        <source>Shipping method details</source>
+        <target>Versandart-Details</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.show.1">
+        <source>Show details of shipping method ID %s</source>
+        <target>Details der Versandart ID %s anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flat">
+        <source>Flat</source>
+        <target>Pauschal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perProduct">
+        <source>Per Product</source>
+        <target>Pro Produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perItem">
+        <source>Per Item</source>
+        <target>Pro Stück</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.first">
+        <source>Price of the first available method</source>
+        <target>Preis der ersten verfügbaren Methode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.lowest">
+        <source>Lowest price of available methods</source>
+        <target>Niedrigster Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.highest">
+        <source>Highest price of available methods</source>
+        <target>Höchster Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.summarize">
+        <source>Summed price of available methods</source>
+        <target>Summierter Preis der verfügbaren Versandarten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+        <target>Nur erlauben bei folgenden Produkttypen im Warenkorb</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+        <target>Nur erlauben wenn alle der folgenden Produkttypen im Warenkorb liegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+        <target>Erlauben, wenn einer der folgenden Produkttypen im Warenkorb liegt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.calculation">
+        <source>Calculate price for these product types</source>
+        <target>Preis für diese Produkttypen berechnen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

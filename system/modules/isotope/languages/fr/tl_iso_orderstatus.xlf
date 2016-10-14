@@ -1,0 +1,131 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+        <target>Veuillez, s'il vous plaît, entrer un nom pour cet état.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.0">
+        <source>Order is paid</source>
+        <target>La commande est payée</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.1">
+        <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
+        <target>On suppose que la commande est payée quand elle a cet état.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+        <target>Afficher dans le back office</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+        <target>Afficher le nombre de commandes avec cet état dans le back office.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.0">
+        <source>Notification</source>
+        <target>Notification</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.1">
+        <source>Please select a notification.</source>
+        <target>Veuillez choisir une notification.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.0">
+        <source>Saferpay transaction</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.1">
+        <source>Please select an option if you want to automatically update the payment gateway. This only applies if the client has used &quot;Saferpay&quot; or &quot;Billpay for Saferpay&quot; payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.capture">
+        <source>Capture payment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.cancel">
+        <source>Suggest manual payment cancellation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.0">
+        <source>New order status</source>
+        <target>Nouvel état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.1">
+        <source>Create a new order status</source>
+        <target>Créer un nouvel état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.0">
+        <source>Edit order status</source>
+        <target>Éditer un état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.1">
+        <source>Edit order status ID %s</source>
+        <target>Éditer l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.0">
+        <source>Duplicate order status</source>
+        <target>Dupliquer un état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.1">
+        <source>Duplicate order status ID %s</source>
+        <target>Dupliquer l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.0">
+        <source>Move order status</source>
+        <target>Déplacer un état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.1">
+        <source>Move order status ID %s</source>
+        <target>Déplacer l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.0">
+        <source>Delete order status</source>
+        <target>Supprimer un état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.1">
+        <source>Delete order status ID %s</source>
+        <target>Supprimer l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.0">
+        <source>Order status details</source>
+        <target>Détails de l'état des commandes</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.1">
+        <source>Show details of order status ID %s</source>
+        <target>Afficher les détails de l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.0">
+        <source>Paste after</source>
+        <target>Coller après</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.1">
+        <source>Paste after order status ID %s</source>
+        <target>Coller après l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.0">
+        <source>Paste into</source>
+        <target>Coller dans</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.1">
+        <source>Paste into order status ID %s</source>
+        <target>Coller dans l'état des commandes ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.email_legend">
+        <source>E-Mail Notification</source>
+        <target>Notification par e-mail</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.payment_legend">
+        <source>Payment Gateways</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

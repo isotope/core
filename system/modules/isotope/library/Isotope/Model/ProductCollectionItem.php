@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -187,8 +186,13 @@ class ProductCollectionItem extends \Model
                 return null;
             }
 
-            $this->objProduct = $strClass::findByPk($this->product_id);
-            
+            try {
+                $this->objProduct = $strClass::findByPk($this->product_id);
+            } catch (\Exception $e) {
+                $this->objProduct = null;
+                $this->addError($e->getMessage());
+            }
+
             if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
                 if ($this->objProduct instanceof \Model) {
                     $this->objProduct = clone $this->objProduct;

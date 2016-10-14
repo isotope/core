@@ -3,10 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2015 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -137,6 +137,9 @@ class InsertTag
                 }
 
                 return $this->getValueForAddressTag($address, $tokens[2]);
+
+            case 'weight':
+                return Isotope::formatPrice($collection->addToScale()->amountIn($tokens[2]), false);
 
             default:
                 return $collection->{$tokens[1]};

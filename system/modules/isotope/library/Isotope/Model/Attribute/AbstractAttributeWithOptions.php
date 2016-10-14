@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
@@ -26,7 +25,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Cache product options for attribute
      * "false" as long as the cache is not built
-     * @type \Isotope\Collection\AttributeOption|array
+     * @var \Isotope\Collection\AttributeOption|array
      */
     protected $varOptionsCache = false;
 
@@ -246,7 +245,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case IsotopeAttributeWithOptions::SOURCE_TABLE:
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                /** @type \Isotope\Collection\AttributeOption $objOptions */
+                /** @var \Isotope\Collection\AttributeOption $objOptions */
                 $objOptions = AttributeOption::findPublishedByIds($arrValues);
 
                 return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
@@ -300,7 +299,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return parent::generateValue($value, $options);
         }
 
-        /** @type \Widget $strClass */
+        /** @var \Widget $strClass */
         $strClass = $this->getFrontendWidget();
         $arrField = $strClass::getAttributesFromDca(
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name],
@@ -346,7 +345,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         $this->fe_search = false;
 
-        if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
+        if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
             $this->be_filter = false;
             $this->fe_filter = false;
         }
@@ -362,11 +361,14 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         parent::saveToDCA($arrData);
 
         if ('BE' === TL_MODE) {
-            if ($this->be_filter && \Input::get('act') == '') {
+            if ($this->be_filter
+                && \Input::get('act') == ''
+                && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+            ) {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
-            if ($this->isCustomerDefined() && 'product' === $this->optionsSource) {
+            if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 

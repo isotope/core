@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 \System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
@@ -381,7 +380,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'search'                => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:80px', 'tl_class'=>'clr'),
-            'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true),
+            'attributes'            => array('legend'=>'general_legend', 'multilingual'=>true, 'fe_search'=>true),
             'sql'                   => "text NULL",
         ),
         'description' => array
@@ -495,7 +494,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
             'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
-            'attributes'            => array('legend'=>'shipping_legend'),
+            'attributes'            => array('legend'=>'shipping_legend', 'type'=>'\Isotope\Model\Attribute\Weight'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_exempt' => array

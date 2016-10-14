@@ -1,0 +1,182 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="es">
+    <body>
+      <trans-unit id="tl_iso_tax_rate.name.0">
+        <source>Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name.1">
+        <source>Enter a name for this tax rate.</source>
+        <target>Introducir un nombre para esta tasa de impuestos.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.0">
+        <source>Label</source>
+        <target>Etiqueta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.1">
+        <source>This label will be used on the front end in the checkout process.</source>
+        <target>Esta etiqueta se utiliza en el front end del proceso de compra.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.0">
+        <source>Address to use for calculation</source>
+        <target>Dirección a utilizar para el cálculo</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.1">
+        <source>Select to which address this rate should use to apply its calculation. Be aware that for non-shippable products, the shipping address will equal to billing address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.0">
+        <source>Countries</source>
+        <target>Países</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.1">
+        <source>Select the countries this tax class applies to.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Comunidades / Regiones</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.1">
+        <source>Select the states or regions this tax class applies to.</source>
+        <target>Seleccionar las comunidades o regiones donde esta clase de impuestos se aplica.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.0">
+        <source>Postal codes</source>
+        <target>Códigos postales</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.1">
+        <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Limitar la tasa de impuestos a los códigos postales. Puede introducir una lista y rangos (por ejemplo 1234,1235,1236-1239,1100-1200) separados por comas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.0">
+        <source>Subtotal amount restriction</source>
+        <target>Restricción a un subtotal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.1">
+        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
+        <target>Opcional: restringir la tasa de impuestos a un subtotal específico (como un impuesto de lujo).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.0">
+        <source>Tax rate</source>
+        <target>Tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.1">
+        <source>A rate in percent this tax is set at.</source>
+        <target>Una tasa en porcentaje para este impuesto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.0">
+        <source>Store configuration</source>
+        <target>Configuración de la tienda</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.1">
+        <source>Select the store configuration that the tax rate applies to.</source>
+        <target>Seleccionar las configuraciones de tienda a las que se aplica el tipo impositivo.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
+        <source>Exempt on valid VAT number</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
+        <source>Do not apply tax if the VAT number is valid.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.0">
+        <source>Stop calculations on trigger?</source>
+        <target>¿Detener los cálculos al activar?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.1">
+        <source>Stop other calculations if this tax rate is triggered.</source>
+        <target>Detener otros cálculos si se activa este tipo de impuesto.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Member groups</source>
+        <target>Grupos de miembros</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.1">
+        <source>Restrict this tax rate to certain member groups.</source>
+        <target>Restringir esta tasa para ciertos grupos de miembros</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.0">
+        <source>Protect tax rate</source>
+        <target>Tasa de impuestos protegida</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.1">
+        <source>Apply the tax rate to certain member groups only.</source>
+        <target>Aplicar la tasa de impuestos sólo a algunos grupos.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.0">
+        <source>Apply to guests only</source>
+        <target>Aplicar solo a los invitados.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.1">
+        <source>Do not apply tax rate if a member is logged in.</source>
+        <target>No aplicar la tasa de impuestos si un miembro se ha autentificado.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.0">
+        <source>New tax rate</source>
+        <target>Nueva tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.1">
+        <source>Create a new tax rate</source>
+        <target>Crear una nueva tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.0">
+        <source>Edit tax rate</source>
+        <target>Editar tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.1">
+        <source>Edit tax rate ID %s</source>
+        <target>Editar la tasa de impuestos ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.0">
+        <source>Copy tax rate</source>
+        <target>Copiar tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.1">
+        <source>Copy tax rate ID %s</source>
+        <target>Copiar la tasa de impuestos ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.0">
+        <source>Delete tax rate</source>
+        <target>Borrar tasa de impuestos </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.1">
+        <source>Delete tax rate ID %s</source>
+        <target>Borrar la tasa de impuestos ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.0">
+        <source>Tax rate details</source>
+        <target>Detalles de la tasa de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.1">
+        <source>Show details of tax rate ID %s</source>
+        <target>Mostrar los detalles de la tasa de impuestos ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.billing">
+        <source>Billing Address</source>
+        <target>Dirección de facturación</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.shipping">
+        <source>Shipping Address</source>
+        <target>Dirección de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name_legend">
+        <source>Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate_legend">
+        <source>Rate</source>
+        <target>Tasa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.location_legend">
+        <source>Location</source>
+        <target>Ubicación</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.condition_legend">
+        <source>Conditions</source>
+        <target>Condiciones</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config_legend">
+        <source>Configuration</source>
+        <target>Configuración</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

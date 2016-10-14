@@ -1,0 +1,42 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_page.xlf" source-language="en" target-language="fr">
+    <body>
+      <trans-unit id="tl_page.iso_config.0">
+        <source>Store Configuration</source>
+        <target>Configuration de boutique</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_config.1">
+        <source>Select a store configuration for this page structure.</source>
+        <target>Sélectionner une configuration de boutique pour cette structure de page.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_setReaderJumpTo.0">
+        <source>Use reader page</source>
+        <target>Configure a reader page for this Isotope category</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_setReaderJumpTo.1">
+        <source>Overwrite the configuration of this page if product details are shown. See help wizard of the page selection for more information.</source>
+        <target>Every page containing a product listing module must have a reader page assigned (gets inherited).</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_readerJumpTo.0">
+        <source>Reader page</source>
+        <target>Choose the reader page</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_readerJumpTo.1">
+        <source>Select a page for your page reader.</source>
+        <target>Select the target page products from this page should forwarded to.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_store_id.0">
+        <source>Store ID</source>
+        <target>ID de la boutique</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_store_id.1">
+        <source>Use different store IDs to group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Utiliser des ID de boutique différents pour regrouper une boutique sur plusieurs racines de sites. Un panier de commande et les adresses seront partagés entre les mêmes ID de boutique.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

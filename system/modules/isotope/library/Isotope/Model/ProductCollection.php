@@ -3,17 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
 use Haste\Generator\RowClass;
-use Haste\Haste;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
@@ -28,8 +26,6 @@ use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\Payment;
-use Isotope\Model\Shipping;
 use Model\Registry;
 
 /**
@@ -941,6 +937,24 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
+     * Gets the product collection with given ID if it belongs to this collection.
+     *
+     * @param int $id
+     *
+     * @return ProductCollectionItem|null
+     */
+    public function getItemById($id)
+    {
+        $items = $this->getItems();
+
+        if (!isset($items[$id])) {
+            return null;
+        }
+
+        return $items[$id];
+    }
+
+    /**
      * Check if a given product is already in the collection
      *
      * @param IsotopeProduct $objProduct
@@ -974,7 +988,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @param float          $fltQuantity
      * @param array          $arrConfig
      *
-     * @return ProductCollectionItem
+     * @return ProductCollectionItem|false
      */
     public function addProduct(IsotopeProduct $objProduct, $fltQuantity, array $arrConfig = array())
     {
@@ -1389,11 +1403,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add all products in the collection to the given scale
-     *
-     * @param Scale $objScale
-     *
-     * @return Scale
+     * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
     {
@@ -1428,12 +1438,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add the collection to a template
-     *
-     * @param \Template $objTemplate
-     * @param array     $arrConfig
+     * @inheritdoc
      */
-    public function addToTemplate(\Template $objTemplate, array $arrConfig = array())
+    public function addToTemplate(\Template $objTemplate, array $arrConfig = [])
     {
         $arrGalleries = array();
         $objConfig    = $this->getRelated('config_id') ?: Isotope::getConfig();
@@ -1536,19 +1543,15 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Add an error message
-     *
-     * @param string
+     * @inheritdoc
      */
-    public function addError($strError)
+    public function addError($message)
     {
-        $this->arrErrors[] = $strError;
+        $this->arrErrors[] = $message;
     }
 
     /**
-     * Check if collection or any item has errors
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function hasErrors()
     {
@@ -1566,9 +1569,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * Return the errors array
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getErrors()
     {
@@ -1823,7 +1824,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             }
         }
 
-        /** @type Config $config */
+        /** @var Config $config */
         $config         = $this->getRelated('config_id');
         $billingFields  = (null === $config) ? array() : $config->getBillingFields();
         $shippingFields = (null === $config) ? array() : $config->getShippingFields();

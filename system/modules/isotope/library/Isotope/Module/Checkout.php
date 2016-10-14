@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -29,8 +28,7 @@ use Isotope\Template;
  * @property array $iso_payment_modules
  * @property array $iso_shipping_modules
  * @property bool  $iso_forward_review
- * @property bool  $iso_skip_shipping
- * @property bool  $iso_skip_payment
+ * @property array $iso_checkout_skippable
  */
 class Checkout extends Module
 {
@@ -146,7 +144,7 @@ class Checkout extends Module
                 /** @var Order $objOrder */
                 if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
-                        /** @type \PageError404 $objHandler */
+                        /** @var \PageError404 $objHandler */
                         $objHandler = new $GLOBALS['TL_PTY']['error_404']();
                         $objHandler->generate((int) $GLOBALS['objPage']->id);
                         exit;
@@ -200,7 +198,7 @@ class Checkout extends Module
 
                 // Make sure all steps have passed successfully
                 foreach ($arrSteps as $step => $arrModules) {
-                    /** @type IsotopeCheckoutStep $objModule */
+                    /** @var IsotopeCheckoutStep $objModule */
                     foreach ($arrModules as $objModule) {
                         $objModule->generate();
 
@@ -288,8 +286,8 @@ class Checkout extends Module
 
         /**
          * Run trough all steps until we find the current one or one reports failure
-         * @type string                $step
-         * @type IsotopeCheckoutStep[] $arrModules
+         * @var string                $step
+         * @var IsotopeCheckoutStep[] $arrModules
          */
         foreach ($arrSteps as $step => $arrModules) {
             $this->strFormId            = 'iso_mod_checkout_' . $step;
@@ -429,7 +427,7 @@ class Checkout extends Module
         $arrCheckoutInfo = array();
 
         // Run trough all steps to collect checkout information
-        /** @type IsotopeCheckoutStep[] $arrModules */
+        /** @var IsotopeCheckoutStep[] $arrModules */
         foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
 
@@ -461,7 +459,7 @@ class Checkout extends Module
         // Run trough all steps to collect checkout information
         foreach ($arrSteps as $arrModules) {
 
-            /** @type IsotopeCheckoutStep $objModule */
+            /** @var IsotopeCheckoutStep $objModule */
             foreach ($arrModules as $objModule) {
                 $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
             }
@@ -480,7 +478,7 @@ class Checkout extends Module
         // Redirect to login page if not logged in
         if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
 
-            /** @type \PageModel $objJump */
+            /** @var \PageModel $objJump */
             $objJump = \PageModel::findPublishedById($this->iso_login_jumpTo);
 
             if (null === $objJump) {
@@ -515,7 +513,7 @@ class Checkout extends Module
         if (Isotope::getCart()->hasErrors()) {
             if ($this->iso_cart_jumpTo > 0) {
 
-                /** @type \PageModel $objJump */
+                /** @var \PageModel $objJump */
                 $objJump = \PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
@@ -532,6 +530,20 @@ class Checkout extends Module
         }
 
         return true;
+    }
+
+    /**
+     * Returns whether the checkout step by given name can be skipped.
+     *
+     * @param string $step
+     *
+     * @return bool
+     */
+    public function canSkipStep($step)
+    {
+        $skippable = deserialize($this->iso_checkout_skippable, true);
+
+        return in_array($step, $skippable, true);
     }
 
     /**
@@ -638,7 +650,7 @@ class Checkout extends Module
         $strUrl = \Controller::generateFrontendUrl($objTarget->row(), '/' . $strStep, $objTarget->language);
 
         if (null !== $objCollection) {
-            $strUrl = Url::addQueryString('uid=' . $objCollection->uniqid, $strUrl);
+            $strUrl = Url::addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);
         }
 
         return $strUrl;

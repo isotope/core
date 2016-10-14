@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Payment;
@@ -115,7 +114,7 @@ class Callback extends Permission
     {
         $arrCCTypes = array();
 
-        /** @type Payment $objPayment */
+        /** @var Payment $objPayment */
         if (($objPayment = Payment::findByPk($dc->id)) !== null) {
 
             try {
@@ -225,7 +224,7 @@ class Callback extends Permission
 
     /**
      * Disable/enable a user group
-     * 
+     *
      * @param int $intId
      * @param bool $blnVisible
      */

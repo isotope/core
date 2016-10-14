@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
+use Haste\Frontend\AbstractFrontendModule;
 use Haste\Haste;
 use Haste\Input\Input;
 use Haste\Util\Debug;
@@ -20,7 +20,6 @@ use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
-use Module as Contao_Module;
 use PageModel;
 
 
@@ -42,7 +41,7 @@ use PageModel;
  * @property bool   $defineRoot
  * @property int    $rootPage
  */
-abstract class Module extends Contao_Module
+abstract class Module extends AbstractFrontendModule
 {
 
     /**
@@ -82,7 +81,7 @@ abstract class Module extends Contao_Module
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if (TL_MODE == 'FE') {
+        if ('FE' === TL_MODE) {
             $version = RepositoryVersion::encode(Isotope::VERSION);
 
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
@@ -112,7 +111,7 @@ abstract class Module extends Contao_Module
         $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        if ($this->iso_includeMessages) {
+        if ('BE' !== TL_MODE && $this->iso_includeMessages) {
             $strBuffer = Message::generate() . $strBuffer;
         }
 
@@ -315,7 +314,7 @@ abstract class Module extends Contao_Module
             }
         }
 
-        /** @type PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');

@@ -1,0 +1,74 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_baseprice.xlf" source-language="en" target-language="es">
+    <body>
+      <trans-unit id="tl_iso_baseprice.name.0">
+        <source>Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name.1">
+        <source>Enter a name for this base price.</source>
+        <target>Introduzca un nombre para este precio básico.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.0">
+        <source>Base amount</source>
+        <target>Importe base</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.1">
+        <source>Enter the base amount (e.g. &quot;100&quot;).</source>
+        <target>Introduce el importe base (por ejemplo, &quot;100&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.0">
+        <source>Label</source>
+        <target>Etiqueta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.1">
+        <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
+        <target>Introduce una etiqueta para este precio base (por ejemplo, &quot;%s por 100g&quot;.)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.new.0">
+        <source>New base price</source>
+        <target>Nuevo precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.new.1">
+        <source>Create a new base price</source>
+        <target>Crear un nuevo precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.edit.0">
+        <source>Edit base price</source>
+        <target>Editar precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.edit.1">
+        <source>Edit base price ID %s</source>
+        <target>Editar precio básico ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.copy.0">
+        <source>Duplicate base price</source>
+        <target>Duplicar precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.copy.1">
+        <source>Duplicate base price ID %s</source>
+        <target>Duplicar precio básico ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.delete.0">
+        <source>Delete base price</source>
+        <target>Borrar precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.delete.1">
+        <source>Delete base price ID %s</source>
+        <target>Borrar precio básico ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.show.0">
+        <source>Base price details</source>
+        <target>Detalles precio básico</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.show.1">
+        <source>Show details of base price ID %s</source>
+        <target>Mostrar detalles precio básico ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name_legend">
+        <source>Base price</source>
+        <target>Precio basico</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,242 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>Shop-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Nutzen Sie verschiedene Shop-IDs um mehrere Shop-Konfigurationen zu gruppieren. Der Warenkorb und die Adressen des Nutzers werden übergreifend zwischen Shops mit identischer ID genutzt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Bezeichnung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.1">
+        <source>Please enter a custom label for this address.</source>
+        <target>Sie können dieser Adresse eine Bezeichnung geben.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.0">
+        <source>Gender</source>
+        <target>Geschlecht</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.1">
+        <source>Please choose the gender.</source>
+        <target>Bitte wählen Sie das Geschlecht.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+        <target>Anrede</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Bitte geben Sie die Anrede ein (Herr, Frau, Dr., Prof.).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Vorname</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.1">
+        <source>Please enter the first name.</source>
+        <target>Bitte geben Sie den Vornamen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Nachname</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.1">
+        <source>Please enter the last name.</source>
+        <target>Bitte geben Sie den Nachnamen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.0">
+        <source>Date of birth</source>
+        <target>Geburtsdatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
+        <target>Bitte geben Sie das Geburtsdatum ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Firma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.1">
+        <source>You can enter a company name here.</source>
+        <target>Hier können Sie einen Firmennamen eingeben.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+        <target>USt-IdNr.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Bitte geben Sie Ihre Umsatzsteuer-Identifikationsnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Straße</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Bitte geben Sie den Straßennamen und die Hausnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Straße 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Geben Sie eine zweite Zeile für die Straße ein falls nötig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Straße 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Geben Sie eine dritte Zeile für die Straße ein falls nötig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Postleitzahl</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Bitte geben Sie die Postleitzahl ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Ort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Bitte geben Sie den Namen der Stadt ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.0">
+        <source>State</source>
+        <target>Staat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Bitte geben Sie den Namen des Bundeslandes/Kanton ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.1">
+        <source>Please select a country.</source>
+        <target>Bitte wählen Sie ein Land.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Bitte geben Sie die Telefonnummer ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.0">
+        <source>E-mail address</source>
+        <target>E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Bitte geben Sie eine gültige E-Mail-Adresse ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.0">
+        <source>Default billing address</source>
+        <target>Standard-Rechnungsadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+        <target>Klicken Sie hier, wenn dies die Standard-Rechnungsadresse ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.0">
+        <source>Default shipping address</source>
+        <target>Standard-Versandadresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+        <target>Klicken Sie hier, wenn dies die Standard-Versandadresse ist.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
+        <target>Shop</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personal_legend">
+        <source>Personal data</source>
+        <target>Persönliche Daten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.address_legend">
+        <source>Address details</source>
+        <target>Adressdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contact_legend">
+        <source>Contact details</source>
+        <target>Kontaktdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.default_legend">
+        <source>Default address</source>
+        <target>Standard-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personalData">
+        <source>Personal data</source>
+        <target>Persönliche Daten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.addressDetails">
+        <source>Address details</source>
+        <target>Adressdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contactDetails">
+        <source>Contact details</source>
+        <target>Kontaktdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.loginDetails">
+        <source>Default address</source>
+        <target>Standard-Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.0">
+        <source>New address</source>
+        <target>Neue Adresse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.1">
+        <source>Create a new address</source>
+        <target>Eine neue Adresse anlegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.0">
+        <source>Edit address</source>
+        <target>Adresse bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.1">
+        <source>Edit address ID %s</source>
+        <target>Adresse ID %s bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.0">
+        <source>Duplicate address</source>
+        <target>Adresse duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.1">
+        <source>Duplicate address ID %s</source>
+        <target>Adresse ID %s duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.0">
+        <source>Delete address</source>
+        <target>Adresse löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.1">
+        <source>Delete address ID %s</source>
+        <target>Adresse ID %s löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.0">
+        <source>Address details</source>
+        <target>Adressdetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.1">
+        <source>Show details of address ID %s</source>
+        <target>Details der Adresse ID %s anzeigen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

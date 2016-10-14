@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
+use Contao\MemberModel;
 use Database\Result;
 use Haste\Util\Format;
 use Isotope\Backend;
@@ -200,12 +200,10 @@ class Address extends \Model
             }
 
             if ('subdivision' === $strField && $this->subdivision != '') {
-                $arrSubdivisions = Backend::getSubdivisions();
+                list($country, $subdivision) = explode('-', $this->subdivision);
 
-                list($country, $subdivion) = explode('-', $this->subdivision);
-
-                $arrTokens['subdivision']      = $arrSubdivisions[strtolower($country)][$this->subdivision];
-                $arrTokens['subdivision_abbr'] = $subdivion;
+                $arrTokens['subdivision_abbr'] = $subdivision;
+                $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $subdivision);
 
                 continue;
             }
@@ -366,22 +364,7 @@ class Address extends \Model
         );
 
         if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
-
-            // Generate address data from tl_member, limit to fields enabled in the shop configuration
-            $arrMember = array_intersect_key(
-                array_merge(
-                    $objMember->row(),
-                    array(
-                         'street_1'    => $objMember->street,
-
-                         // Trying to guess subdivision by country and state
-                         'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
-                    )
-                ),
-                array_flip($arrFill)
-            );
-
-            $arrData = array_merge($arrMember, $arrData);
+            $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
         $objAddress->setRow($arrData);
@@ -416,25 +399,8 @@ class Address extends \Model
             'isDefaultShipping' => $blnDefaultShipping ? '1' : '',
         );
 
-        if (!empty($arrFill)
-            && is_array($arrFill)
-            && ($objMember = $objCollection->getMember()) !== null
-        ) {
-            // Generate address data from tl_member, limit to fields enabled in the shop configuration
-            $arrMember = array_intersect_key(
-                array_merge(
-                    $objMember->row(),
-                    array(
-                        'street_1'    => $objMember->street,
-
-                        // Trying to guess subdivision by country and state
-                        'subdivision' => strtoupper($objMember->country . '-' . $objMember->state)
-                    )
-                ),
-                array_flip($arrFill)
-            );
-
-            $arrData = array_merge($arrMember, $arrData);
+        if (!empty($arrFill) && is_array($arrFill) && ($objMember = $objCollection->getMember()) !== null) {
+            $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
         if ($arrData['country'] == '' && null !== ($objConfig = $objCollection->getConfig())) {
@@ -448,5 +414,24 @@ class Address extends \Model
         $objAddress->setRow($arrData);
 
         return $objAddress;
+    }
+
+    /**
+     * Generate address data from tl_member, limit to fields enabled in the shop configuration
+     */
+    public static function getAddressDataForMember(MemberModel $member, array $fields)
+    {
+        return array_intersect_key(
+            array_merge(
+                $member->row(),
+                array(
+                    'street_1'    => $member->street,
+
+                    // Trying to guess subdivision by country and state
+                    'subdivision' => strtoupper($member->country . '-' . $member->state)
+                )
+            ),
+            array_flip($fields)
+        );
     }
 }

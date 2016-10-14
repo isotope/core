@@ -3,16 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
+use Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
@@ -189,7 +189,7 @@ interface IsotopeProductCollection
      *
      * @return ProductCollectionItem
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array());
+    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = []);
 
     /**
      * Update a product collection item
@@ -237,14 +237,38 @@ interface IsotopeProductCollection
     public function getSurcharges();
 
     /**
-     * Check if minimum order amount is reached
+     * Add all products in the collection to the given scale
+     *
+     * @param Scale $objScale
+     *
+     * @return Scale
+     */
+    public function addToScale(Scale $objScale = null);
+
+    /**
+     * Add the collection to a template
+     *
+     * @param \Template $objTemplate
+     * @param array     $arrConfig
+     */
+    public function addToTemplate(\Template $objTemplate, array $arrConfig = []);
+
+    /**
+     * Add an error message
+     *
+     * @param string
+     */
+    public function addError($message);
+
+    /**
+     * Check if collection or any item has errors
      *
      * @return bool
      */
     public function hasErrors();
 
     /**
-     * Get error messages for the cart
+     * Return the errors array
      *
      * @return array
      */

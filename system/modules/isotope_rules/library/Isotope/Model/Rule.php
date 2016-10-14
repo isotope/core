@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -17,41 +16,39 @@ use Isotope\Isotope;
 use Isotope\Translation;
 
 /**
- * Class Payment
- *
- * Implements payment surcharge in product collection
- *
- * @property int    id
- * @property int    tstamp
- * @property string type
- * @property string name
- * @property string label
- * @property string discount
- * @property int    tax_class
- * @property string applyTo
- * @property bool   enableCode
- * @property string code
- * @property int    limitPerMember
- * @property int    limitPerConfig
- * @property int    minSubtotal
- * @property int    maxSubtotal
- * @property int    minItemQuantity
- * @property int    maxItemQuantity
- * @property string quantityMode
- * @property int    startDate
- * @property int    endDate
- * @property int    startTime
- * @property int    endTime
- * @property string configRestrictions
- * @property bool   configCondition
- * @property string memberRestrictions
- * @property bool   memberCondition
- * @property string productRestrictions
- * @property bool   productCondition
- * @property string attributeName
- * @property string attributeCondition
- * @property string attributeValue
- * @property bool   enabled
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $type
+ * @property string $name
+ * @property string $label
+ * @property string $discount
+ * @property int    $tax_class
+ * @property string $applyTo
+ * @property bool   $enableCode
+ * @property string $code
+ * @property int    $limitPerMember
+ * @property int    $limitPerConfig
+ * @property int    $minSubtotal
+ * @property int    $maxSubtotal
+ * @property string $minWeight
+ * @property string $maxWeight
+ * @property int    $minItemQuantity
+ * @property int    $maxItemQuantity
+ * @property string $quantityMode
+ * @property int    $startDate
+ * @property int    $endDate
+ * @property int    $startTime
+ * @property int    $endTime
+ * @property string $configRestrictions
+ * @property bool   $configCondition
+ * @property string $memberRestrictions
+ * @property bool   $memberCondition
+ * @property string $productRestrictions
+ * @property bool   $productCondition
+ * @property string $attributeName
+ * @property string $attributeCondition
+ * @property string $attributeValue
+ * @property bool   $enabled
  */
 class Rule extends \Model
 {

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -57,7 +56,7 @@ class AddressBook extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
+        if ('BE' === TL_MODE) {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
             $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ADDRESS BOOK ###';
@@ -76,7 +75,7 @@ class AddressBook extends Module
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (empty($this->arrFields)) {
+        if (0 === count($this->arrFields)) {
             return '';
         }
 
@@ -135,13 +134,13 @@ class AddressBook extends Module
      */
     protected function show()
     {
-        /** @type \PageModel $objPage */
+        /** @var \PageModel $objPage */
         global $objPage;
 
         $arrAddresses = [];
         $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
 
-        /** @type Address[] $objAddresses */
+        /** @var Address[] $objAddresses */
         $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
@@ -158,7 +157,7 @@ class AddressBook extends Module
             }
         }
 
-        if (empty($arrAddresses)) {
+        if (0 === count($arrAddresses)) {
             $this->Template->mtype   = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
@@ -189,21 +188,26 @@ class AddressBook extends Module
         $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
         if ($intAddressId === 0) {
-            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id);
+            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, ['country']);
         } else {
             $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
         }
 
         if (null === $objAddress) {
-            /** @type \PageModel $objPage */
+            /** @var \PageModel $objPage */
             global $objPage;
 
             \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
         }
 
-        $objForm = new Form($table . '_' . $this->id, 'POST', function(Form $objForm) {
-            return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
-        }, (boolean) $this->tableless);
+        $objForm = new Form(
+            $table . '_' . $this->id,
+            'POST',
+            function(Form $objForm) {
+                return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
+            },
+            isset($this->tableless) ? (bool) $this->tableless : true
+        );
 
         $objForm->bindModel($objAddress);
 
@@ -257,7 +261,7 @@ class AddressBook extends Module
                 // Send notifications
                 $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
 
-                /** @type \PageModel $objPage */
+                /** @var \PageModel $objPage */
                 global $objPage;
 
                 \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
@@ -313,7 +317,7 @@ class AddressBook extends Module
             return;
         }
 
-        /** @type Notification $objNotification */
+        /** @var Notification $objNotification */
         $objNotification = Notification::findByPk($this->nc_notification);
 
         if (null === $objNotification) {
@@ -356,7 +360,7 @@ class AddressBook extends Module
             $objAddress->delete();
         }
 
-        /** @type \PageModel $objPage */
+        /** @var \PageModel $objPage */
         global $objPage;
 
         \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));

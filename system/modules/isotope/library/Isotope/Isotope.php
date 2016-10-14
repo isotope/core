@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -20,6 +19,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Favorites;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
@@ -121,6 +121,16 @@ class Isotope extends \Controller
         }
 
         return static::$objCart;
+    }
+
+    /**
+     * Gets the favorites collection for the currently logged in user
+     *
+     * @return Favorites|null
+     */
+    public static function getFavorites()
+    {
+        return Favorites::findForCurrentStore();
     }
 
     /**
@@ -259,7 +269,7 @@ class Isotope extends \Controller
 
         return $fltPrice;
     }
-    
+
     /**
      * Rounds a price according to store config settings
      *
@@ -399,6 +409,15 @@ class Isotope extends \Controller
             );
         }
 
+        if (true === FE_USER_LOGGED_IN || 'BE' === TL_MODE) {
+            $isFavorited = ($favorites = Isotope::getFavorites()) !== null && $favorites->hasProduct($objProduct);
+
+            $arrButtons['toggle_favorites'] = array(
+                'label'    => $GLOBALS['TL_LANG']['MSC']['buttonLabel'][$isFavorited ? 'remove_from_favorites' : 'add_to_favorites'],
+                'callback' => array('\Isotope\Frontend', 'toggleFavorites'),
+                'class'    => $isFavorited ? 'active' : '',
+            );
+        }
 
         return $arrButtons;
     }
@@ -491,12 +510,12 @@ class Isotope extends \Controller
 
         foreach ($arrConfig as $k => $v) {
 
-            /** @type \Isotope\Model\Attribute $objAttribute */
+            /** @var \Isotope\Model\Attribute $objAttribute */
             if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
                 && $objAttribute instanceof IsotopeAttributeWithOptions
             ) {
 
-                /** @type \Widget $strClass */
+                /** @var \Widget $strClass */
                 $strClass = $objAttribute->getFrontendWidget();
                 $arrField = $strClass::getAttributesFromDca(
                     $GLOBALS['TL_DCA'][$strTable]['fields'][$k],

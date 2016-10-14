@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -86,6 +85,34 @@ class Backend extends Contao_Backend
         }
 
         return $arrSubdivisions;
+    }
+
+    /**
+     * Returns the label for a subdivision of a country.
+     *
+     * @param string $country
+     * @param string $subdivision
+     *
+     * @return string
+     */
+    public static function getLabelForSubdivision($country, $subdivision)
+    {
+        $country = strtolower($country);
+        $arrSubdivisions = Backend::getSubdivisions();
+
+        if (isset($arrSubdivisions[$country][$subdivision])) {
+            return $arrSubdivisions[$country][$subdivision];
+        } else {
+            foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
+                foreach ($regionGroup as $groupLabel => $regions) {
+                    if (isset($regions[$subdivision])) {
+                        return $regions[$subdivision];
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -170,7 +197,7 @@ class Backend extends Contao_Backend
 
         if (($objStatus = OrderStatus::findAll(array('order' => 'sorting'))) !== null) {
 
-            /** @type OrderStatus $status */
+            /** @var OrderStatus $status */
             foreach ($objStatus as $status) {
                 $arrStatus[$status->id] = $status->getName();
             }
@@ -186,7 +213,7 @@ class Backend extends Contao_Backend
      */
     public function getOrderMessages()
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         if (!\Database::getInstance()->tableExists(OrderStatus::getTable())
@@ -300,7 +327,7 @@ class Backend extends Contao_Backend
                     'name'     => \Input::post('name'),
                 );
 
-                /** @type \Isotope\Widget\MediaManager $objWidget */
+                /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
                 $objWidget->ajaxUpload();
                 exit;
@@ -353,7 +380,7 @@ class Backend extends Contao_Backend
                 $arrAttribs['strField']     = $strField;
                 $arrAttribs['activeRecord'] = $dc->activeRecord;
 
-                /** @type \Isotope\Widget\MediaManager $objWidget */
+                /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
                 echo $objWidget->generate();
                 exit;

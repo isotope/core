@@ -3,17 +3,18 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
+use Isotope\Isotope;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
@@ -31,6 +32,21 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
     {
         // Cart subtotal
         if (($objRule->minSubtotal > 0 && $objCollection->getSubtotal() < $objRule->minSubtotal) || ($objRule->maxSubtotal > 0 && $objCollection->getSubtotal() > $objRule->maxSubtotal)) {
+            return null;
+        }
+
+        // Cart weight
+        $objScale = Isotope::getCart()->addToScale();
+
+        if (($minWeight = Weight::createFromTimePeriod($objRule->minWeight)) !== null
+            && $objScale->isLessThan($minWeight)
+        ) {
+            return null;
+        }
+
+        if (($maxWeight = Weight::createFromTimePeriod($objRule->maxWeight)) !== null
+            && $objScale->isMoreThan($maxWeight)
+        ) {
             return null;
         }
 

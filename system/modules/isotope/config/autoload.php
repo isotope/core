@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -50,6 +49,7 @@ TemplateLoader::addFiles(array
     'iso_collection_default'            => 'system/modules/isotope/templates/collection',
     'iso_collection_mini'               => 'system/modules/isotope/templates/collection',
     'iso_collection_invoice'            => 'system/modules/isotope/templates/collection',
+    'iso_collection_favorites'          => 'system/modules/isotope/templates/collection',
     'iso_document_default'              => 'system/modules/isotope/templates/document',
     'iso_filter_default'                => 'system/modules/isotope/templates/isotope',
     'iso_gallery_standard'              => 'system/modules/isotope/templates/gallery',
@@ -72,6 +72,7 @@ TemplateLoader::addFiles(array
     'iso_reader_default'                => 'system/modules/isotope/templates/isotope',
     'iso_scripts'                       => 'system/modules/isotope/templates/isotope',
     'mod_iso_addressbook'               => 'system/modules/isotope/templates/modules',
+    'mod_iso_favorites'                 => 'system/modules/isotope/templates/modules',
     'mod_iso_cart'                      => 'system/modules/isotope/templates/modules',
     'mod_iso_checkout'                  => 'system/modules/isotope/templates/modules',
     'mod_iso_configswitcher'            => 'system/modules/isotope/templates/modules',

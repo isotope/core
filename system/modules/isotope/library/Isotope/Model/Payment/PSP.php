@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
@@ -100,7 +99,7 @@ abstract class PSP extends Payment implements IsotopePostsale
             case 52: // Genehmigung nicht bekannt
             case 92: // Zahlung unsicher
 
-                /** @type \Isotope\Model\Config $objConfig */
+                /** @var \Isotope\Model\Config $objConfig */
                 if (($objConfig = $objOrder->getConfig()) === null) {
                     \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
                     return false;
@@ -122,7 +121,7 @@ abstract class PSP extends Payment implements IsotopePostsale
             \System::log('Post-Sale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
-        
+
         $objOrder->payment_data = json_encode($this->getRawRequestData());
 
         $objOrder->updateOrderStatus($intStatus);
@@ -217,7 +216,7 @@ abstract class PSP extends Payment implements IsotopePostsale
             'OWNERADDRESS2' => substr($objBillingAddress->street_2, 0, 35),
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => substr($objBillingAddress->city, 0, 35),
-            'OWNERTELNO'    => $objBillingAddress->phone,
+            'OWNERTELNO'    => preg_replace('/[^- +\/0-9]/','', $objBillingAddress->phone),
             'ACCEPTURL'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'DECLINEURL'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'BACKURL'       => \Environment::get('base') . Checkout::generateUrlForStep('review'),

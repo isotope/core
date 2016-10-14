@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\AttributeOption;
@@ -43,7 +42,7 @@ class Callback extends \Backend
         // Attribute options for products can always have a price
         if ('iso_products' !== \Input::get('do')) {
 
-            /** @type Attribute $objAttribute */
+            /** @var Attribute $objAttribute */
             $objAttribute = null;
 
             switch (\Input::get('act')) {

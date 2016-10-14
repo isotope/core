@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -37,8 +36,22 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     /**
      * @inheritdoc
      */
+    public function isSkippable()
+    {
+        return $this->objModule->canSkipStep('shipping_address');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function generate()
     {
+        if ($this->isSkippable()) {
+            Isotope::getCart()->setShippingAddress(Isotope::getCart()->getBillingAddress());
+
+            return '';
+        }
+
         $this->Template->headline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
         $this->Template->message  = $GLOBALS['TL_LANG']['MSC']['shipping_address_message'];
 
@@ -60,7 +73,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_address'],
             'info'     => $objAddress->generate(Isotope::getConfig()->getShippingFieldsConfig()),
-            'edit'     => Checkout::generateUrlForStep('address'),
+            'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('address'),
         ));
     }
 

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend;
@@ -26,7 +25,7 @@ class Permission extends \Backend
      */
     protected function addNewRecordPermissions($id, $table, $accessField, $permissionField)
     {
-        /** @type \BackendUser|object $user */
+        /** @var \BackendUser|object $user */
         $user    = \BackendUser::getInstance();
         $session = \Session::getInstance();
         $db      = \Database::getInstance();

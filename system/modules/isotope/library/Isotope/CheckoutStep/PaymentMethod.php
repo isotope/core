@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -51,7 +50,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
      */
     public function isSkippable()
     {
-        if (!$this->objModule->iso_skip_payment) {
+        if (!$this->objModule->canSkipStep('payment_method')) {
             return false;
         }
 
@@ -85,7 +84,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-        /** @type \Widget $objWidget */
+        /** @var \Widget $objWidget */
         $objWidget = new $strClass(array(
             'id'            => $this->getStepClass(),
             'name'          => $this->getStepClass(),
@@ -171,7 +170,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $arrColumns[] = "enabled='1'";
             }
 
-            /** @type Payment[] $objModules */
+            /** @var Payment[] $objModules */
             $objModules = Payment::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
