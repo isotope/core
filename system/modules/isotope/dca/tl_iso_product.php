@@ -496,6 +496,8 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'shipping_legend', 'type'=>'\Isotope\Model\Attribute\Weight'),
             'sql'                   => "varchar(255) NOT NULL default ''",
+            'load_callback'         => [['Isotope\Backend\Product\ShippingWeight', 'onLoad']],
+            'save_callback'         => [['Isotope\Backend\Product\ShippingWeight', 'onSave']],
         ),
         'shipping_exempt' => array
         (
