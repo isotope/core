@@ -64,7 +64,7 @@
     "extra":{
         "branch-alias": {
             "dev-master": "2.3.x-dev",
-            "dev-develop": "2.4.x-dev",
+            "dev-develop": "productive",
             "dev-support/2.1": "2.1.x-dev"
         },
         "contao": {
