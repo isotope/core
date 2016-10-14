@@ -20,37 +20,34 @@ class CumulativeFields extends \Backend
      */
     public function getColumns()
     {
-        return array(
-            'attribute' => array(
+        return [
+            'attribute' => [
                 'label'            => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['attribute'],
                 'inputType'        => 'select',
-                'options_callback' => array(
-                    'Isotope\Backend\Module\CumulativeFields',
-                    'getAttributes'
-                ),
-                'eval'             => array(
+                'options_callback' => ['Isotope\Backend\Module\CumulativeFields', 'getAttributes'],
+                'eval'             => [
                     'mandatory'          => true,
                     'includeBlankOption' => true,
                     'style'              => 'width:300px'
-                ),
-            ),
-            'queryType' => array(
+                ],
+            ],
+            'queryType' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType'],
                 'default'   => 'and',
                 'inputType' => 'select',
-                'options'   => array('and', 'or'),
+                'options'   => ['and', 'or'],
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['queryType'],
-                'eval'      => array('style' => 'width:100px'),
-            ),
-            'matchCount' => array(
+                'eval'      => ['style' => 'width:100px'],
+            ],
+            'matchCount' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount'],
                 'default'   => 'and',
                 'inputType' => 'select',
-                'options'   => array('none', 'all', 'new'),
+                'options'   => ['none', 'all', 'new'],
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_cumulativeFields']['matchCount'],
-                'eval'      => array('style' => 'width:150px'),
-            ),
-        );
+                'eval'      => ['style' => 'width:150px'],
+            ],
+        ];
     }
 
     /**
@@ -63,7 +60,7 @@ class CumulativeFields extends \Backend
         \Controller::loadDataContainer('tl_iso_product');
         \System::loadLanguageFile('tl_iso_product');
 
-        $arrAttributes = array();
+        $arrAttributes = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_filter']) {
@@ -96,7 +93,7 @@ class CumulativeFields extends \Backend
             return '';
         }
 
-        $attributes = array();
+        $attributes = [];
 
         foreach ($value as $option) {
             if ($option['attribute'] == '') {
@@ -108,7 +105,7 @@ class CumulativeFields extends \Backend
                 );
             }
 
-            if (in_array($option['attribute'], $attributes)) {
+            if (in_array($option['attribute'], $attributes, true)) {
                 throw new \InvalidArgumentException($GLOBALS['TL_LANG']['ERR']['cumulativeDuplicateAttribute']);
             }
 
