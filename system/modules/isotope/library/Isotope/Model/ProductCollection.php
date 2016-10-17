@@ -77,13 +77,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * Cache
      * @var array
      */
-    protected $arrCache;
+    public $arrCache;
 
     /**
      * Cache product items in this collection
      * @var ProductCollectionItem[]
      */
-    protected $arrItems;
+    public $arrItems;
 
     /**
      * Cache surcharges in this collection
@@ -580,6 +580,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $this->settings = serialize($arrSettings);
         }
 
+		file_put_contents("/var/www/contao.log","paretn::save(): ".print_r($this->arrItems,true),FILE_APPEND);
+
         return parent::save();
     }
 
@@ -1017,7 +1019,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         // Remove uploaded files from session so they are not added to the next product (see #646)
         unset($_SESSION['FILES']);
 
-        $objItem            = $this->getItemForProduct($objProduct);
+#        $objItem            = $this->getItemForProduct($objProduct);
+		$objItem = null;
         $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
         if (null !== $objItem) {
@@ -1047,6 +1050,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $this->setProductForItem($objProduct, $objItem, $fltQuantity);
             $objItem->save();
+#			file_put_contents("/var/www/contao.log",print_r("ProductCollection::addProduct(): new item id ".$objItem->id." created\n",true),FILE_APPEND);
 
             // Add the new item to our cache
             $this->arrItems[$objItem->id] = $objItem;
