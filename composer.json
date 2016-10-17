@@ -1,5 +1,5 @@
 {
-    "name":"henrylamorski/isotope-core",
+    "name":"isotope/isotope-core",
     "description":"Fork of Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
     "keywords":["contao", "isotope"],
     "type":"contao-module",
