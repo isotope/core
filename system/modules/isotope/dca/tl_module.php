@@ -31,6 +31,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_orderdetails']             = '{
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_configswitcher']           = '{title_legend},name,headline,type;{config_legend},iso_config_ids;{template_legend},customTpl,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productfilter']            = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_newFilter,iso_enableLimit,iso_filterFields,iso_filterHideSingle,iso_searchFields,iso_searchAutocomplete,iso_sortingFields,iso_listingSortField,iso_listingSortDirection;{template_legend},customTpl,iso_filterTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cumulativefilter']         = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_newFilter,iso_cumulativeFields,iso_filterHideSingle;{template_legend},customTpl,navigationTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_rangefilter']              = '{title_legend},name,headline,type;{config_legend},iso_category_scope,iso_list_where,iso_newFilter,iso_rangeFields;{template_legend},customTpl,navigationTpl,iso_includeMessages,iso_hide_list;{redirect_legend},jumpTo;{reference_legend:hide},defineRoot;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_addressbook']              = '{title_legend},name,headline,type;{config_legend},nc_notification;{template_legend},customTpl,memberTpl,tableless,iso_includeMessages;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']          = '{title_legend},name,headline,type;{config_legend},iso_related_categories,numberOfItems,perPage,iso_list_where,iso_newFilter,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_includeMessages,iso_emptyMessage,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages']                 = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -409,6 +410,22 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = array
     'sql'                       => 'blob NULL',
     'save_callback' => array(
         array('Isotope\Backend\Module\CumulativeFields', 'validateConfiguration')
+    )
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_rangeFields'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFields'],
+    'exclude'                   => true,
+    'inputType'                 => 'multiColumnWizard',
+    'eval'                      => array(
+        'mandatory' => true,
+        'tl_class'  => 'clr',
+        'columnsCallback' => array('Isotope\Backend\Module\RangeFields', 'getColumns')
+    ),
+    'sql'                       => 'blob NULL',
+    'save_callback' => array(
+        array('Isotope\Backend\Module\RangeFields', 'validateConfiguration')
     )
 );
 

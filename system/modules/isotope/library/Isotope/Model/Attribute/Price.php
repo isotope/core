@@ -11,13 +11,14 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Interfaces\IsotopeAttributeWithRange;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement base price calculation
  */
-class Price extends Attribute
+class Price extends Attribute implements IsotopeAttributeWithRange
 {
     /**
      * @inheritdoc
@@ -48,6 +49,14 @@ class Price extends Attribute
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getValue(IsotopeProduct $product)
+    {
+        return $product->getPrice()->getAmount();
+    }
+
+    /**
      * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
@@ -59,5 +68,15 @@ class Price extends Attribute
         }
 
         return $objPrice->generate($objProduct->getType()->showPriceTiers());
+    }
+
+    /**
+     * Returns whether range filter can be used on this attribute.
+     *
+     * @return bool
+     */
+    public function allowRangeFilter()
+    {
+        return true;
     }
 }

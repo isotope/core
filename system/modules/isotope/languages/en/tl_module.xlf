@@ -251,6 +251,24 @@
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
         <source>Show difference</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.0">
+        <source>Filter configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.1">
+        <source>Please configure the range filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.min">
+        <source>Range from</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.max">
+        <source>Range to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.step">
+        <source>Steps</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>
       </trans-unit>

@@ -169,6 +169,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_checkout'                  => 'Isotope\Module\Checkout',
     'iso_productfilter'             => 'Isotope\Module\ProductFilter',
     'iso_cumulativefilter'          => 'Isotope\Module\CumulativeFilter',
+    'iso_rangefilter'               => 'Isotope\Module\RangeFilter',
     'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
     'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
     'iso_configswitcher'            => 'Isotope\Module\ConfigSwitcher',
