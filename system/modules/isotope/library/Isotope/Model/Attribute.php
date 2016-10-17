@@ -369,11 +369,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     }
 
     /**
-     * Gets attribute value from given product.
-     *
-     * @param IsotopeProduct $product
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function getValue(IsotopeProduct $product)
     {
@@ -381,11 +377,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     }
 
     /**
-     * @param array $options
-     *
-     * @return string
+     * @inheritdoc
      */
-    public function getLabel(array $options = [])
+    public function getLabel()
     {
         return Format::dcaLabel('tl_iso_product', $this->field_name);
     }
