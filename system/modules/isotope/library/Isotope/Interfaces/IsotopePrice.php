@@ -64,7 +64,11 @@ interface IsotopePrice
     /**
      * Generate price for HTML rendering
      *
+     * @param bool  $blnShowTiers
+     * @param int   $intQuantity
+     * @param array $arrOptions
+     *
      * @return string
      */
-    public function generate();
+    public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array());
 }
