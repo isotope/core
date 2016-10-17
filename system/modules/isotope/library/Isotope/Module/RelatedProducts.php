@@ -24,6 +24,17 @@ use Isotope\RequestCache\Sort;
  */
 class RelatedProducts extends ProductList
 {
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_related_categories';
+
+        return $props;
+    }
 
     /**
      * Generate the module
@@ -39,9 +50,7 @@ class RelatedProducts extends ProductList
             return '';
         }
 
-        $this->iso_related_categories = deserialize($this->iso_related_categories);
-
-        if (!is_array($this->iso_related_categories) || 0 === count($this->iso_related_categories)) {
+        if (0 === count($this->iso_related_categories)) {
             return '';
         }
 

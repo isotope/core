@@ -31,14 +31,19 @@ class ShippingCalculator extends Module
     protected $strTemplate = 'mod_iso_shipping_calculator';
 
     /**
-     * Shipping methods
-     * @var array
+     * @inheritDoc
      */
-    protected $arrShippingMethods = [];
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_shipping_modules';
+
+        return $props;
+    }
 
     /**
-     * Display a wildcard in the back end
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
@@ -46,9 +51,7 @@ class ShippingCalculator extends Module
             return $this->generateWildcard();
         }
 
-        $this->arrShippingMethods = deserialize($this->iso_shipping_modules, true);
-
-        if (0 === count($this->arrShippingMethods) || (Isotope::getCart()->isEmpty() && !$this->iso_emptyMessage)) {
+        if (0 === count($this->iso_shipping_modules) || (Isotope::getCart()->isEmpty() && !$this->iso_emptyMessage)) {
             return '';
         }
 
@@ -89,7 +92,7 @@ class ShippingCalculator extends Module
         }
 
         /* @var Shipping[] $objShippingMethods */
-        $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
+        $objShippingMethods = Shipping::findMultipleByIds($this->iso_shipping_modules);
 
         if (null === $objShippingMethods) {
             return;

@@ -52,22 +52,16 @@ class ProductList extends Module
     protected $blnCacheProducts = true;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function __construct($objModule, $strColumn = 'main')
+    protected function getSerializedProperties()
     {
-        parent::__construct($objModule, $strColumn);
+        $props = parent::getSerializedProperties();
 
-        $this->iso_filterModules = deserialize($this->iso_filterModules);
-        $this->iso_productcache  = deserialize($this->iso_productcache);
+        $props[] = 'iso_filterModules';
+        $props[] = 'iso_productcache';
 
-        if (!is_array($this->iso_filterModules)) {
-            $this->iso_filterModules = array();
-        }
-
-        if (!is_array($this->iso_productcache)) {
-            $this->iso_productcache = array();
-        }
+        return $props;
     }
 
     /**
@@ -84,8 +78,6 @@ class ProductList extends Module
         if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
             return '';
         }
-
-        $this->iso_productcache  = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
         if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {

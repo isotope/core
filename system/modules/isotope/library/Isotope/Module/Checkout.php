@@ -76,6 +76,18 @@ class Checkout extends Module
      */
     protected $strFormId = 'iso_mod_checkout';
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_checkout_skippable';
+
+        return $props;
+    }
+
 
     /**
      * Display a wildcard in the back end
@@ -533,9 +545,7 @@ class Checkout extends Module
      */
     public function canSkipStep($step)
     {
-        $skippable = deserialize($this->iso_checkout_skippable, true);
-
-        return in_array($step, $skippable, true);
+        return in_array($step, $this->iso_checkout_skippable, true);
     }
 
     /**

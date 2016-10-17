@@ -38,9 +38,21 @@ class OrderHistory extends Module
      */
     protected $blnDisableCache = true;
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_config_ids';
+
+        return $props;
+    }
 
     /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
@@ -49,9 +61,7 @@ class OrderHistory extends Module
             return $this->generateWildcard();
         }
 
-        $this->iso_config_ids = deserialize($this->iso_config_ids);
-
-        if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || 0 === count($this->iso_config_ids)) {
+        if (FE_USER_LOGGED_IN !== true || 0 === count($this->iso_config_ids)) {
             return '';
         }
 

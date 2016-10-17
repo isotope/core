@@ -46,22 +46,20 @@ abstract class AbstractProductFilter extends Module
 
         \Controller::loadDataContainer('tl_iso_product');
         \System::loadLanguageFile('tl_iso_product');
+    }
 
-        $this->iso_filterFields  = deserialize($this->iso_filterFields);
-        $this->iso_sortingFields = deserialize($this->iso_sortingFields);
-        $this->iso_searchFields  = deserialize($this->iso_searchFields);
+    /**
+     * @inheritdoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
 
-        if (!is_array($this->iso_filterFields)) {
-            $this->iso_filterFields = array();
-        }
+        $props[] = 'iso_filterFields';
+        $props[] = 'iso_sortingFields';
+        $props[] = 'iso_searchFields';
 
-        if (!is_array($this->iso_sortingFields)) {
-            $this->iso_sortingFields = array();
-        }
-
-        if (!is_array($this->iso_searchFields)) {
-            $this->iso_searchFields = array();
-        }
+        return $props;
     }
 
     /**

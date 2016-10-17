@@ -72,12 +72,6 @@ abstract class Module extends AbstractFrontendModule
             $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
         }
 
-        $this->iso_buttons = deserialize($this->iso_buttons);
-
-        if (!is_array($this->iso_buttons)) {
-            $this->iso_buttons = array();
-        }
-
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
@@ -100,6 +94,13 @@ abstract class Module extends AbstractFrontendModule
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        return ['iso_buttons'];
+    }
 
     /**
      * Include messages if enabled
@@ -117,7 +118,6 @@ abstract class Module extends AbstractFrontendModule
 
         return $strBuffer;
     }
-
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
@@ -203,7 +203,6 @@ abstract class Module extends AbstractFrontendModule
         return $this->arrCategories;
     }
 
-
     /**
      * Find jumpTo page for current category scope
      *
@@ -258,7 +257,6 @@ abstract class Module extends AbstractFrontendModule
 
         return $objIsotopeListPage ? : $objPage;
     }
-
 
     /**
      * Generate the URL from existing $_GET parameters.
