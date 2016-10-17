@@ -580,8 +580,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $this->settings = serialize($arrSettings);
         }
 
-		file_put_contents("/var/www/contao.log","paretn::save(): ".print_r($this->arrItems,true),FILE_APPEND);
-
         return parent::save();
     }
 
@@ -1050,7 +1048,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $this->setProductForItem($objProduct, $objItem, $fltQuantity);
             $objItem->save();
-#			file_put_contents("/var/www/contao.log",print_r("ProductCollection::addProduct(): new item id ".$objItem->id." created\n",true),FILE_APPEND);
 
             // Add the new item to our cache
             $this->arrItems[$objItem->id] = $objItem;
