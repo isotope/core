@@ -12,18 +12,10 @@
 namespace Isotope;
 
 use Isotope\Model\Config;
+use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 
-
-/**
- * Class Isotope\Automator
- *
- * Provide methods to run Isotope automated jobs.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Automator extends \Controller
 {
     /**
@@ -41,8 +33,8 @@ class Automator extends \Controller
     {
         $t = Cart::getTable();
         $objCarts = Cart::findBy(
-            array("($t.member=0 AND $t.tstamp<?) OR $t.member NOT IN (SELECT id FROM tl_member)"),
-            array(time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout'])
+            ["($t.member=0 AND $t.tstamp<?) OR ($t.member > 0 AND $t.member NOT IN (SELECT id FROM tl_member))"],
+            [time() - $GLOBALS['TL_CONFIG']['iso_cartTimeout']]
         );
 
         if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
@@ -57,13 +49,13 @@ class Automator extends \Controller
     {
         $t = Order::getTable();
         $objOrders = Order::findBy(
-            array(
+            [
                 "$t.order_status=0",
                 "$t.tstamp<?"
-            ),
-            array(
+            ],
+            [
                 time() - $GLOBALS['TL_CONFIG']['iso_orderTimeout']
-            )
+            ]
         );
 
         if (($intPurged = $this->deleteOldCollections($objOrders)) > 0) {
@@ -73,12 +65,13 @@ class Automator extends \Controller
 
     /**
      * Update the store configs with latest currency conversion data
-     * @param   int Config id (optional, if none given, all will be taken)
+     *
+     * @param int $intId Config id (optional, if none given, all will be taken)
      */
     public function convertCurrencies($intId = 0)
     {
-        $arrColumns     = array(Config::getTable() . '.currencyAutomator=?');
-        $arrValues      = array('1');
+        $arrColumns = [Config::getTable() . '.currencyAutomator=?'];
+        $arrValues  = ['1'];
 
         if ($intId > 0) {
             $arrColumns[]   = Config::getTable() . '.id=?';
@@ -185,16 +178,16 @@ class Automator extends \Controller
 
     /**
      * Delete product collections if they are older than given seconds and not locked
-     * @param   string
-     * @return  int
+     *
+     * @param ProductCollection[] $objCollections
+     *
+     * @return int
      */
     protected function deleteOldCollections($objCollections)
     {
         $intPurged = 0;
 
         if (null !== $objCollections) {
-
-            /** @var \Isotope\Model\ProductCollection $objCollection */
             foreach ($objCollections as $objCollection) {
                 if (!$objCollection->isLocked()) {
                     $objCollection->delete();

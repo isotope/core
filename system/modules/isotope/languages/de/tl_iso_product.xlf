@@ -23,9 +23,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.fallback.0">
         <source>Default variant</source>
+        <target>Standard-Variante</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.fallback.1">
         <source>Click here if this variant should be pre-selected by default.</source>
+        <target>Klicken Sie hier um diese Variante standardmässig ausgewählt zu machen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.alias.0">
         <source>Alias</source>

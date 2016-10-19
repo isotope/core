@@ -75,9 +75,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.0">
         <source>Favorites</source>
+        <target>Favoriten</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.1">
         <source>Renders the list of products on the favorites list.</source>
+        <target>Generiert eine Liste der favorisierten Produkte.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>

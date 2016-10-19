@@ -28,28 +28,29 @@ class CartAddress extends Module
     protected $strTemplate = 'member_default';
 
     /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_address';
+        $props[] = 'iso_addressFields';
+
+        return $props;
+    }
+
+    /**
      * Display a wildcard in the back end
      * @return string
      */
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CART ADDRESS ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
-        $this->iso_address = deserialize($this->iso_address, true);
-        $this->iso_addressFields = deserialize($this->iso_addressFields, true);
-
-        if (empty($this->iso_address) || empty($this->iso_addressFields)) {
+        if (0 === count($this->iso_address) || 0 === count($this->iso_addressFields)) {
             return '';
         }
 

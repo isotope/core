@@ -51,6 +51,9 @@
       <trans-unit id="tl_iso_attribute.optionsSource.1">
         <source>Choose where the options for this field should be loaded from.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.name">
+        <source>Attribute Name (Single Option)</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.table">
         <source>Options Manager</source>
       </trans-unit>

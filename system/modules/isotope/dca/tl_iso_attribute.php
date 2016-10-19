@@ -130,8 +130,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'radio'                     => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'radioproduct'              => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory;{search_filters_legend},fe_sorting',
         'radiovariant_option'       => '{attribute_legend},name,field_name,type,legend,variant_option;{description_legend:hide},description;{options_legend},optionsSource,blankOptionLabel;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
-        'checkboxproduct'           => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory,multiple;{search_filters_legend},fe_sorting',
+        'checkbox'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_filter,fe_sorting,be_filter',
+        'checkboxproduct'           => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource;{config_legend},mandatory;{search_filters_legend},fe_sorting',
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
         'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
@@ -235,6 +235,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                         \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY,
                         \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE,
                     ];
+                }
+
+                if ('checkbox' === $dc->activeRecord->type && !$dc->activeRecord->customer_defined) {
+                    array_unshift($arrOptions, \Isotope\Interfaces\IsotopeAttributeWithOptions::SOURCE_NAME);
                 }
 
                 return $arrOptions;

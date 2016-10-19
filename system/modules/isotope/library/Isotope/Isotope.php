@@ -42,7 +42,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.4.0-beta1';
+    const VERSION = '2.4.0-rc1';
 
     /**
      * True if the system has been initialized
@@ -267,7 +267,7 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return $fltPrice;
+        return static::roundPrice($fltPrice);
     }
 
     /**
@@ -282,7 +282,7 @@ class Isotope extends \Controller
     {
         $objConfig = static::getConfig();
 
-        if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
+        if ($blnApplyRoundingIncrement && '0.05' === $objConfig->priceRoundIncrement) {
             $fltValue = round(20 * $fltValue) / 20;
         }
 

@@ -301,4 +301,59 @@ abstract class PSP extends Payment implements IsotopePostsale
 
         return false;
     }
+    
+    /**
+     * Return information or advanced features in the backend.
+     *
+     * @param int $orderId
+     *
+     * @return string
+     */
+    public function backendInterface($orderId)
+    {
+        if (null === ($objOrder = Order::findByPk($orderId))) {
+
+            return parent::backendInterface($orderId);
+        }
+
+        $paymentData = json_decode($objOrder->payment_data, true);
+
+        if (0 === count($paymentData)) {
+
+            return parent::backendInterface($orderId);
+        }
+
+        $i = 0;
+
+
+        $buffer = '
+<div id="tl_buttons">
+<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment.' . $this->type][0] . ')' . '</h2>
+
+<table class="tl_show">
+  <tbody>';
+
+        foreach ($paymentData as $k => $v) {
+            if (is_array($v)) {
+                continue;
+            }
+
+            $buffer .= '
+  <tr>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+            ++$i;
+        }
+
+        $buffer .= '
+</tbody></table>
+</div>';
+
+        return $buffer;
+    }
 }

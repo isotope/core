@@ -38,28 +38,30 @@ class OrderHistory extends Module
      */
     protected $blnDisableCache = true;
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_config_ids';
+
+        return $props;
+    }
 
     /**
      * Display a wildcard in the back end
+     *
      * @return string
      */
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: ORDER HISTORY ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
-        $this->iso_config_ids = deserialize($this->iso_config_ids);
-
-        if (FE_USER_LOGGED_IN !== true || !is_array($this->iso_config_ids) || 0 === count($this->iso_config_ids)) {
+        if (FE_USER_LOGGED_IN !== true || 0 === count($this->iso_config_ids)) {
             return '';
         }
 

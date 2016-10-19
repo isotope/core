@@ -170,7 +170,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         }
 
         $this->field_name  = $strName;
-        $this->type        = array_search(get_called_class(), static::getModelTypes());
+        $this->type        = array_search(get_called_class(), static::getModelTypes(), true);
         $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
@@ -185,7 +185,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     public function saveToDCA(array &$arrData)
     {
         // Keep field settings made through DCA code
-        $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();
+        $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : [];
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
@@ -194,6 +194,10 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrField['attributes']['variant_option']   = $this->isVariantOption(); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+
+        if ('' !== (string) $this->placeholder) {
+            $arrField['eval']['placeholder'] = Translation::get($this->placeholder);
+        }
 
         if (!$this->isCustomerDefined()) {
             $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL'], true);
@@ -365,11 +369,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     }
 
     /**
-     * Gets attribute value from given product.
-     *
-     * @param IsotopeProduct $product
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function getValue(IsotopeProduct $product)
     {
@@ -377,11 +377,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     }
 
     /**
-     * @param array $options
-     *
-     * @return string
+     * @inheritdoc
      */
-    public function getLabel(array $options = [])
+    public function getLabel()
     {
         return Format::dcaLabel('tl_iso_product', $this->field_name);
     }

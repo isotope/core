@@ -43,15 +43,19 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
+        <target>%s - Mitglieder</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.guests_currency">
         <source>%s - Guests</source>
+        <target>%s - Gäste</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_title">
         <source>Sales to Members</source>
+        <target>Verkäufe an Mitglieder</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.guests_title">
         <source>Sales to Guests</source>
+        <target>Verkäufe an Gäste</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_registration.0">
         <source>Registrations</source>
@@ -175,6 +179,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.date_field">
         <source>Report</source>
+        <target>Auswertungen</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.locked">
         <source>Order date</source>
@@ -186,6 +191,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.date_shipped">
         <source>Shiping date</source>
+        <target>Versanddatum</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.total_sales">
         <source>Total sales</source>

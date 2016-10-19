@@ -96,17 +96,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            /** @var \BackendTemplate|object $objTemplate */
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
         }
 
         // Hide product list in reader mode if the respective setting is enabled

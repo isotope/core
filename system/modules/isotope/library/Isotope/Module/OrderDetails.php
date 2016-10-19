@@ -46,6 +46,7 @@ class OrderDetails extends AbstractProductCollection
         if ($blnBackend) {
             $this->backend = true;
             $this->jumpTo  = 0;
+            $this->setWildcard(false);
         }
 
         return parent::generate();

@@ -65,6 +65,26 @@
         <source>to the cart subtotal</source>
         <target>für den Warenkorb-Gesamtwert</target>
       </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.0">
+        <source>Discount rounding</source>
+        <target>Rabatt-Rundung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.1">
+        <source>Define how percentual discounts should be rounded.</source>
+        <target>Definieren Sie wie Rabatte gerundet werden sollen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.normal">
+        <source>Commercial rounding</source>
+        <target>kaufmännisch</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.down">
+        <source>Always round down (in favor of shop owner)</source>
+        <target>Immer nach unten (zum Vorteil des Shopbetreibers)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.up">
+        <source>Always round up (in favor of shop visitor)</source>
+        <target>Immer nach oben (zum Vorteil des Besuchers)</target>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.enableCode.0">
         <source>Enable coupon code</source>
         <target>Gutscheincode freischalten</target>

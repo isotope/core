@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Haste\Http\Response\Response;
+use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
@@ -134,8 +135,9 @@ class Paypal extends Postsale
             }
 
             $arrData['item_number_' . ++$i] = $objItem->getSku();
-            $arrData['item_name_' . $i]     = \StringUtil::restoreBasicEntities(
-                $objItem->getName() . $strConfig
+            $arrData['item_name_' . $i]     = StringUtil::convertToText(
+                $objItem->getName() . $strConfig,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
             );
             $arrData['amount_' . $i]        = $objItem->getPrice();
             $arrData['quantity_' . $i]      = $objItem->quantity;
@@ -153,7 +155,10 @@ class Paypal extends Postsale
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = $objSurcharge->label;
+            $arrData['item_name_' . ++$i] = StringUtil::convertToText(
+                $objSurcharge->label,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
 

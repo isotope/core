@@ -17,12 +17,7 @@ use Isotope\Model\Config;
 
 
 /**
- * Class ModuleIsotopeConfigSwitcher
- *
- * Front end module Isotope "config switcher".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
+ * @property array $iso_config_ids
  */
 class ConfigSwitcher extends Module
 {
@@ -33,6 +28,17 @@ class ConfigSwitcher extends Module
      */
     protected $strTemplate = 'mod_iso_configswitcher';
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_config_ids';
+
+        return $props;
+    }
 
     /**
      * Display a wildcard in the back end
@@ -40,22 +46,11 @@ class ConfigSwitcher extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: STORE CONFIG SWICHER ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
         }
 
-        $this->iso_config_ids = deserialize($this->iso_config_ids);
-
-        if (!is_array($this->iso_config_ids) || !count($this->iso_config_ids)) { // Can't use empty() because its an object property (using __get)
+        if (0 === count($this->iso_config_ids)) {
             return '';
         }
 

@@ -24,6 +24,17 @@ use Isotope\RequestCache\Sort;
  */
 class RelatedProducts extends ProductList
 {
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_related_categories';
+
+        return $props;
+    }
 
     /**
      * Generate the module
@@ -32,24 +43,14 @@ class RelatedProducts extends ProductList
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
         if (!Input::getAutoItem('product', false, true)) {
             return '';
         }
 
-        $this->iso_related_categories = deserialize($this->iso_related_categories);
-
-        if (!is_array($this->iso_related_categories) || 0 === count($this->iso_related_categories)) {
+        if (0 === count($this->iso_related_categories)) {
             return '';
         }
 

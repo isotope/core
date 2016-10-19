@@ -24,6 +24,7 @@ use Isotope\Translation;
  * @property string $discount
  * @property int    $tax_class
  * @property string $applyTo
+ * @property string $rounding
  * @property bool   $enableCode
  * @property string $code
  * @property int    $limitPerMember
@@ -52,6 +53,9 @@ use Isotope\Translation;
  */
 class Rule extends \Model
 {
+    const ROUND_NORMAL = 'normal';
+    const ROUND_UP = 'up';
+    const ROUND_DOWN = 'down';
 
     /**
      * Name of the current table
@@ -199,10 +203,10 @@ class Rule extends \Model
         }
 
         if (!empty($arrProducts)) {
-            $arrProductIds = array(0);
-            $arrVariantIds = array(0);
-            $arrAttributes = array(0);
-            $arrTypes = array(0);
+            $arrProductIds = [0];
+            $arrVariantIds = [0];
+            $arrAttributes = [0];
+            $arrTypes = [0];
 
             // Prepare product attribute condition
             $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
@@ -211,7 +215,7 @@ class Rule extends \Model
                 (
                     'attribute' => $objAttributeRules->attributeName,
                     'condition' => $objAttributeRules->attributeCondition,
-                    'values'    => array(),
+                    'values'    => [],
                 );
             }
 

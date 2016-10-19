@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.4.0-rc1 (2016-08-??)
+Version 2.4.0-rc1 (2016-10-07)
 ------------------------------
 
 ### New
@@ -14,6 +14,7 @@ Version 2.4.0-rc1 (2016-08-??)
 - Added support for ChangeLanguage v3
 - Can skip billing address to always use the member address
 - Can skip shipping address to always use billing address
+- Rule discount can now be configured to always round up, down or commercially
 
 
 ### Improved
@@ -30,7 +31,11 @@ Version 2.4.0-rc1 (2016-08-??)
 - Removed remaining MooTools dependencies (#1694)
 - Pre-fill country from member for new address book entries
 - Use Guzzle or HttpRequestExtended to support HTTP/1.1 for PayPal
-- Use ipnpb.paypal.com URL if request uses TLS (#1657)
+- Use ipnpb.paypal.com URL for PayPal data confirmation (#1657)
+- Do not display product in breadcrumb for 404 and 403 page types (#1690)
+- Correctly handle single checkbox options in the backend (#1658)
+- Sanitize product names and address data for payment providers (#1256)
+- Placeholder for text attributes is now translatable (#1707)
 
 
 ### Fixed
@@ -43,6 +48,10 @@ Version 2.4.0-rc1 (2016-08-??)
 - Backend filter options were IDs instead of labels when using foreignKey options (#1683)
 - Product alias was not correctly generated when duplicating product (#1659)
 - Inline and ElevateZoom gallery only worked once per page due to duplicate CSS ID (#1674)
+- Guest carts were deleted every day (#1709)
+- Page picker was filtered if the product category filter is active (#1701)
+- Rounding issues in product quantity summary and net price on gross shop config
+- Default sorting field in product filter module was not applied to dropdown
 
 
 

@@ -15,6 +15,7 @@ use Isotope\Collection\AttributeOption;
 
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
 {
+    const SOURCE_NAME       = 'name';
     const SOURCE_TABLE      = 'table';
     const SOURCE_FOREIGNKEY = 'foreignKey';
     const SOURCE_ATTRIBUTE  = 'attribute';

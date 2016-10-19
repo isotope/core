@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
+
 /**
  * Attribute to implement CheckboxMenu widget
  *
@@ -36,6 +38,13 @@ class CheckboxMenu extends AbstractAttributeWithOptions
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = $this->multiple ? 'blob NULL' : "char(1) NOT NULL default ''";
+        if (!$this->variant_option && $this->optionsSource === IsotopeAttributeWithOptions::SOURCE_NAME) {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
+            $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";
+            $arrData['fields'][$this->field_name]['options'];
+        } else {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+            $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
+        }
     }
 }

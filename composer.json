@@ -25,7 +25,7 @@
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3",
         "terminal42/dcawizard": "~2.3",
-        "codefog/contao-haste": "~4.13",
+        "codefog/contao-haste": "^4.14.2",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",
@@ -64,7 +64,8 @@
     "extra":{
         "branch-alias": {
             "dev-master": "2.3.x-dev",
-            "dev-develop": "productive",
+            "dev-develop": "2.5.x-dev",
+            "dev-release/2.4.0": "2.4.x-dev",
             "dev-support/2.1": "2.1.x-dev"
         },
         "contao": {

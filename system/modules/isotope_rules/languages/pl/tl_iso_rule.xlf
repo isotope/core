@@ -65,6 +65,21 @@
         <source>to the cart subtotal</source>
         <target>do podsumy koszyka</target>
       </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.0">
+        <source>Discount rounding</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.1">
+        <source>Define how percentual discounts should be rounded.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.normal">
+        <source>Commercial rounding</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.down">
+        <source>Always round down (in favor of shop owner)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.up">
+        <source>Always round up (in favor of shop visitor)</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.enableCode.0">
         <source>Enable coupon code</source>
         <target>Włącz kod kuponu</target>

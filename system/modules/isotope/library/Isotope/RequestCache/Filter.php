@@ -22,6 +22,14 @@ use Isotope\Model\Product;
  */
 class Filter implements \ArrayAccess
 {
+    const CONTAINS      = 'like';
+    const EQUAL         = 'eq';
+    const NOT_EQUAL     = 'neq';
+    const GREATER_THAN  = 'gt';
+    const GREATER_EQUAL = 'gte';
+    const SMALLER_THAN  = 'lt';
+    const SMALLER_EQUAL = 'lte';
+
     /**
      * Filter config
      */
@@ -83,7 +91,7 @@ class Filter implements \ArrayAccess
      */
     public function valueNotIn(array $arrValues)
     {
-        return !in_array($this->arrConfig['value'], $arrValues);
+        return !in_array($this->arrConfig['value'], $arrValues, false);
     }
 
     /**
@@ -108,42 +116,42 @@ class Filter implements \ArrayAccess
 
     public function isEqualTo($value)
     {
-        $this->filter('eq', $value);
+        $this->filter(static::EQUAL, $value);
 
         return $this;
     }
 
     public function isNotEqualTo($value)
     {
-        $this->filter('neq', $value);
+        $this->filter(static::NOT_EQUAL, $value);
 
         return $this;
     }
 
     public function isSmallerThan($value)
     {
-        $this->filter('lt', $value);
+        $this->filter(static::SMALLER_THAN, $value);
 
         return $this;
     }
 
     public function isSmallerOrEqualTo($value)
     {
-        $this->filter('lte', $value);
+        $this->filter(static::SMALLER_EQUAL, $value);
 
         return $this;
     }
 
     public function isGreaterThan($value)
     {
-        $this->filter('gt', $value);
+        $this->filter(static::GREATER_THAN, $value);
 
         return $this;
     }
 
     public function isGreaterOrEqualTo($value)
     {
-        $this->filter('gte', $value);
+        $this->filter(static::GREATER_EQUAL, $value);
 
         return $this;
     }
@@ -209,43 +217,43 @@ class Filter implements \ArrayAccess
 
         foreach ($varValues as $varValue) {
             switch ($this->arrConfig['operator']) {
-                case 'like':
+                case static::CONTAINS:
                     if (stripos($varValue, $this->arrConfig['value']) !== false) {
                         return true;
                     }
                     break;
 
-                case 'gt':
+                case static::GREATER_THAN:
                     if ($varValue > $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
-                case 'lt':
+                case static::SMALLER_THAN:
                     if ($varValue < $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
-                case 'gte':
+                case static::GREATER_EQUAL:
                     if ($varValue >= $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
-                case 'lte':
+                case static::SMALLER_EQUAL:
                     if ($varValue <= $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
-                case 'neq':
+                case static::NOT_EQUAL:
                     if ($varValue != $this->arrConfig['value']) {
                         return true;
                     }
                     break;
 
-                case 'eq':
+                case static::EQUAL:
                     if ($varValue == $this->arrConfig['value']) {
                         return true;
                     }
@@ -268,7 +276,7 @@ class Filter implements \ArrayAccess
      */
     public function isDynamicAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields());
+        return in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields(), true);
     }
 
     /**
@@ -278,7 +286,7 @@ class Filter implements \ArrayAccess
      */
     public function isMultilingualAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields());
+        return in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields(), true);
     }
 
     /**
@@ -298,7 +306,7 @@ class Filter implements \ArrayAccess
      */
     public function sqlValue()
     {
-        if ('like' === $this->arrConfig['operator']) {
+        if (static::CONTAINS === $this->arrConfig['operator']) {
             return ('%' . $this->arrConfig['value'] . '%');
         }
 
@@ -312,30 +320,30 @@ class Filter implements \ArrayAccess
      */
     public function getOperatorForSQL()
     {
-        if ($this->arrConfig['operator'] == '') {
+        if ('' === (string) $this->arrConfig['operator']) {
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
 
         switch ($this->arrConfig['operator']) {
-            case 'like':
+            case static::CONTAINS:
                 return 'LIKE';
 
-            case 'gt':
+            case static::GREATER_THAN:
                 return '>';
 
-            case 'lt':
+            case static::SMALLER_THAN:
                 return '<';
 
-            case 'gte':
+            case static::GREATER_EQUAL:
                 return '>=';
 
-            case 'lte':
+            case static::SMALLER_EQUAL:
                 return '<=';
 
-            case 'neq':
+            case static::NOT_EQUAL:
                 return '!=';
 
-            case 'eq':
+            case static::EQUAL:
                 return '=';
 
             default:

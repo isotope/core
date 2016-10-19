@@ -194,13 +194,17 @@ class ProductCollectionItem extends \Model
             }
 
             if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
-                if ($this->objProduct instanceof \Model) {
-                    $this->objProduct = clone $this->objProduct;
-                    $this->objProduct->preventSaving(false);
-                    $this->objProduct->id = $this->product_id;
-                }
+                try {
+                    if ($this->objProduct instanceof \Model) {
+                        $this->objProduct = clone $this->objProduct;
+                        $this->objProduct->preventSaving(false);
+                        $this->objProduct->id = $this->product_id;
+                    }
 
-                $this->objProduct->setOptions($this->getOptions());
+                    $this->objProduct->setOptions($this->getOptions());
+                } catch (\RuntimeException $e) {
+                    $this->addError($GLOBALS['TL_LANG']['ERR']['collectionItemNotAvailable']);
+                }
             }
         }
 
