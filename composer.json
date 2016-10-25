@@ -28,7 +28,8 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
-        "discordier/httprequestextended": "~1.1"
+        "discordier/httprequestextended": "~1.1",
+        "contao/manager-plugin": "~1.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
@@ -72,7 +73,8 @@
             "runonce": [
                 "system/modules/isotope/config/upgrade.php"
             ]
-        }
+        },
+        "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin"
     },
     "prefer-stable": true,
     "minimum-stability": "dev"
