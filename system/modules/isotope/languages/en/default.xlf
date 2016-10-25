@@ -686,6 +686,12 @@
       <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.customPrice.0">
+        <source>Custom price product</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.customPrice.1">
+        <source>A product that can have a custom price entered in the frontend.</source>
+      </trans-unit>
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href="http://ec.europa.eu/taxation_customs/vies/vieshome.do" target="_blank"&gt;VIES&lt;/a&gt;)</source>
       </trans-unit>

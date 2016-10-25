@@ -231,6 +231,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  * Products
  */
 \Isotope\Model\Product::registerModelType('standard', 'Isotope\Model\Product\Standard');
+\Isotope\Model\Product::registerModelType('customPrice', 'Isotope\Model\Product\CustomPrice');
 
 /**
  * Product collections

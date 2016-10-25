@@ -1,0 +1,36 @@
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+    <div class="formbody" itemscope itemtype="http://schema.org/Product">
+        <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+        <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
+        <input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
+
+        <h2 itemprop="name"><?php echo $this->generateAttribute('name'); ?></h2>
+
+        <?php echo $this->getGallery('images')->generateMainImage(); ?>
+        <?php if($this->hasOptions): ?>
+            <div class="options">
+                <?php foreach( $this->options as $arrOption ): echo $arrOption['html']; endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php echo $this->getGallery('images')->generateGallery(); ?>
+
+        <?php if ($this->sku): ?>
+            <div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>
+            <div class="description" itemprop="description"><?php echo $this->generateAttribute('description'); ?></div><?php endif; ?>
+        <?php if($this->buttons): ?>
+            <div class="submit_container">
+                <?php if ($this->useQuantity): ?>
+                    <div class="quantity_container">
+                        <label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
+                    </div>
+                <?php endif; ?>
+                <?php foreach( $this->buttons as $name => $button ): ?>
+                    <input type="submit" class="submit <?php echo $name; ?> <?= $button['class'] ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+    </div>
+</form>

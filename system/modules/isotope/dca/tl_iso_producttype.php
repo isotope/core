@@ -115,6 +115,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         '__selector__'              => array('class', 'prices', 'variants'),
         'default'                   => '{name_legend},name,class',
         'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+        'customPrice'               => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
     ),
 
     // Subpalettes
