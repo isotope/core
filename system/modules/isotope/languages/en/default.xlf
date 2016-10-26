@@ -581,6 +581,12 @@
       <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concardis.0">
+        <source>Concardis</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concards.1">
+        <source>Payment gateway for Concardis GmbH.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
         <source>Paybyway</source>
       </trans-unit>
