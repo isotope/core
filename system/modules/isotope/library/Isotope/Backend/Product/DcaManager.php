@@ -333,6 +333,11 @@ class DcaManager extends \Backend
                         continue;
                     }
 
+                    // Skip the customer defined attributes when building the palette
+                    if ($arrAttributes[$name] !== null && $arrAttributes[$name]->isCustomerDefined()) {
+                        continue;
+                    }
+
                     $arrLegendOrder[$arrConfig[$name]['position']] = $arrConfig[$name]['legend'];
                     $arrPalette[$arrConfig[$name]['legend']][$arrConfig[$name]['position']] = $name;
 
