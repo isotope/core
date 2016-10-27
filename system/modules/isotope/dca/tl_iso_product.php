@@ -440,6 +440,14 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 array('\Isotope\Backend\Product\Price', 'save'),
             ),
         ),
+        'customPrice' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['customPrice'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'pricing_legend', 'customer_defined'=>true, 'singular'=>true, 'systemColumn'=>true, 'fixed'=>array('customPrice')),
+        ),
         'prices' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['prices'],
