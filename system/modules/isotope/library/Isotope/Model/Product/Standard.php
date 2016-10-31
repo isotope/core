@@ -495,7 +495,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrButtons = array();
 
         // !HOOK: retrieve buttons
-        if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
+        if (isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
+            && is_array($arrConfig['buttons'])
+            && is_array($GLOBALS['ISO_HOOKS']['buttons'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $arrButtons  = $objCallback->{$callback[1]}($arrButtons, $this);
