@@ -12,7 +12,6 @@
 namespace Isotope\Module;
 
 use Haste\Frontend\AbstractFrontendModule;
-use Haste\Haste;
 use Haste\Input\Input;
 use Haste\Util\Debug;
 use Haste\Util\RepositoryVersion;
@@ -69,7 +68,7 @@ abstract class Module extends AbstractFrontendModule
         parent::__construct($objModule, $strColumn);
 
         if ($this->iso_list_where != '') {
-            $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
+            $this->iso_list_where = \Controller::replaceInsertTags($this->iso_list_where);
         }
 
         Isotope::initialize();

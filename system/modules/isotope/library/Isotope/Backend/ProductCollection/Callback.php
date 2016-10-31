@@ -11,7 +11,6 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use \Haste\Haste;
 use Haste\Util\Debug;
 use Haste\Util\Format;
 use Isotope\Frontend;
@@ -96,7 +95,7 @@ class Callback extends \Backend
         \Input::setGet('uid', $objOrder->uniqid);
         $objModule = new OrderDetails($moduleModel);
 
-        return Haste::getInstance()->call('replaceInsertTags', $objModule->generate(true));
+        return \Controller::replaceInsertTags($objModule->generate(true));
     }
 
     /**
