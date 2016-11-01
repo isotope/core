@@ -84,10 +84,7 @@
         <source>Please enter the price(s) for this product and select the tax class.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.customPrice.0">
-        <source>Custom price</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product.customPrice.1">
-        <source>Here you can enter a custom product price.</source>
+        <source>Amount</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
