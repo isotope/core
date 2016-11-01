@@ -16,7 +16,6 @@ use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\Product\Standard;
 
 
 /**
@@ -35,7 +34,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * Tiers for this price
      * @var array
      */
-    protected $arrTiers = array();
+    protected $arrTiers = [];
 
     /**
      * Construct the object
@@ -154,6 +153,16 @@ class ProductPrice extends \Model implements IsotopePrice
     public function getTiers()
     {
         return $this->arrTiers;
+    }
+
+    /**
+     * Set price tiers from array.
+     *
+     * @param array $priceTiers
+     */
+    public function setTiers(array $priceTiers)
+    {
+        $this->arrTiers = $priceTiers;
     }
 
     /**

@@ -12,7 +12,7 @@
 namespace Isotope\Model\Product;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Model\CustomProductPrice;
+use Isotope\Model\ProductPrice;
 
 /**
  * A product that can have a custom price that is entered in the frontend.
@@ -20,25 +20,19 @@ use Isotope\Model\CustomProductPrice;
 class CustomPrice extends Standard
 {
     /**
-     * Price attribute name
-     * @var string
-     */
-    protected $priceAttribute = 'customPrice';
-
-    /**
-     * Get product price model
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return \Isotope\Interfaces\IsotopePrice
+     * @inheritdoc
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
         $options = $this->getOptions();
 
-        $price      = new CustomProductPrice();
+        if (!isset($options['customPrice'])) {
+            return null;
+        }
+
+        $price      = new ProductPrice();
         $price->pid = $this->id;
-        $price->setPrice($options[$this->priceAttribute]);
+        $price->setTiers([1 => $options['customPrice']]);
         $price->preventSaving(false);
 
         return $price;
