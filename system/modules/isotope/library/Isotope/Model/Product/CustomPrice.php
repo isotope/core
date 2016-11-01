@@ -24,15 +24,13 @@ class CustomPrice extends Standard
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        $options = $this->getOptions();
-
-        if (!isset($options['customPrice'])) {
+        if (!isset($this->arrCustomerConfig['customPrice'])) {
             return null;
         }
 
         $price      = new ProductPrice();
         $price->pid = $this->id;
-        $price->setTiers([1 => $options['customPrice']]);
+        $price->setTiers([1 => $this->arrCustomerConfig['customPrice']]);
         $price->preventSaving(false);
 
         return $price;
