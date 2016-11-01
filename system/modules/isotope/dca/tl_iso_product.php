@@ -446,7 +446,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'rgxp'=>'price', 'tl_class'=>'w50'),
-            'attributes'            => array('legend'=>'pricing_legend', 'customer_defined'=>true, 'singular'=>true, 'systemColumn'=>true, 'fixed'=>array('customPrice')),
+            'attributes'            => array('legend'=>'pricing_legend', 'customer_defined'=>true, 'customer_invisible'=>true, 'singular'=>true, 'systemColumn'=>true, 'fixed'=>array('customPrice')),
         ),
         'prices' => array
         (

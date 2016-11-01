@@ -1638,18 +1638,30 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $objProduct    = $objItem->getProduct();
         $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
         $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
+        $productsDca   = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
         // Set the active product for insert tags replacement
         if ($blnHasProduct) {
             Product::setActive($objProduct);
         }
 
+        $configuration = $objItem->getConfiguration();
+        $options = $objItem->getOptions();
+
+        foreach ($options as $attribute => $value) {
+            if (isset($productsDca[$attribute])
+                && true === $productsDca[$attribute]['attributes']['customer_invisible']
+            ) {
+                unset($options[$attribute], $configuration[$attribute]);
+            }
+        }
+
         $arrItem = array(
             'id'                => $objItem->id,
             'sku'               => $objItem->getSku(),
             'name'              => $objItem->getName(),
-            'options'           => Isotope::formatOptions($objItem->getOptions()),
-            'configuration'     => $objItem->getConfiguration(),
+            'options'           => Isotope::formatOptions($options),
+            'configuration'     => $configuration,
             'attributes'        => $objItem->getAttributes(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
