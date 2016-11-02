@@ -25,6 +25,10 @@ abstract class Base extends \System
      */
     protected function createDatabaseField($strField, $strTable)
     {
+        if (!\Database::getInstance()->tableExists($strTable)) {
+            return false;
+        }
+
         if (!\Database::getInstance()->fieldExists($strField, $strTable)) {
             \Database::getInstance()->query("
                 ALTER TABLE $strTable
@@ -48,6 +52,10 @@ abstract class Base extends \System
      */
     protected function renameDatabaseField($strOldField, $strNewField, $strTable)
     {
+        if (!\Database::getInstance()->tableExists($strTable)) {
+            return false;
+        }
+
         if (\Database::getInstance()->fieldExists($strOldField, $strTable)
             && !\Database::getInstance()->fieldExists($strNewField, $strTable)
         ) {
