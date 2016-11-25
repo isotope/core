@@ -18,6 +18,10 @@ class Plugin implements BundlePluginInterface
      */
     public function getBundles(ParserInterface $parser)
     {
-        return $parser->parse('isotope', 'ini');
+        return array_merge(
+            $parser->parse('isotope', 'ini'),
+            $parser->parse('isotope_reports', 'ini'),
+            $parser->parse('isotope_rules', 'ini')
+        );
     }
 }
