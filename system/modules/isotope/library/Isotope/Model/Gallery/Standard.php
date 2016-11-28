@@ -90,6 +90,24 @@ class Standard extends Gallery implements IsotopeGallery
     }
 
     /**
+     * Set gallery template
+     * @param string $strTemplate
+     */
+    public function setTemplate($strTemplate)
+    {
+        $this->strTemplate = $strTemplate;
+    }
+
+    /**
+     * Get gallery template
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->strTemplate;
+    }
+
+    /**
      * Set image files
      *
      * @param array $arrFiles
