@@ -275,7 +275,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
                 \Isotope\Model\Payment::QUANTITY_MODE_PRODUCTS,
             ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'minimum_quantity' => array
