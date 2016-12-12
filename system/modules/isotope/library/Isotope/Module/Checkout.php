@@ -438,6 +438,7 @@ class Checkout extends Module
                 $arrInfo = $objModule->review();
 
                 if (!empty($arrInfo) && is_array($arrInfo)) {
+                    /** @noinspection AdditionOperationOnArraysInspection */
                     $arrCheckoutInfo += $arrInfo;
                 }
             }
