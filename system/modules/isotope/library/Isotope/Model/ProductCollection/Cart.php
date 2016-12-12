@@ -150,7 +150,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             $objOrder = Order::findOneBy(
                 array(
                     "$t.source_collection_id=?",
-                    "$t.locked=''"
+                    "$t.locked IS NULL"
                 ),
                 array($this->id)
             );
