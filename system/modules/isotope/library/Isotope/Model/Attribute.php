@@ -226,7 +226,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         if ($this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
-            $arrField['eval']['includeBlankOption'] = true;
         }
 
         if ($this->blankOptionLabel != '') {

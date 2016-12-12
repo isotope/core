@@ -13,18 +13,20 @@ namespace Isotope\Interfaces;
 
 interface IsotopeAttributeForVariants
 {
-
     /**
      * Return true if attribute is a variant option
-     * @return    bool
+     *
+     * @return bool
      */
     public function isVariantOption();
 
     /**
      * Get available variant options for a product
-     * @param   array
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrIds
+     * @param array $arrOptions
+     *
+     * @return array
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array());
 }

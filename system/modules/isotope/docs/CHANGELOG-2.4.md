@@ -9,6 +9,11 @@ Version 2.4.0 (2016-11-??)
 - Added plugin for Contao Manager
 
 
+### Improved
+
+- Only select menu variant options must have blank option (#1738)
+
+
 ### Fixed
 
 - Prevent error message when no buttons are enabled (#1735)
