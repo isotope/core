@@ -75,7 +75,5 @@
             ]
         },
         "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin"
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
+    }
 }
