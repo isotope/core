@@ -10,7 +10,7 @@ sudo: false
 
 install:
     - mysql -e 'CREATE DATABASE isotope_core_testsuite;'
-    - composer update
+    - composer update --ignore-platform-reqs
     - composer create-project -s dev contao/core:${CONTAO_VERSION} contao
     - cp -R system/modules/isotope contao/system/modules/isotope
     - cp -R system/modules/isotope_reports contao/system/modules/isotope_reports
