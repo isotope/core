@@ -48,6 +48,8 @@ use Isotope\Translation;
  */
 abstract class Payment extends TypeAgent implements IsotopePayment
 {
+    const QUANTITY_MODE_ITEMS = 'cart_items';
+    const QUANTITY_MODE_PRODUCTS = 'cart_products';
 
     /**
      * Table name
@@ -134,11 +136,11 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
         if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
             switch ($this->quantity_mode) {
-                case 'cart_items':
+                case static::QUANTITY_MODE_ITEMS:
                     $quantity =  Isotope::getCart()->sumItemsQuantity();
                     break;
 
-                case 'cart_products':
+                case static::QUANTITY_MODE_PRODUCTS:
                     $quantity =  Isotope::getCart()->countItems();
                     break;
 
