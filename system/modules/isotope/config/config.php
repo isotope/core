@@ -235,9 +235,10 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Product collections
  */
-\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
 \Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
+\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
+\Isotope\Model\ProductCollection::registerModelType('wishlist', 'Isotope\Model\ProductCollection\Wishlist');
 
 /**
  * Product collection surcharge
