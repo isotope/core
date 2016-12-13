@@ -164,6 +164,15 @@
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_wishlist">
+        <source>Add To Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistLabel">
+        <source>New Wishlist …</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistName">
+        <source>Wishlist 1</source>
+      </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
       </trans-unit>
@@ -196,6 +205,9 @@
       </trans-unit>
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
+      </trans-unit>
+      <trans-unit id="MSC.addedToWishlist">
+        <source>The selected product has been added to your wishlist.</source>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
