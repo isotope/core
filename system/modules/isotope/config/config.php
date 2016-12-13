@@ -461,6 +461,7 @@ if (\Config::getInstance()->isComplete()) {
 
         // Adjust the product groups manager
         $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
+        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend\SubtableVersion', 'removeFromWelcomeScreen');
 
         // Enable the module tables in setup
         $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\BackendModule\InitializeListener', 'enableModuleTablesInSetup');
