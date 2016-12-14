@@ -13,6 +13,7 @@ Version 2.4.0 (2016-11-??)
 
 - Only select menu variant options must have blank option (#1738)
 - Remove product category and price version info from welcome screen (#1725)
+- Remove pagination parameter from cumulative filter (#1739)
 
 
 ### Fixed
