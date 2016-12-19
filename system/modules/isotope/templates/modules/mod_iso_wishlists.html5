@@ -1,0 +1,14 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<table>
+    <?php foreach ($this->items as $wishlist): ?>
+        <tr>
+            <td class="<?= $wishlist['class'] ?>"><?= $wishlist['name'] ?></td>
+            <td><a href="<?= $wishlist['href'] ?>">Details</a></td>
+        </tr>
+    <?php endforeach; ?>
+</table>
+
+<?php $this->endblock(); ?>

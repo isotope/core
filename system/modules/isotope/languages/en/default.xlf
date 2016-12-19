@@ -17,6 +17,12 @@
       <trans-unit id="ERR.orderNotFound">
         <source>The requested order was not found.</source>
       </trans-unit>
+      <trans-unit id="ERR.emptyWishlists">
+        <source>You have not created any wishlists yet.</source>
+      </trans-unit>
+      <trans-unit id="ERR.wishlistNotFound">
+        <source>The requested wishlist was not found.</source>
+      </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
       </trans-unit>
@@ -199,6 +205,9 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInWishlist">
+        <source>There are no items in this wishlist.</source>
       </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>

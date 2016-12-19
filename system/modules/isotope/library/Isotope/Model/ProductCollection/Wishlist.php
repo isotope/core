@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection
