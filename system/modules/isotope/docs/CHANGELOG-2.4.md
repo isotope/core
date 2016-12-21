@@ -22,6 +22,7 @@ Version 2.4.0 (2016-11-??)
 - Name and help wizard for model types were no longer translated (#1716)
 - Shipping and payment quantity mode is mandatory (#1743)
 - Prevent duplicate collection error if cart cookie could not be set (#1721)
+- Incorrect tax free total calculation in net-calculation mode (#1711)
 
 
 Version 2.4.0-rc1 (2016-10-07)

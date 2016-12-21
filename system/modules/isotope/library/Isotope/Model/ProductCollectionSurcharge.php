@@ -335,17 +335,17 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
         $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_free_total_price = $objSource->total_price;
+        $objSurcharge->tax_free_total_price = $objSurcharge->total_price;
         $objSurcharge->tax_class = $intTaxClass;
         $objSurcharge->before_tax = ($intTaxClass ? true : false);
         $objSurcharge->addToTotal = true;
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);
-        } elseif ($objSurcharge->tax_class > 0) {
+        } elseif ($intTaxClass > 0) {
 
             /** @var \Isotope\Model\TaxClass $objTaxClass */
-            if (($objTaxClass = TaxClass::findByPk($objSurcharge->tax_class)) !== null) {
+            if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
 
                 /** @var \Isotope\Model\TaxRate $objIncludes */
                 if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {

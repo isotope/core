@@ -826,8 +826,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 foreach ($arrSurcharges as $objSurcharge) {
                     if ($objSurcharge instanceof Tax) {
                         $fltAmount -= $objSurcharge->total_price;
-                    } else {
-                        $fltAmount += $objSurcharge->total_price;
                     }
                 }
             } else {
