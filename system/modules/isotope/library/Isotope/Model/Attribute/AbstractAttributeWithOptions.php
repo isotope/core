@@ -331,19 +331,19 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         }
 
         $values     = (array) $value;
-        $arrOptions = array_filter(
-            $arrField['options'],
-            function(&$option) use (&$values) {
-                if (($pos = array_search($option['value'], $values)) !== false) {
-                    $option = $option['label'];
-                    unset($values[$pos]);
+        $arrOptions = [];
 
-                    return true;
+        foreach ($arrField['options'] as $k => &$option) {
+            if (($pos = array_search($option['value'], $values)) !== false) {
+                $arrOptions[$k] = $option['label'];
+                unset($values[$pos]);
+
+                if (0 === count($values)) {
+                    break;
                 }
-
-                return false;
             }
-        );
+        }
+        unset($option);
 
         if (0 !== count($values)) {
             $arrOptions = array_merge($arrOptions, $values);

@@ -23,6 +23,7 @@ Version 2.4.0 (2016-11-??)
 - Shipping and payment quantity mode is mandatory (#1743)
 - Prevent duplicate collection error if cart cookie could not be set (#1721)
 - Incorrect tax free total calculation in net-calculation mode (#1711)
+- PHP7 does not allow callback value by reference in array_filter (#1746)
 
 
 Version 2.4.0-rc1 (2016-10-07)
