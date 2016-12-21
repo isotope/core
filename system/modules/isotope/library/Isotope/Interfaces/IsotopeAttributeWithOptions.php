@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
@@ -16,6 +15,18 @@ use Isotope\Collection\AttributeOption;
 
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
 {
+    const SOURCE_NAME       = 'name';
+    const SOURCE_TABLE      = 'table';
+    const SOURCE_FOREIGNKEY = 'foreignKey';
+    const SOURCE_ATTRIBUTE  = 'attribute';
+    const SOURCE_PRODUCT    = 'product';
+
+    /**
+     * Returns the options source
+     *
+     * @return string
+     */
+    public function getOptionsSource();
 
     /**
      * Adjust the attribute option wizard for this widget

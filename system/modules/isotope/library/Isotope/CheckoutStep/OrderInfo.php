@@ -3,25 +3,25 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
 
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Template;
 
-
+/**
+ * OrderInfo checkout steps shows a summary of all other checkout steps (e.g. addresses, payment and shipping method).
+ */
 class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true to enable the module
-     * @return  bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -29,12 +29,12 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     * @return  string
+     * @inheritdoc
      */
     public function generate()
     {
-        $objTemplate            = new \Isotope\Template('iso_checkout_order_info');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate            = new Template('iso_checkout_order_info');
         $objTemplate->headline  = $GLOBALS['TL_LANG']['MSC']['order_review'];
         $objTemplate->message   = $GLOBALS['TL_LANG']['MSC']['order_review_message'];
         $objTemplate->summary   = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
@@ -45,8 +45,7 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return review information for last page of checkout
-     * @return  string
+     * @inheritdoc
      */
     public function review()
     {
@@ -54,12 +53,10 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
-        return array();
+        return [];
     }
 }

@@ -3,17 +3,23 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
 
+use Isotope\Interfaces\IsotopeOrderableCollection;
+use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection\Order;
+use UnitedPrototype\GoogleAnalytics\CustomVariable;
+use UnitedPrototype\GoogleAnalytics\Session;
+use UnitedPrototype\GoogleAnalytics\Tracker;
+use UnitedPrototype\GoogleAnalytics\Transaction;
+use UnitedPrototype\GoogleAnalytics\Visitor;
 
 
 class Analytics extends Frontend
@@ -28,13 +34,10 @@ class Analytics extends Frontend
      */
     public function trackOrder(Order $objOrder)
     {
-        $objConfig = Config::findByPk($objOrder->config_id);
+        $objConfig = $objOrder->getConfig();
 
-        if (null !== $objConfig) {
-
-            if ($objConfig->ga_enable) {
-                $this->trackGATransaction($objConfig, $objOrder);
-            }
+        if (null !== $objConfig && $objConfig->ga_enable) {
+            $this->trackGATransaction($objConfig, $objOrder);
         }
 
         return true;
@@ -42,26 +45,31 @@ class Analytics extends Frontend
 
     /**
      * Actually execute the GoogleAnalytics tracking
-     * @param Database_Result
+     *
+     * @param Config                   $objConfig
      * @param IsotopeProductCollection $objOrder
      */
-    protected function trackGATransaction($objConfig, $objOrder)
+    protected function trackGATransaction(Config $objConfig, IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopeOrderableCollection) {
+            return;
+        }
+
         // Initilize GA Tracker
-        $tracker = new \UnitedPrototype\GoogleAnalytics\Tracker($objConfig->ga_account, \Environment::get('base'));
+        $tracker = new Tracker($objConfig->ga_account, \Environment::get('base'));
 
         // Assemble Visitor information
         // (could also get unserialized from database)
-        $visitor = new \UnitedPrototype\GoogleAnalytics\Visitor();
+        $visitor = new Visitor();
         $visitor->setIpAddress(\Environment::get('ip'));
         $visitor->setUserAgent(\Environment::get('httpUserAgent'));
 
-        $transaction = new \UnitedPrototype\GoogleAnalytics\Transaction();
+        $transaction = new Transaction();
 
-        $transaction->setOrderId($objOrder->document_number);
+        $transaction->setOrderId($objOrder->getDocumentNumber());
         $transaction->setAffiliation($objConfig->name);
         $transaction->setTotal($objOrder->getTotal());
-        $transaction->setTax(($objOrder->getTotal() - $objOrder->getTaxFreeTotal()));
+        $transaction->setTax($objOrder->getTotal() - $objOrder->getTaxFreeTotal());
 //        $transaction->setShipping($objOrder->shippingTotal);
 
         $objAddress = $objOrder->getBillingAddress();
@@ -103,16 +111,24 @@ class Analytics extends Frontend
         }
 
         // Track logged-in member as custom variable
-        if ($objConfig->ga_member != '' && $objOrder->member > 0 && ($objMember = \MemberModel::findByPk($objOrder->member)) !== null)
+        if ($objConfig->ga_member != '' && null !== $objOrder->getMember())
         {
-            $customVar = new \UnitedPrototype\GoogleAnalytics\CustomVariable(1, 'Member', $this->parseSimpleTokens($objConfig->ga_member, $objMember->row()), \UnitedPrototype\GoogleAnalytics\CustomVariable::SCOPE_VISITOR);
+            $customVar = new CustomVariable(
+                1,
+                'Member',
+                \StringUtil::parseSimpleTokens(
+                    $objConfig->ga_member,
+                    $objOrder->getMember()->row()
+                ),
+                CustomVariable::SCOPE_VISITOR
+            );
 
             $tracker->addCustomVariable($customVar);
         }
 
         // Assemble Session information
         // (could also get unserialized from PHP session)
-        $session = new \UnitedPrototype\GoogleAnalytics\Session();
+        $session = new Session();
 
         $tracker->trackTransaction($transaction, $session, $visitor);
     }

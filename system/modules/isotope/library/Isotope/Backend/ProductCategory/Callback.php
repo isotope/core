@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\ProductCategory;
 
+use Isotope\Backend\Product\Label;
 use Isotope\Model\Product;
 
 
@@ -27,15 +27,12 @@ class Callback extends \Backend
     {
         $objProduct = Product::findByPk($row['pid']);
 
-        $label = $objProduct->name;
-
-        if ($objProduct->sku != '') {
-            $label .= ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProduct->sku . ']</span>';
-        }
-
-        return $label;
+        return sprintf(
+            '<span style="display:block;float:left;width:50px;">%s</span><span style="display:block;float:left;margin: 0 0 0 10px;padding: 18px 0;">%s</span>',
+            Label::generateImage($objProduct),
+            $objProduct->name
+        );
     }
-
 
     /**
      * Return the page view button

@@ -1,0 +1,194 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="tl_iso_product_collection.document_number.0">
+        <source>Order ID</source>
+        <target>Ordre ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.member.0">
+        <source>Member (empty for guests)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.uniqid.0">
+        <source>Unique ID</source>
+        <target>Unikt ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.0">
+        <source>Order status</source>
+        <target>Ordrestatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.1">
+        <source>Select the status of this order.</source>
+        <target>Vælg en status for ordren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.locked.0">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.source_collection_id.0">
+        <source>Source (Cart ID)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.0">
+        <source>Payment date</source>
+        <target>Betalt den</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.1">
+        <source>Enter a date when this order has been paid.</source>
+        <target>Indtast datoen for betaling af ordren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.0">
+        <source>Shipped date</source>
+        <target>Afsendt den</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.1">
+        <source>Enter a date when this order has been shipped.</source>
+        <target>Indtast datoen for afsendelsen af ordren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.config_id.0">
+        <source>Shop configuration</source>
+        <target>Butiksindstilling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment_id.0">
+        <source>Payment method</source>
+        <target>Betalingsmetode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_id.0">
+        <source>Shipping method</source>
+        <target>Forsendelsesmetode</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_id.0">
+        <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_id.0">
+        <source>Shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.subtotal.0">
+        <source>Subtotal</source>
+        <target>Subtotal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_subtotal.0">
+        <source>Subtotal without tax</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.total.0">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_total.0">
+        <source>Total without tax</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.language.0">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.0">
+        <source>Order notes</source>
+        <target>Ordre notater</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.1">
+        <source>If you would like to convey information to other backend users, please do so here.</source>
+        <target>Hvis du vil tilføje notater til ordre kan du gøre det her. Notaterne er kun synlige i administrationen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.0">
+        <source>Edit order</source>
+        <target>Rediger ordre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.1">
+        <source>Edit order ID %s</source>
+        <target>Rediger ordren ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.0">
+        <source>Copy order</source>
+        <target>Kopier ordre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.1">
+        <source>Copy order ID %s</source>
+        <target>Kopier ordren ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Slet ordre</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Slet ordren ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order details</source>
+        <target>Ordredetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
+        <source>Show details of order ID %s</source>
+        <target>Vis detaljer for ordren ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.0">
+        <source>Payment details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.1">
+        <source>Show payment details of order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.0">
+        <source>Shipping details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.1">
+        <source>Show shipping details of order ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.0">
+        <source>Print a document</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.1">
+        <source>Print order ID %s with a document of your choice</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.0">
+        <source>Document</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.1">
+        <source>Choose the document you would like to print the data with.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print">
+        <source>Print</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
+        <source>The status of your order has been updated.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
+        <source>Notifications (e.g. email to client) have been sent.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
+        <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
+        <source>Saferpay payment was sucessfully captured.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusError">
+        <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
+        <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noEmailData">
+        <source>No additional email data available.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.status_legend">
+        <source>Order status</source>
+        <target>Ordrestatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details_legend">
+        <source>Order details</source>
+        <target>Ordredetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.email_legend">
+        <source>Email data</source>
+        <target>Email data</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_legend">
+        <source>Billing address data</source>
+        <target>Betalingsadresse data</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_legend">
+        <source>Shipping address data</source>
+        <target>Forsendelsesadresse data</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

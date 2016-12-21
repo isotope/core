@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -15,8 +14,13 @@ namespace Isotope\Module;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
+use Isotope\Template;
 
-
+/**
+ * ShippingCalculator frontend module calculates the shipping price for the current cart.
+ *
+ * @property mixed $iso_shipping_modules
+ */
 class ShippingCalculator extends Module
 {
 
@@ -27,39 +31,32 @@ class ShippingCalculator extends Module
     protected $strTemplate = 'mod_iso_shipping_calculator';
 
     /**
-     * Shipping methods
-     * @var array
+     * @inheritDoc
      */
-    protected $arrShippingMethods = array();
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_shipping_modules';
+
+        return $props;
+    }
 
     /**
-     * Display a wildcard in the back end
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: SHIPPING CALCULATOR ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
         }
 
-        $this->arrShippingMethods = deserialize($this->iso_shipping_modules, true);
-
-        if (empty($this->arrShippingMethods)) {
+        if (0 === count($this->iso_shipping_modules) || (Isotope::getCart()->isEmpty() && !$this->iso_emptyMessage)) {
             return '';
         }
 
         return parent::generate();
     }
-
 
     /**
      * Generate the module
@@ -67,42 +64,63 @@ class ShippingCalculator extends Module
     protected function compile()
     {
         $objCart = Isotope::getCart();
-        $objAddress = $objCart->getShippingAddress();
-        $this->Template->showResults = false;
-        $this->Template->requiresShipping = false;
 
-        // There is no address
-        if (!$objAddress->id) {
+        if ($objCart->isEmpty()) {
+            $this->Template          = new Template('mod_message');
+            $this->Template->message = $this->iso_noProducts;
+            $this->Template->type    = 'empty';
+
             return;
         }
 
-        $this->Template->showResults = true;
-        $arrMethods = array();
+        $this->Template->showResults      = true;
+        $this->Template->requiresShipping = true;
+        $this->Template->shippingMethods  = [];
+
+        $objAddress = $objCart->getShippingAddress();
+
+        // There is no address
+        if (!$objAddress->id) {
+            $this->Template->showResults = false;
+            return;
+        }
 
         // Get the shipping methods
-        if ($objAddress->id && $objCart->requiresShipping()) {
-            $this->Template->requiresShipping = true;
-            $objShippingMethods = Shipping::findMultipleByIds($this->arrShippingMethods);
+        if (!$objCart->requiresShipping()) {
+            $this->Template->requiresShipping = false;
+            return;
+        }
 
-            /* @var Shipping $objShipping */
-            foreach ($objShippingMethods as $objShipping) {
-                if ($objShipping->isAvailable()) {
+        /* @var Shipping[] $objShippingMethods */
+        $objShippingMethods = Shipping::findMultipleByIds($this->iso_shipping_modules);
 
-                    $fltPrice = $objShipping->getPrice();
+        if (null === $objShippingMethods) {
+            return;
+        }
 
-                    $arrMethods[] = array(
-                        'label' => $objShipping->getLabel(),
-                        'price' => $fltPrice,
-                        'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
-                        'shipping' => $objShipping
-                    );
-                }
+        $arrMethods = [];
+
+        foreach ($objShippingMethods as $objShipping) {
+            if (!$objShipping->isAvailable()) {
+                continue;
             }
 
-            RowClass::withKey('rowClass')->addCount('row_')->addFirstLast('row_')->addEvenOdd('row_')->applyTo(
-                $arrMethods
-            );
+            $fltPrice = $objShipping->getPrice();
+
+            $arrMethods[] = [
+                'label'           => $objShipping->getLabel(),
+                'price'           => $fltPrice,
+                'formatted_price' => Isotope::formatPriceWithCurrency($fltPrice),
+                'shipping'        => $objShipping
+            ];
         }
+
+        RowClass::withKey('rowClass')
+            ->addCount('row_')
+            ->addFirstLast('row_')
+            ->addEvenOdd('row_')
+            ->applyTo($arrMethods)
+        ;
 
         $this->Template->shippingMethods = $arrMethods;
     }

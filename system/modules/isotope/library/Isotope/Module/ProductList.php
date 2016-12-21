@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -22,6 +21,7 @@ use Isotope\Model\ProductCache;
 use Isotope\Model\ProductType;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
+use Isotope\Template;
 
 /**
  * @property string $iso_list_layout
@@ -52,22 +52,16 @@ class ProductList extends Module
     protected $blnCacheProducts = true;
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    public function __construct($objModule, $strColumn = 'main')
+    protected function getSerializedProperties()
     {
-        parent::__construct($objModule, $strColumn);
+        $props = parent::getSerializedProperties();
 
-        $this->iso_filterModules = deserialize($this->iso_filterModules);
-        $this->iso_productcache  = deserialize($this->iso_productcache);
+        $props[] = 'iso_filterModules';
+        $props[] = 'iso_productcache';
 
-        if (!is_array($this->iso_filterModules)) {
-            $this->iso_filterModules = array();
-        }
-
-        if (!is_array($this->iso_productcache)) {
-            $this->iso_productcache = array();
-        }
+        return $props;
     }
 
     /**
@@ -77,25 +71,13 @@ class ProductList extends Module
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            /** @var \BackendTemplate|object $objTemplate */
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT LIST ###';
-
-            $objTemplate->title = $this->headline;
-            $objTemplate->id    = $this->id;
-            $objTemplate->link  = $this->name;
-            $objTemplate->href  = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
         // Hide product list in reader mode if the respective setting is enabled
         if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
             return '';
         }
-
-        $this->iso_productcache  = deserialize($this->iso_productcache, true);
 
         // Disable the cache in frontend preview or debug mode
         if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
@@ -129,9 +111,9 @@ class ProductList extends Module
         }
 
         global $objPage;
-        $cacheKey    = $this->getCacheKey();
-        $arrProducts = null;
-        $arrCacheIds = null;
+        $cacheKey      = $this->getCacheKey();
+        $arrProducts   = null;
+        $arrCacheIds   = null;
 
         // Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findByUniqid($cacheKey)) !== null) {
@@ -165,7 +147,7 @@ class ProductList extends Module
                     $objPage->noSearch = 1;
                     $objPage->cache    = 0;
 
-                    $this->Template          = new \Isotope\Template('mod_iso_productlist_caching');
+                    $this->Template          = new Template('mod_iso_productlist_caching');
                     $this->Template->message = $GLOBALS['TL_LANG']['MSC']['productcacheLoading'];
 
                     return;
@@ -186,7 +168,7 @@ class ProductList extends Module
                     $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
 
                     \Database::getInstance()
-                        ->prepare("UPDATE tl_module SET iso_productcache=? WHERE id=?")
+                        ->prepare('UPDATE tl_module SET iso_productcache=? WHERE id=?')
                         ->execute(serialize($arrCacheMessage), $this->id)
                     ;
                 }
@@ -238,8 +220,8 @@ class ProductList extends Module
 
             $arrConfig = array(
                 'module'        => $this,
-                'template'      => ($this->iso_list_layout ?: $type->list_template),
-                'gallery'       => ($this->iso_gallery ?: $type->list_gallery),
+                'template'      => $this->iso_list_layout ?: $type->list_template,
+                'gallery'       => $this->iso_gallery ?: $type->list_gallery,
                 'buttons'       => $this->iso_buttons,
                 'useQuantity'   => $this->iso_use_quantity,
                 'jumpTo'        => $this->findJumpToPage($objProduct),
@@ -388,7 +370,9 @@ class ProductList extends Module
             $limit = $this->numberOfItems;
         }
 
-        $total = count($arrItems);
+        $pagination = '';
+        $page       = 1;
+        $total      = count($arrItems);
 
         // Split the results
         if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
@@ -399,7 +383,7 @@ class ProductList extends Module
 
             // Get the current page
             $id   = 'page_iso' . $this->id;
-            $page = \Input::get($id) ? : 1;
+            $page = \Input::get($id) ?: 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
@@ -422,8 +406,15 @@ class ProductList extends Module
 
             // Add the pagination menu
             $objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
-            $this->Template->pagination = $objPagination->generate("\n  ");
+
+            $pagination = $objPagination->generate("\n  ");
         }
+
+        $this->Template->pagination = $pagination;
+        $this->Template->total      = count($arrItems);
+        $this->Template->page       = $page;
+        $this->Template->offset     = $offset;
+        $this->Template->limit      = $limit;
 
         if (isset($limit)) {
             $arrItems = array_slice($arrItems, $offset, $limit);

@@ -3,17 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
-
+use Isotope\Interfaces\IsotopeAttributeWithOptions;
 
 /**
  * Attribute to implement CheckboxMenu widget
@@ -21,12 +19,10 @@ use Isotope\Interfaces\IsotopeAttribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttribute
+class CheckboxMenu extends AbstractAttributeWithOptions
 {
-
     /**
-     * Adjust the options wizard for this attribute
-     * @return  array
+     * @inheritdoc
      */
     public function prepareOptionsWizard($objWidget, $arrColumns)
     {
@@ -36,17 +32,19 @@ class CheckboxMenu extends AbstractAttributeWithOptions implements IsotopeAttrib
     }
 
     /**
-     * Set SQL field for this attribute
-     * @param   array
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
 
-        if ($this->multiple) {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
-        } else {
+        if (!$this->variant_option && $this->optionsSource === IsotopeAttributeWithOptions::SOURCE_NAME) {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
             $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";
+            $arrData['fields'][$this->field_name]['options'];
+        } else {
+            $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+            $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         }
     }
 }

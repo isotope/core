@@ -3,30 +3,26 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 
-
 /**
- * Attribute to impelement additional image galleries
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ * Attribute to implement additional image galleries
  */
-class MediaManager extends Attribute implements IsotopeAttribute
+class MediaManager extends Attribute
 {
-
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
@@ -37,6 +33,11 @@ class MediaManager extends Attribute implements IsotopeAttribute
         $arrData['fields'][$this->field_name]['attributes']['fetch_fallback'] = true;
     }
 
+    /**
+     * @inheritdoc
+     *
+     * @throws \BadMethodCallException because the MediaManager cannot be generated for frontend.
+     */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         throw new \BadMethodCallException('MediaManager attribute cannot be generated');

@@ -3,16 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
-use Haste\Haste;
+use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Haste\Util\Debug;
 use Haste\Util\RepositoryVersion;
@@ -20,7 +19,6 @@ use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
-use Module as Contao_Module;
 use PageModel;
 
 
@@ -42,7 +40,7 @@ use PageModel;
  * @property bool   $defineRoot
  * @property int    $rootPage
  */
-abstract class Module extends Contao_Module
+abstract class Module extends AbstractFrontendModule
 {
 
     /**
@@ -70,19 +68,13 @@ abstract class Module extends Contao_Module
         parent::__construct($objModule, $strColumn);
 
         if ($this->iso_list_where != '') {
-            $this->iso_list_where = Haste::getInstance()->call('replaceInsertTags', $this->iso_list_where);
-        }
-
-        $this->iso_buttons = deserialize($this->iso_buttons);
-
-        if (!is_array($this->iso_buttons)) {
-            $this->iso_buttons = array();
+            $this->iso_list_where = \Controller::replaceInsertTags($this->iso_list_where);
         }
 
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if (TL_MODE == 'FE') {
+        if ('FE' === TL_MODE) {
             $version = RepositoryVersion::encode(Isotope::VERSION);
 
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
@@ -101,6 +93,13 @@ abstract class Module extends Contao_Module
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        return ['iso_buttons'];
+    }
 
     /**
      * Include messages if enabled
@@ -112,13 +111,12 @@ abstract class Module extends Contao_Module
         $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        if ($this->iso_includeMessages) {
+        if ('BE' !== TL_MODE && $this->iso_includeMessages) {
             $strBuffer = Message::generate() . $strBuffer;
         }
 
         return $strBuffer;
     }
-
 
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
@@ -147,7 +145,7 @@ abstract class Module extends Contao_Module
             switch ($this->iso_category_scope) {
 
                 case 'global':
-                    $arrCategories = array($objPage->rootId);
+                    $arrCategories = [$objPage->rootId];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
@@ -157,22 +155,21 @@ abstract class Module extends Contao_Module
                     break;
 
                 case 'current_and_all_children':
-                    $arrCategories = array($objPage->id);
+                    $arrCategories = [$objPage->id];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
                     break;
 
                 case 'parent':
-                    $arrCategories = array($objPage->pid);
+                    $arrCategories = [$objPage->pid];
                     break;
 
                 case 'product':
                     /** @var \Isotope\Model\Product\Standard $objProduct */
                     $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
+                    $arrCategories = [0];
 
                     if ($objProduct !== null) {
                         $arrCategories = $objProduct->getCategories(true);
-                    } else {
-                        $arrCategories = array(0);
                     }
                     break;
 
@@ -182,7 +179,7 @@ abstract class Module extends Contao_Module
 
                 case '':
                 case 'current_category':
-                    $arrCategories = array($objPage->id);
+                    $arrCategories = [$objPage->id];
                     break;
 
                 default:
@@ -204,7 +201,6 @@ abstract class Module extends Contao_Module
 
         return $this->arrCategories;
     }
-
 
     /**
      * Find jumpTo page for current category scope
@@ -261,7 +257,6 @@ abstract class Module extends Contao_Module
         return $objIsotopeListPage ? : $objPage;
     }
 
-
     /**
      * Generate the URL from existing $_GET parameters.
      * Use \Input::setGet('var', null) to remove a parameter from the final URL.
@@ -316,7 +311,7 @@ abstract class Module extends Contao_Module
             }
         }
 
-        /** @type PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');

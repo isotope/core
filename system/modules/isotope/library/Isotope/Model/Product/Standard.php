@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Product;
@@ -15,32 +14,27 @@ namespace Isotope\Model\Product;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeProductWithOptions;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCategory;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
 
-
 /**
- * Class Product
- *
- * Provide methods to handle Isotope products.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
+ * Standard implementation of an Isotope product.
  */
-class Standard extends Product implements IsotopeProduct, WeightAggregate
+class Standard extends AbstractProduct implements WeightAggregate, IsotopeProductWithOptions
 {
 
     /**
@@ -52,12 +46,14 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Attributes assigned to this product type
      * @var array
+     * @deprecated
      */
     protected $arrAttributes;
 
     /**
      * Variant attributes assigned to this product type
      * @var array
+     * @deprecated
      */
     protected $arrVariantAttributes;
 
@@ -74,10 +70,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     protected $arrCustomerConfig = array();
 
     /**
-     * Assigned categories (pages)
+     * Default configuration (to predefine variant or customer editable attributes)
      * @var array
      */
-    protected $arrCategories;
+    protected $arrDefaults = array();
 
     /**
      * Unique form ID
@@ -97,172 +93,35 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     protected $doNotSubmit = false;
 
-
     /**
-     * Returns true if the product is published, otherwise returns false
-     *
-     * @return bool
+     * True if the collection item will be updated.
+     * @var bool
      */
-    public function isPublished()
-    {
-        $time = \Date::floorToMinute();
-
-        if (!$this->arrData['published']) {
-            return false;
-        } elseif ($this->arrData['start'] != '' && $this->arrData['start'] > $time) {
-            return false;
-        } elseif ($this->arrData['stop'] != '' && $this->arrData['stop'] < ($time + 60)) {
-            return false;
-        }
-
-        return true;
-    }
+    protected $blnUpdate = false;
 
     /**
-     * Returns true if the product is available to show on the website
-     *
-     * @return bool
-     */
-    public function isAvailableInFrontend()
-    {
-        $objCollection = Isotope::getCart();
-
-        if (null === $objCollection) {
-            return false;
-        }
-
-        return $this->isAvailableForCollection($objCollection);
-    }
-
-    /**
-     * Returns true if the product is available
-     *
-     * @param IsotopeProductCollection|\Isotope\Model\ProductCollection $objCollection
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailableForCollection(IsotopeProductCollection $objCollection)
     {
-        if ($objCollection->isLocked()) {
-            return true;
-        }
-
-        if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->{$callback[1]}($this, $objCollection);
-
-                // If return value is boolean then we accept it as result
-                if (true === $available || false === $available) {
-                    return $available;
-                }
-            }
-        }
-
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+        if (false === parent::isAvailableForCollection($objCollection)) {
             return false;
-        }
-
-        // Show to guests only
-        if ($this->arrData['guests'] && $objCollection->member > 0 && BE_USER_LOGGED_IN !== true && !$this->arrData['protected']) {
-            return false;
-        }
-
-        // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->arrData['protected']) {
-            if ($objCollection->member == 0) {
-                return false;
-            }
-
-            $groups       = deserialize($this->arrData['groups']);
-            $memberGroups = deserialize($objCollection->getRelated('member')->groups);
-
-            if (!is_array($groups) || empty($groups) || !is_array($memberGroups) || empty($memberGroups) || !count(array_intersect($groups, $memberGroups))) {
-                return false;
-            }
         }
 
         // Check that the product is in any page of the current site
-        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getRelated('member'))) == 0) {
+        if (count(\Isotope\Frontend::getPagesInCurrentRoot($this->getCategories(), $objCollection->getMember())) == 0) {
             return false;
         }
 
         // Check if "advanced price" is available
-        if (null === $this->getPrice($objCollection) && (in_array('price', $this->getAttributes()) || $this->hasVariantPrices())) {
+        if ($this->getType()->hasAdvancedPrices()
+            && (in_array('price', $this->getType()->getAttributes(), true) || $this->hasVariantPrices())
+            && null === $this->getPrice($objCollection)
+        ) {
             return false;
         }
 
         return true;
-    }
-
-    /**
-     * Checks whether a product is new according to the current store config
-     *
-     * @return bool
-     */
-    public function isNew()
-    {
-        return $this->dateAdded >= Isotope::getConfig()->getNewProductLimit();
-    }
-
-    /**
-     * Return true if the product or product type has shipping exempt activated
-     *
-     * @return bool
-     */
-    public function isExemptFromShipping()
-    {
-        return ($this->arrData['shipping_exempt'] || $this->getRelated('type')->shipping_exempt) ? true : false;
-    }
-
-    /**
-     * Returns true if a variant is loaded
-     *
-     * @return bool
-     */
-    public function isVariant()
-    {
-        return ($this->pid > 0 && $this->hasVariants());
-    }
-
-    /**
-     * Returns true if variants are enabled in the product type, otherwise returns false
-     *
-     * @return bool
-     */
-    public function hasVariants()
-    {
-        /** @type ProductType $objType */
-        $objType = $this->getRelated('type');
-
-        return (bool) $objType->hasVariants();
-    }
-
-    /**
-     * Returns true if product has variants, and the price is a variant attribute
-     *
-     * @return bool
-     */
-    public function hasVariantPrices()
-    {
-        if ($this->hasVariants() && in_array('price', $this->getVariantAttributes())) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns true if advanced prices are enabled in the product type, otherwise returns false
-     *
-     * @return bool
-     */
-    public function hasAdvancedPrices()
-    {
-        /** @type ProductType $objType */
-        $objType = $this->getRelated('type');
-
-        return (bool) $objType->hasAdvancedPrices();
     }
 
     /**
@@ -272,7 +131,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function canSeePriceTiers()
     {
-        return $this->hasAdvancedPrices() && $this->getRelated('type')->show_price_tiers;
+        return $this->hasAdvancedPrices() && $this->getType()->show_price_tiers;
     }
 
     /**
@@ -283,16 +142,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     public function getFormId()
     {
         return $this->strFormId;
-    }
-
-    /**
-     * Get the product id (NOT variant id)
-     *
-     * @return int
-     */
-    public function getProductId()
-    {
-        return (int) $this->pid ? : $this->id;
     }
 
     /**
@@ -344,15 +193,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * Return the product attributes
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getAttributes()
      */
     public function getAttributes()
     {
         if (null === $this->arrAttributes) {
-
-            /** @type ProductType $objType */
-            $objType = $this->getRelated('type');
-
-            $this->arrAttributes = $objType->getAttributes();
+            $this->arrAttributes = $this->getType()->getAttributes();
         }
 
         return $this->arrAttributes;
@@ -363,15 +210,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * Return the product variant attributes
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3. Use ProductType::getVariantAttributes()
      */
     public function getVariantAttributes()
     {
         if (null === $this->arrVariantAttributes) {
-
-            /** @type ProductType $objType */
-            $objType = $this->getRelated('type');
-
-            $this->arrVariantAttributes = $objType->getVariantAttributes();
+            $this->arrVariantAttributes = $this->getType()->getVariantAttributes();
         }
 
         return $this->arrVariantAttributes;
@@ -380,13 +225,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     /**
      * Return all available variant IDs of this product
      *
-     * @return int[]|false
+     * @return int[]
      */
     public function getVariantIds()
     {
         if (null === $this->arrVariantIds) {
-
-            $this->arrVariantIds = array();
+            $this->arrVariantIds = [];
 
             // Nothing to do if we have no variants
             if (!$this->hasVariants()) {
@@ -395,22 +239,31 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
-            $strQuery        = "SELECT id, protected, groups FROM tl_iso_product WHERE pid=" . $this->getProductId() . " AND language='' AND published='1' AND (start='' OR start<'$time') AND (stop='' OR stop>'" . ($time + 60) . "')";
+            $strQuery        = '
+                SELECT id, protected, groups 
+                FROM tl_iso_product 
+                WHERE 
+                    pid=' . $this->getProductId() . " 
+                    AND language='' 
+                    AND published='1' 
+                    AND (start='' OR start<'$time') 
+                    AND (stop='' OR stop>'" . ($time + 60) . "')
+            ";
 
             if (BE_USER_LOGGED_IN !== true) {
-                $arrAttributes   = $this->getVariantAttributes();
-                $blnHasProtected = in_array('protected', $arrAttributes);
+                $arrAttributes   = $this->getType()->getVariantAttributes();
+                $blnHasProtected = in_array('protected', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes)) {
-                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ")";
+                if (FE_USER_LOGGED_IN === true && in_array('guests', $arrAttributes, true)) {
+                    $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
                 elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
                     $strQuery .= " AND protected=''";
                 }
             }
 
-            /** @type object $objVariants */
+            /** @var object $objVariants */
             $objVariants = \Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
@@ -426,7 +279,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
 
             // Only show variants where a price is available
-            if (!empty($this->arrVariantIds) && $this->hasVariantPrices()) {
+            if (0 !== count($this->arrVariantIds) && $this->hasVariantPrices()) {
                 if ($this->hasAdvancedPrices()) {
                     $objPrices = ProductPrice::findAdvancedByProductIdsAndCollection($this->arrVariantIds, Isotope::getCart());
                 } else {
@@ -434,7 +287,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 }
 
                 if (null === $objPrices) {
-                    $this->arrVariantIds = array();
+                    $this->arrVariantIds = [];
                 } else {
                     $this->arrVariantIds = $objPrices->fetchEach('pid');
                 }
@@ -442,50 +295,6 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return $this->arrVariantIds;
-    }
-
-    /**
-     * Get categories (pages) assigned to this product
-     *
-     * @param bool $blnPublished Only return published categories (pages)
-     *
-     * @return array
-     */
-    public function getCategories($blnPublished = false)
-    {
-        $key = ($blnPublished ? 'published' : 'all');
-
-        if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
-            if ($blnPublished) {
-                $options = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
-                $options['table'] = ProductCategory::getTable();
-                $query = \Model\QueryBuilder::find($options);
-                $values = (array) $options['value'];
-            } else {
-                $query  = 'SELECT page_id FROM ' . ProductCategory::getTable() . ' WHERE pid=?';
-                $values = array($this->getProductId());
-            }
-
-            $objCategories = \Database::getInstance()->prepare($query)->execute($values);
-
-            $this->arrCategories[$key] = $objCategories->fetchEach('page_id');
-
-            // Sort categories by the backend drag&drop
-            $arrOrder = deserialize($this->orderPages);
-            if (!empty($arrOrder) && is_array($arrOrder)) {
-                $this->arrCategories[$key] = array_unique(
-                    array_merge(
-                        array_intersect(
-                            $arrOrder,
-                            $this->arrCategories[$key]
-                        ),
-                        $this->arrCategories[$key]
-                    )
-                );
-            }
-        }
-
-        return $this->arrCategories[$key];
     }
 
     /**
@@ -503,10 +312,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     }
 
     /**
-     * Return all product options
-     *
-     * @return array
-     * @deprecated use getConfiguration
+     * @inheritdoc
      */
     public function getOptions()
     {
@@ -514,16 +320,49 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setOptions(array $options)
+    {
+        if (!$this->blnPreventSaving) {
+            throw new \RuntimeException('Do not modify a product object that is in the model registry!');
+        }
+
+        if (!$this->isVariant()) {
+            $this->arrCustomerConfig = $options;
+            return;
+        }
+
+        $attributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $this->arrCustomerConfig = [];
+
+        foreach ($options as $k => $v) {
+            if (in_array($k, $attributes, true)) {
+                if ($this->arrData[$k] != $v) {
+                    throw new \RuntimeException(
+                        sprintf('"%s" for attribute "%s" does not match current variant.', $v, $k)
+                    );
+                }
+
+                // Ignore variant data, that's already stored
+                continue;
+            }
+
+            $this->arrCustomerConfig[$k] = $v;
+        }
+    }
+
+    /**
      * Get the product configuration
      * This includes customer defined fields and variant options
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0. Use getOptions() instead.
      */
     public function getConfiguration()
     {
-        $arrConfig = array_merge($this->getVariantConfig(), $this->getCustomerConfig());
-
-        return Isotope::formatProductConfiguration($arrConfig, $this);
+        return Isotope::formatProductConfiguration($this->getOptions(), $this);
     }
 
     /**
@@ -543,12 +382,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      */
     public function getVariantConfig()
     {
-        if (!$this->hasVariants()) {
+        if (!$this->isVariant()) {
             return array();
         }
 
         $arrVariantConfig = array();
-        $arrAttributes = array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields());
+        $arrAttributes = array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields());
 
         foreach (array_unique($arrAttributes) as $attribute) {
             $arrVariantConfig[$attribute] = $this->arrData[$attribute];
@@ -563,9 +402,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @param array $arrConfig
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function generate(array $arrConfig)
     {
+        $this->loadDefaults();
+
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
         $objProduct      = $this->validateVariant();
 
@@ -574,15 +417,15 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return $objProduct->generate($arrConfig);
         }
 
-        /** @type Template|object $objTemplate */
+        /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($arrConfig['template']);
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
         $objTemplate->config  = $arrConfig;
 
         $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
-            return in_array($strAttribute, $objProduct->getAttributes())
-                || in_array($strAttribute, $objProduct->getVariantAttributes());
+            return in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
+                || in_array($strAttribute, $objProduct->getType()->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function ($strAttribute, array $arrOptions = array()) use ($objProduct) {
@@ -599,7 +442,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->generatePrice = function() use ($objProduct) {
             $objPrice = $objProduct->getPrice();
 
-            /** @type ProductType $objType */
+            /** @var ProductType $objType */
             $objType = $objProduct->getRelated('type');
 
             if (null === $objPrice) {
@@ -631,7 +474,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        foreach (array_unique(array_merge($this->getAttributes(), $this->getVariantAttributes())) as $attribute) {
+        foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
             $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
             if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
@@ -652,10 +495,13 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $arrButtons = array();
 
         // !HOOK: retrieve buttons
-        if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
+        if (isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
+            && is_array($arrConfig['buttons'])
+            && is_array($GLOBALS['ISO_HOOKS']['buttons'])
+        ) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $arrButtons  = $objCallback->{$callback[1]}($arrButtons);
+                $arrButtons  = $objCallback->{$callback[1]}($arrButtons, $this);
             }
 
             $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
@@ -676,7 +522,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->buttons          = $arrButtons;
-        $objTemplate->useQuantity      = $arrConfig['useQuantity'];
+        $objTemplate->useQuantity      = $arrConfig['useQuantity'] && !$this->blnUpdate;
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw              = $this->arrData;
         $objTemplate->raw_options      = $this->getConfiguration();
@@ -684,10 +530,10 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $objTemplate->href             = $this->generateUrl($arrConfig['jumpTo']);
         $objTemplate->label_detail     = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options          = $arrProductOptions;
-        $objTemplate->hasOptions       = !empty($arrProductOptions);
+        $objTemplate->hasOptions       = count($arrProductOptions) > 0;
         $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId           = $this->getFormId();
-        $objTemplate->action           = ampersand(\Environment::get('request'), true);
+        $objTemplate->action           = ampersand(\Environment::get('request') ?: \Environment::get('base'), true);
         $objTemplate->formSubmit       = $this->getFormId();
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
@@ -727,8 +573,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant
-        if (\Input::get($strField) != '') {
-            $arrData['default'] = \Input::get($strField);
+        if (!empty($this->arrDefaults[$strField])) {
+            $arrData['default'] = $this->arrDefaults[$strField];
         }
 
         $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
@@ -750,10 +596,19 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             // Remove options not available in any product variant
             if (is_array($arrField['options'])) {
-                foreach ($arrField['options'] as $k => $option) {
+                $blankOption = null;
 
+                foreach ($arrField['options'] as $k => $option) {
                     // Keep groups and blankOptionLabels
-                    if (!in_array($option['value'], $arrOptions) && !$option['group'] && $option['value'] != '') {
+                    if ($option['value'] == '') {
+                        if (null !== $blankOption) {
+                            // Last blank option wins
+                            $arrField['options'][$blankOption] = $option;
+                            unset($arrField['options'][$k]);
+                        } else {
+                            $blankOption = $k;
+                        }
+                    } elseif (!in_array($option['value'], $arrOptions) && !$option['group']) {
                         unset($arrField['options'][$k]);
                     }
                 }
@@ -761,18 +616,16 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
                 $arrField['options'] = array_values($arrField['options']);
             }
 
-            $arrField['value']   = $this->$strField;
+            $arrField['value'] = $this->$strField;
 
         } elseif ($objAttribute instanceof IsotopeAttributeWithOptions && empty($arrField['options'])) {
             return '';
         }
 
         if ($objAttribute->isVariantOption()
-            || (
-                $objAttribute instanceof IsotopeAttributeWithOptions
-                && $objAttribute->canHavePrices()
-            )
-            || $arrField['attributes']['ajax_option']) {
+            || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
+            || $arrField['attributes']['ajax_option']
+        ) {
             $arrAjaxOptions[] = $strField;
         }
 
@@ -809,12 +662,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             }
         }
 
-        /** @var \Widget|object $objWidget */
+        /** @var \Widget|\stdClass $objWidget */
         $objWidget = new $strClass($arrField);
 
         $objWidget->storeValues = true;
         $objWidget->tableless   = true;
-        $objWidget->id .= "_" . $this->getFormId();
+        $objWidget->id .= '_' . $this->getFormId();
 
         // Validate input
         if (\Input::post('FORM_SUBMIT') == $this->getFormId()) {
@@ -822,31 +675,31 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             if ($objWidget->hasErrors()) {
                 $this->doNotSubmit = true;
-            } // Store current value
-            elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
+            } elseif ($objWidget->submitInput() || $objWidget instanceof \uploadable) {
                 $varValue = $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ($varValue != '' && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
+                if ($varValue != '' && in_array($arrData['eval']['rgxp'], ['date', 'time', 'datim'], true)) {
                     try {
-                        /** @type \Date|object $objDate */
+                        /** @var \Date|object $objDate */
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
 
                     } catch (\OutOfBoundsException $e) {
                         $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
                     }
-
                 }
 
                 // Trigger the save_callback
                 if (is_array($arrData['save_callback'])) {
                     foreach ($arrData['save_callback'] as $callback) {
-
-                        $objCallback = \System::importStatic($callback[0]);
-
                         try {
-                            $varValue = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            if (is_array($callback)) {
+                                $objCallback = \System::importStatic($callback[0]);
+                                $varValue    = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                            } else {
+                                $varValue = $objAttribute->{$callback}($varValue, $this, $objWidget);
+                            }
                         } catch (\Exception $e) {
                             $objWidget->class = 'error';
                             $objWidget->addError($e->getMessage());
@@ -935,29 +788,36 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             return $this;
         }
 
+        $hasOptions = null;
         $arrOptions = array();
 
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
-        foreach (array_intersect($this->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
+        foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
 
-            /** @type IsotopeAttribute|Attribute $objAttribute */
+            /** @var IsotopeAttribute|Attribute $objAttribute */
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::post($attribute);
-            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array(\Input::get($attribute), $arrValues)) {
-                $arrOptions[$attribute] = \Input::get($attribute);
+            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array($this->arrDefaults[$attribute], $arrValues)) {
+                $arrOptions[$attribute] = $this->arrDefaults[$attribute];
             } elseif (count($arrValues) == 1) {
                 $arrOptions[$attribute] = $arrValues[0];
             } else {
 
                 // Abort if any attribute does not have a value, we can't find a variant
-                return $this;
+                $hasOptions = false;
+                break;
             }
         }
 
-        if (!empty($arrOptions) && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
+        $hasOptions = false !== $hasOptions && count($arrOptions) > 0;
+
+        if ($hasOptions && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
+            return $objVariant;
+
+        } elseif (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
             return $objVariant;
         }
 
@@ -976,7 +836,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         if ($arrData['pid'] > 0) {
             // Do not use the model, it would trigger setRow and generate too much
             // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-            /** @type object $objParent */
+            /** @var object $objParent */
             $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
@@ -992,16 +852,16 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
 
             // Set all variant attributes, except if they are inherited
             $arrFallbackFields = Attribute::getFetchFallbackFields();
-            $arrVariantFields = array_diff($this->getVariantAttributes(), $this->getInheritedFields());
+            $arrVariantFields = array_diff($this->getType()->getVariantAttributes(), $this->getInheritedFields());
             foreach ($arrData as $attribute => $value) {
                 if (
-                    in_array($attribute, $arrVariantFields)
+                    in_array($attribute, $arrVariantFields, true)
                     || ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
-                        && !in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields))
+                        && !in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields, true))
                 ) {
                     $this->arrData[$attribute] = $arrData[$attribute];
 
-                    if (in_array($attribute, $arrFallbackFields)) {
+                    if (in_array($attribute, $arrFallbackFields, true)) {
                         $this->arrData[$attribute . '_fallback'] = $arrData[$attribute . '_fallback'];
                     }
                 }
@@ -1020,8 +880,7 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         $this->arrAttributes        = null;
         $this->arrVariantAttributes = null;
         $this->arrVariantIds        = null;
-        $this->arrCategories        = null;
-        $this->arrRelated           = array();
+        $this->arrRelated           = [];
 
         // Must initialize product type to have attributes etc.
         if (($this->arrRelated['type'] = ProductType::findByPk($arrData['type'])) === null) {
@@ -1033,12 +892,12 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         // Remove attributes not in this product type
         foreach ($arrData as $attribute => $value) {
             if ((
-                    !in_array($attribute, $this->getAttributes())
-                    && !in_array($attribute, $this->getVariantAttributes())
+                    !in_array($attribute, $this->getType()->getAttributes(), true)
+                    && !in_array($attribute, $this->getType()->getVariantAttributes(), true)
                     && isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'])
                     && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] != ''
                 )
-                || in_array($attribute, Attribute::getVariantOptionFields())
+                || in_array($attribute, Attribute::getVariantOptionFields(), true)
             ) {
                 unset($arrData[$attribute]);
             }
@@ -1073,12 +932,18 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
     public function markModified($strKey)
     {
         if ($this->isVariant()) {
-            $arrAttributes = array_diff($this->getVariantAttributes(), $this->getInheritedFields(), Attribute::getCustomerDefinedFields());
+            $arrAttributes = array_diff(
+                $this->getType()->getVariantAttributes(),
+                $this->getInheritedFields(),
+                Attribute::getCustomerDefinedFields()
+            );
         } else {
-            $arrAttributes = array_diff($this->getAttributes(), Attribute::getCustomerDefinedFields());
+            $arrAttributes = array_diff($this->getType()->getAttributes(), Attribute::getCustomerDefinedFields());
         }
 
-        if (!in_array($strKey, $arrAttributes) && $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] != '') {
+        if (!in_array($strKey, $arrAttributes, true)
+            && '' !== (string) $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend']
+        ) {
             return;
         }
 
@@ -1091,6 +956,8 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
      * @param \PageModel $objJumpTo A PageModel instance
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function generateUrl(\PageModel $objJumpTo = null)
     {
@@ -1098,20 +965,20 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
             global $objPage;
             global $objIsotopeListPage;
 
-            $objJumpTo = $objIsotopeListPage ? : $objPage;
-
-            if (null === $objJumpTo) {
-                return '';
-            }
+            $objJumpTo = $objIsotopeListPage ?: $objPage;
         }
 
-        $strUrl = '/' . $this->arrData['alias'] ? : $this->getProductId();
+        if (null === $objJumpTo) {
+            return '';
+        }
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'])) {
+        $strUrl = '/' . ($this->arrData['alias'] ?: $this->getProductId());
+
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('product', $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strUrl = '/product' . $strUrl;
         }
 
-        return \Haste\Util\Url::addQueryString(
+        return Url::addQueryString(
             http_build_query($this->getOptions()),
             \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
         );
@@ -1130,5 +997,29 @@ class Standard extends Product implements IsotopeProduct, WeightAggregate
         }
 
         return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
+    }
+
+    /**
+     * Load default values from URL
+     */
+    private function loadDefaults()
+    {
+        $this->arrDefaults = array();
+        $this->blnUpdate = false;
+
+        if (\Input::get('collection_item') > 0) {
+            $item = ProductCollectionItem::findByPk(\Input::get('collection_item'));
+            if (null !== $item
+                && $item->hasProduct()
+                && $item->getProduct()->getProductId() == $this->getProductId()
+            ) {
+                $this->arrDefaults = $item->getOptions();
+                $this->blnUpdate = true;
+            }
+        } else {
+            foreach ($_GET as $k => $v) {
+                $this->arrDefaults[$k] = \Input::get($k);
+            }
+        }
     }
 }

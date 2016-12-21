@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\BackendModule;
@@ -54,7 +53,7 @@ class Integrity extends \BackendModule
         $arrTasks = array();
         $blnReload = false;
 
-        if (\Input::post('FORM_SUBMIT') == 'tl_iso_integrity') {
+        if ('tl_iso_integrity' === \Input::post('FORM_SUBMIT')) {
             $arrTasks = (array) \Input::post('tasks');
         }
 
@@ -79,13 +78,13 @@ class Integrity extends \BackendModule
                 $blnError = $objCheck->hasError();
                 $blnRepair = $objCheck->canRepair();
 
-                $arrChecks[] = array(
-                    'id' => $objCheck->getId(),
-                    'name' => $objCheck->getName(),
+                $arrChecks[] = [
+                    'id'          => $objCheck->getId(),
+                    'name'        => $objCheck->getName(),
                     'description' => $objCheck->getDescription(),
-                    'error' => $blnError,
-                    'repair' => ($blnError && $blnRepair),
-                );
+                    'error'       => $blnError,
+                    'repair'      => $blnError && $blnRepair,
+                ];
 
                 if ($blnError && $blnRepair) {
                     $this->Template->hasFixes = true;

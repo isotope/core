@@ -3,23 +3,23 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
 
 use Haste\Data\Plain;
-use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
+use Isotope\Model\ProductCollection\Favorites;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -41,7 +41,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.3.5';
+    const VERSION = '2.4.0';
 
     /**
      * True if the system has been initialized
@@ -97,7 +97,7 @@ class Isotope extends \Controller
                         preg_replace(
                             '/\?.*$/i',
                             '',
-                            (\Environment::get('request')) . (($strQuery) ? '?' . $strQuery : '')
+                            \Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
                         )
                     );
                 }
@@ -120,6 +120,16 @@ class Isotope extends \Controller
         }
 
         return static::$objCart;
+    }
+
+    /**
+     * Gets the favorites collection for the currently logged in user
+     *
+     * @return Favorites|null
+     */
+    public static function getFavorites()
+    {
+        return Favorites::findForCurrentStore();
     }
 
     /**
@@ -246,7 +256,7 @@ class Isotope extends \Controller
 
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
-                'shipping' => ($product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress()),
+                'shipping' => $product->isExemptFromShipping() ? Isotope::getCart()->getBillingAddress() : Isotope::getCart()->getShippingAddress(),
             );
         }
 
@@ -256,9 +266,9 @@ class Isotope extends \Controller
             $fltPrice = $objTaxClass->calculatePrice($fltPrice, $arrAddresses);
         }
 
-        return $fltPrice;
+        return static::roundPrice($fltPrice);
     }
-    
+
     /**
      * Rounds a price according to store config settings
      *
@@ -271,8 +281,8 @@ class Isotope extends \Controller
     {
         $objConfig = static::getConfig();
 
-        if ($blnApplyRoundingIncrement && $objConfig->priceRoundIncrement == '0.05') {
-            $fltValue = (round(20 * $fltValue)) / 20;
+        if ($blnApplyRoundingIncrement && '0.05' === $objConfig->priceRoundIncrement) {
+            $fltValue = round(20 * $fltValue) / 20;
         }
 
         return round($fltValue, $objConfig->priceRoundPrecision);
@@ -354,7 +364,7 @@ class Isotope extends \Controller
     public static function formatItemsString($intItems)
     {
         if ($intItems == 1) {
-            return $GLOBALS['TL_LANG']['ISO']['productSingle'];
+            return $GLOBALS['TL_LANG']['MSC']['productSingle'];
         } else {
             $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
@@ -362,27 +372,51 @@ class Isotope extends \Controller
                 $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
             }
 
-            return sprintf($GLOBALS['TL_LANG']['ISO']['productMultiple'], $intItems);
+            return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
         }
     }
 
     /**
      * Callback for isoButton Hook
      *
-     * @param array $arrButtons
+     * @param array          $arrButtons
+     * @param IsotopeProduct $objProduct
      *
      * @return array
      */
-    public static function defaultButtons($arrButtons)
+    public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
     {
         $arrButtons['update'] = array(
             'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']
         );
 
-        $arrButtons['add_to_cart'] = array(
-            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
-            'callback' => array('\Isotope\Frontend', 'addToCart')
-        );
+        if (null !== $objProduct
+            && \Input::get('collection_item') > 0
+            && ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) !== null
+            && $item->pid == Isotope::getCart()->id
+            && $item->hasProduct()
+            && $item->getProduct()->getProductId() == $objProduct->getProductId()
+        ) {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart'],
+                'callback' => array('\Isotope\Frontend', 'updateCart')
+            );
+        } else {
+            $arrButtons['add_to_cart'] = array(
+                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
+                'callback' => array('\Isotope\Frontend', 'addToCart')
+            );
+        }
+
+        if (true === FE_USER_LOGGED_IN || 'BE' === TL_MODE) {
+            $isFavorited = ($favorites = Isotope::getFavorites()) !== null && $favorites->hasProduct($objProduct);
+
+            $arrButtons['toggle_favorites'] = array(
+                'label'    => $GLOBALS['TL_LANG']['MSC']['buttonLabel'][$isFavorited ? 'remove_from_favorites' : 'add_to_favorites'],
+                'callback' => array('\Isotope\Frontend', 'toggleFavorites'),
+                'class'    => $isFavorited ? 'active' : '',
+            );
+        }
 
         return $arrButtons;
     }
@@ -435,19 +469,22 @@ class Isotope extends \Controller
      * @param bool   $blnSkipEmpty
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
     {
         $arrOptions = array();
 
         foreach ($arrData as $field => $value) {
-            if ($blnSkipEmpty && ($value == '' || $value == '-'))
+            if ($blnSkipEmpty && ($value == '' || $value == '-')) {
                 continue;
+            }
 
             $arrOptions[$field] = array
             (
                 'label' => Format::dcaLabel($strTable, $field),
-                'value' => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue($strTable, $field, $value)),
+                'value' => \Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
             );
         }
 
@@ -461,21 +498,23 @@ class Isotope extends \Controller
      * @param IsotopeProduct|Product $objProduct
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)
     {
         Product::setActive($objProduct);
 
-        $strTable = $objProduct->getTable();
+        $strTable = Product::getTable();
 
         foreach ($arrConfig as $k => $v) {
 
-            /** @type \Isotope\Model\Attribute $objAttribute */
+            /** @var \Isotope\Model\Attribute $objAttribute */
             if (($objAttribute = $GLOBALS['TL_DCA'][$strTable]['attributes'][$k]) !== null
                 && $objAttribute instanceof IsotopeAttributeWithOptions
             ) {
 
-                /** @type \Widget $strClass */
+                /** @var \Widget $strClass */
                 $strClass = $objAttribute->getFrontendWidget();
                 $arrField = $strClass::getAttributesFromDca(
                     $GLOBALS['TL_DCA'][$strTable]['fields'][$k],
@@ -524,7 +563,7 @@ class Isotope extends \Controller
                 $v,
                 Format::dcaLabel($strTable, $k),
                 array (
-                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array($formatted))
+                    'formatted' => \Controller::replaceInsertTags($formatted)
                 )
             );
         }

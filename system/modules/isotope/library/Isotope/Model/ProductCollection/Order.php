@@ -3,29 +3,24 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\ProductCollection;
 
 use Haste\Generator\RowClass;
-use Haste\Haste;
 use Haste\Util\Format;
-use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\Shipping;
+use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 
@@ -36,7 +31,6 @@ use NotificationCenter\Model\Notification;
  *
  * @method static Order findOneBy(string $strColumn, $varValue, array $arrOptions=array())
  *
- * @property int    $locked
  * @property array  $checkout_info
  * @property array  $payment_data
  * @property array  $shipping_data
@@ -46,32 +40,68 @@ use NotificationCenter\Model\Notification;
  * @property int    $date_shipped
  * @property string $notes
  */
-class Order extends ProductCollection implements
-    IsotopeProductCollection,
-    IsotopeOrderableCollection,
-    IsotopePurchasableCollection
+class Order extends ProductCollection implements IsotopePurchasableCollection
 {
 
     /**
-     * Return true if order has been paid.
-     * This is the case if either payment date is set or order status has the paid flag
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isPaid()
     {
         // Order is paid if a payment date is set
-        $paid = (int) $this->date_paid;
-
-        if ($paid > 0 && $paid <= time()) {
+        if (null !== $this->date_paid > 0 && $this->date_paid <= time()) {
             return true;
         }
 
         // Otherwise we check the orderstatus checkbox
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null !== $objStatus && $objStatus->isPaid()) ? true : false;
+            return (null !== $objStatus && $objStatus->isPaid());
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDatePaid()
+    {
+        return $this->date_paid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDatePaid($timestamp = null)
+    {
+        $this->date_paid = $timestamp;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isShipped()
+    {
+        return null !== $this->date_shipped;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDateShipped()
+    {
+        return $this->date_shipped;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setDateShipped($timestamp = null)
+    {
+        $this->date_shipped = $timestamp;
     }
 
     /**
@@ -91,10 +121,14 @@ class Order extends ProductCollection implements
      */
     public function getStatusLabel()
     {
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null === $objStatus) ? '' : $objStatus->getName();
+            return (null === $objStatus) ? '' : $objStatus->getName();
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**
@@ -104,10 +138,14 @@ class Order extends ProductCollection implements
      */
     public function getStatusAlias()
     {
-        /** @var OrderStatus $objStatus */
-        $objStatus = $this->getRelated('order_status');
+        try {
+            /** @var OrderStatus $objStatus */
+            $objStatus = $this->getRelated('order_status');
 
-        return (null === $objStatus) ? $this->order_status : $objStatus->getAlias();
+            return null === $objStatus ? $this->order_status : $objStatus->getAlias();
+        } catch (\Exception $e) {
+            return $this->order_status;
+        }
     }
 
     /**
@@ -125,8 +163,8 @@ class Order extends ProductCollection implements
         // (do this now, because otherwise surcharges etc. will not be loaded form the database)
         $this->checkout_complete = true;
         $this->generateDocumentNumber(
-            $this->getRelated('config_id')->orderPrefix,
-            (int) $this->getRelated('config_id')->orderDigits
+            $this->getConfig()->orderPrefix,
+            (int) $this->getConfig()->orderDigits
         );
 
         if (!$this->isLocked()) {
@@ -158,11 +196,11 @@ class Order extends ProductCollection implements
         if ($this->nc_notification) {
             $blnNotificationError = true;
 
-            /** @type Notification $objNotification */
+            /** @var Notification $objNotification */
             if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (!empty($arrResult) && !in_array(false, $arrResult)) {
+                if (count($arrResult) > 0 && !in_array(false, $arrResult, true)) {
                     $blnNotificationError = false;
                 }
             }
@@ -270,14 +308,14 @@ class Order extends ProductCollection implements
             if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (in_array(false, $arrResult)) {
+                if (in_array(false, $arrResult, true)) {
                     $blnNotificationError = true;
                     \System::log(
                         'Error sending status update notification for order ID ' . $this->id,
                         __METHOD__,
                         TL_ERROR
                     );
-                } elseif (!empty($arrResult)) {
+                } elseif (count($arrResult) > 0) {
                     $blnNotificationError = false;
                 }
             } else {
@@ -355,7 +393,7 @@ class Order extends ProductCollection implements
         // Add billing/customer address fields
         if (($objAddress = $this->getBillingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['billing_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['billing_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['billing_' . $k] = $arrTokens['billing_address_' . $k];
@@ -370,7 +408,7 @@ class Order extends ProductCollection implements
         // Add shipping address fields
         if (($objAddress = $this->getShippingAddress()) !== null) {
             foreach ($objAddress->row() as $k => $v) {
-                $arrTokens['shipping_address_' . $k] = Format::dcaValue($objAddress->getTable(), $k, $v);
+                $arrTokens['shipping_address_' . $k] = Format::dcaValue(Address::getTable(), $k, $v);
 
                 // @deprecated (use ##billing_address_*##)
                 $arrTokens['shipping_' . $k] = $arrTokens['shipping_address_' . $k];
@@ -389,16 +427,16 @@ class Order extends ProductCollection implements
 
         // Add payment method info
         if ($this->hasPayment() && ($objPayment = $this->getPaymentMethod()) !== null) {
-            $arrTokens['payment_id']        = $objPayment->id;
+            $arrTokens['payment_id']        = $objPayment->getId();
             $arrTokens['payment_label']     = $objPayment->getLabel();
-            $arrTokens['payment_note']      = $objPayment->note;
+            $arrTokens['payment_note']      = $objPayment->getNote();
         }
 
         // Add shipping method info
         if ($this->hasShipping() && ($objShipping = $this->getShippingMethod()) !== null) {
-            $arrTokens['shipping_id']        = $objShipping->id;
+            $arrTokens['shipping_id']        = $objShipping->getId();
             $arrTokens['shipping_label']     = $objShipping->getLabel();
-            $arrTokens['shipping_note']      = $objShipping->note;
+            $arrTokens['shipping_note']      = $objShipping->getNote();
         }
 
         // Add config fields
@@ -415,21 +453,23 @@ class Order extends ProductCollection implements
             }
         }
 
+        /** @var Notification|object $objNotification */
         if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
-            $objTemplate                 = new \Isotope\Template($objNotification->iso_collectionTpl);
+            /** @var Template|object $objTemplate */
+            $objTemplate                 = new Template($objNotification->iso_collectionTpl);
             $objTemplate->isNotification = true;
 
             $this->addToTemplate(
                 $objTemplate,
                 array(
-                    'gallery'   => $objNotification->iso_gallery,
-                    'sorting'   => $this->getItemsSortingCallable($objNotification->iso_orderCollectionBy),
+                    'gallery' => $objNotification->iso_gallery,
+                    'sorting' => static::getItemsSortingCallable($objNotification->iso_orderCollectionBy),
                 )
             );
 
-            $arrTokens['cart_html'] = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+            $arrTokens['cart_html'] = \Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), true)));
+            $arrTokens['cart_text'] = strip_tags(\Controller::replaceInsertTags($objTemplate->parse(), true));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
@@ -464,12 +504,12 @@ class Order extends ProductCollection implements
      */
     protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
     {
-        $taxIds          = array();
-        $arrItems        = array();
-        $arrAllDownloads = array();
+        $taxIds          = [];
+        $arrItems        = [];
+        $arrAllDownloads = [];
 
         foreach ($this->getItems($varCallable) as $objItem) {
-            $arrDownloads = array();
+            $arrDownloads = [];
             $arrItem      = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
@@ -487,7 +527,7 @@ class Order extends ProductCollection implements
 
         $objTemplate->items         = $arrItems;
         $objTemplate->downloads     = $arrAllDownloads;
-        $objTemplate->total_tax_ids = count(array_unique($taxIds));
+        $objTemplate->total_tax_ids = count(array_count_values($taxIds));
 
         return $arrItems;
     }
@@ -503,14 +543,14 @@ class Order extends ProductCollection implements
             return $this->arrData['uniqid'];
         }
 
-        $objConfig = $this->getRelated('config_id');
+        $objConfig = $this->getConfig();
 
         if (null === $objConfig) {
             $objConfig = Isotope::getConfig();
         }
 
         return uniqid(
-            Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)),
+            \Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
             true
         );
     }

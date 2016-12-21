@@ -3,20 +3,21 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
 
 /**
@@ -24,26 +25,26 @@ use Isotope\Model\ProductCollection\Order;
  *
  * Handle PSP payments
  *
- * @property string psp_pspid
- * @property string psp_http_method
- * @property string psp_hash_method
- * @property string psp_hash_in
- * @property string psp_hash_out
- * @property string psp_dynamic_template
+ * @property string $psp_pspid
+ * @property string $psp_http_method
+ * @property string $psp_hash_method
+ * @property string $psp_hash_in
+ * @property string $psp_hash_out
+ * @property string $psp_dynamic_template
+ * @property string $psp_payment_method
  */
-abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
+abstract class PSP extends Payment implements IsotopePostsale
 {
-
     /**
-     * Process payment on checkout page.
-     *
-     * @param IsotopeProductCollection|Order $objOrder  The order being places
-     * @param \Module                        $objModule The checkout module instance
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // If the order has already been placed through postsale
         if ($objOrder->isCheckoutComplete()) {
             return true;
@@ -55,27 +56,28 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         return $this->processPostsale($objOrder);
     }
 
-
     /**
      * Process post-sale request from the PSP payment server.
      *
-     * @param IsotopeProductCollection $objOrder
-     *
-     * @return  boolean Not needed when called by postsale.php but when called internally by processPayment
-     * @return bool
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
-        /** @type Order $objOrder */
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
 
         if (!$this->validateSHASign()) {
-            \System::log('Received invalid postsale data for order ID "' . $objOrder->id . '"', __METHOD__, TL_ERROR);
+            \System::log('Received invalid postsale data for order ID "' . $objOrder->getId() . '"', __METHOD__, TL_ERROR);
             return false;
         }
 
         // Validate payment data
-        if ($objOrder->currency != $this->getRequestData('currency') || $objOrder->getTotal() != $this->getRequestData('amount')) {
-            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->id . '!', __METHOD__, TL_ERROR);
+        if ($objOrder->getCurrency() !== $this->getRequestData('currency')
+            || $objOrder->getTotal() != $this->getRequestData('amount')
+        ) {
+            \System::log('Postsale checkout manipulation in payment for Order ID ' . $objOrder->getId() . '!', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -84,7 +86,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 
             /** @noinspection PhpMissingBreakStatementInspection */
             case 9:  // Zahlung beantragt (Authorize & Capture)
-                $objOrder->date_paid = time();
+                $objOrder->setDatePaid(time());
                 // no break
 
             case 5:  // Genehmigt (Authorize ohne Capture)
@@ -97,9 +99,9 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             case 52: // Genehmigung nicht bekannt
             case 92: // Zahlung unsicher
 
-                /** @type \Isotope\Model\Config $objConfig */
-                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                /** @var \Isotope\Model\Config $objConfig */
+                if (($objConfig = $objOrder->getConfig()) === null) {
+                    \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
                     return false;
                 }
 
@@ -116,10 +118,10 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Post-Sale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Post-Sale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
-        
+
         $objOrder->payment_data = json_encode($this->getRawRequestData());
 
         $objOrder->updateOrderStatus($intStatus);
@@ -128,10 +130,8 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         return true;
     }
 
-
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -143,15 +143,15 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the payment form
-     *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
-     *
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $arrParams = $this->preparePSPParams($objOrder, $objModule);
 
         // SHA-1 must be generated on alphabetically sorted keys.
@@ -161,15 +161,17 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
 
         $strSHASign = '';
         foreach ($arrParams as $k => $v) {
-            if ($v == '')
+            if ($v == '') {
                 continue;
+            }
 
             $strSHASign .= $k . '=' . htmlspecialchars_decode($v) . $this->psp_hash_in;
         }
 
         $arrParams['SHASIGN'] = strtoupper(hash($this->psp_hash_method, $strSHASign));
 
-        $objTemplate = new \Isotope\Template($this->strTemplate);
+        /** @var Template|object $objTemplate */
+        $objTemplate = new Template($this->strTemplate);
         $objTemplate->setData($this->arrData);
 
         $objTemplate->params   = $arrParams;
@@ -184,32 +186,28 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
     /**
      * Gets the available payment methods
      *
-     * @param Order  $objOrder
-     * @param \Isotope\Module\Checkout $objModule
-     *
      * @return array
      */
-    public function getPaymentMethods()
-    {
-        return array();
-    }
+    abstract public function getPaymentMethods();
 
     /**
      * Prepare PSP params
-     * @param   Order
-     * @param   Module
+     *
+     * @param   IsotopePurchasableCollection $objOrder
+     * @param   \Module                      $objModule
+     *
      * @return  array
      */
-    protected function preparePSPParams($objOrder, $objModule)
+    protected function preparePSPParams(IsotopePurchasableCollection $objOrder, $objModule)
     {
         $objBillingAddress = $objOrder->getBillingAddress();
 
         return array
         (
             'PSPID'         => $this->psp_pspid,
-            'ORDERID'       => $objOrder->id,
-            'AMOUNT'        => round(($objOrder->getTotal() * 100)),
-            'CURRENCY'      => $objOrder->currency,
+            'ORDERID'       => $objOrder->getId(),
+            'AMOUNT'        => round($objOrder->getTotal() * 100),
+            'CURRENCY'      => $objOrder->getCurrency(),
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
             'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
             'EMAIL'         => $objBillingAddress->email,
@@ -218,10 +216,10 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
             'OWNERADDRESS2' => substr($objBillingAddress->street_2, 0, 35),
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => substr($objBillingAddress->city, 0, 35),
-            'OWNERTELNO'    => $objBillingAddress->phone,
-            'ACCEPTURL'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'DECLINEURL'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
-            'BACKURL'       => \Environment::get('base') . $objModule->generateUrlForStep('review'),
+            'OWNERTELNO'    => preg_replace('/[^- +\/0-9]/','', $objBillingAddress->phone),
+            'ACCEPTURL'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'DECLINEURL'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'BACKURL'       => \Environment::get('base') . Checkout::generateUrlForStep('review'),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );
@@ -236,7 +234,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
      */
     private function getRequestData($strKey)
     {
-        if ($this->psp_http_method == 'GET') {
+        if ('GET' === $this->psp_http_method) {
             return $_GET[$strKey];
         }
 
@@ -250,7 +248,7 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
      */
     private function getRawRequestData()
     {
-        if ($this->psp_http_method == 'GET') {
+        if ('GET' === $this->psp_http_method) {
             return $_GET;
         }
 
@@ -302,5 +300,60 @@ abstract class PSP extends Payment implements IsotopePayment, IsotopePostsale
         );
 
         return false;
+    }
+
+    /**
+     * Return information or advanced features in the backend.
+     *
+     * @param int $orderId
+     *
+     * @return string
+     */
+    public function backendInterface($orderId)
+    {
+        if (null === ($objOrder = Order::findByPk($orderId))) {
+
+            return parent::backendInterface($orderId);
+        }
+
+        $paymentData = json_decode($objOrder->payment_data, true);
+
+        if (0 === count($paymentData)) {
+
+            return parent::backendInterface($orderId);
+        }
+
+        $i = 0;
+
+
+        $buffer = '
+<div id="tl_buttons">
+<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+</div>
+
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>
+
+<table class="tl_show">
+  <tbody>';
+
+        foreach ($paymentData as $k => $v) {
+            if (is_array($v)) {
+                continue;
+            }
+
+            $buffer .= '
+  <tr>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+  </tr>';
+
+            ++$i;
+        }
+
+        $buffer .= '
+</tbody></table>
+</div>';
+
+        return $buffer;
     }
 }

@@ -3,19 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Document;
 
-use Haste\Haste;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
+use Isotope\Model\ProductCollection;
+use Isotope\Template;
 
 class Standard extends Document implements IsotopeDocument
 {
@@ -128,25 +128,26 @@ class Standard extends Document implements IsotopeDocument
     {
         $objPage = \PageModel::findWithDetails($objCollection->page_id);
 
-        $objTemplate = new \Isotope\Template($this->documentTpl);
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
         $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
-        $objTemplate->config        = $objCollection->getRelated('config_id');
+        $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
         $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
         $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
         $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
-        $objCollectionTemplate = new \Isotope\Template($this->collectionTpl);
+        $objCollectionTemplate = new Template($this->collectionTpl);
 
         $objCollection->addToTemplate(
             $objCollectionTemplate,
             array(
                 'gallery' => $this->gallery,
-                'sorting' => $objCollection->getItemsSortingCallable($this->orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->orderCollectionBy),
             )
         );
 
@@ -160,7 +161,7 @@ class Standard extends Document implements IsotopeDocument
         }
 
         // Generate template and fix PDF issues, see Contao's ModuleArticle
-        $strBuffer = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+        $strBuffer = \Controller::replaceInsertTags($objTemplate->parse(), false);
         $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
         $strBuffer = \Controller::convertRelativeUrls($strBuffer, '', true);
 

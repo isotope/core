@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\RequestCache;
@@ -19,6 +18,13 @@ namespace Isotope\RequestCache;
  */
 class CsvFilter extends Filter
 {
+    /**
+     * Adds a filter to validate if attribute contains given value.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
     public function contains($value)
     {
         $this->filter('FIND_IN_SET', $value);
@@ -26,16 +32,25 @@ class CsvFilter extends Filter
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function sqlWhere()
     {
         return 'FIND_IN_SET(?, ' . $this->getFieldForSQL() . ')';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getOperatorForSQL()
     {
         throw new \BadMethodCallException('The CsvFilter class cannot return an SQL operator.');
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function filter($operator, $value)
     {
         if ($operator !== 'FIND_IN_SET') {

@@ -1,183 +1,200 @@
-/**
- * EventListener Polyfill for IE8
- * @see https://gist.github.com/jonathantneal/3748027
- */
-!window.addEventListener && (function (WindowPrototype, DocumentPrototype, ElementPrototype, addEventListener, removeEventListener, dispatchEvent, registry) {
-    WindowPrototype[addEventListener] = DocumentPrototype[addEventListener] = ElementPrototype[addEventListener] = function (type, listener) {
-        var target = this;
-
-        registry.unshift([target, type, listener, function (event) {
-            event.currentTarget = target;
-            event.preventDefault = function () { event.returnValue = false };
-            event.stopPropagation = function () { event.cancelBubble = true };
-            event.target = event.srcElement || target;
-
-            listener.call(target, event);
-        }]);
-
-        this.attachEvent("on" + type, registry[0][3]);
-    };
-
-    WindowPrototype[removeEventListener] = DocumentPrototype[removeEventListener] = ElementPrototype[removeEventListener] = function (type, listener) {
-        for (var index = 0, register; register = registry[index]; ++index) {
-            if (register[0] == this && register[1] == type && register[2] == listener) {
-                return this.detachEvent("on" + type, registry.splice(index, 1)[0][3]);
-            }
-        }
-    };
-
-    WindowPrototype[dispatchEvent] = DocumentPrototype[dispatchEvent] = ElementPrototype[dispatchEvent] = function (eventObject) {
-        return this.fireEvent("on" + eventObject.type, eventObject);
-    };
-})(Window.prototype, HTMLDocument.prototype, Element.prototype, "addEventListener", "removeEventListener", "dispatchEvent", []);
-
-/**
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009-2012 Isotope eCommerce Workgroup
- *
- * @package    Isotope
- * @link       http://www.isotopeecommerce.com
- * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- */
-
-
-var Isotope = {};
-
-(function() {
+(function(_win, _doc, jQuery, MooTools) {
     "use strict";
 
-    /**
-     * Toggle the address fields
-     * @param object
-     * @param string
-     */
-    Isotope.toggleAddressFields = function(el, id) {
-        if (el.value == '0' && el.checked) {
-            document.getElementById(id).style.display = 'block';
+    if (!jQuery && !MooTools) {
+        var polyfill = _doc.createElement('script');
+        polyfill.src = 'system/modules/isotope/assets/js/polyfills.min.js';
+
+        var script = _doc.getElementsByTagName('script')[0];
+        script.parentNode.insertBefore(polyfill, script);
+    }
+
+    function addEventListener(el, name, callback) {
+        if (jQuery) {
+            jQuery(el).on(name, callback);
+        } else if (MooTools) {
+            el.addEvent(name, callback);
         } else {
-            document.getElementById(id).style.display = 'none';
-        }
-    };
-
-    /**
-     * Display a "loading data" message
-     * @param string
-     * @param boolean
-     */
-    Isotope.displayBox = function(message, btnClose) {
-        var box = document.getElementById('iso_ajaxBox');
-        var overlay = document.getElementById('iso_ajaxOverlay');
-
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.setAttribute('id', 'iso_ajaxOverlay');
-            document.body.appendChild(overlay);
-        }
-
-        if (!box) {
-            box = document.createElement('div');
-            box.setAttribute('id', 'iso_ajaxBox');
-            document.body.appendChild(box);
-        }
-
-        if (btnClose) {
-            overlay.addEventListener('click', Isotope.hideBox, false);
-            box.addEventListener('click', Isotope.hideBox, false);
-            if (!box.className.search(/btnClose/) != -1) {
-                box.className = box.className + ' btnClose';
-            }
-        }
-
-        var scroll = window.getScroll().y;
-
-        overlay.style.display = 'block';
-
-        box.innerHTML = message;
-        box.style.display = 'block';
-        box.style.top = ((scroll + 100) + 'px');
-    };
-
-    /**
-     * Hide the "loading data" message
-     */
-    Isotope.hideBox = function() {
-        var box = document.getElementById('iso_ajaxBox');
-        var overlay = document.getElementById('iso_ajaxOverlay');
-
-        if (overlay) {
-            overlay.style.display = 'none';
-            overlay.removeEventListener('click', Isotope.hideBox, false);
-        }
-
-        if (box) {
-            box.style.display = 'none';
-            box.removeEventListener('click', Isotope.hideBox, false);
-            box.className = box.className.replace(/ ?btnClose/, '');
-        }
-    };
-
-    /**
-     * Initialize the inline gallery
-     */
-    Isotope.inlineGallery = function(el, elementId) {
-        var i;
-        var parent = el.parentNode;
-        var siblings = parent.parentNode.children;
-
-        for (i=0; i<siblings.length; i++) {
-            if (siblings[i].getAttribute('data-type') == 'gallery'
-                && siblings[i].getAttribute('data-uid') == elementId
-                && siblings[i].getAttribute('class').search(/(^| )active($| )/) != -1
-            ) {
-                siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
-            }
-        }
-
-        parent.setAttribute('class', parent.getAttribute('class') + ' active');
-        document.getElementById(elementId).src = el.href;
-
-        return false;
-    };
-
-    /**
-     * Swap images in elevateZoom gallery
-     */
-    Isotope.elevateZoom = function(el, elementId) {
-        Isotope.inlineGallery(el, elementId);
-
-        jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
-
-        return false;
-    };
-})();
-
-var IsotopeProducts = (function() {
-    "use strict";
-
-    var loadMessage = 'Loading product data …';
-
-    function initProduct(config) {
-        var formParent = document.getElementById(config.formId).parentNode;
-
-        if (formParent) {
-            registerEvents(formParent, config);
+            el.addEventListener(name, callback, false);
         }
     }
 
-    function registerEvents(formParent, config) {
-        var i, el, xhr;
+    function serializeForm(form) {
+        if (jQuery) {
+            return jQuery(form).serialize();
+        } else if (MooTools) {
+            return form.toQueryString();
+        } else {
+            return formToQueryString(form);
+        }
+    }
 
-        // @todo implement native XMLHttpRequest
-        xhr = new Request.HTML({
-            url: formParent.getElementsByTagName('form')[0].action,
-            link: 'cancel',
-            evalScripts: false,
-            onRequest: Isotope.displayBox.pass(loadMessage),
-            onSuccess: function(responseTree, responseElements, txt, responseJavaScript)
-            {
-                var div = document.createElement('div'),
-                    i;
+    _win.Isotope = _win.Isotope || {
+
+        toggleAddressFields: function (el, id) {
+            if (el.value == '0' && el.checked) {
+                _doc.getElementById(id).style.display = 'block';
+            } else {
+                _doc.getElementById(id).style.display = 'none';
+            }
+        },
+
+        displayBox: function (message, btnClose) {
+            var box = _doc.getElementById('iso_ajaxBox');
+            var overlay = _doc.getElementById('iso_ajaxOverlay');
+
+            if (!overlay) {
+                overlay = _doc.createElement('div');
+                overlay.setAttribute('id', 'iso_ajaxOverlay');
+                _doc.body.appendChild(overlay);
+            }
+
+            if (!box) {
+                box = _doc.createElement('div');
+                box.setAttribute('id', 'iso_ajaxBox');
+                _doc.body.appendChild(box);
+            }
+
+            if (btnClose) {
+                addEventListener(overlay, 'click', Isotope.hideBox);
+                addEventListener(box, 'click', Isotope.hideBox);
+                if (!box.className.search(/btnClose/) != -1) {
+                    box.className = box.className + ' btnClose';
+                }
+            }
+
+            overlay.style.display = 'block';
+
+            box.innerHTML = message;
+            box.style.display = 'block';
+        },
+
+        hideBox: function () {
+            var box = _doc.getElementById('iso_ajaxBox');
+            var overlay = _doc.getElementById('iso_ajaxOverlay');
+
+            if (overlay) {
+                overlay.style.display = 'none';
+                overlay.removeEventListener('click', Isotope.hideBox, false);
+            }
+
+            if (box) {
+                box.style.display = 'none';
+                box.removeEventListener('click', Isotope.hideBox, false);
+                box.className = box.className.replace(/ ?btnClose/, '');
+            }
+        },
+
+        inlineGallery: function (el, elementId) {
+            var i;
+            var parent = el.parentNode;
+            var siblings = parent.parentNode.children;
+
+            for (i = 0; i < siblings.length; i++) {
+                if (siblings[i].getAttribute('data-type') == 'gallery'
+                    && siblings[i].getAttribute('data-uid') == elementId
+                    && siblings[i].getAttribute('class').search(/(^| )active($| )/) != -1
+                ) {
+                    siblings[i].setAttribute('class', siblings[i].getAttribute('class').replace(/ ?active/, ''));
+                }
+            }
+
+            parent.setAttribute('class', parent.getAttribute('class') + ' active');
+            _doc.getElementById(elementId).src = el.href;
+
+            return false;
+        },
+
+        elevateZoom: function (el, elementId) {
+            Isotope.inlineGallery(el, elementId);
+
+            jQuery('#' + elementId).data('elevateZoom').swaptheimage(el.getAttribute('href'), el.getAttribute('data-zoom-image'));
+
+            return false;
+        },
+
+        checkoutButton: function (form) {
+            addEventListener(form, 'submit', function () {
+                try {
+                    document.getElementsByName('nextStep')[0].disabled = true;
+                } catch (e) {}
+                try {
+                    document.getElementsByName('previousStep')[0].disabled = true;
+                } catch (e) {}
+
+                setTimeout(function () {
+                    window.location.reload()
+                }, 30000);
+            });
+        },
+
+        initAwesomplete: function (id, searchField) {
+            var requested = false;
+            addEventListener(searchField, 'focus', function() {
+                if (requested) return false;
+
+                requested = true;
+
+                var url = window.location.href + (document.location.search ? '&' : '?') + '&iso_autocomplete=' + id,
+                    xhr = new XMLHttpRequest();
+
+                xhr.open('GET', encodeURI(url));
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        new Awesomplete(searchField, {
+                            list: JSON.parse(xhr.responseText)
+                        });
+                        searchField.focus();
+                    }
+                };
+
+                xhr.send();
+            });
+        }
+    };
+
+    _win.IsotopeProducts = (function() {
+        var loadMessage = 'Loading product data …';
+
+        function initProduct(config) {
+            var formParent = _doc.getElementById(config.formId).parentNode;
+
+            if (formParent) {
+                registerEvents(formParent, config);
+            }
+        }
+
+        function registerEvents(formParent, config) {
+            var i, el,
+                xhr = new XMLHttpRequest(),
+                form = formParent.getElementsByTagName('form')[0];
+
+            if (!form) return;
+
+            xhr.open(form.getAttribute('method').toUpperCase(), encodeURI(form.getAttribute('action')));
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    ajaxSuccess(xhr.responseText);
+                } else if (xhr.status !== 200) {
+                    Isotope.hideBox();
+                }
+            };
+
+
+            function ajaxSuccess(txt) {
+                var div = _doc.createElement('div'),
+                    scripts = '',
+                    script, i;
+
+                txt = txt.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
+                    scripts += code + '\n';
+                    return '';
+                });
 
                 div.innerHTML = txt;
 
@@ -197,40 +214,47 @@ var IsotopeProducts = (function() {
                 registerEvents(formParent, config);
 
                 Isotope.hideBox();
-                Browser.exec(responseJavaScript);
+
+                if (scripts) {
+                    script = _doc.createElement('script');
+                    script.text = scripts;
+                    _doc.head.appendChild(script);
+                    _doc.head.removeChild(script);
+                }
+            }
+
+            if (config.attributes) {
+                for (i=0; i<config.attributes.length; i++) {
+                    el = _doc.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
+                    if (el) {
+                        addEventListener(el, 'change', function() {
+                            if (xhr.readyState > 1) {
+                                xhr.abort();
+                            }
+
+                            Isotope.displayBox(loadMessage);
+                            xhr.send(serializeForm(form));
+                        });
+                    }
+                }
+            }
+        }
+
+        return {
+            'attach': function(products) {
+                var i;
+
+                // Check if products is an array
+                if (Object.prototype.toString.call(products) === '[object Array]' && products.length > 0) {
+                    for (i=0; i<products.length; i++) {
+                        initProduct(products[i]);
+                    }
+                }
             },
-            onFailure: Isotope.hideBox
-        });
 
-        if (config.attributes) {
-            for (i=0; i<config.attributes.length; i++) {
-                el = document.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
-                if (el) {
-                    el.addEventListener('change', function() {
-                        xhr.send(formParent.toQueryString());
-                    }, false);
-                }
+            'setLoadMessage': function(message) {
+                loadMessage = message || 'Loading product data …';
             }
-        }
-    }
-
-    return {
-        'attach': function(products) {
-            var i;
-
-            // Check if products is an array
-            if (Object.prototype.toString.call(products) === '[object Array]' && products.length > 0) {
-                for (i=0; i<products.length; i++) {
-                    initProduct(products[i]);
-                }
-            }
-        },
-
-        /**
-         * Overwrite the default message
-         */
-        'setLoadMessage': function(message) {
-            loadMessage = message || 'Loading product data …';
-        }
-    };
-})();
+        };
+    })();
+})(window, document, window.jQuery, window.MooTools);

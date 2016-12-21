@@ -2,6 +2,9 @@ language: php
 php:
   - 5.4
   - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
 
 env:
   - CONTAO_VERSION="3.5.*"
@@ -10,14 +13,12 @@ sudo: false
 
 install:
     - mysql -e 'CREATE DATABASE isotope_core_testsuite;'
-    - composer self-update
-    - composer update
+    - composer update --ignore-platform-reqs
     - composer create-project -s dev contao/core:${CONTAO_VERSION} contao
     - cp -R system/modules/isotope contao/system/modules/isotope
     - cp -R system/modules/isotope_reports contao/system/modules/isotope_reports
     - cp -R system/modules/isotope_rules contao/system/modules/isotope_rules
     - cp -R vendor/terminal42/contao-conditionalselectmenu contao/system/modules/conditionalselectmenu
-    - cp -R vendor/terminal42/contao-namespace-class-loader contao/system/modules/_autoload
     - cp -R vendor/terminal42/dcawizard contao/system/modules/dcawizard
     - cp -R vendor/codefog/contao-haste contao/system/modules/haste
     - cp -R vendor/menatwork/contao-multicolumnwizard contao/system/modules/multicolumnwizard
@@ -29,5 +30,6 @@ install:
     - cp test/fixtures/travis/langconfig.php ../../config/langconfig.php
     - cp test/fixtures/travis/localconfig.php ../../config/localconfig.php
     - cp test/fixtures/travis/pathconfig.php ../../config/pathconfig.php
+    - cd test
 
-script: phpunit --configuration test/phpunit.xml --bootstrap test/bootstrap.php ./test
+script: phpunit

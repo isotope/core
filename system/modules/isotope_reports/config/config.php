@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -33,7 +32,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'panels' => array
                     (
                         array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
-                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel')
+                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
                 'sales_product' => array
@@ -44,7 +43,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'panels' => array
                     (
                         array('getSelectFromPanel', 'getSelectColumnsPanel', 'getSelectPeriodPanel', 'getSelectVariantsPanel'),
-                        array('getSortingPanel', 'getStatusPanel')
+                        array('getSortingPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
             ),
@@ -69,7 +68,11 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'callback'          => 'Isotope\Report\MembersGuests',
                     'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_guests'],
                     'icon'              => 'system/modules/isotope_reports/assets/members_guests.png',
-                    'class'             => 'disabled',
+                    'panels' => array
+                    (
+                        array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
+                        array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
+                    )
                 ),
             ),
             'rules' => array

@@ -3,17 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
 
 use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
+use Isotope\Template;
+use Model\Registry;
 
 abstract class Address extends CheckoutStep
 {
@@ -26,35 +28,36 @@ abstract class Address extends CheckoutStep
 
     /**
      * Frontend template instance
-     * @var object
+     * @var Template|\stdClass
      */
     protected $Template;
 
-
     /**
      * Load data container and create template
-     * @param   object
+     *
+     * @param Checkout $objModule
      */
-    public function __construct($objModule)
+    public function __construct(Checkout $objModule)
     {
         parent::__construct($objModule);
 
-        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
-        $this->loadDataContainer(\Isotope\Model\Address::getTable());
+        \System::loadLanguageFile(AddressModel::getTable());
+        \Controller::loadDataContainer(AddressModel::getTable());
 
-        $this->Template = new \Isotope\Template('iso_checkout_address');
+        $this->Template = new Template('iso_checkout_address');
     }
 
     /**
      * Generate the checkout step
-     * @return  string
+     *
+     * @return string
      */
     public function generate()
     {
-        $blnValidate = \Input::post('FORM_SUBMIT') == $this->objModule->getFormId();
+        $blnValidate = \Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
-        $this->Template->tableless = $this->objModule->tableless;
+        $this->Template->tableless = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
         $this->Template->options   = $this->generateOptions($blnValidate);
         $this->Template->fields    = $this->generateFields($blnValidate);
 
@@ -63,7 +66,9 @@ abstract class Address extends CheckoutStep
 
     /**
      * Generate address options and return it as HTML string
-     * @param string
+     *
+     * @param bool $blnValidate
+     *
      * @return string
      */
     protected function generateOptions($blnValidate = false)
@@ -72,8 +77,7 @@ abstract class Address extends CheckoutStep
         $varValue   = '0';
         $arrOptions = $this->getAddressOptions();
 
-        if (!empty($arrOptions)) {
-
+        if (0 !== count($arrOptions)) {
             foreach ($arrOptions as $option) {
                 if ($option['default']) {
                     $varValue = $option['value'];
@@ -82,17 +86,19 @@ abstract class Address extends CheckoutStep
 
             $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-            /** @type \Widget $objWidget */
-            $objWidget = new $strClass(array(
-                'id'            => $this->getStepClass(),
-                'name'          => $this->getStepClass(),
-                'mandatory'     => true,
-                'options'       => $arrOptions,
-                'value'         => $varValue,
-                'onclick'       => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
-                'storeValues'   => true,
-                'tableless'     => true,
-            ));
+            /** @var \Widget $objWidget */
+            $objWidget = new $strClass(
+                [
+                    'id'          => $this->getStepClass(),
+                    'name'        => $this->getStepClass(),
+                    'mandatory'   => true,
+                    'options'     => $arrOptions,
+                    'value'       => $varValue,
+                    'onclick'     => "Isotope.toggleAddressFields(this, '" . $this->getStepClass() . "_new');",
+                    'storeValues' => true,
+                    'tableless'   => true,
+                ]
+            );
 
             // Validate input
             if ($blnValidate) {
@@ -123,10 +129,7 @@ abstract class Address extends CheckoutStep
 
         $objAddress = $this->getAddressForOption($varValue, $blnValidate);
 
-        /** @type \Model\Registry $objModelRegistry */
-        $objModelRegistry = \Model\Registry::getInstance();
-
-        if (null === $objAddress || !$objModelRegistry->isRegistered($objAddress)) {
+        if (null === $objAddress || !Registry::getInstance()->isRegistered($objAddress)) {
             $this->blnError = true;
         }  elseif ($blnValidate) {
             $this->setAddress($objAddress);
@@ -135,11 +138,12 @@ abstract class Address extends CheckoutStep
         return $strBuffer;
     }
 
-
     /**
      * Generate the current step widgets.
-     * @param   bool
-     * @return  string|array
+     *
+     * @param bool $blnValidate
+     *
+     * @return string|array
      */
     protected function generateFields($blnValidate = false)
     {
@@ -157,7 +161,10 @@ abstract class Address extends CheckoutStep
 
     /**
      * Validate input and return address data
-     * @return  array
+     *
+     * @param bool $blnValidate
+     *
+     * @return array
      */
     protected function validateFields($blnValidate)
     {
@@ -165,21 +172,25 @@ abstract class Address extends CheckoutStep
         $arrWidgets = $this->getWidgets();
 
         foreach ($arrWidgets as $strName => $objWidget) {
-            $arrData = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName];
 
             // Validate input
             if ($blnValidate) {
 
                 $objWidget->validate();
-                $varValue = $objWidget->value;
+                $varValue = (string) $objWidget->value;
 
                 // Convert date formats into timestamps
-                if (strlen($varValue) && in_array($arrData['eval']['rgxp'], array('date', 'time', 'datim'))) {
+                if ('' !== $varValue && in_array($objWidget->dca_config['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
                     try {
-                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
                     } catch (\OutOfBoundsException $e) {
-                        $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR'][$arrData['eval']['rgxp']], $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']));
+                        $objWidget->addError(
+                            sprintf(
+                                $GLOBALS['TL_LANG']['ERR'][$objWidget->dca_config['eval']['rgxp']],
+                                $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']
+                            )
+                        );
                     }
                 }
 
@@ -216,40 +227,61 @@ abstract class Address extends CheckoutStep
         if (null === $this->arrWidgets) {
             $this->arrWidgets = array();
             $objAddress       = $this->getDefaultAddress();
+            $arrFields        = $this->mergeFieldsWithDca($this->getAddressFields());
 
-            foreach ($this->getAddressFields() as $field) {
+            // !HOOK: modify address fields in checkout process
+            if (isset($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
+                && is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
+            ) {
+                foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback) {
+                    $this->import($callback[0]);
+                    $arrFields = $this->$callback[0]->$callback[1]($arrFields, $objAddress, $this->getStepClass());
+                }
+            }
 
-                // Do not use reference, otherwise the billing address fields would affect shipping address fields
-                $arrData = $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$field['value']];
+            foreach ($arrFields as $field) {
 
-                if (!is_array($arrData) || !$arrData['eval']['feEditable'] || !$field['enabled'] || ($arrData['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)) {
+                if (!is_array($field['dca'])
+                    || !$field['enabled']
+                    || !$field['dca']['eval']['feEditable']
+                    || ($field['dca']['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
+                ) {
                     continue;
                 }
-
-                /** @type \Widget $strClass */
-                $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
                 // Continue if the class is not defined
-                if ($strClass == '' || !class_exists($strClass)) {
+                if (!array_key_exists($field['dca']['inputType'], $GLOBALS['TL_FFL'])
+                    || !class_exists($GLOBALS['TL_FFL'][$field['dca']['inputType']])
+                ) {
                     continue;
                 }
 
-                // Special field "country"
-                if ($field['value'] == 'country') {
+                /** @var \Widget $strClass */
+                $strClass = $GLOBALS['TL_FFL'][$field['dca']['inputType']];
+
+                if ('country' === $field['value']) {
+                    // Special field "country"
                     $arrCountries = $this->getAddressCountries();
-                    $arrData['reference'] = $arrData['options'];
-                    $arrData['options'] = array_values(array_intersect(array_keys($arrData['options']), $arrCountries));
-                } // Special field type "conditionalselect"
-                elseif (strlen($arrData['eval']['conditionField'])) {
-                    $arrData['eval']['conditionField'] = $this->getStepClass() . '_' . $arrData['eval']['conditionField'];
+                    $field['dca']['reference'] = $field['dca']['options'];
+                    $field['dca']['options'] = array_values(array_intersect(array_keys($field['dca']['options']), $arrCountries));
+                } elseif (strlen($field['dca']['eval']['conditionField'])) {
+                    // Special field type "conditionalselect"
+                    $field['dca']['eval']['conditionField'] = $this->getStepClass() . '_' . $field['dca']['eval']['conditionField'];
                 }
 
-                $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $this->getStepClass() . '_' . $field['value'], $objAddress->{$field['value']}));
+                $objWidget = new $strClass(
+                    $strClass::getAttributesFromDca(
+                        $field['dca'],
+                        $this->getStepClass() . '_' . $field['value'],
+                        $objAddress->{$field['value']}
+                    )
+                );
 
                 $objWidget->mandatory   = $field['mandatory'] ? true : false;
                 $objWidget->required    = $objWidget->mandatory;
-                $objWidget->tableless   = $this->objModule->tableless;
+                $objWidget->tableless   = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
                 $objWidget->storeValues = true;
+                $objWidget->dca_config  = $field['dca'];
 
                 $this->arrWidgets[$field['value']] = $objWidget;
             }
@@ -271,24 +303,24 @@ abstract class Address extends CheckoutStep
 
         if (FE_USER_LOGGED_IN === true) {
 
-            /** @type AddressModel[] $arrAddresses */
+            /** @var AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
-            if (!empty($arrAddresses) && !empty($arrCountries)) {
+            if (0 !== count($arrAddresses) && 0 !== count($arrCountries)) {
                 $objDefault = $this->getAddress();
 
                 foreach ($arrAddresses as $objAddress) {
 
-                    if (!in_array($objAddress->country, $arrCountries)) {
+                    if (!in_array($objAddress->country, $arrCountries, true)) {
                         continue;
                     }
 
-                    $arrOptions[] = array(
+                    $arrOptions[] = [
                         'value'   => $objAddress->id,
                         'label'   => $objAddress->generate($arrFields),
-                        'default' => ($objAddress->id == $objDefault->id ? '1' : ''),
-                    );
+                        'default' => $objAddress->id == $objDefault->id ? '1' : '',
+                    ];
                 }
             }
         }
@@ -368,4 +400,29 @@ abstract class Address extends CheckoutStep
      * @param AddressModel $objAddress
      */
     abstract protected function setAddress(AddressModel $objAddress);
+
+    /**
+     * Append DCA configuration to fields so it can be changed in hook.
+     *
+     * @param array $fieldConfig
+     *
+     * @return array
+     */
+    private function mergeFieldsWithDca(array $fieldConfig)
+    {
+        $fields = [];
+
+        foreach ($fieldConfig as $field) {
+            // Do not use reference, otherwise the billing address fields would affect shipping address fields
+            $dca = $GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'][$field['value']];
+
+            if (is_array($dca)) {
+                $field['dca'] = $dca;
+            }
+
+            $fields[$field['value']] = $field;
+        }
+
+        return $fields;
+    }
 }

@@ -1,10 +1,6 @@
+<?php $this->extend('block_unsearchable'); ?>
 
-<!-- indexer::stop -->
-<div class="<?php echo $this->class; ?> block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-<?php if ($this->headline): ?>
-
-<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-<?php endif; ?>
+<?php $this->block('content'); ?>
 
 <p class="message loading"><?php echo $this->message; ?></p>
 
@@ -12,20 +8,26 @@
 <p class="message error"><?php echo $this->noscript; ?></p>
 </noscript>
 
-</div>
 <script>
-window.addEvent('domready', function() {
-    Isotope.displayBox('<?php echo $this->message; ?>')
-    new Request({
-        url: window.location.href,
-        method: 'get',
-        data: {
-            'buildCache': '1'
-        },
-        onComplete: function() {
-            window.location.reload();
-        }
-    }).send();
-});
+    (function() {
+        Isotope.displayBox('<?php echo $this->message; ?>');
+
+        var url = window.location.href + (document.location.search ? '&' : '?') + '&buildCache=1',
+            xhr = new XMLHttpRequest();
+
+        xhr.open('GET', encodeURI(url));
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            Isotope.hideBox();
+            if (xhr.status === 200) {
+                document.body.innerHTML = xhr.responseText;
+            } else {
+                window.location.href = url;
+            }
+        };
+
+        xhr.send();
+    })();
 </script>
-<!-- indexer::continue -->
+<?php $this->endblock(); ?>

@@ -4,8 +4,6 @@
 # Do not ignore ".gitignore"
 !.gitignore
 !.tx
-.tx/config
-.tx/source/*
 !README.md
 !composer.json
 !.scrutinizer.yml
@@ -22,3 +20,8 @@ system/drivers/*
 !system/modules
 system/modules/*
 !system/modules/isotope*
+
+# Gulp and node modules
+!gulpfile.js
+!package.json
+node_modules/

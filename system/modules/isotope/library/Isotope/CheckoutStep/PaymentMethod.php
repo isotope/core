@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -16,14 +15,30 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
-
+/**
+ * PaymentMethod checkout step lets the user choose a payment method
+ */
 class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 {
+    /**
+     * Payment modules
+     * @var array
+     */
+    private $modules;
+
+    /**
+     * Payment options
+     * @var array
+     */
+    private $options;
 
     /**
      * Returns true if the current cart has payment
-     * @return  bool
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -31,13 +46,120 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     * @return  string
+     * @inheritdoc
+     */
+    public function isSkippable()
+    {
+        if (!$this->objModule->canSkipStep('payment_method')) {
+            return false;
+        }
+
+        $this->initializeModules();
+
+        return 1 === count($this->options);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function generate()
     {
-        $arrModules = array();
-        $arrOptions = array();
+        $this->initializeModules();
+
+        if (empty($this->modules)) {
+            $this->blnError = true;
+
+            \System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+
+            /** @var Template|\stdClass $objTemplate */
+            $objTemplate           = new Template('mod_message');
+            $objTemplate->class    = 'payment_method';
+            $objTemplate->hl       = 'h2';
+            $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
+            $objTemplate->type     = 'error';
+            $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
+
+            return $objTemplate->parse();
+        }
+
+        $strClass  = $GLOBALS['TL_FFL']['radio'];
+
+        /** @var \Widget $objWidget */
+        $objWidget = new $strClass(array(
+            'id'            => $this->getStepClass(),
+            'name'          => $this->getStepClass(),
+            'mandatory'     => true,
+            'options'       => $this->options,
+            'value'         => Isotope::getCart()->payment_id,
+            'storeValues'   => true,
+            'tableless'     => true,
+        ));
+
+        // If there is only one payment method, mark it as selected by default
+        if (count($this->modules) == 1) {
+            $objModule        = reset($this->modules);
+            $objWidget->value = $objModule->id;
+            Isotope::getCart()->setPaymentMethod($objModule);
+        }
+
+        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+            $objWidget->validate();
+
+            if (!$objWidget->hasErrors()) {
+                Isotope::getCart()->setPaymentMethod($this->modules[$objWidget->value]);
+            }
+        }
+
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_checkout_payment_method');
+
+        if (!Isotope::getCart()->hasPayment() || !isset($this->modules[Isotope::getCart()->payment_id])) {
+            $this->blnError = true;
+        }
+
+        $objTemplate->headline       = $GLOBALS['TL_LANG']['MSC']['payment_method'];
+        $objTemplate->message        = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
+        $objTemplate->options        = $objWidget->parse();
+        $objTemplate->paymentMethods = $this->modules;
+
+        return $objTemplate->parse();
+    }
+
+    /**
+     * Return review information for last page of checkout
+     * @return  string
+     */
+    public function review()
+    {
+        return array(
+            'payment_method' => array(
+                'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
+                'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
+                'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->getNote(),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('payment'),
+            ),
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getNotificationTokens(IsotopeProductCollection $objCollection)
+    {
+        return array();
+    }
+
+    /**
+     * Initialize modules and options
+     */
+    private function initializeModules()
+    {
+        if (null !== $this->modules && null !== $this->options) {
+            return;
+        }
+
+        $this->modules = array();
+        $this->options = array();
 
         $arrIds = deserialize($this->objModule->iso_payment_modules);
 
@@ -48,7 +170,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 $arrColumns[] = "enabled='1'";
             }
 
-            /** @type Payment[] $objModules */
+            /** @var Payment[] $objModules */
             $objModules = Payment::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
@@ -73,96 +195,14 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                         $strLabel .= '<span class="note">' . $objModule->note . '</span>';
                     }
 
-                    $arrOptions[] = array(
+                    $this->options[] = array(
                         'value'     => $objModule->id,
                         'label'     => $strLabel,
                     );
 
-                    $arrModules[$objModule->id] = $objModule;
+                    $this->modules[$objModule->id] = $objModule;
                 }
             }
         }
-
-        if (empty($arrModules)) {
-            $this->blnError = true;
-
-            \System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
-
-            $objTemplate           = new \Isotope\Template('mod_message');
-            $objTemplate->class    = 'payment_method';
-            $objTemplate->hl       = 'h2';
-            $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['payment_method'];
-            $objTemplate->type     = 'error';
-            $objTemplate->message  = $GLOBALS['TL_LANG']['MSC']['noPaymentModules'];
-
-            return $objTemplate->parse();
-        }
-
-        $strClass  = $GLOBALS['TL_FFL']['radio'];
-
-        /** @type \Widget $objWidget */
-        $objWidget = new $strClass(array(
-            'id'            => $this->getStepClass(),
-            'name'          => $this->getStepClass(),
-            'mandatory'     => true,
-            'options'       => $arrOptions,
-            'value'         => Isotope::getCart()->payment_id,
-            'storeValues'   => true,
-            'tableless'     => true,
-        ));
-
-        // If there is only one payment method, mark it as selected by default
-        if (count($arrModules) == 1) {
-            $objModule        = reset($arrModules);
-            $objWidget->value = $objModule->id;
-            Isotope::getCart()->setPaymentMethod($objModule);
-        }
-
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
-            $objWidget->validate();
-
-            if (!$objWidget->hasErrors()) {
-                Isotope::getCart()->setPaymentMethod($arrModules[$objWidget->value]);
-            }
-        }
-
-        $objTemplate = new \Isotope\Template('iso_checkout_payment_method');
-
-        if (!Isotope::getCart()->hasPayment() || !isset($arrModules[Isotope::getCart()->payment_id])) {
-            $this->blnError = true;
-        }
-
-        $objTemplate->headline       = $GLOBALS['TL_LANG']['MSC']['payment_method'];
-        $objTemplate->message        = $GLOBALS['TL_LANG']['MSC']['payment_method_message'];
-        $objTemplate->options        = $objWidget->parse();
-        $objTemplate->paymentMethods = $arrModules;
-
-        return $objTemplate->parse();
-    }
-
-    /**
-     * Return review information for last page of checkout
-     * @return  string
-     */
-    public function review()
-    {
-        return array(
-            'payment_method' => array(
-                'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
-                'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
-                'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->note,
-                'edit'     => \Isotope\Module\Checkout::generateUrlForStep('payment'),
-            ),
-        );
-    }
-
-    /**
-     * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
-     */
-    public function getNotificationTokens(IsotopeProductCollection $objCollection)
-    {
-        return array();
     }
 }

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\RequestCache;
@@ -24,7 +23,7 @@ class Limit
     /**
      * Limit config
      */
-    protected $intLimit = null;
+    protected $intLimit;
 
 
     /**
@@ -42,7 +41,10 @@ class Limit
 
     /**
      * Check if current limit is not in a given list
-     * @return  bool
+     *
+     * @param array $arrLimits
+     *
+     * @return bool
      */
     public function notIn($arrLimits)
     {
@@ -51,8 +53,10 @@ class Limit
 
     /**
      * Check if limit equals value
-     * @param   int
-     * @return  bool
+     *
+     * @param int $value
+     *
+     * @return bool
      */
     public function equals($value)
     {
@@ -61,7 +65,8 @@ class Limit
 
     /**
      * Get the limit value
-     * @return  int
+     *
+     * @return int
      */
     public function asInt()
     {

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -173,7 +172,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options_callback'      => function () {
+                return \System::getImageSizes();
+            },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -183,7 +184,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options_callback'      => function () {
+                return \System::getImageSizes();
+            },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -208,7 +211,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options_callback'      => function () {
+                return \System::getImageSizes();
+            },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
@@ -218,7 +223,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
-            'options'               => $GLOBALS['TL_CROP'],
+            'options_callback'      => function () {
+                return \System::getImageSizes();
+            },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"

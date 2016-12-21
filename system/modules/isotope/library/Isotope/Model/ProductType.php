@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -16,24 +15,24 @@ namespace Isotope\Model;
 /**
  * ProductType defines a product configuration
  *
- * @property int    id
- * @property int    tstamp
- * @property string name
- * @property string class
- * @property bool   fallback
- * @property string description
- * @property bool   prices
- * @property bool   show_price_tiers
- * @property string list_template
- * @property string reader_template
- * @property int    list_gallery
- * @property int    reader_gallery
- * @property array  attributes
- * @property bool   variants
- * @property array  variant_attributes
- * @property bool   force_variant_options
- * @property bool   shipping_exempt
- * @property bool   downloads
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $name
+ * @property string $class
+ * @property bool   $fallback
+ * @property string $description
+ * @property bool   $prices
+ * @property bool   $show_price_tiers
+ * @property string $list_template
+ * @property string $reader_template
+ * @property int    $list_gallery
+ * @property int    $reader_gallery
+ * @property array  $attributes
+ * @property bool   $variants
+ * @property array  $variant_attributes
+ * @property bool   $force_variant_options
+ * @property bool   $shipping_exempt
+ * @property bool   $downloads
  */
 class ProductType extends \Model
 {
@@ -144,7 +143,7 @@ class ProductType extends \Model
     {
         if (null === $this->arrVariantAttributes) {
             if (!$this->hasVariants()) {
-                $this->arrVariantAttributes = array();
+                $this->arrVariantAttributes = [];
             } else {
                 $this->arrVariantAttributes = $this->getEnabledAttributesByPosition($this->variant_attributes);
             }
@@ -166,14 +165,10 @@ class ProductType extends \Model
         $arrAttributes = deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
-            if ($a['enabled']
+            return ($a['enabled']
                 && is_array($arrFields[$a['name']])
                 && $arrFields[$a['name']]['attributes']['legend'] != ''
-            ) {
-                return true;
-            }
-
-            return false;
+            );
         });
 
         uasort($arrAttributes, function ($a, $b) {

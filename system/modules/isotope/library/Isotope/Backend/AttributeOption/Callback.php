@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\AttributeOption;
@@ -23,7 +22,9 @@ class Callback extends \Backend
      */
     public function initWrappers()
     {
-        if (\Input::get('act') == '' || \Input::get('act') == 'select') {
+        $act = \Input::get('act');
+
+        if ('' == $act || 'select' === $act) {
             $GLOBALS['TL_WRAPPERS'] = array(
                 'start' => array('group'),
                 'separator' => array(),
@@ -39,9 +40,9 @@ class Callback extends \Backend
     public function checkPermission()
     {
         // Attribute options for products can always have a price
-        if (\Input::get('do') != 'iso_products') {
+        if ('iso_products' !== \Input::get('do')) {
 
-            /** @type Attribute $objAttribute */
+            /** @var Attribute $objAttribute */
             $objAttribute = null;
 
             switch (\Input::get('act')) {
@@ -75,12 +76,12 @@ class Callback extends \Backend
      */
     public function storeFieldName($dc)
     {
-        if (\Input::get('do') == 'iso_products' && $dc->activeRecord->field_name == '') {
-            \Database::getInstance()->prepare("
+        if ('iso_products' === \Input::get('do') && $dc->activeRecord->field_name == '') {
+            \Database::getInstance()->prepare('
                 UPDATE tl_iso_attribute_option
                 SET field_name=?
                 WHERE id=?
-            ")->execute(\Input::get('field'), $dc->id);
+            ')->execute(\Input::get('field'), $dc->id);
         }
     }
 
@@ -93,7 +94,7 @@ class Callback extends \Backend
      */
     public function listRecords($row)
     {
-        if ($row['type'] == 'group') {
+        if ('group' === $row['type']) {
             $GLOBALS['TL_WRAPPERS']['stop'][] = 'group';
         }
 
@@ -120,12 +121,11 @@ class Callback extends \Backend
      */
     public function saveType($varValue, $dc)
     {
-        if ($varValue == 'group') {
-            \Database::getInstance()->prepare("
-                UPDATE tl_iso_attribute_option
-                SET isDefault=''
-                WHERE id=?
-            ")->execute($dc->id);
+        if ('group' === $varValue) {
+            \Database::getInstance()
+                ->prepare("UPDATE tl_iso_attribute_option SET isDefault='' WHERE id=?")
+                ->execute($dc->id)
+            ;
         }
 
         return $varValue;
@@ -143,9 +143,9 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            $this->redirect($this->getReferer());
+        if ('' != \Input::get('tid')) {
+            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
+            \Controller::redirect(\System::getReferer());
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
@@ -159,7 +159,7 @@ class Callback extends \Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="'.$this->addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
+        return '<a href="'.\Backend::addToUrl($href).'" title="'.specialchars($title).'"'.$attributes.'>'.\Image::getHtml($icon, $label).'</a> ';
     }
 
 
@@ -177,8 +177,8 @@ class Callback extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->hasAccess('tl_iso_attribute_option::published', 'alexf')) {
-            $this->log('Not enough permissions to publish/unpublish attribute option ID "'.$intId.'"', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            \System::log('Not enough permissions to publish/unpublish attribute option ID "'.$intId.'"', __METHOD__, TL_ERROR);
+            \Controller::redirect('contao/main.php?act=error');
         }
 
         $objVersions = new \Versions('tl_iso_attribute_option', $intId);
@@ -197,13 +197,13 @@ class Callback extends \Backend
         }
 
         // Update the database
-        \Database::getInstance()->prepare("
+        \Database::getInstance()->prepare('
             UPDATE tl_iso_attribute_option
-            SET tstamp=". time() .", published='" . ($blnVisible ? 1 : '') . "'
+            SET tstamp='. time() .", published='" . ($blnVisible ? 1 : '') . "'
             WHERE id=?
         ")->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_attribute_option.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_attribute_option', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_attribute_option.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_attribute_option', $intId), __METHOD__, TL_GENERAL);
     }
 }

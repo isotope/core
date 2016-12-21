@@ -3,19 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
 use Haste\Units\Mass\Weight;
+use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
-use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Translation;
 
 
@@ -48,8 +48,10 @@ use Isotope\Translation;
  * @property array  $groups
  * @property bool   $enabled
  */
-abstract class Shipping extends TypeAgent
+abstract class Shipping extends TypeAgent implements IsotopeShipping
 {
+    const QUANTITY_MODE_ITEMS = 'cart_items';
+    const QUANTITY_MODE_PRODUCTS = 'cart_products';
 
     /**
      * Table name
@@ -77,9 +79,18 @@ abstract class Shipping extends TypeAgent
 
 
     /**
-     * Return true or false depending on if shipping method is available
-     * @return  bool
-     * @todo must check availability for a specific product collection (and not hardcoded to the current cart)
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return (int) $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws \InvalidArgumentException on unknown quantity mode
+     * @throws \UnexpectedValueException on unknown product type condition
      */
     public function isAvailable()
     {
@@ -123,16 +134,17 @@ abstract class Shipping extends TypeAgent
         }
 
         if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
-            $quantity = 0;
+            switch ($this->quantity_mode) {
+                case static::QUANTITY_MODE_ITEMS:
+                    $quantity =  Isotope::getCart()->sumItemsQuantity();
+                    break;
 
-            if ('cart_items' !== $this->quantity_mode && 'cart_products' !== $this->quantity_mode) {
-                throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
-            }
+                case static::QUANTITY_MODE_PRODUCTS:
+                    $quantity =  Isotope::getCart()->countItems();
+                    break;
 
-            foreach (Isotope::getCart()->getItems() as $item) {
-                if (!$item->hasProduct() || !$item->getProduct()->isExemptFromShipping()) {
-                    $quantity += ('cart_items' === $this->quantity_mode ? $item->quantity : 1);
-                }
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
             }
 
             if (($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
@@ -151,14 +163,14 @@ abstract class Shipping extends TypeAgent
 
         $arrCountries = deserialize($this->countries);
         if (is_array($arrCountries) && !empty($arrCountries)) {
-            if (!in_array($objAddress->country, $arrCountries)) {
+            if (!in_array($objAddress->country, $arrCountries, true)) {
                 return false;
             }
 
             $arrSubdivisions = deserialize($this->subdivisions);
             if (is_array($arrSubdivisions)
                 && !empty($arrSubdivisions)
-                && !in_array($objAddress->subdivision, $arrSubdivisions)
+                && !in_array($objAddress->subdivision, $arrSubdivisions, true)
             ) {
                 return false;
             }
@@ -166,25 +178,26 @@ abstract class Shipping extends TypeAgent
 
         // Check if address has a valid postal code
         if ($this->postalCodes != '') {
-            $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
+            $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
 
             if (!in_array($objAddress->postal, $arrCodes)) {
                 return false;
             }
         }
 
-        if ($this->product_types_condition != 'calculation') {
+        if ('calculation' !== $this->product_types_condition) {
             $arrConfigTypes = deserialize($this->product_types);
 
-            if (is_array($arrConfigTypes) && !empty($arrConfigTypes)) {
+            if (is_array($arrConfigTypes) && count($arrConfigTypes) > 0) {
                 $arrItems = Isotope::getCart()->getItems();
                 $arrItemTypes = array();
 
                 foreach ($arrItems as $objItem) {
                     if ($objItem->hasProduct()) {
-                        $arrItemTypes[] = $objItem->getProduct()->type;
+                        $productType = $objItem->getProduct()->getType();
+                        $arrItemTypes[] = null === $productType ? 0 : (int) $productType->id;
 
-                    } elseif ($this->product_types_condition == 'onlyAvailable') {
+                    } elseif ('onlyAvailable' === $this->product_types_condition) {
                         // If one product in cart is not of given type, shipping method is not available
                         return false;
                     }
@@ -194,22 +207,13 @@ abstract class Shipping extends TypeAgent
 
                 switch ($this->product_types_condition) {
                     case 'onlyAvailable':
-                        if (count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
-                            return false;
-                        }
-                        break;
+                        return 0 === count(array_diff($arrItemTypes, $arrConfigTypes));
 
                     case 'oneAvailable':
-                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
-                            return false;
-                        }
-                        break;
+                        return count(array_intersect($arrConfigTypes, $arrItemTypes)) > 0;
 
                     case 'allAvailable':
-                        if (count(array_intersect($arrConfigTypes, $arrItemTypes)) != count($arrConfigTypes)) {
-                            return false;
-                        }
-                        break;
+                        return count(array_intersect($arrConfigTypes, $arrItemTypes)) === count($arrConfigTypes);
 
                     default:
                         throw new \UnexpectedValueException(
@@ -223,18 +227,17 @@ abstract class Shipping extends TypeAgent
     }
 
     /**
-     * Return true if the shipping has a percentage (not fixed) amount
-     * @return bool
+     * @inheritdoc
      */
     public function isPercentage()
     {
-        return (substr($this->arrData['price'], -1) == '%') ? true : false;
+        return '%' === substr($this->arrData['price'], -1);
     }
 
     /**
-     * Return percentage amount (if applicable)
-     * @return float
-     * @throws \UnexpectedValueException
+     * @inheritdoc
+     *
+     * @throws \UnexpectedValueException if the shipping methods does not have a percentage amount.
      */
     public function getPercentage()
     {
@@ -246,18 +249,15 @@ abstract class Shipping extends TypeAgent
     }
 
     /**
-     * Return percentage label if price is percentage
-     * @return  string
+     * @inheritdoc
      */
     public function getPercentageLabel()
     {
         return $this->isPercentage() ? $this->arrData['price'] : '';
     }
 
-
     /**
-     * Return calculated price for this shipping method
-     * @return float
+     * @inheritdoc
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -274,22 +274,24 @@ abstract class Shipping extends TypeAgent
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);
     }
 
-
     /**
-     * Return translated label for this shipping method
-     * @return string
+     * @inheritdoc
      */
     public function getLabel()
     {
         return Translation::get($this->label ? : $this->name);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
 
     /**
-     * Return information or advanced features in the backend.
-     * Use this function to present advanced features or basic shipping information for an order in the backend.
-     * @param integer
-     * @return string
+     * @inheritdoc
      */
     public function backendInterface($orderId)
     {
@@ -298,7 +300,7 @@ abstract class Shipping extends TypeAgent
 <a href="' . ampersand(str_replace('&key=shipping', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.'.$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'][$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">
@@ -307,22 +309,16 @@ abstract class Shipping extends TypeAgent
 </div>';
     }
 
-
     /**
-     * Return the checkout review information.
-     *
-     * Use this to return custom checkout information about this shipping module.
-     * Example: Information about tracking codes.
-     * @return string
+     * @inheritdoc
      */
     public function checkoutReview()
     {
         return $this->getLabel();
     }
 
-
     /**
-     * Get the checkout surcharge for this shipping method
+     * @inheritdoc
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {

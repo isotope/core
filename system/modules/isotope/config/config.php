@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -28,6 +27,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
         'javascript'        => \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/js/backend.min.js'),
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
+        'fallback'          => array('Isotope\Backend\Product\Fallback', 'setFromUrl'),
     ),
     'iso_orders' => array
     (
@@ -49,9 +49,15 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
-if (TL_MODE == 'BE')
+if ('BE' === TL_MODE)
 {
     $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/css/backend.min.css|static');
+
+    if (file_exists(TL_ROOT . '/system/themes/flexible/icons')) {
+        $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile(
+            'system/modules/isotope/assets/css/backend-svg.min.css|static'
+        );
+    }
 }
 
 
@@ -149,21 +155,6 @@ $GLOBALS['ISO_MOD'] = array
     )
 );
 
-// Enable tables in iso_setup
-if ($_GET['do'] == 'iso_setup')
-{
-    foreach ($GLOBALS['ISO_MOD'] as $strGroup=>$arrModules)
-    {
-        foreach ($arrModules as $strModule => $arrConfig)
-        {
-            if (is_array($arrConfig['tables']))
-            {
-                $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] = array_merge($GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'], $arrConfig['tables']);
-            }
-        }
-    }
-}
-
 
 /**
  * Frontend modules
@@ -173,6 +164,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_productlist'               => 'Isotope\Module\ProductList',
     'iso_productvariantlist'        => 'Isotope\Module\ProductVariantList',
     'iso_productreader'             => 'Isotope\Module\ProductReader',
+    'iso_favorites'                 => 'Isotope\Module\Favorites',
     'iso_cart'                      => 'Isotope\Module\Cart',
     'iso_checkout'                  => 'Isotope\Module\Checkout',
     'iso_productfilter'             => 'Isotope\Module\ProductFilter',
@@ -214,6 +206,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('sofortueberweisung', 'Isotope\Model\Payment\Sofortueberweisung');
 \Isotope\Model\Payment::registerModelType('viveum', 'Isotope\Model\Payment\Viveum');
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
+\Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
 
 /**
  * Shipping methods
@@ -241,6 +234,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Product collections
  */
+\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
 \Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
 
@@ -265,10 +259,14 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
 
+if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+    \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
+}
+
 /**
  * Notification Center notification types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email', 'form_*', 'billing_address_email', 'shipping_address_email');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['attachment_tokens'] = array('form_*', 'document');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['email_text'] = array(
     'uniqid',
@@ -423,19 +421,50 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
  * Hooks
  */
 if (\Config::getInstance()->isComplete()) {
-    // Contao core hooks are in external file to fix postsale script
-    include(TL_ROOT . '/system/modules/isotope/config/hooks.php');
+    $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
+    $GLOBALS['TL_HOOKS']['getAttributesFromDca'][]          = array('Isotope\Backend\Product\DcaManager', 'addOptionsFromAttribute');
+    $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
+    $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
+    $GLOBALS['TL_HOOKS']['getPageLayout'][]                 = array('Isotope\Frontend', 'overrideReaderPage');
+    $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
+    $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
+    $GLOBALS['TL_HOOKS']['modifyFrontendPage'][]            = array('Isotope\Frontend', 'injectScripts');
+    $GLOBALS['TL_HOOKS']['executePreActions'][]             = array('Isotope\Backend', 'executePreActions');
+    $GLOBALS['TL_HOOKS']['executePostActions'][]            = array('Isotope\Backend', 'executePostActions');
+    $GLOBALS['TL_HOOKS']['getSystemMessages'][]             = array('Isotope\Backend', 'getOrderMessages');
+    $GLOBALS['TL_HOOKS']['getArticle'][]                    = array('Isotope\Frontend', 'storeCurrentArticle');
+    $GLOBALS['TL_HOOKS']['generateBreadcrumb'][]            = array('Isotope\Frontend', 'addProductToBreadcrumb');
 
     $GLOBALS['ISO_HOOKS']['buttons'][]                      = array('Isotope\Isotope', 'defaultButtons');
     $GLOBALS['ISO_HOOKS']['findSurchargesForCollection'][]  = array('Isotope\Frontend', 'findShippingAndPaymentSurcharges');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
+    $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\EventListener\PostCheckoutUploads', 'onPostCheckout');
     $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
     $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
+    $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
+
+    // changelanguage v2 + v3
+    $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\EventListener\ChangeLanguageListener', 'onTranslateUrlParameters');
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', 'onChangelanguageNavigation');
 
     // Set module and module id for payment and/or shipping modules
-    if (TL_MODE == 'FE') {
-        $GLOBALS['ISO_HOOKS']['initializePostsale'][]       = array('Isotope\Frontend', 'setPostsaleModuleSettings');
+    if ('FE' === TL_MODE) {
+        // Only limit countries in FE
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
+    }
+
+    if ('BE' === TL_MODE) {
+        // Type agent help is only needed in back end
+        $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
+        $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');
+
+        // Adjust the product groups manager
+        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend', 'adjustGroupsManager');
+        $GLOBALS['TL_HOOKS']['parseTemplate'][]             = array('Isotope\Backend\SubtableVersion', 'removeFromWelcomeScreen');
+
+        // Enable the module tables in setup
+        $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\BackendModule\InitializeListener', 'enableModuleTablesInSetup');
     }
 }
 

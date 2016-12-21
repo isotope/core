@@ -3,17 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Shipping;
 
 use Isotope\Interfaces\IsotopeProductCollection;
-use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
 /**
@@ -22,8 +20,12 @@ use Isotope\Model\Shipping;
  * @property array  group_methods
  * @property string group_calculation
  */
-class Group extends Shipping implements IsotopeShipping
+class Group extends Shipping
 {
+    const CALCULATE_FIRST   = 'first';
+    const CALCULATE_LOWEST  = 'lowest';
+    const CALCULATE_HIGHEST = 'highest';
+    const CALCULATE_SUM     = 'summarize';
 
     /**
      * Shipping methods we're using
@@ -73,10 +75,10 @@ class Group extends Shipping implements IsotopeShipping
         switch ($this->group_calculation) {
 
             default:
-            case 'first':
+            case self::CALCULATE_FIRST:
                 return $this->arrMethods[0]->getPrice();
 
-            case 'lowest':
+            case self::CALCULATE_LOWEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
@@ -87,7 +89,7 @@ class Group extends Shipping implements IsotopeShipping
 
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
-            case 'highest':
+            case self::CALCULATE_HIGHEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
@@ -98,7 +100,7 @@ class Group extends Shipping implements IsotopeShipping
 
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
-            case 'summarize':
+            case self::CALCULATE_SUM:
                 $fltTotal = 0;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltTotal += $objMethod->getPrice();
@@ -124,6 +126,7 @@ class Group extends Shipping implements IsotopeShipping
                 unset($arrMethods[$key]);
             }
 
+            /** @var Shipping[] $objMethods */
             if (($objMethods = Shipping::findMultipleByIds($arrMethods)) !== null) {
                 foreach ($objMethods as $objMethod) {
                     if ($objMethod->isAvailable()) {

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\IntegrityCheck;
@@ -98,10 +97,10 @@ class PriceTable extends AbstractIntegrityCheck
         if ($this->hasError()) {
 
             foreach ($this->arrErrors as $productId) {
-                $objPrices = \Database::getInstance()->prepare("
-                    SELECT * FROM tl_iso_product_price
-                    WHERE pid=?
-                ")->execute($productId);
+                $objPrices = \Database::getInstance()
+                    ->prepare('SELECT * FROM tl_iso_product_price WHERE pid=?')
+                    ->execute($productId)
+                ;
 
                 if ($objPrices->numRows > 0) {
                     $keep = array();
@@ -138,27 +137,23 @@ class PriceTable extends AbstractIntegrityCheck
                     }
 
                     // Make sure the price we keep does not have config etc. assigned
-                    \Database::getInstance()->prepare("
-                        UPDATE tl_iso_product_price
-                        SET
-                          config_id=0,
-                          member_group=0,
-                          start='',
-                          stop=''
-                        WHERE id=?
-                    ")->execute($keep);
+                    \Database::getInstance()
+                        ->prepare("
+                            UPDATE tl_iso_product_price 
+                            SET config_id=0, member_group=0, start='', stop='' 
+                            WHERE id=?
+                        ")
+                        ->execute($keep)
+                    ;
 
                     // Now delete the additional prices and price tiers
                     if (!empty($delete)) {
-                        \Database::getInstance()->prepare("
-                            DELETE FROM tl_iso_product_price
-                            WHERE id IN (" . implode(',', $delete) . ")
-                        ");
+                        \Database::getInstance()->query(
+                            'DELETE FROM tl_iso_product_price WHERE id IN (' . implode(',', $delete) . ')');
 
-                        \Database::getInstance()->prepare("
-                            DELETE FROM tl_iso_product_price_tier
-                            WHERE pid IN (" . implode(',', $delete) . ")
-                        ");
+                        \Database::getInstance()->query(
+                            "DELETE FROM tl_iso_product_pricetier WHERE pid IN (" . implode(',', $delete) . ")"
+                        );
                     }
                 }
             }

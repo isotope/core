@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Gallery;
@@ -61,7 +60,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && TL_MODE == 'FE') {
+        if ($arrData['customTpl'] != '' && 'FE' === TL_MODE) {
             $this->strTemplate = $arrData['customTpl'];
         }
 
@@ -87,6 +86,26 @@ class Standard extends Gallery implements IsotopeGallery
     public function getName()
     {
         return $this->strName;
+    }
+
+    /**
+     * Set gallery template
+     *
+     * @param string $strTemplate
+     */
+    public function setTemplate($strTemplate)
+    {
+        $this->strTemplate = $strTemplate;
+    }
+
+    /**
+     * Get gallery template
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->strTemplate;
     }
 
     /**
@@ -128,9 +147,8 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function hasImages()
     {
-        // Check files array here because we don't need to generate an image
-        // just to know if there are images
-        return !empty($this->arrFiles);
+        // Check files array here because we don't need to generate an image just to know if there are images
+        return count($this->arrFiles) > 0;
     }
 
     /**
@@ -204,7 +222,7 @@ class Standard extends Gallery implements IsotopeGallery
         $arrFiles   = array_slice($this->arrFiles, $intSkip);
 
         // Add placeholder for the gallery
-        if (empty($arrFiles) && $intSkip < 1) {
+        if (0 === count($arrFiles) && $intSkip < 1) {
             $arrFiles[] = $this->getPlaceholderImage();
             $watermark  = false;
         }
@@ -246,6 +264,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
+        $objTemplate->name       = $this->getName();
         $objTemplate->product_id = $this->product_id;
         $objTemplate->file       = $arrFile;
         $objTemplate->src        = $arrFile[$strType];
@@ -253,6 +272,13 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->alt        = $arrFile['alt'];
         $objTemplate->title      = $arrFile['desc'];
         $objTemplate->class      = trim($this->arrData['class'] . ' ' . $arrFile['class']);
+
+        // Add the missing data to the picture
+        $arrFile['picture']['alt']   = $objTemplate->alt;
+        $arrFile['picture']['title'] = $objTemplate->title;
+        $arrFile['picture']['class'] = $objTemplate->class;
+
+        $objTemplate->picture = $arrFile['picture'];
 
         switch ($this->anchor) {
             case 'reader':
@@ -328,12 +354,15 @@ class Standard extends Gallery implements IsotopeGallery
 
         $size = deserialize($this->{$strType . '_size'}, true);
 
-        $objImage = new \Image($objFile);
-        $objImage->setTargetWidth($size[0])
-            ->setTargetHeight($size[1])
-            ->setResizeMode($size[2]);
+        try {
+            $strImage = \Image::create($strFile, $size)->executeResize()->getResizedPath();
+            $picture = \Picture::create($strFile, $size)->getTemplateData();
+        } catch (\Exception $e) {
+            \System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
-        $strImage = $objImage->executeResize()->getResizedPath();
+            $strImage = '';
+            $picture = array('img'=>array('src'=>'', 'srcset'=>''), 'sources'=>array());
+        }
 
         // Watermark
         if ($blnWatermark
@@ -341,6 +370,16 @@ class Standard extends Gallery implements IsotopeGallery
             && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
         ) {
             $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
+
+            // Apply watermark to the picture image source
+            if ($picture['img']['src']) {
+                $picture['img']['src'] = Image::addWatermark($picture['img']['src'], $objWatermark->path, $this->{$strType . '_watermark_position'});
+            }
+
+            // Apply watermark to the picture sources
+            foreach ($picture['sources'] as $k => $v) {
+                $picture['sources'][$k]['src'] = Image::addWatermark($v['src'], $objWatermark->path, $this->{$strType . '_watermark_position'});
+            }
         }
 
         $arrSize = getimagesize(TL_ROOT . '/' . rawurldecode($strImage));
@@ -350,8 +389,9 @@ class Standard extends Gallery implements IsotopeGallery
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
-        $arrFile['alt']  = specialchars($arrFile['alt'], true);
-        $arrFile['desc'] = specialchars($arrFile['desc'], true);
+        $arrFile['alt']     = specialchars($arrFile['alt'], true);
+        $arrFile['desc']    = specialchars($arrFile['desc'], true);
+        $arrFile['picture'] = $picture;
 
         $arrFile[$strType] = TL_ASSETS_URL . $strImage;
 

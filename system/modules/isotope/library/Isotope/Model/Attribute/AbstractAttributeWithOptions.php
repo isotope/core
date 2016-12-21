@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
@@ -18,6 +17,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 use Isotope\Model\Product;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Translation;
 
 abstract class AbstractAttributeWithOptions extends Attribute implements IsotopeAttributeWithOptions
@@ -25,14 +25,12 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Cache product options for attribute
      * "false" as long as the cache is not built
-     * @type \Isotope\Collection\AttributeOption|array
+     * @var \Isotope\Collection\AttributeOption|array
      */
     protected $varOptionsCache = false;
 
     /**
-     * Return true if attribute can have prices
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function canHavePrices()
     {
@@ -40,8 +38,17 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return false;
         }
 
-        return in_array($this->field_name, Attribute::getPricedFields());
+        return in_array($this->field_name, Attribute::getPricedFields(), true);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOptionsSource()
+    {
+        return $this->optionsSource;
+    }
+
 
     /**
      * Get options of attribute from database
@@ -59,8 +66,12 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         switch ($this->optionsSource) {
 
+            // Single checkbox in the backend does not have options
+            case IsotopeAttributeWithOptions::SOURCE_NAME:
+                return [['value' => 1, 'label' => $this->name]];
+
             // @deprecated remove in Isotope 3.0
-            case 'attribute':
+            case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $options = deserialize($this->options);
 
                 if (!empty($options) && is_array($options)) {
@@ -95,21 +106,21 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
                 break;
 
-            case 'table':
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
                 $objOptions = $this->getOptionsFromManager();
 
                 if (null === $objOptions) {
                     $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
 
                 } else {
                     $arrOptions = $objOptions->getArrayForBackendWidget();
                 }
                 break;
 
-            case 'product':
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                 if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
@@ -122,7 +133,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     return array();
 
                 } else {
-                    return $objOptions->getArrayForFrontendWidget($objProduct, (TL_MODE == 'FE'));
+                    return $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
                 }
 
                 break;
@@ -157,25 +168,25 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         switch ($this->optionsSource) {
 
-            case 'table':
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
                 if (false === $this->varOptionsCache) {
                     $this->varOptionsCache = AttributeOption::findByAttribute($this);
                 }
 
                 return $this->varOptionsCache;
 
-            case 'product':
-                /** @type IsotopeProduct|Product|Product\Standard $objProduct */
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                 if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
                     );
-
                 }
 
-                $productId = $objProduct->id;
+                $productId = $objProduct->getId();
 
-                if ($objProduct->isVariant() && !in_array($this->field_name, $objProduct->getVariantAttributes())) {
+                if ($objProduct->isVariant()
+                    && !in_array($this->field_name, $objProduct->getVariantAttributes(), true)
+                ) {
                     $productId = $objProduct->getProductId();
                 }
 
@@ -203,13 +214,28 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
      * @param array $arrValues
      *
      * @return array
+     *
+     * @throws \UnexpectedValueException on invalid options source
      */
     public function getOptionsForProductFilter(array $arrValues)
     {
         switch ($this->optionsSource) {
 
+            case IsotopeAttributeWithOptions::SOURCE_NAME:
+                $arrOptions = [];
+
+                if (array_key_exists('1', $arrValues)) {
+                    $arrOptions['1'] = $GLOBALS['TL_LANG']['MSC']['yes'];
+                }
+
+                if (array_key_exists('', $arrValues)) {
+                    $arrOptions[''] = $GLOBALS['TL_LANG']['MSC']['no'];
+                }
+
+                return $arrOptions;
+
             // @deprecated remove in Isotope 3.0
-            case 'attribute':
+            case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $arrOptions = array();
                 $options = deserialize($this->options);
 
@@ -223,9 +249,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
 
                 return $arrOptions;
-                break;
 
-            case 'foreignKey':
+            case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                 list($table, $field) = explode('.', $this->foreignKey, 2);
                 $result = \Database::getInstance()->execute("
                     SELECT id AS value, $field AS label
@@ -234,15 +259,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 ");
 
                 return $result->fetchAllAssoc();
-                break;
 
-            case 'table':
-            case 'product':
-                /** @type \Isotope\Collection\AttributeOption $objOptions */
+            case IsotopeAttributeWithOptions::SOURCE_TABLE:
+            case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
+                /** @var \Isotope\Collection\AttributeOption $objOptions */
                 $objOptions = AttributeOption::findPublishedByIds($arrValues);
 
                 return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
-                break;
 
             default:
                 throw new \UnexpectedValueException(
@@ -263,7 +286,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         $value = parent::getValue($product);
 
         if ($this->multiple) {
-            if ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey') {
+            if (IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+                || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+            ) {
                 $value = explode(',', $value);
             } else {
                 $value = deserialize($value);
@@ -273,6 +298,59 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         return $value;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function generateValue($value, array $options = [])
+    {
+        $product = null;
+
+        if ($options['product'] instanceof IsotopeProduct) {
+            $product = $options['product'];
+        } elseif (($item = $options['item']) instanceof ProductCollectionItem && $item->hasProduct()) {
+            $product = $item->getProduct();
+        }
+
+        if (null === $product) {
+            return parent::generateValue($value, $options);
+        }
+
+        /** @var \Widget $strClass */
+        $strClass = $this->getFrontendWidget();
+        $arrField = $strClass::getAttributesFromDca(
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name],
+            $this->field_name,
+            $value,
+            $this->field_name,
+            'tl_iso_product',
+            $product
+        );
+
+        if (empty($arrField['options']) && is_array($arrField['options'])) {
+            return parent::generateValue($value, $options);
+        }
+
+        $values     = (array) $value;
+        $arrOptions = [];
+
+        foreach ($arrField['options'] as $k => &$option) {
+            if (($pos = array_search($option['value'], $values)) !== false) {
+                $arrOptions[$k] = $option['label'];
+                unset($values[$pos]);
+
+                if (0 === count($values)) {
+                    break;
+                }
+            }
+        }
+        unset($option);
+
+        if (0 !== count($values)) {
+            $arrOptions = array_merge($arrOptions, $values);
+        }
+
+        return implode(', ', $arrOptions);
+    }
 
     /**
      * Adjust DCA field for this attribute
@@ -283,23 +361,30 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         $this->fe_search = false;
 
-        if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
+        if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
             $this->be_filter = false;
             $this->fe_filter = false;
         }
 
-        if ($this->multiple && ($this->optionsSource == 'table' || $this->optionsSource == 'foreignKey')) {
+        if ($this->multiple
+            && (IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+                || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+            )
+        ) {
             $this->csv = ',';
         }
 
         parent::saveToDCA($arrData);
 
-        if (TL_MODE == 'BE') {
-            if ($this->be_filter && \Input::get('act') == '') {
+        if ('BE' === TL_MODE) {
+            if ($this->be_filter
+                && \Input::get('act') == ''
+                && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+            ) {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
-            if ($this->isCustomerDefined() && $this->optionsSource == 'product') {
+            if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
                 \Controller::loadDataContainer(static::$strTable);
                 \System::loadLanguageFile(static::$strTable);
 
@@ -314,7 +399,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $arrField['attributes']['dynamic'] = true;
                 $arrField['foreignKey'] = 'tl_iso_attribute_option.label';
 
-                if (\Input::get('do') == 'iso_products') {
+                if ('iso_products' === \Input::get('do')) {
                     $arrField['eval']['whereCondition'] = "field_name='{$this->field_name}'";
                 }
 

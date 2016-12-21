@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -159,7 +158,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'filter'                => true,
             'sorting'               => true,
             'eval'                  => array('rgxp'=>'date'),
-            'sql'                   => "varchar(10) NOT NULL default ''",
+            'sql'                   => "int(10) NULL",
         ),
         'store_id' => array
         (
@@ -228,7 +227,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
-            'sql'                   => "varchar(10) NOT NULL default ''"
+            'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
         (
@@ -236,7 +235,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
-            'sql'                   => "varchar(10) NOT NULL default ''",
+            'sql'                   => 'int(10) NULL',
         ),
         'config_id' => array
         (

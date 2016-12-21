@@ -1,12 +1,10 @@
 <script>
-    window.addEvent('domready', function() {
-        <?php if ($this->hasProducts): ?>
-        IsotopeProducts.setLoadMessage('<?php echo $this->loadMessage; ?>');
-        IsotopeProducts.attach(JSON.decode('<?php echo $this->products; ?>'));
-        <?php endif; ?>
+    <?php if ($this->hasProducts): ?>
+    IsotopeProducts.setLoadMessage('<?php echo $this->loadMessage; ?>');
+    IsotopeProducts.attach(JSON.parse('<?php echo $this->products; ?>'));
+    <?php endif; ?>
 
-        <?php if ($this->hasMessages): ?>
-        Isotope.displayBox('<?php echo $this->messages; ?>', true);
-        <?php endif; ?>
-    });
+    <?php if ($this->hasMessages): ?>
+    Isotope.displayBox('<?php echo $this->messages; ?>', true);
+    <?php endif; ?>
 </script>

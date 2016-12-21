@@ -3,29 +3,30 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
 
 interface IsotopeAttributeForVariants
 {
-
     /**
      * Return true if attribute is a variant option
-     * @return    bool
+     *
+     * @return bool
      */
     public function isVariantOption();
 
     /**
      * Get available variant options for a product
-     * @param   array
-     * @param   array
-     * @return  array
+     *
+     * @param array $arrIds
+     * @param array $arrOptions
+     *
+     * @return array
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array());
 }

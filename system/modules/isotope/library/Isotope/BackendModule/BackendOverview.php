@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\BackendModule;
@@ -57,7 +56,7 @@ abstract class BackendOverview extends \BackendModule
 
             if (isset($session['iso_be_overview_legend'][$k])) {
                 $arrGroup['collapse'] = !$session['iso_be_overview_legend'][$k];
-            } elseif ($hide == 'hide') {
+            } elseif ('hide' === $hide) {
                 $arrGroup['collapse'] = true;
             }
 
@@ -72,8 +71,10 @@ abstract class BackendOverview extends \BackendModule
             foreach ($this->arrModules as $arrGroup) {
                 if (isset($arrGroup['modules'])) {
                     foreach ($arrGroup['modules'] as $strModule => $arrConfig) {
-                        if (is_array($arrConfig['tables']) && in_array(\Input::get('table'), $arrConfig['tables'])) {
-                            \Controller::redirect($this->addToUrl('mod=' . $strModule));
+                        if (is_array($arrConfig['tables'])
+                            && in_array(\Input::get('table'), $arrConfig['tables'], true)
+                        ) {
+                            \Controller::redirect(\Backend::addToUrl('mod=' . $strModule));
                         }
                     }
                 }
@@ -104,7 +105,7 @@ abstract class BackendOverview extends \BackendModule
         $dc = null;
 
         foreach ($this->arrModules as $arrGroup) {
-            if (!empty($arrGroup['modules']) && in_array($module, array_keys($arrGroup['modules']))) {
+            if (!empty($arrGroup['modules']) && array_key_exists($module, $arrGroup['modules'])) {
                 $arrModule =& $arrGroup['modules'][$module];
             }
         }
@@ -123,7 +124,7 @@ abstract class BackendOverview extends \BackendModule
         $strTable = \Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '') {
-            \Controller::redirect($this->addToUrl('table=' . $arrModule['tables'][0]));
+            \Controller::redirect(\Backend::addToUrl('table=' . $arrModule['tables'][0]));
         }
 
         // Add module style sheet
@@ -138,22 +139,20 @@ abstract class BackendOverview extends \BackendModule
 
         // Redirect if the current table does not belong to the current module
         if ($strTable != '') {
-            if (!in_array($strTable, (array) $arrModule['tables'])) {
+            if (!in_array($strTable, (array) $arrModule['tables'], true)) {
                 \System::log('Table "' . $strTable . '" is not allowed in module "' . $module . '"', __METHOD__, TL_ERROR);
                 \Controller::redirect('contao/main.php?act=error');
             }
 
             // Load the language and DCA file
             \System::loadLanguageFile($strTable);
-            $this->loadDataContainer($strTable);
+            \Controller::loadDataContainer($strTable);
 
             // Include all excluded fields which are allowed for the current user
             if ($GLOBALS['TL_DCA'][$strTable]['fields']) {
                 foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k => $v) {
-                    if ($v['exclude']) {
-                        if (\BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
-                            $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
-                        }
+                    if ($v['exclude'] && \BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
+                        $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
                     }
                 }
             }
@@ -176,7 +175,7 @@ abstract class BackendOverview extends \BackendModule
         // Call module callback
         elseif (class_exists($arrModule['callback'])) {
 
-            /** @type \BackendModule $objCallback */
+            /** @var \BackendModule $objCallback */
             $objCallback = new $arrModule['callback']($dc, $arrModule);
 
             return $objCallback->generate();
@@ -189,9 +188,9 @@ abstract class BackendOverview extends \BackendModule
             return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
         } // Default action
         elseif (is_object($dc)) {
-            $act = \Input::get('act');
+            $act = (string) \Input::get('act');
 
-            if (!strlen($act) || $act == 'paste' || $act == 'select') {
+            if ('' === $act || 'paste' === $act || 'select' === $act) {
                 $act = ($dc instanceof \listable) ? 'showAll' : 'edit';
             }
 

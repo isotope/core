@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -40,8 +39,8 @@ abstract class OrderConditions extends CheckoutStep
      */
     public function generate()
     {
-        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function ($haste) {
-            return \Input::post('FORM_SUBMIT') === $haste->getFormId();
+        $this->objForm = new Form($this->objModule->getFormId(), 'POST', function (Form $form) {
+            return \Input::post('FORM_SUBMIT') === $form->getFormId();
         });
 
 
@@ -52,7 +51,9 @@ abstract class OrderConditions extends CheckoutStep
                 throw new \InvalidArgumentException('Order condition form "' . $this->objModule->iso_order_conditions . '" not found.');
             }
 
-            $this->objForm->setTableless($objFormConfig->tableless);
+            if (isset($objFormConfig->tableless)) {
+                $this->objForm->setTableless($objFormConfig->tableless);
+            }
 
             $this->objForm->addFieldsFromFormGenerator(
                 $this->objModule->iso_order_conditions,
@@ -129,8 +130,10 @@ abstract class OrderConditions extends CheckoutStep
 
     /**
      * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return array
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {

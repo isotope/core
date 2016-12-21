@@ -3,18 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
-
 
 /**
  * Attribute to impelement SelectMenu widget
@@ -22,26 +19,22 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribute, IsotopeAttributeForVariants
+class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttributeForVariants
 {
-
     /**
-     * Adjust the options wizard for this attribute
-     * @return  array
+     * @inheritdoc
      */
     public function prepareOptionsWizard($objWidget, $arrColumns)
     {
         if ($this->isVariantOption()) {
-            unset($arrColumns['default']);
-            unset($arrColumns['group']);
+            unset($arrColumns['default'], $arrColumns['group']);
         }
 
         return $arrColumns;
     }
 
     /**
-     * Adjust DCA field for this attribute
-     * @param   arary
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {
@@ -53,8 +46,12 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
 
         parent::saveToDCA($arrData);
 
+        if ($this->isVariantOption()) {
+            $arrData['fields'][$this->field_name]['eval']['includeBlankOption'] = true;
+        }
+
         if ($this->multiple) {
-            $arrData['fields'][$this->field_name]['sql'] = "blob NULL";
+            $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         } else {
             if ('attribute' === $this->optionsSource) {
                 $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";

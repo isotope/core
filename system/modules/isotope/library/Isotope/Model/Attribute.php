@@ -3,16 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -61,9 +61,12 @@ use Isotope\Translation;
  * @property string        $uploadFolder
  * @property bool          $useHomeDir
  * @property bool          $doNotOverwrite
+ * @property bool          $checkoutRelocate
+ * @property string        $checkoutTargetFolder
+ * @property string        $checkoutTargetFile
  * @property bool          $datepicker
  */
-abstract class Attribute extends TypeAgent
+abstract class Attribute extends TypeAgent implements IsotopeAttribute
 {
 
     /**
@@ -86,7 +89,7 @@ abstract class Attribute extends TypeAgent
 
     /**
      * Holds a map for field name to ID
-     * @type array
+     * @var array
      */
     protected static $arrFieldNameMap = array();
 
@@ -109,8 +112,15 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return true if attribute is customer defined
-     * @return    bool
+     * @inheritdoc
+     */
+    public function getFieldName()
+    {
+        return $this->field_name;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function isCustomerDefined()
     {
@@ -123,8 +133,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return class name for the backend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
@@ -136,8 +145,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return class name for the frontend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getFrontendWidget()
     {
@@ -149,10 +157,7 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Load attribute configuration from given DCA array
-     *
-     * @param array  $arrData
-     * @param string $strName
+     * @inheritdoc
      */
     public function loadFromDCA(array &$arrData, $strName)
     {
@@ -165,7 +170,7 @@ abstract class Attribute extends TypeAgent
         }
 
         $this->field_name  = $strName;
-        $this->type        = array_search(get_called_class(), static::getModelTypes());
+        $this->type        = array_search(get_called_class(), static::getModelTypes(), true);
         $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
         $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
@@ -175,21 +180,24 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Save attribute configuration into the given DCA array
-     * @param    array
+     * @inheritdoc
      */
     public function saveToDCA(array &$arrData)
     {
         // Keep field settings made through DCA code
-        $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : array();
+        $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : [];
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
         $arrField['inputType']                      = '';
         $arrField['attributes']                     = $this->row();
-        $arrField['attributes']['variant_option']   = ($this->isVariantOption()); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
+        $arrField['attributes']['variant_option']   = $this->isVariantOption(); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
         $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+
+        if ('' !== (string) $this->placeholder) {
+            $arrField['eval']['placeholder'] = Translation::get($this->placeholder);
+        }
 
         if (!$this->isCustomerDefined()) {
             $arrField['inputType'] = (string) array_search($this->getBackendWidget(), $GLOBALS['BE_FFL'], true);
@@ -225,7 +233,7 @@ abstract class Attribute extends TypeAgent
         }
 
         // Prepare options
-        if ('foreignKey' === $this->optionsSource && !$this->isVariantOption()) {
+        if (IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource && !$this->isVariantOption()) {
             $arrField['foreignKey'] = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
             unset($arrField['options'], $arrField['reference']);
 
@@ -233,20 +241,23 @@ abstract class Attribute extends TypeAgent
             $arrOptions = null;
 
             switch ($this->optionsSource) {
-                case 'attribute':
+                case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                     $arrOptions = deserialize($this->options);
                     break;
 
-                case 'foreignKey':
+                case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                     $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
                     $arrKey     = explode('.', $foreignKey, 2);
-                    $arrOptions = \Database::getInstance()
-                        ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
-                        ->fetchAllAssoc()
-                    ;
+
+                    if ('' !== (string) $arrKey[0] && '' !== $arrKey[1]) {
+                        $arrOptions = \Database::getInstance()
+                            ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
+                            ->fetchAllAssoc()
+                        ;
+                    }
                     break;
 
-                case 'table':
+                case IsotopeAttributeWithOptions::SOURCE_TABLE:
                     $query = new \DC_Multilingual_Query(AttributeOption::getTable());
                     $arrOptions = $query
                         ->addField('t1.id AS value')
@@ -258,7 +269,7 @@ abstract class Attribute extends TypeAgent
                     ;
                     break;
 
-                case 'product':
+                case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                     $query = new \DC_Multilingual_Query(AttributeOption::getTable());
                     $arrOptions = $query
                         ->addField('t1.id AS value')
@@ -336,7 +347,7 @@ abstract class Attribute extends TypeAgent
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
         if (0 === count($arrIds)) {
-            return array();
+            return [];
         }
 
         sort($arrIds);
@@ -360,15 +371,19 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Gets attribute value from given product.
-     *
-     * @param IsotopeProduct $product
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function getValue(IsotopeProduct $product)
     {
         return $product->{$this->field_name};
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLabel()
+    {
+        return Format::dcaLabel('tl_iso_product', $this->field_name);
     }
 
     /**
@@ -384,7 +399,7 @@ abstract class Attribute extends TypeAgent
         $varValue = $this->getValue($objProduct);
 
         if (!is_array($varValue)) {
-            return Format::dcaValue('tl_iso_product', $this->field_name, $varValue);
+            return $this->generateValue($varValue, $arrOptions);
         }
 
         // Generate a HTML table for associative arrays
@@ -396,7 +411,7 @@ abstract class Attribute extends TypeAgent
             $result = array();
 
             foreach ($varValue as $v1) {
-                $result[$v1] = Format::dcaValue('tl_iso_product', $this->field_name, $v1);
+                $result[$v1] = $this->generateValue($v1, $arrOptions);
             }
 
             return $result;
@@ -404,10 +419,21 @@ abstract class Attribute extends TypeAgent
 
         // Generate ul/li listing for simple arrays
         foreach ($varValue as &$v2) {
-            $v2 = Format::dcaValue('tl_iso_product', $this->field_name, $v2);
+            $v2 = $this->generateValue($v2, $arrOptions);
         }
 
         return $this->generateList($varValue);
+    }
+
+    /**
+     * @param mixed $value
+     * @param array $options
+     *
+     * @return string
+     */
+    public function generateValue($value, array $options = [])
+    {
+        return Format::dcaValue('tl_iso_product', $this->field_name, $value);
     }
 
     /**
@@ -477,7 +503,7 @@ abstract class Attribute extends TypeAgent
                 continue;
             }
 
-            $label = $arrFormat[$name]['label'] ? $arrFormat[$name]['label'] : $name;
+            $label = $arrFormat[$name]['label'] ?: $name;
 
             $strBuffer .= '
       <th class="head_' . $i . ($i == 0 ? ' head_first' : '') . ($i == $last ? ' head_last' : '') . (!is_numeric($name) ? ' ' . standardize($name) : '') . '">' . $label . '</th>';
@@ -540,7 +566,7 @@ abstract class Attribute extends TypeAgent
 
             $strBuffer .= "\n<li" . ($class != '' ? ' class="' . $class . '"' : '') . '>' . $value . '</li>';
 
-            $current += 1;
+            ++$current;
         }
 
         $strBuffer .= "\n</ul>";
@@ -743,9 +769,63 @@ abstract class Attribute extends TypeAgent
      * Return list of fixed fields
      * Fixed fields cannot be disabled in product type config
      *
+     * @param string|null $class
+     *
      * @return array
      */
-    public static function getFixedFields()
+    public static function getFixedFields($class = null)
+    {
+        \Controller::loadDataContainer('tl_iso_product');
+
+        $arrFields = array();
+        $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+        foreach ($arrDCA as $field => $config) {
+            $fixed = $config['attributes']['fixed'];
+            $isArray = is_array($fixed);
+
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of variant fixed fields
+     * Fixed fields cannot be disabled in product type config
+     *
+     * @param string|null $class
+     *
+     * @return array
+     */
+    public static function getVariantFixedFields($class = null)
+    {
+        \Controller::loadDataContainer('tl_iso_product');
+
+        $arrFields = array();
+        $arrDCA = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+        foreach ($arrDCA as $field => $config) {
+            $fixed   = $config['attributes']['variant_fixed'];
+            $isArray = is_array($fixed);
+
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+                $arrFields[] = $field;
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of excluded fields
+     * Excluded fields cannot be enabled in product type config
+     *
+     * @return array
+     */
+    public static function getExcludedFields()
     {
         static $arrFields;
 
@@ -756,7 +836,7 @@ abstract class Attribute extends TypeAgent
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['fixed']) {
+                if ($config['attributes']['excluded']) {
                     $arrFields[] = $field;
                 }
             }
@@ -766,12 +846,12 @@ abstract class Attribute extends TypeAgent
     }
 
     /**
-     * Return list of fixed fields
-     * Fixed fields cannot be disabled in product type config
+     * Return list of variant excluded fields
+     * Excluded fields cannot be disabled in product type config
      *
      * @return array
      */
-    public static function getVariantFixedFields()
+    public static function getVariantExcludedFields()
     {
         static $arrFields;
 
@@ -782,7 +862,33 @@ abstract class Attribute extends TypeAgent
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['variant_fixed']) {
+                if ($config['attributes']['variant_excluded']) {
+                    $arrFields[] = $field;
+                }
+            }
+        }
+
+        return $arrFields;
+    }
+
+    /**
+     * Return list of singular fields
+     * Singular fields must not be enabled in product AND variant configuration.
+     *
+     * @return array
+     */
+    public static function getSingularFields()
+    {
+        static $arrFields;
+
+        if (null === $arrFields) {
+            \Controller::loadDataContainer('tl_iso_product');
+
+            $arrFields = array();
+            $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
+
+            foreach ($arrDCA as $field => $config) {
+                if ($config['attributes']['singular']) {
                     $arrFields[] = $field;
                 }
             }

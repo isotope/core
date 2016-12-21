@@ -252,23 +252,23 @@ var Isotope = {};
                     } else {
                         // textarea with TinyMCE
                         if (element.getPrevious() && element.getPrevious().hasClass('mce-tinymce')) {
-                            element.getPrevious().setStyle('display', (event.target.checked ? 'none' : 'inherit'));
+                            element.getPrevious().setStyle('display', (event.target.checked ? 'none' : null));
                         } else {
-                            element.setStyle('display', (event.target.checked ? 'none' : 'inherit'));
+                            element.setStyle('display', (event.target.checked ? 'none' : null));
                         }
 
                         // Query would fail if there is no tooltip
-                        try { element.getNext(':not(.tl_tip):not(script)').setStyle('display', (event.target.checked ? 'none' : 'inherit')); } catch (e) {}
+                        try { element.getAllNext(':not(script)').setStyle('display', (event.target.checked ? 'none' : null)); } catch (e) {}
                     }
                 });
 
                 if (el.match('.tl_checkbox_single_container')) {
                     el.getFirst('input[type=checkbox]').disabled = check.checked;
                 } else {
-                    el.setStyle('display', (check.checked ? 'none' : 'inherit'));
+                    el.setStyle('display', (check.checked ? 'none' : null));
 
                     // Query would fail if there is no tooltip
-                    try { el.getNext(':not(.tl_tip):not(script)').setStyle('display', (check.checked ? 'none' : 'inherit')); } catch (e) {}
+                    try { el.getAllNext(':not(script)').setStyle('display', (check.checked ? 'none' : null)); } catch (e) {}
                 }
             }
         });

@@ -1,14 +1,14 @@
-<h2><?php echo $this->headline; ?></h2>
-<p class="message"><?php echo $this->message; ?></p>
-<form id="innopay<?php echo $this->id; ?>" action="https://secure.innopay.ch/vads-payment/" method="post">
-<?php foreach( $this->params as $k => $v ): ?>
-<input type="hidden" name="<?php echo $k; ?>" value="<?php echo (strpos($k, 'vads_url_') === 0 ? ampersand($v) : $v); ?>">
+<h2><?= $this->headline ?></h2>
+<p class="message"><?= $this->message ?></p>
+<form id="innopay<?= $this->id ?>" action="https://secure.innopay.ch/vads-payment/" method="post">
+<?php foreach ($this->params as $k => $v): ?>
+<input type="hidden" name="<?= $k ?>" value="<?= specialchars($v) ?>">
 <?php endforeach; ?>
 <noscript>
-<p><?php echo $this->noscript; ?></p>
-<input type="submit" value="<?php echo $this->slabel; ?>">
+<p><?= $this->noscript ?></p>
+<input type="submit" value="<?= specialchars($this->slabel) ?>">
 </noscript>
 </form>
 <script>
-document.getElementById('innopay<?php echo $this->id; ?>').submit();
+document.getElementById('innopay<?= $this->id ?>').submit();
 </script>

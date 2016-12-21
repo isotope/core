@@ -1,0 +1,110 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+        <target>Legen Sie für die Steuerklasse einen Namen an, der beschreibt wofür sie eingesetzt wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Standard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+        <target>Klicken Sie hier, wenn es sich um die Standard-Steuerklasse handelt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+        <target>Steuerklasse im Produktpreis enthalten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+        <target>Wählen Sie ob Produktpreise mit dieser Steuerklasse einen Steuersatz enthalten. Dieser Steuersatz wird vom Produktpreis abgezogen, wenn sie nicht passt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+        <target>Beschriftung einbinden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+        <target>Eine Beschriftung für Bestellungen um abgezogene Steuern anzuzeigen (falls eingebundene Steuern nicht passen). Wenn dieses Feld leer ist, wird die  Beschriftung des Standard-Steuersatzes angezeigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+        <target>Steuersätze hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+        <target>Diese Steuersätze zu Produkten mit diesen Steuerklassen hinzufügen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.0">
+        <source>Apply rounding increment</source>
+        <target>Rundungszuschlag verwenden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.1">
+        <source>Check here if you want to apply the rounding increment of your shop config.</source>
+        <target>Rundungszuschlag der Shop-Konfiguration verwenden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.0">
+        <source>Not negative</source>
+        <target>Nicht negativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.1">
+        <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
+        <target>Verhindert negative Beträge für diese Steuer (negative Zahl wird auf 0.00 aufgerundet).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.0">
+        <source>New tax class</source>
+        <target>Neue Steuerklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.1">
+        <source>Create a new tax class</source>
+        <target>Neue Steuerklasse erstellen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.0">
+        <source>Edit tax class</source>
+        <target>Steuerklasse bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.1">
+        <source>Edit tax class ID %s</source>
+        <target>Steuerklasse ID %s bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.0">
+        <source>Copy tax class</source>
+        <target>Steuerklasse duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.1">
+        <source>Copy tax class ID %s</source>
+        <target>Dupliziere Steuerklasse ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.0">
+        <source>Delete tax class</source>
+        <target>Steuerklasse löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.1">
+        <source>Delete tax class ID %s</source>
+        <target>Lösche Steuerklasse ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.0">
+        <source>Tax class details</source>
+        <target>Bestelldetails</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.1">
+        <source>Show details of tax class ID %s</source>
+        <target>Details der Steuerklasse ID %s anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Steuersätze</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

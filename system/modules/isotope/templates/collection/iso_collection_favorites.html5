@@ -1,0 +1,53 @@
+<?php if(!empty($this->buttons)): ?>
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<div class="formbody">
+<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<?php endif; ?>
+
+<?php if ($this->collection->hasErrors()): ?>
+<p class="error"><?php echo implode('</p><p class="error">', $this->collection->getErrors()); ?></p>
+<?php endif; ?>
+
+<table>
+<tbody>
+<?php foreach($this->items as $item): $i=0; ?>
+    <tr class="<?php echo $item['rowClass']; ?>"><?php if(!$this->isNotification): ?>
+        <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
+        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
+            <?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
+            <?php if(!empty($item['attributes'])): ?>
+            <ul>
+                <?php foreach($item['attributes'] as $name => $value): ?>
+                <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <?php endif; ?>
+        </td>
+        <?php if($this->isEditable): ?>
+        <td class="col_<?php echo $i++; ?> quantity">
+            <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="" placeholder="1" maxlength="10">
+        </td>
+        <?php endif; ?>
+        <td class="col_<?php echo $i++; ?> col_last actions">
+            <a href="<?php echo $item['cart_href']; ?>" class="add_to_cart"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'] ?></a>
+            <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
+        </td>
+    </tr><?php if($item['item']->hasErrors()): ?>
+    <tr class="<?php echo $item['rowClass']; ?>">
+        <td colspan="<?php echo $i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
+    </tr>
+<?php endif; ?>
+<?php endforeach; ?>
+</tbody>
+</table>
+
+<?php if(!empty($this->buttons)): ?>
+</div>
+<div class="submit_container">
+<?php foreach($this->buttons as $button): ?>
+<input type="<?php echo $button['type']; ?>" class="<?php echo $button['type']; ?> <?php echo $button['name']; ?>" name="<?php echo $button['name']; ?>" id="ctrl_<?php echo $button['name']; ?>_<?php echo $this->id; ?>" value="<?php echo $button['label']; ?>">
+<?php endforeach; ?>
+</div>
+</form>
+<?php endif; ?>

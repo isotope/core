@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
+use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -110,7 +110,7 @@ class TaxRate extends \Model
 
                 // Check if address has a valid postal code
                 if ($this->postalCodes != '') {
-                    $arrCodes = \Isotope\Frontend::parsePostalCodes($this->postalCodes);
+                    $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
 
                     if (!in_array($objAddress->postal, $arrCodes)) {
                         continue;
@@ -136,11 +136,11 @@ class TaxRate extends \Model
                     if (!empty($validators) && is_array($validators)) {
                         foreach ($validators as $type) {
 
-                            /** @type IsotopeVatNoValidator $service */
+                            /** @var IsotopeVatNoValidator $service */
                             $service = new $GLOBALS['ISO_VAT'][$type]();
 
                             if ($service->exemptTax($objAddress, $this)) {
-                                continue(2);
+                                continue 2;
                             }
                         }
                     }

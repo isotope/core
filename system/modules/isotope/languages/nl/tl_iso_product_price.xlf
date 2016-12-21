@@ -1,0 +1,110 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_price.xlf" source-language="en" target-language="nl">
+    <body>
+      <trans-unit id="tl_iso_product_price.price_tiers.0">
+        <source>Price Tiers</source>
+        <target>Prijsstelling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tiers.1">
+        <source>Setup at least one price tier for &quot;Quantity 1&quot;. You can enter discount prices if the user orders more than one product.</source>
+        <target>Stel op z'n minst een prijsstelling voor &quot;1 stuks&quot; in. U kunt kortingen instellen als de klant meer dan 1 product koopt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.tax_class.0">
+        <source>Tax Class</source>
+        <target>Belastingklasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.tax_class.1">
+        <source>Please select a tax class for this price.</source>
+        <target>Selecteer een belastingklasse voor deze prijs.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.config_id.0">
+        <source>Store configuration</source>
+        <target>Winkelinstellingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.config_id.1">
+        <source>Select a store configuration for this price.</source>
+        <target>Selecteer een winkelinstelling voor deze prijs.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.member_group.0">
+        <source>Member group</source>
+        <target>Prijsgroep</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.member_group.1">
+        <source>Select a member group for this price.</source>
+        <target>Selecteer een prijsgroep (leden-groep) voor deze prijs.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.start.0">
+        <source>Use from</source>
+        <target>Gebruik vanaf</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.start.1">
+        <source>Do not use the price on the website before this day.</source>
+        <target>Deze prijs wordt niet gebruikt op de website voor deze dag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.stop.0">
+        <source>Use until</source>
+        <target>Gebruik tot</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.stop.1">
+        <source>Do not use the price on the website after this day.</source>
+        <target>Deze prijs wordt niet gebruikt op de website na deze dag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.new.0">
+        <source>Add price</source>
+        <target>Prijs toevoegen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.new.1">
+        <source>Add a new price to this product</source>
+        <target>Voer een nieuwe prijs in voor dit product</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.edit.0">
+        <source>Edit price</source>
+        <target>Bewerk prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.edit.1">
+        <source>Edit price ID %s</source>
+        <target>Bewerk prijs ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.copy.0">
+        <source>Duplicate price</source>
+        <target>Kopier prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.copy.1">
+        <source>Duplicate price ID %s</source>
+        <target>Kopier prijs ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.delete.0">
+        <source>Delete price</source>
+        <target>Verwijder prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.delete.1">
+        <source>Delete price ID %s</source>
+        <target>Verwijder prijs ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.show.0">
+        <source>Price details</source>
+        <target>Prijs details</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.show.1">
+        <source>Show details of price ID %s</source>
+        <target>Toon details van prijs ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tier_columns.min.0">
+        <source>Quantity (min)</source>
+        <target>Hoeveelheid (minimaal)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_tier_columns.price.0">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.price_legend">
+        <source>Price</source>
+        <target>Prijs</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_price.limit_legend">
+        <source>Limitations</source>
+        <target>Beperkingen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

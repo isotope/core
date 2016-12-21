@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\RequestCache;
@@ -41,7 +40,7 @@ class Sort implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * @inheritdoc
      */
     public function offsetSet($offset, $value)
     {
@@ -49,7 +48,7 @@ class Sort implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * @inheritdoc
      */
     public function offsetExists($offset)
     {
@@ -57,7 +56,7 @@ class Sort implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * @inheritdoc
      */
     public function offsetUnset($offset)
     {
@@ -65,7 +64,7 @@ class Sort implements \ArrayAccess
     }
 
     /**
-     * @see     http://php.net/arrayaccess
+     * @inheritdoc
      */
     public function offsetGet($offset)
     {
@@ -74,7 +73,8 @@ class Sort implements \ArrayAccess
 
     /**
      * Return true if sorting is ascending
-     * @return  bool
+     *
+     * @return bool
      */
     public function isAscending()
     {
@@ -83,7 +83,8 @@ class Sort implements \ArrayAccess
 
     /**
      * Return true if sorting is descending
-     * @return  bool
+     *
+     * @return bool
      */
     public function isDescending()
     {
@@ -92,7 +93,8 @@ class Sort implements \ArrayAccess
 
     /**
      * Treat values as numbers
-     * @return  Sort
+     *
+     * @return $this
      */
     public function asNumbers()
     {
@@ -103,7 +105,8 @@ class Sort implements \ArrayAccess
 
     /**
      * Treat values as strings
-     * @return  Sort
+     *
+     * @return $this
      */
     public function asStrings()
     {

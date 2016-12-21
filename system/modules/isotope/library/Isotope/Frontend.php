@@ -3,16 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
 
+use Haste\Input\Input;
+use Haste\Util\Url;
+use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -22,6 +25,7 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
@@ -47,12 +51,17 @@ class Frontend extends \Frontend
     /**
      * Get shipping and payment surcharges for given collection
      *
-     * @param IsotopeProductCollection|Order $objCollection
+     * @param IsotopeProductCollection $objCollection
      *
      * @return ProductCollectionSurcharge[]
      */
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
+        if (!$objCollection instanceof IsotopeOrderableCollection) {
+            \System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // Do not add shipping and payment surcharge to cart,
         // they should only appear in the order review
         if ($objCollection instanceof Cart) {
@@ -97,12 +106,63 @@ class Frontend extends \Frontend
             }
 
             \Controller::redirect(
-                \Haste\Util\Url::addQueryString(
+                Url::addQueryString(
                     'continue=' . base64_encode(\Environment::get('request')),
                     $objModule->iso_addProductJumpTo
                 )
             );
         }
+    }
+
+    /**
+     * Callback for add_to_cart button if a product is being edited.
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     */
+    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        if (\Input::get('collection_item') < 1
+            || ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) === null
+            || $item->pid != Isotope::getCart()->id
+            || !$item->hasProduct()
+            || $item->getProduct()->getProductId() != $objProduct->getProductId()
+        ) {
+            return;
+        }
+
+        Isotope::getCart()->updateProduct($objProduct, $item);
+
+        if (!$arrConfig['module']->iso_addProductJumpTo) {
+            \Controller::reload();
+        }
+
+        \Controller::redirect(
+            Url::addQueryString(
+                'continue=' . base64_encode(\Environment::get('request')),
+                $arrConfig['module']->iso_addProductJumpTo
+            )
+        );
+    }
+
+    /**
+     * Callback for toggle_favorites button
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     */
+    public function toggleFavorites(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        $favorites = Isotope::getFavorites();
+
+        if ($favorites->hasProduct($objProduct)) {
+            $favorites->deleteItem($favorites->getItemForProduct($objProduct));
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['removedFromFavorites']);
+        } elseif ($favorites->addProduct($objProduct, 1, $arrConfig) !== false) {
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToFavorites']);
+        }
+
+        \Controller::reload();
     }
 
     /**
@@ -118,7 +178,7 @@ class Frontend extends \Frontend
         $strAlias = '';
 
         // Find products alias. Can't use Input because they're not yet initialized
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'])) {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strKey = 'auto_item';
         }
 
@@ -231,18 +291,13 @@ class Frontend extends \Frontend
      * @param array $arrGet
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4. See Isotope\EventListener\ChangeLanguageListener
      */
     public function translateProductUrls($arrGet)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $arrGet['url']['product'] = \Haste\Input\Input::getAutoItem('product', false, true);
-        } elseif (\Haste\Input\Input::getAutoItem('step', false, true) != '') {
-            $arrGet['url']['step'] = \Haste\Input\Input::getAutoItem('step', false, true);
-        } elseif (\Input::get('uid', false, true) != '') {
-            $arrGet['get']['uid'] = \Input::get('uid', false, true);
-        }
-
-        return $arrGet;
+        $listener = new ChangeLanguageListener();
+        return $listener->onTranslateUrlParameters($arrGet);
     }
 
 
@@ -424,6 +479,8 @@ class Frontend extends \Frontend
      * @param \Widget        $objWidget
      *
      * @return mixed
+     *
+     * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
@@ -491,10 +548,11 @@ class Frontend extends \Frontend
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
-        if (empty($arrPages)) {
+        if (0 === count($arrPages)) {
             return $arrPages;
         }
 
+        /** @var \PageModel $objPage */
         global $objPage;
 
         // $objPage not available, we don't know if the page is allowed
@@ -506,6 +564,8 @@ class Frontend extends \Frontend
         static $arrUnavailable = array();
 
         $intMember = 0;
+        $arrGroups = [];
+
         if (null !== $objMember) {
             $intMember = $objMember->id;
             $arrGroups = deserialize($objMember->groups, true);
@@ -570,37 +630,36 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        if (\Haste\Input\Input::getAutoItem('product', false, true) != '') {
-            $objProduct = Product::findAvailableByIdOrAlias(\Haste\Input\Input::getAutoItem('product', false, true));
+        /** @var \PageModel $objPage */
+        global $objPage;
 
-            if (null !== $objProduct) {
+        if (!($objPage->type instanceof \PageRegular)
+            || !($alias = Input::getAutoItem('product', false, true))
+            || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
+        ) {
+            return $arrItems;
+        }
 
-                /** @var \PageModel $objPage */
-                global $objPage;
-                global $objIsotopeListPage;
+        global $objIsotopeListPage;
+        $last = count($arrItems) - 1;
 
-                $last = count($arrItems) - 1;
+        // If we have a reader page, rename the last item (the reader) to the product title
+        if (null !== $objIsotopeListPage) {
+            $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
+            $arrItems[$last]['link']  = $objProduct->name;
+        } // Otherwise we add a new item for the product at the last position
+        else {
+            $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
+            $arrItems[$last]['isActive'] = false;
 
-                // If we have a reader page, rename the last item (the reader) to the product title
-                if (null !== $objIsotopeListPage) {
-                    $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
-                    $arrItems[$last]['link']  = $objProduct->name;
-                } // Otherwise we add a new item for the product at the last position
-                else {
-                    $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
-                    $arrItems[$last]['isActive'] = false;
-
-                    $arrItems[] = array
-                    (
-                        'isRoot'   => false,
-                        'isActive' => true,
-                        'href'     => $objProduct->generateUrl($objPage),
-                        'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
-                        'link'     => $objProduct->name,
-                        'data'     => $objPage->row(),
-                    );
-                }
-            }
+            $arrItems[] = array(
+                'isRoot'   => false,
+                'isActive' => true,
+                'href'     => $objProduct->generateUrl($objPage),
+                'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                'link'     => $objProduct->name,
+                'data'     => $objPage->row(),
+            );
         }
 
         return $arrItems;
@@ -728,13 +787,13 @@ class Frontend extends \Frontend
         $fltAmount = $fltPrice;
 
         if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
-            /** @type IsotopeProduct|Standard $objProduct */
+            /** @var IsotopeProduct|Standard $objProduct */
 
             $arrAttributes = array_intersect(
                 Attribute::getPricedFields(),
                 array_merge(
-                    $objProduct->getAttributes(),
-                    $objProduct->getVariantAttributes()
+                    $objProduct->getType()->getAttributes(),
+                    $objProduct->getType()->getVariantAttributes()
                 )
             );
 
@@ -747,7 +806,7 @@ class Frontend extends \Frontend
                     $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
                     $value = deserialize($value, true);
 
-                    /** @type AttributeOption $objOption */
+                    /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (in_array($objOption->id, $value)) {
                             $fltAmount += $objOption->getAmount($fltPrice, 0);

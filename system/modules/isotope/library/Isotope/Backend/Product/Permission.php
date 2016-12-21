@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -15,8 +14,6 @@ namespace Isotope\Backend\Product;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
-
 
 class Permission extends \Backend
 {
@@ -29,11 +26,11 @@ class Permission extends \Backend
     {
         $session = \Session::getInstance()->getData();
 
-        if (\Input::get('act') == 'delete' && in_array(\Input::get('id'), static::getUndeletableIds())) {
+        if ('delete' === \Input::get('act') && in_array(\Input::get('id'), static::getUndeletableIds())) {
             \System::log('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
 
-        } elseif (\Input::get('act') == 'deleteAll' && is_array($session['CURRENT']['IDS'])) {
+        } elseif ('deleteAll' === \Input::get('act') && is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
             if (count($arrDeletable) != count($session['CURRENT']['IDS'])) {
@@ -119,13 +116,13 @@ class Permission extends \Backend
 
         if (null === $arrProducts) {
             $arrProducts = \Database::getInstance()->query("
-                    SELECT i.product_id AS id FROM " . ProductCollectionItem::getTable() . " i
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT i.product_id AS id FROM tl_iso_product_collection_item i
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
                 UNION
-                    SELECT p.pid AS id FROM " . Product::getTable() . " p
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.pid AS id FROM tl_iso_product p
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.pid>0 AND c.type='order'
             ")->fetchEach('id');
         }
@@ -166,9 +163,9 @@ class Permission extends \Backend
                 SELECT id FROM tl_iso_product
                 WHERE pid=0
                     AND language=''
-                    " . (empty($arrGroups) ? '' : "AND gid IN (" . implode(',', $arrGroups) . ")") . "
+                    " . (empty($arrGroups) ? '' : 'AND gid IN (' . implode(',', $arrGroups) . ')') . "
                     AND (
-                        type IN (" . implode(',', $arrProductTypes) . ")" .
+                        type IN (" . implode(',', $arrProductTypes) . ')' .
                         ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
                     ")
             ");

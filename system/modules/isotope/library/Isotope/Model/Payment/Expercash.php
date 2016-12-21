@@ -3,40 +3,43 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
 use Haste\Http\Response\Response;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
-
+use Isotope\Module\Checkout;
 
 /**
- * Class Expercash
+ * Expercash payment method.
  *
- * @copyright Isotope eCommerce Workgroup 2009-2012
- * @author    Andreas Schempp <andreas.schempp@terminal42.ch>
+ * @property string $expercash_popupId
+ * @property string $expercash_profile
+ * @property string $expercash_popupKey
+ * @property string $expercash_paymentMethod
+ * @property string $expercash_css
  */
-class Expercash extends Payment implements IsotopePayment, IsotopePostsale
+class Expercash extends Payment implements IsotopePostsale
 {
-
     /**
-     * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  boolean
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         // @todo this can't be the only validation
         if ($this->validateUrlParams($objOrder)) {
             $objOrder->checkout();
@@ -48,25 +51,26 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         return false;
     }
 
-
     /**
-     * Process PayPal Instant Payment Notifications (IPN)
-     *
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if (!$this->validateUrlParams($objOrder)) {
             \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
-
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
@@ -77,8 +81,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -86,11 +89,7 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the PayPal form.
-     *
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -98,13 +97,13 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         (
             'popupId'       => $this->expercash_popupId,
             'jobId'         => microtime(),
-            'functionId'    => ($objOrder->member ?: $objOrder->uniqid),
-            'transactionId' => $objOrder->id,
-            'amount'        => (round($objOrder->getTotal(), 2) * 100),
-            'currency'      => $objOrder->currency,
+            'functionId'    => null !== $objOrder->getMember() ? $objOrder->getMember()->id : $objOrder->getUniqueId(),
+            'transactionId' => $objOrder->getId(),
+            'amount'        => round($objOrder->getTotal(), 2) * 100,
+            'currency'      => $objOrder->getCurrency(),
             'paymentMethod' => $this->expercash_paymentMethod,
-            'returnUrl'     => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'errorUrl'      => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'returnUrl'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'errorUrl'      => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'notifyUrl'     => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'       => $this->expercash_profile,
         );
@@ -136,14 +135,27 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
         return $strBuffer;
     }
 
-
-    private function validateUrlParams($objOrder)
+    /**
+     * Validate URL parameters against payment hacking.
+     *
+     * @param IsotopeProductCollection $objOrder
+     *
+     * @return bool
+     */
+    private function validateUrlParams(IsotopeProductCollection $objOrder)
     {
         if ($objOrder === null) {
             return false;
         }
 
-        $strKey = md5(\Input::get('amount') . \Input::get('currency') . \Input::get('paymentMethod') . \Input::get('transactionId') . \Input::get('GuTID') . $this->expercash_popupKey);
+        $strKey = md5(
+            \Input::get('amount')
+            . \Input::get('currency')
+            . \Input::get('paymentMethod')
+            . \Input::get('transactionId')
+            . \Input::get('GuTID')
+            . $this->expercash_popupKey
+        );
 
         if (\Input::get('exportKey') != $strKey) {
             \System::log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
@@ -157,13 +169,13 @@ class Expercash extends Payment implements IsotopePayment, IsotopePostsale
             return false;
         }
 
-        if (\Input::get('currency') != $objOrder->currency) {
+        if (\Input::get('currency') != $objOrder->getCurrency()) {
             \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('transactionId') != $objOrder->id) {
+        if (\Input::get('transactionId') != $objOrder->getId()) {
             \System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;

@@ -3,20 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\ProductType;
 
-use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionItem;
-
 
 class Permission extends \Backend
 {
@@ -29,11 +25,11 @@ class Permission extends \Backend
     {
         $session = \Session::getInstance()->getData();
 
-        if (\Input::get('act') == 'delete' && in_array(\Input::get('id'), static::getUndeletableIds())) {
+        if ('delete' === \Input::get('act') && in_array(\Input::get('id'), static::getUndeletableIds())) {
             \System::log('Product type ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
 
-        } elseif (\Input::get('act') == 'deleteAll' && is_array($session['CURRENT']['IDS'])) {
+        } elseif ('deleteAll' === \Input::get('act') && is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
             if (count($arrDeletable) != count($session['CURRENT']['IDS'])) {
@@ -63,7 +59,7 @@ class Permission extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_producttype']['fields']['variants']['input_field_callback'] = function($dc) {
 
                 // Make sure variants are disabled in this product type (see #1114)
-                \Database::getInstance()->prepare("UPDATE " . $dc->table . " SET variants='' WHERE id=?")->execute($dc->id);
+                \Database::getInstance()->prepare("UPDATE tl_iso_producttype SET variants='' WHERE id=?")->execute($dc->id);
 
                 return '<br><p class="tl_info">'.$GLOBALS['TL_LANG']['XPL']['noVariantAttributes'].'</p>';
             };
@@ -81,15 +77,15 @@ class Permission extends \Backend
 
         if (null === $arrProducts) {
             $arrProducts = \Database::getInstance()->query("
-                    SELECT p.type AS type FROM " . Product::getTable() . " p
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.type AS type FROM tl_iso_product p
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE p.type>0 AND c.type='order'
                 UNION
-                    SELECT p.type AS type FROM " . Product::getTable() . " p
-                    INNER JOIN " . Product::getTable() . " p2 ON p2.pid=p.pid
-                    INNER JOIN " . ProductCollectionItem::getTable() . " i ON i.product_id=p2.id
-                    INNER JOIN " . ProductCollection::getTable() . " c ON i.pid=c.id
+                    SELECT p.type AS type FROM tl_iso_product p
+                    INNER JOIN tl_iso_product p2 ON p2.pid=p.pid
+                    INNER JOIN tl_iso_product_collection_item i ON i.product_id=p2.id
+                    INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
             ")->fetchEach('type');
         }

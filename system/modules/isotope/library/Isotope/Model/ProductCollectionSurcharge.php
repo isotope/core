@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -250,8 +249,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     public static function findForCollection(IsotopeProductCollection $objCollection)
     {
-        $arrPreTax  = array();
-        $arrPostTax = array();
+        $arrPreTax  = [];
+        $arrPostTax = [];
+        $arrTaxes   = [];
 
         // !HOOK: get collection surcharges
         if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
@@ -274,17 +274,15 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             }
         }
 
-        $arrTaxes     = array();
-
         static::addTaxesForItems($arrTaxes, $objCollection, $arrPreTax);
 
         static::addTaxesForSurcharges(
             $arrTaxes,
             $arrPreTax,
-            array(
+            [
                 'billing'  => $objCollection->getBillingAddress(),
-                'shipping' => $objCollection->getShippingAddress()
-            )
+                'shipping' => $objCollection->getShippingAddress(),
+            ]
         );
 
         return array_merge($arrPreTax, $arrTaxes, $arrPostTax);
@@ -334,20 +332,20 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
         /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
         $objSurcharge = new $strClass();
-        $objSurcharge->label = ($strLabel . ' (' . $objSource->getLabel() . ')');
+        $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
         $objSurcharge->price = ($objSource->isPercentage() ? $objSource->getPercentage() . '%' : '&nbsp;');
         $objSurcharge->total_price = $objSource->getPrice();
-        $objSurcharge->tax_free_total_price = $objSource->total_price;
+        $objSurcharge->tax_free_total_price = $objSurcharge->total_price;
         $objSurcharge->tax_class = $intTaxClass;
         $objSurcharge->before_tax = ($intTaxClass ? true : false);
         $objSurcharge->addToTotal = true;
 
         if ($intTaxClass == -1) {
             $objSurcharge->applySplittedTax($objCollection, $objSource);
-        } elseif ($objSurcharge->tax_class > 0) {
+        } elseif ($intTaxClass > 0) {
 
             /** @var \Isotope\Model\TaxClass $objTaxClass */
-            if (($objTaxClass = TaxClass::findByPk($objSurcharge->tax_class)) !== null) {
+            if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
 
                 /** @var \Isotope\Model\TaxRate $objIncludes */
                 if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
@@ -396,7 +394,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 continue;
             }
 
-            $arrTaxIds = array();
+            $arrTaxIds = [];
             $fltPrice  = $objItem->getTotalPrice();
 
             /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
@@ -409,33 +407,32 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             if (null === $productAddresses) {
                 $productAddresses = array(
                     'billing'  => $objCollection->getBillingAddress(),
-                    'shipping' => ($objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress()),
+                    'shipping' => $objProduct->isExemptFromShipping() ? $objCollection->getBillingAddress() : $objCollection->getShippingAddress(),
                 );
             }
 
             /** @var \Isotope\Model\TaxRate $objIncludes */
-            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
-                if ($objIncludes->isApplicable($fltPrice, $productAddresses)) {
-                    $addToTotal = static::getTaxAddState(false);
-                    $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
+                && $objIncludes->isApplicable($fltPrice, $productAddresses)
+            ) {
+                $addToTotal = static::getTaxAddState(false);
+                $total = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
-                    $arrTaxIds[] = static::addTax(
-                        $arrTaxes,
-                        $objTaxClass->id . '_' . $objIncludes->id,
-                        ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
-                        $objIncludes->getAmount(),
-                        $objIncludes->isPercentage(),
-                        $total,
-                        $objTaxClass->applyRoundingIncrement,
-                        $addToTotal,
-                        false
-                    );
-                }
+                $arrTaxIds[] = static::addTax(
+                    $arrTaxes,
+                    $objTaxClass->id . '_' . $objIncludes->id,
+                    ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
+                    $objIncludes->getAmount(),
+                    $objIncludes->isPercentage(),
+                    $total,
+                    $objTaxClass->applyRoundingIncrement,
+                    $addToTotal,
+                    false
+                );
             }
 
+            /** @var \Isotope\Model\TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
-
-                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $productAddresses)) {
@@ -499,30 +496,29 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $fltPrice = $objSurcharge->total_price;
 
             /** @var \Isotope\Model\TaxRate $objIncludes */
-            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
-                if ($objIncludes->isApplicable($fltPrice, $arrAddresses)) {
-                    $addToTotal = static::getTaxAddState(false);
-                    $fltPrice = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
+            if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
+                && $objIncludes->isApplicable($fltPrice, $arrAddresses)
+            ) {
+                $addToTotal = static::getTaxAddState(false);
+                $fltPrice = $addToTotal ? $objIncludes->calculateAmountAddedToPrice($fltPrice) : $objIncludes->calculateAmountIncludedInPrice($fltPrice);
 
-                    $taxId = static::addTax(
-                        $arrTaxes,
-                        $objTaxClass->id . '_' . $objIncludes->id,
-                        ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
-                        $objIncludes->getAmount(),
-                        $objIncludes->isPercentage(),
-                        $fltPrice,
-                        $objTaxClass->applyRoundingIncrement,
-                        $addToTotal,
-                        $objTaxClass->notNegative
-                    );
+                $taxId = static::addTax(
+                    $arrTaxes,
+                    $objTaxClass->id . '_' . $objIncludes->id,
+                    ($objTaxClass->getLabel() ?: $objIncludes->getLabel()),
+                    $objIncludes->getAmount(),
+                    $objIncludes->isPercentage(),
+                    $fltPrice,
+                    $objTaxClass->applyRoundingIncrement,
+                    $addToTotal,
+                    $objTaxClass->notNegative
+                );
 
-                    $objSurcharge->addTaxNumber($taxId);
-                }
+                $objSurcharge->addTaxNumber($taxId);
             }
 
+            /** @var \Isotope\Model\TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
-
-                /** @var \Isotope\Model\TaxRate $objTaxRate */
                 foreach ($objRates as $objTaxRate) {
 
                     if ($objTaxRate->isApplicable($fltPrice, $arrAddresses)) {

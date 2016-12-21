@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -22,8 +21,6 @@ use Isotope\Model\Product\Standard;
 
 /**
  * ProductPrice defines an advanced price of a product
- *
- * @method static|ProductPriceCollection find()
  */
 class ProductPrice extends \Model implements IsotopePrice
 {
@@ -185,7 +182,7 @@ class ProductPrice extends \Model implements IsotopePrice
                 return $this->arrTiers[$intTier];
             }
 
-            $intTier -= 1;
+            --$intTier;
 
         } while ($intTier > 0);
 
@@ -237,7 +234,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find prices for a given product and collection
      *
-     * @param IsotopeProduct|Standard                    $objProduct
+     * @param IsotopeProduct                             $objProduct
      * @param IsotopeProductCollection|ProductCollection $objCollection
      * @param array                                      $arrOptions
      *
@@ -274,9 +271,10 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrIds = $objProduct->getVariantIds() ?: array(0);
             $arrOptions['column'][] = "$t.pid IN (" . implode(',', $arrIds) . ")";
         } else {
-            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->id : $objProduct->getProductId());
+            $arrOptions['column'][] = "$t.pid=" . ($objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId());
         }
 
+        /** @var ProductPriceCollection $objResult */
         $objResult = static::find($arrOptions);
 
         return (null === $objResult) ? null : $objResult->filterDuplicatesBy('pid');

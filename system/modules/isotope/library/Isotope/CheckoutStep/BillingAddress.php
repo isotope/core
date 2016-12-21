@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -16,15 +15,14 @@ use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Address as AddressModel;
+use Isotope\Module\Checkout;
 
 
 class BillingAddress extends Address implements IsotopeCheckoutStep
 {
 
     /**
-     * Returns true to enable the module
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -32,24 +30,39 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     *
-     * @return string
+     * @inheritdoc
+     */
+    public function isSkippable()
+    {
+        return true === FE_USER_LOGGED_IN && $this->objModule->canSkipStep('billing_address');
+    }
+
+    /**
+     * @inheritdoc
      */
     public function generate()
     {
-        $blnRequiresPayment = Isotope::getCart()->requiresPayment();
+        $requiresPayment = Isotope::getCart()->requiresPayment();
 
-        $this->Template->headline = $blnRequiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];
-        $this->Template->message  = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($blnRequiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
+        $this->Template->headline = $requiresPayment ? $GLOBALS['TL_LANG']['MSC']['billing_address'] : $GLOBALS['TL_LANG']['MSC']['customer_address'];
+
+        if ($this->isSkippable()) {
+            $address = $this->getDefaultMemberAddress();
+            $address->save();
+
+            Isotope::getCart()->setBillingAddress($address);
+            $this->Template->options = $address->generate();
+
+            return $this->Template->parse();
+        }
+
+        $this->Template->message  = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
 
         return parent::generate();
     }
 
     /**
-     * Return review information for last page of checkout
-     *
-     * @return string
+     * @inheritdoc
      */
     public function review()
     {
@@ -59,12 +72,15 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         $objBillingAddress   = $draftOrder->getBillingAddress();
         $objShippingAddress  = $draftOrder->getShippingAddress();
 
+        $canEdit     = !$this->isSkippable();
         $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_address'];
 
         if ($blnRequiresPayment && $blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id) {
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['billing_shipping_address'];
+            $canEdit     = $canEdit || !$this->objModule->canSkipStep('shipping_address');
         } elseif ($blnRequiresShipping && $objBillingAddress->id == $objShippingAddress->id) {
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['shipping_address'];
+            $canEdit     = $canEdit || !$this->objModule->canSkipStep('shipping_address');
         } elseif (!$blnRequiresPayment && !$blnRequiresShipping) {
             $strHeadline = $GLOBALS['TL_LANG']['MSC']['customer_address'];
         }
@@ -73,16 +89,12 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
         (
             'headline' => $strHeadline,
             'info'     => $objBillingAddress->generate(Isotope::getConfig()->getBillingFieldsConfig()),
-            'edit'     => \Isotope\Module\Checkout::generateUrlForStep('address'),
+            'edit'     => $canEdit ? Checkout::generateUrlForStep('address') : '',
         ));
     }
 
     /**
-     * Return array of tokens for notification
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
@@ -90,34 +102,25 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Get available address options
-     *
-     * @param array $arrFields
-     *
-     * @return  array
+     * @inheritdoc
      */
     protected function getAddressOptions($arrFields = null)
     {
         $arrOptions = parent::getAddressOptions(Isotope::getConfig()->getBillingFieldsConfig());
 
-        if (!empty($arrOptions)) {
-            $arrOptions[] = array(
+        if (0 !== count($arrOptions)) {
+            $arrOptions[] = [
                 'value'   => '0',
                 'label'   => &$GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'],
-                'default' => ($this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id),
-            );
+                'default' => $this->getDefaultAddress()->id == Isotope::getCart()->billing_address_id,
+            ];
         }
 
         return $arrOptions;
     }
 
     /**
-     * Get address object for a selected option
-     *
-     * @param string $varValue
-     * @param bool   $blnValidate
-     *
-     * @return AddressModel
+     * @inheritdoc
      */
     protected function getAddressForOption($varValue, $blnValidate)
     {
@@ -140,9 +143,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Get default address for this collection and address type
-     *
-     * @return Address
+     * @return AddressModel
      */
     protected function getDefaultAddress()
     {
@@ -160,9 +161,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Get field configuration for this address type
-     *
-     * @return array
+     * @inheritdoc
      */
     protected function getAddressFields()
     {
@@ -170,9 +169,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Get allowed countries for this address type
-     *
-     * @return array
+     * @inheritdoc
      */
     protected function getAddressCountries()
     {
@@ -180,9 +177,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Get the current address (from Cart) for this address type
-     *
-     * @return Address
+     * @inheritdoc
      */
     protected function getAddress()
     {
@@ -196,12 +191,31 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * Set new address in cart
-     *
-     * @param AddressModel $objAddress
+     * @inheritdoc
      */
     protected function setAddress(AddressModel $objAddress)
     {
         Isotope::getCart()->setBillingAddress($objAddress);
+    }
+
+    /**
+     * @return AddressModel
+     */
+    private function getDefaultMemberAddress()
+    {
+        $address = $this->getDefaultAddress();
+
+        if ($address->id > 0 && true === FE_USER_LOGGED_IN) {
+            $data = AddressModel::getAddressDataForMember(
+                Isotope::getCart()->getMember(),
+                Isotope::getConfig()->getBillingFields()
+            );
+
+            foreach ($data as $k => $v) {
+                $address->{$k} = $v;
+            }
+        }
+
+        return $address;
     }
 }

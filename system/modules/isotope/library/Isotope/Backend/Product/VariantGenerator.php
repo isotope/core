@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -33,7 +32,7 @@ class VariantGenerator extends \Backend
         $strBuffer   = '';
         $arrOptions  = array();
 
-        foreach ($objProduct->getRelated('type')->getVariantAttributes() as $attribute) {
+        foreach ($objProduct->getType()->getVariantAttributes() as $attribute) {
             if ($GLOBALS['TL_DCA'][$table]['fields'][$attribute]['attributes']['variant_option']) {
 
                 $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
@@ -86,14 +85,14 @@ class VariantGenerator extends \Backend
 
             foreach ($arrCombinations as $combination) {
 
-                $objVariant = \Database::getInstance()->prepare("
-                    SELECT * FROM $table WHERE pid=? AND " . implode('=? AND ', array_keys($combination)) . "=?"
+                $objVariant = \Database::getInstance()->prepare('
+                    SELECT * FROM tl_iso_product WHERE pid=? AND ' . implode('=? AND ', array_keys($combination)) . '=?'
                 )->execute(array_merge(array($objProduct->id), $combination));
 
                 if (!$objVariant->numRows) {
 
                     $arrInherit = array_diff(
-                        $objProduct->getRelated('type')->getVariantAttributes(),
+                        $objProduct->getType()->getVariantAttributes(),
                         Attribute::getVariantOptionFields(),
                         Attribute::getCustomerDefinedFields(),
                         Attribute::getSystemColumnsFields()

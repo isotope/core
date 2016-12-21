@@ -3,44 +3,57 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Template;
 
-
-class Sofortueberweisung extends Postsale implements IsotopePayment
+/**
+ * Sofortueberweisung payment method
+ *
+ * @property string $sofortueberweisung_user_id
+ * @property string $sofortueberweisung_project_id
+ * @property string sofortueberweisung_project_password
+ */
+class Sofortueberweisung extends Postsale
 {
-
     /**
      * sofortueberweisung.de only supports these currencies
-     * @return  true
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
-        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'))) {
+        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'), true)) {
             return false;
         }
 
-        return parent::isAvailable();
+        try {
+            return parent::isAvailable();
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
-
     /**
-     * Handle the server to server postsale request
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         $arrHash = array(
             'transaction'               => \Input::post('transaction'),
             'user_id'                   => \Input::post('user_id'),
@@ -88,15 +101,14 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             return;
         }
 
-        $objOrder->date_paid = time();
+        $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
         $objOrder->save();
     }
 
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -104,14 +116,16 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $strCountry = in_array($objOrder->getBillingAddress()->country, array('de', 'ch', 'at')) ? $objOrder->getBillingAddress()->country : 'de';
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $strCountry = in_array($objOrder->getBillingAddress()->country, ['de', 'ch', 'at'], true) ? $objOrder->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 
         $arrParams = array
@@ -123,12 +137,12 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
             'sender_bank_code'      => '',
             'sender_country_id'     => strtoupper($objOrder->getBillingAddress()->country),
             'amount'                => number_format($objOrder->getTotal(), 2, '.', ''),
-            'currency_id'           => $objOrder->currency,
+            'currency_id'           => $objOrder->getCurrency(),
             'reason_1'              => \Environment::get('host'),
             'reason_2'              => '',
-            'user_variable_0'       => $objOrder->id,
+            'user_variable_0'       => $objOrder->getId(),
             'user_variable_1'       => $this->id,
-            'user_variable_2'       => $objOrder->uniqid,
+            'user_variable_2'       => $objOrder->getUniqueId(),
             'user_variable_3'       => '',
             'user_variable_4'       => '',
             'user_variable_5'       => '',
@@ -138,7 +152,8 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         $arrParams['hash']        = sha1(implode('|', $arrParams));
         $arrParams['language_id'] = $GLOBALS['TL_LANGUAGE'];
 
-        $objTemplate = new \Isotope\Template('iso_payment_sofortueberweisung');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_sofortueberweisung');
         $objTemplate->setData($this->arrData);
         $objTemplate->action   = $strUrl;
         $objTemplate->params   = array_filter(array_diff_key($arrParams, array('project_password' => '')));
@@ -150,4 +165,3 @@ class Sofortueberweisung extends Postsale implements IsotopePayment
         return $objTemplate->parse();
     }
 }
-

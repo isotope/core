@@ -3,35 +3,35 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2013 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
-
-class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
+class Paybyway extends Payment implements IsotopePostsale
 {
-
     /**
      * Paybyway only supports EUR currency
-     * @return  bool
+     *
+     * @inheritdoc
      */
     public function isAvailable()
     {
         $objConfig = Isotope::getConfig();
 
-        if (null === $objConfig || $objConfig->currency != 'EUR') {
+        if (null === $objConfig || 'EUR' !== $objConfig->currency) {
             return false;
         }
 
@@ -39,14 +39,12 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Return the redirect form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_paybyway');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_paybyway');
 
         $objTemplate->action   = 'https://www.paybyway.com/e-payments/pay';
         $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
@@ -57,8 +55,8 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         $objTemplate->merchant_id = (int) $this->paybyway_merchant_id;
         $objTemplate->amount = round($objOrder->getTotal() * 100);
         $objTemplate->currency = 'EUR';
-        $objTemplate->order_number = $objOrder->id;
-        $objTemplate->lang = ($GLOBALS['TL_LANGUAGE'] == 'fi' ? 'FI' : 'EN');
+        $objTemplate->order_number = $objOrder->getId();
+        $objTemplate->lang = ('fi' === $GLOBALS['TL_LANGUAGE'] ? 'FI' : 'EN');
         $objTemplate->return_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->cancel_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
 
@@ -82,10 +80,7 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
     }
 
     /**
-     * Process payment on checkout page.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return  mixed
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -96,13 +91,16 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         return false;
     }
 
-
     /**
-     * Process post-sale requestion from the PSP payment server.
-     * @param   IsotopeProductCollection
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if ($this->debug) {
             $this->paybyway_private_key = 'private_key';
         }
@@ -116,27 +114,27 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
         ));
 
         if (\Input::post('AUTHCODE') != $strChecksum) {
-            \System::log('Postsale manipulation for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
-            \Isotope\Module\Checkout::redirectToStep('failed');
+            \System::log('Postsale manipulation for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+            Checkout::redirectToStep('failed');
         }
 
         switch (\Input::post('RETURN_CODE')) {
 
             case 0: // Payment completed successfully.
                 if ($objOrder->checkout()) {
-                    $objOrder->date_paid = time();
+                    $objOrder->setDatePaid(time());
                     $objOrder->updateOrderStatus($this->new_order_status);
-                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                    Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
 
             case 4: // Transaction status could not be updated after customer returned from the web page of a bank. Please use the merchant UI to resolve the payment status.
-                if (($objConfig = $objOrder->getRelated('config_id')) === null) {
-                    \System::log('Config for Order ID ' . $objOrder->id . ' not found', __METHOD__, TL_ERROR);
+                if (null === $objOrder->getConfig()) {
+                    \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
 
                 } elseif ($objOrder->checkout()) {
-                    $objOrder->updateOrderStatus($objConfig->orderstatus_error);
-                    \Isotope\Module\Checkout::redirectToStep('complete', $objOrder);
+                    $objOrder->updateOrderStatus($objOrder->getConfig()->orderstatus_error);
+                    Checkout::redirectToStep('complete', $objOrder);
                 }
                 break;
 
@@ -148,15 +146,13 @@ class Paybyway extends Payment implements IsotopePayment, IsotopePostsale
                 break;
         }
 
-        \System::log('Paybyway checkout failed for order ID ' . $objOrder->id, __METHOD__, TL_ERROR);
+        \System::log('Paybyway checkout failed for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
 
-        \Isotope\Module\Checkout::redirectToStep('failed');
+        Checkout::redirectToStep('failed');
     }
 
-
     /**
-     * Get the order object in a postsale request
-     * @return  IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -115,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
     (
         '__selector__'              => array('class', 'prices', 'variants'),
         'default'                   => '{name_legend},name,class',
-        'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+        'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
     ),
 
     // Subpalettes
@@ -130,11 +129,11 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
     (
         'id' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL auto_increment",
+            'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
         (
-            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+            'sql'                   =>  "int(10) unsigned NOT NULL default '0'",
         ),
         'name' => array
         (
@@ -220,7 +219,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['list_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'      		=> \Isotope\Model\Gallery::getTable().'.name',
+            'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
@@ -229,9 +228,18 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['reader_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'      		=> \Isotope\Model\Gallery::getTable().'.name',
+            'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'cssClass' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['cssClass'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'search'                => true,
+            'eval'                  => array('maxlength'=>64, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'attributes' => array
         (
@@ -297,6 +305,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'save_callback'         => array
             (
                 array('Isotope\Backend\ProductType\Callback', 'validateVariantAttributes'),
+                array('Isotope\Backend\ProductType\Callback', 'validateSingularAttributes'),
                 array('Isotope\Backend\ProductType\AttributeWizard', 'save'),
             ),
         ),

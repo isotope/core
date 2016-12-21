@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -26,6 +25,9 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 
+/**
+ * ProductFilter allows to filter a product list by attributes.
+ */
 class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
 
@@ -50,16 +52,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     public function generate()
     {
         if ('BE' === TL_MODE) {
-            /** @var \BackendTemplate|object $objTemplate */
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: PRODUCT FILTERS ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+            return $this->generateWildcard();
         }
 
         $this->generateAjax();
@@ -102,10 +95,10 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         }
 
         if ($this->iso_searchAutocomplete && \Input::get('iso_autocomplete') == $this->id) {
-            $objProducts = Product::findPublishedByCategories($this->findCategories(), array('order' => 'c.sorting'));
+            $objProducts = Product::findPublishedByCategories($this->findCategories(), ['order' => 'c.sorting']);
 
             if (null === $objProducts) {
-                $objResponse = new JsonResponse(array());
+                $objResponse = new JsonResponse([]);
                 $objResponse->send();
             }
 
@@ -187,7 +180,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 if (!$this->blnUpdateCache
                     && null !== $this->objModel->getRelated('jumpTo')
                 ) {
-                    /** @type \PageModel $objJumpTo */
+                    /** @var \PageModel $objJumpTo */
                     $objJumpTo = $this->objModel->getRelated('jumpTo');
                     $strUrl    = $objJumpTo->getFrontendUrl() . '?' . $_SERVER['QUERY_STRING'];
 
@@ -226,7 +219,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->hasFilters = false;
 
         if (0 !== count($this->iso_filterFields)) {
-            $arrFilters    = array();
+            $arrFilters    = [];
             $arrInput      = \Input::post('filter');
             $arrCategories = $this->findCategories();
 
@@ -336,13 +329,13 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->hasSorting = false;
 
         if (0 !== count($this->iso_sortingFields)) {
-            $arrOptions = array();
+            $arrOptions = [];
 
             // Cache new request value
             // @todo should support multiple sorting fields
             list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
 
-            if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields)) {
+            if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields, true)) {
                 Isotope::getRequestCache()->setSortingForModule(
                     $sortingField,
                     ('DESC' === $sortingDirection ? Sort::descending() : Sort::ascending()),
@@ -351,7 +344,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
             } elseif (array_diff(
                 array_keys(
-                    Isotope::getRequestCache()->getSortingsForModules(array($this->id))
+                    Isotope::getRequestCache()->getSortingsForModules([$this->id])
                 ),
                 $this->iso_sortingFields
             )) {
@@ -367,21 +360,28 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
                 $first = Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id);
 
+                if ('' === $first) {
+                    $first = $this->iso_listingSortField;
+                    $objSorting = 'DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending();
+                } else {
+                    $objSorting = Isotope::getRequestCache()->getSortingForModule($first, $this->id);
+                }
+
                 foreach ($this->iso_sortingFields as $field) {
                     list($asc, $desc) = $this->getSortingLabels($field);
-                    $objSorting = $first == $field ? Isotope::getRequestCache()->getSortingForModule($field, $this->id) : null;
+                    $isDefault = $first === $field && null !== $objSorting;
 
-                    $arrOptions[] = array(
+                    $arrOptions[] = [
                         'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $asc,
                         'value'   => $field . ':ASC',
-                        'default' => (null !== $objSorting && $objSorting->isAscending()) ? '1' : '',
-                    );
+                        'default' => ($isDefault && $objSorting->isAscending()) ? '1' : '',
+                    ];
 
-                    $arrOptions[] = array(
+                    $arrOptions[] = [
                         'label'   => Format::dcaLabel('tl_iso_product', $field) . ', ' . $desc,
                         'value'   => $field . ':DESC',
-                        'default' => (null !== $objSorting && $objSorting->isDescending()) ? '1' : '',
-                    );
+                        'default' => ($isDefault && $objSorting->isDescending()) ? '1' : '',
+                    ];
                 }
             }
 
@@ -399,9 +399,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->hasLimit = false;
 
         if ($this->iso_enableLimit) {
-            $arrOptions = array();
+            $arrOptions = [];
             $arrLimit   = array_map('intval', trimsplit(',', $this->iso_perPage));
-            $objLimit   = Isotope::getRequestCache()->getFirstLimitForModules(array($this->id));
+            $objLimit   = Isotope::getRequestCache()->getFirstLimitForModules([$this->id]);
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);
 
@@ -422,11 +422,11 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 // No need to generate options if we reload anyway
 
                 foreach ($arrLimit as $limit) {
-                    $arrOptions[] = array(
+                    $arrOptions[] = [
                         'label'   => $limit,
                         'value'   => $limit,
                         'default' => $objLimit->equals($limit) ? '1' : '',
-                    );
+                    ];
                 }
 
                 $this->Template->hasLimit     = true;

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -55,9 +54,9 @@ class AttributeOption extends \MultilingualModel
     {
         return array(
             'value'     => $this->id,
-            'label'     => ($blnPriceInLabel ? $this->getLabel($objProduct) : $this->label),
-            'group'     => ($this->type == 'group' ? '1' : ''),
-            'default'   => ($this->isDefault ? '1' : ''),
+            'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
+            'group'     => 'group' === $this->type ? '1' : '',
+            'default'   => $this->isDefault ? '1' : '',
             'model'     => $this
         );
     }
@@ -69,10 +68,10 @@ class AttributeOption extends \MultilingualModel
      */
     public function getAttribute()
     {
-        if ($this->ptable == 'tl_iso_attribute') {
+        if ('tl_iso_attribute' === $this->ptable) {
             return Attribute::findByPk($this->pid);
 
-        } elseif ($this->ptable == 'tl_iso_product') {
+        } elseif ('tl_iso_product' === $this->ptable) {
             return Attribute::findByFieldName($this->field_name);
 
         } else {
@@ -87,7 +86,7 @@ class AttributeOption extends \MultilingualModel
      */
     public function isPercentage()
     {
-        return substr($this->arrData['price'], -1) == '%' ? true : false;
+        return '%' === substr($this->arrData['price'], -1) ? true : false;
     }
 
     /**
@@ -101,7 +100,7 @@ class AttributeOption extends \MultilingualModel
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
-            /** @type ProductPrice[] $objPrice */
+            /** @var ProductPrice[] $objPrice */
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice && $objPrice instanceof ProductPriceCollection) {
@@ -147,7 +146,7 @@ class AttributeOption extends \MultilingualModel
     {
         if ($this->isPercentage() && null !== $objProduct) {
 
-            /** @type ProductPrice|ProductPrice[] $objPrice */
+            /** @var ProductPrice|ProductPrice[] $objPrice */
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice) {
@@ -170,7 +169,7 @@ class AttributeOption extends \MultilingualModel
             }
         } else {
 
-            /** @type ProductPrice|ProductPrice[] $objPrice */
+            /** @var ProductPrice|ProductPrice[] $objPrice */
             if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
                 return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
             } else {
@@ -210,7 +209,7 @@ class AttributeOption extends \MultilingualModel
         $strLabel    = $this->label;
         $priceFormat = '%s (%s)';
 
-        /** @type Attribute $objAttribute */
+        /** @var Attribute $objAttribute */
         $objAttribute = null;
 
         switch ($this->ptable) {
@@ -246,27 +245,25 @@ class AttributeOption extends \MultilingualModel
      * @param IsotopeAttributeWithOptions|Attribute $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
+     *
+     * @throws \LogicException if attribute option source is not the database table
      */
     public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute)
     {
-        if ($objAttribute->optionsSource != 'table') {
+        if (IsotopeAttributeWithOptions::SOURCE_TABLE !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table');
         }
 
         $t = static::getTable();
 
         return static::findBy(
-            array(
+            [
                 "$t.pid=?",
                 "$t.ptable='tl_iso_attribute'",
                 "$t.published='1'"
-            ),
-            array(
-                $objAttribute->id
-            ),
-            array(
-                'order' => "$t.sorting"
-            )
+            ],
+            [$objAttribute->id],
+            ['order' => "$t.sorting"]
         );
     }
 
@@ -277,11 +274,13 @@ class AttributeOption extends \MultilingualModel
      * @param IsotopeAttributeWithOptions $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
+     *
+     * @throws \LogicException if attribute options source is not the product
      */
     public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
     {
-        if ($objAttribute->optionsSource != 'product') {
-            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the product');
+        if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
+            throw new \LogicException('Options source for attribute "' . $objAttribute->getFieldName() . '" is not the product');
         }
 
         $t = static::getTable();
@@ -300,11 +299,9 @@ class AttributeOption extends \MultilingualModel
             ),
             array(
                 $productId,
-                $objAttribute->field_name
+                $objAttribute->getFieldName()
             ),
-            array(
-                'order' => "$t.sorting"
-            )
+            ['order' => "$t.sorting"]
         );
     }
 

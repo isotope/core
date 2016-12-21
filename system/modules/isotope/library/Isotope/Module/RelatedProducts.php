@@ -3,18 +3,19 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
 
 use Haste\Input\Input;
+use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedProduct;
+use Isotope\RequestCache\Sort;
 
 /**
  * Class ModuleIsotopeRelatedProducts
@@ -23,6 +24,17 @@ use Isotope\Model\RelatedProduct;
  */
 class RelatedProducts extends ProductList
 {
+    /**
+     * @inheritDoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_related_categories';
+
+        return $props;
+    }
 
     /**
      * Generate the module
@@ -30,25 +42,15 @@ class RelatedProducts extends ProductList
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: RELATED PRODUCTS ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
         }
 
         if (!Input::getAutoItem('product', false, true)) {
             return '';
         }
 
-        $this->iso_related_categories = deserialize($this->iso_related_categories);
-
-        if (!is_array($this->iso_related_categories) || empty($this->iso_related_categories)) {
+        if (0 === count($this->iso_related_categories)) {
             return '';
         }
 
@@ -66,31 +68,52 @@ class RelatedProducts extends ProductList
      */
     protected function findProducts($arrCacheIds = null)
     {
-        $arrIds = array(0);
+        $productIds     = [];
+        $currentProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
 
-        $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
-
-        if (null === $objProduct) {
-            return array();
+        if (null === $currentProduct) {
+            return [];
         }
 
-        $objRelated = RelatedProduct::findByProductAndCategories($objProduct, $this->iso_related_categories);
+        /** @var RelatedProduct[] $relatedProducts */
+        $relatedProducts = RelatedProduct::findByProductAndCategories($currentProduct, $this->iso_related_categories);
 
-        if (null !== $objRelated) {
-            while ($objRelated->next()) {
-                $ids = trimsplit(',', $objRelated->products);
+        if (null !== $relatedProducts) {
+            foreach ($relatedProducts as $category) {
+                $ids = trimsplit(',', $category->products);
 
-                if (!empty($ids) && is_array($ids)) {
-                    $arrIds = array_unique(array_merge($arrIds, $ids));
+                if (is_array($ids) && 0 !== count($ids)) {
+                    $productIds = array_unique(array_merge($productIds, $ids));
                 }
             }
         }
 
-        $objProducts = Product::findAvailableByIds($arrIds, array(
-            'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrIds)
-        ));
+        if (0 === count($productIds)) {
+            return [];
+        }
 
-        return (null === $objProducts) ? array() : $objProducts->getModels();
+        $columns = [Product::getTable() . '.id IN (' . implode(',', array_map('intval', $productIds)) . ')'];
+        $options = ['order' => \Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
+
+        // Apply new/old product filter
+        if ('show_new' === $this->iso_newFilter) {
+            $columns[] = Product::getTable() . '.dateAdded>=' . Isotope::getConfig()->getNewProductLimit();
+        } elseif ('show_old' === $this->iso_newFilter) {
+            $columns[] = Product::getTable() . '.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
+        }
+
+        if ($this->iso_list_where != '') {
+            $columns[] = $this->iso_list_where;
+        }
+
+        if ($this->iso_listingSortField != '') {
+            $direction = 'DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending();
+            $options['sorting'] = [$this->iso_listingSortField => $direction];
+        }
+
+        $objProducts = Product::findAvailableBy($columns, [], $options);
+
+        return (null === $objProducts) ? [] : $objProducts->getModels();
     }
 
     /**
@@ -101,6 +124,9 @@ class RelatedProducts extends ProductList
         parent::compileEmptyMessage(false);
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function getCacheKey()
     {
         return md5(

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -258,9 +257,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('cart_items', 'cart_products'),
+            'options'               => [
+                \Isotope\Model\Shipping::QUANTITY_MODE_ITEMS,
+                \Isotope\Model\Shipping::QUANTITY_MODE_PRODUCTS,
+            ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'minimum_quantity' => array
@@ -356,7 +358,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('first', 'lowest', 'highest', 'summarize'),
+            'options'               => [
+                \Isotope\Model\Shipping\Group::CALCULATE_FIRST,
+                \Isotope\Model\Shipping\Group::CALCULATE_LOWEST,
+                \Isotope\Model\Shipping\Group::CALCULATE_HIGHEST,
+                \Isotope\Model\Shipping\Group::CALCULATE_SUM,
+            ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",

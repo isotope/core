@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope;
@@ -22,16 +21,7 @@ define('TL_SCRIPT', 'system/modules/isotope/group.php');
  */
 define('TL_MODE', 'BE');
 
-// Include the Contao initialization script
-if (file_exists('../../initialize.php')) {
-    // Regular way
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../initialize.php');
-} else {
-    // Try composer location (see #1136)
-    /** @noinspection PhpIncludeInspection */
-    require_once('../../../../../../../system/initialize.php');
-}
+require_once('initialize.php');
 
 
 /**

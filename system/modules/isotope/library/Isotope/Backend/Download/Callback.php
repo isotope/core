@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Download;
@@ -24,9 +23,12 @@ class Callback extends \Backend
 
     /**
      * List download files
-     * @param   array
+     *
+     * @param array $row
+     *
      * @return  string
-     * @see     https://contao.org/de/manual/3.1/data-container-arrays.html#label_callback
+     *
+     * @see https://contao.org/de/manual/3.1/data-container-arrays.html#label_callback
      */
     public function listRows($row)
     {
@@ -39,7 +41,7 @@ class Callback extends \Backend
 
         $path = $objDownload->getRelated('singleSRC')->path;
 
-        if ($objDownload->getRelated('singleSRC')->type == 'folder') {
+        if ('folder' === $objDownload->getRelated('singleSRC')->type) {
             $arrDownloads = array();
 
             foreach (scan(TL_ROOT . '/' . $path) as $file) {
@@ -50,7 +52,7 @@ class Callback extends \Backend
                 }
             }
 
-            if (empty($arrDownloads)) {
+            if (0 === count($arrDownloads)) {
                 return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
             }
 
@@ -67,13 +69,16 @@ class Callback extends \Backend
 
     /**
      * Generate header fields for product or variant
-     * @param   array
-     * @param   \Contao\DataContainer
+     *
+     * @param array                 $arrFields
+     * @param \Contao\DataContainer $dc
+     *
+     * @return array
      */
     public function headerFields($arrFields, $dc)
     {
-        $t = Product::getTable();
-        $arrNew = array();
+        $t          = Product::getTable();
+        $arrNew     = array();
         $objProduct = Product::findByPk($dc->id);
 
         if (null === $objProduct) {
@@ -86,7 +91,7 @@ class Callback extends \Backend
             $arrAttributes = array_merge(
                 $arrAttributes,
                 array_intersect(
-                    array_merge($objProduct->getAttributes(), $objProduct->getVariantAttributes()),
+                    array_merge($objProduct->getType()->getAttributes(), $objProduct->getType()->getVariantAttributes()),
                     Attribute::getVariantOptionFields()
                 )
             );
@@ -121,7 +126,7 @@ class Callback extends \Backend
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        return '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -138,8 +143,8 @@ class Callback extends \Backend
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
         if (strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            \Controller::redirect($this->getReferer());
+            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
+            \Controller::redirect(\System::getReferer());
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
@@ -153,7 +158,7 @@ class Callback extends \Backend
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
-        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -190,6 +195,6 @@ class Callback extends \Backend
         \Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
     }
 }

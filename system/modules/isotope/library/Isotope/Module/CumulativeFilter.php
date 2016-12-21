@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Module;
@@ -97,17 +96,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if (TL_MODE == 'BE') {
-            /** @var \BackendTemplate|object $objTemplate */
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### ISOTOPE ECOMMERCE: CUMULATIVE FILTER ###';
-            $objTemplate->title    = $this->headline;
-            $objTemplate->id       = $this->id;
-            $objTemplate->link     = $this->name;
-            $objTemplate->href     = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-            return $objTemplate->parse();
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
         }
 
         // Hide product list in reader mode if the respective setting is enabled
@@ -289,8 +279,14 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     protected function generateOptionItem($attribute, $label, $value, $matchCount, $isActive)
     {
         $value = base64_encode($this->id . ';' . ($isActive ? 'del' : 'add') . ';' . $attribute . ';' . $value);
-        $href  = Url::addQueryString('cumulativefilter=' . $value);
         $link  = $label;
+
+        $href  = Url::addQueryString(
+            'cumulativefilter=' . $value,
+            Url::removeQueryStringCallback(function ($value, $key) {
+                return strpos($key, 'page_iso') !== 0;
+            })
+        );
 
         if (false !== $matchCount) {
             $link = sprintf('%s <i class="result_count">(%d)</i>', $label, $matchCount);
@@ -384,11 +380,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $filters = array_filter(
                 $filters,
                 function ($filter) use ($attribute) {
-                    if ($filter['attribute'] == $attribute) {
-                        return false;
-                    }
-
-                    return true;
+                    return $filter['attribute'] != $attribute;
                 }
             );
         }

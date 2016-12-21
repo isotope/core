@@ -3,33 +3,35 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
 use Haste\Form\Form;
-use Isotope\Interfaces\IsotopeDocument;
+use Haste\Util\StringUtil;
+use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\Address;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Shipping;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 
-
 class BillpayWithSaferpay extends Saferpay
 {
-
+    /**
+     * @inheritdoc
+     */
     public function isAvailable()
     {
         $objBillingAddress = Isotope::getCart()->getBillingAddress();
         $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
-        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'))) {
+        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'), true)) {
             return false;
         }
 
@@ -44,10 +46,9 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Automatically add Billpay conditions to checkout form
      *
-     * @param Form    $objForm
-     * @param \Module $objModule
+     * @param Form $objForm
      */
-    public static function addOrderCondition(Form $objForm, \Module $objModule)
+    public static function addOrderCondition(Form $objForm)
     {
         if (Isotope::getCart()->hasPayment() && Isotope::getCart()->getPaymentMethod() instanceof BillpayWithSaferpay) {
 
@@ -73,13 +74,12 @@ class BillpayWithSaferpay extends Saferpay
      *
      * @param \Template                $objTemplate
      * @param IsotopeProductCollection $objCollection
-     * @param IsotopeDocument          $objDocument
      */
-    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection, IsotopeDocument $objDocument)
+    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection)
     {
         $objTemplate->billpay = false;
 
-        /** @type Order $objCollection */
+        /** @var Order $objCollection */
         if ($objCollection instanceof Order
             && $objCollection->hasPayment()
             && $objCollection->getPaymentMethod() instanceof BillpayWithSaferpay
@@ -105,42 +105,27 @@ class BillpayWithSaferpay extends Saferpay
      * Add BillPay-specific data to POST values
      *
      * @param IsotopeProductCollection $objOrder
-     * @param \Module                  $objModule
      *
      * @return array
      */
-    protected function generatePaymentPostData(IsotopeProductCollection $objOrder, \Module $objModule)
+    protected function generatePaymentPostData(IsotopeProductCollection $objOrder)
     {
-        /** @type \Isotope\Model\ProductCollection\Order $objOrder */
+        $arrData = parent::generatePaymentPostData($objOrder);
 
-        $arrData = parent::generatePaymentPostData($objOrder, $objModule);
+        if (!$objOrder instanceof IsotopeOrderableCollection) {
+            return $arrData;
+        }
 
         // Billing address
         $objBillingAddress = $objOrder->getBillingAddress();
-        $arrData['GENDER'] = (string) substr((string) $objBillingAddress->gender, 0, 1);
-        $arrData['FIRSTNAME'] = (string) $objBillingAddress->firstname;
-        $arrData['LASTNAME'] = (string) $objBillingAddress->lastname;
-        $arrData['STREET'] = (string) $objBillingAddress->street_1;
-        $arrData['ADDRESSADDITION'] = (string) $objBillingAddress->street_2;
-        $arrData['ZIP'] = (string) $objBillingAddress->postal;
-        $arrData['CITY'] = (string) $objBillingAddress->city;
-        $arrData['COUNTRY'] = strtoupper((string) $objBillingAddress->country);
-        $arrData['EMAIL'] = (string) $objBillingAddress->email;
-        $arrData['PHONE'] = (string) $objBillingAddress->phone;
+        $this->addAddress($arrData, $objBillingAddress);
+        $arrData['EMAIL']       = (string) $objBillingAddress->email;
         $arrData['DATEOFBIRTH'] = ($objBillingAddress->dateOfBirth ? date('Ymd', $objBillingAddress->dateOfBirth) : '');
-        $arrData['COMPANY'] = (string) $objBillingAddress->company;
+        $arrData['COMPANY']     = (string) $objBillingAddress->company;
 
         // Shipping address
         $objShippingAddress = $objOrder->getShippingAddress();
-        $arrData['DELIVERY_GENDER'] = (string) substr((string) $objShippingAddress->gender, 0, 1);
-        $arrData['DELIVERY_FIRSTNAME'] = (string) $objShippingAddress->firstname;
-        $arrData['DELIVERY_LASTNAME'] = (string) $objShippingAddress->lastname;
-        $arrData['DELIVERY_STREET'] = (string) $objShippingAddress->street_1;
-        $arrData['DELIVERY_ADDRESSADDITION'] = (string) $objShippingAddress->street_2;
-        $arrData['DELIVERY_ZIP'] = (string) $objShippingAddress->postal;
-        $arrData['DELIVERY_CITY'] = (string) $objShippingAddress->city;
-        $arrData['DELIVERY_COUNTRY'] = strtoupper((string) $objShippingAddress->country);
-        $arrData['DELIVERY_PHONE'] = (string) $objShippingAddress->phone;
+        $this->addAddress($arrData, $objShippingAddress, 'DELIVERY_');
 
         // Cart items and total
         $arrData['BASKETDATA'] = $this->getCollectionItemsAsXML($objOrder);
@@ -155,11 +140,11 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Generate XML data for collection items
      *
-     * @param IsotopeProductCollection $objCollection
+     * @param IsotopeOrderableCollection $objCollection
      *
      * @return string
      */
-    private function getCollectionItemsAsXML(IsotopeProductCollection $objCollection)
+    private function getCollectionItemsAsXML(IsotopeOrderableCollection $objCollection)
     {
         $xml = new \DOMDocument();
         $articleData = $xml->createElement('article_data');
@@ -176,7 +161,10 @@ class BillpayWithSaferpay extends Saferpay
             $article->appendChild($quantity);
 
             $name = $xml->createAttribute('articlename');
-            $name->value = $objItem->getName();
+            $name->value = StringUtil::convertToText(
+                $objItem->getName(),
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
             $article->appendChild($name);
 
             $price = $xml->createAttribute('articleprice');
@@ -201,7 +189,10 @@ class BillpayWithSaferpay extends Saferpay
                 $article->appendChild($quantity);
 
                 $name = $xml->createAttribute('articlename');
-                $name->value = $objSurcharge->label;
+                $name->value = StringUtil::convertToText(
+                    $objSurcharge->label,
+                    StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                );
                 $article->appendChild($name);
 
                 $price = $xml->createAttribute('articleprice');
@@ -222,7 +213,12 @@ class BillpayWithSaferpay extends Saferpay
     }
 
 
-    private function getCollectionTotalAsXML(IsotopeProductCollection $objCollection)
+    /**
+     * @param IsotopeOrderableCollection $objCollection
+     *
+     * @return string
+     */
+    private function getCollectionTotalAsXML(IsotopeOrderableCollection $objCollection)
     {
         $intRebate = 0;
         $intRebateGross = 0;
@@ -246,7 +242,10 @@ class BillpayWithSaferpay extends Saferpay
 
         if ($intShippingPrice != 0 || $intShippingPriceGross != 0) {
             $shippingName = $xml->createAttribute('shippingname');
-            $shippingName->value = $strShippingName;
+            $shippingName->value = StringUtil::convertToText(
+                $strShippingName,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+            );
             $total->appendChild($shippingName);
 
             $shippingPrice = $xml->createAttribute('shippingprice');
@@ -277,11 +276,24 @@ class BillpayWithSaferpay extends Saferpay
         $total->appendChild($cartTotalPriceGross);
 
         $currency = $xml->createAttribute('currency');
-        $currency->value = $objCollection->currency;
+        $currency->value = $objCollection->getCurrency();
         $total->appendChild($currency);
 
         $xml->appendChild($total);
 
         return $xml->saveXML($xml->documentElement);
+    }
+
+    private function addAddress(&$data, Address $address, $prefix = '')
+    {
+        $data[$prefix . 'GENDER']          = substr((string) $address->gender, 0, 1);
+        $data[$prefix . 'FIRSTNAME']       = (string) $address->firstname;
+        $data[$prefix . 'LASTNAME']        = (string) $address->lastname;
+        $data[$prefix . 'STREET']          = (string) $address->street_1;
+        $data[$prefix . 'ADDRESSADDITION'] = (string) $address->street_2;
+        $data[$prefix . 'ZIP']             = (string) $address->postal;
+        $data[$prefix . 'CITY']            = (string) $address->city;
+        $data[$prefix . 'COUNTRY']         = strtoupper((string) $address->country);
+        $data[$prefix . 'PHONE']           = (string) $address->phone;
     }
 }

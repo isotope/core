@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -37,7 +36,11 @@ abstract class TypeAgent extends \Model
      */
     protected static $strInterface;
 
-
+    /**
+     * @inheritdoc
+     *
+     * @throws \RuntimeException if model does not have a valid type
+     */
     public function __construct(\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
@@ -59,8 +62,10 @@ abstract class TypeAgent extends \Model
     /**
      * Register a model type
      *
-     * @param   string $strName
-     * @param   string $strClass
+     * @param string $strName
+     * @param string $strClass
+     *
+     * @throws \LogicException when called on the TypeAgent class
      */
     public static function registerModelType($strName, $strClass)
     {
@@ -74,7 +79,9 @@ abstract class TypeAgent extends \Model
     /**
      * Unregister a model type
      *
-     * @param   string $strName
+     * @param string $strName
+     *
+     * @throws \LogicException when called on the TypeAgent class
      */
     public static function unregisterModelType($strName)
     {
@@ -87,7 +94,8 @@ abstract class TypeAgent extends \Model
 
     /**
      * Get list of model types
-     * @return  array
+     *
+     * @return array
      */
     public static function getModelTypes()
     {
@@ -97,9 +105,9 @@ abstract class TypeAgent extends \Model
     /**
      * Get class name for given model type
      *
-     * @param   string $strName
+     * @param string $strName
      *
-     * @return  string
+     * @return string
      */
     public static function getClassForModelType($strName)
     {
@@ -109,14 +117,14 @@ abstract class TypeAgent extends \Model
     /**
      * Return options list of model types
      *
-     * @return  array
+     * @return array
      */
     public static function getModelTypeOptions()
     {
         $arrOptions = array();
 
         foreach (static::getModelTypes() as $strName => $strClass) {
-            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName][0] ? : $strName;
+            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable][$strName][0] ? : $strName;
         }
 
         return $arrOptions;
@@ -125,9 +133,9 @@ abstract class TypeAgent extends \Model
     /**
      * Find sibling records by a column value
      *
-     * @param   string
-     * @param   \Model
-     * @param   array
+     * @param string $strColumn
+     * @param \Model $objModel
+     * @param array  $arrOptions
      *
      * @return \Model|\Model\Collection|null
      */
@@ -224,12 +232,12 @@ abstract class TypeAgent extends \Model
 
         $objResult = static::postFind($objResult);
 
-        if ($arrOptions['return'] == 'Model') {
+        if ('Model' === $arrOptions['return']) {
 
             // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
-        } else {
 
+        } else {
             return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
     }
@@ -250,6 +258,7 @@ abstract class TypeAgent extends \Model
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
+                /** @var static $strTypeClass */
                 $strTypeClass = static::getClassFromTable($arrRelations['type']['table']);
                 $objType      = $strTypeClass::findOneBy($arrRelations['type']['field'], $objResult->type);
 
@@ -283,10 +292,10 @@ abstract class TypeAgent extends \Model
     /**
      * Create array of models and return a collection of them
      *
-     * @param   \Database\Result $objResult
-     * @param   string           $strTable
+     * @param \Database\Result $objResult
+     * @param string           $strTable
      *
-     * @return  \Model\Collection
+     * @return \Model\Collection
      */
     protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
     {
@@ -316,7 +325,8 @@ abstract class TypeAgent extends \Model
      * @param \Database\Result $objResult
      *
      * @return \Model
-     * @deprecated  use createModelFromDbResult in Contao 3.3
+     *
+     * @deprecated use createModelFromDbResult in Contao 3.3
      */
     public static function buildModelType(\Database\Result $objResult = null)
     {
@@ -342,10 +352,11 @@ abstract class TypeAgent extends \Model
     /**
      * Allow to override the query builder
      *
-     * @param       array
+     * @param array $arrOptions
      *
-     * @return      string
-     * @deprecated  use buildFindQuery introduced in Contao 3.3
+     * @return string
+     *
+     * @deprecated use buildFindQuery introduced in Contao 3.3
      */
     protected static function buildQueryString($arrOptions)
     {

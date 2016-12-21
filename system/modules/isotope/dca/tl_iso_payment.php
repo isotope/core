@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 
@@ -126,7 +125,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template,psp_payment_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},datatrans_id,datatrans_sign;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},datatrans_id,datatrans_sign,datatrans_hash_method,datatrans_hash_convert;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'innopay'                   => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},vads_site_id,vads_certificate;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -137,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_user_id,opp_password,opp_entity_id;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
     ),
 
     // Subpalettes
@@ -270,9 +270,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('cart_items', 'cart_products'),
+            'options'               => [
+                \Isotope\Model\Payment::QUANTITY_MODE_ITEMS,
+                \Isotope\Model\Payment::QUANTITY_MODE_PRODUCTS,
+            ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'minimum_quantity' => array
@@ -425,8 +428,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'options_callback'      => function($dc) {
                 $payment = \Isotope\Model\Payment::findByPk($dc->id);
 
-                if ($payment === null || !$payment instanceof \Isotope\Model\Payment\PSP) {
-                    return array();
+                if (null === $payment || !$payment instanceof \Isotope\Model\Payment\PSP) {
+                    return [];
                 }
 
                 return $payment->getPaymentMethods();
@@ -449,6 +452,25 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''",
+        ),
+        'datatrans_hash_convert' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_convert'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default '0'",
+            'eval'                  => array('tl_class' => 'w50 m12'),
+        ),
+        'datatrans_hash_method' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_method'],
+            'exclude'               => true,
+            'default'               => 'md5',
+            'inputType'             => 'select',
+            'options'               => array('md5', 'sha256'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['datatrans_hash_method'],
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(6) NOT NULL default 'md5'",
         ),
         'vads_site_id' => array
         (
@@ -756,6 +778,30 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('decodeEntities'=>true, 'tl_class'=>'clr long'),
             'sql'                   => "text NULL",
+        ),
+        'opp_user_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_user_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'opp_password' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_password'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgxp'=>'alnum', 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'opp_entity_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_entity_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'requireCCV' => array
         (

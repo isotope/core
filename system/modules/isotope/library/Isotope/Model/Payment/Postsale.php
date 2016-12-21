@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
@@ -15,6 +14,7 @@ namespace Isotope\Model\Payment;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
+use Isotope\Template;
 
 
 /**
@@ -24,14 +24,10 @@ use Isotope\Model\Payment;
  */
 abstract class Postsale extends Payment implements IsotopePostsale
 {
-
     /**
      * Show message while we are waiting for server-to-server order confirmation
      *
-     * @param   IsotopeProductCollection $objOrder    The order being places
-     * @param   \Module                  $objModule   The checkout module instance
-     *
-     * @return  bool
+     * @inheritdoc
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
@@ -57,7 +53,8 @@ abstract class Postsale extends Payment implements IsotopePostsale
             $objPage->noSearch = 1;
             $objPage->cache    = 0;
 
-            $objTemplate          = new \Isotope\Template('mod_message');
+            /** @var Template|\stdClass $objTemplate */
+            $objTemplate          = new Template('mod_message');
             $objTemplate->type    = 'processing';
             $objTemplate->message = $GLOBALS['TL_LANG']['MSC']['payment_processing'];
 

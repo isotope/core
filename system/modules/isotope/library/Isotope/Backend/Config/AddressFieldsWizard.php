@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Config;
 
+use Isotope\Model\Address;
 
 class AddressFieldsWizard extends \Backend
 {
@@ -29,7 +29,7 @@ class AddressFieldsWizard extends \Backend
         static $i = 0;
 
         if (empty($arrValues)) {
-            \System::loadLanguageFile(\Isotope\Model\Address::getTable());
+            \System::loadLanguageFile(Address::getTable());
             $arrValues = $objWidget->value;
             $i = 0;
         }
@@ -44,7 +44,7 @@ class AddressFieldsWizard extends \Backend
             $objWidget->name,
             $i++,
             $strName,
-            $GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'][$strName]['label'][0] ? : $strName,
+            $GLOBALS['TL_DCA'][Address::getTable()]['fields'][$strName]['label'][0] ? : $strName,
             $strName
         );
     }
@@ -58,9 +58,9 @@ class AddressFieldsWizard extends \Backend
      */
     public function load($varValue)
     {
-        $this->loadDataContainer(\Isotope\Model\Address::getTable());
+        \Controller::loadDataContainer(Address::getTable());
 
-        $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];
+        $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
         $arrFields = array();
         $arrValues = deserialize($varValue);
 
@@ -87,8 +87,8 @@ class AddressFieldsWizard extends \Backend
 
             $arrFields[$strName] = array(
                 'name'      => $strName,
-                'billing'   => ($arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled')),
-                'shipping'  => ($arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled')),
+                'billing'   => $arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled'),
+                'shipping'  => $arrField['eval']['mandatory'] === true ? 'mandatory' : ($arrField['eval']['mandatory'] === false ? 'enabled' : 'disabled'),
             );
         }
 
@@ -104,7 +104,7 @@ class AddressFieldsWizard extends \Backend
      */
     public function save($varValue)
     {
-        $this->loadDataContainer(\Isotope\Model\Address::getTable());
+        \Controller::loadDataContainer(Address::getTable());
 
         $arrFields = deserialize($varValue);
 

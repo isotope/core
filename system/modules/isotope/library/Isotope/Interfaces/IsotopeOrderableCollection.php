@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
@@ -15,9 +14,11 @@ namespace Isotope\Interfaces;
 use Isotope\Model\Address;
 use Isotope\Model\ProductCollectionSurcharge;
 
-interface IsotopeOrderableCollection
+/**
+ * IsotopeOrderableCollection describes a product collection that can have order information.
+ */
+interface IsotopeOrderableCollection extends IsotopeProductCollection
 {
-
     /**
      * Return boolean whether collection has payment
      *
@@ -115,4 +116,11 @@ interface IsotopeOrderableCollection
      * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null);
+
+    /**
+     * Returns the generated document number or empty string if not available.
+     *
+     * @return string
+     */
+    public function getDocumentNumber();
 }

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -29,12 +28,20 @@ class Category extends \Backend
      */
     public function updateSorting($insertId)
     {
-        $table = ProductCategory::getTable();
-
-        $objCategories = \Database::getInstance()->query("SELECT c1.*, MAX(c2.sorting) AS max_sorting FROM $table c1 LEFT JOIN $table c2 ON c1.page_id=c2.page_id WHERE c1.pid=" . (int) $insertId . " GROUP BY c1.page_id");
+        $objCategories = \Database::getInstance()->query('
+            SELECT c1.*, MAX(c2.sorting) AS max_sorting 
+            FROM tl_iso_product_category c1 
+            LEFT JOIN tl_iso_product_category c2 ON c1.page_id=c2.page_id 
+            WHERE c1.pid=' . (int) $insertId . ' 
+            GROUP BY c1.page_id'
+        );
 
         while ($objCategories->next()) {
-            \Database::getInstance()->query("UPDATE $table SET sorting=" . ($objCategories->max_sorting + 128) . " WHERE id=" . $objCategories->id);
+            \Database::getInstance()->query('
+                UPDATE tl_iso_product_category 
+                SET sorting=' . ($objCategories->max_sorting + 128) . ' 
+                WHERE id=' . $objCategories->id
+            );
         }
     }
 
@@ -67,7 +74,7 @@ class Category extends \Backend
             }, $arrCategories);
 
             \Database::getInstance()
-                ->prepare("UPDATE tl_version SET data=? WHERE id=?")
+                ->prepare('UPDATE tl_version SET data=? WHERE id=?')
                 ->execute(serialize($data), $current->id)
             ;
         }
@@ -90,9 +97,9 @@ class Category extends \Backend
         $arrData = SubtableVersion::find('tl_iso_product_category', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_category WHERE pid=" . (int) $intId);
+            \Database::getInstance()->query('DELETE FROM tl_iso_product_category WHERE pid=' . (int) $intId);
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldnames('tl_iso_product_category'));
+            $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_category'));
 
             \Controller::loadDataContainer('tl_iso_product_category');
 
@@ -104,7 +111,7 @@ class Category extends \Backend
                     $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product_category %s")->set($data)->execute();
+                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_category %s')->set($data)->execute();
             }
 
             \Database::getInstance()
@@ -113,7 +120,7 @@ class Category extends \Backend
             ;
 
             \Database::getInstance()
-                     ->prepare("UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?")
+                     ->prepare('UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?')
                      ->execute($intId, 'tl_iso_product_category', $intVersion)
             ;
         }
@@ -146,29 +153,37 @@ class Category extends \Backend
      */
     public function save($varValue, \DataContainer $dc)
     {
+        $db = \Database::getInstance();
         $arrIds = deserialize($varValue);
-        $table  = ProductCategory::getTable();
 
         if (is_array($arrIds) && !empty($arrIds)) {
             $time = time();
 
-            if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ")")->affectedRows > 0) {
+            if ($db->query("DELETE FROM tl_iso_product_category WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ')')->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
 
-            $objPages = \Database::getInstance()->execute("SELECT page_id FROM $table WHERE pid={$dc->id}");
+            $objPages = $db->execute("SELECT page_id FROM tl_iso_product_category WHERE pid={$dc->id}");
             $arrIds   = array_diff($arrIds, $objPages->fetchEach('page_id'));
 
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
-                    $sorting = (int) \Database::getInstance()->execute("SELECT MAX(sorting) AS sorting FROM $table WHERE page_id=$id")->sorting + 128;
-                    \Database::getInstance()->query("INSERT INTO $table (pid,tstamp,page_id,sorting) VALUES ({$dc->id}, $time, $id, $sorting)");
+                    $sorting = (int) $db->execute("
+                        SELECT MAX(sorting) AS sorting 
+                        FROM tl_iso_product_category 
+                        WHERE page_id=$id
+                    ")->sorting + 128;
+
+                    $db->query("
+                        INSERT INTO tl_iso_product_category (pid,tstamp,page_id,sorting) 
+                        VALUES ({$dc->id}, $time, $id, $sorting)
+                    ");
                 }
 
                 $dc->createNewVersion = true;
             }
         } else {
-            if (\Database::getInstance()->query("DELETE FROM $table WHERE pid={$dc->id}")->affectedRows > 0) {
+            if ($db->query("DELETE FROM tl_iso_product_category WHERE pid={$dc->id}")->affectedRows > 0) {
                 $dc->createNewVersion = true;
             }
         }

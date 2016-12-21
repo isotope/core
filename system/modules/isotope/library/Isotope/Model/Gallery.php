@@ -3,16 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
 
 use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Model\Gallery\Standard as StandardGallery;
 
 /**
  * Gallery is the parent class for all gallery types
@@ -67,7 +67,7 @@ abstract class Gallery extends TypeAgent
         $objGallery = static::findByPk((int) $arrConfig['gallery']);
 
         if (null === $objGallery) {
-            $objGallery = new \Isotope\Model\Gallery\Standard();
+            $objGallery = new StandardGallery();
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
@@ -75,7 +75,7 @@ abstract class Gallery extends TypeAgent
             deserialize($objProduct->$strAttribute, true),
             deserialize($objProduct->{$strAttribute . '_fallback'}, true)
         ));
-        $objGallery->product_id = ($objProduct->pid ? $objProduct->pid : $objProduct->id);
+        $objGallery->product_id = $objProduct->getProductId();
         $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
 
         return $objGallery;
@@ -93,21 +93,21 @@ abstract class Gallery extends TypeAgent
     {
         $arrTranslate = array();
 
-        if (!empty($arrParent) && is_array($arrParent)) {
+        if (is_array($arrParent) && 0 !== count($arrParent)) {
 
             // Create an array of images where key = image name
             foreach ($arrParent as $image) {
-                if ($image['translate'] != 'all') {
+                if ('all' !== $image['translate']) {
                     $arrTranslate[$image['src']] = $image;
                 }
             }
         }
 
-        if (!empty($arrCurrent) && is_array($arrCurrent)) {
+        if (is_array($arrCurrent) && 0 !== count($arrCurrent)) {
             foreach ($arrCurrent as $i => $image) {
 
                 if (isset($arrTranslate[$image['src']])) {
-                    if ($arrTranslate[$image['src']]['translate'] == 'none') {
+                    if ('none' === $arrTranslate[$image['src']]['translate']) {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
                     } else {
                         $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'];
@@ -116,7 +116,7 @@ abstract class Gallery extends TypeAgent
 
                     unset($arrTranslate[$image['src']]);
 
-                } elseif ($arrCurrent[$i]['translate'] != 'all') {
+                } elseif ('all' !== $arrCurrent[$i]['translate']) {
                     unset($arrCurrent[$i]);
                 }
             }

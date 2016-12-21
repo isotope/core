@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\CheckoutStep;
@@ -15,16 +14,14 @@ namespace Isotope\CheckoutStep;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
+use Isotope\Model\ProductCollection;
 use Isotope\Template;
 
 
 class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
 {
-
     /**
-     * Returns true to enable the module
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function isAvailable()
     {
@@ -32,9 +29,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Generate the checkout step
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generate()
     {
@@ -45,7 +40,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
             $objTemplate,
             array(
                 'gallery' => $this->objModule->iso_gallery,
-                'sorting' => $objOrder->getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
+                'sorting' => ProductCollection::getItemsSortingCallable($this->objModule->iso_orderCollectionBy),
             )
         );
 
@@ -55,7 +50,7 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     /**
      * Cart product view does not have review information
      *
-     * @return string
+     * @inheritdoc
      */
     public function review()
     {
@@ -63,14 +58,10 @@ class OrderProducts extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * Return array of tokens for notification
-     *
-     * @param IsotopeProductCollection $objCollection
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getNotificationTokens(IsotopeProductCollection $objCollection)
     {
-        return array();
+        return [];
     }
 }

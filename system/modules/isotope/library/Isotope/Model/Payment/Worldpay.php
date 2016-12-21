@@ -3,37 +3,42 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Isotope\Template;
 use Isotope\Translation;
-
 
 /**
  * Isotope payment method for www.worldpay.com
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
+ *
+ * @property int    $worldpay_instId
+ * @property string $worldpay_callbackPW
+ * @property string $worldpay_signatureFields
+ * @property string $worldpay_md5secret
+ * @property string $worldpay_description
  */
-class Worldpay extends Postsale implements IsotopePayment
+class Worldpay extends Postsale
 {
-
     /**
-     * Process Instant Payment Notifications (IPN)
-     *
-     * @param IsotopeProductCollection $objOrder
+     * @inheritdoc
      */
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            $this->postsaleError();
+        }
+
         if (\Input::post('instId') != $this->worldpay_instId) {
             \System::log('Installation ID does not match', __METHOD__, TL_ERROR);
             $this->postsaleError();
@@ -41,7 +46,7 @@ class Worldpay extends Postsale implements IsotopePayment
 
         // Validate payment data
         if (
-            $objOrder->currency != \Input::post('currency') ||
+            $objOrder->getCurrency() != \Input::post('currency') ||
             $objOrder->getTotal() != \Input::post('amount') ||
             $this->worldpay_callbackPW != \Input::post('callbackPW') ||
             (!$this->debug && \Input::post('testMode') == '100')
@@ -51,17 +56,17 @@ class Worldpay extends Postsale implements IsotopePayment
         }
 
         // Order status cancelled and order not yet completed, do nothing
-        if (\Input::post('transStatus') != 'Y' && $objOrder->status == 0) {
+        if ('Y' !== \Input::post('transStatus') && $objOrder->status == 0) {
             $this->postsaleError();
         }
 
-        if (\Input::post('transStatus') == 'Y') {
+        if ('Y' === \Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
-                \System::log('Checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 $this->postsaleError();
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
         }
 
@@ -76,9 +81,7 @@ class Worldpay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return IsotopeProductCollection
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -86,21 +89,23 @@ class Worldpay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the checkout form.
-     * @param   IsotopeProductCollection    The order being places
-     * @param   Module                      The checkout module instance
-     * @return string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         global $objPage;
         $objAddress = $objOrder->getBillingAddress();
 
         $arrData                = array();
         $arrData['instId']      = $this->worldpay_instId;
-        $arrData['cartId']      = $objOrder->id;
+        $arrData['cartId']      = $objOrder->getId();
         $arrData['amount']      = number_format($objOrder->getTotal(), 2);
-        $arrData['currency']    = $objOrder->currency;
+        $arrData['currency']    = $objOrder->getCurrency();
         $arrData['description'] = Translation::get($this->worldpay_description);
         $arrData['name']        = substr($objAddress->firstname . ' ' . $objAddress->lastname, 0, 40);
 
@@ -124,7 +129,8 @@ class Worldpay extends Postsale implements IsotopePayment
         // Generate MD5 secret hash
         $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
 
-        $objTemplate = new \Isotope\Template('iso_payment_worldpay');
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_payment_worldpay');
 
         $objTemplate->setData($arrData);
         $objTemplate->id       = $this->id;
@@ -169,7 +175,7 @@ Redirecting back to shop...
      *
      * @param IsotopeProductCollection $objOrder
      */
-    protected function postsaleSuccess($objOrder)
+    protected function postsaleSuccess(IsotopeProductCollection $objOrder)
     {
         $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
         $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder, $objPage);

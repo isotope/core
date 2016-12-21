@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Report;
@@ -17,7 +16,7 @@ use Isotope\Model\OrderStatus;
 abstract class Sales extends Report
 {
 
-    // Allow extensions to use date_paid or date_shipped
+    // @deprecated
     protected $strDateField = 'locked';
 
 
@@ -28,28 +27,26 @@ abstract class Sales extends Report
         return parent::generate();
     }
 
-
     protected function initializeDefaultValues()
     {
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '')
-        {
+        if ($arrSession[$this->name]['period'] == '') {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['columns'] == '')
-        {
+        if ($arrSession[$this->name]['columns'] == '') {
             $arrSession[$this->name]['columns'] = '6';
         }
 
-        if ($arrSession[$this->name]['from'] == '')
-        {
-            $arrSession[$this->name]['from'] = '';
+        if (!in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
+            $arrSession[$this->name]['date_field'] = 'locked';
         }
-        elseif (!is_numeric($arrSession[$this->name]['from']))
-        {
+
+        if ($arrSession[$this->name]['from'] == '') {
+            $arrSession[$this->name]['from'] = '';
+        } elseif (!is_numeric($arrSession[$this->name]['from'])) {
             // Convert date formats into timestamps
             try {
                 $objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
@@ -60,13 +57,6 @@ abstract class Sales extends Report
             }
         }
 
-        if (!isset($arrSession[$this->name]['iso_status']))
-        {
-            $orderStatusTable = OrderStatus::getTable();
-            $objStatus = \Database::getInstance()->query("SELECT id FROM $orderStatusTable WHERE paid=1 ORDER BY sorting");
-            $arrSession[$this->name]['iso_status'] = $objStatus->id;
-        }
-
         \Session::getInstance()->set('iso_reports', $arrSession);
     }
 
@@ -75,15 +65,14 @@ abstract class Sales extends Report
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'      => 'from',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
             'value'     => ($arrSession[$this->name]['from'] ? \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
             'class'     => 'tl_from',
-        );
+        ];
     }
 
 
@@ -91,21 +80,19 @@ abstract class Sales extends Report
     {
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        return array
-        (
+        return [
             'name'  => 'columns',
             'label' => &$GLOBALS['TL_LANG']['ISO_REPORT']['columns'],
             'type'  => 'text',
             'value' => (int) $arrSession[$this->name]['columns'],
             'class' => 'tl_columns',
-        );
+        ];
     }
 
 
     protected function getPeriodConfiguration($strPeriod)
     {
-        switch ($strPeriod)
-        {
+        switch ($strPeriod) {
             case 'day':
                 $publicDate  = 'd.m.y';
                 $privateDate = 'Ymd';
@@ -158,8 +145,7 @@ abstract class Sales extends Report
         $arrSession = \Session::getInstance()->get('iso_reports');
         $varValue = (int) $arrSession[$this->name]['iso_status'];
 
-        return array
-        (
+        return [
             'name'      => 'iso_status',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['status'],
             'type'      => 'filter',
@@ -167,7 +153,26 @@ abstract class Sales extends Report
             'active'    => ($varValue != ''),
             'class'     => 'iso_status',
             'options'   => $arrStatus,
-        );
+        ];
+    }
+
+
+    protected function getDateFieldPanel()
+    {
+        $arrSession = \Session::getInstance()->get('iso_reports');
+        $varValue = $arrSession[$this->name]['date_field'];
+
+        return [
+            'name'      => 'date_field',
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['date_field'],
+            'type'      => 'filter',
+            'value'     => $varValue,
+            'class'     => 'iso_date_field',
+            'options' => [
+                'locked'       => $GLOBALS['TL_LANG']['ISO_REPORT']['locked'],
+                'date_paid'    => $GLOBALS['TL_LANG']['ISO_REPORT']['date_paid'],
+                'date_shipped' => $GLOBALS['TL_LANG']['ISO_REPORT']['date_shipped'],
+            ],
+        ];
     }
 }
-

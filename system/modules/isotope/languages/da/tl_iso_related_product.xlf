@@ -1,0 +1,86 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_related_product.xlf" source-language="en" target-language="da">
+    <body>
+      <trans-unit id="tl_iso_related_product.category.0">
+        <source>Category</source>
+        <target>Kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category.1">
+        <source>Select a category.</source>
+        <target>Vælg en kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products.0">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products.1">
+        <source>Enter a comma-separated list of product or variant IDs to show as related products.</source>
+        <target>Indtast en kommasepareret liste med produkter eller variant-ID'er, der skal vises som relaterede produkter.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.new.0">
+        <source>Add category</source>
+        <target>Tilføj kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.new.1">
+        <source>Add a new category with products</source>
+        <target>Tilføj en ny kategori med produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.edit.0">
+        <source>Edit category</source>
+        <target>Rediger kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.edit.1">
+        <source>Edit category ID %s</source>
+        <target>Rediger kategorien ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.copy.0">
+        <source>Duplicate category</source>
+        <target>Kopier kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.copy.1">
+        <source>Duplicate category ID %s</source>
+        <target>Kopier kategorien ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.cut.0">
+        <source>Move category</source>
+        <target>Flyt kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.cut.1">
+        <source>Move category ID %s</source>
+        <target>Flyt kategorien ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.delete.0">
+        <source>Delete category</source>
+        <target>Slet kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.delete.1">
+        <source>Delete category ID %s</source>
+        <target>Slet kategorien ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.show.0">
+        <source>Category details</source>
+        <target>Kategori detaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.show.1">
+        <source>Show details of category ID %s</source>
+        <target>Vis detaljer for kategorien ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.editheader.0">
+        <source>Edit product</source>
+        <target>Rediger produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.editheader.1">
+        <source>Edit this product</source>
+        <target>Rediger produktet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.category_legend">
+        <source>Category</source>
+        <target>Kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_product.products_legend">
+        <source>Related products</source>
+        <target>Relaterede produkter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

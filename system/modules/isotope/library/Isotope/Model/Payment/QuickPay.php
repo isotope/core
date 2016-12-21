@@ -3,21 +3,22 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
 
 use Isotope\Currency;
-use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Module\Checkout;
+use Isotope\Template;
 
 /**
  * Class QuickPay
@@ -28,27 +29,29 @@ use Isotope\Model\ProductCollection\Order;
  * @property string $quickpay_privateKey
  * @property string $quickpay_paymentMethods
  */
-class QuickPay extends Postsale implements IsotopePayment
+class QuickPay extends Postsale
 {
-
     /**
-     * Process postsale callback
-     *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @inheritdoc
      */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if ($this->validatePayment($objOrder)) {
             if ($objOrder->isCheckoutComplete()) {
                 return;
             }
 
             if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->id . '" failed', __METHOD__, TL_ERROR);
+                \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
                 return;
             }
 
-            $objOrder->date_paid = time();
+            $objOrder->setDatePaid(time());
             $objOrder->updateOrderStatus($this->new_order_status);
 
             $objOrder->save();
@@ -56,9 +59,7 @@ class QuickPay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Get the order object in a postsale request
-     *
-     * @return  IsotopeProductCollection|null
+     * @inheritdoc
      */
     public function getPostsaleOrder()
     {
@@ -72,30 +73,25 @@ class QuickPay extends Postsale implements IsotopePayment
     }
 
     /**
-     * Return the payment form
-     *
-     * @param IsotopeProductCollection|Order   $objOrder
-     * @param \Module|\Isotope\Module\Checkout $objModule
-     *
-     * @return  string
+     * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $objTemplate = new \Isotope\Template('iso_payment_quickpay');
+        $objTemplate = new Template('iso_payment_quickpay');
         $objTemplate->setData($this->arrData);
 
         $params = array(
             'version'      => 'v10',
             'merchant_id'  => $this->quickpay_merchantId,
             'agreement_id' => $this->quickpay_agreementId,
-            'order_id'     => str_pad($objOrder->id, 4, '0', STR_PAD_LEFT),
+            'order_id'     => str_pad($objOrder->getId(), 4, '0', STR_PAD_LEFT),
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
-            'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency),
-            'currency'     => $objOrder->currency,
-            'continueurl'  => \Environment::get('base') . $objModule->generateUrlForStep('complete', $objOrder),
-            'cancelurl'    => \Environment::get('base') . $objModule->generateUrlForStep('failed'),
+            'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
+            'currency'     => $objOrder->getCurrency(),
+            'continueurl'  => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'cancelurl'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
-            'autocapture'  => ($this->trans_type == 'capture' ? '1' : '0'),
+            'autocapture'  => 'capture' === $this->trans_type ? '1' : '0',
         );
 
         if ('' !== $this->quickpay_paymentMethods) {
@@ -117,7 +113,7 @@ class QuickPay extends Postsale implements IsotopePayment
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection|Order $objOrder
+     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */
@@ -151,9 +147,9 @@ class QuickPay extends Postsale implements IsotopePayment
             return false;
         }
 
-        $amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->currency);
+        $amount = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency());
 
-        if ($objOrder->currency != $data['currency']
+        if ($objOrder->getCurrency() != $data['currency']
             || $amount != $data['operations'][0]['amount']
             || 0 != $data['balance']
             || $data['test_mode'] != $this->debug
@@ -173,7 +169,7 @@ class QuickPay extends Postsale implements IsotopePayment
                     "Accepted: got \"%s\", expected \"yes\"\n\n" .
                     "Test Mode: got \"%s\", expected \"%s\"\n\n",
                     $data['currency'],
-                    $objOrder->currency,
+                    $objOrder->getCurrency(),
                     $data['operations'][0]['amount'],
                     $amount,
                     $data['balance'],

@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -31,7 +30,7 @@ class Alias extends \Backend
         // Generate alias if there is none
         if ('' === $varValue) {
             $autoAlias = true;
-            $act       = \Input::get('mode');
+            $act       = \Input::get('act');
 
             if ('edit' === $act || 'overrideAll' === $act) {
                 $varValue = (string) (\Input::post('name') ?: \Input::post('sku'));
@@ -50,8 +49,10 @@ class Alias extends \Backend
 
         $varValue = standardize(strip_tags($varValue));
 
-        $objAlias = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE id=? OR alias=?")
-                                   ->execute($dc->id, $varValue);
+        $objAlias = \Database::getInstance()
+            ->prepare('SELECT id FROM tl_iso_product WHERE id=? OR alias=?')
+            ->execute($dc->id, $varValue)
+        ;
 
         // Check whether the product alias exists
         if ($objAlias->numRows > 1) {

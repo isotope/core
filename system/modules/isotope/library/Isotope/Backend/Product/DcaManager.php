@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\Product;
@@ -15,7 +14,6 @@ namespace Isotope\Backend\Product;
 use Haste\Util\Format;
 use Isotope\Backend\Group\Breadcrumb;
 use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
@@ -70,7 +68,7 @@ class DcaManager extends \Backend
         $intGroup = (int) \Session::getInstance()->get('iso_products_gid');
 
         if (!$intGroup) {
-            $intGroup = \BackendUser::getInstance()->isAdmin ? 0 : intval(\BackendUser::getInstance()->iso_groups[0]);
+            $intGroup = \BackendUser::getInstance()->isAdmin ? 0 : (int) \BackendUser::getInstance()->iso_groups[0];
         }
 
         $objGroup = Group::findByPk($intGroup);
@@ -97,8 +95,10 @@ class DcaManager extends \Backend
      */
     public function updateDateAdded($insertId)
     {
-        $strTable = Product::getTable();
-        \Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertId);
+        \Database::getInstance()
+            ->prepare("UPDATE tl_iso_product SET dateAdded=? WHERE id=?")
+            ->execute(time(), $insertId)
+        ;
     }
 
     /**
@@ -133,7 +133,7 @@ class DcaManager extends \Backend
 
                 if ($strClass != '') {
 
-                    /** @type Attribute $objAttribute */
+                    /** @var Attribute $objAttribute */
                     $objAttribute = new $strClass();
                     $objAttribute->loadFromDCA($arrData, $strName);
                     $arrData['attributes'][$strName] = $objAttribute;
@@ -170,11 +170,11 @@ class DcaManager extends \Backend
                     $blnAdvancedPrices = true;
                 }
 
-                if (in_array('sku', $objType->getAttributes())) {
+                if (in_array('sku', $objType->getAttributes(), true)) {
                     $blnShowSku = true;
                 }
 
-                if (in_array('price', $objType->getAttributes())) {
+                if (in_array('price', $objType->getAttributes(), true)) {
                     $blnShowPrice = true;
                 }
 
@@ -232,6 +232,11 @@ class DcaManager extends \Backend
      */
     public function addBreadcrumb()
     {
+        // Avoid the page node trap (#1701)
+        if (defined('TL_SCRIPT') && TL_SCRIPT === 'contao/page.php') {
+            return;
+        }
+
         $strBreadcrumb = Breadcrumb::generate(\Session::getInstance()->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
@@ -260,7 +265,7 @@ class DcaManager extends \Backend
 
         if (\Input::get('id') > 0) {
 
-            /** @type object $objProduct */
+            /** @var object $objProduct */
             $objProduct = \Database::getInstance()->prepare("SELECT p1.pid, p1.type, p2.type AS parent_type FROM tl_iso_product p1 LEFT JOIN tl_iso_product p2 ON p1.pid=p2.id WHERE p1.id=?")->execute(\Input::get('id'));
 
             if ($objProduct->numRows) {
@@ -345,7 +350,7 @@ class DcaManager extends \Backend
                         && null !== $arrAttributes[$name]
                         && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
                         && */!$arrAttributes[$name]->isVariantOption()
-                        && !in_array($name, array('price', 'published', 'start', 'stop'))
+                        && !in_array($name, ['price', 'published', 'start', 'stop'], true)
                     ) {
                         $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
@@ -401,44 +406,44 @@ class DcaManager extends \Backend
         }
 
 
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['mode']      = 4;
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields']    = array('id');
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['fields']['alias']['sorting']   = false;
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['mode']    = 4;
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields']  = ['id'];
+        $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
 
         $arrFields         = array();
 
-        /** @type ProductType $objType */
+        /** @var ProductType $objType */
         $objType           = $objProduct->getRelated('type');
 
         $arrVariantFields  = $objType->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
-        if (in_array('images', $arrVariantFields)) {
+        if (in_array('images', $arrVariantFields, true)) {
             $arrFields[] = 'images';
         }
 
-        if (in_array('name', $arrVariantFields)) {
+        if (in_array('name', $arrVariantFields, true)) {
             $arrFields[] = 'name';
-            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('name');
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = array('name');
         }
 
-        if (in_array('sku', $arrVariantFields)) {
+        if (in_array('sku', $arrVariantFields, true)) {
             $arrFields[] = 'sku';
-            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['sorting']['fields'] = array('sku');
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = array('sku');
         }
 
-        if (in_array('price', $arrVariantFields)) {
+        if (in_array('price', $arrVariantFields, true)) {
             $arrFields[] = 'price';
         }
 
         // Limit the number of columns if there are more than 2
         if (count($arrVariantOptions) > 2) {
             $arrFields[] = 'variantFields';
-            $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['variantFields'] = $arrVariantOptions;
+            $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
             foreach (array_merge($arrVariantOptions) as $name) {
 
-                /** @type Attribute $objAttribute */
+                /** @var Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
 
                 if ($objAttribute instanceof IsotopeAttributeWithOptions
@@ -451,10 +456,10 @@ class DcaManager extends \Backend
             }
         }
 
-        $GLOBALS['TL_DCA'][$objProduct->getTable()]['list']['label']['fields'] = $arrFields;
+        $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['fields'] = $arrFields;
 
         // Make all column fields sortable
-        foreach ($GLOBALS['TL_DCA'][$objProduct->getTable()]['fields'] as $name => $arrField) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $arrField) {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && in_array($name, $arrFields));
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
@@ -593,9 +598,6 @@ class DcaManager extends \Backend
             \System::log('Page ID ' . $intNode . ' was not mounted', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
-
-        // Limit tree
-        $GLOBALS['TL_DCA']['tl_page']['list']['sorting']['root'] = array($intNode);
 
         // Add root link
         $arrLinks[] = '<img src="' . TL_FILES_URL . 'system/themes/' . \Backend::getTheme() . '/images/pagemounts.gif" width="18" height="18" alt=""> <a href="' . \Controller::addToUrl('page=0') . '" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['selectAllNodes']) . '">' . $GLOBALS['TL_LANG']['MSC']['filterAll'] . '</a>';

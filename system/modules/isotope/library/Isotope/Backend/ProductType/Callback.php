@@ -3,15 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Backend\ProductType;
 
+use Haste\Util\Format;
 use Isotope\Backend\Permission;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
@@ -28,11 +28,11 @@ class Callback extends Permission
     public function checkPermission()
     {
         // Do not run the permission check on other Isotope modules
-        if (\Input::get('mod') != 'producttypes') {
+        if ('producttypes' !== \Input::get('mod')) {
             return;
         }
 
-        /** @type \BackendUser $objBackendUser */
+        /** @var \BackendUser $objBackendUser */
         $objBackendUser = \BackendUser::getInstance();
 
         if ($objBackendUser->isAdmin) {
@@ -76,7 +76,7 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || (\Input::get('act') == 'delete' && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
+                if (!in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -86,7 +86,7 @@ class Callback extends Permission
             case 'deleteAll':
             case 'overrideAll':
                 $session = $this->Session->getData();
-                if (\Input::get('act') == 'deleteAll' && !$this->User->hasAccess('delete', 'iso_product_typep')) {
+                if ('deleteAll' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_product_typep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
@@ -118,10 +118,10 @@ class Callback extends Permission
      */
     public function copyProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
-        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
 
 
@@ -143,10 +143,10 @@ class Callback extends Permission
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
-        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
 
     /**
@@ -156,7 +156,7 @@ class Callback extends Permission
      */
     public function getOptions()
     {
-        /** @type \BackendUser $objUser */
+        /** @var \BackendUser $objUser */
         $objUser = \BackendUser::getInstance();
 
         $arrTypes = $objUser->iso_product_types;
@@ -165,13 +165,12 @@ class Callback extends Permission
             $arrTypes = array(0);
         }
 
-        $t = ProductType::getTable();
         $arrProductTypes = array();
-        $objProductTypes = \Database::getInstance()->execute("
-            SELECT id,name FROM $t
-            WHERE tstamp>0" . ($objUser->isAdmin ? '' : (" AND id IN (" . implode(',', $arrTypes) . ")")) . "
+        $objProductTypes = \Database::getInstance()->execute('
+            SELECT id,name FROM tl_iso_producttype
+            WHERE tstamp>0' . ($objUser->isAdmin ? '' : (' AND id IN (' . implode(',', $arrTypes) . ')')) . '
             ORDER BY name
-        ");
+        ');
 
         while ($objProductTypes->next()) {
             $arrProductTypes[$objProductTypes->id] = $objProductTypes->name;
@@ -183,12 +182,15 @@ class Callback extends Permission
     /**
      * Make sure at least one variant attribute is enabled
      *
-     * @param mixed $varValue
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
      *
      * @return mixed
+     *
      * @throws \UnderflowException
+     * @throws \LogicException
      */
-    public function validateVariantAttributes($varValue)
+    public function validateVariantAttributes($varValue, \DataContainer $dc)
     {
         \Controller::loadDataContainer('tl_iso_product');
 
@@ -199,7 +201,7 @@ class Callback extends Permission
         if (!empty($arrAttributes) && is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
 
-                /** @type IsotopeAttributeForVariants|Attribute $objAttribute */
+                /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
                 $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
 
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
@@ -222,5 +224,57 @@ class Callback extends Permission
         }
 
         return $varValue;
+    }
+
+    /**
+     * Check if singular attributes appear in the both product type attributes and variant attributes
+     *
+     * @param mixed          $value
+     * @param \DataContainer $dc
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     */
+    public function validateSingularAttributes($value, \DataContainer $dc)
+    {
+        $productFields  = deserialize($dc->activeRecord->attributes);
+        $variantFields  = deserialize($value);
+        $singularFields = Attribute::getSingularFields();
+
+        if (!is_array($productFields) || !is_array($variantFields) || 0 === count($singularFields)) {
+            return $value;
+        }
+
+        $error = [];
+
+        foreach ($singularFields as $singular) {
+            foreach ($productFields as $product) {
+                if ($product['name'] === $singular) {
+                    if ($product['enabled']) {
+                        foreach ($variantFields as $variant) {
+                            if ($variant['name'] === $singular) {
+                                if ($variant['enabled']) {
+                                    $error[] = Format::dcaLabel('tl_iso_product', $singular);
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        if (count($error) > 0) {
+            throw new \LogicException(sprintf(
+                $GLOBALS['TL_LANG']['tl_iso_producttype']['singularAttributes'],
+                implode(', ', $error)
+            ));
+        }
+
+        return $value;
     }
 }

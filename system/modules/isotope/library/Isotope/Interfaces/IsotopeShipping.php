@@ -3,14 +3,15 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Interfaces;
+
+use Isotope\Model\ProductCollectionSurcharge\Shipping;
 
 
 /**
@@ -18,6 +19,12 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeShipping
 {
+    /**
+     * Returns the ID of this shipping method.
+     *
+     * @return int
+     */
+    public function getId();
 
     /**
      * Return boolean flag if the shipping method is available
@@ -42,6 +49,13 @@ interface IsotopeShipping
      * @return  string
      */
     public function getLabel();
+
+    /**
+     * Returns the shipping note.
+     *
+     * @return string
+     */
+    public function getNote();
 
     /**
      * Return percentage label if price is percentage
@@ -74,6 +88,10 @@ interface IsotopeShipping
 
     /**
      * Get the checkout surcharge for this shipping method
+     *
+     * @param IsotopeProductCollection $objCollection
+     *
+     * @return Shipping|null
      */
     public function getSurcharge(IsotopeProductCollection $objCollection);
 }

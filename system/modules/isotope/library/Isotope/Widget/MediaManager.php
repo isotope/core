@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Widget;
@@ -87,12 +86,10 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function ajaxUpload()
     {
-        $strFile = $this->validateUpload();
+        $arrResponse = array('success' => true, 'file' => $this->validateUpload());
 
         if ($this->hasErrors()) {
             $arrResponse = array('success' => false, 'error' => $this->getErrorAsString(), 'preventRetry' => true);
-        } else {
-            $arrResponse = array('success' => true, 'file' => $strFile);
         }
 
         // Can't use Haste\Response\JsonResponse, it triggers a json download in IE iframes
@@ -183,7 +180,7 @@ class MediaManager extends \Widget implements \uploadable
 
         if (is_array($arrFallback)) {
             foreach ($arrFallback as $k => $arrImage) {
-                if ($arrImage['translate'] == 'all') {
+                if ('all' === $arrImage['translate']) {
                     unset($arrFallback[$k]);
                 }
             }
@@ -248,7 +245,7 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function generate()
     {
-        if (\Input::post('action') == 'uploadMediaManager') {
+        if ('uploadMediaManager' === \Input::post('action')) {
             $this->ajaxUpload();
         }
 
@@ -383,8 +380,8 @@ class MediaManager extends \Widget implements \uploadable
                 $strPreview = 'system/themes/' . \Backend::getTheme() . '/images/' . $objFile->icon;
             }
 
-            $strTranslateText = ($blnLanguage && $this->varValue[$i]['translate'] != 'all') ? ' disabled="disabled"' : '';
-            $strTranslateNone = ($blnLanguage && $this->varValue[$i]['translate'] == 'none') ? ' disabled="disabled"' : '';
+            $strTranslateText = ($blnLanguage && 'all' !== $this->varValue[$i]['translate']) ? ' disabled="disabled"' : '';
+            $strTranslateNone = ($blnLanguage && 'none' === $this->varValue[$i]['translate']) ? ' disabled="disabled"' : '';
 
             $return .= '
   <tr>
@@ -395,13 +392,13 @@ class MediaManager extends \Widget implements \uploadable
         '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.$this->optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.\Widget::optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.$this->optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.\Widget::optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_text" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.$this->optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.\Widget::optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][0].'</label></span>
         </fieldset>
     </td>
@@ -409,16 +406,16 @@ class MediaManager extends \Widget implements \uploadable
 
             // Add buttons
             foreach ($arrButtons as $button) {
-                if ($button == 'delete' && $blnLanguage && $this->varValue[$i]['translate'] != 'all') {
+                if ('delete' === $button && $blnLanguage && 'all' !== $this->varValue[$i]['translate']) {
                     continue;
                 }
 
-                $class = ($button == 'up' || $button == 'down') ? ' class="button-move"' : '';
+                $class = ('up' === $button || 'down' === $button) ? ' class="button-move"' : '';
 
-                if ($button == 'drag') {
+                if ('drag' === $button) {
                     $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
                 } else {
-                    $return .= '<a href="'.$this->addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                    $return .= '<a href="'.\Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
                 }
             }
 

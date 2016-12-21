@@ -3,11 +3,10 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model;
@@ -117,7 +116,7 @@ class Config extends \Model
         $address->phone       = $this->phone;
         $address->vat_no      = $this->vat_no;
 
-        $address->preventSaving();
+        $address->preventSaving(false);
 
         return $address;
     }
@@ -144,7 +143,8 @@ class Config extends \Model
 
     /**
      * Return raw billing field data
-     * @return  array
+     *
+     * @return array
      */
     public function getBillingFieldsConfig()
     {
@@ -154,11 +154,11 @@ class Config extends \Model
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-                    $this->arrCache['billingFieldsConfig'][] = array(
+                    $this->arrCache['billingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['billing'] != 'disabled'),
-                        'mandatory' => ($arrField['billing'] == 'mandatory'),
-                    );
+                        'enabled'   => 'disabled' !== $arrField['billing'],
+                        'mandatory' => 'mandatory' === $arrField['billing'],
+                    ];
                 }
             }
         }
@@ -198,11 +198,11 @@ class Config extends \Model
 
             if (is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
-                    $this->arrCache['shippingFieldsConfig'][] = array(
+                    $this->arrCache['shippingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
-                        'enabled'   => ($arrField['shipping'] != 'disabled'),
-                        'mandatory' => ($arrField['shipping'] == 'mandatory'),
-                    );
+                        'enabled'   => 'disabled' !== $arrField['shipping'],
+                        'mandatory' => 'mandatory' === $arrField['shipping'],
+                    ];
                 }
             }
         }
@@ -284,7 +284,7 @@ class Config extends \Model
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );
             } else {
-                $this->arrCache['newProductLimit'] = time();
+                $this->arrCache['newProductLimit'] = \Date::floorToMinute();
             }
         }
 

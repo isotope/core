@@ -3,19 +3,16 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-
 
 /**
  * Attribute to provide an audio/video player in the product details
@@ -23,8 +20,11 @@ use Isotope\Model\Attribute;
  * @copyright  Isotope eCommerce Workgroup 2009-2014
  * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
-class Media extends Attribute implements IsotopeAttribute
+class Media extends Attribute
 {
+    /**
+     * @inheritdoc
+     */
     public function saveToDCA(array &$arrData)
     {
         parent::saveToDCA($arrData);
@@ -38,21 +38,15 @@ class Media extends Attribute implements IsotopeAttribute
     }
 
     /**
-     * Return class name for the backend widget or false if none should be available
-     * @return    string
+     * @inheritdoc
      */
     public function getBackendWidget()
     {
         return $GLOBALS['BE_FFL']['fileTree'];
     }
 
-
     /**
-     * Generate media attribute
-     *
-     * @param \Isotope\Interfaces\IsotopeProduct $objProduct
-     * @param array $arrOptions
-     * @return string
+     * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
