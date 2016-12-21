@@ -59,6 +59,10 @@ class OrderDetails extends AbstractProductCollection
     {
         $order = $this->getCollection();
 
+        if (null === $order) {
+            return;
+        }
+
         parent::compile();
 
         $this->Template->info                 = deserialize($order->checkout_info, true);
