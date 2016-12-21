@@ -11,8 +11,34 @@
 
 namespace Isotope\Backend;
 
-class SubtableVersion extends \Backend
+use Contao\Template;
+
+class SubtableVersion
 {
+    private static $hiddenTables = [
+        'tl_iso_product_category',
+        'tl_iso_product_price',
+    ];
+
+    /**
+     * Remove subtable versions from backend welcome screen.
+     *
+     * @param Template $template
+     */
+    public function removeFromWelcomeScreen(Template $template)
+    {
+        if ('be_welcome' !== $template->getName()) {
+            return;
+        }
+
+        $template->versions = array_filter(
+            $template->versions,
+            function ($version) {
+                return !in_array($version['fromTable'], static::$hiddenTables, true);
+            }
+        );
+    }
+
     /**
      * Create initial version record if it does not exist
      *

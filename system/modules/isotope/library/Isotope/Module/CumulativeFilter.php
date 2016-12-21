@@ -279,8 +279,14 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     protected function generateOptionItem($attribute, $label, $value, $matchCount, $isActive)
     {
         $value = base64_encode($this->id . ';' . ($isActive ? 'del' : 'add') . ';' . $attribute . ';' . $value);
-        $href  = Url::addQueryString('cumulativefilter=' . $value);
         $link  = $label;
+
+        $href  = Url::addQueryString(
+            'cumulativefilter=' . $value,
+            Url::removeQueryStringCallback(function ($value, $key) {
+                return strpos($key, 'page_iso') !== 0;
+            })
+        );
 
         if (false !== $matchCount) {
             $link = sprintf('%s <i class="result_count">(%d)</i>', $label, $matchCount);

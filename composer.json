@@ -20,7 +20,7 @@
         "contao-community-alliance/composer-plugin": "~2.4 || ~3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3",
         "terminal42/dcawizard": "~2.3",
-        "codefog/contao-haste": "^4.14.2",
+        "codefog/contao-haste": "~4.15",
         "menatwork/contao-multicolumnwizard": "~3.2",
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",
@@ -28,7 +28,8 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
-        "discordier/httprequestextended": "~1.1"
+        "discordier/httprequestextended": "~1.1",
+        "contao/manager-plugin": "~1.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
@@ -72,8 +73,7 @@
             "runonce": [
                 "system/modules/isotope/config/upgrade.php"
             ]
-        }
-    },
-    "prefer-stable": true,
-    "minimum-stability": "dev"
+        },
+        "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin"
+    }
 }

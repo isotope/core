@@ -124,7 +124,7 @@ abstract class TypeAgent extends \Model
         $arrOptions = array();
 
         foreach (static::getModelTypes() as $strName => $strClass) {
-            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable . '.' . $strName][0] ? : $strName;
+            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable][$strName][0] ? : $strName;
         }
 
         return $arrOptions;

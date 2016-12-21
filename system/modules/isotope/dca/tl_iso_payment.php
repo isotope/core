@@ -271,9 +271,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('cart_items', 'cart_products'),
+            'options'               => [
+                \Isotope\Model\Payment::QUANTITY_MODE_ITEMS,
+                \Isotope\Model\Payment::QUANTITY_MODE_PRODUCTS,
+            ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['quantity_mode'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'minimum_quantity' => array

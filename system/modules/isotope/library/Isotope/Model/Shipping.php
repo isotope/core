@@ -50,6 +50,8 @@ use Isotope\Translation;
  */
 abstract class Shipping extends TypeAgent implements IsotopeShipping
 {
+    const QUANTITY_MODE_ITEMS = 'cart_items';
+    const QUANTITY_MODE_PRODUCTS = 'cart_products';
 
     /**
      * Table name
@@ -132,16 +134,17 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
         }
 
         if ($this->minimum_quantity > 0 || $this->maximum_quantity > 0) {
-            $quantity = 0;
+            switch ($this->quantity_mode) {
+                case static::QUANTITY_MODE_ITEMS:
+                    $quantity =  Isotope::getCart()->sumItemsQuantity();
+                    break;
 
-            if ('cart_items' !== $this->quantity_mode && 'cart_products' !== $this->quantity_mode) {
-                throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
-            }
+                case static::QUANTITY_MODE_PRODUCTS:
+                    $quantity =  Isotope::getCart()->countItems();
+                    break;
 
-            foreach (Isotope::getCart()->getItems() as $item) {
-                if (!$item->hasProduct() || !$item->getProduct()->isExemptFromShipping()) {
-                    $quantity += ('cart_items' === $this->quantity_mode ? $item->quantity : 1);
-                }
+                default:
+                    throw new \InvalidArgumentException(sprintf('Unknown quantity mode "%s"', $this->quantity_mode));
             }
 
             if (($this->minimum_quantity > 0 && $this->minimum_quantity > $quantity)
@@ -297,7 +300,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
 <a href="' . ampersand(str_replace('&key=shipping', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping.'.$this->type][0] . ')' . '</h2>
+<h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'][$this->type][0] . ')' . '</h2>
 
 <div class="tl_formbody_edit">
 <div class="tl_tbox block">

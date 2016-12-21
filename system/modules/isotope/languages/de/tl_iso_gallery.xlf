@@ -321,9 +321,6 @@
         <source>Make sure to include jQuery in your page layout for this gallery to work correctly.</source>
         <target>Damit diese Galerie funktioniert, stellen Sie sicher, dass jQuery in Ihrem Seitenlayout eingebunden wird.</target>
       </trans-unit>
-      <trans-unit id="tl_iso_gallery.pictureNotSupported">
-        <source>Be aware that this gallery type does not support &amp;lt;picture&amp;gt; (responsive images).</source>
-      </trans-unit>
     </body>
   </file>
 </xliff>

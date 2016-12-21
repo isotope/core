@@ -440,7 +440,7 @@ class Backend extends Contao_Backend
         // try to load a type agent model help description
         $arrField['explanation'] = 'type';
         foreach ($arrFieldComplete['options'] as $arrOption) {
-            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strKey . '.' . $arrOption['value']];
+            $arrLabel = $GLOBALS['TL_LANG']['MODEL'][$strKey][$arrOption['value']];
             if ($arrLabel) {
                 $GLOBALS['TL_LANG']['XPL']['type'][] = $arrLabel;
             }

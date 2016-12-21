@@ -13,7 +13,7 @@ namespace Isotope\Backend\Gallery;
 
 use Isotope\Model\Gallery;
 
-class Callback extends \Backend
+class Callback
 {
 
     public function showJsLibraryHint()
@@ -23,17 +23,6 @@ class Callback extends \Backend
 
             if (null !== $gallery && 'elevatezoom' === $gallery->type) {
                 \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_gallery']['includeJQuery']);
-            }
-        }
-    }
-
-    public function showImageSizeHint()
-    {
-        if ('edit' === \Input::get('act')) {
-            $gallery = Gallery::findByPk(\Input::get('id'));
-
-            if (null !== $gallery && ('elevatezoom' === $gallery->type || 'inline' === $gallery->type)) {
-                \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_gallery']['pictureNotSupported']);
             }
         }
     }

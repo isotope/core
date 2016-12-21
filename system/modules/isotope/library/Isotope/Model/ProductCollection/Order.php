@@ -12,7 +12,6 @@
 namespace Isotope\Model\ProductCollection;
 
 use Haste\Generator\RowClass;
-use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -20,10 +19,7 @@ use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
-use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection;
-use Isotope\Model\ProductCollectionSurcharge;
-use Isotope\Model\Shipping;
 use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
@@ -471,9 +467,9 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 )
             );
 
-            $arrTokens['cart_html'] = Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), false));
+            $arrTokens['cart_html'] = \Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(Haste::getInstance()->call('replaceInsertTags', array($objTemplate->parse(), true)));
+            $arrTokens['cart_text'] = strip_tags(\Controller::replaceInsertTags($objTemplate->parse(), true));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
@@ -554,7 +550,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         return uniqid(
-            Haste::getInstance()->call('replaceInsertTags', array((string) $objConfig->orderPrefix, false)),
+            \Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
             true
         );
     }

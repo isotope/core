@@ -12,7 +12,6 @@
 namespace Isotope;
 
 use Haste\Data\Plain;
-use Haste\Haste;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
@@ -485,7 +484,7 @@ class Isotope extends \Controller
             $arrOptions[$field] = array
             (
                 'label' => Format::dcaLabel($strTable, $field),
-                'value' => Haste::getInstance()->call('replaceInsertTags', Format::dcaValue($strTable, $field, $value)),
+                'value' => \Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
             );
         }
 
@@ -564,7 +563,7 @@ class Isotope extends \Controller
                 $v,
                 Format::dcaLabel($strTable, $k),
                 array (
-                    'formatted' => Haste::getInstance()->call('replaceInsertTags', array($formatted))
+                    'formatted' => \Controller::replaceInsertTags($formatted)
                 )
             );
         }

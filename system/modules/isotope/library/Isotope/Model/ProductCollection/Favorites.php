@@ -44,9 +44,7 @@ class Favorites extends ProductCollection
 
         /** @var \PageModel|\stdClass $rootPage */
         $rootPage = \PageModel::findByPk($objPage->rootId);
-
-        $collection = null;
-        $storeId    = (int) $rootPage->iso_store_id;
+        $storeId  = (int) $rootPage->iso_store_id;
 
         $collection = static::findOneBy(
             array('member=?', 'store_id=?'),

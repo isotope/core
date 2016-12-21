@@ -135,7 +135,7 @@
 
                 requested = true;
 
-                var url = url = window.location.href + (document.location.search ? '&' : '?') + '&iso_autocomplete=' + id,
+                var url = window.location.href + (document.location.search ? '&' : '?') + '&iso_autocomplete=' + id,
                     xhr = new XMLHttpRequest();
 
                 xhr.open('GET', encodeURI(url));

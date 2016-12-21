@@ -116,7 +116,7 @@ class Config extends \Model
         $address->phone       = $this->phone;
         $address->vat_no      = $this->vat_no;
 
-        $address->preventSaving();
+        $address->preventSaving(false);
 
         return $address;
     }

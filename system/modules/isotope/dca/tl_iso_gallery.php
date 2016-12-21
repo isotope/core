@@ -26,7 +26,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             array('Isotope\\Backend', 'initializeSetupModule'),
             array('Isotope\\Backend\\Gallery\\Callback', 'showJsLibraryHint'),
-            array('Isotope\\Backend\\Gallery\\Callback', 'showImageSizeHint'),
         ),
         'sql' => array
         (

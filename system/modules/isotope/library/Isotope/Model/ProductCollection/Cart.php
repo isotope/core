@@ -150,7 +150,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             $objOrder = Order::findOneBy(
                 array(
                     "$t.source_collection_id=?",
-                    "$t.locked=''"
+                    "$t.locked IS NULL"
                 ),
                 array($this->id)
             );
@@ -268,16 +268,28 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         $time       = time();
         $objCart    = null;
-        $cookieHash = (string) \Input::cookie(static::$strCookie);
         $storeId    = (int) $rootPage->iso_store_id;
 
-        //  Check to see if the user is logged in.
-        if (FE_USER_LOGGED_IN === true) {
+        if (true === FE_USER_LOGGED_IN) {
+            $cookieHash = null;
+
             $objCart = static::findOneBy(
                 array('member=?', 'store_id=?'),
                 array(\FrontendUser::getInstance()->id, $storeId)
             );
-        } elseif ('' !== $cookieHash) {
+
+        } else {
+            $cookieHash = (string) \Input::cookie(static::$strCookie);
+
+            if ('' === $cookieHash) {
+                $cookieHash = sha1(
+                    session_id()
+                    . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
+                    . $storeId
+                    . static::$strCookie
+                );
+            }
+
             $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
         }
 
@@ -285,13 +297,6 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         if ($objCart === null) {
             $objConfig = Config::findByRootPageOrFallback($objPage->rootId);
             $objCart   = new static();
-
-            $cookieHash = FE_USER_LOGGED_IN === true ? null : sha1(
-                session_id()
-                . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
-                . $storeId
-                . static::$strCookie
-            );
 
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
@@ -306,7 +311,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             $objCart->tstamp = $time;
         }
 
-        if (FE_USER_LOGGED_IN !== true) {
+        if (true !== FE_USER_LOGGED_IN) {
             \System::setCookie(
                 static::$strCookie,
                 $cookieHash,

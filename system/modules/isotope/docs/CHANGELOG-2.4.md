@@ -1,6 +1,31 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.0 (2016-12-21)
+--------------------------
+
+### New
+
+- Added plugin for Contao Manager
+
+
+### Improved
+
+- Only select menu variant options must have blank option (#1738)
+- Remove product category and price version info from welcome screen (#1725)
+- Remove pagination parameter from cumulative filter (#1739)
+
+
+### Fixed
+
+- Prevent error message when no buttons are enabled (#1735)
+- Name and help wizard for model types were no longer translated (#1716)
+- Shipping and payment quantity mode is mandatory (#1743)
+- Prevent duplicate collection error if cart cookie could not be set (#1721)
+- Incorrect tax free total calculation in net-calculation mode (#1711)
+- PHP7 does not allow callback value by reference in array_filter (#1746)
+
+
 Version 2.4.0-rc1 (2016-10-07)
 ------------------------------
 

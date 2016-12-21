@@ -226,7 +226,6 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         if ($this->isVariantOption()) {
             $arrField['eval']['mandatory'] = true;
-            $arrField['eval']['includeBlankOption'] = true;
         }
 
         if ($this->blankOptionLabel != '') {
@@ -249,10 +248,13 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                 case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                     $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
                     $arrKey     = explode('.', $foreignKey, 2);
-                    $arrOptions = \Database::getInstance()
-                        ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
-                        ->fetchAllAssoc()
-                    ;
+
+                    if ('' !== (string) $arrKey[0] && '' !== $arrKey[1]) {
+                        $arrOptions = \Database::getInstance()
+                            ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
+                            ->fetchAllAssoc()
+                        ;
+                    }
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_TABLE:

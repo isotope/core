@@ -46,6 +46,10 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
 
         parent::saveToDCA($arrData);
 
+        if ($this->isVariantOption()) {
+            $arrData['fields'][$this->field_name]['eval']['includeBlankOption'] = true;
+        }
+
         if ($this->multiple) {
             $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         } else {
