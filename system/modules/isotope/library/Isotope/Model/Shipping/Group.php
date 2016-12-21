@@ -22,6 +22,10 @@ use Isotope\Model\Shipping;
  */
 class Group extends Shipping
 {
+    const CALCULATE_FIRST   = 'first';
+    const CALCULATE_LOWEST  = 'lowest';
+    const CALCULATE_HIGHEST = 'highest';
+    const CALCULATE_SUM     = 'summarize';
 
     /**
      * Shipping methods we're using
@@ -71,10 +75,10 @@ class Group extends Shipping
         switch ($this->group_calculation) {
 
             default:
-            case 'first':
+            case self::CALCULATE_FIRST:
                 return $this->arrMethods[0]->getPrice();
 
-            case 'lowest':
+            case self::CALCULATE_LOWEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
@@ -85,7 +89,7 @@ class Group extends Shipping
 
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
-            case 'highest':
+            case self::CALCULATE_HIGHEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
@@ -96,7 +100,7 @@ class Group extends Shipping
 
                 return ($fltReturn === null) ? 0 : $fltReturn;
 
-            case 'summarize':
+            case self::CALCULATE_SUM:
                 $fltTotal = 0;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltTotal += $objMethod->getPrice();

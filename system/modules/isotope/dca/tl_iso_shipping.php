@@ -358,7 +358,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('first', 'lowest', 'highest', 'summarize'),
+            'options'               => [
+                \Isotope\Model\Shipping\Group::CALCULATE_FIRST,
+                \Isotope\Model\Shipping\Group::CALCULATE_LOWEST,
+                \Isotope\Model\Shipping\Group::CALCULATE_HIGHEST,
+                \Isotope\Model\Shipping\Group::CALCULATE_SUM,
+            ],
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
