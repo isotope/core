@@ -74,7 +74,7 @@ class Wishlist extends AbstractProductCollection
      */
     protected function getEmptyMessage()
     {
-        return $GLOBALS['TL_LANG']['MSC']['noItemsInFavorites'];
+        return $GLOBALS['TL_LANG']['MSC']['noItemsInWishlist'];
     }
 
     /**
