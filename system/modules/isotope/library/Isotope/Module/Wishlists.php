@@ -91,6 +91,28 @@ class Wishlists extends Module
             return;
         }
 
+        if ('wishlists'.$this->id === \Input::post('FORM_SUBMIT')) {
+            $names = \Input::post('name');
+            $new   = (string) \Input::post('new');
+
+            if (is_array($names) && 0 !== count($names)) {
+                foreach ($wishlists as $wishlist) {
+                    if (isset($names[$wishlist->id])) {
+                        $wishlist->setName($names[$wishlist->id]);
+                        $wishlist->save();
+                    }
+                }
+            }
+
+            if ('' !== $new) {
+                $wishlist = Wishlist::createForCurrentUser();
+                $wishlist->setName($new);
+                $wishlist->save();
+            }
+
+            \Controller::reload();
+        }
+
         $url = $this->getJumpTo()->getFrontendUrl();
 
         foreach ($wishlists as $wishlist) {
@@ -98,13 +120,16 @@ class Wishlists extends Module
 
             $items[] = [
                 'collection' => $wishlist,
+                'id'         => $wishlist->id,
                 'name'       => $wishlist->getName(),
-                'href'       => Url::addQueryString('id=' . $wishlist->id)
+                'href'       => Url::addQueryString('id=' . $wishlist->id, $url)
             ];
         }
 
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($items);
 
+        $this->Template->id = $this->id;
+        $this->Template->action = \Environment::get('request');
         $this->Template->items = $items;
     }
 
