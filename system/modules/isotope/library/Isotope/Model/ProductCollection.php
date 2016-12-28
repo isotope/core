@@ -78,13 +78,13 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * Cache
      * @var array
      */
-    protected $arrCache;
+    public $arrCache;
 
     /**
      * Cache product items in this collection
      * @var ProductCollectionItem[]
      */
-    protected $arrItems;
+    public $arrItems;
 
     /**
      * Cache surcharges in this collection
@@ -997,12 +997,12 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * Add a product to the collection
      *
      * @param IsotopeProduct $objProduct
-     * @param int            $intQuantity
+     * @param float          $fltQuantity
      * @param array          $arrConfig
      *
      * @return ProductCollectionItem|false
      */
-    public function addProduct(IsotopeProduct $objProduct, $intQuantity, array $arrConfig = array())
+    public function addProduct(IsotopeProduct $objProduct, $fltQuantity, array $arrConfig = array())
     {
         // !HOOK: additional functionality when adding product to collection
         if (isset($GLOBALS['ISO_HOOKS']['addProductToCollection'])
@@ -1010,11 +1010,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $intQuantity = $objCallback->{$callback[1]}($objProduct, $intQuantity, $this);
+                $fltQuantity = $objCallback->{$callback[1]}($objProduct, $fltQuantity, $this);
             }
         }
 
-        if ($intQuantity == 0) {
+        if ($fltQuantity <= 0) {
             return false;
         }
 
@@ -1029,35 +1029,36 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         // Remove uploaded files from session so they are not added to the next product (see #646)
         unset($_SESSION['FILES']);
 
-        $objItem            = $this->getItemForProduct($objProduct);
+#        $objItem            = $this->getItemForProduct($objProduct);
+		$objItem = null;
         $intMinimumQuantity = $objProduct->getMinimumQuantity();
 
         if (null !== $objItem) {
-            if (($objItem->quantity + $intQuantity) < $intMinimumQuantity) {
+            if (($objItem->quantity + $fltQuantity) < $intMinimumQuantity) {
                 Message::addInfo(sprintf(
                     $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
                     $objProduct->getName(),
                     $intMinimumQuantity
                 ));
-                $intQuantity            = $intMinimumQuantity - $objItem->quantity;
+                $fltQuantity            = $intMinimumQuantity - $objItem->quantity;
             }
 
-            $objItem->increaseQuantityBy($intQuantity);
+            $objItem->increaseQuantityBy($fltQuantity);
         } else {
-            if ($intQuantity < $intMinimumQuantity) {
+            if ($fltQuantity < $intMinimumQuantity) {
                 Message::addInfo(sprintf(
                     $GLOBALS['TL_LANG']['ERR']['productMinimumQuantity'],
                     $objProduct->getName(),
                     $intMinimumQuantity
                 ));
-                $intQuantity            = $intMinimumQuantity;
+                $fltQuantity            = $intMinimumQuantity;
             }
 
             $objItem           = new ProductCollectionItem();
             $objItem->pid      = $this->id;
             $objItem->jumpTo   = (int) $arrConfig['jumpTo']->id;
 
-            $this->setProductForItem($objProduct, $objItem, $intQuantity);
+            $this->setProductForItem($objProduct, $objItem, $fltQuantity);
             $objItem->save();
 
             // Add the new item to our cache
@@ -1070,7 +1071,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}($objItem, $intQuantity, $this);
+                $objCallback->{$callback[1]}($objItem, $fltQuantity, $this);
             }
         }
 
@@ -1507,7 +1508,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 return new StandardGallery();
             }
 
-            $strCacheKey         = 'product' . $objItem->product_id . '_' . $strAttribute;
+			/** use database-id instead of product_id see #1723**/
+            $strCacheKey         = 'product' . $objItem->id . '_' . $strAttribute;
             $arrConfig['jumpTo'] = $objItem->getRelated('jumpTo');
 
             if (!isset($arrGalleries[$strCacheKey])) {
@@ -2022,9 +2024,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * @param IsotopeProduct        $product
      * @param ProductCollectionItem $item
-     * @param int                   $quantity
+     * @param float                 $fltQuantity
      */
-    private function setProductForItem(IsotopeProduct $product, ProductCollectionItem $item, $quantity)
+    private function setProductForItem(IsotopeProduct $product, ProductCollectionItem $item, $fltQuantity)
     {
         $item->tstamp         = time();
         $item->type           = array_search(get_class($product), Product::getModelTypes(), true);
@@ -2032,8 +2034,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $item->sku            = $product->getSku();
         $item->name           = $product->getName();
         $item->configuration  = $product->getOptions();
-        $item->quantity       = (int) $quantity;
-        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
-        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $quantity) : 0);
+        $item->quantity       = (float) $fltQuantity;
+        $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $fltQuantity) : 0);
+        $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $fltQuantity) : 0);
     }
 }

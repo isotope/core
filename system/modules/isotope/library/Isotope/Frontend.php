@@ -91,7 +91,7 @@ class Frontend extends \Frontend
     public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
     {
         $objModule   = $arrConfig['module'];
-        $intQuantity = ($objModule->iso_use_quantity && ((int) \Input::post('quantity_requested')) > 0) ? ((int) \Input::post('quantity_requested')) : 1;
+        $intQuantity = ($objModule->iso_use_quantity && ((float) \Input::post('quantity_requested')) > 0) ? ((float) \Input::post('quantity_requested')) : 1;
 
         // Do not add parent of variant product to the cart
         if ($objProduct->hasVariants() && !$objProduct->isVariant()) {

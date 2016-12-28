@@ -13,7 +13,7 @@ namespace Isotope\Backend\Module;
 
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
-
+use Isotope\Model\Attribute;
 
 class Callback extends \Backend
 {
@@ -56,11 +56,28 @@ class Callback extends \Backend
     {
         $arrAttributes = array();
 
+		/** system cols **/
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_sorting']) {
-                $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field)." (".$field.")";;
             }
         }
+
+		/** user cols **/
+		$arrAllAttributes = Attribute::findValid();
+		if($arrAllAttributes)
+		{
+			foreach($arrAllAttributes as $objAttr)
+			{
+				if(
+					$objAttr->isCustomerDefined()
+					|| $objAttr->isVariantOption()
+				)
+					continue;
+	
+				$arrAttributes[$objAttr->getFieldName()] = $objAttr->name." (".$objAttr->getFieldName().")";
+			}
+		}
 
         return $arrAttributes;
     }

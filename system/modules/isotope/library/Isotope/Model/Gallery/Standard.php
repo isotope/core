@@ -3,10 +3,11 @@
 /**
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
+ * @package    Isotope
+ * @link       http://isotopeecommerce.org
+ * @license    http://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Gallery;
@@ -238,6 +239,27 @@ class Standard extends Gallery implements IsotopeGallery
         return $strGallery;
     }
 
+    public function getGalleryTemplates($strTemplate = null)
+    {
+
+        if(!$strTemplate)
+            $strTemplate = $this->strTemplate;
+
+        $arrFiles   = $this->arrFiles;
+        $arrOut = array();
+
+        if(!$arrFiles)
+            return array();
+
+        foreach ($arrFiles as $arrFile) {
+            $objTemplate = new Template($strTemplate);
+            $this->addImageToTemplate($objTemplate, 'gallery', $arrFile, $watermark);
+            $arrOut[] = $objTemplate;
+        }
+        return $arrOut;
+    }
+
+
     /**
      * If the class is echoed, return the main image
      *
@@ -264,7 +286,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $objTemplate->setData($this->arrData);
         $objTemplate->type       = $strType;
-        $objTemplate->name       = $this->getName();
+		$objTemplate->name       = $this->getName();
         $objTemplate->product_id = $this->product_id;
         $objTemplate->file       = $arrFile;
         $objTemplate->src        = $arrFile[$strType];

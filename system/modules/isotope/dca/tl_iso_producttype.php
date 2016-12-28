@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
     (
         '__selector__'              => array('class', 'prices', 'variants'),
         'default'                   => '{name_legend},name,class',
-        'standard'                  => '{name_legend},name,class,fallback;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
+        'standard'                  => '{name_legend},name,class,fallback,integer_only;{description_legend:hide},description;{prices_legend:hide},prices;{template_legend},list_template,reader_template,list_gallery,reader_gallery,cssClass;{attributes_legend},attributes;{variants_legend:hide},variants;{expert_legend:hide},shipping_exempt,downloads',
     ),
 
     // Subpalettes
@@ -164,6 +164,15 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('fallback'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'integer_only' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['integer_only'],
+            'exclude'               => true,
+            'filter'                => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('integery_only'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'description' => array

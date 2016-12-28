@@ -20,6 +20,12 @@
       <trans-unit id="tl_iso_producttype.fallback.1">
         <source>Check here if this is the default product type.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.integer_only.0">
+        <source>Cart-Quanty is Integer only</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.integer_only.1">
+        <source>Check here if Cart-Quanty should be only type integer.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.description.0">
         <source>Description</source>
       </trans-unit>

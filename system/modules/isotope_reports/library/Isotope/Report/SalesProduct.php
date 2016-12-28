@@ -141,9 +141,9 @@ class SalesProduct extends Sales
             $arrRaw[$objProducts->product_id]['name'] = implode('<br>', $arrOptions);
             $arrRaw[$objProducts->product_id]['product_type_name'] = $product_type_name;
             $arrRaw[$objProducts->product_id][$objProducts->dateGroup] = (float) $arrRaw[$objProducts->product_id][$objProducts->dateGroup] + (float) $objProducts->total;
-            $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] = (int) $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] + (int) $objProducts->quantity;
+            $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] = (float) $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] + (float) $objProducts->quantity;
             $arrRaw[$objProducts->product_id]['total'] = (float) $arrRaw[$objProducts->product_id]['total'] + (float) $objProducts->total;
-            $arrRaw[$objProducts->product_id]['quantity'] = (int) $arrRaw[$objProducts->product_id]['quantity'] + (int) $objProducts->quantity;
+            $arrRaw[$objProducts->product_id]['quantity'] = (float) $arrRaw[$objProducts->product_id]['quantity'] + (float) $objProducts->quantity;
         }
 
         // Prepare columns

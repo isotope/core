@@ -1,10 +1,15 @@
 {
     "name":"isotope/isotope-core",
-    "description":"Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
+    "description":"Fork of Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
     "keywords":["contao", "isotope"],
     "type":"contao-module",
     "license":"LGPL-3.0+",
     "authors":[
+	{
+		"name":"Henry Lamorski",
+		"email":"henry.lamorski@mailbox.org",
+		"role":"Developer"
+	},
         {
             "name":"terminal42 gmbh",
             "homepage":"https://www.terminal42.ch"

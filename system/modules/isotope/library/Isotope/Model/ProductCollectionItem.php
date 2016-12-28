@@ -28,7 +28,7 @@ use Isotope\Isotope;
  * @property string sku
  * @property string name
  * @property mixed  configuration
- * @property int    quantity
+ * @property float  quantity
  * @property float  price
  * @property float  tax_free_price
  * @property string tax_id
@@ -67,6 +67,31 @@ class ProductCollectionItem extends \Model
      */
     protected $blnLocked = false;
 
+    /**
+     * validate and return $this->quantity
+     * @return quantity, when invalid value then fallback to value 1
+     */
+    public function getQuantity()
+    {
+        $blnIntegerOnly = (int) $this->getProduct()->getRelated('type')->integer_only;
+
+        if($blnIntegerOnly)
+		{
+			if(!\Validator::isNatural($this->quantity))
+			{
+                $this->quantity = 1;
+   			} 
+		}
+		else
+		{
+			if(!\Validator::isNumeric($this->quantity))
+			{
+                $this->quantity = 1;
+            }
+		}
+
+        return $this->quantity;
+    }
 
     /**
      * Check if collection item is available
@@ -284,7 +309,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
+        return $objPrice->getAmount($this->getQuantity(), $this->getOptions());
     }
 
     /**
@@ -304,7 +329,7 @@ class ProductCollectionItem extends \Model
             return '';
         }
 
-        return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
+        return $objPrice->getNetAmount($this->getQuantity(), $this->getOptions());
     }
 
     /**
@@ -314,7 +339,7 @@ class ProductCollectionItem extends \Model
      */
     public function getTotalPrice()
     {
-        return (string) ($this->getPrice() * (int) $this->quantity);
+        return (string) ($this->getPrice() * (float) $this->quantity);
     }
 
     /**
@@ -324,7 +349,7 @@ class ProductCollectionItem extends \Model
      */
     public function getTaxFreeTotalPrice()
     {
-        return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
+        return (string) ($this->getTaxFreePrice() * $this->getQuantity());
     }
 
     /**
@@ -352,17 +377,17 @@ class ProductCollectionItem extends \Model
     /**
      * Increase quantity of product collection item
      *
-     * @param int $intQuantity
+     * @param float $fltQuantity
      *
      * @return bool
      */
-    public function increaseQuantityBy($intQuantity)
+    public function increaseQuantityBy($fltQuantity)
     {
         $time = time();
 
         \Database::getInstance()->query("
             UPDATE tl_iso_product_collection_item 
-            SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ') 
+            SET tstamp=$time, quantity=(quantity+" . $fltQuantity . ') 
             WHERE id=' . $this->id
         );
 
@@ -378,13 +403,13 @@ class ProductCollectionItem extends \Model
     /**
      * Decrease quantity of product collection item
      *
-     * @param int $intQuantity
+     * @param flt $fltQuantity
      *
      * @return bool
      */
-    public function decreaseQuantityBy($intQuantity)
+    public function decreaseQuantityBy($fltQuantity)
     {
-        if (($this->quantity - $intQuantity) < 1) {
+        if (($this->quantity - $fltQuantity) < 1) {
             throw new \UnderflowException('Quantity of product collection item cannot be less than 1.');
         }
 
@@ -392,7 +417,7 @@ class ProductCollectionItem extends \Model
 
         \Database::getInstance()->query("
             UPDATE tl_iso_product_collection_item 
-            SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ') 
+            SET tstamp=$time, quantity=(quantity-" . $fltQuantity . ') 
             WHERE id=' . $this->id
         );
 
@@ -412,7 +437,7 @@ class ProductCollectionItem extends \Model
      * @param mixed  $strColumn
      * @param mixed  $varValue
      *
-     * @return int
+     * @return float
      */
     public static function sumBy($strField, $strColumn = null, $varValue = null)
     {
@@ -422,7 +447,7 @@ class ProductCollectionItem extends \Model
             $strQuery .= ' WHERE ' . (is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 
-        return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
+        return (float) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
     }
 
     /**
