@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.1 (2017-??-??)
+--------------------------
+
+### Fixed
+
+- Product was not shown in the breadcrumb (#1690)
+
+
 Version 2.4.0 (2016-12-21)
 --------------------------
 
