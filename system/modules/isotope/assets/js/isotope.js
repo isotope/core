@@ -114,13 +114,16 @@
         },
 
         checkoutButton: function (form) {
+            function disableButton(name) {
+                try {
+                    document.getElementsByName(name)[0].className = document.getElementsByName(name)[0].className + ' disabled';
+                    document.getElementsByName(name)[0].onclick = function () { return false };
+                } catch (e) {}
+            }
+
             addEventListener(form, 'submit', function () {
-                try {
-                    document.getElementsByName('nextStep')[0].disabled = true;
-                } catch (e) {}
-                try {
-                    document.getElementsByName('previousStep')[0].disabled = true;
-                } catch (e) {}
+                disableButton('nextStep');
+                disableButton('previousStep');
 
                 setTimeout(function () {
                     window.location.reload()

@@ -7,6 +7,7 @@ Version 2.4.1 (2017-??-??)
 ### Fixed
 
 - Product was not shown in the breadcrumb (#1690)
+- Back button in checkout process sent to next step (#1749)
 
 
 Version 2.4.0 (2016-12-21)
