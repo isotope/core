@@ -6,7 +6,7 @@ const gutil = require('gulp-util');
 const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
 
-const production = !!gutil.env.prod;
+const production = true;
 
 // Configuration
 const scripts = [
@@ -38,6 +38,21 @@ gulp.task('styles', function () {
             path.extname = '.min' + path.extname;
         }))
         .pipe(gulp.dest('./'));
+});
+
+// Watch task
+gulp.task('watch', function () {
+    gulp.watch(
+        ['system/modules/isotope/assets/js/*.js'],
+        ['scripts']
+    );
+    gulp.watch(
+        [
+            'system/modules/isotope/assets/css/*.css',
+            'system/modules/isotope_reports/assets/*.css'
+        ],
+        ['styles']
+    );
 });
 
 // Build by default
