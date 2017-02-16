@@ -83,12 +83,19 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
             return '';
         }
 
-        /** @var ProductCollectionItem $item */
-        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $value)) {
-            $item->addError('File does not exist.'); // TODO add real error message
+        $value = is_array($value) ? $value : [$value];
+        $parsed = [];
+
+        foreach ($value as $file) {
+            /** @var ProductCollectionItem $item */
+            if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $file)) {
+                $item->addError('File does not exist.'); // TODO add real error message
+            }
+
+            $parsed[] = substr(basename($file), 9);
         }
 
-        return substr(basename($value), 9);
+        return implode(', ', $parsed);
     }
 
     /**

@@ -8,7 +8,8 @@ Version 2.4.1 (2017-??-??)
 
 - Product was not shown in the breadcrumb (#1690)
 - Back button in checkout process sent to next step (#1749)
-- FineUploader did not work correctly
+- FineUploader product attribute did not upload files correctly
+- FineUploader product attribute did not display correctly in cart
 
 
 Version 2.4.0 (2016-12-21)
