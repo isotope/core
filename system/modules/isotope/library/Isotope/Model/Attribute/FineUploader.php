@@ -89,7 +89,7 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
         foreach ($value as $file) {
             /** @var ProductCollectionItem $item */
             if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $file)) {
-                $item->addError('File does not exist.'); // TODO add real error message
+                $item->addError($GLOBALS['TL_LANG']['ERR']['uploadNotFound']);
             }
 
             $parsed[] = substr(basename($file), 9);
