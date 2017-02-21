@@ -29,13 +29,16 @@
     },
     "require-dev": {
         "discordier/httprequestextended": "~1.1",
-        "contao/manager-plugin": "~1.0"
+        "terminal42/contao-fineuploader": "^2.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
     },
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader"
+    },
+    "conflict": {
+        "terminal42/contao-fineuploader": "< 2.0 || >= 3.0"
     },
     "autoload": {
         "psr-0": {
@@ -73,7 +76,6 @@
             "runonce": [
                 "system/modules/isotope/config/upgrade.php"
             ]
-        },
-        "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin"
+        }
     }
 }

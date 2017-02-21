@@ -194,7 +194,13 @@
                     scripts = '',
                     script, i;
 
-                txt = txt.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
+                txt = txt.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function(all, attr, code){
+                    var type = attr.match(/type=['"]?([^"']+)/);
+
+                    if (type !== null && type[1] !== 'text/javascript') {
+                        return all;
+                    }
+
                     scripts += code + '\n';
                     return '';
                 });

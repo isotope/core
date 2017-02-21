@@ -27,7 +27,7 @@ use Isotope\Model\ProductCollectionItem;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
+class FineUploader extends Attribute implements \uploadable
 {
 
     /**
