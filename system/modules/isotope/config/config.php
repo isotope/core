@@ -265,6 +265,13 @@ if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
 }
 
 /**
+ * Product actions
+ */
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\UpdateAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\CartAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\FavoriteAction());
+
+/**
  * Notification Center notification types
  */
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_status_change']['recipients'] = array('recipient_email', 'form_*', 'billing_address_email', 'shipping_address_email');
