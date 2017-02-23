@@ -13,9 +13,7 @@ namespace Isotope\Module;
 
 use Contao\PageError403;
 use Haste\Util\Format;
-use Haste\Util\Url;
-use Isotope\Isotope;
-use Isotope\Message;
+use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
 
@@ -141,30 +139,12 @@ class OrderDetails extends AbstractProductCollection
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function generateButtons(array $buttons = [])
+    protected function getActions()
     {
-        if ($this->iso_cart_jumpTo > 0) {
-            $this->addButton(
-                $buttons,
-                'reorder',
-                $GLOBALS['TL_LANG']['MSC']['reorderLabel'],
-                function () {
-                    Isotope::getCart()->copyItemsFrom($this->getCollection());
-
-                    Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
-
-                    \Controller::redirect(
-                        Url::addQueryString(
-                            'continue=' . base64_encode(\System::getReferer()),
-                            $this->iso_cart_jumpTo
-                        )
-                    );
-                }
-            );
-        }
-
-        return $buttons;
+        return [
+            new ReorderAction($this),
+        ];
     }
 }

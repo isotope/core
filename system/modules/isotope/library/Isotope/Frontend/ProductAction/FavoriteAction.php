@@ -76,8 +76,12 @@ class FavoriteAction extends AbstractButton
      *
      * @return bool
      */
-    private function isFavorited(IsotopeProduct $product)
+    private function isFavorited(IsotopeProduct $product = null)
     {
+        if (null === $product) {
+            return false;
+        }
+
         $favorites = Isotope::getFavorites();
 
         return $favorites !== null && $favorites->hasProduct($product);

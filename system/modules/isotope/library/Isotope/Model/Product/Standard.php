@@ -525,6 +525,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
             }
 
+            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
+
             if ($handleButtons) {
                 foreach ($arrButtons as $button => $data) {
                     if (isset($_POST[$button])) {
