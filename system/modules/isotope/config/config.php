@@ -273,6 +273,7 @@ if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\UpdateAction());
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\CartAction());
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\FavoriteAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\WishlistAction());
 
 /**
  * Notification Center notification types

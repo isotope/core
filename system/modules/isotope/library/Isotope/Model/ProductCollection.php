@@ -210,7 +210,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public function getUniqueId()
     {
-        return $this->uniqid;
+        return (string) $this->uniqid;
     }
 
     /**

@@ -7,7 +7,7 @@ use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Message;
 use Isotope\Model\ProductCollection\Wishlist;
 
-class FavoriteAction extends AbstractButton
+class WishlistAction extends AbstractButton
 {
 
     /**

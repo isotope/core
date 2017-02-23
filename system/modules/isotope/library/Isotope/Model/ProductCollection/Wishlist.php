@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection
@@ -71,6 +70,14 @@ class Wishlist extends ProductCollection
             array('member=?', 'store_id=?'),
             array(\FrontendUser::getInstance()->id, $storeId)
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function generateUniqueId()
+    {
+        return $this->arrData['uniqid'];
     }
 
     private static function getCurrentStoreId()

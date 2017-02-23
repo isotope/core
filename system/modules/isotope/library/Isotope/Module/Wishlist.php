@@ -12,6 +12,8 @@
 namespace Isotope\Module;
 
 use Contao\PageError403;
+use Haste\Util\Url;
+use Isotope\Frontend\ProductCollectionAction\ShareWishlistAction;
 use Isotope\Model\ProductCollection\Wishlist as WishlistCollection;
 use Isotope\Template;
 
@@ -37,14 +39,34 @@ class Wishlist extends AbstractProductCollection
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function compile()
+    {
+        parent::compile();
+
+        if ($this->getCollection()->uniqid) {
+            /** @var \PageModel $objPage */
+            global $objPage;
+
+            $this->Template->share = Url::addQueryString(
+                'uid='.$this->getCollection()->uniqid,
+                $objPage->getFrontendUrl()
+            );
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     protected function getCollection()
     {
         if (\Input::get('uid') != '') {
             $wishlist = WishlistCollection::findOneBy('uniqid', \Input::get('uid'));
+            $public = true;
         } else {
             $wishlist = WishlistCollection::findByIdForCurrentUser(\Input::get('id'));
+            $public = false;
         }
 
         if (null === $wishlist) {
@@ -55,8 +77,8 @@ class Wishlist extends AbstractProductCollection
             return null;
         }
 
-        // Order belongs to a member but not logged in
-        if ('FE' === TL_MODE && $this->iso_loginRequired && \FrontendUser::getInstance()->id != $wishlist->member) {
+        // Wishlist belongs to a member but not logged in
+        if ('FE' === TL_MODE && !$public && \FrontendUser::getInstance()->id != $wishlist->member) {
             /** @var \PageModel $objPage */
             global $objPage;
 
@@ -91,5 +113,15 @@ class Wishlist extends AbstractProductCollection
     protected function canRemoveProducts()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getActions()
+    {
+        return [
+            new ShareWishlistAction(),
+        ];
     }
 }

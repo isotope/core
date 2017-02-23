@@ -8,5 +8,9 @@
 
 <?= $this->products; ?>
 
+<?php if ($this->share): ?>
+<a href="<?= $this->share ?>">Share Link</a>
+<?php endif; ?>
+
 <?php $this->endblock() ?>
 
