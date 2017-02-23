@@ -506,6 +506,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
+        'shipping_price' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_price'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'price', 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\ShippingPrice'),
+            'sql'                   => "decimal(9,2) unsigned NOT NULL default '0.00'",
+        ),
         'images' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['images'],

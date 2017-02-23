@@ -575,6 +575,12 @@
       <trans-unit id="MODEL.tl_iso_shipping.group.1">
         <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
       </trans-unit>

@@ -214,6 +214,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  */
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
 \Isotope\Model\Shipping::registerModelType('group', 'Isotope\Model\Shipping\Group');
+\Isotope\Model\Shipping::registerModelType('product_price', 'Isotope\Model\Shipping\ProductPrice');
 
 /**
  * Documents
