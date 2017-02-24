@@ -75,6 +75,7 @@ TemplateLoader::addFiles(array
     'mod_iso_addressbook'               => 'system/modules/isotope/templates/modules',
     'mod_iso_favorites'                 => 'system/modules/isotope/templates/modules',
     'mod_iso_wishlistmanager'           => 'system/modules/isotope/templates/modules',
+    'mod_iso_wishlistviewer'            => 'system/modules/isotope/templates/modules',
     'mod_iso_wishlistdetails'           => 'system/modules/isotope/templates/modules',
     'mod_iso_cart'                      => 'system/modules/isotope/templates/modules',
     'mod_iso_checkout'                  => 'system/modules/isotope/templates/modules',

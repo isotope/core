@@ -172,6 +172,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
     'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
     'iso_wishlistmanager'           => 'Isotope\Module\WishlistManager',
+    'iso_wishlistviewer'            => 'Isotope\Module\WishlistViewer',
     'iso_wishlistdetails'           => 'Isotope\Module\WishlistDetails',
     'iso_configswitcher'            => 'Isotope\Module\ConfigSwitcher',
     'iso_addressbook'               => 'Isotope\Module\AddressBook',
