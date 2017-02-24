@@ -42,7 +42,7 @@ class ShareWishlistAction extends AbstractButton
             return false;
         }
 
-        $collection->uniqid = $this->isShared($collection) ? '' : uniqid('', true);
+        $collection->uniqid = $this->isShared($collection) ? null : uniqid('', true);
         $collection->save();
 
         \Controller::reload();
@@ -57,6 +57,6 @@ class ShareWishlistAction extends AbstractButton
      */
     private function isShared(IsotopeProductCollection $collection)
     {
-        return $collection->getUniqueId() !== '';
+        return $collection->getUniqueId() !== null;
     }
 }

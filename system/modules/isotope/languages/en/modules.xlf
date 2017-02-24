@@ -92,16 +92,16 @@
       <trans-unit id="FMD.iso_orderdetails.1">
         <source>Order reader that allows customers to view order history details</source>
       </trans-unit>
-      <trans-unit id="FMD.iso_wishlists.0">
-        <source>Wishlists</source>
+      <trans-unit id="FMD.iso_wishlistmanager.0">
+        <source>Wishlist Manager</source>
       </trans-unit>
-      <trans-unit id="FMD.iso_wishlists.1">
-        <source>Lists wishlists of the current member.</source>
+      <trans-unit id="FMD.iso_wishlistmanager.1">
+        <source>Allows the current member to manage it's wishlists.</source>
       </trans-unit>
-      <trans-unit id="FMD.iso_wishlist.0">
+      <trans-unit id="FMD.iso_wishlistdetails.0">
         <source>Wishlist Details</source>
       </trans-unit>
-      <trans-unit id="FMD.iso_wishlist.1">
+      <trans-unit id="FMD.iso_wishlistdetails.1">
         <source>Shows details of a given wishlist.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.0">

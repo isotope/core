@@ -20,14 +20,14 @@ use Isotope\Template;
 /**
  * @property int $iso_cart_jumpTo
  */
-class Wishlists extends Module
+class WishlistManager extends Module
 {
 
     /**
      * Template
      * @var string
      */
-    protected $strTemplate = 'mod_iso_wishlists';
+    protected $strTemplate = 'mod_iso_wishlistmanager';
 
     /**
      * Disable caching of the frontend page if this module is in use
@@ -77,8 +77,8 @@ class Wishlists extends Module
         /** @var Wishlist[] $wishlists */
         $wishlists = Wishlist::findBy(
             [
-                'member=?'/*,
-                'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'*/
+                'member=?',
+                /*'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')',*/
             ],
             [\FrontendUser::getInstance()->id]
         );
@@ -122,6 +122,7 @@ class Wishlists extends Module
                 'collection' => $wishlist,
                 'id'         => $wishlist->id,
                 'name'       => $wishlist->getName(),
+                'member'     => $wishlist->getRelated('member'),
                 'href'       => Url::addQueryString('id=' . $wishlist->id, $url)
             ];
         }

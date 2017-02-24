@@ -17,14 +17,18 @@ use Isotope\Frontend\ProductCollectionAction\ShareWishlistAction;
 use Isotope\Model\ProductCollection\Wishlist as WishlistCollection;
 use Isotope\Template;
 
-class Wishlist extends AbstractProductCollection
+class WishlistDetails extends AbstractProductCollection
 {
-
     /**
      * Template
      * @var string
      */
-    protected $strTemplate = 'mod_iso_wishlist';
+    protected $strTemplate = 'mod_iso_wishlistdetails';
+
+    /**
+     * @var bool
+     */
+    private $public = false;
 
     /**
      * @inheritdoc
@@ -45,7 +49,7 @@ class Wishlist extends AbstractProductCollection
     {
         parent::compile();
 
-        if ($this->getCollection()->uniqid) {
+        if (!$this->public && $this->getCollection()->uniqid !== null) {
             /** @var \PageModel $objPage */
             global $objPage;
 
@@ -63,10 +67,9 @@ class Wishlist extends AbstractProductCollection
     {
         if (\Input::get('uid') != '') {
             $wishlist = WishlistCollection::findOneBy('uniqid', \Input::get('uid'));
-            $public = true;
+            $this->public = true;
         } else {
             $wishlist = WishlistCollection::findByIdForCurrentUser(\Input::get('id'));
-            $public = false;
         }
 
         if (null === $wishlist) {
@@ -78,7 +81,7 @@ class Wishlist extends AbstractProductCollection
         }
 
         // Wishlist belongs to a member but not logged in
-        if ('FE' === TL_MODE && !$public && \FrontendUser::getInstance()->id != $wishlist->member) {
+        if ('FE' === TL_MODE && !$this->public && \FrontendUser::getInstance()->id != $wishlist->member) {
             /** @var \PageModel $objPage */
             global $objPage;
 
@@ -112,7 +115,7 @@ class Wishlist extends AbstractProductCollection
      */
     protected function canRemoveProducts()
     {
-        return true;
+        return !$this->public;
     }
 
     /**
@@ -120,6 +123,10 @@ class Wishlist extends AbstractProductCollection
      */
     protected function getActions()
     {
+        if ($this->public) {
+            return [];
+        }
+
         return [
             new ShareWishlistAction(),
         ];
