@@ -53,13 +53,11 @@ class ProductPrice extends Shipping
                 continue;
             }
 
-            $status = true;
-
-            // Break immediately if at least one product has no shipping price attribute
-            if ((!$product->isVariant() && !in_array($this->attributeName, $product->getType()->getAttributes(), true))
-                || ($product->isVariant() && !in_array($this->attributeName, $product->getType()->getVariantAttributes(), true))
+            // Break immediately if at least one product has shipping price attribute
+            if ((!$product->isVariant() && in_array($this->attributeName, $product->getType()->getAttributes(), true))
+                || ($product->isVariant() && in_array($this->attributeName, $product->getType()->getVariantAttributes(), true))
             ) {
-                $status = false;
+                $status = true;
                 break;
             }
         }
