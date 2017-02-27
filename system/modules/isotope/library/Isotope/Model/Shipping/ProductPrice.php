@@ -39,14 +39,32 @@ class ProductPrice extends Shipping
             return false;
         }
 
+        $status = false;
+
         /** @var ProductCollectionItem $item */
         foreach (Isotope::getCart()->getItems() as $item) {
-            if (!in_array($this->attributeName, $item->getProduct()->getType()->getAttributes(), true)) {
-                return false;
+            if (!$item->hasProduct()) {
+                continue;
+            }
+
+            $product = $item->getProduct();
+
+            if ($product->isExemptFromShipping()) {
+                continue;
+            }
+
+            $status = true;
+
+            // Break immediately if at least one product has no shipping price attribute
+            if ((!$product->isVariant() && !in_array($this->attributeName, $product->getType()->getAttributes(), true))
+                || ($product->isVariant() && !in_array($this->attributeName, $product->getType()->getVariantAttributes(), true))
+            ) {
+                $status = false;
+                break;
             }
         }
 
-        return true;
+        return $status;
     }
 
     /**
@@ -63,26 +81,13 @@ class ProductPrice extends Shipping
 
         /** @var ProductCollectionItem $item */
         foreach ($objCollection->getItems() as $item) {
-            if (!$item->hasProduct()) {
-                continue;
-            }
-
             $cartProduct = $item->getProduct();
+            $cartPrice   = $item->quantity * $cartProduct->{$this->attributeName};
 
-            if ($cartProduct->isExemptFromShipping()) {
-                continue;
-            }
-
-            $cartPrice = $item->quantity * $cartProduct->{$this->attributeName};
-
-            if ($cartPrice > $price) {
+            if ($cartPrice >= $price) {
                 $price   = $cartPrice;
                 $product = $cartProduct;
             }
-        }
-
-        if ($product === null) {
-            return 0;
         }
 
         return Isotope::calculatePrice($price, $product, $this->attributeName, $this->arrData['tax_class']);
