@@ -81,6 +81,10 @@ class ProductPrice extends Shipping
 
         /** @var ProductCollectionItem $item */
         foreach ($objCollection->getItems() as $item) {
+            if (!$item->hasProduct()) {
+                continue;
+            }
+
             $cartProduct = $item->getProduct();
             $cartPrice   = $item->quantity * $cartProduct->{$this->attributeName};
 
