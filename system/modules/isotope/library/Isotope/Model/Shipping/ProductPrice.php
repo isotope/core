@@ -11,24 +11,21 @@
 
 namespace Isotope\Model\Shipping;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
 
-/**
- * Class ProductPrice
- */
 class ProductPrice extends Shipping
 {
     /**
-     * Attribute name
      * @var string
      */
     private $attributeName = 'shipping_price';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @throws \InvalidArgumentException on unknown quantity mode
      * @throws \UnexpectedValueException on unknown product type condition
@@ -39,34 +36,18 @@ class ProductPrice extends Shipping
             return false;
         }
 
-        $status = false;
-
         /** @var ProductCollectionItem $item */
         foreach (Isotope::getCart()->getItems() as $item) {
-            if (!$item->hasProduct()) {
-                continue;
-            }
-
-            $product = $item->getProduct();
-
-            if ($product->isExemptFromShipping()) {
-                continue;
-            }
-
-            // Break immediately if at least one product has shipping price attribute
-            if ((!$product->isVariant() && in_array($this->attributeName, $product->getType()->getAttributes(), true))
-                || ($product->isVariant() && in_array($this->attributeName, $product->getType()->getVariantAttributes(), true))
-            ) {
-                $status = true;
-                break;
+            if ($item->hasProduct() && $this->hasShippingPrice($item->getProduct())) {
+                return true;
             }
         }
 
-        return $status;
+        return false;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
@@ -79,7 +60,7 @@ class ProductPrice extends Shipping
 
         /** @var ProductCollectionItem $item */
         foreach ($objCollection->getItems() as $item) {
-            if (!$item->hasProduct()) {
+            if (!$item->hasProduct() || !$this->hasShippingPrice($item->getProduct())) {
                 continue;
             }
 
@@ -93,5 +74,21 @@ class ProductPrice extends Shipping
         }
 
         return Isotope::calculatePrice($price, $product, $this->attributeName, $this->arrData['tax_class']);
+    }
+
+    /**
+     * @param IsotopeProduct $product
+     *
+     * @return bool
+     */
+    private function hasShippingPrice(IsotopeProduct $product)
+    {
+        $attributes = array_merge($product->getType()->getAttributes(), $product->getType()->getVariantAttributes());
+
+        if (!$product->isExemptFromShipping() && in_array($this->attributeName, $attributes, true)) {
+            return true;
+        }
+
+        return false;
     }
 }
