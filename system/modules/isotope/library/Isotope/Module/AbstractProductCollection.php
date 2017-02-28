@@ -12,6 +12,8 @@
 namespace Isotope\Module;
 
 use Haste\Util\Url;
+use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
+use Isotope\Frontend\ProductCollectionAction\ProductCollectionActionInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
@@ -108,8 +110,41 @@ abstract class AbstractProductCollection extends Module
             $arrItems[$k] = $this->updateItemTemplate($collection, $item, $data, $arrQuantity, $blnReload);
         }
 
-        // Must be before the reload because buttons can have actions
-        $buttons = $this->generateButtons();
+        // Must be before the reload
+        $actions = [];
+
+        foreach ($this->getActions() as $action) {
+            if (!$action->isAvailable($collection)) {
+                continue;
+            }
+
+            if (\Input::post('FORM_SUBMIT') === $this->strFormId) {
+                if ($action->handleSubmit($collection)) {
+                    break;
+                }
+            }
+
+            $actions[$action->getName()] = $action;
+        }
+
+        $buttons = function() use ($collection, $actions) {
+            $buttons = [];
+
+            foreach ($actions as $action) {
+                if (!is_callable([$action, 'getLabel'])) {
+                    continue;
+                }
+
+                $this->addButton(
+                    $buttons,
+                    $action->getName(),
+                    $action->getLabel($collection),
+                    is_callable([$action, 'getHref']) ? $action->getHref() : null
+                );
+            }
+
+            return $buttons;
+        };
 
         // Reload the page if no button has handled it
         if ($blnReload) {
@@ -128,6 +163,7 @@ abstract class AbstractProductCollection extends Module
         }
 
         $objTemplate->items         = $arrItems;
+        $objTemplate->actions       = $actions;
         $objTemplate->buttons       = $buttons;
 
         $this->Template->empty      = false;
@@ -212,15 +248,31 @@ abstract class AbstractProductCollection extends Module
     }
 
     /**
+     * @return ProductCollectionActionInterface[]
+     */
+    protected function getActions()
+    {
+        $actions = [];
+
+        foreach ($this->generateButtons() as $button) {
+            $actions[] = new LegacyButtonAction($button);
+        }
+
+        return $actions;
+    }
+
+    /**
      * Generate buttons for collection view template
      *
      * @param array $buttons
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.5
      */
     protected function generateButtons(array $buttons = [])
     {
-        return $buttons;
+        return [];
     }
 
     /**
@@ -229,6 +281,8 @@ abstract class AbstractProductCollection extends Module
      * @param string          $label
      * @param \Closure|string $action
      * @param array           $additional
+     *
+     * @deprecated Deprecated since Isotope 2.5
      */
     protected function addButton(array &$buttons, $name, $label, $action = null, array $additional = [])
     {

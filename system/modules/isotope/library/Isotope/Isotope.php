@@ -13,13 +13,16 @@ namespace Isotope;
 
 use Haste\Data\Plain;
 use Haste\Util\Format;
+use Isotope\Frontend\ProductAction\CartAction;
+use Isotope\Frontend\ProductAction\FavoriteAction;
+use Isotope\Frontend\ProductAction\ProductActionInterface;
+use Isotope\Frontend\ProductAction\UpdateAction;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Config;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Favorites;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TaxClass;
@@ -41,7 +44,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.4.0';
+    const VERSION = '2.5.0-dev';
 
     /**
      * True if the system has been initialized
@@ -383,39 +386,26 @@ class Isotope extends \Controller
      * @param IsotopeProduct $objProduct
      *
      * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.5
      */
     public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
     {
-        $arrButtons['update'] = array(
-            'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update']
-        );
+        $actions = [
+            new UpdateAction(),
+            new CartAction(),
+            new FavoriteAction(),
+        ];
 
-        if (null !== $objProduct
-            && \Input::get('collection_item') > 0
-            && ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) !== null
-            && $item->pid == Isotope::getCart()->id
-            && $item->hasProduct()
-            && $item->getProduct()->getProductId() == $objProduct->getProductId()
-        ) {
-            $arrButtons['add_to_cart'] = array(
-                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['update_cart'],
-                'callback' => array('\Isotope\Frontend', 'updateCart')
-            );
-        } else {
-            $arrButtons['add_to_cart'] = array(
-                'label' => $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_to_cart'],
-                'callback' => array('\Isotope\Frontend', 'addToCart')
-            );
-        }
-
-        if (true === FE_USER_LOGGED_IN || 'BE' === TL_MODE) {
-            $isFavorited = ($favorites = Isotope::getFavorites()) !== null && $favorites->hasProduct($objProduct);
-
-            $arrButtons['toggle_favorites'] = array(
-                'label'    => $GLOBALS['TL_LANG']['MSC']['buttonLabel'][$isFavorited ? 'remove_from_favorites' : 'add_to_favorites'],
-                'callback' => array('\Isotope\Frontend', 'toggleFavorites'),
-                'class'    => $isFavorited ? 'active' : '',
-            );
+        /** @var ProductActionInterface $action */
+        foreach ($actions as $action) {
+            if ($action->isAvailable($objProduct)) {
+                $arrButtons[$action->getName()] = array(
+                    'label' => $action->getLabel(),
+                    'callback' => [get_class($action), 'handleSubmit'],
+                    'class' => (is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
+                );
+            }
         }
 
         return $arrButtons;
@@ -563,7 +553,7 @@ class Isotope extends \Controller
                 $v,
                 Format::dcaLabel($strTable, $k),
                 array (
-                    'formatted' => \Controller::replaceInsertTags($formatted)
+                    'formatted' => \Controller::replaceInsertTags($formatted),
                 )
             );
         }

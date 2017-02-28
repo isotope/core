@@ -12,6 +12,10 @@
 namespace Isotope\Module;
 
 use Haste\Util\Url;
+use Isotope\Frontend\ProductCollectionAction\ContinueShoppingAction;
+use Isotope\Frontend\ProductCollectionAction\GoToCartAction;
+use Isotope\Frontend\ProductCollectionAction\GoToCheckoutAction;
+use Isotope\Frontend\ProductCollectionAction\UpdateCartAction;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
@@ -118,45 +122,15 @@ class Cart extends AbstractProductCollection
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function generateButtons(array $buttons = [])
+    protected function getActions()
     {
-        // Add "update cart" button
-        $this->addButton($buttons, 'update', $GLOBALS['TL_LANG']['MSC']['updateCartBT']);
-
-        // Add button to cart button (usually if not on the cart page)
-        if ($this->iso_cart_jumpTo > 0 && ($jumpToCart = \PageModel::findByPk($this->iso_cart_jumpTo)) !== null) {
-            $this->addButton(
-                $buttons,
-                'cart',
-                $GLOBALS['TL_LANG']['MSC']['cartBT'],
-                $jumpToCart->getFrontendUrl()
-            );
-        }
-
-        // Add button to checkout page
-        if ($this->iso_checkout_jumpTo > 0
-            && !Isotope::getCart()->hasErrors()
-            && ($jumpToCheckout = \PageModel::findByPk($this->iso_checkout_jumpTo)) !== null
-        ) {
-            $this->addButton(
-                $buttons,
-                'checkout',
-                $GLOBALS['TL_LANG']['MSC']['checkoutBT'],
-                $jumpToCheckout->getFrontendUrl()
-            );
-        }
-
-        if ($this->iso_continueShopping && \Input::get('continue') != '') {
-            $this->addButton(
-                $buttons,
-                'continue',
-                $GLOBALS['TL_LANG']['MSC']['continueShoppingBT'],
-                ampersand(base64_decode(\Input::get('continue', true)))
-            );
-        }
-
-        return $buttons;
+        return [
+            new UpdateCartAction(),
+            new GoToCartAction($this),
+            new GoToCheckoutAction($this),
+            new ContinueShoppingAction($this),
+        ];
     }
 }
