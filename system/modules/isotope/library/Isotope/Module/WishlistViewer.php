@@ -75,9 +75,13 @@ class WishlistViewer extends Module
         $wishlists = Wishlist::findBy(
             [
                 "uniqid IS NOT NULL",
+                "date_shipped IS NOT NULL",
                 /*'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'*/
             ],
-            []
+            [],
+            [
+                'order' => 'date_shipped DESC'
+            ]
         );
 
         if (null === $wishlists) {
@@ -97,8 +101,10 @@ class WishlistViewer extends Module
                 'collection' => $wishlist,
                 'id'         => $wishlist->id,
                 'name'       => $wishlist->getName(),
+                'published'  => \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $wishlist->date_shipped),
                 'member'     => $wishlist->getRelated('member'),
-                'href'       => Url::addQueryString('uid=' . $wishlist->uniqid, $url)
+                'href'       => Url::addQueryString('uid=' . $wishlist->uniqid, $url),
+                'model'      => $wishlist,
             ];
         }
 

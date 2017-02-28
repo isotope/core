@@ -42,7 +42,10 @@ class ShareWishlistAction extends AbstractButton
             return false;
         }
 
-        $collection->uniqid = $this->isShared($collection) ? null : uniqid('', true);
+        $published = $this->isShared($collection);
+
+        $collection->uniqid = $published ? null : uniqid('', true);
+        $collection->date_shipped = $published ? null : time();
         $collection->save();
 
         \Controller::reload();
