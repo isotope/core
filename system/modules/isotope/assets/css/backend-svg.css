@@ -42,7 +42,8 @@
     margin-left: 0;
 }
 
-.iso_panels .tl_select {
+.iso_panels .tl_select,
+.iso_filter .tl_select {
     width: auto;
     margin-left: 3px;
 }
@@ -59,4 +60,8 @@
 .iso_panels .tl_radio {
     margin-left: 8px;
     margin-right: 4px;
+}
+
+.iso_filter .tl_submit.active {
+    background: #ffd;
 }
