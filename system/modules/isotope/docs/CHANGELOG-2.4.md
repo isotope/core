@@ -16,6 +16,7 @@ Version 2.4.1 (2017-??-??)
 - Improved CSS styles for backend modules (#1765, #1766, #1767, #1768, #1769, #1770, #1772, #1774)
 - Subdivision name was empty for address tokens (#1780)
 - Gracefully handle SOAP issues in EU Vat Validation (#1755)
+- Coupon codes were not transferred from guest to member cart on login (#1754)
 
 
 Version 2.4.0 (2016-12-21)
