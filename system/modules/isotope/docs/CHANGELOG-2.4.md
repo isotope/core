@@ -20,6 +20,10 @@ Version 2.4.1 (2017-??-??)
 - Sofortüberweisung payment validation failed on special characters (#1034)
 
 
+### Improved
+- Added itemscope attributes to product list (#1751)
+
+
 Version 2.4.0 (2016-12-21)
 --------------------------
 
