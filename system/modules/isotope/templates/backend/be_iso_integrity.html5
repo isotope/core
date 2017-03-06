@@ -1,7 +1,7 @@
 <div id="tl_buttons">
   <a href="<?php echo $this->back; ?>" class="header_back" title=""><?php echo $GLOBALS['TL_LANG']['MSC']['backBT']; ?></a>
 </div>
-<div id="tl_maintenance_cache">
+<div id="tl_maintenance_cache" class="maintenance_inactive">
   <h2 class="sub_headline"><?php echo $GLOBALS['TL_LANG']['tl_iso_integrity']['headline']; ?></h2>
   <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
     <div class="tl_formbody_edit">

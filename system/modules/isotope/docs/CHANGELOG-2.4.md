@@ -13,6 +13,7 @@ Version 2.4.1 (2017-??-??)
 - Giropay requires order ID with a least 4 digits (#1744)
 - Disable buttons for order collection in backend (#1781)
 - Load TCPDF config from core-bundle in Contao 4 (#1763)
+- Improved CSS styles for backend modules (#1765, #1766, #1768)
 
 
 Version 2.4.0 (2016-12-21)

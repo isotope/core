@@ -6,12 +6,20 @@
     display: none;
 }
 
+.be_iso_overview .daily_summary {
+    padding: 0 2%;
+}
+
+.iso_be_overview .item:nth-child(2) a {
+    margin-left: 2%;
+}
+
 .tl_iso_category_sorting {
     padding:10px 0 0 8px;
 }
 
 .be_iso_introduction {
-    margin-top: 18px;
+    margin: 2% 2% 0;
 }
 
 .be_iso_introduction h2 {
