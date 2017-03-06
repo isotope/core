@@ -102,11 +102,13 @@ class Backend extends Contao_Backend
 
         if (isset($arrSubdivisions[$country][$subdivision])) {
             return $arrSubdivisions[$country][$subdivision];
-        } else {
+        } elseif (is_array($arrSubdivisions[$country])) {
             foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
-                foreach ($regionGroup as $groupLabel => $regions) {
-                    if (isset($regions[$subdivision])) {
-                        return $regions[$subdivision];
+                if (is_array($regionGroup)) {
+                    foreach ($regionGroup as $groupLabel => $regions) {
+                        if (isset($regions[$subdivision])) {
+                            return $regions[$subdivision];
+                        }
                     }
                 }
             }

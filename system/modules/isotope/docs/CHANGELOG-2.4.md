@@ -14,6 +14,7 @@ Version 2.4.1 (2017-??-??)
 - Disable buttons for order collection in backend (#1781)
 - Load TCPDF config from core-bundle in Contao 4 (#1763)
 - Improved CSS styles for backend modules (#1765, #1766, #1767, #1768, #1769, #1770, #1772, #1774)
+- Subdivision name was empty for address tokens (#1780)
 
 
 Version 2.4.0 (2016-12-21)
