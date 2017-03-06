@@ -29,3 +29,30 @@
 .iso_operations {
     width: 114px;
 }
+
+.iso_panels .tl_subpanel {
+    margin-left: 3%;
+}
+
+.iso_panels .tl_subpanel.tl_submit_panel {
+    margin-left: 0;
+}
+
+.iso_panels .tl_select {
+    width: auto;
+    margin-left: 3px;
+}
+
+.iso_panels .tl_text {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+.iso_panels .radio_container {
+    margin-top: 8px;
+}
+
+.iso_panels .tl_radio {
+    margin-left: 8px;
+    margin-right: 4px;
+}
