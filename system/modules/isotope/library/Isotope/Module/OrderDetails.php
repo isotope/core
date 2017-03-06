@@ -145,6 +145,10 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function generateButtons(array $buttons = [])
     {
+        if ('BE' === TL_MODE) {
+            return [];
+        }
+
         if ($this->iso_cart_jumpTo > 0) {
             $this->addButton(
                 $buttons,
