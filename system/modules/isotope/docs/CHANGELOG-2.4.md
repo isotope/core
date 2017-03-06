@@ -10,6 +10,7 @@ Version 2.4.1 (2017-??-??)
 - Back button in checkout process sent to next step (#1749)
 - FineUploader product attribute did not upload files correctly
 - FineUploader product attribute did not display correctly in cart
+- Giropay requires order ID with a least 4 digits (#1744)
 
 
 Version 2.4.0 (2016-12-21)
