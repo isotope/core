@@ -15,7 +15,7 @@ Version 2.4.1 (2017-??-??)
 - Load TCPDF config from core-bundle in Contao 4 (#1763)
 - Improved CSS styles for backend modules (#1765, #1766, #1768)
 - Improved CSS styles for reports (#1769, #1770)
-
+- Improved CSS styles for order and rule edit modes (#1774, #1767)
 
 
 Version 2.4.0 (2016-12-21)

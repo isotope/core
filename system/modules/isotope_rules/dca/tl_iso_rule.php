@@ -205,7 +205,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'inputType'                     => 'radio',
             'options'                       => array('normal', 'down', 'up'),
             'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['rounding'],
-            'eval'                          => array('mandatory'=>true, 'tl_class'=>'clr'),
+            'eval'                          => array('mandatory'=>true, 'tl_class'=>'w50 w50h'),
             'sql'                           => "varchar(8) NOT NULL default ''",
         ),
         'enableCode' => array

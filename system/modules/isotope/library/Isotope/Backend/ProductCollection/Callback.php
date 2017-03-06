@@ -123,7 +123,7 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
+<table cellpadding="0" cellspacing="0" class="tl_show">
   <tbody>';
 
         $i = 0;
@@ -199,7 +199,7 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table cellpadding="0" cellspacing="0" class="tl_show" summary="Table lists all details of an entry" style="width:650px">
+<table cellpadding="0" cellspacing="0" class="tl_show">
   <tbody>';
 
         $i = 0;
