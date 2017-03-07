@@ -4,7 +4,9 @@ Isotope eCommerce Changelog
 Version 2.4.2 (2017-??-??)
 --------------------------
 
+### Fixed
 
+- Removed line break on version panel in product edit mode
 
 
 Version 2.4.1 (2017-03-07)
