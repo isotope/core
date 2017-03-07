@@ -20,7 +20,11 @@ class Reports extends BackendOverview
 
     protected function compile()
     {
-        $this->Template->before = $this->getDailySummary();
+        $this->Template->before = sprintf(
+            '<h1 id="tl_welcome" class="main_headline">Isotope eCommerce - %s</h1>%s',
+            $GLOBALS['TL_LANG']['MOD']['reports'][0],
+            $this->getDailySummary()
+        );
 
         parent::compile();
     }
@@ -74,7 +78,8 @@ class Reports extends BackendOverview
         $strBuffer = '
 <div class="tl_formbody_edit be_iso_overview">
 <fieldset class="tl_tbox">
-<legend style="cursor: default;">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary'] . '</legend>';
+<legend style="cursor: default;">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary'] . '</legend>
+<div class="daily_summary">';
 
         $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
@@ -98,7 +103,7 @@ class Reports extends BackendOverview
         if (!$objOrders->numRows) {
 
             $strBuffer .= '
-<p class="tl_info" style="margin-top:10px">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_empty'] . '</p>';
+<p class="tl_info">' . $GLOBALS['TL_LANG']['ISO_REPORT']['24h_empty'] . '</p>';
 
         } else {
 
@@ -133,6 +138,7 @@ class Reports extends BackendOverview
 
 
         $strBuffer .= '
+</div>
 </fieldset>
 </div>';
 

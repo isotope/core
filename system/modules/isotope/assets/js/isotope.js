@@ -114,13 +114,16 @@
         },
 
         checkoutButton: function (form) {
+            function disableButton(name) {
+                try {
+                    document.getElementsByName(name)[0].className = document.getElementsByName(name)[0].className + ' disabled';
+                    document.getElementsByName(name)[0].onclick = function () { return false };
+                } catch (e) {}
+            }
+
             addEventListener(form, 'submit', function () {
-                try {
-                    document.getElementsByName('nextStep')[0].disabled = true;
-                } catch (e) {}
-                try {
-                    document.getElementsByName('previousStep')[0].disabled = true;
-                } catch (e) {}
+                disableButton('nextStep');
+                disableButton('previousStep');
 
                 setTimeout(function () {
                     window.location.reload()
@@ -191,7 +194,13 @@
                     scripts = '',
                     script, i;
 
-                txt = txt.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
+                txt = txt.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function(all, attr, code){
+                    var type = attr.match(/type=['"]?([^"']+)/);
+
+                    if (type !== null && type[1] !== 'text/javascript') {
+                        return all;
+                    }
+
                     scripts += code + '\n';
                     return '';
                 });

@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_collectionTpl.0">
         <source>Product collection template</source>
-        <target>Produktsammlung-Template</target>
+        <target>Produktsammlungs-Template</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_collectionTpl.1">
         <source>Please choose a template to render the products. You can add custom collection templates to folder &lt;em&gt;templates&lt;/em&gt;. Collection template files start with &lt;em&gt;iso_collection_&lt;/em&gt;.</source>
@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_display404Page.0">
         <source>Display a 404 page</source>
-        <target>Eine 404 Fehlerseite anzeigen</target>
+        <target>Eine 404-Fehlerseite anzeigen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_display404Page.1">
         <source>Display the 404 not found page if no product alias is in the URL. Use this if your reader module is on a separate page that should not be available otherwise.</source>
@@ -75,11 +75,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method.0">
         <source>Checkout method</source>
-        <target>Bestellvorgang-Art</target>
+        <target>Bestellvorgangs-Art</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method.1">
         <source>Choose your checkout method.</source>
-        <target>Wählen Sie eine Bestellvorgang-Art</target>
+        <target>Wählen Sie eine Bestellvorgangs-Art</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_loginRequired.0">
         <source>Require login</source>
@@ -399,7 +399,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_perPage.1">
         <source>Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.</source>
-        <target>Geben Sie eine kommaseparierte Liste für das Limit-Dropdown ein. Die erste Option wird als Standardwert genutzt. Werte werden automatisch nach der Nummer sortiert.</target>
+        <target>Geben Sie eine kommagetrennte Liste für das Limit-Dropdownfeld ein. Die erste Option wird als Standardwert genutzt. Werte werden automatisch nach der Nummer sortiert.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cart_jumpTo.0">
         <source>Shopping Cart Jump to page</source>
@@ -523,7 +523,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.0">
         <source>Current Category and All Child Categories</source>
-        <target>Aktive Kategorie und &quot;Alle Kinder&quot;-Kategorien</target>
+        <target>Aktive Kategorie und Unter-Kategorien</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.1">
         <source>Show all products that are assigned to the active page or any child page of it.</source>

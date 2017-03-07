@@ -59,4 +59,23 @@ class Template extends \FrontendTemplate
 
         return parent::getTemplate($strTemplate, $strFormat);
     }
+
+    /**
+     * Find a particular template file and return its path
+     *
+     * @param string  $strTemplate The name of the template
+     * @param string  $strFormat   The file extension
+     * @param boolean $blnDefault  If true, the default template path is returned
+     *
+     * @return string The path to the template file
+     */
+    protected function getTemplatePath($strTemplate, $strFormat='html5', $blnDefault=false)
+    {
+        if ($blnDefault)
+        {
+            return \TemplateLoader::getDefaultPath($strTemplate, $strFormat);
+        }
+
+        return static::getTemplate($strTemplate, $strFormat);
+    }
 }

@@ -1,6 +1,31 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.1 (2017-03-07)
+--------------------------
+
+### Fixed
+
+- Product was not shown in the breadcrumb (#1690)
+- Back button in checkout process sent to next step (#1749)
+- FineUploader product attribute did not upload files correctly
+- FineUploader product attribute did not display correctly in cart
+- Giropay requires order ID with a least 4 digits (#1744)
+- Disable buttons for order collection in backend (#1781)
+- Load TCPDF config from core-bundle in Contao 4 (#1763)
+- Improved CSS styles for backend modules (#1765, #1766, #1767, #1768, #1769, #1770, #1772, #1774)
+- Subdivision name was empty for address tokens (#1780)
+- Gracefully handle SOAP issues in EU Vat Validation (#1755)
+- Coupon codes were not transferred from guest to member cart on login (#1754)
+- Sofortüberweisung payment validation failed on special characters (#1034)
+- Templates in Isotope config folder were not found for status notifications (#1773)
+- Orders were always seen as being paid (resulting in download being available)
+
+
+### Improved
+- Added itemscope attributes to product list (#1751)
+
+
 Version 2.4.0 (2016-12-21)
 --------------------------
 

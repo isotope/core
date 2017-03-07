@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.name.1">
         <source>Enter a name for this document. This will only be used in the backend.</source>
-        <target>Geben Sie einen Namen für dieses Dokument ein. Dies wird nur im Backend benutzt.</target>
+        <target>Geben Sie einen Namen für dieses Dokument ein. Dieser wird nur im Backend benutzt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type.0">
         <source>Type of document</source>
@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.0">
         <source>Collection template</source>
-        <target>Sammlung-Template</target>
+        <target>Sammlungs-Template</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.1">
         <source>Choose a collection template you want to render the products with.</source>

@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
-        <target>Wenn Sie für andere Backend-Nutzer hinterlegen möchten, tun Sie das bitte hier.</target>
+        <target>Wenn Sie für andere Backend-Nutzer Informationen hinterlegen möchten, tun Sie das bitte hier.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.edit.0">
         <source>Edit order</source>
@@ -175,7 +175,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
         <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
-        <target>Benachrichtigung (z.B. E-Mail an Kunden) konnte nicht gesendet werden. Überprüfen Sie den System-Log.</target>
+        <target>Benachrichtigung (z.B. E-Mail an Kunden) konnte nicht gesendet werden. Überprüfen Sie das System-Log.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
         <source>Saferpay payment was sucessfully captured.</source>

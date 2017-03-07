@@ -73,7 +73,11 @@ class Standard extends Document implements IsotopeDocument
         $l['w_page']          = 'page';
 
         // Include TCPDF config
-        require_once TL_ROOT . '/system/config/tcpdf.php';
+        if (file_exists(TL_ROOT . '/system/config/tcpdf.php')) {
+            require_once TL_ROOT . '/system/config/tcpdf.php';
+        } elseif (file_exists(TL_ROOT . '/vendor/contao/core-bundle/Resources/contao/config/tcpdf.php')) {
+            require_once TL_ROOT . '/vendor/contao/core-bundle/Resources/contao/config/tcpdf.php';
+        }
 
         // Create new PDF document
         $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true);

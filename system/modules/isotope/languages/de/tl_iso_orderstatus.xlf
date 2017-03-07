@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.paid.1">
         <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
-        <target>Bei diesem Status wurde die Bestellung bezahlt. Beispielsweise ist das herunterladen von Dateien möglich.</target>
+        <target>Bei diesem Status wurde die Bestellung bezahlt. Beispielsweise ist das Herunterladen von Dateien möglich.</target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
         <source>Show on welcome screen</source>

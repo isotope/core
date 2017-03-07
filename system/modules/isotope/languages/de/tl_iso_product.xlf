@@ -27,7 +27,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.fallback.1">
         <source>Click here if this variant should be pre-selected by default.</source>
-        <target>Klicken Sie hier um diese Variante standardmässig ausgewählt zu machen.</target>
+        <target>Klicken Sie hier um diese Variante standardmäßig auszuwählen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.alias.0">
         <source>Alias</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_keywords.0">
         <source>Meta keywords</source>
-        <target>Meta keywords</target>
+        <target>Meta-Keywords</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_keywords.1">
         <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
@@ -107,7 +107,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>
-        <target>Bitte geben Sie den Preis für dieses Produkt ein und wählen die Steuerklasse.</target>
+        <target>Bitte geben Sie den Preis für dieses Produkt ein und wählen Sie die Steuerklasse.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
@@ -115,7 +115,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.1">
         <source>Check if item is not a shipped item (such as downloadable products).</source>
-        <target>Klicken Sie hier wenn dieses Produkt nicht versendet wird (wie z.B. herunterladbare Produkte.</target>
+        <target>Klicken Sie hier wenn dieses Produkt nicht versendet wird (wie z.B. herunter ladbare Produkte).</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.0">
         <source>Base price amount</source>
@@ -451,7 +451,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.options_legend">
         <source>Product Options Settings</source>
-        <target>Produktoptionen-Einstellungen</target>
+        <target>Produktoptions-Einstellungen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.media_legend">
         <source>Media Management</source>

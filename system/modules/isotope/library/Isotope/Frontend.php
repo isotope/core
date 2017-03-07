@@ -633,7 +633,7 @@ class Frontend extends \Frontend
         /** @var \PageModel $objPage */
         global $objPage;
 
-        if (!($objPage->type instanceof \PageRegular)
+        if (!($objPage instanceof \PageRegular)
             || !($alias = Input::getAutoItem('product', false, true))
             || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
         ) {

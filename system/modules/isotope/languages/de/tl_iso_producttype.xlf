@@ -139,7 +139,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variant_attributes.1">
         <source>Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.</source>
-        <target>Wählen Sie eine Sammlung von Varianten-Attributen die zu diesem Produkttyp hinzugefügt werden soll. Unausgewählte Varianten-Attribute sind unsichtbar und werden nicht vom Elternprodukt vererbt.</target>
+        <target>Wählen Sie eine Sammlung von Varianten-Attributen die zu diesem Produkttyp hinzugefügt werden soll. Nicht ausgewählte Varianten-Attribute sind unsichtbar und werden nicht vom Elternprodukt vererbt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.force_variant_options.0">
         <source>Always show variant attributes</source>
@@ -151,7 +151,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Exempt from shipping</source>
-        <target>Vom Versand ausschliessen</target>
+        <target>Vom Versand ausschließen</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.1">
         <source>Check if items of this product type are not a shipped item (such as downloadable products).</source>
@@ -171,7 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.new.1">
         <source>Create new product type.</source>
-        <target>Neuen Produkttypen erstellen</target>
+        <target>Neuen Produkttyp erstellen</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.edit.0">
         <source>Edit product type</source>

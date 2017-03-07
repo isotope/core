@@ -43,7 +43,12 @@ class EuViesValidator implements IsotopeVatNoValidator
 
     public function __construct ()
     {
-        $this->soap = new \SoapClient(static::$url_vies);
+        try {
+            $this->soap = new \SoapClient(static::$url_vies, ['exceptions' => true]);
+        } catch (\SoapFault $e) {
+            $this->soap = false;
+            \System::log('EU VAT validation failed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+        }
     }
 
     /**
@@ -105,6 +110,10 @@ class EuViesValidator implements IsotopeVatNoValidator
      */
     private function checkVat($country, $number)
     {
+        if (false === $this->soap) {
+            return false;
+        }
+
         $key = $country . $number;
 
         if (!isset(static::$cache[$key])) {

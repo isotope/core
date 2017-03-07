@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.postalCodes.1">
         <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
-        <target>Begrenzt den Steuersatz auf Postleitzahlen. Sie können einen Bereich mit kommaseparierte Liste auswählen (z.B. 1234,1235,1236-1239,1100-1200).</target>
+        <target>Begrenzt den Steuersatz auf Postleitzahlen. Sie können einen Bereich mit kommagetrennter Liste auswählen (z.B. 1234,1235,1236-1239,1100-1200).</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.amount.0">
         <source>Subtotal amount restriction</source>
@@ -75,11 +75,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
         <source>Exempt on valid VAT number</source>
-        <target>USt-IdNr. bei Gültigkeit befreien.</target>
+        <target>USt-ID-Nr. bei Gültigkeit befreien.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
         <source>Do not apply tax if the VAT number is valid.</source>
-        <target>Die Steuer nicht anwenden, wenn die USt-IdNr. gültig ist.</target>
+        <target>Die Steuer nicht anwenden, wenn die USt-ID-Nr. gültig ist.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.stop.0">
         <source>Stop calculations on trigger?</source>
@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.guests.1">
         <source>Do not apply tax rate if a member is logged in.</source>
-        <target>Diesen Steuersatz für eingeloggte Mitglieder nicht verwenden (ausser die entsprechenden Gruppen sind erlaubt).</target>
+        <target>Diesen Steuersatz für eingeloggte Mitglieder nicht verwenden (außer die entsprechenden Gruppen sind erlaubt).</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.new.0">
         <source>New tax rate</source>

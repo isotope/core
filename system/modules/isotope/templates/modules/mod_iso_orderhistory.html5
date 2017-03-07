@@ -18,7 +18,7 @@
             <td class="col_0 col_first order_date"><?php echo $order['date']; ?></td>
             <td class="col_1 document_number"><?php echo $order['raw']['document_number']; ?></td>
             <td class="col_2 order_total"><?php echo $order['grandTotal']; ?></td>
-            <td class="col_3 oder_status"><?php echo $order['status']; ?></td>
+            <td class="col_3 order_status"><?php echo $order['status']; ?></td>
             <td class="col_4 col_last link">
                 <?php if ($order['link']): ?><a href="<?php echo $order['link']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['detailLabel']; ?></a><?php endif; ?>
                 <?php if ($order['reorder']): ?><a href="<?php echo $order['reorder']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['reorderLabel']; ?></a><?php endif; ?>

@@ -203,7 +203,7 @@ class Address extends \Model
                 list($country, $subdivision) = explode('-', $this->subdivision);
 
                 $arrTokens['subdivision_abbr'] = $subdivision;
-                $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $subdivision);
+                $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $this->subdivision);
 
                 continue;
             }

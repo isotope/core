@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="ERR.datepickerRgxp">
         <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
-        <target>Wählen Sie eine bestimmte Feldvalidation (Datum, Zeit, Datum und Zeit) aus, um die Datumsauswahl zu aktivieren.</target>
+        <target>Wählen Sie eine bestimmte Feldvalidierung (Datum, Zeit, Datum und Zeit) aus, um die Datumsauswahl zu aktivieren.</target>
       </trans-unit>
       <trans-unit id="ERR.emptyDownloadsFolder">
         <source>The selected folder is empty.</source>
@@ -84,6 +84,10 @@
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
         <target>Das gleiche Attribut kann nicht mehrmals konfiguriert werden.</target>
+      </trans-unit>
+      <trans-unit id="ERR.uploadNotFound">
+        <source>The uploaded file is no longer available.</source>
+        <target>Die hochgeladene Datei ist nicht mehr verfügbar.</target>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
@@ -611,7 +615,7 @@
       </trans-unit>
       <trans-unit id="MSC.assetImportNoFilesFound">
         <source>The folder did not contain any files to be imported.</source>
-        <target>Der Order enthält keine Dateien passenden Dateien.</target>
+        <target>Der Ordner enthält keine zum Import passenden Dateien.</target>
       </trans-unit>
       <trans-unit id="MSC.loadingProductData">
         <source>Loading product data …</source>
@@ -671,7 +675,7 @@
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.2">
         <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
-        <target>Auf dieser Seite werden die meisten Einstellungen vorgenommen. &lt;strong&gt;Sie sollten am Ende der Seite starten und sich Schritt für Schritt von rechts unten nach links oben arbeiten.&lt;/strong&gt;</target>
+        <target>Auf dieser Seite werden die meisten Einstellungen vorgenommen. &lt;strong&gt;Sie sollten am Ende der Seite starten und sich Schritt für Schritt von rechts unten nach links oben durcharbeiten.&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.3">
         <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
@@ -819,7 +823,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.innopay.1">
         <source>A payment module for the swiss payment gateway &quot;Innocard&quot;.</source>
-        <target>Ein Zahlungsmodul für das Schweizer-Zahlungs-Gateway &quot;Innocard&quot;.</target>
+        <target>Ein Zahlungsmodul für das schweizer Zahlungs-Gateway &quot;Innocard&quot;.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
         <source>Sparkasse</source>
@@ -1039,7 +1043,7 @@
       </trans-unit>
       <trans-unit id="ATTR.mediaManager.1">
         <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
-        <target>Ladet Bilder und andere Dateien in das Isotope eCommerce Dateisystem hoch. Die Ausgabe erfolgt durch eine IsotopeGallery-Klasse.</target>
+        <target>Lädt Bilder und andere Dateien in das Isotope eCommerce Dateisystem hoch. Die Ausgabe erfolgt durch eine IsotopeGallery-Klasse.</target>
       </trans-unit>
       <trans-unit id="ATTR.conditionalselect.0">
         <source>Conditional Select-Menu</source>

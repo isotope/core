@@ -27,7 +27,7 @@ use Isotope\Model\ProductCollectionItem;
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
+class FineUploader extends Attribute implements \uploadable
 {
 
     /**
@@ -83,12 +83,19 @@ class FineUploader extends Attribute implements IsotopeAttribute, \uploadable
             return '';
         }
 
-        /** @var ProductCollectionItem $item */
-        if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $value)) {
-            $item->addError('File does not exist.'); // TODO add real error message
+        $value = is_array($value) ? $value : [$value];
+        $parsed = [];
+
+        foreach ($value as $file) {
+            /** @var ProductCollectionItem $item */
+            if (($item = $options['item']) instanceof ProductCollectionItem && !is_file(TL_ROOT . '/' . $file)) {
+                $item->addError($GLOBALS['TL_LANG']['ERR']['uploadNotFound']);
+            }
+
+            $parsed[] = substr(basename($file), 9);
         }
 
-        return substr(basename($value), 9);
+        return implode(', ', $parsed);
     }
 
     /**

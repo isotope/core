@@ -106,7 +106,7 @@ class Payone extends Postsale
             'request'           => 'auth' === $this->trans_type ? 'preauthorization' : 'authorization',
             'encoding'          => 'UTF-8',
             'clearingtype'      => $this->payone_clearingtype,
-            'reference'         => $objOrder->getId(),
+            'reference'         => str_pad($objOrder->getId(), 4, '0', STR_PAD_LEFT),
             'display_name'      => 'no',
             'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),

@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_nc_notification.iso_collectionTpl.0">
         <source>Product collection template</source>
-        <target>Produktsammlung-Template</target>
+        <target>Produktsammlungs-Template</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_collectionTpl.1">
         <source>Please choose a template to render the products for the notification content.</source>
