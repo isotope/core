@@ -143,6 +143,10 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
+        if ('BE' === TL_MODE) {
+            return [];
+        }
+
         return [
             new ReorderAction($this),
         ];

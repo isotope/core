@@ -96,7 +96,7 @@ class Favorites extends AbstractProductCollection
         $data['cart_href'] = Url::addQueryString('add_to_cart=' . $item->id);
 
         // Add single item to cart
-        if ((int) \Input::get('add_to_cart') === $item->id && $item->hasProduct()) {
+        if (\Input::get('add_to_cart') == $item->id && $item->hasProduct()) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),
                 $item->quantity,

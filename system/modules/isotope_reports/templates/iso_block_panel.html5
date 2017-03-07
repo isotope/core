@@ -1,12 +1,12 @@
 <?php if(count($this->panels)): ?>
     <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
-        <div class="tl_formbody">
+        <div class="tl_formbody iso_panels">
             <input type="hidden" name="FORM_SUBMIT" value="tl_filters">
             <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
 
             <?php $lastPanel = count($this->panels)-1; ?>
             <?php foreach($this->panels as $p => $panel): ?>
-                <div class="tl_panel">
+                <div class="tl_panel cf">
 
                     <?php if($p==$lastPanel): ?>
                         <div class="tl_submit_panel tl_subpanel">

@@ -66,7 +66,7 @@ class Panel extends \Backend
         );
 
         return '
-<div class="tl_filter iso_filter tl_subpanel">
+<div class="iso_filter tl_subpanel">
 ' . implode("\n", $buttons) . '
 </div>';
     }
@@ -107,7 +107,7 @@ class Panel extends \Backend
         ];
 
         $strBuffer = '
-<div class="tl_filter iso_filter tl_subpanel">
+<div class="tl_advanced_filter iso_filter tl_subpanel">
 <strong>' . $GLOBALS['TL_LANG']['tl_iso_product']['filter'] . '</strong>' . "\n";
 
         // Generate filters
@@ -139,7 +139,7 @@ class Panel extends \Backend
         }
 
         return '
-<div class="tl_sorting tl_subpanel tl_iso_category_sorting">
+<div class="tl_subpanel tl_iso_category_sorting">
 <a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
 </div>';
     }

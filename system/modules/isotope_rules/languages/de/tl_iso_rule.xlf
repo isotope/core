@@ -107,7 +107,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.1">
         <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each customer.</source>
-        <target>Dies wird genutzt um zu sehen ob die Regel bereits eingelöst wurde. Wenn es auf 0 eingestellt wird, kann sie von jedem Kunden beliebig oft eingesetzt werden,</target>
+        <target>Dies wird genutzt um zu sehen ob die Regel bereits eingelöst wurde. Wenn es auf 0 eingestellt wird, kann sie von jedem Kunden beliebig oft eingesetzt werden.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerConfig.0">
         <source>Uses per store config</source>
@@ -115,7 +115,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerConfig.1">
         <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each store config.</source>
-        <target>Dies wird genutzt um zu sehen ob die Regel bereits eingelöst wurde. Wenn es auf 0 eingestellt wird, kann sie in jeder Shop-Konfiguration beliebig oft eingesetzt werden,</target>
+        <target>Dies wird genutzt um zu sehen ob die Regel bereits eingelöst wurde. Wenn es auf 0 eingestellt wird, kann sie in jeder Shop-Konfiguration beliebig oft eingesetzt werden.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minSubtotal.0">
         <source>Minimum subtotal</source>

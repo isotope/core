@@ -111,7 +111,7 @@
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.config_*">
         <source>All the store configuration fields.</source>
-        <target>Alle Shop-Konfiguration-Felder.</target>
+        <target>Alle Shop-Konfigurations-Felder.</target>
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.member_*">
         <source>All the member fields if it was a member checkout.</source>

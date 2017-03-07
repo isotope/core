@@ -1,5 +1,5 @@
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
-<div class="formbody">
+<div class="formbody" itemscope itemtype="http://schema.org/Product">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
@@ -10,11 +10,14 @@
 <?php echo $this->getGallery('images')->generateMainImage(); ?>
 
 <?php if ($this->sku): ?>
-<div class="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
+<div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
 
+<div class="offer" itemscope itemtype="http://schema.org/Offer">
 <div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
+</div>
+
 <div class="details"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
 <?php if($this->actions): ?>

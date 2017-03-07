@@ -151,9 +151,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.0">
         <source>Size/Amount</source>
+        <target>Größe/Menge</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.1">
         <source>Here you can set a limit, e.g. size of the select box or number of file uploads.</source>
+        <target>Hier können Sie eine Beschränkung festlegen, z.B. die Größe der Auswahlbox oder die Anzahl der Datei-Uploads.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file types</source>
@@ -201,6 +203,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minlength.1">
         <source>Require the field value to be a certain number of characters (text) or bytes (file uploads).</source>
+        <target>Schränkt die Feldlänge auf eine bestimmte Zeichenanzahl (Text) oder Bytes (Datei-Upload) ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxlength.0">
         <source>Maximum length</source>
@@ -208,7 +211,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxlength.1">
         <source>Limit the field length to a certain number of characters (text) or bytes (file uploads).</source>
-        <target>Schränke die Feldlänge auf eine bestimmte Zeichenanzahl (Text) oder Bytes (Datei-Upload) ein.</target>
+        <target>Schränkt die Feldlänge auf eine bestimmte Zeichenanzahl (Text) oder Bytes (Datei-Upload) ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.0">
         <source>Foreign table &amp; field</source>
@@ -244,9 +247,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.0">
         <source>Mark as gallery</source>
+        <target>Als Galerie markieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.isGallery.1">
         <source>Mark the attribute as image gallery which allows for better display in the backend.</source>
+        <target>Das Attribut als Bilder-Galerie markieren, welches eine bessere Darstellung im Backend ermöglicht.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fieldType.0">
         <source>Field type</source>
@@ -306,9 +311,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutRelocate.0">
         <source>Move file(s) after checkout</source>
+        <target>Die Datei(en) nach der Kasse bewegen</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutRelocate.1">
         <source>Re-organize files after an order has been completed.</source>
+        <target>Organisieren Sie die Dateien neu nachdem eine Bestellung abgeschlossen wurde.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFolder.0">
         <source>Target folder</source>
@@ -316,12 +323,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFolder.1">
         <source>Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+        <target>Geben Sie den Zielpfad relativ zum Contao root ein. Verwenden Sie Tokens und InsertTags um einen dynamischen Namen zu generieren (rufen Sie den Hilfe-Assistent auf).</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFile.0">
         <source>Target file name</source>
+        <target>Zieldateiname</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFile.1">
         <source>Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+        <target>Geben Sie einen Zieldateinnamen ein. Verwenden Sie Tokens und InsertTags um einen dynamischen Namen zu generieren (rufen Sie den Hilfe-Assistent auf).</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_sorting.0">
         <source>Add to &quot;Order By&quot; option list</source>
@@ -373,15 +383,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chunking.0">
         <source>Enable chunking</source>
+        <target>Datei-Aufteilung</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chunking.1">
         <source>Enable the file chunking. It is useful to upload big files.</source>
+        <target>Datei-Aufteilung aktivieren. Hilfreich beim Upload großer Dateien.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chunkSize.0">
         <source>Chunk size in bytes</source>
+        <target>Größe des Dateiteils in Bytes.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chunkSize.1">
         <source>Please enter the chunk size in bytes (1MB = 1000000 bytes).</source>
+        <target>Bitte geben Sie die Größe des Dateiteils in Bytes an (1MB = 1000000 Bytes).</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsTable_edit">
         <source>Edit options</source>
@@ -525,6 +539,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.0">
         <source>Use these simple tokens to generate a dynamic folder name.</source>
+        <target>Verwenden Sie diese Simple Tokens, um einen dynamischen Ordnernamen zu erzeugen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
         <source>##document_number##</source>
@@ -532,6 +547,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.1">
         <source>Generated document number for the order.</source>
+        <target>Erzeugte Dokumentennummer für die Bestellung.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
         <source>##order_id##</source>
@@ -547,6 +563,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.1">
         <source>Date of the order as timestamp. Use insert tags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt; to convert timestamp to formatted date.</source>
+        <target>Datum der Bestellung als Zeitstempel. Verwenden Sie Inserttags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt;, um Zeitstempel in formatierte Datumsfelder zu ändern.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.0">
         <source>##product_id##</source>
@@ -562,7 +579,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
         <source>SKU of the product.</source>
-        <target>Artikelnummer des Produkt.</target>
+        <target>Artikelnummer des Produkts.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
         <source>##product_name##</source>
@@ -602,7 +619,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.10.1">
         <source>Full file name and extension as uploaded by the user.</source>
-        <target>Vollständiger Dateiname und -erweiterung gemäss Benutzer-Upload.</target>
+        <target>Vollständiger Dateiname und -erweiterung gemäß Benutzer-Upload.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.0">
         <source>##file_target##</source>
@@ -610,6 +627,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.1">
         <source>Full file name and extension as uploaded by the user, but renamed if &quot;Preserve existing files&quot; is enabled and a file with same name exists in target folder. &lt;br&gt;&lt;strong&gt;Only available for the file name, not for the folder!&lt;/strong&gt;</source>
+        <target>Komplette(r) Dateiname und Erweiterung wie vom Benutzer heraufgeladen, aber umbenannt, wenn &quot;Existierende Dateien erhalten&quot; aktiviert ist und eine Datei mit dem gleichen Namen im Zielverzeichnis existiert.&lt;br&gt;&lt;strong&gt;Nur verfügbar für den Dateinamen, nicht für den Ordner!&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.12.0">
         <source>##file_extension##</source>
@@ -625,6 +643,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.13.1">
         <source>1 if a member is signed in to the frontend, 0 if not.</source>
+        <target>1 wenn ein Mitglied sich im Frontend angemeldet hat, 0 wenn nicht.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.14.0">
         <source>##member_*##</source>
@@ -632,6 +651,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.14.1">
         <source>If a user is logged in, all member fields are available as tokens.</source>
+        <target>Wenn ein Benutzer eingeloggt ist, sind alle Mitgliedsfelder als Tokens verfügbar.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.new.0">
         <source>New attribute</source>

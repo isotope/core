@@ -685,12 +685,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
+        $arrField['storeValues'] = true;
+        $arrField['tableless'] = true;
+        $arrField['id'] .= '_' . $this->getFormId();
+
         /** @var \Widget|\stdClass $objWidget */
         $objWidget = new $strClass($arrField);
-
-        $objWidget->storeValues = true;
-        $objWidget->tableless   = true;
-        $objWidget->id .= '_' . $this->getFormId();
 
         // Validate input
         if (\Input::post('FORM_SUBMIT') == $this->getFormId()) {

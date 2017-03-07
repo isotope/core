@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.postalCodes.1">
         <source>Limit this shipping module to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
-        <target>Limitieren Sie dieses Versandmodul auf bestimmte Postleitzahlen. Sie können eine komma-getrennte Liste und Bereiche eingeben (z. B. 1234,1235,1236-1239,1100-1200).</target>
+        <target>Limitieren Sie dieses Versandmodul auf bestimmte Postleitzahlen. Sie können eine kommagetrennte Liste und Bereiche eingeben (z. B. 1234,1235,1236-1239,1100-1200).</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.minimum_total.0">
         <source>Minimum subtotal</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.maximum_total.1">
         <source>Enter a maximum amount to control availability based on the cart subtotal.</source>
-        <target>Geben Sie den Maximalbetrag der Zwischensumme für die Verfübarkeit dieser Versandart ein.</target>
+        <target>Geben Sie den Maximalbetrag der Zwischensumme für die Verfügbarkeit dieser Versandart ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.minimum_weight.0">
         <source>Minimum weight</source>

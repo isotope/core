@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.countries.1">
         <source>Select the countries where this payment method may be used (customer's billing address).</source>
-        <target>Falls diese Zahlungsart nur in gewissen Ländern unterstütz wird (Rechnungsadresse des Kunden).</target>
+        <target>Falls diese Zahlungsart nur in gewissen Ländern unterstützt wird (Rechnungsadresse des Kunden).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
         <source>Shipping methods</source>
@@ -266,7 +266,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_out.1">
         <source>This will be used to validate the server to server communication.</source>
-        <target>Dies wird zum validieren der Server-zu-Server-Verbindung genutzt.</target>
+        <target>Dies wird zum Validieren der Server-zu-Server-Verbindung genutzt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.0">
         <source>Dynamic template URL</source>
@@ -506,15 +506,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_authorize">
         <source>verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug</source>
-        <target>verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug</target>
+        <target>Verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.giropay">
         <source>Transaktion über giropay</source>
-        <target>Transaktion über giropay</target>
+        <target>Transaktion über giropay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.sofortueberweisung">
         <source>Transaktion über Sofortüberweisung</source>
-        <target>Transaktion über Sofortüberweisung</target>
+        <target>Transaktion über Sofortüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_css.0">
         <source>CSS-Vorlage</source>
@@ -694,7 +694,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.protected.0">
         <source>Protect payment method</source>
-        <target>Modul schützen</target>
+        <target>Bezahlmethode schützen</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.protected.1">
         <source>Show the payment method to certain member groups only.</source>
@@ -806,7 +806,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.elv">
         <source>Debit withdrawal</source>
-        <target>Einziehen mit Drawal</target>
+        <target>Lastschrifteinzug</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.cc">
         <source>Credit card</source>
@@ -814,7 +814,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.dc">
         <source>Debit card</source>
-        <target>Bankomatkarte</target>
+        <target>EC-Karte</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.vor">
         <source>Prepayment</source>

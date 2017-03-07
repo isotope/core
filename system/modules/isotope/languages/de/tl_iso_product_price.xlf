@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.start.1">
         <source>Do not use the price on the website before this day.</source>
-        <target>Nutze den Preis nicht vor diesem Tag.</target>
+        <target>Verwende den Preis nicht vor diesem Tag.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.0">
         <source>Use until</source>
@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.1">
         <source>Do not use the price on the website after this day.</source>
-        <target>Nutze den Preis nicht nach diesem Tag.</target>
+        <target>Verwende den Preis nicht nach diesem Tag.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.new.0">
         <source>Add price</source>
