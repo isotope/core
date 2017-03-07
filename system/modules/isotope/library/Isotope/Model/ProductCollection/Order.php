@@ -369,6 +369,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     public function getNotificationTokens($intNotification)
     {
         $objConfig = $this->getRelated('config_id') ?: Isotope::getConfig();
+        Isotope::setConfig($objConfig);
 
         $arrTokens                    = deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;

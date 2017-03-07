@@ -18,6 +18,7 @@ Version 2.4.1 (2017-??-??)
 - Gracefully handle SOAP issues in EU Vat Validation (#1755)
 - Coupon codes were not transferred from guest to member cart on login (#1754)
 - Sofortüberweisung payment validation failed on special characters (#1034)
+- Templates in Isotope config folder were not found for status notifications (#1773)
 
 
 ### Improved
