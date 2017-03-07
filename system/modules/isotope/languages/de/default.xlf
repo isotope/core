@@ -87,6 +87,7 @@
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
+        <target>Die hochgeladene Datei ist nicht mehr verfügbar.</target>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
