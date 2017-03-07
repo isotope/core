@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.0">
         <source>Paste at the top</source>
-        <target>Oben hinzufügen</target>
+        <target>Oben einfügen</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.1">
         <source>Paste after download ID %s</source>

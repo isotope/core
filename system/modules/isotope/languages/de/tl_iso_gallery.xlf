@@ -163,7 +163,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_border.0">
         <source>Zoom window border</source>
-        <target>Zomm-Fensterrahmen</target>
+        <target>Zoom-Fensterrahmen</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_border.1">
         <source>Optionally enter a hex color and size in pixels for the zoom window.</source>

@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.fallback.1">
         <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
-        <target>Verwendet dies als Standardkonfiguration für die Anzeige im Backend.</target>
+        <target>Verwendet diese als Standardkonfiguration für die Anzeige im Backend.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.firstname.0">
         <source>First name</source>
@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.vat_no.0">
         <source>VAT No.</source>
-        <target>USt-IdNr.</target>
+        <target>USt-ID-Nr.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vat_no.1">
         <source>Please enter a VAT number.</source>
@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.1">
         <source>Please enter the name of the state.</source>
-        <target>Bitte geben Sie den Namen des Bundeslandes/Kanton ein.</target>
+        <target>Bitte geben Sie den Namen des Bundeslandes/Kantons ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.country.0">
         <source>Country</source>
@@ -199,15 +199,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.limitMemberCountries.1">
         <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
-        <target>Schränken Sie die Mitgliederländer (Registration, Persönliche Daten) auf die kombinierte Liste der Rechnungs- und Versand-Länder ein.</target>
+        <target>Schränken Sie die Mitgliederländer (Registrierung, Persönliche Daten) auf der kombinierten Liste der Rechnungs- und Versand-Länder ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vatNoValidators.0">
         <source>VAT No. validation</source>
-        <target>Validierung der USt-IdNr.</target>
+        <target>Prüfung der USt-ID-Nr.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.vatNoValidators.1">
         <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
-        <target>Wenn Sie einen oder mehrere Dienste aktivieren, wird das USt-IdNr.-Adressfeld validiert.</target>
+        <target>Wenn Sie einen oder mehrere Dienste aktivieren, wird das USt-ID-Nr.-Adressfeld geprüft.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyPosition.0">
         <source>Position of currency code/symbol</source>
-        <target>Position der Währungsbezeichung/-symbol</target>
+        <target>Position der Währungsbezeichnung/-symbol</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyPosition.1">
         <source>Select if you want to show currency on the left or right side of the price.</source>
@@ -271,7 +271,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.currencySpace.1">
         <source>Add space between price and currency symbol.</source>
-        <target>Zwischen den Preis und das Währungssymbol ein Leerzeichen einfügen.</target>
+        <target>Zwischen dem Preis und dem Währungssymbol ein Leerzeichen einfügen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.priceCalculateFactor.0">
         <source>Price factor</source>
@@ -287,7 +287,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.priceCalculateMode.1">
         <source>Divide or multiply using this factor.</source>
-        <target>Preis dividieren oder multiplieren mit dem Faktor.</target>
+        <target>Preis dividieren oder multiplizieren mit diesem Faktor.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currencyAutomator.0">
         <source>Automatic currency conversion</source>
@@ -319,7 +319,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.orderPrefix.1">
         <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
-        <target>Sie können für die automatisch hochzählende Bestellnummer einen Präxif (z. B. Fiskaljahr) hinzufügen.</target>
+        <target>Sie können für die automatisch hochzählende Bestellnummer einen Präfix (z. B. Fiskaljahr) hinzufügen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.orderDigits.0">
         <source>Order number length</source>
@@ -375,7 +375,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.cartMinSubtotal.1">
         <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
-        <target>Diese Gesamtsumme muss im Warenkorb mindest erreicht werden um die Bestellung durchzuführen. Geben Sie eine 0 ein um diese Funktion zu deaktivieren.</target>
+        <target>Diese Gesamtsumme muss im Warenkorb mindestens erreicht werden um die Bestellung durchzuführen. Geben Sie eine 0 ein um diese Funktion zu deaktivieren.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.newProductPeriod.0">
         <source>Duration to mark a product as &quot;new&quot;</source>
@@ -407,15 +407,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.ga_member.1">
         <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
-        <target>Geben Sie Simple Token ein um Mitglieder zu tracken (z. B. ##firstname## ##lastname##). Achtung: vergewissern Sie sich, dass   Sie das machen dürfen!</target>
+        <target>Geben Sie Simple Token ein um Mitglieder zu tracken (z. B. ##firstname## ##lastname##). Achtung: Vergewissern Sie sich, dass   Sie das machen dürfen!</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.left">
         <source>To the left of price</source>
-        <target>Links des Preises</target>
+        <target>Links vom Preis</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.right">
         <source>To the right of price</source>
-        <target>Rechts des Preises</target>
+        <target>Rechts vom Preis</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.div">
         <source>Divide</source>
@@ -555,7 +555,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.converter_legend">
         <source>Currency conversion</source>
-        <target>Währungsumrechnung</target>
+        <target>Währungs-Umrechnung</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.order_legend">
         <source>Orders</source>
@@ -575,7 +575,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.analytics_legend">
         <source>Analytics</source>
-        <target>Analytics</target>
+        <target>Analysen</target>
       </trans-unit>
     </body>
   </file>

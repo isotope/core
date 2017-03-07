@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.0">
         <source>Option details</source>
-        <target>Option-Details</target>
+        <target>Options-Details</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.1">
         <source>Show details for option ID %s.</source>

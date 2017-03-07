@@ -3,11 +3,11 @@
     <body>
       <trans-unit id="MOD.isotope_reports.0">
         <source>Isotope eCommerce: Reports &amp;amp; Statistics</source>
-        <target>Isotope eCommerce: Auswertungen &amp;amp; Statistik</target>
+        <target>Isotope eCommerce: Auswertungen &amp;amp; Statistiken</target>
       </trans-unit>
       <trans-unit id="MOD.reports.0">
         <source>Reports &amp;amp; Statistics</source>
-        <target>Auswertungen &amp;amp; Statistik</target>
+        <target>Auswertungen &amp;amp; Statistiken</target>
       </trans-unit>
     </body>
   </file>

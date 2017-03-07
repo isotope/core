@@ -207,7 +207,7 @@
       </trans-unit>
       <trans-unit id="IMD.baseprice.1">
         <source>Define base price.</source>
-        <target>Grundpres festlegen.</target>
+        <target>Grundpreis festlegen.</target>
       </trans-unit>
       <trans-unit id="IMD.checkout">
         <source>Checkout Flow</source>
@@ -227,7 +227,7 @@
       </trans-unit>
       <trans-unit id="IMD.payment.1">
         <source>Set up payment methods.</source>
-        <target>Hier definieren Sie die für Ihren Shop erlaubten Zahlungsarten. Es werden verschiedene Zahlungsmodule unterstützt (z.B. PayPal, Barzahlung usw). Zahlungsmodule können bezüglich Produkttypen, Versandarten, Länder und anderen Einstellungen eingeschränkt werden. Es ist gut möglich dass Sie für dieselbe Zahlungsart mehrere Module anlegen müssen, um die volle Flexibilität zu erreichen.</target>
+        <target>Hier definieren Sie die für Ihren Shop erlaubten Zahlungsarten. Es werden verschiedene Zahlungsmodule unterstützt (z.B. PayPal, Barzahlung usw). Zahlungsmodule können bezüglich Produkttypen, Versandarten, Ländern und anderen Einstellungen eingeschränkt werden. Es ist gut möglich dass Sie für dieselbe Zahlungsart mehrere Module anlegen müssen, um die volle Flexibilität zu erreichen.</target>
       </trans-unit>
       <trans-unit id="IMD.tax_class.0">
         <source>Tax classes</source>
@@ -243,7 +243,7 @@
       </trans-unit>
       <trans-unit id="IMD.tax_rate.1">
         <source>Set up tax rates based on things like shipping/billing location and order total.</source>
-        <target>Steuersätze definieren die Gebühren welche zum Preis hinzugerechnet werden sollen. Dies muss nicht zwingend eine Umsatzsteuer sein, sondern z.B. auch ein Zuschlag bei verwenden einer bestimmten Zahlungsart (Kreditkarte).</target>
+        <target>Steuersätze definieren die Gebühren welche zum Preis hinzugerechnet werden sollen. Dies muss nicht zwingend eine Umsatzsteuer sein, sondern z.B. auch ein Zuschlag bei Verwendung einer bestimmten Zahlungsart (Kreditkarte).</target>
       </trans-unit>
       <trans-unit id="IMD.config">
         <source>General settings</source>
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="IMD.orderstatus.1">
         <source>Define order status.</source>
-        <target>Verschieden Statusbezeichnungen für die Bestellungen anlegen.</target>
+        <target>Verschiedene Statusbezeichnungen für die Bestellungen anlegen.</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.0">
         <source>Notifications</source>
@@ -271,7 +271,7 @@
       </trans-unit>
       <trans-unit id="IMD.notifications.1">
         <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
-        <target>Nutzen Sie das Benachrichtigungs-Center um alle E-Mail's für Isotope eCommerce zu verwalten.</target>
+        <target>Nutzen Sie das Benachrichtigungs-Center um alle E-Mails für Isotope eCommerce zu verwalten.</target>
       </trans-unit>
       <trans-unit id="IMD.documents.0">
         <source>Documents</source>

@@ -47,7 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.1">
         <source>Duplicate group ID %s with subgroups</source>
-        <target>Dupliziere Gruppe mit ID %s mit Untergruppen</target>
+        <target>Dupliziere Gruppe ID %s mit Untergruppen</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.0">
         <source>Move group</source>

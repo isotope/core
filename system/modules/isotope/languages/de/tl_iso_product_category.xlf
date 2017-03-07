@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_category.pasteafter.0">
         <source>Paste at the top</source>
-        <target>Oben hinzufügen</target>
+        <target>Oben einfügen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_category.pasteafter.1">
         <source>Paste after product ID %s</source>

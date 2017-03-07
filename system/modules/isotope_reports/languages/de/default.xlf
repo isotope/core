@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_guests.0">
         <source>vs. Guest</source>
-        <target>gegen Gast</target>
+        <target>gegenüber Gast</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_guests.1">
         <source>Sales comparison between members and guests</source>
