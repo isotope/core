@@ -101,6 +101,9 @@ class ProductList extends Module
      */
     protected function compile()
     {
+       $productCount = 0;
+       $queryBuilder = null;
+
         // return message if no filter is set
         if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
             $this->Template->message  = \Controller::replaceInsertTags($this->iso_noFilter);
@@ -118,6 +121,7 @@ class ProductList extends Module
         // Try to load the products from cache
         if ($this->blnCacheProducts && ($objCache = ProductCache::findByUniqid($cacheKey)) !== null) {
             $arrCacheIds = $objCache->getProductIds();
+            $productCount=count($arrCacheIds);
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
             if ($objCache->keywords == \Input::get('keywords')) {
@@ -129,8 +133,12 @@ class ProductList extends Module
 
                 $arrProducts = (null === $objProducts) ? array() : $objProducts->getModels();
 
+        $queryBuilder  = new FilterQueryBuilder(
+            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
+        );
                 // Cache is wrong, drop everything and run findProducts()
-                if (count($arrProducts) != count($arrCacheIds)) {
+                if (count($arrProducts) != count($arrProducts)) {
+                    $productCount=count($arrCacheIds);
                     $arrCacheIds = null;
                     $arrProducts = null;
                 }
@@ -158,6 +166,10 @@ class ProductList extends Module
 
                 // Load products
                 $arrProducts = $this->findProducts($arrCacheIds);
+		$productCount=count($arrProducts);
+        $queryBuilder  = new FilterQueryBuilder(
+            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
+        );
 
                 // Decide if we should show the "caching products" message the next time
                 $end = microtime(true) - $start;
@@ -271,6 +283,8 @@ class ProductList extends Module
             ->applyTo($arrBuffer)
         ;
 
+        $this->Template->filters=$queryBuilder;
+        $this->Template->countProducts=$productCount;
         $this->Template->products = $arrBuffer;
     }
 
