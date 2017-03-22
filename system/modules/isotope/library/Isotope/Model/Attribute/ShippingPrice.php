@@ -17,6 +17,8 @@ use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement shipping price calculation
+ *
+ * @internal do not use, this class might be removed in a future minor release!
  */
 class ShippingPrice extends Attribute
 {
