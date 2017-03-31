@@ -163,6 +163,11 @@ abstract class Module extends AbstractFrontendModule
                     $arrCategories = [$objPage->pid];
                     break;
 
+                case 'parent_and_all_parent_children':
+                    $arrCategories = [$objPage->pid];
+                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->pid, 'tl_page', false, $arrCategories, $strWhere);
+                    break;
+
                 case 'product':
                     /** @var \Isotope\Model\Product\Standard $objProduct */
                     $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
