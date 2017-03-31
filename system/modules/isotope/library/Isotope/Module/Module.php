@@ -163,7 +163,7 @@ abstract class Module extends AbstractFrontendModule
                     $arrCategories = [$objPage->pid];
                     break;
 
-                case 'parent_and_all_parent_children':
+                case 'parent_and_siblings':
                     $arrCategories = [$objPage->pid];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->pid, 'tl_page', false, $arrCategories, $strWhere);
                     break;
