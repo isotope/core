@@ -43,7 +43,6 @@ class WishlistAction extends AbstractButton
         $options   = [['label' => $GLOBALS['TL_LANG']['MSC']['defaultWishlistLabel'], 'value' => '']];
 
         if (null !== $wishlists) {
-            $options = [];
             foreach ($wishlists as $wishlist) {
                 $options[] = ['label' => $wishlist->getName(), 'value' => $wishlist->id];
             }
