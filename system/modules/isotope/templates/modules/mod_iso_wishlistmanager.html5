@@ -11,19 +11,19 @@
     <tr class="<?= $wishlist['class'] ?>">
         <td class="show" style="display:none"><?= $wishlist['name'] ?></td>
         <td class="edit"><input type="text" name="name[<?=$wishlist['id'] ?>]" value="<?= $wishlist['name'] ?>"></td>
-        <td><a href="<?= $wishlist['href'] ?>">Details</a></td>
+        <td><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
     </tr>
     <?php endforeach; ?>
     <tr class="edit">
         <td>
-            <input type="text" name="new" placeholder="New Wishlist …">
+            <input type="text" name="new" placeholder="<?= $GLOBALS['TL_LANG']['MSC']['defaultWishlistLabel'] ?>">
         </td>
         <td>&nbsp;</td>
     </tr>
 </table>
 
-<input type="button" class="show" id="wishlists<?= $this->id ?>_edit" name="edit" value="Edit" style="display:none">
-<input type="submit" class="edit" name="save" value="Save">
+<input type="button" class="show" id="wishlists<?= $this->id ?>_edit" name="edit" value="<?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['edit_wishlist'] ?>" style="display:none">
+<input type="submit" class="edit" name="save" value="<?= $GLOBALS['TL_LANG']['MSC']['save'] ?>">
 
 </form>
 

@@ -173,6 +173,12 @@
       <trans-unit id="MSC.buttonLabel.add_to_wishlist">
         <source>Add To Wishlist</source>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.edit_wishlist">
+        <source>Edit</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.wishlist_details">
+        <source>Details</source>
+      </trans-unit>
       <trans-unit id="MSC.buttonLabel.share_wishlist">
         <source>Share Wishlist</source>
       </trans-unit>
