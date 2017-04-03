@@ -94,20 +94,29 @@ class WishlistManager extends Module
         if ('wishlists'.$this->id === \Input::post('FORM_SUBMIT')) {
             $names = \Input::post('name');
             $new   = (string) \Input::post('new');
+            $delete = (int) \Input::post('delete');
 
-            if (is_array($names) && 0 !== count($names)) {
-                foreach ($wishlists as $wishlist) {
-                    if (isset($names[$wishlist->id])) {
-                        $wishlist->setName($names[$wishlist->id]);
-                        $wishlist->save();
+            if ($delete > 0) {
+                $wishlist = Wishlist::findByIdForCurrentUser($delete);
+
+                if ($wishlist instanceof Wishlist) {
+                    $wishlist->delete();
+                }
+            } else {
+                if (is_array($names) && 0 !== count($names)) {
+                    foreach ($wishlists as $wishlist) {
+                        if (isset($names[$wishlist->id])) {
+                            $wishlist->setName($names[$wishlist->id]);
+                            $wishlist->save();
+                        }
                     }
                 }
-            }
 
-            if ('' !== $new) {
-                $wishlist = Wishlist::createForCurrentUser();
-                $wishlist->setName($new);
-                $wishlist->save();
+                if ('' !== $new) {
+                    $wishlist = Wishlist::createForCurrentUser();
+                    $wishlist->setName($new);
+                    $wishlist->save();
+                }
             }
 
             \Controller::reload();

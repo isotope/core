@@ -10,8 +10,9 @@
     <?php foreach ($this->items as $wishlist): ?>
     <tr class="<?= $wishlist['class'] ?>">
         <td class="show" style="display:none"><?= $wishlist['name'] ?></td>
+        <td class="show"><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
         <td class="edit"><input type="text" name="name[<?=$wishlist['id'] ?>]" value="<?= $wishlist['name'] ?>"></td>
-        <td><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
+        <td class="edit"><button type="submit" name="delete" value="<?= $wishlist['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['delete_wishlist'] ?></button></td>
     </tr>
     <?php endforeach; ?>
     <tr class="edit">
@@ -35,12 +36,12 @@
         var showElements = form.getElementsByClassName('show');
         var editElements = form.getElementsByClassName('edit');
 
-        setDisplay(showElements, 'block');
+        setDisplay(showElements, 'table-cell');
         setDisplay(editElements, 'none');
 
         editButton.addEventListener('click', function () {
             setDisplay(showElements, 'none');
-            setDisplay(editElements, 'block');
+            setDisplay(editElements, 'table-cell');
         });
 
         function setDisplay(elements, display) {

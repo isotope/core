@@ -176,6 +176,9 @@
       <trans-unit id="MSC.buttonLabel.edit_wishlist">
         <source>Edit</source>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.delete_wishlist">
+        <source>Delete</source>
+      </trans-unit>
       <trans-unit id="MSC.buttonLabel.wishlist_details">
         <source>Details</source>
       </trans-unit>
