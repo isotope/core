@@ -6,6 +6,8 @@
     <p class="<?php echo $this->type; ?> message"><?php echo $this->message; ?></p>
 <?php endif; ?>
 
+<h2><?= $this->collection->getName() ?></h2>
+
 <?= $this->products; ?>
 
 <?php if ($this->share): ?>
@@ -13,4 +15,3 @@
 <?php endif; ?>
 
 <?php $this->endblock() ?>
-
