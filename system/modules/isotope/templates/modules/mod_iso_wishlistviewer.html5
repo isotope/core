@@ -16,7 +16,7 @@
             <td><?= $wishlist['name'] ?></td>
             <td><?= $wishlist['published'] ?></td>
             <td><?= $wishlist['member']->firstname ?> <?= $wishlist['member']->lastname ?></td>
-            <td><a href="<?= $wishlist['href'] ?>">Details</a></td>
+            <td><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
