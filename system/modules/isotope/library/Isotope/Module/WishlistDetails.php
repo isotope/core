@@ -31,18 +31,6 @@ class WishlistDetails extends AbstractProductCollection
     private $public = false;
 
     /**
-     * @inheritdoc
-     */
-    public function generate()
-    {
-        if ('FE' === TL_MODE && true !== FE_USER_LOGGED_IN) {
-            return '';
-        }
-
-        return parent::generate();
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function compile()
