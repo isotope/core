@@ -20,8 +20,8 @@ use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 
 /**
- * @property string $paypal_plus_client
- * @property string $paypal_plus_secret
+ * @property string $paypal_client
+ * @property string $paypal_secret
  */
 abstract class PaypalApi extends Payment
 {
@@ -180,7 +180,7 @@ abstract class PaypalApi extends Payment
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
         $paymentData = deserialize($collection->payment_data, true);
-        $paymentData['PAYPAL_PLUS'] = $paypalData;
+        $paymentData['PAYPAL'] = $paypalData;
 
         $collection->payment_data = $paymentData;
         $collection->save();
@@ -195,7 +195,7 @@ abstract class PaypalApi extends Payment
     {
         $paymentData = deserialize($collection->payment_data, true);
 
-        return array_key_exists('PAYPAL_PLUS', $paymentData) ? $paymentData['PAYPAL_PLUS'] : [];
+        return array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
 
     /**
@@ -211,7 +211,7 @@ abstract class PaypalApi extends Payment
                 [
                     RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
                     RequestOptions::HEADERS     => [
-                        'Authorization' => 'Basic ' . base64_encode($this->paypal_plus_client . ':' . $this->paypal_plus_secret),
+                        'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
                     ],
                 ]
             );
@@ -224,7 +224,7 @@ abstract class PaypalApi extends Payment
 
         } else {
             $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-            $request->setHeader('Authorization', 'Basic ' . base64_encode($this->paypal_plus_client . ':' . $this->paypal_plus_secret));
+            $request->setHeader('Authorization', 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret));
 
             $request->send(
                 $this->getApiUrl('/oauth2/token'),
