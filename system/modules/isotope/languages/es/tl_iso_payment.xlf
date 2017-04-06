@@ -162,45 +162,6 @@
       <trans-unit id="tl_iso_payment.paypal_account.1">
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_user.0">
-        <source>Paypal Payflow Pro username</source>
-        <target>Nombre de usuario Paypal Payflow Pro</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_user.1">
-        <source/>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_vendor.0">
-        <source>Paypal Payflow Pro vendor</source>
-        <target>Vendedor Paypal Payflow Pro</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_vendor.1">
-        <source>An alphanumeric string of about 10 characters.</source>
-        <target>Cadena alfanumérica de unos 10 caracteres.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_partner.0">
-        <source>Paypal Payflow Pro partner</source>
-        <target>Socio Paypal Payflow Pro</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_partner.1">
-        <source>Case-sensitive! Usual partner Ids are either &quot;PayPal&quot; or &quot;PayPalUK&quot;.</source>
-        <target>Distinguir mayúsculas de minúsculas! Ids de socios habituales son o &quot;PayPal&quot; o &quot;PayPalUK&quot;.</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_password.0">
-        <source>Paypal Payflow Pro api password</source>
-        <target>Contraseña Paypal Payflow Pro api</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_password.1">
-        <source>An alphanumeric string of about 11 characters</source>
-        <target>Cadena alfanumérica de unos 11 caracteres</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_transType.0">
-        <source>Paypal Payflow Pro transaction type</source>
-        <target>Tipo de transacción Paypal Payflow Pro</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.payflowpro_transType.1">
-        <source>Please select a transaction type.</source>
-        <target>Por favor selecciona un tipo de transacción.</target>
-      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
       </trans-unit>
