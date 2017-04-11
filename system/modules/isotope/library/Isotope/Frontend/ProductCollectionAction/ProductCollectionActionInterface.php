@@ -14,6 +14,15 @@ interface ProductCollectionActionInterface
     public function getName();
 
     /**
+     * Gets the action label.
+     *
+     * @param IsotopeProductCollection $collection
+     *
+     * @return string
+     */
+    public function getLabel(IsotopeProductCollection $collection);
+
+    /**
      * Returns whether the action is available for the given product.
      *
      * @param IsotopeProductCollection $collection

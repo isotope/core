@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Haste\Util\Url;
+use Isotope\Frontend\ProductCollectionAction\AbstractLink;
 use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
 use Isotope\Frontend\ProductCollectionAction\ProductCollectionActionInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -130,16 +131,13 @@ abstract class AbstractProductCollection extends Module
         $buttons = function() use ($collection, $actions) {
             $buttons = [];
 
+            /** @var ProductCollectionActionInterface $action */
             foreach ($actions as $action) {
-                if (!is_callable([$action, 'getLabel'])) {
-                    continue;
-                }
-
                 $this->addButton(
                     $buttons,
                     $action->getName(),
-                    $action->getLabel(),
-                    is_callable([$action, 'getHref']) ? $action->getHref() : null
+                    $action->getLabel($collection),
+                    $action instanceof AbstractLink ? $action->getHref() : null
                 );
             }
 

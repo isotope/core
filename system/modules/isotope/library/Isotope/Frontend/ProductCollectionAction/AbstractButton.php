@@ -34,13 +34,4 @@ abstract class AbstractButton implements ProductCollectionActionInterface
     {
         return '' !== (string) \Input::post('button_' . $this->getName());
     }
-
-    /**
-     * Gets the button label.
-     *
-     * @param IsotopeProductCollection $collection
-     *
-     * @return string
-     */
-    abstract public function getLabel(IsotopeProductCollection $collection);
 }
