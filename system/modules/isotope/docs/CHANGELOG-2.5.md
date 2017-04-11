@@ -7,6 +7,7 @@ Version 2.5.0-beta1 (201?-??-??)
 ### New
 
 - Added payment method for Concardis (https://www.concardis.com/)
+- Added payment method for PayPal PLUS
 - Added shipping method that calculates from price in product
 
 
