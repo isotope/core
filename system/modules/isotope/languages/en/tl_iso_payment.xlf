@@ -134,6 +134,18 @@
       <trans-unit id="tl_iso_payment.paypal_account.1">
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.0">
+        <source>Client ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.1">
+        <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.0">
+        <source>Secret</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.1">
+        <source>Enter your PayPal API secret.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.payflowpro_user.0">
         <source>Paypal Payflow Pro username</source>
       </trans-unit>

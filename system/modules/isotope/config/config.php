@@ -199,6 +199,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('paybyway', 'Isotope\Model\Payment\Paybyway');
 \Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
 \Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
+\Isotope\Model\Payment::registerModelType('paypal_plus', 'Isotope\Model\Payment\PaypalPlus');
 \Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
 \Isotope\Model\Payment::registerModelType('quickpay', 'Isotope\Model\Payment\QuickPay');
 \Isotope\Model\Payment::registerModelType('saferpay', 'Isotope\Model\Payment\Saferpay');

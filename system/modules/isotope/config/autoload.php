@@ -63,6 +63,7 @@ TemplateLoader::addFiles(array
     'iso_payment_epay'                  => 'system/modules/isotope/templates/payment',
     'iso_payment_paybyway'              => 'system/modules/isotope/templates/payment',
     'iso_payment_paypal'                => 'system/modules/isotope/templates/payment',
+    'iso_payment_paypal_plus'           => 'system/modules/isotope/templates/payment',
     'iso_payment_payone'                => 'system/modules/isotope/templates/payment',
     'iso_payment_postfinance'           => 'system/modules/isotope/templates/payment',
     'iso_payment_quickpay'              => 'system/modules/isotope/templates/payment',
