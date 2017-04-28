@@ -44,9 +44,7 @@ class PaypalPlus extends PaypalApi
             $paypalData = json_decode($responseData, true);
             $this->storePayment($objOrder, $paypalData);
 
-            $request = $this->patchPayment($objOrder, $paypalData['id']);
-
-            #dump($request->getBody()->getContents());exit;
+            $this->patchPayment($objOrder, $paypalData['id']);
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
@@ -115,6 +113,9 @@ class PaypalPlus extends PaypalApi
         if (200 !== $responseCode) {
             return false;
         }
+
+        $objOrder->setDatePaid(time());
+        $objOrder->updateOrderStatus($this->new_order_status);
 
         return true;
     }

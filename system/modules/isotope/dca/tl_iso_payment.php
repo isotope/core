@@ -33,8 +33,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'keys' => array
             (
                 'id' => 'primary'
-            )
-        )
+            ),
+        ),
     ),
 
     // List
@@ -444,13 +444,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function($dc) {
+                /** @var \Isotope\Model\Payment $payment */
                 $payment = \Isotope\Model\Payment::findByPk($dc->id);
 
-                if (null === $payment || !$payment instanceof \Isotope\Model\Payment\PSP) {
-                    return [];
+                if ($payment instanceof \Isotope\Model\Payment\PSP) {
+                    return $payment->getPaymentMethods();
                 }
 
-                return $payment->getPaymentMethods();
+                return [];
             },
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'clr'),
             'sql'                   => "varchar(128) NOT NULL default ''",
