@@ -12,6 +12,7 @@
 namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
@@ -32,12 +33,18 @@ class TextField extends Attribute implements IsotopeAttributeWithRange
     }
 
     /**
-     * Returns whether range filter can be used on this attribute.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function allowRangeFilter()
     {
         return 'digit' === $this->rgxp;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueRange(IsotopeProduct $product)
+    {
+        return [$this->getValue($product)];
     }
 }

@@ -11,9 +11,12 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\ProductPrice;
 
 /**
  * Attribute to implement base price calculation
@@ -53,7 +56,13 @@ class Price extends Attribute implements IsotopeAttributeWithRange
      */
     public function getValue(IsotopeProduct $product)
     {
-        return $product->getPrice()->getAmount();
+        $price = $product->getPrice();
+
+        if (!$price instanceof IsotopePrice) {
+            return null;
+        }
+
+        return $price->getAmount();
     }
 
     /**
@@ -71,12 +80,44 @@ class Price extends Attribute implements IsotopeAttributeWithRange
     }
 
     /**
-     * Returns whether range filter can be used on this attribute.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function allowRangeFilter()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueRange(IsotopeProduct $product)
+    {
+        $amounts = [];
+        $price = $product->getPrice();
+
+        if (!$price instanceof IsotopePrice) {
+            return null;
+        }
+
+        if ($price instanceof ProductPriceCollection) {
+            /** @var IsotopePrice $item */
+            foreach ($price as $item) {
+                if ($item instanceof ProductPrice) {
+                    $amounts[] = $item->getLowestAmount();
+                }
+
+                $amounts[] = $item->getAmount();
+            }
+        } else {
+            if ($price instanceof ProductPrice) {
+                $amounts[] = $price->getLowestAmount();
+            }
+
+            $amounts[] = $price->getAmount();
+        }
+
+        sort($amounts);
+
+        return array_filter([array_shift($amounts), array_pop($amounts)]);
     }
 }

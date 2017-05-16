@@ -19,4 +19,13 @@ interface IsotopeAttributeWithRange extends IsotopeAttribute
      * @return bool
      */
     public function allowRangeFilter();
+
+    /**
+     * Gets array of values for range filter.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return array
+     */
+    public function getValueRange(IsotopeProduct $product);
 }
