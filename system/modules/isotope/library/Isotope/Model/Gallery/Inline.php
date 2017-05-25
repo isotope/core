@@ -71,9 +71,12 @@ class Inline extends Standard
         $objTemplate->uid = $this->getName();
 
         if ('gallery' === $strType) {
-            $image = $this->getImageForType('main', $arrFile, $blnWatermark);
+            $objTemplate->link = $this->getImageForType('main', $arrFile, $blnWatermark)['main'];
 
-            $objTemplate->link = $image['main'];
+            // Generate the lightbox image
+            if ($this->anchor === 'lightbox') {
+                $objTemplate->lightboxUrl = $this->getImageForType('lightbox', $arrFile, $blnWatermark)['lightbox'];
+            }
         }
     }
 }

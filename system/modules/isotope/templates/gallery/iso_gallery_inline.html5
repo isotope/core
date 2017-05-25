@@ -1,9 +1,19 @@
 <?php if ($this->type == 'gallery'): ?>
 <figure data-type="gallery" data-uid="g<?php echo $this->name; ?>" class="image_container<?php if ($this->class) echo ' '.$this->class; ?>">
-<a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>" onclick="return Isotope.inlineGallery(this, 'g<?php echo $this->name; ?>');">
+<a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>" onclick="return Isotope.inlineGallery(this, 'g<?php echo $this->name; ?>');"<?php if ($this->lightboxUrl): ?> data-lightbox-url="<?php echo $this->lightboxUrl; ?>"<?php endif; ?>>
 <img src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>" <?php echo $this->size; ?><?php if ($this->class) echo ' class="'.$this->class.'"'; ?>>
 </a>
 </figure>
 <?php else: ?>
-<figure class="image_container"><img id="g<?php echo $this->name; ?>" src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>"></figure>
+<figure class="image_container">
+    <?php if ($this->hasLink): ?>
+        <a title="<?php echo $this->title; ?>" href="<?php echo $this->link; ?>"<?php echo $this->attributes; ?>>
+    <?php endif; ?>
+
+    <img id="g<?php echo $this->name; ?>" src="<?php echo $this->src; ?>" itemprop="image" alt="<?php echo $this->alt; ?>">
+
+    <?php if ($this->hasLink): ?>
+        </a>
+    <?php endif; ?>
+</figure>
 <?php endif; ?>
