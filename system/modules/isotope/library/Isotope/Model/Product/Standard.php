@@ -165,6 +165,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $this->objPrice = ProductPrice::findByProductAndCollection($this, $objCollection);
         }
 
+        $this->objPrice->arrOptions = $this->arrOptions;
         return $this->objPrice;
     }
 

@@ -183,6 +183,7 @@ class ProductCollectionItem extends \Model
             }
         }
 
+        $this->objProduct->arrOptions = deserialize($this->options);
         return $this->objProduct;
     }
 
