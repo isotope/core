@@ -1417,7 +1417,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * @inheritdoc
      */
-    public function addToScale(Scale $objScale = null)
+    public function addToScale(Scale $objScale = null, $blnForShipping = false)
     {
         if (null === $objScale) {
             $objScale = new Scale();
@@ -1429,6 +1429,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             }
 
             $objProduct = $objItem->getProduct();
+
+            if ($blnForShipping && $objProduct->shipping_exempt) {
+                continue;
+            }
 
             if ($objProduct instanceof WeightAggregate) {
                 $objWeight = $objProduct->getWeight();
