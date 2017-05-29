@@ -13,6 +13,8 @@ Version 2.5.0-beta1 (201?-??-??)
 
 ### Improved
 
+- Shipping and payment methods can now show zero amound in checkout process
+
 
 ### Fixed
 

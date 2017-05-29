@@ -75,7 +75,7 @@ class Group extends Shipping
         $this->getGroupMethods();
 
         if (empty($this->arrMethods)) {
-            return 0;
+            return null;
         }
 
         switch ($this->group_calculation) {
@@ -87,28 +87,34 @@ class Group extends Shipping
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
-                    if (null === $fltReturn || $fltPrice < $fltReturn) {
+                    if (null !== $fltPrice && (null === $fltReturn || $fltPrice < $fltReturn)) {
                         $fltReturn = $fltPrice;
                     }
                 }
 
-                return ($fltReturn === null) ? 0 : $fltReturn;
+                return $fltReturn;
 
             case self::CALCULATE_HIGHEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
-                    if (null === $fltReturn || $fltPrice > $fltReturn) {
+                    if (null !== $fltPrice && (null === $fltReturn || $fltPrice > $fltReturn)) {
                         $fltReturn = $fltPrice;
                     }
                 }
 
-                return ($fltReturn === null) ? 0 : $fltReturn;
+                return $fltReturn;
 
             case self::CALCULATE_SUM:
-                $fltTotal = 0;
+                $fltTotal = null;
                 foreach ($this->arrMethods as $objMethod) {
-                    $fltTotal += $objMethod->getPrice();
+                    if (null !== ($price = $objMethod->getPrice())) {
+                        if (null === $fltTotal) {
+                            $fltTotal = 0;
+                        }
+
+                        $fltTotal += $price;
+                    }
                 }
 
                 return $fltTotal;

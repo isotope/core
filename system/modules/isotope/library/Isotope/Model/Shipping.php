@@ -261,11 +261,15 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        if (null === $objCollection) {
-            $objCollection = Isotope::getCart();
+        if (!is_numeric($this->arrData['price'])) {
+            return null;
         }
 
         if ($this->isPercentage()) {
+            if (null === $objCollection) {
+                $objCollection = Isotope::getCart();
+            }
+
             $fltPrice = $objCollection->getSubtotal() / 100 * $this->getPercentage();
         } else {
             $fltPrice = (float) $this->arrData['price'];
@@ -322,7 +326,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if ($this->getPrice() == 0) {
+        if (null === $this->getPrice()) {
             return null;
         }
 

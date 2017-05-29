@@ -63,7 +63,7 @@ interface IsotopePayment
     /**
      * Return the calculated total price for payment.
      *
-     * @return float
+     * @return float|null
      */
     public function getPrice();
 

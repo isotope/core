@@ -69,9 +69,9 @@ interface IsotopeShipping
     public function getPercentageLabel();
 
     /**
-     * @return  float
      * Return the calculated total price for shipping.
      *
+     * @return float|null
      */
     public function getPrice();
 
