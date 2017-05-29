@@ -116,8 +116,6 @@ class Price extends Attribute implements IsotopeAttributeWithRange
             $amounts[] = $price->getAmount();
         }
 
-        sort($amounts);
-
-        return array_filter([array_shift($amounts), array_pop($amounts)]);
+        return array_filter([min($amounts), max($amounts)]);
     }
 }
