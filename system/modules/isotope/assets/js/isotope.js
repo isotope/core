@@ -102,6 +102,11 @@
             parent.setAttribute('class', parent.getAttribute('class') + ' active');
             _doc.getElementById(elementId).src = el.href;
 
+            // Update the href for lightbox
+            if (el.dataset.lightboxUrl) {
+                _doc.getElementById(elementId).parentNode.href = el.dataset.lightboxUrl;
+            }
+
             return false;
         },
 
