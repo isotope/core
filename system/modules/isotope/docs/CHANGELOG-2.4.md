@@ -17,6 +17,7 @@ Version 2.4.2 (2017-??-??)
 - Fixed PHP7 compatibility for backend overview callback (#1795)
 - Always store the country in order addresses (#1811)
 - Member country restrictions were not applicable in Contao 4 (#1803)
+- ImageSize widget is no longer usable for custom options (#1761)
 
 
 Version 2.4.1 (2017-03-07)
