@@ -4,9 +4,18 @@ Isotope eCommerce Changelog
 Version 2.4.2 (2017-??-??)
 --------------------------
 
+### Improved
+
+- Updated navigation icon for Contao 4.4 backend (#1808)
+
+
 ### Fixed
 
 - Removed line break on version panel in product edit mode
+- Integrity Check could not disable rules module in Contao 4 (#1764)
+- Removed usage of mysql_real_escape_string (#1786)
+- Fixed PHP7 compatibility for backend overview callback (#1795)
+- Always store the country in order addresses (#1811)
 
 
 Version 2.4.1 (2017-03-07)
@@ -31,6 +40,7 @@ Version 2.4.1 (2017-03-07)
 
 
 ### Improved
+
 - Added itemscope attributes to product list (#1751)
 
 

@@ -272,8 +272,9 @@ class Rule extends \Model
             $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
 
             foreach ($arrAttributes as $restriction) {
-                if (empty($restriction['values']))
+                if (empty($restriction['values'])) {
                     continue;
+                }
 
                 $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
 
