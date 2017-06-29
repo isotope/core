@@ -20,6 +20,7 @@ Version 2.4.2 (2017-??-??)
 - ImageSize widget is no longer usable for custom options (#1761)
 - Shimane was missing in the japanese subdivisions list (#1810)
 - Custom template is not supported for related products module (#1809)
+- DC clipboard is stored in non-persistent session in Contao 4 (#1806)
 
 
 Version 2.4.1 (2017-03-07)
