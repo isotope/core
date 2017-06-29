@@ -228,8 +228,7 @@ class Panel extends \Backend
                     // !HOOK: add custom advanced filters
                     if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'])) {
                         foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback) {
-                            $objCallback = \System::importStatic($callback[0]);
-                            $arrReturn   = $objCallback->{$callback[1]}($k);
+                            $arrReturn = \System::importStatic($callback[0])->{$callback[1]}($k);
 
                             if (is_array($arrReturn)) {
                                 $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;

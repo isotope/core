@@ -188,8 +188,7 @@ class Callback extends \Backend
         if (is_array($GLOBALS['TL_DCA']['tl_iso_attribute_option']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_attribute_option']['fields']['published']['save_callback'] as $callback) {
                 if (is_array($callback)) {
-                    $this->import($callback[0]);
-                    $blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, $this);
+                    $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
                 } elseif (is_callable($callback)) {
                     $blnVisible = $callback($blnVisible, $this);
                 }

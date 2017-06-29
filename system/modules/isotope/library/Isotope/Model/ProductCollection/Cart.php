@@ -177,8 +177,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                         && is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
-                            $objCallback = \System::importStatic($callback[0]);
-                            $objCallback->{$callback[1]}($objOrder, $this, $arrItemIds);
+                            \System::importStatic($callback[0])->{$callback[1]}($objOrder, $this, $arrItemIds);
                         }
                     }
                 } catch (\Exception $e) {

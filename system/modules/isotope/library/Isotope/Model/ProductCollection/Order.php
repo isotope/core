@@ -220,8 +220,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}($this, $arrTokens);
+                \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -275,9 +274,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
-
-                $objCallback = \System::importStatic($callback[0]);
-                $blnCancel   = $objCallback->{$callback[1]}($this, $objNewStatus);
+                $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus);
 
                 if ($blnCancel === true) {
                     return false;
@@ -343,8 +340,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}($this, $intOldStatus, $objNewStatus);
+                \System::importStatic($callback[0])->{$callback[1]}($this, $intOldStatus, $objNewStatus);
             }
         }
 
@@ -487,8 +483,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrTokens   = $objCallback->{$callback[1]}($this, $arrTokens);
+                $arrTokens = \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 

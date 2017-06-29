@@ -500,8 +500,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             && is_array($GLOBALS['ISO_HOOKS']['buttons'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrButtons  = $objCallback->{$callback[1]}($arrButtons, $this);
+                $arrButtons = \System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
             }
 
             $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
@@ -543,8 +542,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}($objTemplate, $this);
+                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this);
             }
         }
 
@@ -695,8 +693,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     foreach ($arrData['save_callback'] as $callback) {
                         try {
                             if (is_array($callback)) {
-                                $objCallback = \System::importStatic($callback[0]);
-                                $varValue    = $objCallback->{$callback[1]}($varValue, $this, $objWidget);
+                                $varValue = \System::importStatic($callback[0])->{$callback[1]}($varValue, $this, $objWidget);
                             } else {
                                 $varValue = $objAttribute->{$callback}($varValue, $this, $objWidget);
                             }
@@ -765,8 +762,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // Add a custom wizard
         if (is_array($arrData['wizard'])) {
             foreach ($arrData['wizard'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $wizard .= $objCallback->{$callback[1]}($this);
+                $wizard .= \System::importStatic($callback[0])->{$callback[1]}($this);
             }
         }
 

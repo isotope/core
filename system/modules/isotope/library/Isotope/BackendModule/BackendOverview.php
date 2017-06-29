@@ -185,7 +185,7 @@ abstract class BackendOverview extends \BackendModule
         elseif (\Input::get('key') && isset($arrModule[\Input::get('key')])) {
             $objCallback = new $arrModule[\Input::get('key')][0]();
 
-            return $objCallback->$arrModule[\Input::get('key')][1]($dc, $strTable, $arrModule);
+            return $objCallback->{$arrModule[\Input::get('key')][1]}($dc, $strTable, $arrModule);
         } // Default action
         elseif (is_object($dc)) {
             $act = (string) \Input::get('act');
