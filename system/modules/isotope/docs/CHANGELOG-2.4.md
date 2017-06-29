@@ -16,6 +16,7 @@ Version 2.4.2 (2017-??-??)
 - Removed usage of mysql_real_escape_string (#1786)
 - Fixed PHP7 compatibility for backend overview callback (#1795)
 - Always store the country in order addresses (#1811)
+- Member country restrictions were not applicable in Contao 4 (#1803)
 
 
 Version 2.4.1 (2017-03-07)
