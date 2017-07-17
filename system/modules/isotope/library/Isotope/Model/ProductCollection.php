@@ -152,7 +152,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             && !$this->isLocked()
             && (Registry::getInstance()->isRegistered($this) || $blnCreate)
         ) {
-
             foreach ($this->getItems() as $objItem) {
                 if (!$objItem->hasProduct()) {
                     continue;

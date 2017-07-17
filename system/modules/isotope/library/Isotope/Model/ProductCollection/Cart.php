@@ -229,6 +229,25 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function save()
+    {
+        parent::save();
+
+        if (!$this->member) {
+            \System::setCookie(
+                static::$strCookie,
+                $this->uniqid,
+                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
+                $GLOBALS['TL_CONFIG']['websitePath']
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * Get a collection-specific error message for items with errors
      *
      * @return string
@@ -308,15 +327,6 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         } else {
             $objCart->tstamp = $time;
-        }
-
-        if (true !== FE_USER_LOGGED_IN) {
-            \System::setCookie(
-                static::$strCookie,
-                $cookieHash,
-                $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                $GLOBALS['TL_CONFIG']['websitePath']
-            );
         }
 
         return $objCart;
