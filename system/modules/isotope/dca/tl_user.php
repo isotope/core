@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_product_types'] = array
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-    'eval'                  => array('multiple'=>true, 'helpwizard'=>true, 'tl_class'=>'clr w50 w50h'),
+    'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
     'sql'                   => 'blob NULL',
 );
 

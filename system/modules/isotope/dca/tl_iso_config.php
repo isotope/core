@@ -519,7 +519,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['currencyAutomator'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr w50'),
             'save_callback'         => array(
                 array('Isotope\Backend\Config\Callback', 'checkNeedToConvertCurrencies')
             ),
@@ -531,7 +531,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => &$GLOBALS['TL_LANG']['CUR'],
-            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'clr w50'),
             'save_callback'         => array(
                 array('Isotope\Backend\Config\Callback', 'checkNeedToConvertCurrencies')
             ),

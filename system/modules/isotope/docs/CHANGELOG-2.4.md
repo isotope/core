@@ -22,6 +22,7 @@ Version 2.4.2 (2017-??-??)
 - Custom template is not supported for related products module (#1809)
 - DC clipboard is stored in non-persistent session in Contao 4 (#1806)
 - Group and page selection in products backend did not reload (#1801)
+- Help wizard was empty for payment, shipping, gallery and producttype (#1821)
 
 
 Version 2.4.1 (2017-03-07)

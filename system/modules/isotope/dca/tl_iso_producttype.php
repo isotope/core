@@ -154,6 +154,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'options_callback'      => function() {
                 return \Isotope\Model\Product::getModelTypeOptions();
             },
+            'reference'             => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_product'],
             'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
@@ -196,7 +197,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_list_default',
-            'options_callback'      => function(\DataContainer $dc) {
+            'options_callback'      => function() {
                 return \Isotope\Backend::getTemplates('iso_list_');
             },
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),
@@ -208,7 +209,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_reader_default',
-            'options_callback'      => function(\DataContainer $dc) {
+            'options_callback'      => function() {
                 return \Isotope\Backend::getTemplates('iso_reader_');
             },
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'chosen'=>true),

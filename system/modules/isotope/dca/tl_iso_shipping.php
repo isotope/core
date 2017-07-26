@@ -174,6 +174,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'options_callback'      => function() {
                 return \Isotope\Model\Shipping::getModelTypeOptions();
             },
+            'reference'             => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'],
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
