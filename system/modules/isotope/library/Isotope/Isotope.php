@@ -41,7 +41,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.4.1';
+    const VERSION = '2.4.2';
 
     /**
      * True if the system has been initialized
@@ -229,8 +229,13 @@ class Isotope extends \Controller
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $fltPrice = $objCallback->{$callback[1]}($fltPrice, $objSource, $strField, $intTaxClass, $arrOptions);
+                $fltPrice = \System::importStatic($callback[0])->{$callback[1]}(
+                    $fltPrice,
+                    $objSource,
+                    $strField,
+                    $intTaxClass,
+                    $arrOptions
+                );
             }
         }
 

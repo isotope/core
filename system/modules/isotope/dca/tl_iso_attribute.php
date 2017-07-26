@@ -193,8 +193,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'options_callback'      => function() {
                 return \Isotope\Model\Attribute::getModelTypeOptions();
             },
-            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'reference'             => &$GLOBALS['TL_LANG']['ATTR'],
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'legend' => array

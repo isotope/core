@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.includes.0">
         <source>Tax rate included with product price</source>
-        <target>Steuerklasse im Produktpreis enthalten</target>
+        <target>Steuersatz im Produktpreis enthalten</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.includes.1">
         <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>

@@ -88,8 +88,7 @@ class AddressBook extends Module
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}();
+                \System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
@@ -235,8 +234,7 @@ class AddressBook extends Module
                 // Call onsubmit_callback
                 if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->{$callback[1]}($objAddress);
+                        \System::importStatic($callback[0])->{$callback[1]}($objAddress);
                     }
                 }
 
@@ -245,8 +243,7 @@ class AddressBook extends Module
                     && is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateAddressData'] as $callback) {
-                        $objCallback = \System::importStatic($callback[0]);
-                        $objCallback->{$callback[1]}($objAddress, $arrOldAddress, $this);
+                        \System::importStatic($callback[0])->{$callback[1]}($objAddress, $arrOldAddress, $this);
                     }
                 }
 

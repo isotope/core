@@ -234,8 +234,7 @@ abstract class Address extends CheckoutStep
                 && is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback) {
-                    $this->import($callback[0]);
-                    $arrFields = $this->$callback[0]->$callback[1]($arrFields, $objAddress, $this->getStepClass());
+                    $arrFields = \System::importStatic($callback[0])->{$callback[1]}($arrFields, $objAddress, $this->getStepClass());
                 }
             }
 

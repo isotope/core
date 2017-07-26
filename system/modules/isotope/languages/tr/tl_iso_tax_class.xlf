@@ -1,0 +1,110 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+        <target>Bu vergi sınıfına, ne için kullanıldığını açıklayan bir isim verin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Varsayılan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+        <target>Varsayılan vergi sınıfıysa buraya tıklayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+        <target>Ürün fiyatına dahil vergi oranı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+        <target>Bu vergi sınıfına sahip ürünlerin fiyatları bir vergi oranı içeriyorsa seçin. Bu vergi oranı, eşleşmiyorsa, ürün fiyatından çıkarılır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+        <target>Etiket ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+        <target>Çıkarılmış vergileri için sunmak için gereken emirler için bir etiket (eğer veriliyorsa vergi uyuşmuyor). Boş ise, varsayılan vergi oranı etiketi kullanılacaktır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+        <target>Vergi oranlarını uygula</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+        <target>Bu vergi oranlarını, bu vergi sınıfına sahip ürünlere ekleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.0">
+        <source>Apply rounding increment</source>
+        <target>Yuvarlama artışını uygula</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.1">
+        <source>Check here if you want to apply the rounding increment of your shop config.</source>
+        <target>Mağaza yapılandırmanıza yuvarlama artışını uygulamak istiyorsanız burayı tıklayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.0">
+        <source>Not negative</source>
+        <target>Negatif değil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.1">
+        <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
+        <target>Bu vergi için negatif değeri önler (negatif tutar 0.00 olarak ayarlanır).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.0">
+        <source>New tax class</source>
+        <target>Yeni vergi sınıfı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.1">
+        <source>Create a new tax class</source>
+        <target>Yeni vergi sınıfı oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.0">
+        <source>Edit tax class</source>
+        <target>Vergi sınıfını düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.1">
+        <source>Edit tax class ID %s</source>
+        <target>%s ID'li vergi sınıfını düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.0">
+        <source>Copy tax class</source>
+        <target>Vergi sınıfını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.1">
+        <source>Copy tax class ID %s</source>
+        <target>%s ID'li vergi sınıfını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.0">
+        <source>Delete tax class</source>
+        <target>Vergi sınıfını sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.1">
+        <source>Delete tax class ID %s</source>
+        <target>%s ID'li vergi sınıfını sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.0">
+        <source>Tax class details</source>
+        <target>Vergi sınıfı detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.1">
+        <source>Show details of tax class ID %s</source>
+        <target>%s ID'li vergi sınıfının detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Vergi oranları</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

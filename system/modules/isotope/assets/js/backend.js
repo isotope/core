@@ -99,21 +99,22 @@ var Isotope = {};
                 if (!inp[i].checked || inp[i].id.match(/^check_all_/)) continue;
                 if (!inp[i].id.match(/^reset_/)) val.push(inp[i].get('value'));
             }
-            new Request.Contao(
-            {
+            new Request.Contao({
                 evalScripts: false,
                 onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
-                onSuccess: function(txt, json)
-                {
-                    if (txt != '')
-                    {
+                onSuccess: function(txt, json) {
+                    if (txt != '') {
                         window.location.href = txt;
+                    }
+                },
+                onFailure: function(xhr) {
+                    if (xhr.status === 302 && xhr.responseText != '') {
+                        window.location.href = xhr.responseText;
                     }
                 }
             }).post({'action':opt.action, 'value':val[0], 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});
             this.hide();
-            if (opt.trigger)
-            {
+            if (opt.trigger) {
                 opt.trigger.fireEvent('closeModal');
             }
         });
@@ -181,11 +182,14 @@ var Isotope = {};
             {
                 evalScripts: false,
                 onRequest: AjaxRequest.displayBox(Contao.lang.loading + ' …'),
-                onSuccess: function(txt, json)
-                {
-                    if (txt != '')
-                    {
+                onSuccess: function(txt, json) {
+                    if (txt != '') {
                         window.location.href = txt;
+                    }
+                },
+                onFailure: function(xhr) {
+                    if (xhr.status === 302 && xhr.responseText != '') {
+                        window.location.href = xhr.responseText;
                     }
                 }
             }).post({'action':opt.action, 'value':val, 'redirect':opt.redirect, 'REQUEST_TOKEN':Contao.request_token});

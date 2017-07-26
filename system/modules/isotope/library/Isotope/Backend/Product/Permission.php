@@ -181,8 +181,7 @@ class Permission extends \Backend
         // HOOK: allow extensions to define allowed products
         if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds'])) {
             foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $arrAllowed  = $objCallback->{$callback[1]}();
+                $arrAllowed = \System::importStatic($callback[0])->{$callback[1]}();
 
                 if ($arrAllowed === false) {
                     return false;

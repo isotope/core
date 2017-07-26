@@ -1,6 +1,33 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.2 (2017-07-26)
+--------------------------
+
+### Improved
+
+- Updated navigation icon for Contao 4.4 backend (#1808)
+- Pass DataContainer object when generating widgets (#1758)
+
+
+### Fixed
+
+- Removed line break on version panel in product edit mode
+- Integrity Check could not disable rules module in Contao 4 (#1764)
+- Removed usage of mysql_real_escape_string (#1786)
+- Fixed PHP7 compatibility for backend overview callback (#1795)
+- Always store the country in order addresses (#1811)
+- Member country restrictions were not applicable in Contao 4 (#1803)
+- ImageSize widget is no longer usable for custom options (#1761)
+- Shimane was missing in the japanese subdivisions list (#1810)
+- Custom template is not supported for related products module (#1809)
+- DC clipboard is stored in non-persistent session in Contao 4 (#1806)
+- Group and page selection in products backend did not reload (#1801)
+- Help wizard was empty for payment, shipping, gallery and producttype (#1821)
+- TinyMCE options were missing in textarea attribute (#1815)
+- Back button was not visible in Contao 4.4 picker (#1813)
+
+
 Version 2.4.1 (2017-03-07)
 --------------------------
 
@@ -23,6 +50,7 @@ Version 2.4.1 (2017-03-07)
 
 
 ### Improved
+
 - Added itemscope attributes to product list (#1751)
 
 

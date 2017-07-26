@@ -154,8 +154,12 @@ abstract class OrderConditions extends CheckoutStep
                 && is_array($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $varValue    = $objCallback->{$callback[1]}($strField, $varValue, $arrConfig, $this->objForm);
+                    $varValue = \System::importStatic($callback[0])->{$callback[1]}(
+                        $strField,
+                        $varValue,
+                        $arrConfig,
+                        $this->objForm
+                    );
                 }
             }
 

@@ -1,0 +1,518 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_rule.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.1">
+        <source>Please choose the type of rule.</source>
+        <target>Lütfen kuralın tipini seçin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.product">
+        <source>Product</source>
+        <target>Ürün</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart">
+        <source>Cart</source>
+        <target>Sepet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.1">
+        <source>Please enter a name for this rule.</source>
+        <target>Lütfen bu kural için bir ad girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.0">
+        <source>Label</source>
+        <target>Etiket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.1">
+        <source>The label will be show in cart. If you do not enter a label, the name will be used.</source>
+        <target>Etiket sepette gösterilecek. Bir etiket girmezseniz, ad kullanılacaktır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.0">
+        <source>Discount</source>
+        <target>İndirim</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.1">
+        <source>Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.</source>
+        <target>Geçerli değerler, ondalık sayı veya tam sayı, eksi bir sayısal değer veya eksi bir yüzdeliktir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.0">
+        <source>Tax Class</source>
+        <target>Vergi Sınıfları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.0">
+        <source>Apply discount to</source>
+        <target>İndirimi şuna uygula</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.1">
+        <source>Select how the discount is applied.</source>
+        <target>İndirimin nasıl uygulanacağını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.products">
+        <source>to each product</source>
+        <target>her ürüne</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.items">
+        <source>to each unit of a product</source>
+        <target>bir ürünün her bir birimi için</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.subtotal">
+        <source>to the cart subtotal</source>
+        <target>sepet ara toplamına</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.0">
+        <source>Discount rounding</source>
+        <target>İndirim yuvarlama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.1">
+        <source>Define how percentual discounts should be rounded.</source>
+        <target>Yüzdelik indirimin nasıl yuvarlanacağını tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.normal">
+        <source>Commercial rounding</source>
+        <target>Ticari yuvarlanma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.down">
+        <source>Always round down (in favor of shop owner)</source>
+        <target>Her zaman yuvarlak (dükkan sahibi lehine)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.up">
+        <source>Always round up (in favor of shop visitor)</source>
+        <target>Her zaman yuvarlak (mağaza ziyaretçisi lehine)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.0">
+        <source>Enable coupon code</source>
+        <target>Kupon kodunu etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.1">
+        <source>Require a code to be entered to invoke this rule, as a coupon.</source>
+        <target>Bu kuralı çağırmak için kupon olarak bir kod girilmesini isteyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.0">
+        <source>Rule (coupon) code</source>
+        <target>Kural (kupon) kodu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.1">
+        <source>Please enter a code by which a customer will invoke this rule, as a coupon.</source>
+        <target>Lütfen bir müşterinin bu kuralı bir kupon olarak kullanacağı bir kod girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.0">
+        <source>Uses per member</source>
+        <target>Üye başına kullanır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each customer.</source>
+        <target>Bu, kuralın daha önce kullanıldığını görmek için kullanılacaktır. Bu 0 olarak ayarlanırsa, her müşteri için sınırsız süre kullanılabilir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.0">
+        <source>Uses per store config</source>
+        <target>Mağaza yapılandırma başına  kullanır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each store config.</source>
+        <target>Bu, kuralın daha önce kullanıldığını görmek için kullanılacaktır. Bu 0 olarak ayarlanırsa, her bir mağaza yapılandırması için sınırsız süre kullanılabilir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Minimum ara toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.1">
+        <source>Please specify a minimum subtotal this rule applies to.</source>
+        <target>Lütfen bu kuralın uygulandığı minimum bir alt toplam belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.0">
+        <source>Maximum subtotal</source>
+        <target>Maksimum alt toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.1">
+        <source>Please specify a maximum subtotal this rule applies to.</source>
+        <target>Lütfen bu kuralın geçerli olduğu maksimum bir alt toplam belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.0">
+        <source>Minimum weight</source>
+        <target>Minimum ağırlık</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Uygunluğu, alışveriş sepetindeki ürünler temel alınarak kontrol etmek için minimum bir ağırlık girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.0">
+        <source>Maximum weight</source>
+        <target>Maksimum ağırlık</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Uygunluğu, alışveriş sepetindeki ürünler temel alınarak kontrol etmek için maksimum bir ağırlık girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.0">
+        <source>Minimum item quantity</source>
+        <target>Minimum öğe sayısı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.1">
+        <source>Please specify a minimum quantity of an item this rule applies to.</source>
+        <target>Lütfen bu kuralın uygulanacağı minimum adedi belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.0">
+        <source>Maximum item quantity</source>
+        <target>Maksimum öğe adedi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.1">
+        <source>Please specify a maximum quantity of a single item this rule applies to.</source>
+        <target>Lütfen bu kuralın uygulandığı tek bir öğe için maksimum öğe adedi belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.0">
+        <source>Quantity calculation mode</source>
+        <target>Adet hesaplama modu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Min / maks adetiçin bir hesaplama modu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.product_quantity">
+        <source>Quantity of product in cart</source>
+        <target>Sepetteki ürünün adedi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_products">
+        <source>Total products in cart</source>
+        <target>Sepetteki Toplam Ürün</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Sepetteki toplam adet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.0">
+        <source>Start date</source>
+        <target>Başlangıç tarihi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.1">
+        <source>If desired, please specify the date this rule will become eligible on.</source>
+        <target>İsterseniz, lütfen bu kuralın uygun olacağı tarihi belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.0">
+        <source>End date</source>
+        <target>Bitiş tarihi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.1">
+        <source>If desired, please specify the date this rule will no longer be eligible on.</source>
+        <target>İsterseniz, lütfen bu kuralın artık uygun olmayacağı tarihi belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.0">
+        <source>Start time</source>
+        <target>Başlangıç zamanı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.1">
+        <source>If desired, please specify the time this rule will become eligible at.</source>
+        <target>İsterseniz, lütfen bu kuralın uygun olacağı süreyi belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.0">
+        <source>End time</source>
+        <target>Bitiş zamanı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.1">
+        <source>If desired, please specify the time this rule will not longer be eligible at.</source>
+        <target>İsterseniz, lütfen bu kuralın artık uygun olmayacağı zamanı belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configRestrictions.0">
+        <source>Store config restrictions</source>
+        <target>Mağaza yapılandırması kısıtlamaları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configRestrictions.1">
+        <source>Restrict a rule to certain store configs.</source>
+        <target>Bir kuralın belirli mağaza yapılandırmalarıyla sınırlandırılması.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configCondition.0">
+        <source>Store config condition</source>
+        <target>Mağaza yapılandırma koşulu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configs.0">
+        <source>Store configs</source>
+        <target>Mağaza yapılandırmaları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configs.1">
+        <source>Select configs this rule is restricted to.</source>
+        <target>Bu kural için sınırlandırılmış yapılandırmaları seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.0">
+        <source>Member restrictions</source>
+        <target>Üye kısıtlamaları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.1">
+        <source>Restrict a rule to certain groups or members.</source>
+        <target>Bir kuralın belirli gruba veya üyelere sınırlandırılması.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.none">
+        <source>No restrictions</source>
+        <target>Kısıtlama yok</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.guests">
+        <source>Guests</source>
+        <target>Misafirler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.groups">
+        <source>Specific groups</source>
+        <target>Belirli gruplar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.members">
+        <source>Specific members</source>
+        <target>Belirli üyeler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberCondition.0">
+        <source>Member condition</source>
+        <target>Üye koşulu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.members.0">
+        <source>Members</source>
+        <target>Üyeler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.members.1">
+        <source>Select members this rule is restricted to.</source>
+        <target>Bu kuralın sınırlandırıldığı üyeleri seçin </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.0">
+        <source>Groups</source>
+        <target>Gruplar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.1">
+        <source>Select groups this rule is restricted to.</source>
+        <target>Bu kuralın sınırlandırıldığı grupları seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.0">
+        <source>Product restrictions</source>
+        <target>Ürün kısıtlamaları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.1">
+        <source>Restrict this rule to certain product types, categories, or to individual products.</source>
+        <target>Bu kuralı belirli ürün türlerine, kategorilere veya tek tek ürünler için sınırlandırın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.none">
+        <source>No restrictions</source>
+        <target>Kısıtlama yok </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
+        <source>Product types</source>
+        <target>Ürün tipleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.pages">
+        <source>Categories</source>
+        <target>Kategoriler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.products">
+        <source>Products</source>
+        <target>Ürünler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.variants">
+        <source>Products &amp;amp; Variants</source>
+        <target>Ürübler &amp;amp; Çeşitler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.attribute">
+        <source>Product attribute</source>
+        <target>Ürün niteliği</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productCondition.0">
+        <source>Product condition</source>
+        <target>Ürün koşulu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın. </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.producttypes.0">
+        <source>Product Types</source>
+        <target>Ürün Tipleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.producttypes.1">
+        <source>Select the product types this rule is restricted to. If none, all are eligible.</source>
+        <target>Bu kuralın sınırlandırıldığı ürün türlerini seçin. Yoksa hepsi uygun olacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.0">
+        <source>Products</source>
+        <target>Ürünler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.1">
+        <source>Select products this rule is restricted to. If none, all are eligible.</source>
+        <target>Bu kuralın sınırlandırıldığı ürünleri seçin. Yoksa hepsi uygun olacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.variants.0">
+        <source>Products &amp; Variants</source>
+        <target>Ürübler &amp; Çeşitler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.variants.1">
+        <source>Enter a comma-separated list of product or variant IDs to limit this rule to.</source>
+        <target>Bu kuralı sınırlandırmak için virgülle ayrılmış ürün veya çeşit ID listesini girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeName.0">
+        <source>Attribute name</source>
+        <target>Özellik adı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeName.1">
+        <source>Select the product attribute you want to restrict.</source>
+        <target>Kısıtlamak istediğiniz ürün özelliklerini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.0">
+        <source>Attribute condition</source>
+        <target>Özellik koşulu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.1">
+        <source>Select the product attribute you want to restrict.</source>
+        <target>Kısıtlamak istediğiniz ürün özelliklerini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.eq">
+        <source>equals</source>
+        <target>eşittir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.neq">
+        <source>not equal</source>
+        <target>eşit değildir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.lt">
+        <source>less than</source>
+        <target>daha az</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.gt">
+        <source>greater than</source>
+        <target>daha büyük</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.elt">
+        <source>less than or equal to</source>
+        <target>daha az veya eşit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.egt">
+        <source>greater than or equal to</source>
+        <target>daha fazla veya eşit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.starts">
+        <source>starts with</source>
+        <target>bununla başlayanlar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.ends">
+        <source>ends with</source>
+        <target>bununla bitenler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.contains">
+        <source>contains</source>
+        <target>içeriyor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.0">
+        <source>Categories</source>
+        <target>Kategoriler </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.1">
+        <source>Select categories this rule is restricted to. If none, all are eligible.</source>
+        <target>Bu kuralın sınırlandırıldığı kategorileri seçin. Yoksa hepsi uygun olacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enabled</source>
+        <target>v</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.1">
+        <source>Please select whether this rule is currently enabled or not.</source>
+        <target>Lütfen bu kuralın şu anda etkin olup olmadığını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.basic_legend">
+        <source>Basic rule setup</source>
+        <target>Temel kuralı ayarlama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.coupon_legend">
+        <source>Coupon Code</source>
+        <target>Kupo Kodu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limit_legend">
+        <source>Limit Uses</source>
+        <target>Limit Kullanımları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.datim_legend">
+        <source>Date &amp;amp; Time Restrictions</source>
+        <target>Tarih &amp;amp; Zaman Kısıtlamaları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.advanced_legend">
+        <source>Advanced Restrictions</source>
+        <target>Gelişmiş Kısıtlamalar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled_legend">
+        <source>Availability</source>
+        <target>Kullanılabilirlik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.all">
+        <source>Exclude all other rules</source>
+        <target>Diğer tüm kuralları hariç tut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.none">
+        <source>No rule exclusions</source>
+        <target>Hariç tutulan kural bulunmamaktadır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.rules">
+        <source>Exclude certain rules</source>
+        <target>Belirli kuralları hariç tut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.condition_true">
+        <source>true</source>
+        <target>doğru</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.condition_false">
+        <source>false</source>
+        <target>yanlış</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.new.0">
+        <source>Add rule</source>
+        <target>Kural ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.new.1">
+        <source>Create a new rule</source>
+        <target>Yeni kural oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.edit.0">
+        <source>Edit rule</source>
+        <target>Kuralı düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.edit.1">
+        <source>Edit rule ID %s</source>
+        <target>%s ID'li kuralı düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.copy.0">
+        <source>Duplicate rule</source>
+        <target>Kuralı kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.copy.1">
+        <source>Duplicate rule ID %s</source>
+        <target>%s ID'li kuralı kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.delete.0">
+        <source>Delete rule</source>
+        <target>Kuralı sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.delete.1">
+        <source>Delete rule ID %s</source>
+        <target>%s ID'li kuralı sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.toggle.0">
+        <source>Publish/unpublish rule</source>
+        <target>Kuralı yayınla/yayından kaldır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.toggle.1">
+        <source>Publish/unpublish rule ID %s</source>
+        <target>%s ID'li kuralı yayınla/yayından kaldır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.show.0">
+        <source>Rule details</source>
+        <target>Kural detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.show.1">
+        <source>Show the details of rule ID %s</source>
+        <target>%s ID'li kuralın detaylarını gör</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

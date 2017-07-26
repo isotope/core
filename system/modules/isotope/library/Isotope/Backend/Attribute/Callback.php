@@ -134,15 +134,21 @@ class Callback extends \Backend
      */
     public function getRTE()
     {
-        $arrOptions = array();
+        $options = array();
 
-        foreach (scan(TL_ROOT . '/system/config') as $file) {
-            if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0) {
-                $arrOptions[] = basename($file, '.php');
+        if (version_compare(VERSION, '4.0', '<')) {
+            foreach (scan(TL_ROOT . '/system/config') as $file) {
+                if (is_file(TL_ROOT . '/system/config/' . $file) && strpos($file, 'tiny') === 0) {
+                    $options[] = basename($file, '.php');
+                }
+            }
+        } else {
+            foreach (preg_grep('/^be_tiny/', array_keys(\TemplateLoader::getFiles())) as $template) {
+                $options[] = substr($template, 3);
             }
         }
 
-        return $arrOptions;
+        return $options;
     }
 
     /**

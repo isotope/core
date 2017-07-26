@@ -1,0 +1,574 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_module.iso_list_layout.0">
+        <source>Product list template</source>
+        <target>Ürün listesi şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_list_layout.1">
+        <source>Please choose a list layout. List template files start with &lt;em&gt;iso_list_&lt;/em&gt;.</source>
+        <target>Lütfen bir liste düzeni seçin. Liste şablonu &lt;em&gt;iso_list_&lt;/em&gt; dosyaları ile başlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_reader_layout.0">
+        <source>Product reader template</source>
+        <target>Ürün okuyucu şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_reader_layout.1">
+        <source>Please choose a reader template. Reader template files start with &lt;em&gt;iso_reader_&lt;/em&gt;.</source>
+        <target>Lütfen bir okuyucu şablonu seçin. Okuyucu şablon  &lt;em&gt;iso_reader_&lt;/em&gt; dosyaları ile başlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_gallery.0">
+        <source>Gallery</source>
+        <target>Galeri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_gallery.1">
+        <source>Select a gallery to render images (overrides the product type config).</source>
+        <target>Resimleri oluşturmak için bir galeri seçin (ürün tipi yapılandırmasını geçersiz kılar).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_collectionTpl.0">
+        <source>Product collection template</source>
+        <target>Ürün koleksiyon şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_collectionTpl.1">
+        <source>Please choose a template to render the products. You can add custom collection templates to folder &lt;em&gt;templates&lt;/em&gt;. Collection template files start with &lt;em&gt;iso_collection_&lt;/em&gt;.</source>
+        <target>Lütfen ürünleri üretmek için bir şablon seçin. &lt;Em&gt; şablonları &lt;/ em&gt; klasörüne özel toplama şablonları ekleyebilirsiniz. Koleksiyon şablonu dosyaları &lt;em&gt; iso_collection _ &lt;/ em&gt; ile başlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterTpl.0">
+        <source>Filter template</source>
+        <target>Filtre şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterTpl.1">
+        <source>Please choose a filter template. Filter template files start with &lt;em&gt;iso_filter_&lt;/em&gt;.</source>
+        <target>Lütfen bir filtre şablonu seçin. Filtre şablonu &lt;em&gt;iso_filter_&lt;/em&gt; dosyaları başlamaktadır.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_jump_first.0">
+        <source>Redirect to first product</source>
+        <target>İlk ürüne yönlendirme</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_jump_first.1">
+        <source>Check here if users are redirected to the first product of the list.</source>
+        <target>Kullanıcıların listenin ilk ürününe yönlendirilip yönlendirilmediğini kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_hide_list.0">
+        <source>Hide in reader mode</source>
+        <target>Okuyucu modunda gizle</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_hide_list.1">
+        <source>Hide product list when a product alias is found in the URL.</source>
+        <target>URL'de bir ürün takma adı bulunursa ürün listesini gizleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_use_quantity.0">
+        <source>Enable quantity</source>
+        <target>Adedi etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_use_quantity.1">
+        <source>Allow users to specify 1 or more of a product to be purchased.</source>
+        <target>Kullanıcıların satın alınacak 1 veya daha fazla ürünü belirtmesine izin verin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.0">
+        <source>Display a 404 page</source>
+        <target>Bir 404 hata sayfası göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_display404Page.1">
+        <source>Display the 404 not found page if no product alias is in the URL. Use this if your reader module is on a separate page that should not be available otherwise.</source>
+        <target>URL'de ürün takma adı yoksa, 404 bulunamadı sayfasını görüntüleyin. Okuyucu modülünüz aksi halde mevcut olmamalı ayrı bir sayfada bulunuyorsa bunu kullanın.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method.0">
+        <source>Checkout method</source>
+        <target>Ödeme methodu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method.1">
+        <source>Choose your checkout method.</source>
+        <target>Ödeme yönteminizi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.0">
+        <source>Require login</source>
+        <target>Oturum açma gerektirir</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_loginRequired.1">
+        <source>A member login is required to view this page (e.g. if the order belongs to a member).</source>
+        <target>Bu sayfayı görüntülemek için bir üye girişi gerekir (örneğin, sipariş bir üyeye aitse).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.0">
+        <source>Login page</source>
+        <target>Giriş sayfası</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_login_jumpTo.1">
+        <source>Select the page where a member can login.</source>
+        <target>Bir üyenin oturum açabileceği sayfayı seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addProductJumpTo.0">
+        <source>Add product jump to page</source>
+        <target>Sayfaya ürün atlama ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addProductJumpTo.1">
+        <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
+        <target>Bu ayar, geçerli sayfanın dışındaysa, sepete bir ürün eklerken bir kullanıcının hangi sayfaya yönleneceğini tanımlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cols.0">
+        <source>Columns</source>
+        <target>Sütunlar</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cols.1">
+        <source>Enter a number of columns to display width-wise in the listing template.</source>
+        <target>Giriş şablonunda genişlik yönünde görüntülemek için bir dizi sütun girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_id.0">
+        <source>Store configuration</source>
+        <target>Mağaza yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_id.1">
+        <source>Select the store configuration that this module will be used for.</source>
+        <target>Bu modülün kullanılacağı mağaza yapılandırmasını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_ids.0">
+        <source>Store configurations</source>
+        <target>Mağaza yapılandırmaları</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_config_ids.1">
+        <source>Select the store configurations that this module will be used for.</source>
+        <target>Bu modülün kullanılacağı mağaza yapılandırmasını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_payment_modules.0">
+        <source>Payment methods</source>
+        <target>Ödeme yöntemleri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_payment_modules.1">
+        <source>Select one or more payment methods for this checkout module.</source>
+        <target>Bu ödeme modülü için bir veya daha fazla ödeme yöntemi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Nakliye yöntemleri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_shipping_modules.1">
+        <source>Select one or more shipping methods for this checkout module.</source>
+        <target>Bu ödeme modülü için bir veya daha fazla gönderim yöntemi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.orderCompleteJumpTo.0">
+        <source>Completed order jump to page</source>
+        <target>Sipariş tamamlandığında sayfaya atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.orderCompleteJumpTo.1">
+        <source>Select a page the customer will be referred to after their order is complete.</source>
+        <target>Müşterilerin siparişleri tamamlandıktan sonra yönlendirilecekleri bir sayfa seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_forward_review.0">
+        <source>Forward to review page</source>
+        <target>İnceleme sayfasına ilet</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_forward_review.1">
+        <source>Forward the user to the review page if no data is required on any step.</source>
+        <target>Herhangi bir adımda veri gerekmiyorsa, kullanıcıyı inceleme sayfasına iletin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.0">
+        <source>Skip checkout steps</source>
+        <target>Ödeme adımlarını atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.1">
+        <source>Enable individual options to skip certain checkout steps if possible</source>
+        <target>Mümkünse, belirli ödeme adımlarını atlamak için bireysel seçenekleri etkinleştirin</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.billing_address">
+        <source>Use member address as billing address if user is logged in</source>
+        <target>Kullanıcı oturum açtıysa, üye adresini faturalandırma adresi olarak kullanın</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.shipping_address">
+        <source>Always use billing address as shipping address</source>
+        <target>Her zaman faturalandırma adresini gönderim adresi olarak kullanın</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.shipping_method">
+        <source>Skip shipping step if only one shippig method is available</source>
+        <target>Tek bir gönderim yöntemi varsa, nakliye adımını atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_skippable.payment_method">
+        <source>Skip payment step if only one payment method is available</source>
+        <target>Yalnızca bir ödeme yöntemi varsa ödeme adımını atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.0">
+        <source>Order conditions form</source>
+        <target>Sipariş koşulları formu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.1">
+        <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
+        <target>Sipariş şartlarınızı ve koşullarınızı görüntülemek için kullanılan özel bir form seçin (isteğe bağlı).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.0">
+        <source>Position of order conditions form</source>
+        <target>Sipariş koşullarının konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.1">
+        <source>Define if the order condition form should be shown before or after the products list.</source>
+        <target>Sipariş durumu formunun, ürün listesinden önce veya sonra gösterilip gösterilmeyeceğini tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.top">
+        <source>On top (before address)</source>
+        <target>Yukarıda (adres öncesi)</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.before">
+        <source>Before products list</source>
+        <target>Ürünlerin listesinden önce</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_position.after">
+        <source>After products list</source>
+        <target>Ürünlerin listesinden sonra</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addToAddressbook.0">
+        <source>Add to address book</source>
+        <target>Adres defterine ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addToAddressbook.1">
+        <source>Add new addresses to members address book (if logged in).</source>
+        <target>Üyelerin adres defterine yeni adresler ekleyin (eğer giriş yapmışsa).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Sıralama</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Koleksiyon öğelerinin hangi sırayla listeleneceğini tanımlayın</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyMessage.0">
+        <source>Define empty message</source>
+        <target>Boş mesajı tanımla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyMessage.1">
+        <source>Set a custom message when there is nothing to show (empty product list, empty cart, etc.).</source>
+        <target>Göstermek için hiçbir şey yoksa özel bir ileti ayarlayın (boş ürün listesi, boş sepet vb.).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noProducts.0">
+        <source>Message when empty</source>
+        <target>Boş iken mesaj</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noProducts.1">
+        <source>Enter a custom message if there is nothing to show (empty product list, empty cart, etc.).</source>
+        <target>Göstermek için hiçbir şey yoksa özel bir ileti ayarlayın (boş ürün listesi, boş sepet vb.).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyFilter.0">
+        <source>Define a message if no filter is set</source>
+        <target>Hiçbir filtre ayarlanmadıysa bir mesaj tanımlayın</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_emptyFilter.1">
+        <source>Set a custom message when there is no filter set.</source>
+        <target>Filtre seti olmadığında özel mesaj ayarlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noFilter.0">
+        <source>Message when no filter is set</source>
+        <target>Hiçbir filtre ayarlanmadığında mesaj</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_noFilter.1">
+        <source>Enter a custom message if there is no filter set.</source>
+        <target>Filtre seti yoksa, özel bir mesaj girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope.0">
+        <source>Category Scope</source>
+        <target>Kategori Kapsamı</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope.1">
+        <source>Specify the scope of a product lister.</source>
+        <target>Bir ürün listesinin kapsamını belirtin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.0">
+        <source>Condition</source>
+        <target>Koşul</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_list_where.1">
+        <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with &quot;tl_iso_product.&quot; (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
+        <target>Burada ürünleri süzmek için bir SQL koşul girebilirsiniz. Alanlara &quot;tl_iso_product&quot; öneki gerekir. (Ör. &lt;Em&gt; tl_iso_product.featured = 1 &lt;/ em&gt; veya &lt;em&gt; tl_iso_product.color! = 'Kırmızı' &lt;/ em&gt;)!</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterModules.0">
+        <source>Filter modules</source>
+        <target>Filtre modülleri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterModules.1">
+        <source>Select the filter modules you want to consider for this product list.</source>
+        <target>Bu ürün listesi için göz önüne getirmek istediğiniz filtre modüllerini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterFields.0">
+        <source>Enabled filters</source>
+        <target>Etkin filtreler</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterFields.1">
+        <source>Please select filters to enable.</source>
+        <target>Lütfen etkinleştirilecek filtreleri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.0">
+        <source>Filter configuration</source>
+        <target>Filtre yapılandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.1">
+        <source>Please configure the cumulative filter fields.</source>
+        <target>Lütfen toplu filtre alanlarını yapılandırın.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.attribute.0">
+        <source>Attribute</source>
+        <target>Özellik</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
+        <source>Query Type</source>
+        <target>Sorgu Türü</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.and">
+        <source>AND</source>
+        <target>AND</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.queryType.or">
+        <source>OR</source>
+        <target>OR</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.0">
+        <source>Number of results</source>
+        <target>Sonuç sayısı</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.none">
+        <source>Do not show</source>
+        <target>Gösterme</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.all">
+        <source>Show total</source>
+        <target>Toplamı göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
+        <source>Show difference</source>
+        <target>Farkı göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterHideSingle.0">
+        <source>Hide single options</source>
+        <target>Tek seçeneği gizle</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_filterHideSingle.1">
+        <source>Hide filter field if there is just one option.</source>
+        <target>Yalnızca bir seçenek varsa filtre alanını gizleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchFields.0">
+        <source>Enabled search fields</source>
+        <target>Etkin arama alanları</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchFields.1">
+        <source>Please select search fields to enable.</source>
+        <target>Lütfen etkinleştirilecek arama alanlarını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchAutocomplete.0">
+        <source>Autocomplete search field</source>
+        <target>Otomatik tamamlama arama alanı</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchAutocomplete.1">
+        <source>If you select a field here, the search will be autocompleted by the values of that field.</source>
+        <target>Burada bir alan seçerseniz, arama o alanın değerlerine göre otomatik tamamlanır.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_sortingFields.0">
+        <source>Enabled sorting fields</source>
+        <target>Etkin sıralama alanları</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_sortingFields.1">
+        <source>Please select orderable fields to enable.</source>
+        <target>Lütfen etkinleştirmek için sıralanabilir alanları seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.0">
+        <source>Filtering for new products</source>
+        <target>Yeni ürünler için filtreleme</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.1">
+        <source>If you have configured marking products as &quot;new&quot; in your shop configuration, you can either filter for old ones, new ones or just display all products.</source>
+        <target>Mağaza yapılandırmanızda ürünleri  &quot;yeni&quot; olarak yapılandırdıysanız, eskilerini, yenilerini filtreleyebilir veya sadece tüm ürünleri görüntüleyebilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_all">
+        <source>Show all products</source>
+        <target>Tüm ürünleri göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_new">
+        <source>Only show new products</source>
+        <target>Sadece yen ürünleri göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_newFilter.show_old">
+        <source>Only show old products</source>
+        <target>Sadece eski ürünleri göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_enableLimit.0">
+        <source>Enable per-page limiting</source>
+        <target>Sayfa başına sınırlamayı etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_enableLimit.1">
+        <source>Allow the user to select the number of records to show per page.</source>
+        <target>Kullanıcının, sayfa başına gösterilecek kayıt sayısını seçmesine izin verin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_perPage.0">
+        <source>Per page options</source>
+        <target>Sayfa başı seçenekleri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_perPage.1">
+        <source>Enter a comma separated list for the limit dropdown. The first option will be used as the default value. Values will automatically sort by number.</source>
+        <target>Sınır açılır listesine virgülle ayrılmış bir liste girin. İlk seçenek varsayılan değer olarak kullanılacaktır. Değerler otomatik olarak numaraya göre sıralanır.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cart_jumpTo.0">
+        <source>Shopping Cart Jump to page</source>
+        <target>Alışveriş Sepeti sayfaya atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_cart_jumpTo.1">
+        <source>This setting defines to which page a user will be redirected when requesting a full shopping cart view.</source>
+        <target>Bu ayar, bir tam alışveriş sepeti görüntüsü istendiğinde bir kullanıcının hangi sayfaya yönleneceğini tanımlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_jumpTo.0">
+        <source>Checkout Jump to page</source>
+        <target>Ödeme sayfaya atla</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_jumpTo.1">
+        <source>This setting defines to which page a user will be redirected when completing their transaction.</source>
+        <target>Bu ayar, bir kullanıcının işlemini tamamlarken hangi sayfaya yönlendirileceğini tanımlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortField.0">
+        <source>Initial sorting field</source>
+        <target>İlk sıralama alanı</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortField.1">
+        <source>Select a sorting field to sort the listing by on first page load.</source>
+        <target>İlk sayfadaki yüklemede sıralamayı yapmak için bir sıralama alanı seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortDirection.0">
+        <source>Initial sorting direction</source>
+        <target>İlk sıralama yönü</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_listingSortDirection.1">
+        <source>Select a initial sorting direction.</source>
+        <target>Bir başlangıç sıralama yönü seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_buttons.0">
+        <source>Buttons</source>
+        <target>Düğmeler</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_buttons.1">
+        <source>Select the buttons you want to show.</source>
+        <target>Göstermek istediğiniz düğmeleri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_related_categories.0">
+        <source>Related categories</source>
+        <target>Önerilen kategoriler</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_related_categories.1">
+        <source>Select the categories to show products of.</source>
+        <target>Ürünleri göstermek için kategorileri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_includeMessages.0">
+        <source>Include messaging</source>
+        <target>Mesajlaşma ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_includeMessages.1">
+        <source>This setting allows the module to include any errors, notifications, or confirmations the visitor should be aware of.</source>
+        <target>Bu ayar, modülün ziyaretçinin farkında olması gereken tüm hataları, bildirimleri veya onayları içermesine izin verir.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_continueShopping.0">
+        <source>Enable &quot;Continue shopping&quot; button</source>
+        <target>&quot;Alışverişe devam et&quot; düğmesi etkin</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_continueShopping.1">
+        <source>Add a link to the currently added product to the cart.</source>
+        <target>Geçerli ürünün sepete eklenmesi için bir bağlantı ekleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.0">
+        <source>Address types</source>
+        <target>Adres türleri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.1">
+        <source>Please choose the address types.</source>
+        <target>Lütfen adres türlerini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.billing">
+        <source>Billing address</source>
+        <target>Fatura Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_address.shipping">
+        <source>Shipping address</source>
+        <target>Nakliye Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.0">
+        <source>Available address fields</source>
+        <target>Kullanılabilir adres alanları ekleyin</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_addressFields.1">
+        <source>Choose the available address fields you would like to display.</source>
+        <target>Görüntülemek istediğiniz adres alanlarını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions_legend">
+        <source>Order conditions form</source>
+        <target>Sipariş koşulları formu </target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method_ref.member">
+        <source>Login/Registration required</source>
+        <target>Oturum açma/Kayıt gerektirir</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method_ref.guest">
+        <source>Guest checkout only</source>
+        <target>Yalnızca misafir ödemesi</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_checkout_method_ref.both">
+        <source>Both allowed</source>
+        <target>Her ikisine de izin verilir</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.global.0">
+        <source>All Categories</source>
+        <target>Tüm Kategoriler</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.global.1">
+        <source>Show all products that are assigned to a page of the active page tree (based on the root page).</source>
+        <target>Aktif sayfa ağacının bir sayfasına atanan tüm ürünleri gösterin (kök sayfaya dayalı olarak).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.0">
+        <source>Current Category and First Child Category</source>
+        <target>Geçerli Kategori ve İlk Yavru Kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.1">
+        <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
+        <target>Etkin sayfaya veya alt sayfalara atanan tüm ürünleri birinci alt seviyede gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.0">
+        <source>Current Category and All Child Categories</source>
+        <target>Geçerli Kategori ve İlk Yavru Kategoriler</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.1">
+        <source>Show all products that are assigned to the active page or any child page of it.</source>
+        <target>Etkin sayfaya veya sayfanın alt sayfasına atanan tüm ürünleri gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_category.0">
+        <source>Current Category</source>
+        <target>Geçerli Kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.current_category.1">
+        <source>Show all products that are assigned to the active page (default).</source>
+        <target>Aktif sayfaya atanan tüm ürünleri göster (varsayılan).</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.parent.0">
+        <source>Parent Category</source>
+        <target>Ana Kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.parent.1">
+        <source>Show all products that are assigned to the parent page of the active page.</source>
+        <target>Aktif sayfanın üst sayfasına atanan tüm ürünleri gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.product.0">
+        <source>Current Product's Categories</source>
+        <target>Mevcut Ürünün Kategorileri</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.product.1">
+        <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
+        <target>Geçerli olan ürünün atandığı aynı sayfalara atanan tüm ürünleri gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.article.0">
+        <source>Category of article</source>
+        <target>Makale kategorisi</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.article.1">
+        <source>If you place the module in an article, it will show products assigned to the artilce's partent page, even though if you place the article in another page (e.g. using insert tag).</source>
+        <target>Modülü bir makaleye yerleştirirseniz, makaleyi başka bir sayfaya yerleştirirseniz (ör. Insert etiketi kullanarak) bile, makalenin ana sayfasına atanan ürünleri gösterecektir.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.sortingDirection.ASC">
+        <source>ASC</source>
+        <target>ASC</target>
+      </trans-unit>
+      <trans-unit id="tl_module.sortingDirection.DESC">
+        <source>DESC</source>
+        <target>DESC</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

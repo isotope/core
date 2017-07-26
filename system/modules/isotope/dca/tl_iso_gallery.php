@@ -146,6 +146,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'options_callback'      => function() {
                 return \Isotope\Model\Gallery::getModelTypeOptions();
             },
+            'reference'             => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_gallery'],
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
@@ -242,29 +243,42 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
             'exclude'               => true,
-            'inputType'             => 'imageSize',
-            'options' => array(
-                'pos1'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos1'],
-                'pos2'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos2'],
-                'pos3'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos3'],
-                'pos4'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos4'],
-                'pos5'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos5'],
-                'pos6'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos6'],
-                'pos7'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos7'],
-                'pos8'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos8'],
-                'pos9'  => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos9'],
-                'pos10' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos10'],
-                'pos11' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos11'],
-                'pos12' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos12'],
-                'pos13' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos13'],
-                'pos14' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos14'],
-                'pos15' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos15'],
-                'pos16' => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position']['pos16'],
+            'inputType'             => 'multiColumnWizard',
+            'eval'                  => array(
+                'rgxp' => 'digit',
+                'helpwizard' => true,
+                'tl_class' => 'w50',
+                'disableSorting' => true,
+                'minCount' => 1,
+                'maxCount' => 1,
+                'hideButtons' => true,
+                'columnFields' => array(
+                    2 => array(
+                        'inputType' => 'select',
+                        'options'   => array('pos1', 'pos2', 'pos3', 'pos4', 'pos5', 'pos6', 'pos7', 'pos8', 'pos9', 'pos10', 'pos11', 'pos12', 'pos13', 'pos14', 'pos15', 'pos16',),
+                        'reference' => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
+                        'eval'      => array('hideHead' => true, 'class' => 'tl_select_interval'),
+                    ),
+                    0 => array(
+                        'inputType' => 'text',
+                        'eval'      => array('hideHead' => true, 'rgxp' => 'digit'),
+                    ),
+                    1 => array(
+                        'inputType' => 'text',
+                        'eval'      => array('hideHead' => true, 'rgxp' => 'digit'),
+                    ),
+                ),
             ),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
-            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
             'explanation'           => 'elevatezoom_position',
+            'load_callback' => [function ($value) {
+                $value = deserialize($value);
+                return is_array($value) && !is_array($value[0]) ? [$value] : [];
+            }],
+            'save_callback' => [function ($value) {
+                $value = deserialize($value);
+                return is_array($value) ? serialize($value[0]) : '';
+            }],
         ),
         'zoom_windowFade' => array
         (
@@ -272,7 +286,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''"
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'zoom_border' => array
         (

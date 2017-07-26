@@ -38,7 +38,8 @@
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader"
     },
     "conflict": {
-        "terminal42/contao-fineuploader": "< 2.0 || >= 3.0"
+        "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
+        "contao/core-bundle": "4.0.0 || 4.0.1"
     },
     "autoload": {
         "psr-0": {

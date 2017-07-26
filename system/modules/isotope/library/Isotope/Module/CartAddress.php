@@ -79,8 +79,7 @@ class CartAddress extends Module
         // Call onload_callback (e.g. to check permissions)
         if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}();
+                \System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
@@ -142,8 +141,7 @@ class CartAddress extends Module
             // Call onsubmit_callback
             if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $objCallback->{$callback[1]}($objAddress);
+                    \System::importStatic($callback[0])->{$callback[1]}($objAddress);
                 }
             }
 

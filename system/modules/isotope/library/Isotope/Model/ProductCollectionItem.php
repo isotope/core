@@ -20,19 +20,19 @@ use Isotope\Isotope;
 /**
  * ProductCollectionItem represents an item in a product collection.
  *
- * @property int    id
- * @property int    pid
- * @property int    tstamp
- * @property int    product_id
- * @property string type
- * @property string sku
- * @property string name
- * @property mixed  configuration
- * @property int    quantity
- * @property float  price
- * @property float  tax_free_price
- * @property string tax_id
- * @property int    jumpTo
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property int    $product_id
+ * @property string $type
+ * @property string $sku
+ * @property string $name
+ * @property mixed  $configuration
+ * @property int    $quantity
+ * @property float  $price
+ * @property float  $tax_free_price
+ * @property string $tax_id
+ * @property int    $jumpTo
 */
 class ProductCollectionItem extends \Model
 {
@@ -81,8 +81,7 @@ class ProductCollectionItem extends \Model
 
         if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
             foreach ($GLOBALS['ISO_HOOKS']['itemIsAvailable'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->{$callback[1]}($this);
+                $available = \System::importStatic($callback[0])->{$callback[1]}($this);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {

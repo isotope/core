@@ -1,0 +1,122 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tokens.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.uniqid">
+        <source>The order's unique ID.</source>
+        <target>Siparişin benzersiz ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status">
+        <source>The label of the order's current status.</source>
+        <target>Siparişin geçerli durumu etiketi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_old">
+        <source>The label of the order's previous status. Useful for things like &quot;order status changed from x to y&quot;.</source>
+        <target>Siparişin önceki durumunun etiketi. &quot;Sipariş durumu x'ten y'ye değiştirildi&quot; gibi şeyler için kullanışlı.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id">
+        <source>The ID of the order's current status.</source>
+        <target>Sipariş güncel durumunun ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_status_id_old">
+        <source>The ID of the order's previous status.</source>
+        <target>Siparişin önceki durumunun ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.recipient_email">
+        <source>The email address of the recipient.</source>
+        <target>Alıcının e-posta adresi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_id">
+        <source>The ID of the order.</source>
+        <target>Siparişin ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_items">
+        <source>The number of items (quantities summed up) in the order.</source>
+        <target>Siparişteki öğelerin sayısı (toplam miktarlar).</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_products">
+        <source>The number of individual products in the order.</source>
+        <target>Siparişteki ürünlerin tek tek sayıları.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_subtotal">
+        <source>The order's subtotal.</source>
+        <target>Siparişin ara toplamı.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.order_total">
+        <source>The order's total.</source>
+        <target>Sipariş toplamı.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document_number">
+        <source>The order document number.</source>
+        <target>Sipariş belge numarası.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_text">
+        <source>Order/Cart as text.</source>
+        <target>Metin şeklinde Sipariş/Sepet.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.cart_html">
+        <source>Order/Cart as HTML.</source>
+        <target>HTML olarak Sipariş/Sepet.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.document">
+        <source>The document that should be attached (e.g. an invoice).</source>
+        <target>Eklenmesi gereken belge (ör. Fatura).</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.collection_*">
+        <source>All the collection/order column fields as stored in the database</source>
+        <target>Veritabanın da saklandığı gibi tüm koleksiyon/sipariş sütunları</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address">
+        <source>Formatted billing address.</source>
+        <target>Biçimlendirilmiş fatura adresi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.billing_address_*">
+        <source>All the billing address model fields.</source>
+        <target>Tüm fatura adresi model alanları.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address">
+        <source>Formatted shipping address.</source>
+        <target>Biçimlendirilmiş nakliye adresi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_address_*">
+        <source>All the shipping address model fields.</source>
+        <target>Tüm nakliye adresi model alanları.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.form_*">
+        <source>All the order condition form fields.</source>
+        <target>Tüm sipariş koşulları alanları.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_id">
+        <source>Payment method ID.</source>
+        <target>Ödeme şekli ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_label">
+        <source>Payment method label.</source>
+        <target>Ödeme şekli etiketi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.payment_note">
+        <source>Payment method note.</source>
+        <target>Ödeme şekli notu.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_id">
+        <source>Shipping method ID.</source>
+        <target>Nakliye şekli ID'si.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_label">
+        <source>Shipping method label.</source>
+        <target>Nakliye şekli etiketi.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.shipping_note">
+        <source>Shipping method note.</source>
+        <target>Nakliye şekli notu.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.config_*">
+        <source>All the store configuration fields.</source>
+        <target>Tüm mağaza yapılandırma alanları.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.member_*">
+        <source>All the member fields if it was a member checkout.</source>
+        <target>Üyelik işlemi olan tüm üye alanları.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

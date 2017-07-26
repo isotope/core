@@ -256,9 +256,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         // !HOOK: get collection surcharges
         if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'] as $callback) {
-
-                $objCallback = \System::importStatic($callback[0]);
-                $arrResult   = $objCallback->{$callback[1]}($objCollection);
+                $arrResult = \System::importStatic($callback[0])->{$callback[1]}($objCollection);
 
                 foreach ($arrResult as $objSurcharge) {
                     if (!($objSurcharge instanceof IsotopeProductCollectionSurcharge) || $objSurcharge instanceof Tax) {

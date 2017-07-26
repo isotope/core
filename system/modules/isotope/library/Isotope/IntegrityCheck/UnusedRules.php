@@ -11,7 +11,9 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\System;
 use Isotope\Model\Rule;
+use Symfony\Component\Filesystem\Filesystem;
 
 class UnusedRules extends AbstractIntegrityCheck
 {
@@ -55,6 +57,25 @@ class UnusedRules extends AbstractIntegrityCheck
             return;
         }
 
-        \System::disableModule('isotope_rules');
+        if (version_compare(VERSION, '4.0', '<')) {
+            \System::disableModule('isotope_rules');
+            return;
+        }
+
+        $objFile = new \File('system/modules/isotope_rules/.skip', true);
+
+        if (!$objFile->exists()) {
+            $objFile->write('Remove this file to enable the module');
+            $objFile->close();
+        }
+
+        try {
+            System::getContainer()
+                  ->get('filesystem')
+                  ->remove(System::getContainer()->get('kernel')->getCacheDir())
+            ;
+        } catch (\Exception $e) {
+            // Ignore cache removal errors
+        }
     }
 }

@@ -51,9 +51,7 @@ class DC_ProductData extends \DC_Table
      */
     public function __construct($strTable)
     {
-        $this->import('Session');
-
-        $this->intGroupId = (int)\Session::getInstance()->get('iso_products_gid');
+        $this->intGroupId = (int) \Session::getInstance()->get('iso_products_gid');
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
@@ -82,7 +80,7 @@ class DC_ProductData extends \DC_Table
             }
         }
 
-        $arrClipboard = $this->Session->get('CLIPBOARD');
+        $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
         // Cut all records
         if ($arrClipboard[$strTable]['mode'] == 'cutAll' && \Input::get('act') != 'cutAll') {
@@ -135,7 +133,7 @@ class DC_ProductData extends \DC_Table
 
         // Add to clipboard
         if (\Input::get('act') == 'paste') {
-            $arrClipboard = $this->Session->get('CLIPBOARD');
+            $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
             $arrClipboard[$this->strTable] = array
             (
@@ -144,7 +142,7 @@ class DC_ProductData extends \DC_Table
                 'mode' => \Input::get('mode')
             );
 
-            $this->Session->set('CLIPBOARD', $arrClipboard);
+            $this->getSession()->set('CLIPBOARD', $arrClipboard);
 
             // Perform a redirect (this is the CURRENT_ID fix)
             \Controller::redirect('contao/main.php?do=' . \Input::get('do') . (\Input::get('pid') ? '&id=' . \Input::get('pid') : '') . '&rt=' . \Input::get('rt') . '&ref=' . \Input::get('ref'));
@@ -194,9 +192,9 @@ class DC_ProductData extends \DC_Table
         }
 
         // Store the current IDs
-        $session = $this->Session->getData();
+        $session = $this->getSessionData();
         $session['CURRENT']['IDS'] = $this->current;
-        $this->Session->setData($session);
+        $this->setSessionData($session);
 
         return $return;
     }
@@ -212,9 +210,9 @@ class DC_ProductData extends \DC_Table
             $time = time();
 
             // Empty clipboard
-            $arrClipboard = $this->Session->get('CLIPBOARD');
+            $arrClipboard = $this->getSession()->get('CLIPBOARD');
             $arrClipboard[$this->strTable] = array();
-            $this->Session->set('CLIPBOARD', $arrClipboard);
+            $this->getSession()->set('CLIPBOARD', $arrClipboard);
 
             $objRecord = $this->Database->prepare("SELECT pid FROM {$this->strTable} WHERE id=?")
                 ->limit(1)
@@ -374,7 +372,7 @@ class DC_ProductData extends \DC_Table
      */
     public function copyAll()
     {
-        $arrClipboard = $this->Session->get('CLIPBOARD');
+        $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
         if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id'])) {
             $arrIds = array();
@@ -450,7 +448,7 @@ class DC_ProductData extends \DC_Table
 
         if (!empty($this->arrTranslations)) {
             $blnLanguageUpdated = false;
-            $session   = $this->Session->getData();
+            $session = \Session::getInstance()->getData();
 
             if (\Input::post('FORM_SUBMIT') == 'tl_language') {
                 if (in_array(\Input::post('language'), $this->arrTranslations)) {
@@ -467,7 +465,7 @@ class DC_ProductData extends \DC_Table
             }
 
             if ($blnLanguageUpdated) {
-                $this->Session->setData($session);
+                \Session::getInstance()->setData($session);
                 $_SESSION['TL_INFO'] = '';
                 \Controller::reload();
             }
@@ -521,7 +519,7 @@ class DC_ProductData extends \DC_Table
             }
 
             $class = 'tl_tbox';
-            $fs = $this->Session->get('fieldset_states');
+            $fs = $this->getSession()->get('fieldset_states');
             $blnIsFirst = true;
 
             // Render boxes
@@ -852,14 +850,14 @@ class DC_ProductData extends \DC_Table
         $this->import('BackendUser', 'User');
 
         // Get current IDs from session
-        $session = $this->Session->getData();
+        $session = $this->getSessionData();
         $ids = $session['CURRENT']['IDS'];
 
         // Save field selection in session
         if (\Input::post('FORM_SUBMIT') == $this->strTable.'_all' && \Input::get('fields'))
         {
             $session['CURRENT'][$this->strTable] = \Input::post('all_fields');
-            $this->Session->setData($session);
+            $this->setSessionData($session);
         }
 
         // Add fields
@@ -1244,7 +1242,7 @@ class DC_ProductData extends \DC_Table
         $objRow = $objRowStmt->execute($this->values);
         $this->bid = ($return != '') ? $this->bid : 'tl_buttons';
         $blnClipboard = false;
-        $arrClipboard = $this->Session->get('CLIPBOARD');
+        $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
         // Check the clipboard
         if (!empty($arrClipboard[$this->strTable])) {
@@ -1482,7 +1480,7 @@ class DC_ProductData extends \DC_Table
     protected function parentView()
     {
         $blnClipboard = false;
-        $arrClipboard = $this->Session->get('CLIPBOARD');
+        $arrClipboard = $this->getSession()->get('CLIPBOARD');
         $blnHasSorting = false;
         $blnMultiboard = false;
 
@@ -1959,7 +1957,7 @@ class DC_ProductData extends \DC_Table
         }
 
         $this->bid = 'tl_buttons_a';
-        $session = $this->Session->getData();
+        $session = \Session::getInstance()->getData();
         $sessionKey = \Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
         $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
@@ -1979,7 +1977,7 @@ class DC_ProductData extends \DC_Table
             if (in_array($strSort, $sortingFields))
             {
                 $session['sorting'][$sessionKey] = in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strSort]['flag'], array(2, 4, 6, 8, 10, 12)) ? "$strSort DESC" : $strSort;
-                $this->Session->setData($session);
+                \Session::getInstance()->setData($session);
             }
         }
 
@@ -2032,7 +2030,7 @@ class DC_ProductData extends \DC_Table
     protected function searchMenu()
     {
         $searchFields = array();
-        $session = $this->Session->getData();
+        $session = \Session::getInstance()->getData();
         $sessionKey = \Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
         // Get search fields
@@ -2070,7 +2068,7 @@ class DC_ProductData extends \DC_Table
                 catch (\Exception $e) {}
             }
 
-            $this->Session->setData($session);
+            \Session::getInstance()->setData($session);
         }
 
         // Set the search value from the session
@@ -2120,7 +2118,7 @@ class DC_ProductData extends \DC_Table
      */
     protected function limitMenu($blnOptional = false)
     {
-        $session = $this->Session->getData();
+        $session = \Session::getInstance()->getData();
         $filter = \Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
         $fields = '';
 
@@ -2137,7 +2135,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            $this->Session->setData($session);
+            \Session::getInstance()->setData($session);
 
             if (\Input::post('FORM_SUBMIT') == 'tl_filters_limit') {
                 \Controller::reload();
@@ -2240,7 +2238,7 @@ class DC_ProductData extends \DC_Table
         $fields = '';
         $this->bid = 'tl_buttons_a';
         $sortingFields = array();
-        $session = $this->Session->getData();
+        $session = \Session::getInstance()->getData();
         $filter = \Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
         // Get the sorting fields
@@ -2273,7 +2271,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            $this->Session->setData($session);
+            \Session::getInstance()->setData($session);
         }
 
         // Set filter from table configuration
@@ -2637,7 +2635,7 @@ class DC_ProductData extends \DC_Table
      */
     public function copyFallback()
     {
-        $session = $this->Session->getData();
+        $session = $this->getSessionData();
         $strLanguage = $session['language'][$this->strTable][$this->intId];
         $this->strPalette = trimsplit('[;,]', $this->getPalette());
         $arrDuplicate = array();
@@ -2661,5 +2659,47 @@ class DC_ProductData extends \DC_Table
         }
 
         \Controller::redirect(\Backend::addToUrl('act=edit'));
+    }
+
+    /**
+     * Gets session instance depending on Contao 3 or Contao 4.
+     *
+     * @return Session|\Symfony\Component\HttpFoundation\Session\SessionInterface
+     */
+    private function getSession()
+    {
+        if (method_exists('Contao\System', 'getContainer')) {
+            return \System::getContainer()->get('session');
+        }
+
+        return \Session::getInstance();
+    }
+
+    /**
+     * Gets session data depending on Contao 3 or Contao 4.
+     *
+     * @return array
+     */
+    private function getSessionData()
+    {
+        if (method_exists('Contao\System', 'getContainer')) {
+            return $this->getSession()->all();
+        }
+
+        return $this->getSession()->getData();
+    }
+
+    /**
+     * Sets session data depending on Contao 3 or Contao 4.
+     *
+     * @param array $data
+     */
+    private function setSessionData(array $data)
+    {
+        if (method_exists('Contao\System', 'getContainer')) {
+            return $this->getSession()->replace($data);
+        }
+
+        return $this->getSession()->setData($data);
     }
 }

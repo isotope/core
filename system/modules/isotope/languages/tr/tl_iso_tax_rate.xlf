@@ -1,0 +1,186 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_tax_rate.name.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name.1">
+        <source>Enter a name for this tax rate.</source>
+        <target>Bu vergi oranı için bir ad girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.0">
+        <source>Label</source>
+        <target>Etiket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.1">
+        <source>This label will be used on the front end in the checkout process.</source>
+        <target>Bu etiket, ödeme sürecinde müşteriye gösterilecektir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.0">
+        <source>Address to use for calculation</source>
+        <target>Hesaplamada kullanılacak adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.1">
+        <source>Select to which address this rate should use to apply its calculation. Be aware that for non-shippable products, the shipping address will equal to billing address.</source>
+        <target>Bu oranın hesaplamasını yapmak için hangi adresin kullanılması gerektiğini seçin. Gönderilemeyen ürünler için gönderim adresinin faturalandırma adresine eşit olacağını unutmayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.0">
+        <source>Countries</source>
+        <target>Ülkeler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.1">
+        <source>Select the countries this tax class applies to.</source>
+        <target>Bu vergi sınıfının geçerli olduğu ülkeleri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Eyaletler/Bölgeler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.1">
+        <source>Select the states or regions this tax class applies to.</source>
+        <target>Bu vergi sınıfının uygulanacağı eyaletleri veya bölgeleri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.0">
+        <source>Postal codes</source>
+        <target>Posta kodları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.1">
+        <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>ergi oranını posta kodlarıyla sınırlayın. Virgülle ayrılmış bir liste ve aralık girebilirsiniz (örn. 1234,1235,1236-1239,1100-1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.0">
+        <source>Subtotal amount restriction</source>
+        <target>Arat toplam tutar kısıtlaması</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.1">
+        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
+        <target>İsteğe bağlı: Bu vergi oranını belirli alt toplam tutara göre (ör. Lüks bir vergi için) sınırlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.0">
+        <source>Tax rate</source>
+        <target>Vergi oranı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.1">
+        <source>A rate in percent this tax is set at.</source>
+        <target>Bu vergi oranı yüzde olarak belirlenmiştir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.0">
+        <source>Store configuration</source>
+        <target>Mağaza yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.1">
+        <source>Select the store configuration that the tax rate applies to.</source>
+        <target>Vergi oranının geçerli olduğu mağaza yapılandırmasını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
+        <source>Exempt on valid VAT number</source>
+        <target>Geçerli vergi numarasında muaf tut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
+        <source>Do not apply tax if the VAT number is valid.</source>
+        <target>Vergi numarası geçerli ise vergi uygulamayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.0">
+        <source>Stop calculations on trigger?</source>
+        <target>Tetiklemeyle ilgili hesaplamaları durdurun?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.1">
+        <source>Stop other calculations if this tax rate is triggered.</source>
+        <target>Bu vergi oranı tetiklenirse diğer hesaplamaları durdurun.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Member groups</source>
+        <target>Üye grupları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.1">
+        <source>Restrict this tax rate to certain member groups.</source>
+        <target>Bu vergi oranını belirli üye gruplarııyla sınırlandırın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.0">
+        <source>Protect tax rate</source>
+        <target>Vergi oranını koru</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.1">
+        <source>Apply the tax rate to certain member groups only.</source>
+        <target>Vergi oranını yalnızca belirli üye gruplara uygulayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.0">
+        <source>Apply to guests only</source>
+        <target>Sadece misafirlere uygula</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.1">
+        <source>Do not apply tax rate if a member is logged in.</source>
+        <target>Bir üye oturum açtıysa vergi oranını uygulama.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.0">
+        <source>New tax rate</source>
+        <target>Yeni vergi oranı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.1">
+        <source>Create a new tax rate</source>
+        <target>Yeni vergi oranı oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.0">
+        <source>Edit tax rate</source>
+        <target>Vergi oranını düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.1">
+        <source>Edit tax rate ID %s</source>
+        <target>%s ID'li vergi oranını düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.0">
+        <source>Copy tax rate</source>
+        <target>Vergi oranını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.1">
+        <source>Copy tax rate ID %s</source>
+        <target>%s ID'li vergi oranını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.0">
+        <source>Delete tax rate</source>
+        <target>Vergi oranını sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.1">
+        <source>Delete tax rate ID %s</source>
+        <target>%s ID'li vergi oranını sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.0">
+        <source>Tax rate details</source>
+        <target>Vergi oranı detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.1">
+        <source>Show details of tax rate ID %s</source>
+        <target>%s ID'li vergi oranının detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.billing">
+        <source>Billing Address</source>
+        <target>Fatura Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.shipping">
+        <source>Shipping Address</source>
+        <target>Nakliye Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name_legend">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate_legend">
+        <source>Rate</source>
+        <target>Oran</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.location_legend">
+        <source>Location</source>
+        <target>Konum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.condition_legend">
+        <source>Conditions</source>
+        <target>Koşullar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config_legend">
+        <source>Configuration</source>
+        <target>Yapılandırma</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

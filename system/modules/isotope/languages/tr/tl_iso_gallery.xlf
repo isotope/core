@@ -1,0 +1,326 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_gallery.name.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name.1">
+        <source>Enter a name for this gallery.</source>
+        <target>Bu galeri için bir ad girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.type.1">
+        <source>Please select a gallery type.</source>
+        <target>Bir galeri tipi seçin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.0">
+        <source>Image anchor</source>
+        <target>Resim dayanağı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.anchor.1">
+        <source>Select what anchor type should be generated on the image.</source>
+        <target>Görüntüye hangi dayanak türünün oluşturulması gerektiğini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.0">
+        <source>Placeholder image</source>
+        <target>Yer tutucu - placeholder resim</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.placeholder.1">
+        <source>This image will be used if an image file cannot be found or none are associated with a product.</source>
+        <target>Bu resim, bir resim dosyası bulunamazsa veya hiç bir ürünle ilişkilendirilmemişse kullanılacaktır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.0">
+        <source>Main image size</source>
+        <target>Ana resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_size.1">
+        <source>Please enter a width and height for the main product image.</source>
+        <target>Lütfen ana ürün resmi için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.0">
+        <source>Gallery image size</source>
+        <target>Galeri resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_size.1">
+        <source>Please enter a width and height for the additional images.</source>
+        <target>Lütfen ek resimler için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_template.0">
+        <source>Lightbox template</source>
+        <target>Lightbox teması</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_template.1">
+        <source>Please select the lightbox template from your page-layout to reload the image gallery after an AJAX request.</source>
+        <target>Lütfen bir AJAX isteğinden sonra resim galerisini yeniden yüklemek için sayfa düzeninizden lightbox şablonunu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.0">
+        <source>Lightbox image size</source>
+        <target>Lightbox resim boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_size.1">
+        <source>Please enter a width and height for lightbox images.</source>
+        <target>Lütfen lightbox resimleri için bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_size.0">
+        <source>Zoom image size</source>
+        <target>Yakınlaştırılmış görüntü boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_size.1">
+        <source>Please enter a width and height for zoom images.</source>
+        <target>Yakınlaştırılmış görüntüler için lütfen bir genişlik ve yükseklik girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_windowSize.0">
+        <source>Zoom window size</source>
+        <target>Yakınlaştırma penceresi boyutu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_windowSize.1">
+        <source>Optionally enter a width and height for the zoom window (defaults to 400x400).</source>
+        <target>İsteğe bağlı olarak yakınlaştırma penceresi için bir genişlik ve yükseklik girin (varsayılan değer 400x400).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.0">
+        <source>Zoom window position</source>
+        <target>Yakınlaştırma penceresi konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.1">
+        <source>Optionally enter a horizontal and vertical offset and a position for the zoom window.</source>
+        <target>İsteğe bağlı olarak yatay ve dikey kaydırmayı ve yakınlaştırma penceresi için bir konum girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos1">
+        <source>Right Top (Pos. #1)</source>
+        <target>Sağ üst (Pos. #1)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos2">
+        <source>Right Center (Pos. #2)</source>
+        <target>Sağ orta (Pos. #2)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos3">
+        <source>Right Bottom (Pos. #3)</source>
+        <target>Sağ alt(Pos. #3)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos4">
+        <source>Right Bottom Corner (Pos. #4)</source>
+        <target>Sağ alt köşe (Pos. #4)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos5">
+        <source>Bottom Right (Pos. #5)</source>
+        <target>Alt sağ  (Pos. #5)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos6">
+        <source>Bottom Center (Pos. #6)</source>
+        <target>Alt orta (Pos. #6)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos7">
+        <source>Bottom Left (Pos. #7)</source>
+        <target>Alt sol (Pos. #7)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos8">
+        <source>Left Bottom Corner (Pos. #8)</source>
+        <target>Sol alt orta (Pos. #8)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos9">
+        <source>Left Bottom (Pos. #9)</source>
+        <target>Sol Alt (Pos. #9)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos10">
+        <source>Left Center (Pos. #10)</source>
+        <target>Sol orta (Pos. #10)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos11">
+        <source>Left Top (Pos. #11)</source>
+        <target>Sol üst (Pos. #11)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos12">
+        <source>Left Top Corner (Pos. #12)</source>
+        <target>Sol üst köşe (Pos. #12) </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos13">
+        <source>Top Left (Pos. #13)</source>
+        <target>Üst sol (Pos. #13)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos14">
+        <source>Top Center (Pos. #14)</source>
+        <target>Üst orta (Pos. #14)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos15">
+        <source>Top Right (Pos. #15)</source>
+        <target>Üst sağ (Pos. #15)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_position.pos16">
+        <source>Top Right Corner (Pos. #16)</source>
+        <target>Üst sağ köşe (Pos. #16)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_windowFade.0">
+        <source>Zoom window fade effect</source>
+        <target>Yakınlaştırma penceresi açılış efekti</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_windowFade.1">
+        <source>Optionally enter miliseconds to fade in and fade out the zoom window.</source>
+        <target>İsteğe bağlı olarak yakınlaştırma penceresini açılıp kapanacağı milisaniyeleri girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_border.0">
+        <source>Zoom window border</source>
+        <target>Yakınlaştırma penceresi kenarlığı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_border.1">
+        <source>Optionally enter a hex color and size in pixels for the zoom window.</source>
+        <target>İsteğe bağlı olarak, yakınlaştırma penceresi için altı renk ve piksel cinsinden piksel girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_watermark_image.0">
+        <source>Main watermark image</source>
+        <target>Ana filigran görüntüsü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_watermark_image.1">
+        <source>Select an image if you want to add a watermark to the main product image.</source>
+        <target>Ana ürün resmine filigran eklemek istiyorsanız bir resim seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_watermark_position.0">
+        <source>Main watermark position</source>
+        <target>Ana filigran konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.main_watermark_position.1">
+        <source>Select the position where to apply the watermark to.</source>
+        <target>Filigranı uygulamak istediğiniz konumu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_watermark_image.0">
+        <source>Gallery watermark image</source>
+        <target>Galeri filigran resmi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_watermark_image.1">
+        <source>Select an image if you want to add a watermark to the gallery images.</source>
+        <target>Galeri görüntülerine filigran eklemek istiyorsanız bir resim seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_watermark_position.0">
+        <source>Gallery watermark position</source>
+        <target>Galeri filigrası konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.gallery_watermark_position.1">
+        <source>Select the position where to apply the watermark to.</source>
+        <target>Filigranı uygulamak istediğiniz konumu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_watermark_image.0">
+        <source>Lightbox watermark image</source>
+        <target>Lightbox filigran görüntüsü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_watermark_image.1">
+        <source>Select an image if you want to add a watermark to the lightbox images.</source>
+        <target>Lightbox görüntülerine filigran eklemek istiyorsanız bir resim seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_watermark_position.0">
+        <source>Lightbox watermark position</source>
+        <target>Lightbox filigran konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_watermark_position.1">
+        <source>Select the position where to apply the watermark to.</source>
+        <target>Filigranı uygulamak istediğiniz konumu seçin. </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_watermark_image.0">
+        <source>Zoom watermark image</source>
+        <target>Yakınlaştırma filigran görüntüsü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_watermark_image.1">
+        <source>Select an image if you want to add a watermark to the zoom images.</source>
+        <target>Yakınlaştırma görüntülerine filigran eklemek istiyorsanız bir resim seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_watermark_position.0">
+        <source>Zoom watermark position</source>
+        <target>Yakınlaştırma filigran konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.zoom_watermark_position.1">
+        <source>Select the position where to apply the watermark to.</source>
+        <target>Filigranı uygulamak istediğiniz konumu seçin. </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.0">
+        <source>Custom gallery template</source>
+        <target>Özel galeri şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.customTpl.1">
+        <source>Here you can overwrite the default gallery template.</source>
+        <target>Burada varsayılan galeri şablonunun üzerine yazabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.new.0">
+        <source>New gallery</source>
+        <target>Yeni galeri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.new.1">
+        <source>Create a new gallery</source>
+        <target>Yeni bir kategori oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.edit.0">
+        <source>Edit gallery</source>
+        <target>Galeriyi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.edit.1">
+        <source>Edit gallery ID %s</source>
+        <target>%s ID'li galeriyi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.copy.0">
+        <source>Duplicate gallery</source>
+        <target>Galeriyi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.copy.1">
+        <source>Duplicate gallery ID %s</source>
+        <target>%s ID'Li galeriyi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.delete.0">
+        <source>Delete gallery</source>
+        <target>Galeriyi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.delete.1">
+        <source>Delete gallery ID %s</source>
+        <target>%s ID'Li galeriyi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.show.0">
+        <source>Gallery details</source>
+        <target>Galeri detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.show.1">
+        <source>Show details of gallery ID %s</source>
+        <target>%s ID'li galeriinin detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.name_legend">
+        <source>Name &amp;amp; Type</source>
+        <target>İsim &amp;amp;  tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.size_legend">
+        <source>Image sizes</source>
+        <target>Resim boyutları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.config_legend">
+        <source>Configuration</source>
+        <target>Yapılandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.watermark_legend">
+        <source>Watermark</source>
+        <target>Filigran</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox_legend">
+        <source>Lightbox/Mediabox</source>
+        <target>Lightbox/Mediabox</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.template_legend">
+        <source>Template settings</source>
+        <target>Şablon ayarları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.none">
+        <source>No link action</source>
+        <target>Link eylemi yok</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.reader">
+        <source>Link to the product reader</source>
+        <target>Ürün okuyucusuna bağla</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.lightbox">
+        <source>Open lightbox/mediabox</source>
+        <target>Lightbox/mediabox aç</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_gallery.includeJQuery">
+        <source>Make sure to include jQuery in your page layout for this gallery to work correctly.</source>
+        <target>Bu galerinin düzgün çalışması için sayfa düzeninize jQuery eklediğinizden emin olun.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
