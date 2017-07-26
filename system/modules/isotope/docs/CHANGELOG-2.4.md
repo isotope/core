@@ -24,6 +24,7 @@ Version 2.4.2 (2017-??-??)
 - Group and page selection in products backend did not reload (#1801)
 - Help wizard was empty for payment, shipping, gallery and producttype (#1821)
 - TinyMCE options were missing in textarea attribute (#1815)
+- Back button was not visible in Contao 4.4 picker (#1813)
 
 
 Version 2.4.1 (2017-03-07)

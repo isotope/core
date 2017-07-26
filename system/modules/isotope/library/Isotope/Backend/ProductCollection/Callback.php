@@ -11,7 +11,6 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use Haste\Util\Debug;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Isotope;
@@ -80,7 +79,7 @@ class Callback extends \Backend
             return '';
         }
 
-        $GLOBALS['TL_CSS'][] = Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
+        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/print.css|print';
 
         // Try to find a order details module or create a dummy FE module model
         if (($config = $objOrder->getRelated('config_id')) === null

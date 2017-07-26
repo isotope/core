@@ -45,7 +45,7 @@ body[class*="version_4-4"] #tl_navigation .tl_level_1_group .group-isotope {
     padding:3px 0 0 8px;
 }
 
-body.popup .header_back {
+body.popup a[href*="table=tl_iso_attribute_option"].header_back {
     display: none;
 }
 
