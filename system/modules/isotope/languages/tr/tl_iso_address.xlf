@@ -1,0 +1,242 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>Mağaza ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Farklı mağaza kimlikleri, birden fazla kök sitesinde bir mağaza grubu oluşturur. Üyelerin alışveriş sepeti ve adresleri, aynı mağaza kimliklerinde paylaşılacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Etiket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.1">
+        <source>Please enter a custom label for this address.</source>
+        <target>Lütfen bu adres için özel bir etiket girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.0">
+        <source>Gender</source>
+        <target>Cinsiyet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.1">
+        <source>Please choose the gender.</source>
+        <target>Lütfen cinsiyeti seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+        <target>Selamlama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Lütfen selam vermeyi giriniz (Sayın, Dr., Prof.).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Adınız</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.1">
+        <source>Please enter the first name.</source>
+        <target>Lütfen adınızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Soyadınız</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.1">
+        <source>Please enter the last name.</source>
+        <target>Lütfen soyadınızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.0">
+        <source>Date of birth</source>
+        <target>Doğum tarihi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
+        <target>Lütfen doğum tarihinizi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Şirket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.1">
+        <source>You can enter a company name here.</source>
+        <target>Lütfen şirketinizin adını girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+        <target>Vergi No.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Lütfen vergi numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Cadde</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Lütfen caddenizi ve cadde numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Sokak 2 </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Lütfen sokağınızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Sokak 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Diğer adres bilgileri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Posta kodu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Lütfen posta kodunuzu girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Şehir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Lütfen bir şehir ismi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.0">
+        <source>State</source>
+        <target>Eyalet/Bölge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Lütfen bir eyalet/bölge ismi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Ülke</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.1">
+        <source>Please select a country.</source>
+        <target>Bir ülke seçin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Telefon numarası</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Lütfen telefon numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.0">
+        <source>E-mail address</source>
+        <target>E-posta adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Lütfen geçerli bir e-posta adresi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.0">
+        <source>Default billing address</source>
+        <target>Varsayılan fatura adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+        <target>Bu sizin varsayılan fatura adresiniz mi?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.0">
+        <source>Default shipping address</source>
+        <target>Varsayılan teslimat adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+        <target>Bu sizin varsayılan teslimat adresiniz mi?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
+        <target>Mağaza</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personal_legend">
+        <source>Personal data</source>
+        <target>Kişisel bilgi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.address_legend">
+        <source>Address details</source>
+        <target>Adres detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contact_legend">
+        <source>Contact details</source>
+        <target>Kişi detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.default_legend">
+        <source>Default address</source>
+        <target>Varsayılan adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personalData">
+        <source>Personal data</source>
+        <target>Kişisel bilgi </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.addressDetails">
+        <source>Address details</source>
+        <target>Adres detayları </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contactDetails">
+        <source>Contact details</source>
+        <target>Kişi detayları </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.loginDetails">
+        <source>Default address</source>
+        <target>Varsayılan adres </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.0">
+        <source>New address</source>
+        <target>Yeni adres</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.1">
+        <source>Create a new address</source>
+        <target>Yeni Adres Oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.0">
+        <source>Edit address</source>
+        <target>Adresi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.1">
+        <source>Edit address ID %s</source>
+        <target>%s ID'li adresi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.0">
+        <source>Duplicate address</source>
+        <target>Adresi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.1">
+        <source>Duplicate address ID %s</source>
+        <target>%s ID'li adresi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.0">
+        <source>Delete address</source>
+        <target>Adresi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.1">
+        <source>Delete address ID %s</source>
+        <target>%s ID'li adresi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.0">
+        <source>Address details</source>
+        <target>Adres detayları </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.1">
+        <source>Show details of address ID %s</source>
+        <target>%s ID'li adresin detaylarını gör</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

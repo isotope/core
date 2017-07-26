@@ -1,0 +1,214 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="ISO_REPORT.sales">
+        <source>Sales Statistics</source>
+        <target>Satış İstatikleri</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.member">
+        <source>Member Statistics</source>
+        <target>Üye İstatikleri</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules">
+        <source>Rules Statistics</source>
+        <target>Kural İstatistikleri</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.custom">
+        <source>Custom Reports</source>
+        <target>Özel Raporlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.0">
+        <source>Total</source>
+        <target>Toplam</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.1">
+        <source>Total sales of all products</source>
+        <target>Tüm ürünlerin toplam satışı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.0">
+        <source>Per product</source>
+        <target>ürün başına</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.1">
+        <source>Sales per product</source>
+        <target>Ürün başına satış</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.0">
+        <source>Total</source>
+        <target>Toplam</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.1">
+        <source>Sales statistics by member</source>
+        <target>Üyeler bazında satış istatistikleri</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_currency">
+        <source>%s - Members</source>
+        <target>%s - Üye</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guests_currency">
+        <source>%s - Guests</source>
+        <target>%s - Misafir</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_title">
+        <source>Sales to Members</source>
+        <target>Müşterilere yapılan satışlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guests_title">
+        <source>Sales to Guests</source>
+        <target>Misafirlere yapılan satışlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.0">
+        <source>Registrations</source>
+        <target>Kayıtlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.1">
+        <source>Statistics about member registrations</source>
+        <target>Üye kayıtları hakkında istatistik</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.0">
+        <source>vs. Guest</source>
+        <target>vs. Misafir</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.1">
+        <source>Sales comparison between members and guests</source>
+        <target>Üyelerle misafirler arasındaki satış karşılaştırması</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.0">
+        <source>Rules Usage</source>
+        <target>Kuralların Kullanımı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.1">
+        <source>Statistics about rules usage</source>
+        <target>Kuralların kullanımı ile ilgili istatistikler</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.0">
+        <source>Coupons</source>
+        <target>Kuponlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.1">
+        <source>Statistics about coupon usage</source>
+        <target>Kuponların kullanımı ile ilgili istatistikler</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_summary">
+        <source>Sales in the last 24 hours</source>
+        <target>Son 24 saat içindeki satışlar </target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_empty">
+        <source>No orders have been placed in the last 24 hours.</source>
+        <target>Son 24 saat içinde hiçbir sipariş verilmemiş.</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.shop_config">
+        <source>Shop configuration</source>
+        <target>Mağaza yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.currency">
+        <source>Currency</source>
+        <target>Para birimi</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.orders#">
+        <source>Number of orders</source>
+        <target>Sipariş sayısı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.products#">
+        <source>Number of products</source>
+        <target>Ürün sayısı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.items#">
+        <source>Number of items</source>
+        <target>Öğe sayısı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales#">
+        <source>Sales Total</source>
+        <target>Satış Toplamı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.filter_config">
+        <source>Shop-Config</source>
+        <target>Mağaza-Yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.all">
+        <source>All</source>
+        <target>Tümü</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sums">
+        <source>Sums</source>
+        <target>Toplamlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.show">
+        <source>Show</source>
+        <target>Göster</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.search">
+        <source>Search</source>
+        <target>Ara</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sort">
+        <source>Sort</source>
+        <target>Sırala</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.period">
+        <source>Period</source>
+        <target>Dönem</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.day">
+        <source>Day</source>
+        <target>Gün</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.week">
+        <source>Week</source>
+        <target>Hafta</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.month">
+        <source>Month</source>
+        <target>Ay</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year">
+        <source>Year</source>
+        <target>Yıl</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.from">
+        <source>From</source>
+        <target>Kimden</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.to">
+        <source>To</source>
+        <target>Kime</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Durum </target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_field">
+        <source>Report</source>
+        <target>Rapor</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Sipariş tarihi</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_paid">
+        <source>Payment date</source>
+        <target>Ödeme tarihi</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_shipped">
+        <source>Shiping date</source>
+        <target>Nakliye tarihi</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.total_sales">
+        <source>Total sales</source>
+        <target>Toplam satışlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.product_name">
+        <source>Product name</source>
+        <target>Ürün adı</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.columns">
+        <source>Columns</source>
+        <target>Sütunlar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.variants">
+        <source>Variants</source>
+        <target>Çeşitler</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,246 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_producttype.name.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.name.1">
+        <source>Please enter a name for this product type.</source>
+        <target>Lütfen bu ürün tipi için bir ad girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.class.0">
+        <source>Product Class</source>
+        <target>Ürün Sınıfı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.class.1">
+        <source>Please select a product class. Different product classes will handle products differently.</source>
+        <target>Lütfen bir ürün sınıfı seçin. Farklı ürün sınıfları ürünleri farklı şekilde ele alacaktır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.fallback.0">
+        <source>Default</source>
+        <target>Varsayılan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.fallback.1">
+        <source>Check here if this is the default product type.</source>
+        <target>Varsayılan ürün tipi ise buraya bakın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description.0">
+        <source>Description</source>
+        <target>Açıklama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description.1">
+        <source>A hint to product managers what this product type is for.</source>
+        <target>Ürün yöneticilerine bu ürün türünün ne anlama geldiğine dair bir ipucu.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices.0">
+        <source>Advanced pricing</source>
+        <target>Gelişmiş fiyatlandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices.1">
+        <source>Allow to define multiple prices per product, e.g. for different store configs, member groups or dates.</source>
+        <target>Ürün başına birden fazla fiyat tanımlamaya izin ver, ör. farklı mağaza yapılandırmaları, üye grupları veya tarihler için farklı fiyatlar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show_price_tiers.0">
+        <source>Show price tiers</source>
+        <target>Fiyat katmanlarını göste</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show_price_tiers.1">
+        <source>Show highest tier as lowest product price.</source>
+        <target>En yüksek katmanı en düşük ürün fiyatı olarak gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_template.0">
+        <source>List template</source>
+        <target>Liste şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_template.1">
+        <source>Select a template for product listing.</source>
+        <target>Ürün listeleme için bir şablon seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_template.0">
+        <source>Reader template</source>
+        <target>Okuyucu şablonu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_template.1">
+        <source>Select a template for product details.</source>
+        <target>Ürün ayrıntıları için bir şablon seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.0">
+        <source>List gallery</source>
+        <target>Liste galerisi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.list_gallery.1">
+        <source>Select a gallery for product listing.</source>
+        <target>Ürün listeleme için bir galeri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.0">
+        <source>Reader gallery</source>
+        <target>Okuyucu galerisi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.reader_gallery.1">
+        <source>Select a gallery for product details.</source>
+        <target>Ürün ayrıntıları için bir galeri seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.0">
+        <source>CSS class</source>
+        <target>CSS sınıfı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.cssClass.1">
+        <source>The class(es) will be added to the product list and reader templates.</source>
+        <target>Sınıf(lar), ürün listesine ve okuyucu şablonlarına eklenecek.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.0">
+        <source>Attributes</source>
+        <target>Özellikler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.1">
+        <source>Select the collection of attributes that should be included for this product type.</source>
+        <target>Bu ürün türü için dahil edilmesi gereken niteliklerin koleksiyonunu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.0">
+        <source>Grouping</source>
+        <target>Gruplama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.legend.1">
+        <source>Group fields by topic (legends)</source>
+        <target>Konuya göre gruplandırılmış alanlar (efsaneler)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.0">
+        <source>Alignment</source>
+        <target>Hizalama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.tl_class.1">
+        <source>Enter a tl_class to override alignment for this attribute.</source>
+        <target>Bu özellikte hizalamayı geçersiz kılmak için bir tl_class yazın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.mandatory.0">
+        <source>Mandatory</source>
+        <target>Zorunlu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.mandatory.1">
+        <source>You can override the default mandatory-ness here.</source>
+        <target>Burada varsayılan zorunluluğu geçersiz kılabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes.default">
+        <source>Default</source>
+        <target>Varsayılan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants.0">
+        <source>Enable variants</source>
+        <target>Çeşitleri etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants.1">
+        <source>Check here if this product type has variants.</source>
+        <target>Bu ürün tipinde çeşit olup olmadığını kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variant_attributes.0">
+        <source>Variant attributes</source>
+        <target>Çeşit nitelikleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variant_attributes.1">
+        <source>Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.</source>
+        <target>Bu ürün tipi için dahil edilmesi gereken çeşit öznitelikleri koleksiyonunu seçin. Seçilmemiş olanlar  ana üründen devralınacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.force_variant_options.0">
+        <source>Always show variant attributes</source>
+        <target>Çeşit niteliklerini daima göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.force_variant_options.1">
+        <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
+        <target>Tek bir seçenek olsa bile bir çeşit niteliğini (seçim, radyo) gösterin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.0">
+        <source>Exempt from shipping</source>
+        <target>Nakliyeden muaf</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.1">
+        <source>Check if items of this product type are not a shipped item (such as downloadable products).</source>
+        <target>Bu ürün tipinin ürünlerinin fiziki taşıma gerektiren bir öğe olup olmadığını kontrol edin (indirilebilir ürünler gibi).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.downloads.0">
+        <source>Enable downloads</source>
+        <target>İndirmeleri etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.downloads.1">
+        <source>Check here if this product type has downloads.</source>
+        <target>Bu ürün tipinin indirilmiş olup olmadığını kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.new.0">
+        <source>New product type</source>
+        <target>Yeni ürün tipi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.new.1">
+        <source>Create new product type.</source>
+        <target>Yeni ürün tipi ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.edit.0">
+        <source>Edit product type</source>
+        <target>Ürün tipini düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.edit.1">
+        <source>Edit product type ID %s</source>
+        <target>%s ID'li ürün tipini düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.copy.0">
+        <source>Copy product type definiton</source>
+        <target>Ürün türünün tanımını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.copy.1">
+        <source>Copy definition of product type ID %s</source>
+        <target>%s ID'li ürün tipinin tanımını düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.delete.0">
+        <source>Delete product type</source>
+        <target>Ürün tipini sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.delete.1">
+        <source>Delete product type ID %s</source>
+        <target>%s ID'li ürün tipini sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show.0">
+        <source>product type details</source>
+        <target>ürün tipi detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.show.1">
+        <source>Show details of product type ID %s</source>
+        <target>%s ID'li ürün tipinin detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.name_legend">
+        <source>Product type settings</source>
+        <target>Ürün tipi ayarları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.description_legend">
+        <source>Description</source>
+        <target>Açıklama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.prices_legend">
+        <source>Prices</source>
+        <target>Fiyatlar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.template_legend">
+        <source>Templates</source>
+        <target>Şablonlar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.attributes_legend">
+        <source>Product attributes</source>
+        <target>Ürün nitelikleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.variants_legend">
+        <source>Variant attributes</source>
+        <target>Çeşit nitelikleri </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.expert_legend">
+        <source>Expert settings</source>
+        <target>Uzman ayarları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.noVariantAttributes">
+        <source>You must select at least one variant option (one of those: %s).</source>
+        <target>En az bir çeşit seçeneği seçmelisiniz (bunlardan birini : %s).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.singularAttributes">
+        <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
+        <target>Nitelik(ler) &quot;%s&quot; , hem nitelikler hem de çeşit nitelikleri için etkinleştirilemiyor.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
