@@ -23,6 +23,7 @@ Version 2.4.2 (2017-??-??)
 - DC clipboard is stored in non-persistent session in Contao 4 (#1806)
 - Group and page selection in products backend did not reload (#1801)
 - Help wizard was empty for payment, shipping, gallery and producttype (#1821)
+- TinyMCE options were missing in textarea attribute (#1815)
 
 
 Version 2.4.1 (2017-03-07)
