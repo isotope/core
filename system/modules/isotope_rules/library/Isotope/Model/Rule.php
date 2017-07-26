@@ -272,15 +272,21 @@ class Rule extends \Model
             $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
 
             foreach ($arrAttributes as $restriction) {
-                if (empty($restriction['values']))
+                if (empty($restriction['values'])) {
                     continue;
+                }
 
                 $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
 
                 switch ($restriction['condition']) {
                     case 'eq':
                     case 'neq':
-                        $strRestriction .= "attributeValue" . ($restriction['condition'] == 'neq' ? " NOT" : '') . " IN ('" . implode("','", array_map('mysql_real_escape_string', $restriction['values'])) . "')";
+                        $strRestriction .= sprintf(
+                            "attributeValue %s IN (%s)",
+                            ('neq' === $restriction['condition'] ? 'NOT' : ''),
+                            implode(', ', array_fill(0, count($restriction['values']), '?'))
+                        );
+                        $arrValues = array_merge($arrValues, $restriction['values']);
                         break;
 
                     case 'lt':
@@ -289,7 +295,11 @@ class Rule extends \Model
                     case 'egt':
                         $arrOR = array();
                         foreach ($restriction['values'] as $value) {
-                            $arrOR[] = "attributeValue" . (($restriction['condition'] == 'lt' || $restriction['condition'] == 'elt') ? '>' : '<') . (($restriction['condition'] == 'elt' || $restriction['condition'] == 'egt') ? '=' : '') . '?';
+                            $arrOR[] = sprintf(
+                                'attributeValue %s%s ?',
+                                (('lt' === $restriction['condition'] || 'elt' === $restriction['condition']) ? '>' : '<'),
+                                (('elt' === $restriction['condition'] || 'egt' === $restriction['condition']) ? '=' : '')
+                            );
                             $arrValues[] = $value;
                         }
                         $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
@@ -300,14 +310,20 @@ class Rule extends \Model
                     case 'contains':
                         $arrOR = array();
                         foreach ($restriction['values'] as $value) {
-                            $arrOR[] = "? LIKE CONCAT(" . (($restriction['condition'] == 'ends' || $restriction['condition'] == 'contains') ? "'%', " : '') . "attributeValue" . (($restriction['condition'] == 'starts' || $restriction['condition'] == 'contains') ? ", '%'" : '') . ")";
+                            $arrOR[] = sprintf(
+                                "? LIKE CONCAT(%sattributeValue%s)",
+                                (('ends' === $restriction['condition'] || 'contains' === $restriction['condition']) ? "'%', " : ''),
+                                (('starts' === $restriction['condition'] || 'contains' === $restriction['condition']) ? ", '%'" : '')
+                            );
                             $arrValues[] = $value;
                         }
                         $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
                         break;
 
                     default:
-                        throw new \InvalidArgumentException('Unknown rule condition "' . $restriction['condition'] . '"');
+                        throw new \InvalidArgumentException(
+                            sprintf('Unknown rule condition "%s"', $restriction['condition'])
+                        );
                 }
 
                 $arrRestrictions[] = $strRestriction . ')';
@@ -316,7 +332,10 @@ class Rule extends \Model
             $arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
         }
 
-        $objResult = \Database::getInstance()->prepare("SELECT * FROM " . static::$strTable . " r WHERE " . implode(' AND ', $arrProcedures))->execute($arrValues);
+        $objResult = \Database::getInstance()
+            ->prepare('SELECT * FROM tl_iso_rule r WHERE ' . implode(' AND ', $arrProcedures))
+            ->execute($arrValues)
+        ;
 
         if ($objResult->numRows) {
             return \Model\Collection::createFromDbResult($objResult, static::$strTable);

@@ -20,9 +20,9 @@ class AssetImport extends \Backend
      *
      * @return string
      */
-    public function generate()
+    public function generate($dc)
     {
-        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product'));
+        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product', $dc));
 
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '') {
@@ -51,9 +51,11 @@ class AssetImport extends \Backend
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
-  <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
-  ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
-  <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
+  <div class="widget">
+    <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
+    ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
+    <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
+  </div>
 </div>
 
 </div>
@@ -109,8 +111,7 @@ class AssetImport extends \Backend
             // !HOOK: add custom import regex patterns
             if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $arrPattern  = $objCallback->{$callback[1]}($arrPattern, $objProducts);
+                    $arrPattern = \System::importStatic($callback[0])->{$callback[1]}($arrPattern, $objProducts);
                 }
             }
 

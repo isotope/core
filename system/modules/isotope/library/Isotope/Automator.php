@@ -167,8 +167,7 @@ class Automator extends \Controller
                         && is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
-                            $objCallback = \System::importStatic($callback[0]);
-                            $objCallback->{$callback[1]}($config);
+                            \System::importStatic($callback[0])->{$callback[1]}($config);
                         }
                     }
             }

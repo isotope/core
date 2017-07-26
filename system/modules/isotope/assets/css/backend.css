@@ -4,6 +4,11 @@
     background-size: 16px 16px;
 }
 
+body[class*="version_4-4"] #tl_navigation .tl_level_1_group .group-isotope {
+    background: url(../images/module44.svg) 5px 1px no-repeat;
+    background-size: 14px 14px;
+}
+
 .header_import_assets
 {
     padding:2px 0 3px 20px;
@@ -40,7 +45,7 @@
     padding:3px 0 0 8px;
 }
 
-body.popup .header_back {
+body.popup a[href*="table=tl_iso_attribute_option"].header_back {
     display: none;
 }
 
@@ -424,8 +429,4 @@ body.iso_be_overview .tip-wrap{
 .tl_version_panel.tl_iso_products_panel #tl_language {
     float:left;
     margin-left:20px;
-}
-
-.tl_version_panel.tl_iso_products_panel #tl_version {
-    float: right;
 }

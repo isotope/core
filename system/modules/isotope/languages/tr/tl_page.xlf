@@ -1,0 +1,42 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_page.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_page.iso_config.0">
+        <source>Store Configuration</source>
+        <target>Mağaza Yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_config.1">
+        <source>Select a store configuration for this page structure.</source>
+        <target>Bu sayfa yapısı için bir mağaza yapılandırması seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_setReaderJumpTo.0">
+        <source>Use reader page</source>
+        <target>Okuyucu sayfasını kullan</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_setReaderJumpTo.1">
+        <source>Overwrite the configuration of this page if product details are shown. See help wizard of the page selection for more information.</source>
+        <target>Ürün ayrıntıları gösteriliyorsa, bu sayfanın yapılandırmasının üzerine yazın. Daha fazla bilgi için sayfa seçiminin yardım sihirbazına bakın.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_readerJumpTo.0">
+        <source>Reader page</source>
+        <target>Okuyucu sayfası</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_readerJumpTo.1">
+        <source>Select a page for your page reader.</source>
+        <target>Sayfa okuyucunuz için bir sayfa seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_store_id.0">
+        <source>Store ID</source>
+        <target>Mağaza ID</target>
+      </trans-unit>
+      <trans-unit id="tl_page.iso_store_id.1">
+        <source>Use different store IDs to group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Birden çok kök sitesinde bir mağaza gruplamak için farklı mağaza kimlikleri kullanın. Üyelerin alışveriş sepeti ve adresleri, aynı mağaza ID'lerinde paylaşılacak.</target>
+      </trans-unit>
+      <trans-unit id="tl_page.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

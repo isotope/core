@@ -1,0 +1,583 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_config.name.0">
+        <source>Configuration Name</source>
+        <target>Yapılandırma Adı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.1">
+        <source>Please enter a name for your configuration. This is only used for back end reference.</source>
+        <target>Bu yapılandırma için bir ad girin. Bu sadece geri planda kullanılacaktır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Etiket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.1">
+        <source>The label is used in frontend, e.g. for config switcher.</source>
+        <target>Etiket, ön tarafta kullanılır, ör. Yapılandırma değiştiricisi için.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.0">
+        <source>Set as default store</source>
+        <target>Varsayılan mağaza olarak ayarla</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.1">
+        <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
+        <target>Bu mağazayı, arka plan para birimi biçimlendirmesi ve diğer yerel ayara özgü bilgiler için varsayılan mağaza olarak ayarlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Adınız</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.1">
+        <source>Please enter the first name (if applicable).</source>
+        <target>Lütfen adınızı girin  (uygunsa).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Soyadınız</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.1">
+        <source>Please enter the last name (if applicable).</source>
+        <target>Lütfen soy adınızı girin  (uygunsa).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Şirket</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.1">
+        <source>You can enter a company name here (if applicable).</source>
+        <target>Lütfen bir şirket adı girin (uygunsa).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>Vergi No.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Lütfen vergi numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Sokak</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Lütfen caddenizi ve cadde numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Cadde 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Lütfen sokağınızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Sokak 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Diğer adres bilgileri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Posta kodu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Lütfen posta kodunuzu girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Şehir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Lütfen bir şehir ismi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Eyalet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Lütfen bir eyalet ismi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Ülke</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.1">
+        <source>Please select a country. This is also the default for custom shipping/billing addresses.</source>
+        <target>Lütfen bir ülke seçin. Bu ayrıca, özel gönderim / faturalandırma adresleri için varsayılandır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Telefon numarası</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Lütfen telefon numaranızı girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.0">
+        <source>Shipping email address</source>
+        <target>Naklye e-posta adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Lütfen geçerli bir e-posta adresi girin</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.0">
+        <source>Address fields</source>
+        <target>Adres alanı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.1">
+        <source>Select the fields for a billing and shipping address when checking out.</source>
+        <target>Ödeme yaparken bir faturalandırma ve nakliye adresi için alanları seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.name.0">
+        <source>Address field</source>
+        <target>Adres alanı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.billing.0">
+        <source>For billing address</source>
+        <target>Fatura Adresi için</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.shipping.0">
+        <source>For shipping address</source>
+        <target>Nakliye Adresi için</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.disabled">
+        <source>Disabled</source>
+        <target>Devre dışı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.enabled">
+        <source>Enabled (not mandatory)</source>
+        <target>Etkin (zorunlu değil)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.mandatory">
+        <source>Enabled (mandatory)</source>
+        <target>Etkin (zorunlu)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.0">
+        <source>Default billing country</source>
+        <target>Varsayılan fatura ülkesi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.1">
+        <source>Select a default country for new billing addresses.</source>
+        <target>Yeni fatura adresleri için varsayılan bir ülke seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.0">
+        <source>Default shipping country</source>
+        <target>Varsayılan teslimat ülkesi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.1">
+        <source>Select a default country for new shipping addresses.</source>
+        <target>Yeni nakliye adresi için varsayılan ülke seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.0">
+        <source>Available billing countries</source>
+        <target>Kullanılabilir fatura ülkeleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.1">
+        <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
+        <target>Ödeme faturalandırma adresi için izin vermek istediğiniz ülkeleri seçin. Tüm ülkelere izin vermek için hiçbirini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.0">
+        <source>Available shipping countries</source>
+        <target>Kullanılabilir nakliye ülkeleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.1">
+        <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
+        <target>Ödeme nakliye adresi için izin vermek istediğiniz ülkeleri seçin. Tüm ülkelere izin vermek için hiçbirini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.0">
+        <source>Limit member countries</source>
+        <target>Üye ülkelerini sınırla</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.1">
+        <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
+        <target>Üye ülkelerini (Kayıt, Kişisel Veriler) faturalandırma ve gönderim yapan ülkelerin birleşik listesinde sınırlayın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.0">
+        <source>VAT No. validation</source>
+        <target>KDV No. doğrulama</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.1">
+        <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
+        <target>Bir veya birden fazla hizmeti etkinleştirirseniz, KDV No. Adresi alanı doğrulanır.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.0">
+        <source>Price display</source>
+        <target>Fiyat göstergesi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.1">
+        <source>Select if you want to display net or gross prices in your shop. See the help wizard for more information.</source>
+        <target>Mağazada net veya brüt fiyatlar görüntülemek istiyorsanız seçin. Daha fazla bilgi için yardım sihirbazına bakın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.0">
+        <source>Price formatting</source>
+        <target>Fiyat biçimi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.1">
+        <source>Choose a formatting for prices.</source>
+        <target>Fiyatlar için bir biçimlendirme seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.0">
+        <source>Rounding precision</source>
+        <target>Yuvarlama hassaslığı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.1">
+        <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
+        <target>Ne kadar ondalık hassaslığa sahip olunur? Tüm ödeme ağ geçitlerinin doğru şekilde çalışması için 0 ile 2 arasında bir şey ayarlamanız gerekir. round() için PHP el kitabına bakın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.0">
+        <source>Rounding increment</source>
+        <target>Yuvarlama artışı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.1">
+        <source>Some currencies (e.g. swiss francs) do not support 0.01 precision.</source>
+        <target>Bazı para birimleri (ör. İsviçre Frangı), 0.01 hassaslığı desteklemez.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Para birimi
+</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.1">
+        <source>Please select a currency for this store.</source>
+        <target>Lütfen bu mağaza için bir para birimi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.0">
+        <source>Position of currency code/symbol</source>
+        <target>Para birimi kodunun / sembolün konumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.1">
+        <source>Select if you want to show currency on the left or right side of the price.</source>
+        <target>Fiyatın solunda veya sağında para birimini göstermek isteyip istemediğinizi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.0">
+        <source>Use currency symbol</source>
+        <target>Para birimi sembolünü kullan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.1">
+        <source>Use a currency symbol ($, €) if available.</source>
+        <target>Varsa bir para birimi sembolü ($, €) kullanın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.0">
+        <source>Include blank space</source>
+        <target>Boş alan ekle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.1">
+        <source>Add space between price and currency symbol.</source>
+        <target>Fiyat ve para birimi simgesi arasında boşluk ekleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.0">
+        <source>Price factor</source>
+        <target>Fiyat faktörü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.1">
+        <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
+        <target>Varsayılan değerler 1 olmalıdır. Bunu birden fazla para birimi arasında dönüştürmek için kullanabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.0">
+        <source>Calculation mode</source>
+        <target>Hesaplama modu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.1">
+        <source>Divide or multiply using this factor.</source>
+        <target>Bu faktörü kullanarak bölün veya çarpın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.0">
+        <source>Automatic currency conversion</source>
+        <target>Otomatik para birimi dönüştürme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.1">
+        <source>Enable automatic update of price calcuation factors by using an online currency conversion provider.</source>
+        <target>Çevrimiçi para birimi dönüştürme sağlayıcısı kullanarak fiyat hesaplama faktörlerinin otomatik güncellemesini etkinleştirin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.0">
+        <source>Currency origin</source>
+        <target>Para birimi menşei</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.1">
+        <source>Please select the source currency for calculation.</source>
+        <target>Lütfen hesaplamak için kaynak para birimini seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.0">
+        <source>Currency Data Provider</source>
+        <target>Para Birimi Veri Sağlayıcısı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.1">
+        <source>Select an available online provider of currency calculation data.</source>
+        <target>Para birimi hesaplama verileri için kullanılabilir bir online sağlayıcı seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.0">
+        <source>Order number prefix</source>
+        <target>Sipariş numarası öneki</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.1">
+        <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
+        <target>Otomatik artan sipariş numarasına bir ön ek (ör. Mali yıl) ekleyebilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.0">
+        <source>Order number length</source>
+        <target>Sipariş numarası uzunluğu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.1">
+        <source>Select the minimum length of the order number (not including order prefix).</source>
+        <target>Sipariş numarasının minimum uzunluğunu seçin (sipariş ön ekini içermez).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.0">
+        <source>Status for new orders</source>
+        <target>Yeni siparişlerin durumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.1">
+        <source>Choose a matching status for new orders. A payment module can override this.</source>
+        <target>Yeni siparişler için eşleşen bir durum seçin. Bir ödeme modülü bunu geçersiz kılabilir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.0">
+        <source>Order status on error</source>
+        <target>Hata durumunda sipariş durumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.1">
+        <source>Select an order status if something goes wrong (e.g. payment).</source>
+        <target>Bir sorun oluşursa sipariş durumunun ne olacağını seçin (ör. Ödeme).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.0">
+        <source>Module for backend view</source>
+        <target>Arka plan görünümü modülü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.1">
+        <source>Select a order details module that is used to show the order in the backend.</source>
+        <target>Siparişi arka planda göstermek için kullanılan bir sipariş ayrıntıları modülü seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.0">
+        <source>Invoice Logo</source>
+        <target>Fatura Logosu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.1">
+        <source>Select a logo to show up on the invoices for this store.</source>
+        <target>Bu mağaza için faturalarda görünmesi için bir logo seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.0">
+        <source>Templates folder</source>
+        <target>Şablonlar klasörü</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.1">
+        <source>Here you can select a templates folder to search before every other template folder.</source>
+        <target>Burada, diğer tüm şablon klasörlerinden önce aranacak bir şablon klasörü seçebilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Minimum ara toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.1">
+        <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
+        <target>Sipariş vermek için gereken sepetinin minimum ara toplamı. Devre dışı bırakmak için 0 girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.0">
+        <source>Duration to mark a product as &quot;new&quot;</source>
+        <target>Bir ürünün &quot;yeni&quot; olarak işaretleme süresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.1">
+        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
+        <target>Yeni ürünleri vurgulamak isterseniz, bunun burada bir süre girebilirsiniz. Istop eCommerce'in her yerinde her ürüne otomatik olarak bir &quot;yeni&quot; CSS sınıfı ekleyecek.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.0">
+        <source>Enable Google Analytics</source>
+        <target>Google Analytics'i etkinleştir</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.1">
+        <source>Enable e-commerce tracking with Google Analytics.</source>
+        <target>Google Analytics ile e-ticaret izlemeyi etkinleştirin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.0">
+        <source>Account</source>
+        <target>Hesap</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.1">
+        <source>Please provde the account key (UA-XXXXXXX-X).</source>
+        <target>Lütfen hesap anahtarını sağlayın (UA-XXXXXXX-X).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.0">
+        <source>Track member</source>
+        <target>Üye izleme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.1">
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <target>Bir üyeyi izlemek için basit simgeleri girin (örn. ##firstname## ##lastname##). DİKKAT: Bunu yapmanıza izin verildiğinden emin olun!</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.left">
+        <source>To the left of price</source>
+        <target>Fiyatın soluna</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.right">
+        <source>To the right of price</source>
+        <target>Fiyatın sağına</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.div">
+        <source>Divide</source>
+        <target>Böl</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.mul">
+        <source>Multiply</source>
+        <target>Çarp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWidth.0">
+        <source>Width</source>
+        <target>Genişlik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwHeight.0">
+        <source>Height</source>
+        <target>Yükseklik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwMode.0">
+        <source>Mode</source>
+        <target>Mod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWatermark.0">
+        <source>Watermark image</source>
+        <target>Filigran resmi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwPosition.0">
+        <source>Position</source>
+        <target>Konum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ecb.int">
+        <source>European Central Bank</source>
+        <target>Avrupa Merkez Bankası</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.admin.ch">
+        <source>Swiss Federal Department of Finance</source>
+        <target>İsviçre Federal Maliye Bakanlığı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.net.0">
+        <source>Net</source>
+        <target>Net</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+        <target>Net fiyatları tüm müşterilere gösterin. Ürün fiyatına dahil edilen vergiler (vergi oranı yapılandırması) düşülecektir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.gross.0">
+        <source>Gross (recommended)</source>
+        <target>Brüt (önerilen)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+        <target>Brüt fiyatları tüm müşterilere gösterin. Uygulanabilir vergiler, ürün fiyat ekranına eklenecektir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fixed.0">
+        <source>Fixed</source>
+        <target>Sabit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+        <target>Ürün fiyatı daima ürün ayarında gösterilecektir. Vergiler her zaman &quot;dahil&quot; olarak hesaplanır. Bu, mağaza sahibinin karının, geçerli vergilere bağlı olarak değiştiği anlamına gelir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.legacy.0">
+        <source>Legacy</source>
+        <target>Eski</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.legacy.1">
+        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
+        <target>Fiyat göstergesi, İzotop &lt;2.3'deki gibi. Bir vergi dahil edilip uygulanabilirse fiyatlar brüt fiyatlarla gösterilir. Ek vergiler sadece ek ücret olarak gösterilir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.0">
+        <source>New configuration</source>
+        <target>Yeni yapılandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.1">
+        <source>Create a new store configuration.</source>
+        <target>Yeni mağaza yapılandırması oluştur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.0">
+        <source>Edit configuration</source>
+        <target>Yapılandırmayı düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.1">
+        <source>Edit store configuration ID %s.</source>
+        <target>%s ID'li mağaza yapılandırmasını düzenle </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.0">
+        <source>Copy configuration</source>
+        <target>Yapılandırmayı kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.1">
+        <source>Copy store configuration ID %s.</source>
+        <target>%s ID'li mağaza yapılandırmasını kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.0">
+        <source>Delete configuration</source>
+        <target>Yapılandırmayı sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.1">
+        <source>Delete store configuration ID %s.</source>
+        <target>%s ID'li mağaza yapılandırmasını sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.0">
+        <source>Show configuration details</source>
+        <target>Yapılandırma detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.1">
+        <source>Show details for store configuration ID %s.</source>
+        <target>%s ID'li mağaza yapılandırmasının detaylarını gör</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Ad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_legend">
+        <source>Address configuration</source>
+        <target>Adres yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.config_legend">
+        <source>Configuration</source>
+        <target>Yapılandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Ödeme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.pricing_legend">
+        <source>Pricing</source>
+        <target>Fiyatlandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency_legend">
+        <source>Currency formatting</source>
+        <target>Para birimi biçimlendirme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.converter_legend">
+        <source>Currency conversion</source>
+        <target>Para birimi dönüştürme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Siparişler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Resimler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.url_legend">
+        <source>URL settings</source>
+        <target>URL ayarları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Ürünler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.analytics_legend">
+        <source>Analytics</source>
+        <target>Analytics</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

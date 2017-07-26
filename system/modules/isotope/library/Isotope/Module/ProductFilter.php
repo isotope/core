@@ -100,6 +100,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             if (null === $objProducts) {
                 $objResponse = new JsonResponse([]);
                 $objResponse->send();
+                exit;
             }
 
             $objResponse = new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
@@ -309,8 +310,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             // !HOOK: alter the filters
             if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $arrFilters  = $objCallback->{$callback[1]}($arrFilters);
+                    $arrFilters = \System::importStatic($callback[0])->{$callback[1]}($arrFilters);
                 }
             }
 

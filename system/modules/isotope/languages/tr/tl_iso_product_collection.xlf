@@ -1,0 +1,219 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_iso_product_collection.document_number.0">
+        <source>Order ID</source>
+        <target>Sipariş ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.member.0">
+        <source>Member (empty for guests)</source>
+        <target>Üye (misafirler için boş)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.uniqid.0">
+        <source>Unique ID</source>
+        <target>Benzersiz ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.0">
+        <source>Order status</source>
+        <target>Sipariş durumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.1">
+        <source>Select the status of this order.</source>
+        <target>Bu siparişin durumunu seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.locked.0">
+        <source>Placed</source>
+        <target>Yerleştirilen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.source_collection_id.0">
+        <source>Source (Cart ID)</source>
+        <target>Kaynak (Sepet ID)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.0">
+        <source>Payment date</source>
+        <target>Ödeme tarihi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.1">
+        <source>Enter a date when this order has been paid.</source>
+        <target>Bu sipariş ödendiğinde bir tarih girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.0">
+        <source>Shipped date</source>
+        <target>Nakllye tarihi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.1">
+        <source>Enter a date when this order has been shipped.</source>
+        <target>Bu sipariş gönderildiğinde bir tarih girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.config_id.0">
+        <source>Shop configuration</source>
+        <target>Mağaza yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment_id.0">
+        <source>Payment method</source>
+        <target>Ödeme Şekli</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_id.0">
+        <source>Shipping method</source>
+        <target>Nakliye Şekli</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_id.0">
+        <source>Billing address</source>
+        <target>Fatura Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_id.0">
+        <source>Shipping address</source>
+        <target>Nakliye Adresi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.subtotal.0">
+        <source>Subtotal</source>
+        <target>Ara toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_subtotal.0">
+        <source>Subtotal without tax</source>
+        <target>Vergisiz ara toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.total.0">
+        <source>Total</source>
+        <target>Toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_total.0">
+        <source>Total without tax</source>
+        <target>Vergisiz toplam</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.currency.0">
+        <source>Currency</source>
+        <target>Para birimi
+</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.language.0">
+        <source>Language</source>
+        <target>Dil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.0">
+        <source>Order notes</source>
+        <target>Sipariş notları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.1">
+        <source>If you would like to convey information to other backend users, please do so here.</source>
+        <target>Diğer arka plan kullanıcılarına bilgi aktarmak isterseniz, lütfen bunu buradan yapın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.0">
+        <source>Edit order</source>
+        <target>Siparişi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.1">
+        <source>Edit order ID %s</source>
+        <target>%s ID'li siparişi düzenle</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.0">
+        <source>Copy order</source>
+        <target>Siparişi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.copy.1">
+        <source>Copy order ID %s</source>
+        <target>%s ID'li siparişi kopyala</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Siparişi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>%s ID'li siparişi sil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.0">
+        <source>Order details</source>
+        <target>Sipariş Detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show.1">
+        <source>Show details of order ID %s</source>
+        <target>%s ID'li siparişin detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.0">
+        <source>Payment details</source>
+        <target>Ödeme detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.1">
+        <source>Show payment details of order ID %s</source>
+        <target>%s ID'li siparişin ödeme detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.0">
+        <source>Shipping details</source>
+        <target>Nakliye detayları</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.1">
+        <source>Show shipping details of order ID %s</source>
+        <target>%s ID'li siparişin nakliye detaylarını göster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.0">
+        <source>Print a document</source>
+        <target>Bir belge yazdır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.1">
+        <source>Print order ID %s with a document of your choice</source>
+        <target>Seçeceğiniz bir belge ile birlikte %s ID'li siparişi yazdırın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.0">
+        <source>Document</source>
+        <target>Belge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.1">
+        <source>Choose the document you would like to print the data with.</source>
+        <target>Veriyle beraber yazdırmak istediğiniz belgeyi seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print">
+        <source>Print</source>
+        <target>Yazdır</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
+        <source>The status of your order has been updated.</source>
+        <target>Siparişinizin durumu güncellendi.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
+        <source>Notifications (e.g. email to client) have been sent.</source>
+        <target>Bildirimler (ör. Müşteri e-postası) gönderildi.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
+        <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
+        <target>Bildirimler (ör. Müşteri e-postası) gönderilemedi. Sistem günlüğünü kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
+        <source>Saferpay payment was sucessfully captured.</source>
+        <target>Saferpay ödemesi başarıyla alındı.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusError">
+        <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
+        <target>Saferpay ödemesi yakalanamadı! Lütfen &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt; Saferpay web arayüzünü &lt;/a&gt; kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
+        <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
+        <target>Saferpay ödemeleri otomatik olarak iptal edilemez. Geri ödeme yapmak için &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt; Saferpay web arayüzünü &lt;/a&gt; kullanın.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noEmailData">
+        <source>No additional email data available.</source>
+        <target>Ek e-posta verileri yok.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.status_legend">
+        <source>Order status</source>
+        <target>Sipariş durumu</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details_legend">
+        <source>Order details</source>
+        <target>Sipariş Detayları </target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.email_legend">
+        <source>Email data</source>
+        <target>E-posta verisi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_legend">
+        <source>Billing address data</source>
+        <target>Fatura Adresi verisi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_legend">
+        <source>Shipping address data</source>
+        <target>Nakliye Adresi verisi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

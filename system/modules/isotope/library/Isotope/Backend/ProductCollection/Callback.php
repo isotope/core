@@ -11,7 +11,6 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use Haste\Util\Debug;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Isotope;
@@ -80,7 +79,7 @@ class Callback extends \Backend
             return '';
         }
 
-        $GLOBALS['TL_CSS'][] = Debug::uncompressedFile('system/modules/isotope/assets/css/print.min.css|print');
+        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/print.css|print';
 
         // Try to find a order details module or create a dummy FE module model
         if (($config = $objOrder->getRelated('config_id')) === null
@@ -473,8 +472,7 @@ class Callback extends \Backend
             // !HOOK: add additional functionality when saving collection
             if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
-                    $objCallback = \System::importStatic($callback[0]);
-                    $objCallback->{$callback[1]}($objOrder);
+                    \System::importStatic($callback[0])->{$callback[1]}($objOrder);
                 }
             }
         }

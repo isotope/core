@@ -106,8 +106,7 @@ abstract class AbstractProduct extends Product
             && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $available   = $objCallback->{$callback[1]}($this, $objCollection);
+                $available = \System::importStatic($callback[0])->{$callback[1]}($this, $objCollection);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {

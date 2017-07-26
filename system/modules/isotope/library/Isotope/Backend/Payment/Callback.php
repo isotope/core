@@ -247,8 +247,7 @@ class Callback extends Permission
         // Trigger the save_callback
         if (is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
-                $blnVisible  = $objCallback->{$callback[1]}($blnVisible, $this);
+                $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }
         }
 

@@ -1,0 +1,306 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce </target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>Ürün yönetimi</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Isotope eCommerce için ürünlerinizi yönetin</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Siparişler</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+        <target>Mağazanızdaki ürünleri görün ve yönetin</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.0">
+        <source>Store configuration</source>
+        <target>Mağaza yapılandırması</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs</source>
+        <target>Isotope eCommerce'i ihtiyaçlarınıza göre ayarlayın ve yapılandırın</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce </target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Ürün Filtresi</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Isotope için kategori ağaçlarını ve ürün nitelik filtrelerini  tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+        <target>Toplu Filtre</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
+        <target>Ziyaretçilerin birden çok şartı seçerek ürün seçimini azaltabilmesi için toplu bir filtre sağlar.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.0">
+        <source>Product List</source>
+        <target>Ürün Listesi</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Genel Liste modülü. Nitelikleri veya değerleri listelemek için kullanılabilir. Daha fazla detaylandırma özelliği sağlamak için diğer modüller (ör. Filtre Modülü) ile kombine edilebilir.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.0">
+        <source>Product Variant List</source>
+        <target>Ürün Çeşit Listesi</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.1">
+        <source>Lists each variant of a product. Make sure you use the iso_list_variants template.</source>
+        <target>Bir ürünün her çeşidini listeler. iso_list_variants şablonunu kullandığınızdan emin olun.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Ürün Okuyucu</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Ürün okuyucu modülü. Bu, ürün ayrıntılarını görüntülemek için kullanılır </target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.0">
+        <source>Favorites</source>
+        <target>Favoriler</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.1">
+        <source>Renders the list of products on the favorites list.</source>
+        <target>Sık kullanılanlar listesinde ürünlerin listesini oluşturur.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Alışveriş Sepeti </target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>Tam özellikli bir alışveriş sepeti modülü. Kutu veya Tam Ekran, nasıl olacağı şablon seçimi ile ayarlanabilir.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Ödeme</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Mağaza müşterilerinin işlemlerini tamamlamalarına izin verin.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Adres Defteri </target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Müşterilerin adres defterini yönetmesine izin verin.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Sipariş Geçmişi</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Müşterilerin sipariş geçmişlerini görmelerini sağlayan özellik</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Sipariş Detayları</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Müşterilerin sipariş geçmişi detaylarını görüntüleyebilmelerini sağlayan sipariş okuyucusu</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Mağaza Yapılandırma Değiştirici</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Para birimini ve diğer ayarları değiştirmek için mağaza yapılandırmaları arasında geçiş yapın.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>İlgili ürünler</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Geçerli ürünle ilgili ürünleri listeleyin.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+        <target>Mesajlar</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+        <target>Başka bir yerde gösterilmediyse, tüm Isotope mesajlarını görüntüler.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.0">
+        <source>Shipping cost calculator</source>
+        <target>Nakliye maliyeti hesaplayıcı</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.1">
+        <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+        <target>Ödeme sayfasına gitmeden önce nakliye maliyetlerini hesaplamak için bir modül görüntüler.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.0">
+        <source>Cart address</source>
+        <target>Sepet adresi</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.1">
+        <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
+        <target>Fiyatları hesaplamak için kullanılacak alışveriş sepeti adres verilerini girmek için bir form görüntüler.</target>
+      </trans-unit>
+      <trans-unit id="IMD.config_module">
+        <source>Isotope eCommerce configuration (Version: %s)</source>
+        <target>Isotope eCommerce yapılandırması (Sürüm: %s)</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Ürünler</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Özellikler</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.1">
+        <source>Manage and create product attributes such as size, color, etc.</source>
+        <target>Boyut, renk vb. gibi ürün özelliklerini yönetin ve oluşturun.</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.0">
+        <source>Product types</source>
+        <target>Ürün tipleri </target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.1">
+        <source>Manage and create product types from sets of attributes.</source>
+        <target>Özellik gruplarından ürün türlerini yönetin ve oluşturun.</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.0">
+        <source>Related categories</source>
+        <target>İlgili kategoriler</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.1">
+        <source>Define categories for product relations.</source>
+        <target>Ürün ilişkileri için kategorileri tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Galeriler</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
+        <target>Ürününüzdeki görüntülerin nasıl oluşturulmasını istediğinizi tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.0">
+        <source>Base prices</source>
+        <target>Taban fiyatlar</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.1">
+        <source>Define base price.</source>
+        <target>Taban fiyatı tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.checkout">
+        <source>Checkout Flow</source>
+        <target>Ödeme Akışı</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.0">
+        <source>Shipping methods</source>
+        <target>Nakliye yöntemleri </target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.1">
+        <source>Set up shipping methods.</source>
+        <target>Nakliye yöntemleri ayarların.</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.0">
+        <source>Payment methods</source>
+        <target>Ödeme yöntemleri</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.1">
+        <source>Set up payment methods.</source>
+        <target>Ödeme yöntemleri ayarlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.0">
+        <source>Tax classes</source>
+        <target> Vergi sınıfları</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.1">
+        <source>Set up Tax classes, which contain sets of Tax rates.</source>
+        <target>Vergi oranları içeren vergi sınıfları oluşturun.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.0">
+        <source>Tax rates</source>
+        <target>Vergi oranları </target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.1">
+        <source>Set up tax rates based on things like shipping/billing location and order total.</source>
+        <target>Nakliye / faturalandırma ve sipariş toplamı gibi şeyleri temel alan vergi oranlarını ayarlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.config">
+        <source>General settings</source>
+        <target>Genel ayarlar</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.0">
+        <source>Store configurations</source>
+        <target>Mağaza yapılandırmaları</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.1">
+        <source>Configure general settings for this store.</source>
+        <target>Bu mağazanın genel ayarlarını yapılandırın</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>Sipariş durumu</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.1">
+        <source>Define order status.</source>
+        <target>Sipariş durumu tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+        <target>Bildirimler</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.1">
+        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+        <target>Isotope eCommerce'de  e-postaları yönetmek için Bildirim Merkezi'ni kullanın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Belgeler</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+        <target>Belgeleri tanımlayın.</target>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Muhtelif</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+        <target>Çeviriler</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.1">
+        <source>Replace given labels for certain languages.</source>
+        <target>Belirli diller için verilen etiketleri değiştirin.</target>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.0">
+        <source>Integrity Check</source>
+        <target>Bütünlük Denetimi</target>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.1">
+        <source>Validate your shop configuration against common errors.</source>
+        <target>Mağazanızın yapılandırmasını genel hatalara karşı doğrulayın.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

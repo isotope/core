@@ -1,0 +1,22 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_settings.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="tl_settings.iso_cartTimeout.0">
+        <source>Guest cart timeout</source>
+        <target>Misafir alışveriş sepeti zaman aşımı</target>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_cartTimeout.1">
+        <source>Enter the maximum lifetime of a guest cart in seconds (30 days = 2592000 seconds).</source>
+        <target>Misafir kullanıcılar için alışveriş sepetinin maksimum kullanım ömrünü saniye cinsinden girin (30 gün = 2592000 saniye).</target>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_orderTimeout.0">
+        <source>Order timeout</source>
+        <target>Sipariş zaman aşımı</target>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_orderTimeout.1">
+        <source>Enter how long an order will stay in the database if the checkout was not successful (7 days = 604800 seconds).</source>
+        <target>Ödemenin başarısız olması durumunda bir siparişin veritabanında kalacağı süreyi girin (7 gün = 604800 saniye).</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

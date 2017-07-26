@@ -1,0 +1,1762 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="ERR.systemColumn">
+        <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
+        <target> &quot;%s&quot;  ismi sistem kullanımı için ayrılmıştır. Lütfen farklı bir ad seçin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noStoreConfigurationSet">
+        <source>No store configuration available</source>
+        <target>Mağaza yapılandırması yok</target>
+      </trans-unit>
+      <trans-unit id="ERR.noDefaultStoreConfiguration">
+        <source>Please create a default store configuration.</source>
+        <target>Lütfen bir varsayılan mağaza yapılandırması oluşturun.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyOrderHistory">
+        <source>You have not yet placed any orders.</source>
+        <target>Henüz bir sipariş vermedin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderNotFound">
+        <source>The requested order was not found.</source>
+        <target>İstenen sipariş bulunamadı.</target>
+      </trans-unit>
+      <trans-unit id="ERR.isoLoginRequired">
+        <source>You must be logged in to checkout.</source>
+        <target>Ödeme yapmak için giriş yapmalısınız.</target>
+      </trans-unit>
+      <trans-unit id="ERR.variantDuplicate">
+        <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Bu özelliklere sahip bir çeşit zaten mevcuttur. Lütfen başka bir kombinasyon seçin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.discount">
+        <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Lütfen + veya - ve isteğe bağlı olarak yüzde ile imzalanmış tam sayıları veya ondalık sayıları girin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.surcharge">
+        <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Lütfen tam sayıları veya ondalık sayıları isteğe bağlı olarak yüzde cinsinden girin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.orderFailed">
+        <source>Checkout failed. Please try again or choose another payment method.</source>
+        <target>Ödeme başarısız oldu. Lütfen tekrar deneyin veya başka bir ödeme yöntemi seçin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.noAddressBookEntries">
+        <source>You have no address book entries.</source>
+        <target>Adres defteri girişiniz yok.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartMinSubtotal">
+        <source>The minimum order amount is %s. Please add more products before checkout.</source>
+        <target>Asgari sipariş miktarı %s. Ödemeden önce lütfen daha fazla ürün ekleyin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.productMinimumQuantity">
+        <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
+        <target>&quot;%s&quot; ürünü  için minimum sipariş adedi %s olmalıdır. Lütfen alışveriş sepetinizi kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.imageInFallback">
+        <source>This image has already been assigned to the fallback language.</source>
+        <target>Bu resim, geri dönüşüm diline zaten atandı.</target>
+      </trans-unit>
+      <trans-unit id="ERR.datepickerRgxp">
+        <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Tarih seçiciyi etkinleştirmek için uygun bir alan doğrulama (tarih, saat, tarih ve saat) seçin.</target>
+      </trans-unit>
+      <trans-unit id="ERR.emptyDownloadsFolder">
+        <source>The selected folder is empty.</source>
+        <target>Seçilen klasör boş.</target>
+      </trans-unit>
+      <trans-unit id="ERR.checkoutNotAllowed">
+        <source>User checkout not allowed</source>
+        <target>Kullanıcının ödemesine izin verilmiyor</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionItemNotAvailable">
+        <source>This product is no longer available.</source>
+        <target>Bu ürün artık mevcut değil.</target>
+      </trans-unit>
+      <trans-unit id="ERR.collectionErrorInItems">
+        <source>There are errors in your products.</source>
+        <target>Ürünlerinizde hatalar var.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cartErrorInItems">
+        <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Lütfen kontrol etmeden önce sepetinizdeki hataları çözün.</target>
+      </trans-unit>
+      <trans-unit id="ERR.cumulativeDuplicateAttribute">
+        <source>You cannot configure the same attribute multiple times.</source>
+        <target>Aynı özniteliği birden fazla düzenleyemezsiniz.</target>
+      </trans-unit>
+      <trans-unit id="ERR.uploadNotFound">
+        <source>The uploaded file is no longer available.</source>
+        <target>Yüklenen dosya artık mevcut değil.</target>
+      </trans-unit>
+      <trans-unit id="MSC.selectGroup">
+        <source>Only show this group</source>
+        <target>Bu grubu yalnızca göster</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByGroups">
+        <source>Groups</source>
+        <target>Gruplar</target>
+      </trans-unit>
+      <trans-unit id="MSC.filterByPages">
+        <source>Pages</source>
+        <target>Sayfalar</target>
+      </trans-unit>
+      <trans-unit id="MSC.groupPickerHome">
+        <source>Back to the group picker</source>
+        <target>Grup seçicisine geri dön</target>
+      </trans-unit>
+      <trans-unit id="MSC.allGroups">
+        <source>Show all groups</source>
+        <target>Tüm grupları göster</target>
+      </trans-unit>
+      <trans-unit id="MSC.noVariants">
+        <source>There are no variants for this product.</source>
+        <target>Bu ürün için herhangi bir çeşit bulunmamaktadır.</target>
+      </trans-unit>
+      <trans-unit id="MSC.copyFallback">
+        <source>Duplicate Fallback</source>
+        <target>Yedek Çoğalt</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderDetailsHeadline">
+        <source>Order no %s / %s</source>
+        <target>Sipariş no %s / %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_processing">
+        <source>Your payment is being processed. Please be patient...</source>
+        <target>Ödemeniz işleniyor. Lütfen sabırlı olun...</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmNoUploads">
+        <source>No files uploaded.</source>
+        <target>Hiçbir dosya yüklenmedi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUnknownError">
+        <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Dosya bilinmeyen bir nedenle yüklenemedi. Lütfen sistem günlüğünü kontrol edin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmDrop">
+        <source>Drop files here to upload</source>
+        <target>Yüklemek istediğiniz dosyaları buraya sürükleyin</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmUpload">
+        <source>Upload files</source>
+        <target>Dosyaları yükle</target>
+      </trans-unit>
+      <trans-unit id="MSC.mmProcessing">
+        <source>Processing dropped files...</source>
+        <target>Sürüklenen dosyalar işleniyor...</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableRecords">
+        <source>Some records could not be deleted.</source>
+        <target>Bazı kayıtlar silinemedi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.undeletableUnpublished">
+        <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Bazı kayıtlar silinemedi ve bunun yerine yayınlanmamış durumda.</target>
+      </trans-unit>
+      <trans-unit id="MSC.quantity">
+        <source>Quantity</source>
+        <target>Adet</target>
+      </trans-unit>
+      <trans-unit id="MSC.taxFree">
+        <source>Tax-free</source>
+        <target>Vergisiz</target>
+      </trans-unit>
+      <trans-unit id="MSC.defaultSearchText">
+        <source>search products</source>
+        <target>ürünleri ara</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsLabel">
+        <source>Your downloadable products</source>
+        <target>İndirilebilir ürünleriniz</target>
+      </trans-unit>
+      <trans-unit id="MSC.priceRangeLabel">
+        <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class=&quot;from&quot;&gt;Kimden&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.detailLabel">
+        <source>View Details</source>
+        <target>Detayları Gör</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderLabel">
+        <source>Reorder</source>
+        <target>Yeniden sipariş ver</target>
+      </trans-unit>
+      <trans-unit id="MSC.perPageLabel">
+        <source>Products Per Page</source>
+        <target>Sayfa başına ürün</target>
+      </trans-unit>
+      <trans-unit id="MSC.searchTermsLabel">
+        <source>Keywords</source>
+        <target>Anahtar kelimeler</target>
+      </trans-unit>
+      <trans-unit id="MSC.submitLabel">
+        <source>Submit</source>
+        <target>Gönder</target>
+      </trans-unit>
+      <trans-unit id="MSC.clearFiltersLabel">
+        <source>Clear Filters</source>
+        <target>Filtreleri Sıfırla</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update">
+        <source>Update</source>
+        <target>Güncelle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_cart">
+        <source>Add To Cart</source>
+        <target>Sepete ekle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_all_to_cart">
+        <source>Add All To Cart</source>
+        <target>Hepsini sepete ekle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.update_cart">
+        <source>Update Cart</source>
+        <target>Sepeti Güncelle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_favorites">
+        <source>Add To Favorites</source>
+        <target>Favorilere Ekle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.remove_from_favorites">
+        <source>Remove From Favorites</source>
+        <target>Favorilerden Kaldır</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderByLabel">
+        <source>Order By:</source>
+        <target>Sıralama türü:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noProducts">
+        <source>No products have been found.</source>
+        <target>Hiçbir ürün bulunamadı.</target>
+      </trans-unit>
+      <trans-unit id="MSC.previousStep">
+        <source>Back</source>
+        <target>Geri</target>
+      </trans-unit>
+      <trans-unit id="MSC.nextStep">
+        <source>Continue</source>
+        <target>Devam et</target>
+      </trans-unit>
+      <trans-unit id="MSC.confirmOrder">
+        <source>Order</source>
+        <target>Sipariş</target>
+      </trans-unit>
+      <trans-unit id="MSC.noCategoriesAssociated">
+        <source>No categories are associated with this product.</source>
+        <target>Bu üründe kategori bulunmamaktadır.</target>
+      </trans-unit>
+      <trans-unit id="MSC.labelSubmit">
+        <source>Submit</source>
+        <target>Gönder</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInFavorites">
+        <source>There are no items in your favorites list.</source>
+        <target>Favoriler listenizde hiçbir öğe yok.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noItemsInCart">
+        <source>There are no items in your cart.</source>
+        <target>Sepetinizde hiç ürün yok.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToFavorites">
+        <source>The selected product has been added to your favorites.</source>
+        <target>Seçilen ürün favorilerinize eklendi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.removedFromFavorites">
+        <source>The selected product has been removed to your favorites.</source>
+        <target>Seçilen ürün favorilerinize kaldırılmıştır.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToCart">
+        <source>The selected product has been added to your shopping cart.</source>
+        <target>Seçilen ürün alışveriş sepetinize eklendi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartMerged">
+        <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Son ziyaretinizdeki ürünler yeniden eklendi. Lütfen alışveriş sepeti öğelerinizi inceleyin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.reorderConfirmation">
+        <source>The products of the selected order have been added to your shopping cart.</source>
+        <target>Seçilen siparişin ürünleri alışveriş sepetinize eklendi.</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkTitle">
+        <source>Edit %s</source>
+        <target>Düzenle %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.editProductLinkText">
+        <source>Edit</source>
+        <target>Düzenle</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkText">
+        <source>Remove</source>
+        <target>Sil</target>
+      </trans-unit>
+      <trans-unit id="MSC.removeProductLinkTitle">
+        <source>Remove %s from your cart</source>
+        <target>%s ürününü sepetten sil</target>
+      </trans-unit>
+      <trans-unit id="MSC.subTotalLabel">
+        <source>Order Subtotal: </source>
+        <target>Sipariş Ara Tutarı:</target>
+      </trans-unit>
+      <trans-unit id="MSC.shippingLabel">
+        <source>Shipping (%s)</source>
+        <target>Nakliye (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.paymentLabel">
+        <source>Payment (%s)</source>
+        <target>Ödeme (%s)</target>
+      </trans-unit>
+      <trans-unit id="MSC.grandTotalLabel">
+        <source>Order Total: </source>
+        <target>Sipariş Toplamı:</target>
+      </trans-unit>
+      <trans-unit id="MSC.noPaymentModules">
+        <source>No payment options are currently available</source>
+        <target>Şu anda ödeme seçeneği mevcut değil</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingModules">
+        <source>No shipping options are currently available.</source>
+        <target>Şu anda hiçbir nakliye seçeneği mevcut değildir.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrderEmails">
+        <source>No orders emails found.</source>
+        <target>Hiçbir sipariş e-postası bulunamadı.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noOrders">
+        <source>No orders found.</source>
+        <target>Sipariş bulunamadı.</target>
+      </trans-unit>
+      <trans-unit id="MSC.downloadsRemaining">
+        <source>&lt;br /&gt;%s downloads remaining</source>
+        <target>&lt;br /&gt;kalan indirme %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.cartBT">
+        <source>Shopping Cart</source>
+        <target>Alışveriş Sepeti</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutBT">
+        <source>Proceed to Checkout</source>
+        <target>Ödemeye Git</target>
+      </trans-unit>
+      <trans-unit id="MSC.continueShoppingBT">
+        <source>Continue shopping</source>
+        <target>Alışverişe devam et</target>
+      </trans-unit>
+      <trans-unit id="MSC.updateCartBT">
+        <source>Update Cart</source>
+        <target>Sepeti Güncelle</target>
+      </trans-unit>
+      <trans-unit id="MSC.orderStatusHeadline">
+        <source>Order Status: %s</source>
+        <target>Sipariş Durumu : %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkboutStepBack">
+        <source>Go back to step &quot;%s&quot;</source>
+        <target>&quot;%s&quot; adımına dön</target>
+      </trans-unit>
+      <trans-unit id="MSC.createNewAddressLabel">
+        <source>Create New Address</source>
+        <target>Yeni Adres Oluştur</target>
+      </trans-unit>
+      <trans-unit id="MSC.useBillingAddress">
+        <source>Use billing address</source>
+        <target>Fatura adresini kullan</target>
+      </trans-unit>
+      <trans-unit id="MSC.useCustomerAddress">
+        <source>Use customer address</source>
+        <target>Müşteri adresini kullan</target>
+      </trans-unit>
+      <trans-unit id="MSC.differentShippingAddress">
+        <source>Different shipping address</source>
+        <target>Farklı gönderim adresi</target>
+      </trans-unit>
+      <trans-unit id="MSC.editAddressLabel">
+        <source>Edit</source>
+        <target>Düzenle</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressLabel">
+        <source>Delete</source>
+        <target>Sil</target>
+      </trans-unit>
+      <trans-unit id="MSC.deleteAddressConfirm">
+        <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Bu adresi gerçekten silmek istiyor musun? Bu geri alınamaz.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_invoice_title">
+        <source>Invoice</source>
+        <target>Fatura</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_status">
+        <source>Status</source>
+        <target>Durum</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_date">
+        <source>Order date</source>
+        <target>Sipariş tarihi</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_document_number">
+        <source>Order number</source>
+        <target>Sipariş tarihi</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_description">
+        <source>Description</source>
+        <target>Açıklama</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_quantity">
+        <source>Quantity</source>
+        <target>Adet</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_price">
+        <source>Price</source>
+        <target>Fiyat</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_total">
+        <source>Total</source>
+        <target>Toplam</target>
+      </trans-unit>
+      <trans-unit id="MSC.low_to_high">
+        <source>lo to hi</source>
+        <target>düşükten yükseğe</target>
+      </trans-unit>
+      <trans-unit id="MSC.high_to_low">
+        <source>hi to lo</source>
+        <target>yüksekten düşüğe</target>
+      </trans-unit>
+      <trans-unit id="MSC.a_to_z">
+        <source>A to Z</source>
+        <target>A'dan Z'ye</target>
+      </trans-unit>
+      <trans-unit id="MSC.z_to_a">
+        <source>Z to A</source>
+        <target>Z'den A'ya</target>
+      </trans-unit>
+      <trans-unit id="MSC.old_to_new">
+        <source>earlier to later</source>
+        <target>yeniden eskiye</target>
+      </trans-unit>
+      <trans-unit id="MSC.new_to_old">
+        <source>later to earlier</source>
+        <target>eskiden yeniye</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.0">
+        <source>Processing payment</source>
+        <target>Ödeme İşlemi</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.1">
+        <source>You will be redirected to the payment gateway website.</source>
+        <target>Ödeme ağ geçidi web sitesine yönlendirileceksiniz.</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.2">
+        <source>Pay now</source>
+        <target>Şimdi öde</target>
+      </trans-unit>
+      <trans-unit id="MSC.pay_with_redirect.3">
+        <source>Please click on the &quot;Pay now&quot; button to continue.</source>
+        <target>Devam etmek için &quot;Şimdi öde&quot; tuşuna basın</target>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionOnline">
+        <source>Click here to view this PayPal transaction online</source>
+        <target>Bu PayPal işlemini çevrimiçi görüntülemek için tıklayın</target>
+      </trans-unit>
+      <trans-unit id="MSC.productSingle">
+        <source>1 Product</source>
+        <target>1 Ürün</target>
+      </trans-unit>
+      <trans-unit id="MSC.productMultiple">
+        <source>%s Products</source>
+        <target>%s Ürün</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address_message">
+        <source>Enter your shipping information or select an existing address.</source>
+        <target>Gönderim bilgilerinizi girin veya var olan bir adresi seçin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_message">
+        <source>Enter your billing information or select an existing address.</source>
+        <target>Fatura bilgilerinizi girin veya varolan bir adresi seçin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address_guest_message">
+        <source>Enter your billing information</source>
+        <target>Fatura bilgilerinizi girin</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_message">
+        <source>Enter your customer information or select an existing address.</source>
+        <target>Müşteri bilgilerinizi girin veya mevcut bir adresi seçin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address_guest_message">
+        <source>Enter your customer information</source>
+        <target>Müşteri bilgilerinizi girin</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_message">
+        <source>Select a shipping method.</source>
+        <target>Bir nakliye şekli seçin</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method_missing">
+        <source>Please select a shipping method.</source>
+        <target>Lütfen bir nakliye şekli seçin</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_message">
+        <source>Enter your payment information.</source>
+        <target>Ödeme bilgilerinizi girin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method_missing">
+        <source>Please select a payment method.</source>
+        <target>Lütfen bir ödeme şekli seçin.</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review_message">
+        <source>Review and confirm your order details.</source>
+        <target>Sipariş ayrıntılarınızı gözden geçirin ve onaylayın.</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_address">
+        <source>Address</source>
+        <target>Adres</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_shipping">
+        <source>Shipping</source>
+        <target>Nakliye</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_payment">
+        <source>Payment</source>
+        <target>Ödeme</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkout_review">
+        <source>Review</source>
+        <target>Gözden Geçirme</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_address">
+        <source>Billing Address</source>
+        <target>Fatura Adresi</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_address">
+        <source>Shipping Address</source>
+        <target>Nakliye Adresi</target>
+      </trans-unit>
+      <trans-unit id="MSC.billing_shipping_address">
+        <source>Billing &amp; Shipping Address</source>
+        <target>Fatura Adresi ve Nakliye Adresi</target>
+      </trans-unit>
+      <trans-unit id="MSC.customer_address">
+        <source>Customer Address</source>
+        <target>Müşteri Adresi</target>
+      </trans-unit>
+      <trans-unit id="MSC.shipping_method">
+        <source>Shipping Method</source>
+        <target>Nakliye Şekli</target>
+      </trans-unit>
+      <trans-unit id="MSC.payment_method">
+        <source>Payment Method</source>
+        <target>Ödeme Şekli</target>
+      </trans-unit>
+      <trans-unit id="MSC.order_review">
+        <source>Order Review</source>
+        <target>Siparişi Gözden Geçirme</target>
+      </trans-unit>
+      <trans-unit id="MSC.changeCheckoutInfo">
+        <source>Change</source>
+        <target>Değiştir</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_num">
+        <source>Credit card number</source>
+        <target>Kredi Kartı Numarası</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_type">
+        <source>Credit card type</source>
+        <target>Kredi Kartı tipi</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_ccv">
+        <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV - güvenlik numarası (3 ya da 4 rakam olur)</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_month">
+        <source>Expiration month</source>
+        <target>Son kullanma ayı</target>
+      </trans-unit>
+      <trans-unit id="MSC.cc_exp_year">
+        <source>Expiration year</source>
+        <target>Son kullanma yılı</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNotFound">
+        <source>Payment module not found!</source>
+        <target>Ödeme modülü bulunamadı!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNotFound">
+        <source>Shipping module not found!</source>
+        <target>Nakliye modülü bulunamadı!</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendPaymentNoInfo">
+        <source>This payment module does not provide additional information.</source>
+        <target>Bu ödeme modülü ek bilgi sağlamıyor.</target>
+      </trans-unit>
+      <trans-unit id="MSC.backendShippingNoInfo">
+        <source>This shipping module does not provide additional information.</source>
+        <target>Bu nakliye modülü ek bilgi sağlamıyor.</target>
+      </trans-unit>
+      <trans-unit id="MSC.useDefault">
+        <source>Use default value</source>
+        <target>Varsayılan değeri kullan</target>
+      </trans-unit>
+      <trans-unit id="MSC.activeStep">
+        <source>active step: </source>
+        <target>geçerli adım:</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheLoading">
+        <source>Loading products...</source>
+        <target>Ürünler yükleniyor...</target>
+      </trans-unit>
+      <trans-unit id="MSC.productcacheNoscript">
+        <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
+        <target>Tarayıcınız JavaScript'i desteklemiyor. Ürün listesini yüklemek için &lt;a href=&quot;%s&quot;&gt; burayı tıklayın &lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noFilesInFolder">
+        <source>No files in this folder</source>
+        <target>Bu klasörde dosya yok</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportConfirmation">
+        <source>Imported file %s for product &quot;%s&quot;</source>
+        <target>&quot;%s&quot; ürünü için içe aktarılan %s dosyası</target>
+      </trans-unit>
+      <trans-unit id="MSC.assetImportNoFilesFound">
+        <source>The folder did not contain any files to be imported.</source>
+        <target>Klasör, içe aktarılacak herhangi bir dosya içermiyordu.</target>
+      </trans-unit>
+      <trans-unit id="MSC.loadingProductData">
+        <source>Loading product data …</source>
+        <target>Ürün bilgisi yükleniyor...</target>
+      </trans-unit>
+      <trans-unit id="MSC.templatesConfig">
+        <source>Store Config &quot;%s&quot;</source>
+        <target>Mağaza Yapılandırması &quot;%s&quot;</target>
+      </trans-unit>
+      <trans-unit id="MSC.splittedTaxRate">
+        <source>Splitted</source>
+        <target>Bölünmüş</target>
+      </trans-unit>
+      <trans-unit id="MSC.newOrders">
+        <source>You have %s order(s) with status &quot;%s&quot;</source>
+        <target>&quot;%s&quot; durumunda %s sipariş(ler)iniz var</target>
+      </trans-unit>
+      <trans-unit id="MSC.checkoutStep">
+        <source>Step %s of %s (%s) - </source>
+        <target>%s adımdan %s  (%s) -</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.minutes">
+        <source>Minutes</source>
+        <target>Dakika</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.hours">
+        <source>Hours</source>
+        <target>Saat</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.days">
+        <source>Days</source>
+        <target>Gün</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.weeks">
+        <source>Weeks</source>
+        <target>Hafta</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.months">
+        <source>Months</source>
+        <target>Ay</target>
+      </trans-unit>
+      <trans-unit id="MSC.timePeriod.years">
+        <source>Years</source>
+        <target>Yıl</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroductionLegend">
+        <source>Introduction</source>
+        <target>Giriş</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.0">
+        <source>Welcome to Isotope eCommerce</source>
+        <target>Isotope eCommerce'e Hoş geldiniz</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.1">
+        <source>Isotope is the premier open source eCommerce solution for Contao.</source>
+        <target>Isotope, Contao için önde gelen açık kaynaklı bir e-ticaret çözümüdür.</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.2">
+        <source>This is the page where most of the configuration will take place. &lt;strong&gt;You should start from the bottom of this page and work your way upward from right to left.&lt;/strong&gt;</source>
+        <target>Bu, yapılandırmanın çoğunun gerçekleşeceği sayfadır. &lt;strong&gt;Bu sayfanın altından başlayıp sağdan sola doğru ve yukarı ilerlemelisiniz.&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.3">
+        <source>Visit the official &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; for the latest news, configuration manuals and professional support. Thank you so much for considering giving something back!</source>
+        <target>Son haberler,yapılandırma kılavuzları ve profesyonel destek için resmi &lt;a href=&quot;http://isotopeecommerce.org&quot; target=&quot;_blank&quot;&gt;Isotope eCommerce website&lt;/a&gt; web sayfasını ziyaret edin. Bir şeyler geri vermeyi düşündüğünüz için çok teşekkürler!</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.4">
+        <source>The Isotope eCommerce Team</source>
+        <target>Isotope eCommerce Takımı</target>
+      </trans-unit>
+      <trans-unit id="MSC.isotopeIntroduction.5">
+        <source>Isotope is a product of %s in association with &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
+        <target>Isotope, %s'in  &lt;a href=&quot;http://isotopeecommerce.org/de/team.html&quot; target=&quot;_blank&quot;&gt;the Isotope eCommerce Takımı&lt;/a&gt; ile ilişkili bir üründür.</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
+        <source>by date added (ascending)</source>
+        <target>tarihe göre eklendi (artan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
+        <source>by date added (descending)</source>
+        <target>tarihe göre eklendi (azalan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
+        <source>by date updated (ascending)</source>
+        <target>tarihe göre güncellendi (artan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_tstamp">
+        <source>by date updated (descending)</source>
+        <target>tarihe göre güncellendi (azalan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
+        <source>by product name (ascending)</source>
+        <target>ürün adına göre (artan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_name">
+        <source>by product name (descending)</source>
+        <target>ürün adına göre (azalan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.asc_price">
+        <source>by price (ascending)</source>
+        <target>fiyata göre (artan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_orderCollectionBy.desc_price">
+        <source>by price (descending)</source>
+        <target>fiyata göre (azalan)</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingAddress">
+        <source>Please fill in the shipping address.</source>
+        <target>Lütfen nakliye adresini doldurun.</target>
+      </trans-unit>
+      <trans-unit id="MSC.noShippingRequiredMsg">
+        <source>None of the products in your shopping cart require shipping!</source>
+        <target>Sepetinizdeki hiçbir ürün nakliye gerektirmiyor!</target>
+      </trans-unit>
+      <trans-unit id="MSC.availableShippingMethodsMsg">
+        <source>The following shipping methods are available for your current shopping cart and the shipping address details you provided:</source>
+        <target>Aşağıdaki nakliye yöntemleri mevcut alışveriş sepetiniz ve verdiğiniz gönderim adresi ayrıntıları için kullanılabilir:</target>
+      </trans-unit>
+      <trans-unit id="MSC.saveAddressButton">
+        <source>Save address</source>
+        <target>Adresi kaydet</target>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_de">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+        <target>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_ch">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+        <target>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-ch#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</target>
+      </trans-unit>
+      <trans-unit id="MSC.billpay_agb_at">
+        <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+        <target>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</target>
+      </trans-unit>
+      <trans-unit id="CTE.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.0">
+        <source>Flat-price shipping</source>
+        <target>Düz fiyatlı gönderim</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.flat.1">
+        <source>This is the default shipping method for regular shipping.</source>
+        <target>Bu, normal nakliye için varsayılan gönderim yöntemidir.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.0">
+        <source>Shipping group</source>
+        <target>Nakliye grubu</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.group.1">
+        <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
+        <target>Bu yöntemle, birden fazla nakliye yöntemini gruplayabilir ve fiyat esas alınarak fiyatını hesaplayabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.0">
+        <source>Cash</source>
+        <target>Nakit</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.cash.1">
+        <source>Use this for all offline processed payment.</source>
+        <target>Tüm çevrimdışı işlenmiş ödemeler için bunu kullanın.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
+        <source>Paybyway</source>
+        <target>Paybyway</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paybyway.1">
+        <source>Implements payment provider &lt;a href=&quot;https://www.paybyway.com/en/&quot; target=&quot;_blank&quot;&gt;Paybyway&lt;/a&gt;.</source>
+        <target>Ödeme sağlayıcısını &lt;a href=&quot;https://www.paybyway.com/en/&quot; target=&quot;_blank&quot;&gt; Paybyway &lt;/a&gt; uygular.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.0">
+        <source>PayPal Standard Checkout</source>
+        <target>PayPal Standart Ödeme</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal.1">
+        <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+        <target>Bu PayPal modülü, IPN'yi (Anında Ödeme Bildirimleri) destekler.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
+        <source>PostFinance</source>
+        <target>PostFinance</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.postfinance.1">
+        <source>Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.</source>
+        <target>Çeşitli kart türlerini destekleyen İsviçre ödeme sistemi için ödeme ağ geçidi. Mağaza, başarılı işlemler hakkında anında bilgilendirilecek.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.viveum.0">
+        <source>VIVEUM</source>
+        <target>VIVEUM</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.viveum.1">
+        <source>Payment gateway for VIVEUM Zahlungssysteme GmbH.</source>
+        <target>VIVEUM Zahlungssysteme GmbH şirketinin ürün yelpazesi arasında.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.datatrans.0">
+        <source>Datatrans</source>
+        <target>Datatrans</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.datatrans.1">
+        <source>A payment module for the swiss payment gateway &quot;Datatrans&quot;.</source>
+        <target>İsviçre ödeme ağ geçidi &quot;Datatrans&quot; için bir ödeme modülü.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.innopay.0">
+        <source>Innopay</source>
+        <target>Innopay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.innopay.1">
+        <source>A payment module for the swiss payment gateway &quot;Innocard&quot;.</source>
+        <target>İsviçre ödeme ağ geçidi &quot;Innocard&quot; için bir ödeme modülü.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
+        <source>Sparkasse</source>
+        <target>Sparkasse</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.saferpay.0">
+        <source>Saferpay</source>
+        <target>Saferpay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.billpay_saferpay.0">
+        <source>BillPay (using Saferpay)</source>
+        <target>BillPay (Saferpay kullanır)</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.sofortueberweisung.0">
+        <source>sofortüberweisung.de</source>
+        <target>sofortüberweisung.de</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.expercash.0">
+        <source>ExperCash</source>
+        <target>ExperCash</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.epay.0">
+        <source>ePay</source>
+        <target>ePay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.epay.1">
+        <source>Implements payment provider &lt;a href=&quot;http://www.epay.eu&quot; target=&quot;_blank&quot;&gt;ePay&lt;/a&gt;.</source>
+        <target>Ödeme sağlayıcısını &lt;a href=&quot;http://www.epay.eu&quot; target=&quot;_blank&quot;&gt; ePay &lt;/a&gt; sağlar.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.payone.0">
+        <source>PayOne</source>
+        <target>PayOne</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.worldpay.0">
+        <source>WorldPay</source>
+        <target>WorldPay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.quickpay.0">
+        <source>QuickPay</source>
+        <target>QuickPay</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.opp.0">
+        <source>Open Payment Platform</source>
+        <target>Open Payment Platform</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.opp.1">
+        <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
+        <target>Çeşitli ödeme sağlayıcıları için bir ödeme ağ geçidi (ör. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt; PayUnity.PAY &lt;/a&gt;).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_document.standard.0">
+        <source>Standard</source>
+        <target>Standart</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.0">
+        <source>Default gallery</source>
+        <target>Varsayılan galeri</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.standard.1">
+        <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
+        <target>&lt;p&gt;Tam boyutlu resimler için lightbox / mediabox'u kullanır. Sayfa düzen yapılandırmanızda uygun &quot;moo_&quot; şablonunu seçtiğinizden emin olun.&lt;/p&gt;&lt;p&gt;Bağlantı hedefine bir boru kullanarak bir &quot;rel&quot; özelliği sunabilirsiniz (örn. &quot;tl_files/video.mov | lightbox [ 400 300] &quot;). &quot;Rel&quot; özelliği sağlanmazsa, bağlantı yeni bir pencerede açılacaktır.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.inline.0">
+        <source>Inline gallery</source>
+        <target>Satır içi galeri</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.inline.1">
+        <source>Clicking on a gallery image will replace the main image.</source>
+        <target>Bir galeri resmini tıklamak onu ana resmin yerine koyacak.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.0">
+        <source>Elevate Zoom gallery</source>
+        <target>Elevate Zoom galeri</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_gallery.elevatezoom.1">
+        <source>A gallery that zooms on the image on hover. See &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;the script website&lt;/a&gt; for more information.</source>
+        <target>Fareyle üzerine gelerek görüntüyü büyüten bir galeri. Buradan &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom&quot; target=&quot;_blank&quot;&gt;script websitesi&lt;/a&gt; daha fazla bilgi alabilirsiniz.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.0">
+        <source>Standard product</source>
+        <target>Standart ürün</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_product.standard.1">
+        <source>A default product. Select this if nothing else matches.</source>
+        <target>Varsayılan bir ürün. Başka bir şey eşleşmiyorsa bunu seçin.</target>
+      </trans-unit>
+      <trans-unit id="ISO_VAT.eu_vies">
+        <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
+        <target>Avrupa KDV Numarası(&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</target>
+      </trans-unit>
+      <trans-unit id="CCT.mc">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa">
+        <source>Visa</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="CCT.amex">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="CCT.discover">
+        <source>Discover</source>
+        <target>Keşfet</target>
+      </trans-unit>
+      <trans-unit id="CCT.jcb">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="CCT.diners">
+        <source>Diner's Club</source>
+        <target>Diner's Club</target>
+      </trans-unit>
+      <trans-unit id="CCT.enroute">
+        <source>EnRoute</source>
+        <target>EnRoute</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_blanche">
+        <source>Carte Blanche</source>
+        <target>Carte Blanche</target>
+      </trans-unit>
+      <trans-unit id="CCT.jal">
+        <source>JAL</source>
+        <target>JAL</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro">
+        <source>Maestro UK</source>
+        <target>Maestro UK</target>
+      </trans-unit>
+      <trans-unit id="CCT.delta">
+        <source>Delta</source>
+        <target>Delta</target>
+      </trans-unit>
+      <trans-unit id="CCT.solo">
+        <source>Solo</source>
+        <target>Solo</target>
+      </trans-unit>
+      <trans-unit id="CCT.visa_electron">
+        <source>Visa Electron</source>
+        <target>Visa Electron</target>
+      </trans-unit>
+      <trans-unit id="CCT.dankort">
+        <source>Dankort</source>
+        <target>Dankort</target>
+      </trans-unit>
+      <trans-unit id="CCT.laser">
+        <source>Laser</source>
+        <target>Laser</target>
+      </trans-unit>
+      <trans-unit id="CCT.carte_bleue">
+        <source>Carte Bleue</source>
+        <target>Carte Bleue</target>
+      </trans-unit>
+      <trans-unit id="CCT.carta_si">
+        <source>Carta Si</source>
+        <target>Carta Si</target>
+      </trans-unit>
+      <trans-unit id="CCT.enc_acct_num">
+        <source>Encoded Account Number</source>
+        <target>Kodlanmış Hesap Numarası</target>
+      </trans-unit>
+      <trans-unit id="CCT.uatp">
+        <source>Universal Air Travel Program</source>
+        <target>Universal Air Travel Program</target>
+      </trans-unit>
+      <trans-unit id="CCT.maestro_intl">
+        <source>Maestro International</source>
+        <target>Maestro International</target>
+      </trans-unit>
+      <trans-unit id="CCT.ge_money_uk">
+        <source>GE Money UK</source>
+        <target>GE Money UK</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.0">
+        <source>Text field</source>
+        <target>Metin alanı</target>
+      </trans-unit>
+      <trans-unit id="ATTR.text.1">
+        <source>A single-line input field for a short or medium text.</source>
+        <target>Kısa veya orta uzunlukta metin için tek satırlık bir giriş alanı.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.0">
+        <source>Textarea</source>
+        <target>Büyük metin alanı</target>
+      </trans-unit>
+      <trans-unit id="ATTR.textarea.1">
+        <source>A multi-line input field for a medium or long text.</source>
+        <target>Orta veya uzun bir metin için çok satırlı bir giriş alanı.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.0">
+        <source>Select menu</source>
+        <target>Menü seçin</target>
+      </trans-unit>
+      <trans-unit id="ATTR.select.1">
+        <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Tek veya çok satırlı bir açılır menü.&lt;br /&gt;&lt;i&gt;Bu alan tipi, ürün çeşitleri için uygundur.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.0">
+        <source>Radio button menu</source>
+        <target>Radyo düğmesi menüsü</target>
+      </trans-unit>
+      <trans-unit id="ATTR.radio.1">
+        <source>A list of multiple options from which one can be selected.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
+        <target>Birinin  birden çok seçenek seçebileceği bir liste.&lt;br /&gt;&lt;i&gt;Bu alan tipi, ürün çeşitleri için uygundur.&lt;/i&gt;</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.0">
+        <source>Checkbox menu</source>
+        <target>Onay kutusu menüsü</target>
+      </trans-unit>
+      <trans-unit id="ATTR.checkbox.1">
+        <source>A list of multiple options from which any can be selected.</source>
+        <target>Seçilebilecek birden çok seçenek içeren bir liste.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.0">
+        <source>Media Manager</source>
+        <target>Medya Yöneticisi</target>
+      </trans-unit>
+      <trans-unit id="ATTR.mediaManager.1">
+        <source>Upload images and other files to the Isotope eCommerce file system. Output is processed trough an IsotopeGallery class.</source>
+        <target>Görüntüleri ve diğer dosyaları sotope eCommerce dosya sistemine yükleyin. Çıktı, bir IsotopeGallery sınıfıyla işlenir.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.conditionalselect.0">
+        <source>Conditional Select-Menu</source>
+        <target>Şartlı Seçme Menüsü</target>
+      </trans-unit>
+      <trans-unit id="ATTR.conditionalselect.1">
+        <source>show select-options based on another select menu.</source>
+        <target>Seçenekleri, başka bir seçme menüsüne dayalı olarak gösterin.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fileTree.0">
+        <source>File tree</source>
+        <target>Dosya Ağacı</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fileTree.1">
+        <source>A file tree for single or multiple files and folders.</source>
+        <target>Tek veya birden fazla dosya ve klasör için bir dosya ağacı.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.0">
+        <source>Downloads</source>
+        <target>İndirmeler</target>
+      </trans-unit>
+      <trans-unit id="ATTR.downloads.1">
+        <source>Download files from the product, e.g. manuals, data sheets etc.</source>
+        <target>Dosyaları üründen indirin, ör. kullanım klavzuları, veri tabloları vs.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.0">
+        <source>File upload</source>
+        <target>Dosya yükleme</target>
+      </trans-unit>
+      <trans-unit id="ATTR.upload.1">
+        <source>A single-line input field to upload a local file to the server.</source>
+        <target>Sunucuya yerel bir dosya yüklemek için tek satırlık bir giriş alanı.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.media.0">
+        <source>Video/Audio</source>
+        <target>Video / Ses</target>
+      </trans-unit>
+      <trans-unit id="ATTR.media.1">
+        <source>Generates a video or audio player.</source>
+        <target>Bir video oynatıcı veya müzik çalar oluşturur.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fineUploader.0">
+        <source>Fine Uploader</source>
+        <target>Dosya Yükleyici</target>
+      </trans-unit>
+      <trans-unit id="ATTR.fineUploader.1">
+        <source>A javascript file uploader to upload a local file to the server.</source>
+        <target>Sunucuya yerel bir dosya yüklemek için bir javascript dosyası yükleyicisi.</target>
+      </trans-unit>
+      <trans-unit id="CUR.AED">
+        <source>AED - United Arab Emirates Dirham</source>
+        <target>AED - United Arab Emirates Dirham</target>
+      </trans-unit>
+      <trans-unit id="CUR.AFN">
+        <source>AFN - Afghani</source>
+        <target>AFN - Afghani</target>
+      </trans-unit>
+      <trans-unit id="CUR.ALL">
+        <source>ALL - Lek</source>
+        <target>ALL - Lek</target>
+      </trans-unit>
+      <trans-unit id="CUR.AMD">
+        <source>AMD - Dram</source>
+        <target>AMD - Dram</target>
+      </trans-unit>
+      <trans-unit id="CUR.ANG">
+        <source>ANG - Netherlands Antilles Guilder</source>
+        <target>ANG - Netherlands Antilles Guilder</target>
+      </trans-unit>
+      <trans-unit id="CUR.AOA">
+        <source>AOA - Kwanza</source>
+        <target>AOA - Kwanza</target>
+      </trans-unit>
+      <trans-unit id="CUR.ARS">
+        <source>ARS - Argentinian Nuevo Peso</source>
+        <target>ARS - Argentinian Nuevo Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.AUD">
+        <source>AUD - Australian Dollar</source>
+        <target>AUD - Australian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.AWG">
+        <source>AWG - Aruban Guilder</source>
+        <target>AWG - Aruban Guilder</target>
+      </trans-unit>
+      <trans-unit id="CUR.AZN">
+        <source>AZN - Azerbaijani Manat</source>
+        <target>AZN - Azerbaijani Manat</target>
+      </trans-unit>
+      <trans-unit id="CUR.BAM">
+        <source>BAM - Convertible Mark</source>
+        <target>BAM - Convertible Mark</target>
+      </trans-unit>
+      <trans-unit id="CUR.BBD">
+        <source>BBD - Barbados Dollar</source>
+        <target>BBD - Barbados Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BDT">
+        <source>BDT - Taka</source>
+        <target>BDT - Taka</target>
+      </trans-unit>
+      <trans-unit id="CUR.BGN">
+        <source>BGN - Bulgarian Lev</source>
+        <target>BGN - Bulgarian Lev</target>
+      </trans-unit>
+      <trans-unit id="CUR.BHD">
+        <source>BHD - Bahraini Dinar</source>
+        <target>BHD - Bahraini Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BIF">
+        <source>BIF - Burundi Franc</source>
+        <target>BIF - Burundi Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.BMD">
+        <source>BMD - Bermudian Dollar</source>
+        <target>BMD - Bermudian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BND">
+        <source>BND - Brunei Dollar</source>
+        <target>BND - Brunei Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BOB">
+        <source>BOB - Boliviano</source>
+        <target>BOB - Boliviano</target>
+      </trans-unit>
+      <trans-unit id="CUR.BRL">
+        <source>BRL - Brazilian real</source>
+        <target>BRL - Brazilian real</target>
+      </trans-unit>
+      <trans-unit id="CUR.BSD">
+        <source>BSD - Bahamian Dollar</source>
+        <target>BSD - Bahamian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.BTN">
+        <source>BTN - Ngultrum</source>
+        <target>BTN - Ngultrum</target>
+      </trans-unit>
+      <trans-unit id="CUR.BWP">
+        <source>BWP - Pula</source>
+        <target>BWP - Pula</target>
+      </trans-unit>
+      <trans-unit id="CUR.BYR">
+        <source>BYR - Belarussian Rouble</source>
+        <target>BYR - Belarussian Rouble</target>
+      </trans-unit>
+      <trans-unit id="CUR.BZD">
+        <source>BZD - Belize Dollar</source>
+        <target>BZD - Belize Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.CAD">
+        <source>CAD - Canadian Dollar</source>
+        <target>CAD - Canadian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.CDF">
+        <source>CDF - Congolese Franc</source>
+        <target>CDF - Congolese Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.CHF">
+        <source>CHF - Swiss Franc</source>
+        <target>CHF - Swiss Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.CLF">
+        <source>CLF - Unidades de Fomento</source>
+        <target>CLF - Unidades de Fomento</target>
+      </trans-unit>
+      <trans-unit id="CUR.CLP">
+        <source>CLP - Chilean Peso</source>
+        <target>CLP - Chilean Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.CNY">
+        <source>CNY - Yuan Renminbi</source>
+        <target>CNY - Yuan Renminbi</target>
+      </trans-unit>
+      <trans-unit id="CUR.COP">
+        <source>COP - Colombian Peso</source>
+        <target>COP - Colombian Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.CRC">
+        <source>CRC - Costa Rican Colón</source>
+        <target>CRC - Costa Rican Colón</target>
+      </trans-unit>
+      <trans-unit id="CUR.CUC">
+        <source>CUC - Peso Convertible</source>
+        <target>CUC - Peso Convertible</target>
+      </trans-unit>
+      <trans-unit id="CUR.CUP">
+        <source>CUP - Cuban Peso</source>
+        <target>CUP - Cuban Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.CVE">
+        <source>CVE - Escudo Caboverdiano</source>
+        <target>CVE - Escudo Caboverdiano</target>
+      </trans-unit>
+      <trans-unit id="CUR.CZK">
+        <source>CZK - Czech Koruna</source>
+        <target>CZK - Czech Koruna</target>
+      </trans-unit>
+      <trans-unit id="CUR.DJF">
+        <source>DJF - Djibouti Franc</source>
+        <target>DJF - Djibouti Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.DKK">
+        <source>DKK - Danish Krone</source>
+        <target>DKK - Danish Krone</target>
+      </trans-unit>
+      <trans-unit id="CUR.DOP">
+        <source>DOP - Dominican Republic Peso</source>
+        <target>DOP - Dominican Republic Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.DZD">
+        <source>DZD - Algerian Dinar</source>
+        <target>DZD - Algerian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.EGP">
+        <source>EGP - Egyptian Pound</source>
+        <target>EGP - Egyptian Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.ERN">
+        <source>ERN - Eritrean Nakfa</source>
+        <target>ERN - Eritrean Nakfa</target>
+      </trans-unit>
+      <trans-unit id="CUR.ETB">
+        <source>ETB - Ethiopian Birr</source>
+        <target>ETB - Ethiopian Birr</target>
+      </trans-unit>
+      <trans-unit id="CUR.EUR">
+        <source>EUR - Euro</source>
+        <target>EUR - Euro</target>
+      </trans-unit>
+      <trans-unit id="CUR.FJD">
+        <source>FJD - Fiji Dollar</source>
+        <target>FJD - Fiji Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.FKP">
+        <source>FKP - Falkland Pound</source>
+        <target>FKP - Falkland Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.GBP">
+        <source>GBP - Pound Sterling</source>
+        <target>GBP - Pound Sterling</target>
+      </trans-unit>
+      <trans-unit id="CUR.GEL">
+        <source>GEL - Lari</source>
+        <target>GEL - Lari</target>
+      </trans-unit>
+      <trans-unit id="CUR.GHS">
+        <source>GHS - Ghanaian cedi</source>
+        <target>GHS - Ghanaian cedi</target>
+      </trans-unit>
+      <trans-unit id="CUR.GIP">
+        <source>GIP - Gibraltar Pound</source>
+        <target>GIP - Gibraltar Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.GMD">
+        <source>GMD - Dalasi</source>
+        <target>GMD - Dalasi</target>
+      </trans-unit>
+      <trans-unit id="CUR.GNF">
+        <source>GNF - Guinea Franc</source>
+        <target>GNF - Guinea Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.GTQ">
+        <source>GTQ - Quetzal</source>
+        <target>GTQ - Quetzal</target>
+      </trans-unit>
+      <trans-unit id="CUR.GYD">
+        <source>GYD - Guyana Dollar</source>
+        <target>GYD - Guyana Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.HKD">
+        <source>HKD - Hong Kong Dollar</source>
+        <target>HKD - Hong Kong Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.HNL">
+        <source>HNL - Lempira</source>
+        <target>HNL - Lempira</target>
+      </trans-unit>
+      <trans-unit id="CUR.HRD">
+        <source>HRD - Croatian Dinar</source>
+        <target>HRD - Croatian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.HRK">
+        <source>HRK - Croatian Kuna</source>
+        <target>HRK - Croatian Kuna</target>
+      </trans-unit>
+      <trans-unit id="CUR.HTG">
+        <source>HTG - Gourde</source>
+        <target>HTG - Gourde</target>
+      </trans-unit>
+      <trans-unit id="CUR.HUF">
+        <source>HUF - Forint</source>
+        <target>HUF - Forint</target>
+      </trans-unit>
+      <trans-unit id="CUR.IDR">
+        <source>IDR - Rupiah</source>
+        <target>IDR - Rupiah</target>
+      </trans-unit>
+      <trans-unit id="CUR.ILS">
+        <source>ILS - Shekel</source>
+        <target>ILS - Shekel</target>
+      </trans-unit>
+      <trans-unit id="CUR.INR">
+        <source>INR - Indian Rupee</source>
+        <target>INR - Indian Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.IQD">
+        <source>IQD - Iraqi Dinar</source>
+        <target>IQD - Iraqi Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.IRR">
+        <source>IRR - Iranian Rial</source>
+        <target>IRR - Iranian Rial</target>
+      </trans-unit>
+      <trans-unit id="CUR.ISK">
+        <source>ISK - Icelandic Króna</source>
+        <target>ISK - Icelandic Króna</target>
+      </trans-unit>
+      <trans-unit id="CUR.JMD">
+        <source>JMD - Jamaican Dollar</source>
+        <target>JMD - Jamaican Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.JOD">
+        <source>JOD - Jordanian Dinar</source>
+        <target>JOD - Jordanian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.JPY">
+        <source>JPY - Yen</source>
+        <target>JPY - Yen</target>
+      </trans-unit>
+      <trans-unit id="CUR.KES">
+        <source>KES - Kenyan Shilling</source>
+        <target>KES - Kenyan Shilling</target>
+      </trans-unit>
+      <trans-unit id="CUR.KGS">
+        <source>KGS - Kyrgyzstani Som</source>
+        <target>KGS - Kyrgyzstani Som</target>
+      </trans-unit>
+      <trans-unit id="CUR.KHR">
+        <source>KHR - Riel</source>
+        <target>KHR - Riel</target>
+      </trans-unit>
+      <trans-unit id="CUR.KMF">
+        <source>KMF - Comorian Franc</source>
+        <target>KMF - Comorian Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.KPW">
+        <source>KPW - Democratic People's Republic of Korean Won</source>
+        <target>KPW - Democratic People's Republic of Korean Won</target>
+      </trans-unit>
+      <trans-unit id="CUR.KRW">
+        <source>KRW - Republic of Korean Won</source>
+        <target>KRW - Republic of Korean Won</target>
+      </trans-unit>
+      <trans-unit id="CUR.KWD">
+        <source>KWD - Kuwaiti Dinar</source>
+        <target>KWD - Kuwaiti Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.KYD">
+        <source>KYD - Cayman Islands Dollar</source>
+        <target>KYD - Cayman Islands Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.KZT">
+        <source>KZT - Tenge</source>
+        <target>KZT - Tenge</target>
+      </trans-unit>
+      <trans-unit id="CUR.LAK">
+        <source>LAK - Kip</source>
+        <target>LAK - Kip</target>
+      </trans-unit>
+      <trans-unit id="CUR.LBP">
+        <source>LBP - Lebanese Pound</source>
+        <target>LBP - Lebanese Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.LKR">
+        <source>LKR - Sri Lankan Rupee</source>
+        <target>LKR - Sri Lankan Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.LRD">
+        <source>LRD - Liberian Dollar</source>
+        <target>LRD - Liberian Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.LSL">
+        <source>LSL - Loti</source>
+        <target>LSL - Loti</target>
+      </trans-unit>
+      <trans-unit id="CUR.LTL">
+        <source>LTL - Litas</source>
+        <target>LTL - Litas</target>
+      </trans-unit>
+      <trans-unit id="CUR.LVL">
+        <source>LVL - Lats</source>
+        <target>LVL - Lats</target>
+      </trans-unit>
+      <trans-unit id="CUR.LYD">
+        <source>LYD - Libyan Dinar</source>
+        <target>LYD - Libyan Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.MAD">
+        <source>MAD - Moroccan Dirham</source>
+        <target>MAD - Moroccan Dirham</target>
+      </trans-unit>
+      <trans-unit id="CUR.MDL">
+        <source>MDL - Moldavian Leu</source>
+        <target>MDL - Moldavian Leu</target>
+      </trans-unit>
+      <trans-unit id="CUR.MGA">
+        <source>MGA - Malagasy ariary</source>
+        <target>MGA - Malagasy ariary</target>
+      </trans-unit>
+      <trans-unit id="CUR.MKD">
+        <source>MKD - Macedonian Dinar</source>
+        <target>MKD - Macedonian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.MMK">
+        <source>MMK - Kyat</source>
+        <target>MMK - Kyat</target>
+      </trans-unit>
+      <trans-unit id="CUR.MNT">
+        <source>MNT - Tugrik</source>
+        <target>MNT - Tugrik</target>
+      </trans-unit>
+      <trans-unit id="CUR.MOP">
+        <source>MOP - Pataca</source>
+        <target>MOP - Pataca</target>
+      </trans-unit>
+      <trans-unit id="CUR.MRO">
+        <source>MRO - Ouguiya</source>
+        <target>MRO - Ouguiya</target>
+      </trans-unit>
+      <trans-unit id="CUR.MUR">
+        <source>MUR - Mauritius Rupee</source>
+        <target>MUR - Mauritius Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.MVR">
+        <source>MVR - Rufiyaa</source>
+        <target>MVR - Rufiyaa</target>
+      </trans-unit>
+      <trans-unit id="CUR.MWK">
+        <source>MWK - Malawian Kwacha</source>
+        <target>MWK - Malawian Kwacha</target>
+      </trans-unit>
+      <trans-unit id="CUR.MXN">
+        <source>MXN - Mexican Peso</source>
+        <target>MXN - Mexican Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.MYR">
+        <source>MYR - Ringgit (Malaysian Dollar)</source>
+        <target>MYR - Ringgit (Malaysian Dollar)</target>
+      </trans-unit>
+      <trans-unit id="CUR.MZN">
+        <source>MZN - Mozambican metical</source>
+        <target>MZN - Mozambican metical</target>
+      </trans-unit>
+      <trans-unit id="CUR.NAD">
+        <source>NAD - Namibia Dollar</source>
+        <target>NAD - Namibia Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.NGN">
+        <source>NGN - Naira</source>
+        <target>NGN - Naira</target>
+      </trans-unit>
+      <trans-unit id="CUR.NIO">
+        <source>NIO - Cordoba Oro</source>
+        <target>NIO - Cordoba Oro</target>
+      </trans-unit>
+      <trans-unit id="CUR.NOK">
+        <source>NOK - Norwegian Krone</source>
+        <target>NOK - Norwegian Krone</target>
+      </trans-unit>
+      <trans-unit id="CUR.NPR">
+        <source>NPR - Nepalese Rupee</source>
+        <target>NPR - Nepalese Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.NZD">
+        <source>NZD - New Zealand Dollar</source>
+        <target>NZD - New Zealand Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.OMR">
+        <source>OMR - Omani Rial</source>
+        <target>OMR - Omani Rial</target>
+      </trans-unit>
+      <trans-unit id="CUR.PAB">
+        <source>PAB - Balboa</source>
+        <target>PAB - Balboa</target>
+      </trans-unit>
+      <trans-unit id="CUR.PEN">
+        <source>PEN - New Sol</source>
+        <target>PEN - New Sol</target>
+      </trans-unit>
+      <trans-unit id="CUR.PGK">
+        <source>PGK - Kina</source>
+        <target>PGK - Kina</target>
+      </trans-unit>
+      <trans-unit id="CUR.PHP">
+        <source>PHP - Philippines Peso</source>
+        <target>PHP - Philippines Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.PKR">
+        <source>PKR - Pakistani Rupee</source>
+        <target>PKR - Pakistani Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.PLN">
+        <source>PLN - Zloty</source>
+        <target>PLN - Zloty</target>
+      </trans-unit>
+      <trans-unit id="CUR.PYG">
+        <source>PYG - Guarani</source>
+        <target>PYG - Guarani</target>
+      </trans-unit>
+      <trans-unit id="CUR.QAR">
+        <source>QAR - Qatari Riyal</source>
+        <target>QAR - Qatari Riyal</target>
+      </trans-unit>
+      <trans-unit id="CUR.RON">
+        <source>RON - Romanian New Leu</source>
+        <target>RON - Romanian New Leu</target>
+      </trans-unit>
+      <trans-unit id="CUR.RSD">
+        <source>RSD - Serbian Dinar</source>
+        <target>RSD - Serbian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.RUB">
+        <source>RUB - Russian Federation Rouble</source>
+        <target>RUB - Russian Federation Rouble</target>
+      </trans-unit>
+      <trans-unit id="CUR.RWF">
+        <source>RWF - Rwandan Franc</source>
+        <target>RWF - Rwandan Franc</target>
+      </trans-unit>
+      <trans-unit id="CUR.SAR">
+        <source>SAR - Saudi Riyal</source>
+        <target>SAR - Saudi Riyal</target>
+      </trans-unit>
+      <trans-unit id="CUR.SBD">
+        <source>SBD - Solomon Islands Dollar</source>
+        <target>SBD - Solomon Islands Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.SCR">
+        <source>SCR - Seychelles Rupee</source>
+        <target>SCR - Seychelles Rupee</target>
+      </trans-unit>
+      <trans-unit id="CUR.SDG">
+        <source>SDG - Sudanese Pound</source>
+        <target>SDG - Sudanese Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.SEK">
+        <source>SEK - Swedish Krona</source>
+        <target>SEK - Swedish Krona</target>
+      </trans-unit>
+      <trans-unit id="CUR.SGD">
+        <source>SGD - Singapore Dollar</source>
+        <target>SGD - Singapore Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.SHP">
+        <source>SHP - St. Helena Pound</source>
+        <target>SHP - St. Helena Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.SLL">
+        <source>SLL - Leone</source>
+        <target>SLL - Leone</target>
+      </trans-unit>
+      <trans-unit id="CUR.SOS">
+        <source>SOS - Somali Shilling</source>
+        <target>SOS - Somali Shilling</target>
+      </trans-unit>
+      <trans-unit id="CUR.SRD">
+        <source>SRD - Surinamese Dollar</source>
+        <target>SRD - Surinamese Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.SSP">
+        <source>SSP - South Sudanese Pound</source>
+        <target>SSP - South Sudanese Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.STD">
+        <source>STD - Dobra</source>
+        <target>STD - Dobra</target>
+      </trans-unit>
+      <trans-unit id="CUR.SVC">
+        <source>SVC - El Salvador Colon</source>
+        <target>SVC - El Salvador Colon</target>
+      </trans-unit>
+      <trans-unit id="CUR.SYP">
+        <source>SYP - Syrian Pound</source>
+        <target>SYP - Syrian Pound</target>
+      </trans-unit>
+      <trans-unit id="CUR.SZL">
+        <source>SZL - Lilangeni</source>
+        <target>SZL - Lilangeni</target>
+      </trans-unit>
+      <trans-unit id="CUR.THB">
+        <source>THB - Baht</source>
+        <target>THB - Baht</target>
+      </trans-unit>
+      <trans-unit id="CUR.TJS">
+        <source>TJS - Tajikistani Somoni</source>
+        <target>TJS - Tajikistani Somoni</target>
+      </trans-unit>
+      <trans-unit id="CUR.TMT">
+        <source>TMT - Turkmenistani Manat</source>
+        <target>TMT - Turkmenistani Manat</target>
+      </trans-unit>
+      <trans-unit id="CUR.TND">
+        <source>TND - Tunisian Dinar</source>
+        <target>TND - Tunisian Dinar</target>
+      </trans-unit>
+      <trans-unit id="CUR.TOP">
+        <source>TOP - Pa'anga</source>
+        <target>TOP - Pa'anga</target>
+      </trans-unit>
+      <trans-unit id="CUR.TRY">
+        <source>TRY - New Turkish Lira</source>
+        <target>TRY - Türk Lirası</target>
+      </trans-unit>
+      <trans-unit id="CUR.TTD">
+        <source>TTD - Trinidad and Tobago Dollar</source>
+        <target>TTD - Trinidad and Tobago Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.TWD">
+        <source>TWD - Taiwan Dollar</source>
+        <target>TWD - Taiwan Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.TZS">
+        <source>TZS - Tanzanian Shilling</source>
+        <target>TZS - Tanzanian Shilling</target>
+      </trans-unit>
+      <trans-unit id="CUR.UAH">
+        <source>UAH - Hryvna</source>
+        <target>UAH - Hryvna</target>
+      </trans-unit>
+      <trans-unit id="CUR.UGX">
+        <source>UGX - Ugandan Shilling</source>
+        <target>UGX - Ugandan Shilling</target>
+      </trans-unit>
+      <trans-unit id="CUR.USD">
+        <source>USD - United States Dollar</source>
+        <target>USD - Amerikan Doları</target>
+      </trans-unit>
+      <trans-unit id="CUR.UYU">
+        <source>UYU - Uruguayan Peso</source>
+        <target>UYU - Uruguayan Peso</target>
+      </trans-unit>
+      <trans-unit id="CUR.UZS">
+        <source>UZS - Uzbekistani Som</source>
+        <target>UZS - Uzbekistani Som</target>
+      </trans-unit>
+      <trans-unit id="CUR.VEF">
+        <source>VEF - Bolivar Fuerte</source>
+        <target>VEF - Bolivar Fuerte</target>
+      </trans-unit>
+      <trans-unit id="CUR.VND">
+        <source>VND - Viet Nam Dông</source>
+        <target>VND - Viet Nam Dông</target>
+      </trans-unit>
+      <trans-unit id="CUR.VUV">
+        <source>VUV - Vatu</source>
+        <target>VUV - Vatu</target>
+      </trans-unit>
+      <trans-unit id="CUR.WST">
+        <source>WST - Tala</source>
+        <target>WST - Tala</target>
+      </trans-unit>
+      <trans-unit id="CUR.XCD">
+        <source>XCD - East Caribbean Dollar</source>
+        <target>XCD - East Caribbean Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.YER">
+        <source>YER - Yemeni Riyal</source>
+        <target>YER - Yemeni Riyal</target>
+      </trans-unit>
+      <trans-unit id="CUR.ZAR">
+        <source>ZAR - Rand</source>
+        <target>ZAR - Rand</target>
+      </trans-unit>
+      <trans-unit id="CUR.ZMK">
+        <source>ZMK - Zambian Kwacha</source>
+        <target>ZMK - Zambian Kwacha</target>
+      </trans-unit>
+      <trans-unit id="CUR.ZWL">
+        <source>ZWL - Zimbabwe Dollar</source>
+        <target>ZWL - Zimbabwe Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.CHF">
+        <source>Fr.</source>
+        <target>Fr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.DKK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.EUR">
+        <source>€</source>
+        <target>€</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.GBP">
+        <source>£</source>
+        <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.JPY">
+        <source>¥</source>
+        <target>¥</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.NOK">
+        <source>Kr.</source>
+        <target>Kr.</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.SEK">
+        <source>Kr.</source>
+        <target>Kr. </target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.USD">
+        <source>$</source>
+        <target>$</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

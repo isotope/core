@@ -1,0 +1,54 @@
+<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="tr">
+    <body>
+      <trans-unit id="XPL.isoReaderJumpTo">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+    Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
+    &lt;br&gt;
+    The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Option 1:&lt;/strong&gt;&lt;br&gt;
+    Do not set a reader page in the site structure. Place the list and reader module on the same page. Tell the list module to hide if a product alias is found (there's a checkbox in the module settings). The reader will automatically be invisible if no reader is found.&lt;br&gt;
+    &lt;u&gt;Advantage:&lt;/u&gt; Pretty simple to set up&lt;br&gt;
+    &lt;u&gt;Disadvantage:&lt;/u&gt; The layout of reader and list will be identical, and you cannot have different article content for the two cases.&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Option 2:&lt;/strong&gt;&lt;br&gt;
+    Set a reader page for every list page (product category) in the site structure. &lt;i&gt;Be aware that the reader setting is not inherited!&lt;/i&gt; Add the reader module to this page as usual.&lt;br&gt;
+    Isotope will now use this page to generate the site if a product alias is found in the URL. The alias will still be the one from the list page though.&lt;br&gt;
+    &lt;u&gt;Advantage:&lt;/u&gt; You can have different page content and layout (e.g. different columns) for the reader page then the list page.&lt;br&gt;
+    &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
+&lt;/p&gt;</source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+   Diğer Contao modüllerinin aksine, bir ürün ayrıntılarını görüntülerken bir kullanıcı okuyucu sayfasına yönlendirilmez. Güzel takma adlar sorununu çözmek ve bir ürünün detay sayfasını öğrenmek için yeni bir çözüm getirdik.&lt;br&gt;
+    &lt;br&gt;
+    Okuyucu sayfası (takma ad) ürün için bir kategori olarak seçtiğinizle daima aynı sayfadır. Bir ürünün ayrıntılarını görüntülemek için iki seçenek vardır:&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Seçenek 1:&lt;/strong&gt;&lt;br&gt;
+ Site yapısında bir okuyucu sayfası ayarlamayın. Listeyi ve okuyucu modülünü aynı sayfaya yerleştirin. Bir ürün takma adı bulunup bulunmadığını gizlemek için liste modülüne bildirin (modül ayarlarında bir onay kutusu bulunur). Okuyucu bulunmazsa, okuyucu otomatik olarak görünmez olur.&lt;br&gt;
+    &lt;u&gt;Avantajı:&lt;/u&gt; Kurmak oldukça basit&lt;br&gt;
+    &lt;u&gt;Dezavantajı:&lt;/u&gt; Okuyucu ve listenin düzeni aynı olacak ve iki durum için farklı makale içeriğine sahip olamazsınız..&lt;br&gt;
+    &lt;br&gt;
+    &lt;strong&gt;Seçenek 2:&lt;/strong&gt;&lt;br&gt;
+Site yapısındaki her liste sayfası için bir okuyucu sayfası ayarlayın (ürün kategorisi). &lt;I&gt; Okuyucu ayarının miras alınmadığına dikkat edin! &lt;/ I&gt; Okuyucu modülünü her zamanki gibi bu sayfaya ekleyin. &lt;br&gt;
+     URL'de bir ürün takma adı bulunursa, izotop şimdi bu sayfayı siteyi oluşturmak için kullanacaktır. Diğer ad hala olsa liste sayfasından biridir..&lt;br&gt;
+    &lt;u&gt;Avantajı:&lt;/u&gt; Okuyucu sayfası ve daha sonra liste sayfası için farklı sayfa içeriğine ve düzenine (ör. Farklı sütunlar) sahip olabilirsiniz.&lt;br&gt;
+    &lt;u&gt;Dezavantajı:&lt;/u&gt;Sahip olduğunuz her liste (kategori) sayfası için bir okuyucu sayfası oluşturmanız gerekir ZORUNLU. Ayarı KESİNLİKLE DEĞİLDİR.
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.mediaManager">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Yeni bir resim yüklemek için dosyayı seçin ve ürünü kaydedin. Başarılı bir şekilde yüklendikten sonra, resmin bir ön izlemesi görüntülenir ve yanından, alternatif metin ve açıklama girebilirsiniz. Birden çok resim için sağdaki okları tıklayabilir ve sipariş özelliklerini değiştirebilir, en iyi resim her bir ürünün ana görüntüsü olarak kullanabilirsiniz.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.noVariantAttributes">
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>Isotope eCommerce ile ürün çeşitlerini kullanmak için öncelikle özellikleri yapılandırmanız gerekir. &lt;br&gt; Lütfen daha fazla bilgi için &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt; öznitelik ayarlarına kılavuzuna &lt;/a&gt;  bakın.</target>
+      </trans-unit>
+      <trans-unit id="XPL.elevatezoom_position">
+        <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
+        <target>Pencerenin konumlandırılması, bir varsayılan konum ayarlayarak ve daha sonra ayarlamak için x ve y kaydırıcısını kullanarak yapılabilir. Ayrıca pencereyi bir konteynere yerleştirebilirsiniz - Daha fazla bilgi için bkz:&lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

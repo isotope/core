@@ -24,28 +24,52 @@ class Callback extends \Backend
      */
     public function limitCountries($strTable)
     {
-        if ($strTable != 'tl_member' || !Isotope::getConfig()->limitMemberCountries) {
+        if ('tl_member' !== $strTable || !Isotope::getConfig()->limitMemberCountries) {
             return;
         }
 
-        $arrCountries = array_unique(
-            array_merge(
-                Isotope::getConfig()->getBillingCountries(),
-                Isotope::getConfig()->getShippingCountries()
-            )
-        );
+        $originalField = $GLOBALS['TL_DCA']['tl_member']['fields']['country'];
 
-        $arrCountries = array_intersect_key(
-            $GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'],
-            array_flip($arrCountries)
-        );
+        unset($GLOBALS['TL_DCA']['tl_member']['fields']['country']['options']);
 
-        $GLOBALS['TL_DCA']['tl_member']['fields']['country']['options'] = $arrCountries;
+        $GLOBALS['TL_DCA']['tl_member']['fields']['country']['options_callback'] = function () use ($originalField) {
+            if (isset($originalField['options_callback'])) {
+                if (is_array($originalField['options_callback'])) {
+                    $callable = [
+                        \System::importStatic($originalField['options_callback'][0]),
+                        $originalField['options_callback'][1],
+                    ];
+                } else {
+                    $callable = $originalField['options_callback'];
+                }
 
-        if (count($arrCountries) == 1) {
-            $arrCountryCodes = array_keys($arrCountries);
-            $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $arrCountryCodes[0];
-        }
+                $options = call_user_func_array(
+                    $callable,
+                    func_get_args()
+                );
+            } else {
+                $options = (array) $originalField['options'];
+            }
+
+            $countries = array_unique(
+                array_merge(
+                    Isotope::getConfig()->getBillingCountries(),
+                    Isotope::getConfig()->getShippingCountries()
+                )
+            );
+
+            $countries = array_intersect_key(
+                $options,
+                array_flip($countries)
+            );
+
+            if (1 === count($countries)) {
+                $countryCodes = array_keys($countries);
+                $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $countryCodes[0];
+            }
+
+            return $countries;
+        };
     }
 
     /**

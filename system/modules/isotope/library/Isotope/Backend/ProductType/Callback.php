@@ -139,7 +139,14 @@ class Callback extends Permission
      */
     public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        if (Product::countBy('type', $row['id']) > 0) {
+        // Do not use Product::countBy() as it uses a way too complex query with joined subtables for no reason
+        $count = \Database::getInstance()
+            ->prepare("SELECT COUNT(*) AS count FROM tl_iso_product WHERE pid=0 AND language='' AND type=?")
+            ->execute($row['id'])
+            ->count
+        ;
+
+        if ($count > 0) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
