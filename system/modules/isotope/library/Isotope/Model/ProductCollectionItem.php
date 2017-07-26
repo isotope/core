@@ -20,19 +20,19 @@ use Isotope\Isotope;
 /**
  * ProductCollectionItem represents an item in a product collection.
  *
- * @property int    id
- * @property int    pid
- * @property int    tstamp
- * @property int    product_id
- * @property string type
- * @property string sku
- * @property string name
- * @property mixed  configuration
- * @property int    quantity
- * @property float  price
- * @property float  tax_free_price
- * @property string tax_id
- * @property int    jumpTo
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property int    $product_id
+ * @property string $type
+ * @property string $sku
+ * @property string $name
+ * @property mixed  $configuration
+ * @property int    $quantity
+ * @property float  $price
+ * @property float  $tax_free_price
+ * @property string $tax_id
+ * @property int    $jumpTo
 */
 class ProductCollectionItem extends \Model
 {
