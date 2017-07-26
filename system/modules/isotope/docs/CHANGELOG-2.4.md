@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.4.2 (2017-??-??)
+Version 2.4.2 (2017-07-26)
 --------------------------
 
 ### Improved
