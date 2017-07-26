@@ -20,9 +20,9 @@ class AssetImport extends \Backend
      *
      * @return string
      */
-    public function generate()
+    public function generate($dc)
     {
-        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product'));
+        $objTree = new \FileTree(\FileTree::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields']['source'], 'source', null, 'source', 'tl_iso_product', $dc));
 
         // Import assets
         if (\Input::post('FORM_SUBMIT') == 'tl_iso_product_import' && \Input::post('source') != '') {
@@ -51,9 +51,11 @@ class AssetImport extends \Backend
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
-  <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
-  ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
-  <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
+  <div class="widget">
+    <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
+    ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
+    <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
+  </div>
 </div>
 
 </div>

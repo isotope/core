@@ -38,7 +38,7 @@ class VariantGenerator extends \Backend
                 $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
                 $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['multiple']  = true;
 
-                $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA'][$table]['fields'][$attribute], $attribute, null, $attribute, $table);
+                $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA'][$table]['fields'][$attribute], $attribute, null, $attribute, $table, $dc);
 
                 foreach ($arrField['options'] as $k => $option) {
                     if ($option['value'] == '') {

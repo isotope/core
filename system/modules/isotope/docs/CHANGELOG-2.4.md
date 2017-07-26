@@ -7,6 +7,7 @@ Version 2.4.2 (2017-??-??)
 ### Improved
 
 - Updated navigation icon for Contao 4.4 backend (#1808)
+- Pass DataContainer object when generating widgets (#1758)
 
 
 ### Fixed
