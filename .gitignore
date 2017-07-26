@@ -12,6 +12,7 @@
 # Isotope ignoring rules
 !isotope/
 isotope/*
+!isotope/.htaccess
 !isotope/index.html
 !system/
 system/*
