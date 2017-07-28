@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.4.3 (2017-07-28)
+--------------------------
+
+### Fixed
+
+- Address data was not correctly saved in orders (#1828)
+- Remove edit button if product in collection has errors (#1829)
+
+
 Version 2.4.2 (2017-07-26)
 --------------------------
 
