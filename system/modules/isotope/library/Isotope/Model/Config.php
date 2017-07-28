@@ -135,7 +135,6 @@ class Config extends \Model
                 },
                 $this->getBillingFieldsConfig()
             ));
-
         }
 
         return $this->arrCache['billingFields'];

@@ -1828,8 +1828,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         ) {
             $arrData = array_intersect_key(
                 $objBillingAddress->row(),
-                array_flip($billingFields),
-                ['country' => '']
+                array_merge(array_flip($billingFields), ['country' => ''])
             );
 
             $objNew = new Address();
@@ -1856,8 +1855,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         ) {
             $arrData = array_intersect_key(
                 $objShippingAddress->row(),
-                array_flip($shippingFields),
-                ['country' => '']
+                array_merge(array_flip($shippingFields), ['country' => ''])
             );
 
             $objNew = new Address();
