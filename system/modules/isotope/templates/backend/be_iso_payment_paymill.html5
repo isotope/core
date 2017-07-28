@@ -1,0 +1,33 @@
+<?php
+\System::loadLanguageFile('payment_paymill');
+?>
+<div style="padding: 5px 18px;">
+    <h2 class="pending"><? echo $GLOBALS['TL_LANG']['payment_paymill']['translation_details']; ?></h2>
+</div>
+
+<div>
+    <table cellpadding="0" cellspacing="0" class="tl_show" style="width:650px">
+        <tbody>
+        <tr>
+            <td style="vertical-align:top"><span class="tl_label"><? echo $GLOBALS['TL_LANG']['payment_paymill']['order_id']; ?>:</span></td>
+            <td><? echo $this->order->id; ?></td>
+        </tr>
+        <tr>
+            <td class="tl_bg" style="vertical-align:top">
+                <span class="tl_label"><? echo $GLOBALS['TL_LANG']['payment_paymill']['paymill_code']; ?>:
+                    <a href="https://developers.paymill.com/API/index#response-codes">(Info)</a>
+                </span>
+            </td>
+            <td class="tl_bg"><? echo $this->payment_data['paymill_code']; ?></td>
+        </tr>
+        <tr>
+            <td class="" style="vertical-align:top"><span class="tl_label"><? echo $GLOBALS['TL_LANG']['payment_paymill']['paymill_status']; ?>: </span></td>
+            <td class=""><? echo $this->payment_data['paymill_status']; ?></td>
+        </tr>
+        <tr>
+            <td class="tl_bg" style="vertical-align:top"><span class="tl_label"><? echo $GLOBALS['TL_LANG']['payment_paymill']['paymill_id']; ?>:</span></td>
+            <td class="tl_bg"><? echo $this->payment_data['paymill_id']; ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

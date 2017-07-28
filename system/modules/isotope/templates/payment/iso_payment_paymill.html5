@@ -1,0 +1,60 @@
+<script type="text/javascript">
+    var PAYMILL_PUBLIC_KEY = '<? echo $this->paymill_public_key; ?>';
+</script>
+
+<script type="text/javascript" src="https://bridge.paymill.com/"></script>
+
+<script type="text/javascript">
+    var options = {
+        lang: '<? echo strtolower($GLOBALS['TL_LANGUAGE']); ?>'
+    };
+
+    var callback = function (error) {
+        if (error) {
+            console.log(error.apierror, error.message);
+        }
+        else {
+            console.log('Frame loaded successfully');
+        }
+    };
+
+    var initPayframe = function () {
+        paymill.embedFrame('credit-card-fields', options, callback);
+    };
+
+    var submitForm = function () {
+        paymill.createTokenViaFrame({
+                amount_int: <? echo $this->amount; ?>,
+                currency: '<? echo $this->currency; ?>',
+                email: '<?php echo $this->address->email; ?>'
+            },
+            function (error, result) {
+                if (error) {
+                    console.log(error.apierror, error.message); // todo: view error
+                }
+                else {
+                    var form = document.getElementById("payment-form");
+                    var tokenField = document.getElementById("paymillToken");
+                    tokenField.value = result.token;
+                    form.submit();
+                }
+            }
+        );
+    };
+
+    window.onload = function () {
+        initPayframe();
+    };
+</script>
+
+<h2><?= $this->headline ?></h2>
+<form id="payment-form" action="<?= $this->action ?>" method="post">
+    <div id="credit-card-fields"></div>
+    <input id="paymillToken" name="paymillToken" type="hidden">
+    <input name="REQUEST_TOKEN" type="hidden" value="<?php echo $this->request_token; ?>">
+
+    <div class="submit_container">
+        <a href="<?php echo $this->cancel_return; ?>" class="submit previous button"><?= $this->blabel ?></a>
+        <button type="button" class="submit confirm button" onclick="submitForm();"><?= $this->slabel ?></button>
+    </div>
+</form>
