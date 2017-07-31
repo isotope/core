@@ -166,20 +166,14 @@ class PostSale extends \Frontend
             $objResponse->send();
 
         } catch (\Exception $e) {
-            \System::log(
-                sprintf(
-                    'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
-                    $e->getFile(),
-                    $e->getLine(),
-                    $e->getMessage()
-                ),
-                __METHOD__,
-                TL_ERROR
-            );
+            \System::log('Exception in post-sale request. See system/logs/isotope_postsale.log for details.', __METHOD__, TL_ERROR);
 
             log_message(
                 sprintf(
-                    "Exception in post-sale request\n%s\n\n",
+                    "Exception in post-sale request\n%s(%s): %s\n%s\n\n",
+                    $e->getFile(),
+                    $e->getLine(),
+                    $e->getMessage(),
                     $e->getTraceAsString()
                 ),
                 'isotope_postsale.log'
