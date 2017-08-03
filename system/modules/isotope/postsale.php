@@ -179,7 +179,8 @@ class PostSale extends \Frontend
 
             log_message(
                 sprintf(
-                    "Exception in post-sale request\n%s\n\n",
+                    "Exception in post-sale request\n%s\n%s\n\n",
+                    $e->getMessage(),
                     $e->getTraceAsString()
                 ),
                 'isotope_postsale.log'
