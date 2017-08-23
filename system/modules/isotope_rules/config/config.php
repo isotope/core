@@ -23,10 +23,18 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
     ),
 ));
 
+
+/**
+ * Frontend modules
+ */
+$GLOBALS['FE_MOD']['isotope']['iso_coupons'] = 'Isotope\Module\Coupons';
+
+
 /**
  * Models
  */
 $GLOBALS['TL_MODELS'][\Isotope\Model\Rule::getTable()] = 'Isotope\Model\Rule';
+
 
 /**
  * Checkout Steps
@@ -34,11 +42,11 @@ $GLOBALS['TL_MODELS'][\Isotope\Model\Rule::getTable()] = 'Isotope\Model\Rule';
  */
 array_insert($GLOBALS['ISO_CHECKOUT_STEPS']['review'], 0, array(array('Isotope\Rules', 'cleanRuleUsages')));
 
+
 /**
  * Product collection surcharge
  */
 \Isotope\Model\ProductCollectionSurcharge::registerModelType('rule', 'Isotope\Model\ProductCollectionSurcharge\Rule');
-
 
 
 /**
