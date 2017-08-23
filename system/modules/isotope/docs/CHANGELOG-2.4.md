@@ -2,6 +2,15 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.4.4 (2017-??-??)
+--------------------------
+
+### Fixed
+
+- Renewal of guest cart cookie could lead to error message (#1837)
+
+
+
 Version 2.4.3 (2017-07-28)
 --------------------------
 
