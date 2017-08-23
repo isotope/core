@@ -113,10 +113,14 @@ class PostSale extends \Frontend
 
         try {
             $strMod = $this->getModule();
-            $intId = $this->getModuleId();
+            $intId  = $this->getModuleId();
 
             if ($strMod == '' || $intId == 0) {
-                \System::log('Invalid post-sale request (param error): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+                \System::log(
+                    'Invalid post-sale request (param error): ' . \Environment::get('request'),
+                    __METHOD__,
+                    TL_ERROR
+                );
 
                 $objResponse = new Response('Bad Request', 400);
                 $objResponse->send();
@@ -133,16 +137,24 @@ class PostSale extends \Frontend
             }
 
             if (null === $objMethod) {
-                \System::log('Invalid post-sale request (model not found): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+                \System::log(
+                    'Invalid post-sale request (model not found): ' . \Environment::get('request'),
+                    __METHOD__,
+                    TL_ERROR
+                );
 
                 $objResponse = new Response('Not Found', 404);
                 $objResponse->send();
             }
 
-            \System::log('New post-sale request: '.\Environment::get('request'), __METHOD__, TL_ACCESS);
+            \System::log('New post-sale request: ' . \Environment::get('request'), __METHOD__, TL_ACCESS);
 
             if (!($objMethod instanceof IsotopePostsale)) {
-                \System::log('Invalid post-sale request (interface not implemented): '.\Environment::get('request'), __METHOD__, TL_ERROR);
+                \System::log(
+                    'Invalid post-sale request (interface not implemented): ' . \Environment::get('request'),
+                    __METHOD__,
+                    TL_ERROR
+                );
 
                 $objResponse = new Response('Not Implemented', 501);
                 $objResponse->send();
@@ -166,6 +178,10 @@ class PostSale extends \Frontend
             $objResponse->send();
 
         } catch (\Exception $e) {
+            if (is_a($e, 'Contao\CoreBundle\Exception\ResponseException')) {
+                throw $e;
+            }
+
             \System::log(
                 'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                 __METHOD__,

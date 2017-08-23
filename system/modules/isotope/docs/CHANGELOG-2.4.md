@@ -8,6 +8,7 @@ Version 2.4.4 (2017-??-??)
 ### Fixed
 
 - Renewal of guest cart cookie could lead to error message (#1837)
+- Contao 4 response exception caused log message in postsale request (#1834)
 
 
 
