@@ -167,23 +167,12 @@ class PostSale extends \Frontend
 
         } catch (\Exception $e) {
             \System::log(
-                sprintf(
-                    'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
-                    $e->getFile(),
-                    $e->getLine(),
-                    $e->getMessage()
-                ),
+                'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                 __METHOD__,
                 TL_ERROR
             );
 
-            log_message(
-                sprintf(
-                    "Exception in post-sale request\n%s\n\n",
-                    $e->getTraceAsString()
-                ),
-                'isotope_postsale.log'
-            );
+            log_message((string) $e, 'isotope_postsale.log');
 
             $objResponse = new Response('Internal Server Error', 500);
             $objResponse->send();
