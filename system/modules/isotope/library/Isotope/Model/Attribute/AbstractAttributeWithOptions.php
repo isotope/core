@@ -251,7 +251,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $arrOptions;
 
             case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
-                list($table, $field) = explode('.', $this->foreignKey, 2);
+                $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
+                list($table, $field) = explode('.', $foreignKey, 2);
                 $result = \Database::getInstance()->execute("
                     SELECT id AS value, $field AS label
                     FROM $table
