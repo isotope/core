@@ -14,6 +14,7 @@ Version 2.4.4 (2017-??-??)
 
 - Renewal of guest cart cookie could lead to error message (#1837)
 - Contao 4 response exception caused log message in postsale request (#1834)
+- Allow blank option / no image size in gallery configuration (#1830)
 
 
 Version 2.4.3 (2017-07-28)
