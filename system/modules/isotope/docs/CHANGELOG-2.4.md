@@ -2,6 +2,30 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.4.4 (2017-09-07)
+--------------------------
+
+### Improved
+
+- Correctly limit notifications options for order status (#1816)
+- Symlink the Isotope images folder to web in Contao 4 (#1794)
+- Replace insert tags in document name (#1841)
+
+
+### Fixed
+
+- Renewal of guest cart cookie could lead to error message (#1837)
+- Contao 4 response exception caused log message in postsale request (#1834)
+- Allow blank option / no image size in gallery configuration (#1830)
+- Broken cumulative filter when using foreign key attributes (#1844)
+- Rebuild DcaExtractor cache when changing attributes (#1825)
+- Duplicate attribute values in some collection templates (#1864)
+- Default variant selection was lost when editing a variant (#1849)
+- Saferpay payment response was not correctly validated (#1855)
+- Address without name contained empty lines (#1845)
+- Language selection was sometimes unusable when editing products (#1850)
+
+
 Version 2.4.3 (2017-07-28)
 --------------------------
 

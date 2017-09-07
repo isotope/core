@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**
@@ -73,8 +74,13 @@ abstract class Document extends TypeAgent
     protected function prepareFileName($strName, $arrTokens = array(), $strPath = '')
     {
         // Replace simple tokens
-        $strName = \StringUtil::parseSimpleTokens($strName, $arrTokens);
-        $strName = $this->sanitizeFileName($strName);
+        $strName = $this->sanitizeFileName(
+            StringUtil::recursiveReplaceTokensAndTags(
+                $strName,
+                $arrTokens,
+                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_ENTITIES
+            )
+        );
 
         if ($strPath) {
             // Make sure the path contains a trailing slash

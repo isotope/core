@@ -28,6 +28,7 @@
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
+        "contao/manager-plugin": "^2.0",
         "discordier/httprequestextended": "~1.1",
         "terminal42/contao-fineuploader": "^2.0"
     },
@@ -39,7 +40,8 @@
     },
     "conflict": {
         "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
-        "contao/core-bundle": "4.0.0 || 4.0.1"
+        "contao/core-bundle": "4.0.0 || 4.0.1",
+        "contao/manager-plugin": "<2.0 || >= 3.0"
     },
     "autoload": {
         "psr-0": {
@@ -66,6 +68,7 @@
             "dev-master": "2.4.x-dev",
             "dev-develop": "2.5.x-dev"
         },
+        "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin",
         "contao": {
             "sources":{
                 "system/modules/isotope": "system/modules/isotope",

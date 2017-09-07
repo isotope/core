@@ -99,4 +99,25 @@ class Callback extends \Backend
             $sorting += 128;
         }
     }
+
+    /**
+     * Gets notification options for order status change.
+     *
+     * @param \DataContainer $dc
+     *
+     * @return array
+     */
+    public function getNotificationChoices(\DataContainer $dc)
+    {
+        $arrChoices = array();
+        $objNotifications = \Database::getInstance()->execute(
+            "SELECT id,title FROM tl_nc_notification WHERE type='iso_order_status_change' ORDER BY title"
+        );
+
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
+        }
+
+        return $arrChoices;
+    }
 }

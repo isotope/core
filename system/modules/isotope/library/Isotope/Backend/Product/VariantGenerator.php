@@ -14,119 +14,79 @@ namespace Isotope\Backend\Product;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
-
 class VariantGenerator extends \Backend
 {
 
     /**
      * Generate all combination of product attributes
-     * @param object
+     *
+     * @param \DataContainer $dc
+     *
      * @return string
      */
     public function generate($dc)
     {
-        $table      = Product::getTable();
         $objProduct = Product::findByPk($dc->id);
 
         $doNotSubmit = false;
-        $strBuffer   = '';
-        $arrOptions  = array();
+        $strBuffer = '';
+        $values = [];
 
         foreach ($objProduct->getType()->getVariantAttributes() as $attribute) {
-            if ($GLOBALS['TL_DCA'][$table]['fields'][$attribute]['attributes']['variant_option']) {
+            if ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['variant_option']) {
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['mandatory'] = true;
+                $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple']  = true;
 
-                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['mandatory'] = true;
-                $GLOBALS['TL_DCA'][$table]['fields'][$attribute]['eval']['multiple']  = true;
-
-                $arrField = \CheckBox::getAttributesFromDca($GLOBALS['TL_DCA'][$table]['fields'][$attribute], $attribute, null, $attribute, $table, $dc);
+                $arrField = \CheckBox::getAttributesFromDca(
+                    $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute],
+                    $attribute,
+                    null,
+                    $attribute,
+                    'tl_iso_product',
+                    $dc
+                );
 
                 foreach ($arrField['options'] as $k => $option) {
-                    if ($option['value'] == '') {
+                    if (empty($option['value'])) {
                         unset($arrField['options'][$k]);
                     }
                 }
 
                 $objWidget = new \CheckBox($arrField);
 
-                if (\Input::post('FORM_SUBMIT') == ($table . '_generate')) {
+                if ('tl_iso_product_generate' === \Input::post('FORM_SUBMIT')) {
                     $objWidget->validate();
 
                     if ($objWidget->hasErrors()) {
                         $doNotSubmit = true;
                     } else {
-                        $arrOptions[$attribute] = $objWidget->value;
+                        $values[$attribute] = $objWidget->value;
                     }
                 }
 
-                $strBuffer .= $objWidget->parse();
+                $strBuffer .= '<div class="clr widget">'.$objWidget->parse().'</div>';
             }
         }
 
-        if (\Input::post('FORM_SUBMIT') == $table . '_generate' && !$doNotSubmit) {
-            $time            = time();
-            $arrCombinations = array();
-
-            foreach ($arrOptions as $name => $options) {
-                $arrTemp         = $arrCombinations;
-                $arrCombinations = array();
-
-                foreach ($options as $option) {
-                    if (empty($arrTemp)) {
-                        $arrCombinations[][$name] = $option;
-                        continue;
-                    }
-
-                    foreach ($arrTemp as $temp) {
-                        $temp[$name]       = $option;
-                        $arrCombinations[] = $temp;
-                    }
-                }
-            }
-
-            foreach ($arrCombinations as $combination) {
-
-                $objVariant = \Database::getInstance()->prepare('
-                    SELECT * FROM tl_iso_product WHERE pid=? AND ' . implode('=? AND ', array_keys($combination)) . '=?'
-                )->execute(array_merge(array($objProduct->id), $combination));
-
-                if (!$objVariant->numRows) {
-
-                    $arrInherit = array_diff(
-                        $objProduct->getType()->getVariantAttributes(),
-                        Attribute::getVariantOptionFields(),
-                        Attribute::getCustomerDefinedFields(),
-                        Attribute::getSystemColumnsFields()
-                    );
-
-                    $arrSet = array_merge($combination, array(
-                        'tstamp'    => $time,
-                        'pid'       => $objProduct->id,
-                        'inherit'   => $arrInherit ?: null,
-                    ));
-
-                    \Database::getInstance()->prepare("INSERT INTO $table %s")->set($arrSet)->execute();
-                }
-            }
-
-            \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
+        if (!$doNotSubmit && 'tl_iso_product_generate' === \Input::post('FORM_SUBMIT')) {
+            $this->handle($objProduct, $values);
         }
 
-        // Return form
         return '
 <div id="tl_buttons">
 <a href="' . ampersand(str_replace('&key=generate', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG'][$table]['generate'][1], $dc->id) . '</h2>' . \Message::generate() . '
+<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product']['generate'][1], $dc->id) . '</h2>' . \Message::generate() . '
 
-<form action="' . ampersand(\Environment::get('request'), true) . '" id="' . $table . '_generate" class="tl_form" method="post">
+<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_iso_product_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
-<input type="hidden" name="FORM_SUBMIT" value="' . $table . '_generate">
+<input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_generate">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
-<div class="tl_tbox block">
+<fieldset class="tl_tbox block">
 ' . $strBuffer . '
-</div>
+</fieldset>
 
 </div>
 
@@ -138,5 +98,56 @@ class VariantGenerator extends \Backend
 
 </div>
 </form>';
+    }
+
+    public function handle(Product $objProduct, array $values)
+    {
+        $time = time();
+        $arrCombinations = [];
+
+        foreach ($values as $name => $options) {
+            $arrTemp = $arrCombinations;
+            $arrCombinations = [];
+
+            foreach ($options as $option) {
+                if (empty($arrTemp)) {
+                    $arrCombinations[][$name] = $option;
+                    continue;
+                }
+
+                foreach ($arrTemp as $temp) {
+                    $temp[$name] = $option;
+                    $arrCombinations[] = $temp;
+                }
+            }
+        }
+
+        foreach ($arrCombinations as $combination) {
+            $objVariant = \Database::getInstance()->prepare('
+                    SELECT * FROM tl_iso_product WHERE pid=? AND ' . implode('=? AND ', array_keys($combination)) . '=?'
+            )->execute(array_merge([$objProduct->id], $combination));
+
+            if (!$objVariant->numRows) {
+                $arrInherit = array_diff(
+                    $objProduct->getType()->getVariantAttributes(),
+                    Attribute::getVariantOptionFields(),
+                    Attribute::getCustomerDefinedFields(),
+                    Attribute::getSystemColumnsFields()
+                );
+
+                $arrSet = array_merge(
+                    $combination,
+                    [
+                        'tstamp' => $time,
+                        'pid' => $objProduct->id,
+                        'inherit' => $arrInherit ?: null,
+                    ]
+                );
+
+                \Database::getInstance()->prepare("INSERT INTO tl_iso_product %s")->set($arrSet)->execute();
+            }
+        }
+
+        \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
     }
 }

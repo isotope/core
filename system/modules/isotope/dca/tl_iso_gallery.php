@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
                 return \System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'gallery_size' => array
@@ -190,7 +190,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
                 return \System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'lightbox_template' => array
@@ -217,7 +217,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
                 return \System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'zoom_size' => array
@@ -229,7 +229,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
                 return \System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'                  => array('rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''"
         ),
         'zoom_windowSize' => array
