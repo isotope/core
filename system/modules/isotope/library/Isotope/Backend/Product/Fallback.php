@@ -25,7 +25,7 @@ class Fallback extends \Backend
      */
     public function reset($varValue, \DataContainer $dc)
     {
-        if (!$dc->activeRecord->pid) {
+        if (!$varValue || !$dc->activeRecord->pid) {
             return $varValue;
         }
 
