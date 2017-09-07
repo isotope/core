@@ -21,6 +21,7 @@ system/drivers/*
 !system/modules
 system/modules/*
 !system/modules/isotope*
+/system/modules/isotope/config/runonce.php
 
 # Gulp and node modules
 !gulpfile.js
