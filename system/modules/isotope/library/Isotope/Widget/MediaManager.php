@@ -253,7 +253,7 @@ class MediaManager extends \Widget implements \uploadable
         $arrFallback = $this->getFallbackData();
 
         // Adapt the temporary files
-        if (is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
+        if (is_array($this->varValue) && is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
             foreach ($this->varValue['files'] as $v) {
                 if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
