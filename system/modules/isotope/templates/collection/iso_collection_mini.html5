@@ -4,9 +4,9 @@
     <div class="remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></div><?php endif; ?>
     <div class="name"><?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?></div>
     <div class="info">
-        <?php if(!empty($item['configuration'])): ?>
+        <?php if(!empty($item['attributes'])): ?>
         <ul>
-        <?php foreach($item['configuration'] as $name => $value): ?>
+        <?php foreach($item['attributes'] as $name => $value): ?>
             <li><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?></li>
         <?php endforeach; ?>
         </ul>

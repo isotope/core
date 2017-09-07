@@ -12,8 +12,8 @@
         <tr><td colspan="4" style="font-size:5px;line-height:5px<?php if($i!=0): ?>; border-top: 1px solid #c4c4c4<?php endif; ?>">&nbsp;</td></tr>
         <tr>
             <td><?= $item['name'] ?>
-                <?php if(!empty($item['configuration'])): ?>
-                        <?php foreach($item['configuration'] as $name => $value): ?>
+                <?php if(!empty($item['attributes'])): ?>
+                        <?php foreach($item['attributes'] as $name => $value): ?>
                             <br><strong><?= $this->attributeLabel($name) ?>:</strong> <?= $this->attributeValue($name, $value, ['html'=>true, 'item'=>$item['item']]) ?>
                         <?php endforeach; ?>
                 <?php endif; ?>
