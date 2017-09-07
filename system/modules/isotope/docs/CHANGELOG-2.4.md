@@ -20,6 +20,7 @@ Version 2.4.4 (2017-??-??)
 - Rebuild DcaExtractor cache when changing attributes (#1825)
 - Duplicate attribute values in some collection templates (#1864)
 - Default variant selection was lost when editing a variant (#1849)
+- Saferpay payment response was not correctly validated (#1855)
 
 
 Version 2.4.3 (2017-07-28)

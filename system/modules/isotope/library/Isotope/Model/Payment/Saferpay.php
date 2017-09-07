@@ -119,7 +119,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
         $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
 
-        if ((int) $objRequest->code !== 200 || 0 !== strpos($objRequest->response, 'ERROR:')) {
+        if ((int) $objRequest->code !== 200 || 0 === strpos($objRequest->response, 'ERROR:')) {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
             log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'isotope_saferpay.log');
 
@@ -281,14 +281,16 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid), 'isotope_saferpay.log');
 
             return false;
+        }
 
-        } elseif ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100, 0)) {
+        if ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100, 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()), 'isotope_saferpay.log');
 
             return false;
+        }
 
-        } elseif ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
+        if ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
             \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency), 'isotope_saferpay.log');
 
