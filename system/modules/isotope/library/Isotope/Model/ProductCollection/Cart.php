@@ -235,7 +235,8 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     {
         parent::save();
 
-        if (!$this->member) {
+        // Create the guest cart cookie
+        if (!$this->member && !headers_sent() && '' === (string) \Input::cookie(static::$strCookie)) {
             \System::setCookie(
                 static::$strCookie,
                 $this->uniqid,
@@ -327,6 +328,16 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         } else {
             $objCart->tstamp = $time;
+
+            // Renew the guest cart cookie
+            if (!$objCart->member && !headers_sent()) {
+                \System::setCookie(
+                    static::$strCookie,
+                    $objCart->uniqid,
+                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
+                    $GLOBALS['TL_CONFIG']['websitePath']
+                );
+            }
         }
 
         return $objCart;

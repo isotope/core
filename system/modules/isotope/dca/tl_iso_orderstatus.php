@@ -178,7 +178,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options_callback'      => array('NotificationCenter\tl_module', 'getNotificationChoices'),
+            'options_callback'      => array('Isotope\Backend\OrderStatus\Callback', 'getNotificationChoices'),
             'eval'                  => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'"
         ),

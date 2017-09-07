@@ -36,7 +36,11 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         ),
         'onsubmit_callback' => array
         (
-            array('Isotope\Backend\Attribute\Callback', 'updateDatabase'),
+            array('Isotope\Backend\Attribute\DatabaseUpdate', 'onSubmit'),
+        ),
+        'ondelete_callback' => array
+        (
+            array('Isotope\Backend\Attribute\DatabaseUpdate', 'onDelete'),
         ),
         'sql' => array
         (

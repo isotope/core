@@ -30,7 +30,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'enableVersioning'          => false,
         'ctable'                    => array(\Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\Address::getTable()),
         'closed'                    => true,
-        'notDeletable'              => (\Input::get('act') == 'select'),
+        'notCreatable'              => true,
+        'notCopyable'               => true,
+        'notSortable'               => true,
+        'notDeletable'              => ('select' === \Input::get('act')),
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
