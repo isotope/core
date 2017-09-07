@@ -9,6 +9,7 @@ Version 2.4.4 (2017-??-??)
 
 - Correctly limit notifications options for order status (#1816)
 - Symlink the Isotope images folder to web in Contao 4 (#1794)
+- Replace insert tags in document name (#1841)
 
 
 ### Fixed
