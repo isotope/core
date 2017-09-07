@@ -404,8 +404,10 @@ class Callback extends \Backend
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
 <div class="tl_tbox block">
-  ' . $objSelect->parse() . '
-  <p class="tl_help">' . $objSelect->description . '</p>
+  <div class="clr widget">
+    ' . $objSelect->parse() . '
+    <p class="tl_help">' . $objSelect->description . '</p>
+  </div>
 </div>
 
 </div>

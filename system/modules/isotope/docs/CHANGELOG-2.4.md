@@ -23,6 +23,7 @@ Version 2.4.4 (2017-??-??)
 - Default variant selection was lost when editing a variant (#1849)
 - Saferpay payment response was not correctly validated (#1855)
 - Address without name contained empty lines (#1845)
+- Language selection was sometimes unusable when editing products (#1850)
 
 
 Version 2.4.3 (2017-07-28)
