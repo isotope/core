@@ -109,7 +109,7 @@ class FineUploader extends Attribute implements \uploadable
     {
         $files = [];
 
-        foreach ((array) $value as $temp) {
+        foreach (array_filter((array) $value) as $temp) {
             $file = basename($temp);
 
             // Make sure the upload folder exists and is protected
