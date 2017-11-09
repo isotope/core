@@ -189,24 +189,29 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             }
         }
 
-        // Generate tokens
-        $arrTokens = $this->getNotificationTokens($this->nc_notification);
+        $notificationIds = array_filter(explode(',', $this->nc_notification));
 
-        // Send notification
-        if ($this->nc_notification) {
-            $blnNotificationError = true;
+        // Send the notifications
+        if (count($notificationIds) > 0) {
+            foreach ($notificationIds as $notificationId) {
+                // Generate tokens
+                $arrTokens = $this->getNotificationTokens($notificationId);
 
-            /** @var Notification $objNotification */
-            if (($objNotification = Notification::findByPk($this->nc_notification)) !== null) {
-                $arrResult = $objNotification->send($arrTokens, $this->language);
+                // Send notification
+                $blnNotificationError = true;
 
-                if (count($arrResult) > 0 && !in_array(false, $arrResult, true)) {
-                    $blnNotificationError = false;
+                /** @var Notification $objNotification */
+                if (($objNotification = Notification::findByPk($notificationId)) !== null) {
+                    $arrResult = $objNotification->send($arrTokens, $this->language);
+
+                    if (count($arrResult) > 0 && !in_array(false, $arrResult, true)) {
+                        $blnNotificationError = false;
+                    }
                 }
-            }
 
-            if ($blnNotificationError === true) {
-                \System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                if ($blnNotificationError === true) {
+                    \System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                }
             }
         } else {
             \System::log('No notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
@@ -219,6 +224,11 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // !HOOK: post-process checkout
         if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
+            // Generate the default notification tokens if none set yet
+            if (!isset($arrTokens)) {
+                $arrTokens = $this->getNotificationTokens(0);
+            }
+
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
@@ -289,9 +299,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // Trigger notification
         $blnNotificationError = null;
-        if ($objNewStatus->notification > 0) {
-
-            $arrTokens = $this->getNotificationTokens($objNewStatus->notification);
+        foreach (array_filter(explode(',', $objNewStatus->notification)) as $notificationId) {
+            $arrTokens = $this->getNotificationTokens($notificationId);
 
             // Override order status and save the old one to the tokens too
             $arrTokens['order_status_id']       = $objNewStatus->id;
@@ -302,7 +311,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $blnNotificationError = true;
 
             /** @var Notification $objNotification */
-            if (($objNotification = Notification::findByPk($objNewStatus->notification)) !== null) {
+            if (($objNotification = Notification::findByPk($notificationId)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
                 if (in_array(false, $arrResult, true)) {
