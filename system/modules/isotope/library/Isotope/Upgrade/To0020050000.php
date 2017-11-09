@@ -38,5 +38,9 @@ class To0020050000 extends Base
                 "UPDATE tl_iso_shipping SET price=NULL WHERE price='' OR price REGEXP '^0(\.[0]*)?$'"
             );
         }
+
+        if ($this->createDatabaseField('iso_notifications', 'tl_module')) {
+            \Database::getInstance()->query("UPDATE tl_module SET iso_notifications=nc_notification");
+        }
     }
 }
