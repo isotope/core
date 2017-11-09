@@ -214,7 +214,7 @@ class Checkout extends Module
 
                 $objOrder = Isotope::getCart()->getDraftOrder();
                 $objOrder->checkout_info        = $this->getCheckoutInfo($arrSteps);
-                $objOrder->nc_notification      = $this->nc_notification;
+                $objOrder->nc_notification      = $this->iso_notifications;
                 $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
