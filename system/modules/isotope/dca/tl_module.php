@@ -614,17 +614,21 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
     'sql'                       => 'blob NULL',
 );
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'];
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['csv'] = ',';
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['multiple'] = true;
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['tl_class'] = 'clr';
-$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['sql'] = "varchar(255) NOT NULL default ''";
-
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_notification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('NotificationCenter\tl_module', 'getNotificationChoices'),
+    'eval'                      => array('multiple'=>true, 'csv'=>',', 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(255) NOT NULL default ''",
+    'relation'                  => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_nc_notification'),
+);
 
 /**
  * Limit notification choices
  */
-$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['iso_checkout']         = array('iso_order_status_change');
-$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['iso_checkoutmember']   = array('iso_order_status_change');
-$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['iso_checkoutguest']    = array('iso_order_status_change');
-$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['iso_checkoutboth']     = array('iso_order_status_change');
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkout']         = array('iso_order_status_change');
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutmember']   = array('iso_order_status_change');
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutguest']    = array('iso_order_status_change');
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications']['eval']['ncNotificationChoices']['iso_checkoutboth']     = array('iso_order_status_change');
