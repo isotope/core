@@ -1,6 +1,7 @@
 {
     "name":"isotope/isotope-core",
-    "description":"Core repository of Isotope eCommerce, an eCommerce extension for Contao Open Source CMS",
+    "description":"Isotope is the premier open source eCommerce solution for Contao Open Source CMS",
+    "homepage": "https://isotopeecommerce.org",
     "keywords":["contao", "isotope"],
     "type":"contao-module",
     "license":"LGPL-3.0+",
@@ -14,6 +15,10 @@
             "homepage":"https://isotopeecommerce.org"
         }
     ],
+    "support": {
+        "issues": "https://github.com/isotope/core/issues",
+        "source": "https://github.com/isotope/core"
+    },
     "require":{
         "php": "~5.4 || ~7.0",
         "contao/core-bundle": "^3.5.2 || ~4.1",
