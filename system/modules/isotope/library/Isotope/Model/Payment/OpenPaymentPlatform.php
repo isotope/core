@@ -12,6 +12,7 @@ namespace Isotope\Model\Payment;
 
 use Contao\Request;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -22,16 +23,57 @@ use Isotope\Template;
  * @property string $opp_user_id
  * @property string $opp_password
  * @property string $opp_entity_id
+ * @property array  $opp_brands
  */
 class OpenPaymentPlatform extends Payment
 {
+    public static $paymentTypes = ['PA', 'PA>CP', 'DB'];
+
+    public static $paymentBrands = [
+        'AMEX' => ['PA', 'PA>CP', 'DB'],
+        'DINERS' => ['PA', 'PA>CP', 'DB'],
+        'DIRECTDEBIT_SEPA' => ['PA', 'PA>CP', 'DB'],
+        'GIROPAY' => ['PA'],
+        'JCB' => ['PA', 'PA>CP', 'DB'],
+        'KLARNA_INSTALLMENTS' => ['PA', 'PA>CP'],
+        'KLARNA_INVOICE' => ['PA', 'PA>CP'],
+        'MASTER' => ['PA', 'PA>CP', 'DB'],
+        'PAYDIREKT' => ['PA', 'PA>CP', 'DB'],
+        'PAYPAL' => ['PA', 'PA>CP', 'DB'],
+        'RATENKAUF' => ['PA', 'PA>CP'],
+        'SOFORTUEBERWEISUNG' => ['DB'],
+        'VISA' => ['PA', 'PA>CP', 'DB'],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        $brands = deserialize($this->opp_brands);
+
+        if (!empty($brands)
+            && is_array($brands)
+            && (!static::supportsPaymentBrands($brands) || strlen(implode(' ', $brands)) > 32)
+        ) {
+            return false;
+        }
+
+        return parent::isAvailable();
+    }
+
+
     /**
      * @inheritdoc
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
-        $base    = $this->getBaseUrl();
-        $request = $this->prepareRequest('PA', $objOrder);
+        $paymentBrands = deserialize($this->opp_brands, true);
+        $supportedTypes = static::getPaymentTypes($paymentBrands);
+        $paymentType = array_shift($supportedTypes);
+
+        $base = $this->getBaseUrl();
+        $request = $this->prepareRequest($paymentType, $objOrder);
         $request->send($base . '/v1/checkouts');
 
         $response = json_decode($request->response, true);
@@ -54,9 +96,14 @@ class OpenPaymentPlatform extends Payment
 
         /** @var Template|object $template */
         $template = new Template('iso_payment_opp');
-        $template->base   = $base;
+        $template->base = $base;
         $template->action = Checkout::generateUrlForStep('complete', $objOrder);
         $template->checkoutId = $response['id'];
+        $template->brands = '';
+
+        if (!empty($paymentBrands)) {
+            $template->brands = implode(' ', $paymentBrands);
+        }
 
         return $template->parse();
     }
@@ -66,6 +113,11 @@ class OpenPaymentPlatform extends Payment
      */
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $ndc = \Input::get('id');
 
         $request = new Request();
@@ -75,7 +127,7 @@ class OpenPaymentPlatform extends Payment
         $this->storeApiResponse($response, $objOrder);
 
         if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
-            || 'PA' !== $response['paymentType']
+            || !in_array($response['paymentType'], static::$paymentTypes, true)
             || $ndc !== $response['ndc']
             || $objOrder->getTotal() != $response['amount']
             || $objOrder->getCurrency() != $response['currency']
@@ -95,8 +147,20 @@ class OpenPaymentPlatform extends Payment
             return false;
         }
 
+        // Debit request is always paid
+        if ('DB' === $response['paymentType']) {
+            $objOrder->setDatePaid(time());
+            $objOrder->updateOrderStatus($this->new_order_status);
+            $objOrder->save();
+
+            return true;
+        }
+
         // Capture payment
-        if ('capture' === $this->trans_type) {
+        if ('capture' === $this->trans_type
+            && 'PA' === $response['paymentType']
+            && in_array('PA>CP', static::getPaymentTypes(deserialize($this->opp_brands, true)), true)
+        ) {
             $request = $this->prepareRequest('CP', $objOrder);
             $request->send($this->getBaseUrl() . '/v1/payments/' . $response['id']);
 
@@ -118,7 +182,12 @@ class OpenPaymentPlatform extends Payment
                 );
 
                 log_message(print_r($response, true), 'open_payment.log');
+
+                return false;
             }
+
+            $objOrder->setDatePaid(time());
+            $objOrder->updateOrderStatus($this->new_order_status);
         }
 
         return true;
@@ -170,5 +239,34 @@ class OpenPaymentPlatform extends Payment
 
         $objOrder->payment_data = $payments;
         $objOrder->save();
+    }
+
+    /**
+     * @param array $brands
+     *
+     * @return array
+     */
+    public static function getPaymentTypes(array $brands)
+    {
+        if (empty($brands)) {
+            return static::$paymentTypes;
+        }
+
+        $types = array_values(array_intersect_key(static::$paymentBrands, array_flip($brands)));
+        array_unshift($types, static::$paymentTypes);
+
+        return call_user_func_array('array_intersect', $types);
+    }
+
+    /**
+     * @param mixed $brands
+     *
+     * @return bool
+     */
+    public static function supportsPaymentBrands(array $brands)
+    {
+        $types = static::getPaymentTypes($brands);
+
+        return !empty($types);
     }
 }
