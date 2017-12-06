@@ -183,7 +183,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 ) {
                     /** @var \PageModel $objJumpTo */
                     $objJumpTo = $this->objModel->getRelated('jumpTo');
-                    $strUrl    = $objJumpTo->getFrontendUrl() . '?' . $_SERVER['QUERY_STRING'];
+                    $strUrl    = $objJumpTo->getFrontendUrl() . '?' . \Environment::get('queryString');
 
                     if (\Environment::get('request') != $strUrl) {
                         // Include \Environment::base or the URL would not work on the index page
