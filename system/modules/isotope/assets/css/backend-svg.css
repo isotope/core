@@ -6,10 +6,6 @@
     margin: 2%;
 }
 
-.iso_be_overview #main h1:first-child {
-    display: none;
-}
-
 .be_iso_overview .daily_summary {
     padding: 0 2%;
 }
