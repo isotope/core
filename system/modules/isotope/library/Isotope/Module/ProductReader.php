@@ -183,7 +183,7 @@ class ProductReader extends Module
     {
         $css = deserialize($objProduct->cssID, true);
 
-        return $css[0] ?: null;
+        return $css[0] ? ' id="' . $css[0] . '"' : null;
     }
 
     /**
