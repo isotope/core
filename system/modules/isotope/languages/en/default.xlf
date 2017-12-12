@@ -347,8 +347,17 @@
       <trans-unit id="MSC.pay_with_redirect.3">
         <source>Please click on the "Pay now" button to continue.</source>
       </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+      </trans-unit>
       <trans-unit id="MSC.paypalTransactionOnline">
-        <source>Click here to view this PayPal transaction online</source>
+        <source>You can view this PayPal transaction online.</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
       </trans-unit>
       <trans-unit id="MSC.productSingle">
         <source>1 Product</source>

@@ -199,6 +199,24 @@ abstract class PaypalApi extends Payment
     }
 
     /**
+     * @param IsotopeProductCollection $collection
+     * @param array                    $paypalData
+     */
+    protected function storeHistory(IsotopeProductCollection $collection, array $paypalData)
+    {
+        $paymentData = deserialize($collection->payment_data, true);
+
+        if (!is_array($paymentData['PAYPAL_HISTORY'])) {
+            $paymentData['PAYPAL_HISTORY'] = [];
+        }
+
+        $paymentData['PAYPAL_HISTORY'][] = $paypalData;
+
+        $collection->payment_data = $paymentData;
+        $collection->save();
+    }
+
+    /**
      * @return array|null
      */
     private function getApiToken()
