@@ -17,6 +17,8 @@ Version 2.4.5 (2017-12-??)
 - Finally fix the backend version problem (#1869)
 - Use potentially encoded query string (#1887)
 - Non-negative tax checkbox was not always respected
+- Fineuploader integration handled empty uploads (#1866)
+- Symlink in Contao 4 did not work on Windows (#1894)
 
 
 Version 2.4.4 (2017-09-07)
