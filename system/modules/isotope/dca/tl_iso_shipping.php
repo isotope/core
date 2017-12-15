@@ -376,7 +376,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_user'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(16) NULL",
         ),
         'dhl_signature' => array
@@ -384,7 +384,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_signature'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NULL",
         ),
         'dhl_epk' => array
@@ -410,7 +410,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_app'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NULL",
         ),
         'dhl_token' => array
@@ -418,7 +418,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_token'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NULL",
         ),
         'guests' => array

@@ -27,7 +27,7 @@ class DHLBusinessCheckoutListener
 
         $credentials = $this->getCredentials($shipping);
 
-        $dhl = new BusinessShipment($credentials);
+        $dhl = new BusinessShipment($credentials, (bool) $shipping->debug);
         $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping));
         $dhl->setSender($this->getSender($config->getOwnerAddress()));
         $dhl->setReceiver($this->getReceiver($order->getBillingAddress()));
@@ -35,7 +35,6 @@ class DHLBusinessCheckoutListener
         $response = $dhl->createShipment();
 
         if (false === $response) {
-            dump($dhl->getErrors());
             return;
         }
 
@@ -49,14 +48,12 @@ class DHLBusinessCheckoutListener
     {
         $credentials = new Credentials((bool) $shipping->debug);
 
-        $credentials->setApiUser($shipping->dhl_user);
-        $credentials->setApiPassword($shipping->dhl_signature);
+        $credentials->setUser($shipping->dhl_user);
+        $credentials->setSignature($shipping->dhl_signature);
+        $credentials->setEpk($shipping->dhl_epk);
+        $credentials->setApiUser($shipping->dhl_app);
+        $credentials->setApiPassword($shipping->dhl_token);
 
-        if (!$shipping->debug) {
-            $credentials->setEpk($shipping->dhl_epk);
-            $credentials->setApiUser($shipping->dhl_app);
-            $credentials->setApiPassword($shipping->dhl_token);
-        }
 
         return $credentials;
     }
@@ -107,7 +104,7 @@ class DHLBusinessCheckoutListener
         $accountNumber = sprintf(
             '%s%s01',
             $credentials->getEpk(10),
-            substr(1, 2, $shippingMethod->dhl_product)
+            substr($shippingMethod->dhl_product, 1, 2)
         );
 
         $details = new ShipmentDetails($accountNumber);
