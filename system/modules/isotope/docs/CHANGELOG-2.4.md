@@ -5,12 +5,18 @@ Isotope eCommerce Changelog
 Version 2.4.5 (2017-12-??)
 --------------------------
 
+### Improved
+
+- Added currency symbol for HRK (#1899)
+
+
 ### Fixed
 
 - Correctly order downloads by product (#1892)
 - Invalid CSS ID for product reader (#1884)
 - Finally fix the backend version problem (#1869)
 - Use potentially encoded query string (#1887)
+- Non-negative tax checkbox was not always respected
 
 
 Version 2.4.4 (2017-09-07)
