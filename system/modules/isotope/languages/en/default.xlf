@@ -1307,6 +1307,9 @@
       <trans-unit id="CUR_SYMBOL.GBP">
         <source>£</source>
       </trans-unit>
+      <trans-unit id="CUR_SYMBOL.HRK">
+        <source>Kn</source>
+      </trans-unit>
       <trans-unit id="CUR_SYMBOL.JPY">
         <source>¥</source>
       </trans-unit>
