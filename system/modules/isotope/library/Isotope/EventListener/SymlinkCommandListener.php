@@ -21,7 +21,7 @@ class SymlinkCommandListener
      */
     public function __construct($rootDir)
     {
-        $this->rootDir = $rootDir;
+        $this->rootDir = dirname($rootDir);
     }
 
     /**

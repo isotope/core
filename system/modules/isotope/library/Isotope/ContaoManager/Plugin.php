@@ -18,7 +18,7 @@ class Plugin implements ConfigPluginInterface
             $container->setDefinition(
                 'isotope.listener.console',
                 (new Definition('Isotope\EventListener\SymlinkCommandListener'))
-                    ->setArguments(['%kernel.project_dir%'])
+                    ->setArguments(['%kernel.root_dir%'])
                     ->addTag('kernel.event_listener', ['event' => 'console.terminate'])
             );
         });
