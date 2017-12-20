@@ -28,7 +28,7 @@ class DHLBusinessCheckoutListener
         $credentials = $this->getCredentials($shipping);
 
         $dhl = new BusinessShipment($credentials, (bool) $shipping->debug);
-        $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping));
+        $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping, $order));
         $dhl->setSender($this->getSender($config->getOwnerAddress()));
         $dhl->setReceiver($this->getReceiver($order->getBillingAddress()));
 
@@ -96,10 +96,13 @@ class DHLBusinessCheckoutListener
 //        $person->setCountry((string) 'Germany');
         $person->setCountryISOCode($address->country);
 
+        $person->setEmail($address->email);
+        $person->setPhone($address->phone);
+
         return $person;
     }
 
-    private function getShipmentDetails(Credentials $credentials, DHLBusiness $shippingMethod)
+    private function getShipmentDetails(Credentials $credentials, DHLBusiness $shippingMethod, IsotopePurchasableCollection $order)
     {
         $accountNumber = sprintf(
             '%s%s01',
@@ -110,6 +113,8 @@ class DHLBusinessCheckoutListener
         $details = new ShipmentDetails($accountNumber);
 
         $details->setProduct($shippingMethod->dhl_product);
+        $details->setCustomerReference($order->getDocumentNumber());
+        $details->setReturnReference($order->getDocumentNumber());
 
         return $details;
     }
