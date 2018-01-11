@@ -18,10 +18,15 @@ class DHLBusinessCheckoutListener
 {
     public function onPostCheckout(IsotopePurchasableCollection $order)
     {
+        $shippingAddress = $order->getShippingAddress();
         $shipping = $order->getShippingMethod();
         $config = $order->getConfig();
 
-        if (!$order instanceof Order || !$shipping instanceof DHLBusiness || !$config instanceof Config) {
+        if (!$order instanceof Order
+            || !$shipping instanceof DHLBusiness
+            || !$shippingAddress instanceof Address
+            || !$config instanceof Config
+        ) {
             return;
         }
 
@@ -30,7 +35,7 @@ class DHLBusinessCheckoutListener
         $dhl = new BusinessShipment($credentials, (bool) $shipping->debug);
         $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping, $order));
         $dhl->setSender($this->getSender($config->getOwnerAddress()));
-        $dhl->setReceiver($this->getReceiver($order->getBillingAddress()));
+        $dhl->setReceiver($this->getReceiver($shippingAddress));
 
         $response = $dhl->createShipment();
 
