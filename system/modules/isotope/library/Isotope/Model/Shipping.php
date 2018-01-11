@@ -346,8 +346,8 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
             return;
         }
 
-        $pos = strpos(__CLASS__, '\\') ?: -1;
-        $className = substr(__CLASS__, $pos+1);
+        $pos = strrpos(get_called_class(), '\\') ?: -1;
+        $className = substr(get_called_class(), $pos+1);
 
         $logFile = sprintf(
             'isotope_%s.log',

@@ -40,12 +40,13 @@ class DHLBusinessCheckoutListener
         $response = $dhl->createShipment();
 
         if ($shipping->logging) {
-            log_message(print_r($response, true), 'dhl_business.log');
+            log_message(print_r($dhl->getLastXML(), true), 'isotope_dhl_business.log');
+            log_message(print_r($response, true), 'isotope_dhl_business.log');
         }
 
         if (false === $response) {
             if ($shipping->logging) {
-                log_message(print_r($dhl->getErrors(), true), 'dhl_business.log');
+                log_message(print_r($dhl->getErrors(), true), 'isotope_dhl_business.log');
             }
 
             return;
@@ -57,7 +58,7 @@ class DHLBusinessCheckoutListener
         $order->save();
 
         if ($shipping->logging) {
-            log_message('Shipment Number: ' . $response->getShipmentNumber(), 'dhl_business.log');
+            log_message('Shipment Number: ' . $response->getShipmentNumber(), 'isotope_dhl_business.log');
         }
     }
 
@@ -72,7 +73,7 @@ class DHLBusinessCheckoutListener
         $credentials->setApiPassword($shipping->dhl_token);
 
         if ($shipping->logging) {
-            log_message(print_r($credentials, true), 'dhl_business.log');
+            log_message(print_r($credentials, true), 'isotope_dhl_business.log');
         }
 
         return $credentials;

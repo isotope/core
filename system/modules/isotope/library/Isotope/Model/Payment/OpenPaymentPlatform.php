@@ -79,6 +79,8 @@ class OpenPaymentPlatform extends Payment
         $response = json_decode($request->response, true);
         $this->storeApiResponse($response, $objOrder);
 
+        $this->debugLog($response);
+
         if ('000.200.100' !== $response['result']['code']) {
             \System::log(
                 sprintf(
@@ -88,8 +90,6 @@ class OpenPaymentPlatform extends Payment
                 __METHOD__,
                 TL_ERROR
             );
-
-            $this->debugLog($response);
 
             Checkout::redirectToStep('failed');
         }
@@ -126,6 +126,9 @@ class OpenPaymentPlatform extends Payment
         $response = json_decode($request->response, true);
         $this->storeApiResponse($response, $objOrder);
 
+        $this->debugLog(\Environment::get('request'));
+        $this->debugLog($response);
+
         if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
             || !in_array($response['paymentType'], static::$paymentTypes, true)
             || $ndc !== $response['ndc']
@@ -140,9 +143,6 @@ class OpenPaymentPlatform extends Payment
                 __METHOD__,
                 TL_ERROR
             );
-
-            $this->debugLog(\Environment::get('request'));
-            $this->debugLog($response);
 
             return false;
         }
@@ -168,7 +168,9 @@ class OpenPaymentPlatform extends Payment
             $response = json_decode($request->response, true);
             $this->storeApiResponse($response, $objOrder);
 
-            if ('000.100.110' !== $response['result']['code']
+            $this->debugLog($response);
+
+            if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
                 || 'CP' !== $response['paymentType']
                 || $objOrder->getTotal() != $response['amount']
                 || $objOrder->getCurrency() != $response['currency']
@@ -181,8 +183,6 @@ class OpenPaymentPlatform extends Payment
                     __METHOD__,
                     TL_ERROR
                 );
-
-                $this->debugLog($response);
 
                 return false;
             }
