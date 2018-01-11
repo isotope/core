@@ -27,22 +27,22 @@ use Isotope\Template;
  */
 class OpenPaymentPlatform extends Payment
 {
-    public static $paymentTypes = ['PA', 'PA>CP', 'DB'];
+    public static $paymentTypes = ['PA', 'CP', 'DB'];
 
     public static $paymentBrands = [
-        'AMEX' => ['PA', 'PA>CP', 'DB'],
-        'DINERS' => ['PA', 'PA>CP', 'DB'],
-        'DIRECTDEBIT_SEPA' => ['PA', 'PA>CP', 'DB'],
+        'AMEX' => ['PA', 'CP', 'DB'],
+        'DINERS' => ['PA', 'CP', 'DB'],
+        'DIRECTDEBIT_SEPA' => ['PA', 'CP', 'DB'],
         'GIROPAY' => ['PA'],
-        'JCB' => ['PA', 'PA>CP', 'DB'],
-        'KLARNA_INSTALLMENTS' => ['PA', 'PA>CP'],
-        'KLARNA_INVOICE' => ['PA', 'PA>CP'],
-        'MASTER' => ['PA', 'PA>CP', 'DB'],
-        'PAYDIREKT' => ['PA', 'PA>CP', 'DB'],
-        'PAYPAL' => ['PA', 'PA>CP', 'DB'],
-        'RATENKAUF' => ['PA', 'PA>CP'],
+        'JCB' => ['PA', 'CP', 'DB'],
+        'KLARNA_INSTALLMENTS' => ['PA', 'CP'],
+        'KLARNA_INVOICE' => ['PA', 'CP'],
+        'MASTER' => ['PA', 'CP', 'DB'],
+        'PAYDIREKT' => ['PA', 'CP', 'DB'],
+        'PAYPAL' => ['PA', 'CP', 'DB'],
+        'RATENKAUF' => ['PA', 'CP'],
         'SOFORTUEBERWEISUNG' => ['DB'],
-        'VISA' => ['PA', 'PA>CP', 'DB'],
+        'VISA' => ['PA', 'CP', 'DB'],
     ];
 
     /**
@@ -159,7 +159,8 @@ class OpenPaymentPlatform extends Payment
         // Capture payment
         if ('capture' === $this->trans_type
             && 'PA' === $response['paymentType']
-            && in_array('PA>CP', static::getPaymentTypes(deserialize($this->opp_brands, true)), true)
+            && isset(static::$paymentBrands[$response['paymentBrand']])
+            && in_array('CP', static::$paymentBrands[$response['paymentBrand']], true)
         ) {
             $request = $this->prepareRequest('CP', $objOrder);
             $request->send($this->getBaseUrl() . '/v1/payments/' . $response['id']);
