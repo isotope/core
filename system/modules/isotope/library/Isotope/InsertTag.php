@@ -38,7 +38,7 @@ class InsertTag
                 return $this->getValueForCollectionTag(Isotope::getCart(), $tokens);
 
             case 'order':
-                if (($order = Order::findOneBy('uniqid', \Input::get('uid'))) === null) {
+                if (!\Input::get('uid') || ($order = Order::findOneBy('uniqid', \Input::get('uid'))) === null) {
                     return '';
                 }
 
