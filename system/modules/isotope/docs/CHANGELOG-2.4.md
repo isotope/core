@@ -21,6 +21,7 @@ Version 2.4.5 (2017-12-??)
 - Symlink in Contao 4 did not work on Windows (#1894)
 - Datepicker was not correctly loaded in Contao 4 (#1904)
 - Prevent database lookup error in uniqid insert tag (#1902)
+- Fallback language could not be copied (#1877)
 
 
 Version 2.4.4 (2017-09-07)
