@@ -89,7 +89,7 @@ class OpenPaymentPlatform extends Payment
                 TL_ERROR
             );
 
-            log_message(print_r($response, true), 'open_payment.log');
+            $this->debugLog($response);
 
             Checkout::redirectToStep('failed');
         }
@@ -141,8 +141,8 @@ class OpenPaymentPlatform extends Payment
                 TL_ERROR
             );
 
-            log_message(\Environment::get('request'), 'open_payment.log');
-            log_message(print_r($response, true), 'open_payment.log');
+            $this->debugLog(\Environment::get('request'));
+            $this->debugLog($response);
 
             return false;
         }
@@ -182,7 +182,7 @@ class OpenPaymentPlatform extends Payment
                     TL_ERROR
                 );
 
-                log_message(print_r($response, true), 'open_payment.log');
+                $this->debugLog($response);
 
                 return false;
             }

@@ -122,7 +122,7 @@ abstract class PaypalApi extends Payment
             ],
         ];
 
-        log_message(print_r($data, true), 'paypal.log');
+        $this->debugLog($data);
 
         return $this->sendRequest('/payments/payment', $data, 'POST');
     }

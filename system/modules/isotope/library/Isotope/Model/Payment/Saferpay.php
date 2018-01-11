@@ -70,7 +70,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         // Stop if verification is not working
         if (0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
             \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
-            log_message(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response));
 
             return;
         }
@@ -121,7 +121,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
         if ((int) $objRequest->code !== 200 || 0 === strpos($objRequest->response, 'ERROR:')) {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
-            log_message(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response));
 
             Checkout::redirectToStep('failed');
         }
@@ -259,7 +259,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         // Stop if capture was not successful
         if ($objRequest->hasError() || 0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
             \System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
-            log_message(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response));
 
             return false;
         }
@@ -278,21 +278,21 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     {
         if ($this->getPostValue('ACCOUNTID') != $this->saferpay_accountid) {
             \System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid));
 
             return false;
         }
 
         if ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100, 0)) {
             \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()));
 
             return false;
         }
 
         if ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
             \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
-            log_message(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency), 'isotope_saferpay.log');
+            $this->debugLog(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency));
 
             return false;
         }

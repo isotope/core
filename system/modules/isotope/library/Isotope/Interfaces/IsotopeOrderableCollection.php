@@ -12,7 +12,9 @@
 namespace Isotope\Interfaces;
 
 use Isotope\Model\Address;
+use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Model\Shipping;
 
 /**
  * IsotopeOrderableCollection describes a product collection that can have order information.
@@ -36,7 +38,7 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
     /**
      * Return payment method for this collection
      *
-     * @return IsotopePayment|null
+     * @return IsotopePayment|Payment|null
      */
     public function getPaymentMethod();
 
@@ -85,7 +87,7 @@ interface IsotopeOrderableCollection extends IsotopeProductCollection
     /**
      * Return shipping method for this collection
      *
-     * @return IsotopeShipping|null
+     * @return IsotopeShipping|Shipping|null
      */
     public function getShippingMethod();
 

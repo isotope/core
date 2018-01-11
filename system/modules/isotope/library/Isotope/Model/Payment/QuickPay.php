@@ -14,8 +14,6 @@ namespace Isotope\Model\Payment;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
-use Isotope\Model\Payment;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -128,14 +126,13 @@ class QuickPay extends Postsale
                 TL_ERROR
             );
 
-            log_message(
+            $this->debugLog(
                 sprintf(
                     "Invalid hash for QuickPay payment:\ngot %s, expected %s\nInput: %s\n\n",
                     $_SERVER['HTTP_QUICKPAY_CHECKSUM_SHA256'],
                     $checksum,
                     file_get_contents("php://input")
-                ),
-                'isotope_quickpay.log'
+                )
             );
 
             return false;
@@ -160,7 +157,7 @@ class QuickPay extends Postsale
                 TL_ERROR
             );
 
-            log_message(
+            $this->debugLog(
                 sprintf(
                     "QuickPay data was not accepted:\n" .
                     "Currency: got \"%s\", expected \"%s\"\n" .
@@ -176,8 +173,7 @@ class QuickPay extends Postsale
                     ($data['accepted'] ? 'yes' : 'no'),
                     ($data['test_mode'] ? 'yes' : 'no'),
                     ($this->debug ? 'yes' : 'no')
-                ),
-                'isotope_quickpay.log'
+                )
             );
 
             return false;
@@ -202,12 +198,11 @@ class QuickPay extends Postsale
                 TL_ERROR
             );
 
-            log_message(
+            $this->debugLog(
                 sprintf(
                     "Unable to read JSON for QuickPay payment:\nInput: %s\n\n",
                     file_get_contents("php://input")
-                ),
-                'isotope_quickpay.log'
+                )
             );
 
             return null;

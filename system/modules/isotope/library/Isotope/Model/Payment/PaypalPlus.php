@@ -64,14 +64,13 @@ class PaypalPlus extends PaypalApi
 
         \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
 
-        log_message(
+        $this->debugLog(
             sprintf(
                 "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
                 $responseCode,
                 $responseError,
                 $responseData
-            ),
-            'paypal.log'
+            )
         );
 
         $response = new RedirectResponse(Checkout::redirectToStep(Checkout::STEP_FAILED), 303);
@@ -88,7 +87,6 @@ class PaypalPlus extends PaypalApi
             return parent::backendInterface($orderId);
         }
 
-        $i = 0;
         $arrPayment = deserialize($objOrder->payment_data, true);
 
         if (!is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
