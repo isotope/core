@@ -275,7 +275,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        if (!is_numeric($this->arrData['price'])) {
+        if ('' === (string) $this->arrData['price']) {
             return null;
         }
 

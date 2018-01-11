@@ -263,7 +263,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        if (!is_numeric($this->arrData['price'])) {
+        if ('' === (string) $this->arrData['price']) {
             return null;
         }
 
