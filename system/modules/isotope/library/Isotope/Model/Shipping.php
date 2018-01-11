@@ -46,6 +46,7 @@ use Isotope\Translation;
  * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
+ * @property bool   $logging
  * @property bool   $enabled
  */
 abstract class Shipping extends TypeAgent implements IsotopeShipping
@@ -331,5 +332,27 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
         }
 
         return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
+    }
+
+    /**
+     * Logs information for this shipping method if enabled.
+     *
+     * @param mixed $value
+     */
+    protected function debugLog($value)
+    {
+        if (!$this->logging) {
+            return;
+        }
+
+        $pos = strpos(__CLASS__, '\\') ?: -1;
+        $className = substr(__CLASS__, $pos+1);
+
+        $logFile = sprintf(
+            'payment_%s.log',
+            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className)))
+        );
+
+        log_message(print_r($value, true), $logFile);
     }
 }

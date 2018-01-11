@@ -566,6 +566,12 @@
       <trans-unit id="tl_iso_payment.debug.1">
         <source>For testing without actually capturing for payment.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.0">
+        <source>Enable logging</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.1">
+        <source>Write transaction information to the system log files.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>
       </trans-unit>

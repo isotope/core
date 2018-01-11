@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},debug,enabled',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
         'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
-        'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_user_id,opp_password,opp_entity_id,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},debug,enabled',
+        'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_user_id,opp_password,opp_entity_id,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
     // Subpalettes
@@ -830,7 +830,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'checkbox',
             'options'               => array_keys(\Isotope\Model\Payment\OpenPaymentPlatform::$paymentBrands),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_brands'],
-            'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
+            'eval'                  => array('multiple'=>true, 'tl_class'=>'clr w50 w50h'),
             'sql'                   => "blob NULL",
             'save_callback' => [
                 function($value) {
@@ -855,14 +855,14 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['requireCCV'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'sql'                   => "char(1) NOT NULL default ''"
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'guests' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['guests'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'sql'                   => "char(1) NOT NULL default ''"
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'protected' => array
         (
@@ -870,7 +870,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true),
-            'sql'                   => "char(1) NOT NULL default ''"
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'groups' => array
         (
@@ -887,14 +887,24 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['debug'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'sql'                   => "char(1) NOT NULL default ''"
+            'eval'                  => ['tl_class' => 'clr w50'],
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'logging' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['logging'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'w50'],
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'enabled' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'sql'                   => "char(1) NOT NULL default ''"
+            'eval'                  => ['tl_class' => 'w50'],
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
     )
 );

@@ -395,11 +395,20 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
+        'logging' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['logging'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'w50'],
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
         'enabled' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'w50'],
             'sql'                   => "char(1) NOT NULL default ''",
         ),
     )
