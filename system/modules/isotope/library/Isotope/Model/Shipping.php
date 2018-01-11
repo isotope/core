@@ -46,6 +46,7 @@ use Isotope\Translation;
  * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
+ * @property bool   $debug
  * @property bool   $logging
  * @property bool   $enabled
  */
