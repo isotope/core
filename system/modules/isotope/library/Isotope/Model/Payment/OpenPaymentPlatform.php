@@ -213,7 +213,8 @@ class OpenPaymentPlatform extends Payment
             'authentication.entityId' => $this->opp_entity_id,
             'amount'                  => number_format($objOrder->getTotal(), 2, '.', ''),
             'currency'                => $objOrder->getCurrency(),
-            'paymentType'             => $type
+            'paymentType'             => $type,
+            'merchantTransactionId'   => str_pad($objOrder->getId(), '0', STR_PAD_LEFT),
         ];
 
         $request = new Request();
