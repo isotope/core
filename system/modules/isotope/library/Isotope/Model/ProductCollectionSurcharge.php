@@ -425,7 +425,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                     $total,
                     $objTaxClass->applyRoundingIncrement,
                     $addToTotal,
-                    false
+                    $objTaxClass->notNegative
                 );
             }
 
@@ -446,7 +446,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                             $total,
                             $objTaxClass->applyRoundingIncrement,
                             $addToTotal,
-                            false
+                            $objTaxClass->notNegative
                         );
 
                         if ($objTaxRate->stop) {

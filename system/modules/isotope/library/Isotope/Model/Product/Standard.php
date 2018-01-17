@@ -722,8 +722,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // Datepicker
         if ($arrData['eval']['datepicker']) {
 
-            $GLOBALS['TL_JAVASCRIPT'][] = 'assets/mootools/datepicker/' . DATEPICKER . '/datepicker.js';
-            $GLOBALS['TL_CSS'][]        = 'assets/mootools/datepicker/' . DATEPICKER . '/dashboard.css';
+            if (version_compare(VERSION, '4.0', '<')) {
+                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/mootools/datepicker/' . DATEPICKER . '/datepicker.js';
+                $GLOBALS['TL_CSS'][] = 'assets/mootools/datepicker/' . DATEPICKER . '/dashboard.css';
+                $icon = 'assets/mootools/datepicker/' . DATEPICKER . '/icon.gif';
+            } else {
+                $GLOBALS['TL_JAVASCRIPT'][] = 'assets/datepicker/js/datepicker.min.js';
+                $GLOBALS['TL_CSS'][] = 'assets/datepicker/css/datepicker.min.css';
+                $icon = 'assets/datepicker/images/icon.svg';
+            }
 
             $rgxp   = $arrData['eval']['rgxp'];
             $format = \Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
@@ -742,7 +749,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     break;
             }
 
-            $wizard .= ' <img src="assets/mootools/datepicker/' . DATEPICKER . '/icon.gif" width="20" height="20" alt="" id="toggle_' . $objWidget->id . '" style="vertical-align:-6px">
+            $wizard .= ' <img src="'.$icon.'" width="20" height="20" alt="" id="toggle_' . $objWidget->id . '" style="vertical-align:-6px">
   <script>
   window.addEvent("domready", function() {
     new Picker.Date($$("#ctrl_' . $objWidget->id . '"), {

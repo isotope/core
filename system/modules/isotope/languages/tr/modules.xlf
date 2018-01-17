@@ -161,10 +161,6 @@
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
         <target>Fiyatları hesaplamak için kullanılacak alışveriş sepeti adres verilerini girmek için bir form görüntüler.</target>
       </trans-unit>
-      <trans-unit id="IMD.config_module">
-        <source>Isotope eCommerce configuration (Version: %s)</source>
-        <target>Isotope eCommerce yapılandırması (Sürüm: %s)</target>
-      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
         <target>Ürünler</target>

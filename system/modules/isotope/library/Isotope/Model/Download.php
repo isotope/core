@@ -11,23 +11,23 @@
 
 namespace Isotope\Model;
 
+use Isotope\Interfaces\IsotopeProduct;
 
 /**
- * Download model represents a file or folder download for a product
+ * Download model represents a file or folder download for a product.
  */
 class Download extends \Model
 {
-
     /**
-     * Name of the current table
      * @var string
      */
     protected static $strTable = 'tl_iso_download';
 
 
     /**
-     * Get array of files for this download (could be multiple for folder selection)
-     * @return  array
+     * Gets array of files for this download (could be multiple for folder selection).
+     *
+     * @return array
      */
     public function getFiles()
     {
@@ -37,7 +37,7 @@ class Download extends \Model
             return array();
         }
 
-        if ($objFile->type == 'folder') {
+        if ('folder' === $objFile->type) {
             $arrFiles = array();
             $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
 
@@ -48,9 +48,9 @@ class Download extends \Model
             }
 
             return $arrFiles;
+        }
 
-        } elseif (is_file(TL_ROOT . '/' . $objFile->path)) {
-
+        if (is_file(TL_ROOT . '/' . $objFile->path)) {
             return array($objFile);
         }
 
@@ -58,9 +58,11 @@ class Download extends \Model
     }
 
     /**
-     * Calculate the expiration time of a download
-     * @param   int|null
-     * @return  int|null
+     * Calculates the expiration time of a download.
+     *
+     * @param int|null $intFrom
+     *
+     * @return int|null
      */
     public function getExpirationTimestamp($intFrom = null)
     {
@@ -75,5 +77,23 @@ class Download extends \Model
         }
 
         return strtotime('+' . $arrExpires['value'] . ' ' . $arrExpires['unit'], $intFrom);
+    }
+
+    /**
+     * Finds downloads for a given product or variant.
+     *
+     * @param IsotopeProduct $product
+     *
+     * @return Download[]|\Model\Collection|null
+     */
+    public static function findByProduct(IsotopeProduct $product)
+    {
+        $t = static::getTable();
+
+        return static::findBy(
+            array("($t.pid=? OR $t.pid=?)", "$t.published='1'"),
+            array($product->getId(), $product->getProductId()),
+            array('order' => 'sorting ASC')
+        );
     }
 }

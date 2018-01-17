@@ -2,8 +2,8 @@
 <?php echo $this->before; ?>
 <?php endif; ?>
 <div class="tl_formbody_edit be_iso_overview">
-    <?php foreach ($this->modules as $strGroupKey => $arrGroup): ?>
-    <fieldset id="pal_<?php echo $strGroupKey; ?>" class="tl_box<?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
+    <?php $first = true; foreach ($this->modules as $strGroupKey => $arrGroup): ?>
+    <fieldset id="pal_<?php echo $strGroupKey; ?>" class="<?= $first ? 'tl_tbox' : 'tl_box'; ?><?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
         <legend onclick="AjaxRequest.toggleFieldset(this,'<?php echo $strGroupKey; ?>','iso_be_overview_legend')"><?php echo $arrGroup['label']; ?></legend>
         <?php if ($arrGroup['html']): ?>
         <?php echo $arrGroup['html']; ?>
@@ -18,7 +18,7 @@
         <?php endforeach; ?>
         <?php endif; ?>
     </fieldset>
-    <?php endforeach; ?>
+    <?php $first = false; endforeach; ?>
 </div>
 <?php if ($this->after): ?>
 <?php echo $this->after; ?>
@@ -27,7 +27,6 @@
 <script>
 // I really can't do this properly :-(
 window.addEvent('domready', function() {
-    document.id(document.body).addClass('iso_be_overview');
-
+    document.id(document.body).addClass('iso_be_overview').addClass('<?= $this->versionClass ?>');
 });
 </script>
