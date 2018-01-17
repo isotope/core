@@ -33,9 +33,10 @@ class DHLBusinessCheckoutListener
         $credentials = $this->getCredentials($shipping);
 
         $dhl = new BusinessShipment($credentials, (bool) $shipping->debug);
-        $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping, $order, $shippingAddress->email));
+        $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping, $order));
         $dhl->setSender($this->getSender($config->getOwnerAddress()));
         $dhl->setReceiver($this->getReceiver($shippingAddress));
+        $dhl->setReceiverEmail($shippingAddress->email);
 
         $response = $dhl->createShipment();
 
@@ -126,8 +127,7 @@ class DHLBusinessCheckoutListener
     private function getShipmentDetails(
         Credentials $credentials,
         DHLBusiness $shippingMethod,
-        IsotopePurchasableCollection $order,
-        $notificationEmail
+        IsotopePurchasableCollection $order
     ) {
         $accountNumber = sprintf(
             '%s%s01',
@@ -140,11 +140,6 @@ class DHLBusinessCheckoutListener
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
         $details->setReturnReference($order->getDocumentNumber());
-
-        // See https://github.com/Petschko/dhl-php-sdk/pull/39
-        if ($notificationEmail && method_exists($details, 'setNotificationEmail')) {
-            $details->setNotificationEmail($notificationEmail);
-        }
 
         return $details;
     }
