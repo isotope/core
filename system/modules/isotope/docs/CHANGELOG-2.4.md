@@ -22,6 +22,7 @@ Version 2.4.5 (2017-12-??)
 - Datepicker was not correctly loaded in Contao 4 (#1904)
 - Prevent database lookup error in uniqid insert tag (#1902)
 - Fallback language could not be copied (#1877)
+- Prevent double encoding of URL in ajax request (#1880)
 
 
 Version 2.4.4 (2017-09-07)
