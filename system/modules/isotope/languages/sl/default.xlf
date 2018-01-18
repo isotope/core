@@ -177,6 +177,7 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_all_to_cart">
         <source>Add All To Cart</source>
+        <target>Vse dodaj v košarico</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
@@ -184,9 +185,11 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_favorites">
         <source>Add To Favorites</source>
+        <target>Dodaj na Seznam želja</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
+        <target>Umakni s Seznama želja</target>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -240,6 +243,7 @@
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
+        <target>Uredi %s</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkText">
         <source>Edit</source>
@@ -259,9 +263,11 @@
       </trans-unit>
       <trans-unit id="MSC.shippingLabel">
         <source>Shipping (%s)</source>
+        <target>Dostava (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.paymentLabel">
         <source>Payment (%s)</source>
+        <target>Plačilo (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.grandTotalLabel">
         <source>Order Total: </source>
@@ -278,6 +284,7 @@
       </trans-unit>
       <trans-unit id="MSC.noOrders">
         <source>No orders found.</source>
+        <target>Ni naročil.</target>
       </trans-unit>
       <trans-unit id="MSC.downloadsRemaining">
         <source>&lt;br /&gt;%s downloads remaining</source>
@@ -288,6 +295,7 @@
       </trans-unit>
       <trans-unit id="MSC.checkoutBT">
         <source>Proceed to Checkout</source>
+        <target>Zaključek nakupa</target>
       </trans-unit>
       <trans-unit id="MSC.continueShoppingBT">
         <source>Continue shopping</source>
@@ -315,9 +323,11 @@
       </trans-unit>
       <trans-unit id="MSC.useCustomerAddress">
         <source>Use customer address</source>
+        <target>Uporabite naslov kupca</target>
       </trans-unit>
       <trans-unit id="MSC.differentShippingAddress">
         <source>Different shipping address</source>
+        <target>Drugačen naslov za dostavo</target>
       </trans-unit>
       <trans-unit id="MSC.editAddressLabel">
         <source>Edit</source>
@@ -364,9 +374,11 @@
       </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
+        <target>nižje do višje</target>
       </trans-unit>
       <trans-unit id="MSC.high_to_low">
         <source>hi to lo</source>
+        <target>višje do nižje</target>
       </trans-unit>
       <trans-unit id="MSC.a_to_z">
         <source>A to Z</source>
@@ -430,9 +442,11 @@
       </trans-unit>
       <trans-unit id="MSC.shipping_method_missing">
         <source>Please select a shipping method.</source>
+        <target>Izberite način dostave.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_method_message">
         <source>Enter your payment information.</source>
+        <target>Vnesite informacije za plačilo.</target>
       </trans-unit>
       <trans-unit id="MSC.payment_method_missing">
         <source>Please select a payment method.</source>
@@ -464,12 +478,15 @@
       </trans-unit>
       <trans-unit id="MSC.shipping_address">
         <source>Shipping Address</source>
+        <target>Naslov za dostavo</target>
       </trans-unit>
       <trans-unit id="MSC.billing_shipping_address">
         <source>Billing &amp; Shipping Address</source>
+        <target>Naslov za plačilo in dostavo</target>
       </trans-unit>
       <trans-unit id="MSC.customer_address">
         <source>Customer Address</source>
+        <target>Naslov kupca</target>
       </trans-unit>
       <trans-unit id="MSC.shipping_method">
         <source>Shipping Method</source>
@@ -518,6 +535,7 @@
       </trans-unit>
       <trans-unit id="MSC.useDefault">
         <source>Use default value</source>
+        <target>Uporabi privzeto vrednost</target>
       </trans-unit>
       <trans-unit id="MSC.activeStep">
         <source>active step: </source>
@@ -525,12 +543,14 @@
       </trans-unit>
       <trans-unit id="MSC.productcacheLoading">
         <source>Loading products...</source>
+        <target>Iščem izdelke...</target>
       </trans-unit>
       <trans-unit id="MSC.productcacheNoscript">
         <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
       </trans-unit>
       <trans-unit id="MSC.noFilesInFolder">
         <source>No files in this folder</source>
+        <target>V tej mapi ni datotek</target>
       </trans-unit>
       <trans-unit id="MSC.assetImportConfirmation">
         <source>Imported file %s for product &quot;%s&quot;</source>
@@ -544,9 +564,11 @@
       </trans-unit>
       <trans-unit id="MSC.templatesConfig">
         <source>Store Config &quot;%s&quot;</source>
+        <target>Nastavitve trgovine &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="MSC.splittedTaxRate">
         <source>Splitted</source>
+        <target>Ločeno</target>
       </trans-unit>
       <trans-unit id="MSC.newOrders">
         <source>You have %s order(s) with status &quot;%s&quot;</source>
@@ -583,7 +605,7 @@
         <source>Introduction</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.0">
-        <source>Welcome to Isotope eCommerce</source>
+        <source>Welcome to Isotope eCommerce (Version: %s)</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.1">
         <source>Isotope is the premier open source eCommerce solution for Contao.</source>
@@ -603,15 +625,19 @@
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>
+        <target>po datumu (naraščajoče)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.desc_id">
         <source>by date added (descending)</source>
+        <target>po datumu (padajoče)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_tstamp">
         <source>by date updated (ascending)</source>
+        <target>po datumu posodobitve (naraščajoče)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.desc_tstamp">
         <source>by date updated (descending)</source>
+        <target>po datumu posodobitve (padajoče)</target>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_name">
         <source>by product name (ascending)</source>
@@ -631,6 +657,7 @@
       </trans-unit>
       <trans-unit id="MSC.noShippingAddress">
         <source>Please fill in the shipping address.</source>
+        <target>Vnesi naslov za dostavo.</target>
       </trans-unit>
       <trans-unit id="MSC.noShippingRequiredMsg">
         <source>None of the products in your shopping cart require shipping!</source>
@@ -640,6 +667,7 @@
       </trans-unit>
       <trans-unit id="MSC.saveAddressButton">
         <source>Save address</source>
+        <target>Shrani naslov</target>
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_de">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
@@ -663,6 +691,7 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.group.0">
         <source>Shipping group</source>
+        <target>Skupina dostave</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.group.1">
         <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
@@ -777,12 +806,15 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.0">
         <source>Standard product</source>
+        <target>Klasični izdelek</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_product.standard.1">
         <source>A default product. Select this if nothing else matches.</source>
+        <target>Privzeti izdelek. Izberi tega, če ni ustreznejšega.</target>
       </trans-unit>
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
+        <target>Evropska DDV številka (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="CCT.mc">
         <source>MasterCard</source>
@@ -856,6 +888,7 @@
       </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>
+        <target>Tekstovno polje</target>
       </trans-unit>
       <trans-unit id="ATTR.text.1">
         <source>A single-line input field for a short or medium text.</source>
@@ -871,6 +904,7 @@
       </trans-unit>
       <trans-unit id="ATTR.select.0">
         <source>Select menu</source>
+        <target>Izbirni menu</target>
       </trans-unit>
       <trans-unit id="ATTR.select.1">
         <source>A single- or multi-line drop-down menu.&lt;br /&gt;&lt;i&gt;This field type is suitable for product variants.&lt;/i&gt;</source>
@@ -1427,6 +1461,9 @@
       <trans-unit id="CUR_SYMBOL.GBP">
         <source>£</source>
         <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.HRK">
+        <source>Kn</source>
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.JPY">
         <source>¥</source>

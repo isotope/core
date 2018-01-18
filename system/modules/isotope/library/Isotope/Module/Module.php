@@ -195,7 +195,7 @@ abstract class Module extends AbstractFrontendModule
                     break;
             }
 
-            $this->arrCategories = empty($arrCategories) ? array(0) : $arrCategories;
+            $this->arrCategories = empty($arrCategories) ? array(0) : array_map('intval', $arrCategories);
         }
 
         return $this->arrCategories;

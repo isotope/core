@@ -5,7 +5,7 @@
         <p><a href="https://isotopeecommerce.org" target="_blank" style="text-decoration: underline;">https://isotopeecommerce.org</a></p>
     </div>
     <div class="left">
-        <h2><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0]; ?></h2>
+        <h2><?php echo sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0], \Isotope\Isotope::VERSION); ?></h2>
         <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]; ?></p>
         <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]; ?></p>
         <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]; ?></p>

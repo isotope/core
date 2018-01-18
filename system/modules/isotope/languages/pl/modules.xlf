@@ -155,10 +155,6 @@
       <trans-unit id="FMD.iso_cart_address.1">
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
       </trans-unit>
-      <trans-unit id="IMD.config_module">
-        <source>Isotope eCommerce configuration (Version: %s)</source>
-        <target>Konfiguracja Isotope eCommerce (wersja: %s)</target>
-      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
         <target>Produkty</target>

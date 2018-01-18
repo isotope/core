@@ -161,10 +161,6 @@
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
         <target>Zeigt ein Formular zur EIngabe der Warenkorb-Adresse an, um Preise zu berechnen.</target>
       </trans-unit>
-      <trans-unit id="IMD.config_module">
-        <source>Isotope eCommerce configuration (Version: %s)</source>
-        <target>Isotope eCommerce Konfiguration (Version: %s)</target>
-      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
         <target>Produkte</target>

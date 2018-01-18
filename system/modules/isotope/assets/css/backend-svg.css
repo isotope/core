@@ -1,13 +1,9 @@
 .header_iso_copy {
-    background-image:url(../../../../themes/flexible/icons/back.svg);
+    background-image:url(../../../../themes/flexible/icons/copy.svg);
 }
 
 .mod_iso_orderdetails {
     margin: 2%;
-}
-
-.iso_be_overview #main h1:first-child {
-    display: none;
 }
 
 .be_iso_overview .daily_summary {

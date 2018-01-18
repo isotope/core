@@ -3,6 +3,7 @@
 namespace Isotope\EventListener;
 
 use Contao\CoreBundle\Command\SymlinksCommand;
+use Contao\CoreBundle\Util\SymlinkUtil;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -20,11 +21,11 @@ class SymlinkCommandListener
      */
     public function __construct($rootDir)
     {
-        $this->rootDir = $rootDir;
+        $this->rootDir = dirname($rootDir);
     }
 
     /**
-     * Adds the initialize.php file.
+     * Adds the isotope symlink.
      *
      * @param ConsoleTerminateEvent $event
      */
@@ -34,8 +35,8 @@ class SymlinkCommandListener
             return;
         }
 
-        (new Filesystem())
-            ->symlink('../isotope', $this->rootDir.'/../web/isotope')
-        ;
+        (new Filesystem())->mkdir($this->rootDir . '/isotope');
+
+        SymlinkUtil::symlink('isotope', 'web/isotope', $this->rootDir);
     }
 }

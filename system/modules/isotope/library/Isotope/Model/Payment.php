@@ -340,8 +340,8 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>
 
-<div class="tl_formbody_edit">
-<div class="tl_tbox block">
+<div id="tl_soverview">
+<div id="tl_messages">
 <p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendPaymentNoInfo'] . '</p>
 </div>
 </div>';

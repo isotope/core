@@ -666,8 +666,7 @@
         <target>Einführung</target>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.0">
-        <source>Welcome to Isotope eCommerce</source>
-        <target>Willkommen zu Isotope eCommerce</target>
+        <source>Welcome to Isotope eCommerce (Version: %s)</source>
       </trans-unit>
       <trans-unit id="MSC.isotopeIntroduction.1">
         <source>Isotope is the premier open source eCommerce solution for Contao.</source>
@@ -1740,6 +1739,9 @@
       <trans-unit id="CUR_SYMBOL.GBP">
         <source>£</source>
         <target>£</target>
+      </trans-unit>
+      <trans-unit id="CUR_SYMBOL.HRK">
+        <source>Kn</source>
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.JPY">
         <source>¥</source>

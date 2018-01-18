@@ -180,15 +180,11 @@ class ProductCollectionDownload extends \Model
     public static function createForProductsInCollection(IsotopeProductCollection $objCollection)
     {
         $arrDownloads = array();
-        $t            = Download::getTable();
-        $time         = $objCollection->isLocked() ? $objCollection->getLockTime(): time();
+        $time = $objCollection->isLocked() ? $objCollection->getLockTime(): time();
 
         foreach ($objCollection->getItems() as $objItem) {
             if ($objItem->hasProduct()) {
-                $objDownloads = Download::findBy(
-                    array("($t.pid=? OR $t.pid=?)", "$t.published='1'"),
-                    array($objItem->getProduct()->getId(), $objItem->getProduct()->getProductId())
-                );
+                $objDownloads = Download::findByProduct($objItem->getProduct());
 
                 if (null !== $objDownloads) {
                     /** @var Download $objDownload */

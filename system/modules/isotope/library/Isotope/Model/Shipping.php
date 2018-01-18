@@ -308,8 +308,8 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'][$this->type][0] . ')' . '</h2>
 
-<div class="tl_formbody_edit">
-<div class="tl_tbox block">
+<div id="tl_soverview">
+<div id="tl_messages">
 <p class="tl_info">' . $GLOBALS['TL_LANG']['MSC']['backendShippingNoInfo'] . '</p>
 </div>
 </div>';

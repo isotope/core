@@ -2635,27 +2635,37 @@ class DC_ProductData extends \DC_Table
      */
     public function copyFallback()
     {
-        $session = $this->getSessionData();
+        $session = \Session::getInstance()->getData();
         $strLanguage = $session['language'][$this->strTable][$this->intId];
-        $this->strPalette = trimsplit('[;,]', $this->getPalette());
         $arrDuplicate = array();
 
-        foreach ($this->strPalette as $field) {
+        foreach (trimsplit('[;,]', $this->getPalette()) as $field) {
             if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual']) {
                 $arrDuplicate[] = $field;
             }
         }
 
         if (!empty($arrDuplicate)) {
-            $intLanguageId = $this->Database->execute("SELECT id FROM {$this->strTable} WHERE pid={$this->intId} AND language='$strLanguage'")->id;
+            $language = $this->Database->prepare("SELECT id FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $strLanguage);
 
-            $this->createInitialVersion($this->strTable, $intLanguageId);
+            if ($language->numRows) {
+                $this->createInitialVersion($this->strTable, $language->id);
 
-            $arrRow = $this->Database->execute("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id={$this->intId}")->fetchAssoc();
-            \Database::getInstance()->prepare("UPDATE {$this->strTable} %s WHERE id=$intLanguageId")->set($arrRow)->execute();
+                $arrRow = $this->Database->prepare("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id=?")->execute($this->intId)->fetchAssoc();
+                \Database::getInstance()->prepare("UPDATE {$this->strTable} %s WHERE id=?")->set($arrRow)->execute($language->id);
 
-            $this->createNewVersion($this->strTable, $intLanguageId);
-            \System::log(sprintf('A new version of record ID %s (table %s) has been created', $intLanguageId, $this->strTable), 'DC_ProductData copyFallback()', TL_GENERAL);
+                $this->createNewVersion($this->strTable, $language->id);
+
+                \System::log(
+                    sprintf(
+                        'A new version of record ID %s (table %s) has been created',
+                        $language->id,
+                        $this->strTable
+                    ),
+                    __METHOD__,
+                    TL_GENERAL
+                );
+            }
         }
 
         \Controller::redirect(\Backend::addToUrl('act=edit'));
