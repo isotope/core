@@ -13,6 +13,7 @@ namespace Isotope\Model\Payment;
 use Contao\Request;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
+use Isotope\Model\Address;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -68,12 +69,17 @@ class OpenPaymentPlatform extends Payment
      */
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
+        if (!$objOrder instanceof IsotopePurchasableCollection) {
+            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return false;
+        }
+
         $paymentBrands = deserialize($this->opp_brands, true);
         $supportedTypes = static::getPaymentTypes($paymentBrands);
         $paymentType = array_shift($supportedTypes);
 
         $base = $this->getBaseUrl();
-        $request = $this->prepareRequest($paymentType, $objOrder);
+        $request = $this->createRequest($paymentType, $objOrder, $this->preparePaymentParams($objOrder));
         $request->send($base . '/v1/checkouts');
 
         $response = json_decode($request->response, true);
@@ -162,7 +168,7 @@ class OpenPaymentPlatform extends Payment
             && isset(static::$paymentBrands[$response['paymentBrand']])
             && in_array('CP', static::$paymentBrands[$response['paymentBrand']], true)
         ) {
-            $request = $this->prepareRequest('CP', $objOrder);
+            $request = $this->createRequest('CP', $objOrder);
             $request->send($this->getBaseUrl() . '/v1/payments/' . $response['id']);
 
             $response = json_decode($request->response, true);
@@ -200,22 +206,20 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param string                   $type
-     * @param IsotopeProductCollection $objOrder
+     * @param string                       $paymentType
+     * @param IsotopePurchasableCollection $objOrder
+     * @param array                        $params
      *
      * @return Request
      */
-    private function prepareRequest($type, IsotopeProductCollection $objOrder)
+    private function createRequest($paymentType, IsotopePurchasableCollection $objOrder, array $params = [])
     {
-        $params = [
-            'authentication.userId'   => $this->opp_user_id,
-            'authentication.password' => $this->opp_password,
-            'authentication.entityId' => $this->opp_entity_id,
-            'amount'                  => number_format($objOrder->getTotal(), 2, '.', ''),
-            'currency'                => $objOrder->getCurrency(),
-            'paymentType'             => $type,
-            'merchantTransactionId'   => str_pad($objOrder->getId(), '0', STR_PAD_LEFT),
-        ];
+        $params['authentication.userId']   = $this->opp_user_id;
+        $params['authentication.password'] = $this->opp_password;
+        $params['authentication.entityId'] = $this->opp_entity_id;
+        $params['amount']                  = number_format($objOrder->getTotal(), 2, '.', '');
+        $params['currency']                = $objOrder->getCurrency();
+        $params['paymentType']             = $paymentType;
 
         $request = new Request();
         $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -226,10 +230,10 @@ class OpenPaymentPlatform extends Payment
     }
 
     /**
-     * @param array                    $data
-     * @param IsotopeProductCollection $objOrder
+     * @param array                        $data
+     * @param IsotopePurchasableCollection $objOrder
      */
-    private function storeApiResponse(array $data, IsotopeProductCollection $objOrder)
+    private function storeApiResponse(array $data, IsotopePurchasableCollection $objOrder)
     {
         $payments = deserialize($objOrder->payment_data, true);
 
@@ -270,5 +274,84 @@ class OpenPaymentPlatform extends Payment
         $types = static::getPaymentTypes($brands);
 
         return !empty($types);
+    }
+
+    /**
+     * @param IsotopePurchasableCollection $objOrder
+     *
+     * @return array
+     */
+    private function preparePaymentParams(IsotopePurchasableCollection $objOrder)
+    {
+        $params = [];
+        $params['merchantTransactionId'] = str_pad($objOrder->getId(), '0', STR_PAD_LEFT);
+        $params['transactionCategory'] = 'EC';
+
+        if (null !== $objOrder->getMember()) {
+            $params['customer.merchantCustomerId'] = $objOrder->getMember()->id;
+        }
+
+        if (null !== ($billingAddress = $objOrder->getBillingAddress())) {
+            $this->setCustomerParams($params, $billingAddress, 'customer');
+            $this->setAddressParams($params, $billingAddress, 'billing');
+        }
+
+        if ($objOrder->hasShipping() && null !== ($shippingAddress = $objOrder->getShippingAddress())) {
+            $this->setCustomerParams($params, $shippingAddress, 'shipping.customer');
+            $this->setAddressParams($params, $shippingAddress, 'shipping');
+        }
+
+        return $params;
+    }
+
+    /**
+     * @param array   $params
+     * @param Address $address
+     * @param string  $type
+     */
+    private function setCustomerParams(array &$params, Address $address, $type)
+    {
+        $params[$type.'.givenName'] = $address->firstname;
+        $params[$type.'.surname'] = $address->lastname;
+
+        if ($address->gender === 'male') {
+            $params[$type.'.sex'] = 'M';
+        } elseif ($address->gender === 'female') {
+            $params[$type.'.sex'] = 'F';
+        }
+
+        if ($address->dateOfBirth) {
+            $params[$type.'.birthDate'] = date('Y-m-d', $address->dateOfBirth);
+        }
+
+        if ($address->phone) {
+            $params[$type.'.phone'] = $address->phone;
+        }
+
+        if ($address->email) {
+            $params[$type.'.email'] = $address->email;
+        }
+
+        if ($address->company) {
+            $params[$type.'.companyName'] = $address->company;
+        }
+    }
+
+    /**
+     * @param array   $params
+     * @param Address $address
+     * @param string  $type
+     */
+    private function setAddressParams(array &$params, Address $address, $type)
+    {
+        $params[$type.'.street1'] = $address->street_1;
+
+        if ($address->street_2) {
+            $params[$type.'.street2'] = $address->street_2;
+        }
+
+        $params[$type.'.city'] = $address->city;
+        $params[$type.'.postcode'] = $address->postal;
+        $params[$type.'.country'] = strtoupper($address->country);
     }
 }
