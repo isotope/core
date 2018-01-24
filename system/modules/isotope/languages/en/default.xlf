@@ -695,6 +695,9 @@
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href="http://www.payunity.com" target="_blank"&gt;PayUnity.PAY&lt;/a&gt;).</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.mpay24.0">
+        <source>mPAY24</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
       </trans-unit>

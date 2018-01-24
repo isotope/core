@@ -36,19 +36,22 @@
         "contao/manager-plugin": "^2.0",
         "discordier/httprequestextended": "~1.1",
         "terminal42/contao-fineuploader": "^2.0",
-        "petschko/dhl-php-sdk": "dev-master@dev"
+        "petschko/dhl-php-sdk": "dev-master@dev",
+        "mpay24/mpay24-php": "^4.0"
     },
     "replace": {
         "contao-legacy/isotope": "self.version"
     },
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
-        "petschko/dhl-php-sdk": "For DHL Business shipping"
+        "petschko/dhl-php-sdk": "For DHL Business shipping",
+        "mpay24/mpay24-php": "For mPAY24 payment provider"
     },
     "conflict": {
         "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
         "contao/core-bundle": "4.0.0 || 4.0.1",
-        "contao/manager-plugin": "<2.0 || >= 3.0"
+        "contao/manager-plugin": "<2.0 || >= 3.0",
+        "mpay24/mpay24-php": "< 4.0 || >= 5.0"
     },
     "autoload": {
         "psr-0": {

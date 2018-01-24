@@ -207,6 +207,10 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
 \Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
 
+if (class_exists('Mpay24\Mpay24')) {
+    \Isotope\Model\Payment::registerModelType('mpay24', 'Isotope\Model\Payment\Mpay24');
+}
+
 /**
  * Shipping methods
  */

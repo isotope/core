@@ -542,6 +542,18 @@
       <trans-unit id="tl_iso_payment.opp_brands.VISA">
         <source>VISA</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.0">
+        <source>Merchant ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.1">
+        <source>Please enter your merchant ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.0">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.1">
+        <source>Please enter your SOAP password.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
       </trans-unit>
