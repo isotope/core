@@ -129,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token,dhl_shipping;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
     // Subpalettes
@@ -420,6 +420,16 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NULL",
+        ),
+        'dhl_shipping' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_shipping'],
+            'exclude'               => true,
+            'inputType'             => 'timePeriod',
+            'options'               => array('days', 'weeks', 'months', 'years'),
+            'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'guests' => array
         (

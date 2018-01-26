@@ -176,6 +176,12 @@
       <trans-unit id="tl_iso_shipping.dhl_token.1">
         <source>Enter the Token for DHL API.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_shipping.0">
+        <source>Shipping Date Calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_shipping.1">
+        <source>Enter the period within the package will be shipped. Default is next day.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.groups.0">
         <source>Member Groups</source>
       </trans-unit>
@@ -219,7 +225,7 @@
         <source>Shipping note</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.api_legend">
-        <source>API Credentials</source>
+        <source>API Configuration</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.config_legend">
         <source>Configuration</source>

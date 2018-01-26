@@ -141,6 +141,15 @@ class DHLBusinessCheckoutListener
         $details->setCustomerReference($order->getDocumentNumber());
         $details->setReturnReference($order->getDocumentNumber());
 
+        $shippingDate = deserialize($shippingMethod->dhl_shipping, true);
+        if (isset($shippingDate['value']) && $shippingDate['value'] && $shippingDate['unit']) {
+            $shippingDate = strtotime(sprintf('+%s %s', $shippingDate['value'], $shippingDate['unit']));
+
+            $details->setShipmentDate(
+                date('Y-m-d', date('w', $shippingDate) === 0 ? strtotime('+1 day', $shippingDate) : $shippingDate)
+            );
+        }
+
         return $details;
     }
 }

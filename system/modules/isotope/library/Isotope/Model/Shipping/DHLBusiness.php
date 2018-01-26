@@ -18,6 +18,7 @@ namespace Isotope\Model\Shipping;
  * @property string $dhl_product
  * @property string $dhl_app
  * @property string $dhl_token
+ * @property array  $dhl_shipping
  */
 class DHLBusiness extends Flat
 {
