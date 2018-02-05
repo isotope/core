@@ -60,6 +60,7 @@ TemplateLoader::addFiles(array
     'iso_payment_concardis'             => 'system/modules/isotope/templates/payment',
     'iso_payment_datatrans'             => 'system/modules/isotope/templates/payment',
     'iso_payment_innopay'               => 'system/modules/isotope/templates/payment',
+    'iso_payment_mpay24'                => 'system/modules/isotope/templates/payment',
     'iso_payment_epay'                  => 'system/modules/isotope/templates/payment',
     'iso_payment_paybyway'              => 'system/modules/isotope/templates/payment',
     'iso_payment_paypal'                => 'system/modules/isotope/templates/payment',

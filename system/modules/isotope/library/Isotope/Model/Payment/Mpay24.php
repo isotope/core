@@ -47,7 +47,7 @@ class Mpay24 extends Postsale
 
         $this->debugLog($status);
 
-        if ($status->getParam('status') !== 'BILLED') {
+        if ($status->getParam('STATUS') !== 'BILLED') {
             \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
 
             return;
