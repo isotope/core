@@ -4,7 +4,7 @@
     "homepage": "https://isotopeecommerce.org",
     "keywords":["contao", "isotope"],
     "type":"contao-module",
-    "license":"LGPL-3.0+",
+    "license":"LGPL-3.0-or-later",
     "authors":[
         {
             "name":"terminal42 gmbh",
