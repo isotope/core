@@ -1755,6 +1755,10 @@
         <source>Kr.</source>
         <target>Kr. </target>
       </trans-unit>
+      <trans-unit id="CUR_SYMBOL.VND">
+        <source>₫</source>
+        <target>₫</target>
+      </trans-unit>
       <trans-unit id="CUR_SYMBOL.USD">
         <source>$</source>
         <target>$</target>

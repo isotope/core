@@ -11,6 +11,7 @@ Version 2.5.0-beta1 (201?-??-??)
 - Added shipping method for DHL Business (requires petschko/dhl-php-sdk)
 - Added shipping method that calculates from price in product
 - Added lightbox option for inline gallery (#1800)
+- Added currency symbol for Vietnamese Dong
 
 
 ### Improved
