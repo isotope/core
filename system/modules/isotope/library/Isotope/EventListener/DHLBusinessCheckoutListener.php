@@ -2,6 +2,7 @@
 
 namespace Isotope\EventListener;
 
+use Haste\Units\Mass\Unit;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
@@ -140,6 +141,7 @@ class DHLBusinessCheckoutListener
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
         $details->setReturnReference($order->getDocumentNumber());
+        $details->setWeight($order->addToScale()->amountIn(Unit::KILOGRAM));
 
         $shippingDate = deserialize($shippingMethod->dhl_shipping, true);
         if (isset($shippingDate['value']) && $shippingDate['value'] && $shippingDate['unit']) {
