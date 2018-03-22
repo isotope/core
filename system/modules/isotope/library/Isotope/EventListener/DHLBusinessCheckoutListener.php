@@ -136,12 +136,18 @@ class DHLBusinessCheckoutListener
             substr($shippingMethod->dhl_product, 1, 2)
         );
 
+        $scale = $order->addToScale();
+
+        if (($shippingWeight = $shippingMethod->getWeight()) !== null) {
+            $scale->add($shippingWeight);
+        }
+
         $details = new ShipmentDetails($accountNumber);
 
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
         $details->setReturnReference($order->getDocumentNumber());
-        $details->setWeight($order->addToScale()->amountIn(Unit::KILOGRAM));
+        $details->setWeight($scale->amountIn(Unit::KILOGRAM));
 
         $shippingDate = deserialize($shippingMethod->dhl_shipping, true);
         if (isset($shippingDate['value']) && $shippingDate['value'] && $shippingDate['unit']) {

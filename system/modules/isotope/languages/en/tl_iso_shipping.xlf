@@ -44,6 +44,12 @@
       <trans-unit id="tl_iso_shipping.flatCalculation.1">
         <source>Select the mode of price calculation.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.0">
+        <source>Shipping weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.1">
+        <source>Adds additional weight to the shipping to account for packaging material.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>
       </trans-unit>
@@ -231,7 +237,7 @@
         <source>Configuration</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price_legend">
-        <source>Pricing threshold and tax class applicability</source>
+        <source>Price and Weight</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.expert_legend">
         <source>Expert settings</source>

@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Haste\Units\Mass\Weight;
+use Haste\Units\Mass\WeightAggregate;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
@@ -43,6 +44,7 @@ use Isotope\Translation;
  * @property array  $config_ids
  * @property string $price
  * @property int    $tax_class
+ * @property array  $shipping_weight
  * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
@@ -50,7 +52,7 @@ use Isotope\Translation;
  * @property bool   $logging
  * @property bool   $enabled
  */
-abstract class Shipping extends TypeAgent implements IsotopeShipping
+abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggregate
 {
     const QUANTITY_MODE_ITEMS = 'cart_items';
     const QUANTITY_MODE_PRODUCTS = 'cart_products';
@@ -333,6 +335,14 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
         }
 
         return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWeight()
+    {
+        return Weight::createFromTimePeriod($this->shipping_weight);
     }
 
     /**
