@@ -18,7 +18,7 @@
     position:fixed;
     top:10%;
     left:40%;
-    background:#fff url("../../../../themes/default/images/loading.gif") no-repeat right center;
+    background:#fff url("../../../../../isotope/loading.gif") no-repeat right center;
     border:2px solid #000;
     font-family:"Trebuchet MS",Verdana,sans-serif;
     font-size:15px;
