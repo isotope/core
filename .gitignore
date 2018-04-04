@@ -14,6 +14,7 @@
 isotope/*
 !isotope/.htaccess
 !isotope/index.html
+!isotope/loading.gif
 !system/
 system/*
 !system/drivers/
