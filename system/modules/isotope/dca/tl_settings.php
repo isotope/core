@@ -13,7 +13,11 @@
 /**
  * Extend a tl_settings default palette
  */
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace(';{chmod_legend', ',iso_cartTimeout,iso_orderTimeout;{chmod_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+\Haste\Dca\PaletteManipulator::create()
+    ->addField('iso_cartTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_orderTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('default', 'tl_settings')
+;
 
 
 /**

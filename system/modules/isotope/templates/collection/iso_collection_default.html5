@@ -113,7 +113,7 @@
 <h2><?php echo $GLOBALS['TL_LANG']['MSC']['downloadsLabel']; ?></h2>
 <ul>
 <?php foreach ($this->downloads as $download): ?>
-<li class="<?php echo $download['downloadable'] ? 'available' : 'unavailable'; ?>"><?php if ($download['downloadable']): ?><a href="<?php echo $download['href']; ?>"><?php endif; echo $download['title']; if ($download['downloadable']): ?></a><?php endif; echo $download['remaining']; ?></li>
+<li class="<?php echo $download['downloadable'] ? 'available' : 'unavailable'; ?>"><?php if ($download['downloadable'] && $download['href']): ?><a href="<?php echo $download['href']; ?>"><?php endif; echo $download['title']; if ($download['downloadable'] && $download['href']): ?></a><?php endif; echo $download['remaining']; ?></li>
 <?php endforeach; ?>
 </ul>
 </div>

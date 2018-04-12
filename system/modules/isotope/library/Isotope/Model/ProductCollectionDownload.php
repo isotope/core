@@ -129,6 +129,7 @@ class ProductCollectionDownload extends \Model
             // Add the image
             $arrDownloads[] = array(
                 'id'            => $this->id,
+                'file'          => $objFile->path,
                 'name'          => $objFile->basename,
                 'title'         => $arrMeta['title'],
                 'link'          => $arrMeta['title'],

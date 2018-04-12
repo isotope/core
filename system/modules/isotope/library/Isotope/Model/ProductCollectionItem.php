@@ -94,7 +94,6 @@ class ProductCollectionItem extends \Model
             return false;
         }
 
-        // @todo change to ->getConfiguration() in Isotope 3.0
         $arrConfig = $this->getOptions();
         foreach ($this->getProduct()->getOptions() as $k => $v) {
             if ($arrConfig[$k] !== $v) {

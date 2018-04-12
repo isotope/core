@@ -15,8 +15,26 @@
 /**
  * Extend tl_user palettes
  */
-$GLOBALS['TL_DCA']['tl_user']['palettes']['extend'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_configs,iso_configp,iso_groups,iso_groupp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['extend']);
-$GLOBALS['TL_DCA']['tl_user']['palettes']['custom'] = str_replace('{account_legend}', '{isotope_legend},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_configs,iso_configp,iso_groups,iso_groupp;{account_legend}', $GLOBALS['TL_DCA']['tl_user']['palettes']['custom']);
+\Haste\Dca\PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'account_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_types', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_typep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classes', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_rates', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_ratep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configs', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groupp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('extend', 'tl_user')
+    ->applyToPalette('custom', 'tl_user')
+;
 
 /**
  * Add fields to tl_user
