@@ -1,6 +1,19 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.6 (2018-04-12)
+--------------------------
+
+### Fixed
+
+- Correctly add setting fields to existing palette (#1921)
+- Replace all new line characters in flash message (#1925)
+- Moved ajax loading icon to module folder (##1926)
+- Correctly display the backend icon in Contao 4.4 (#1911)
+- Round amounts in PayOne payment method (#1879)
+- Update paths in collection items after moving upload files (#1793)
+- Remove download link from mail when sent from backend (#1804)
+
 
 Version 2.4.5 (2018-01-18)
 --------------------------

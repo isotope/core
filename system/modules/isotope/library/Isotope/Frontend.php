@@ -217,7 +217,7 @@ class Frontend extends \Frontend
 
         if ($messages !== '') {
             $template->hasMessages = true;
-            $template->messages = str_replace(array("\n", "'"), array('', '\''), $messages);
+            $template->messages = str_replace(array("\n", "\r", "'"), array('', '', '\''), $messages);
         }
 
         return str_replace('</body>', $template->parse() . '</body>', $buffer);

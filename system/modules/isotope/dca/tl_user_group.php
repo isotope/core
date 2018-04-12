@@ -15,7 +15,25 @@
 /**
  * Extend a tl_user_group palette
  */
-$GLOBALS['TL_DCA']['tl_user_group']['palettes']['default'] = str_replace(array('{alexf_legend}', '{alexf_legend:hide}'), '{isotope_legend:hide},iso_modules,iso_product_types,iso_product_typep,iso_payment_modules,iso_payment_modulep,iso_shipping_modules,iso_shipping_modulep,iso_tax_classes,iso_tax_classp,iso_tax_rates,iso_tax_ratep,iso_configs,iso_configp,iso_groups,iso_groupp;{alexf_legend}', $GLOBALS['TL_DCA']['tl_user_group']['palettes']['default']);
+\Haste\Dca\PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'alexf_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_types', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_typep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classes', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_rates', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_ratep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configs', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groupp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('default', 'tl_user_group')
+;
 
 
 /**

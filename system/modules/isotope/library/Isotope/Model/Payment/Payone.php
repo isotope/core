@@ -14,6 +14,7 @@ namespace Isotope\Model\Payment;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
+use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
@@ -111,7 +112,7 @@ class Payone extends Postsale
             'display_address'   => 'no',
             'successurl'        => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'backurl'           => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'amount'            => $objOrder->getTotal() * 100,
+            'amount'            => $this->formatAmount($objOrder->getTotal()),
             'currency'          => $objOrder->getCurrency(),
 
             // Custom parameter to recognize payone in postsale request (only alphanumeric is allowed)
@@ -141,7 +142,7 @@ class Payone extends Postsale
             }
 
             $arrData['id[' . ++$i . ']'] = $objItem->getSku();
-            $arrData['pr[' . $i . ']']   = round($objItem->getPrice(), 2) * 100;
+            $arrData['pr[' . $i . ']']   = $this->formatAmount($objItem->getPrice());
             $arrData['no[' . $i . ']']   = $objItem->quantity;
             $arrData['de[' . $i . ']']   = StringUtil::convertToText(
                 $objItem->getName() . $strConfig,
@@ -156,7 +157,7 @@ class Payone extends Postsale
             }
 
             $arrData['id[' . ++$i . ']'] = 'surcharge' . $k;
-            $arrData['pr[' . $i . ']']   = $objSurcharge->total_price * 100;
+            $arrData['pr[' . $i . ']']   = $this->formatAmount($objSurcharge->total_price);
             $arrData['no[' . $i . ']']   = '1';
             $arrData['de[' . $i . ']']   = StringUtil::convertToText(
                 $objSurcharge->label,
@@ -180,5 +181,17 @@ class Payone extends Postsale
         $objTemplate->noscript = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
+    }
+
+    /**
+     * Format price/amount in lowest currency format (e.g. Euro Cents).
+     *
+     * @param float $price
+     *
+     * @return int
+     */
+    private function formatAmount($price)
+    {
+        return (int) round(Isotope::roundPrice($price) * 100);
     }
 }
