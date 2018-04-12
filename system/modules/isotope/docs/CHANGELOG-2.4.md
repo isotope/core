@@ -7,6 +7,7 @@ Version 2.4.6 (2018-04-12)
 ### Fixed
 
 - Correctly add setting fields to existing palette (#1921)
+- Replace all new line characters in flash message (#1925)
 
 
 Version 2.4.5 (2018-01-18)
