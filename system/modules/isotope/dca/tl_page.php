@@ -24,8 +24,18 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataCon
 /**
  * Extend tl_page palettes
  */
-$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_config,iso_store_id;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['root']);
-$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace(';{publish_legend}', ';{isotope_legend},iso_setReaderJumpTo;{publish_legend}', $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']);
+\Haste\Dca\PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_config', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_store_id', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('root', 'tl_page')
+;
+
+\Haste\Dca\PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_setReaderJumpTo', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('regular', 'tl_page')
+;
 
 
 /**

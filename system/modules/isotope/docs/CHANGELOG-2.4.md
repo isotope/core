@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.4.6 (2018-04-12)
+--------------------------
+
+### Fixed
+
+- Correctly add setting fields to existing palette (#1921)
+
 
 Version 2.4.5 (2018-01-18)
 --------------------------
