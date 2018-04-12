@@ -11,6 +11,7 @@ Version 2.4.6 (2018-04-12)
 - Moved ajax loading icon to module folder (##1926)
 - Correctly display the backend icon in Contao 4.4 (#1911)
 - Round amounts in PayOne payment method (#1879)
+- Update paths in collection items after moving upload files (#1793)s
 
 
 Version 2.4.5 (2018-01-18)

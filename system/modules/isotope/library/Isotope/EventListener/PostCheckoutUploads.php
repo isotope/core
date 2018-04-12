@@ -34,7 +34,14 @@ class PostCheckoutUploads
         foreach ($items as $item) {
             ++$position;
 
-            foreach ($item->getConfiguration() as $attributeName => $config) {
+            $hasChanges = false;
+            $configuration = deserialize($item->configuration);
+
+            if (!is_array($configuration)) {
+                continue;
+            }
+
+            foreach ($configuration as $attributeName => $value) {
                 /** @var Attribute $attribute */
                 $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attributeName];
 
@@ -42,9 +49,7 @@ class PostCheckoutUploads
                     continue;
                 }
 
-                $sources = $this->getSources($attribute, $config['value']);
-
-                foreach ($sources as $source) {
+                foreach ($value as $i => $source) {
                     $tokens = $this->generateTokens($order, $item, $position, $total, $attribute, $source);
 
                     $targetFolder = StringUtil::recursiveReplaceTokensAndTags(
@@ -67,44 +72,19 @@ class PostCheckoutUploads
 
                     $file = new File($source);
                     $file->renameTo($targetFolder . '/' . $targetFile);
+
+                    $value[$i] = $targetFolder . '/' . $targetFile;
                 }
+
+                $configuration[$attributeName] = $value;
+                $hasChanges = true;
+            }
+
+            if ($hasChanges) {
+                $item->configuration = serialize($configuration);
+                $item->save();
             }
         }
-    }
-
-    /**
-     * @param Attribute    $attribute
-     * @param string|array $files
-     *
-     * @return array
-     * @throws \UnderflowException if upload folder does not exist
-     */
-    private function getSources(Attribute $attribute, $files)
-    {
-        $sources = [];
-        $folder  = $attribute->uploadFolder;
-
-        // Overwrite the upload folder with user's home directory
-        if ($attribute->useHomeDir && FE_USER_LOGGED_IN) {
-            $user = FrontendUser::getInstance();
-
-            if ($user->assignDir && $user->homeDir) {
-                $folder = $user->homeDir;
-            }
-        }
-
-        $filesModel = FilesModel::findByPk($folder);
-
-        // The upload folder could not be found
-        if (null === $filesModel) {
-            throw new \UnderflowException("Invalid upload folder ID $folder");
-        }
-
-        foreach ((array) $files as $file) {
-            $sources[] = $filesModel->path . '/' . $file;
-        }
-
-        return $sources;
     }
 
     /**
