@@ -38,6 +38,12 @@
       <trans-unit id="FMD.iso_cumulativefilter.1">
         <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
       </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.0">
+        <source>Range Filter</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.1">
+        <source>Provides a range filter to find products within a value range.</source>
+      </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
       </trans-unit>

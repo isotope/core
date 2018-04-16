@@ -1,0 +1,55 @@
+<?php
+
+$this->extend('block_unsearchable');
+
+$GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile(
+    'system/modules/isotope/assets/plugins/noUiSlider/nouislider.min.css'
+);
+
+$GLOBALS['TL_BODY'][] = <<<HTML
+<script src="system/modules/isotope/assets/plugins/noUiSlider/nouislider.min.js"></script>
+<script>
+(function() {
+    JSON.parse('{$this->jsonFields}').forEach(function (config) {
+        var slider = document.getElementById('slider-' + config.attribute + '-{$this->id}'),
+            min    = document.getElementById('ctrl_' + config.attribute + '_min_{$this->id}'),
+            max    = document.getElementById('ctrl_' + config.attribute + '_max_{$this->id}');
+    
+        noUiSlider.create(slider, {
+            start: config.value,
+            connect: true,
+            tooltips: [true, true],
+            range: {'min':config.min, 'max':config.max},
+            step: config.step
+        });
+    
+        slider.noUiSlider.on('change', function(values) {
+            min.value = values[0];
+            max.value = values[1];
+        });
+    });
+})();
+</script>
+
+HTML;
+
+$this->block('content');
+?>
+
+<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+    <div class="formbody">
+        <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+
+        <?php foreach ($this->fields as $config): ?>
+        <div id="slider-<?= $config['attribute'] ?>-<?= $this->id ?>">
+            <input type="hidden" name="<?= $config['attribute'] ?>[min]" id="ctrl_<?= $config['attribute'] ?>_min_<?= $this->id ?>" value="<?= $config['min'] ?>">
+            <input type="hidden" name="<?= $config['attribute'] ?>[max]" id="ctrl_<?= $config['attribute'] ?>_max_<?= $this->id ?>" value="<?= $config['max'] ?>">
+        </div>
+        <?php endforeach; ?>
+
+        <div class="submit_container"><input type="submit" class="submit" value="<?php echo $this->slabel; ?>"></div>
+    </div>
+</form>
+
+<?php $this->endblock(); ?>
