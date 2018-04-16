@@ -26,6 +26,7 @@ Version 2.5.0-stable (2018-04-16)
 - Show the database ID in backend order list
 - Unified logging for all payment and shipping methods
 - Store source of product collection surcharge in database table
+- Fire javascript event when products are reloaded in the front end
 
 
 ### Fixed

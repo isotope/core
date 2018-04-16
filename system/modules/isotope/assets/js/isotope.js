@@ -18,6 +18,16 @@
             el.addEventListener(name, callback, false);
         }
     }
+    
+    function dispatchEvent(name, data) {
+        if (jQuery) {
+            jQuery(window).trigger(jQuery.Event(name, data));
+        } else if (MooTools) {
+            window.fireEvent(name, data);
+        } else {
+            window.dispatchEvent(new CustomEvent(name, data));
+        }
+    }
 
     function serializeForm(form) {
         if (jQuery) {
@@ -235,6 +245,8 @@
                     _doc.head.appendChild(script);
                     _doc.head.removeChild(script);
                 }
+
+                dispatchEvent('isotopeProductReload', { detail: config });
             }
 
             if (config.attributes) {
