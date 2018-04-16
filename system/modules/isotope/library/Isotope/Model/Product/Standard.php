@@ -156,8 +156,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     {
         if (null !== $objCollection && $objCollection !== Isotope::getCart()) {
             return ProductPrice::findByProductAndCollection($this, $objCollection);
+        }
 
-        } elseif (false === $this->objPrice) {
+        if (false === $this->objPrice) {
             if (null === $objCollection) {
                 $objCollection = Isotope::getCart();
             }
@@ -494,8 +495,13 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         /** @var ProductActionInterface[] $actions */
-        $actions = array_intersect_key(Registry::all(true, $this), array_flip($arrConfig['buttons']));
         $handleButtons = false;
+        $actions = array_filter(
+            Registry::all(true, $this),
+            function (ProductActionInterface $action) use ($arrConfig) {
+                return in_array($action->getName(), $arrConfig['buttons']) && $action->isAvailable($this, $arrConfig);
+            }
+        );
 
         if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
             $handleButtons = true;
@@ -609,8 +615,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
                 return '';
+            }
 
-            } elseif ($arrField['value'] != '' && in_array($arrField['value'], $arrOptions)) {
+            if ($arrField['value'] != '' && in_array($arrField['value'], $arrOptions)) {
                 $arrVariantOptions[$strField] = $arrField['value'];
             }
 
@@ -841,8 +848,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         if ($hasOptions && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
             return $objVariant;
+        }
 
-        } elseif (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
+        if (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
             return $objVariant;
         }
 

@@ -172,6 +172,9 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_cumulativefilter'          => 'Isotope\Module\CumulativeFilter',
     'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
     'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
+    'iso_wishlistmanager'           => 'Isotope\Module\WishlistManager',
+    'iso_wishlistviewer'            => 'Isotope\Module\WishlistViewer',
+    'iso_wishlistdetails'           => 'Isotope\Module\WishlistDetails',
     'iso_configswitcher'            => 'Isotope\Module\ConfigSwitcher',
     'iso_addressbook'               => 'Isotope\Module\AddressBook',
     'iso_relatedproducts'           => 'Isotope\Module\RelatedProducts',
@@ -246,9 +249,10 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 /**
  * Product collections
  */
-\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
 \Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
+\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
+\Isotope\Model\ProductCollection::registerModelType('wishlist', 'Isotope\Model\ProductCollection\Wishlist');
 
 /**
  * Product collection surcharge
@@ -281,6 +285,7 @@ if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\UpdateAction());
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\CartAction());
 \Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\FavoriteAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\WishlistAction());
 
 /**
  * Notification Center notification types

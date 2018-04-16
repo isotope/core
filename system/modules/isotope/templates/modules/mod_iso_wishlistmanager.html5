@@ -1,0 +1,55 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<form action="<?= $this->action ?>" method="post" id="wishlists<?= $this->id ?>">
+    <input type="hidden" name="FORM_SUBMIT" value="wishlists<?= $this->id ?>">
+    <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
+
+<table>
+    <?php foreach ($this->items as $wishlist): ?>
+    <tr class="<?= $wishlist['class'] ?>">
+        <td class="show" style="display:none"><?= $wishlist['name'] ?></td>
+        <td class="show"><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
+        <td class="edit"><input type="text" name="name[<?=$wishlist['id'] ?>]" value="<?= $wishlist['name'] ?>"></td>
+        <td class="edit"><button type="submit" name="delete" value="<?= $wishlist['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['delete_wishlist'] ?></button></td>
+    </tr>
+    <?php endforeach; ?>
+    <tr class="edit">
+        <td>
+            <input type="text" name="new" placeholder="<?= $GLOBALS['TL_LANG']['MSC']['defaultWishlistLabel'] ?>">
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+
+<input type="button" class="show" id="wishlists<?= $this->id ?>_edit" name="edit" value="<?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['edit_wishlist'] ?>" style="display:none">
+<input type="submit" class="edit" name="save" value="<?= $GLOBALS['TL_LANG']['MSC']['save'] ?>">
+
+</form>
+
+<script>
+    (function() {
+        var form = document.getElementById('wishlists<?= $this->id ?>');
+        var editButton = document.getElementById('wishlists<?= $this->id ?>_edit');
+
+        var showElements = form.getElementsByClassName('show');
+        var editElements = form.getElementsByClassName('edit');
+
+        setDisplay(showElements, 'table-cell');
+        setDisplay(editElements, 'none');
+
+        editButton.addEventListener('click', function () {
+            setDisplay(showElements, 'none');
+            setDisplay(editElements, 'table-cell');
+        });
+
+        function setDisplay(elements, display) {
+            for(var i=0; i<elements.length; i++) {
+                elements[i].style.display = display;
+            }
+        }
+    })();
+</script>
+
+<?php $this->endblock(); ?>

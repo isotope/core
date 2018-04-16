@@ -80,6 +80,12 @@
       <trans-unit id="tl_module.iso_addProductJumpTo.1">
         <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.0">
+        <source>Add to wishlist jump to page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.1">
+        <source>This setting defines to which page a user will be redirected when adding a product to the wishlist, if other than the current page.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_cols.0">
         <source>Columns</source>
       </trans-unit>
