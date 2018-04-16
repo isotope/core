@@ -7,6 +7,7 @@ Version 2.5.0-stable (2018-04-16)
 ### New
 
 - Added payment method for Concardis (https://www.concardis.com/)
+- Added payment method for mPAY24 (https://www.mpay24.com/)
 - Added payment method for PayPal PLUS
 - Added shipping method for DHL Business (requires petschko/dhl-php-sdk)
 - Added shipping method that calculates from price in product
