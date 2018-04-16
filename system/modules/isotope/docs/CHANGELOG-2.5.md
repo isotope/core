@@ -1,8 +1,8 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.5.0-beta1 (201?-??-??)
---------------------------------
+Version 2.5.0-stable (2018-04-16)
+---------------------------------
 
 ### New
 
@@ -10,6 +10,8 @@ Version 2.5.0-beta1 (201?-??-??)
 - Added payment method for PayPal PLUS
 - Added shipping method for DHL Business (requires petschko/dhl-php-sdk)
 - Added shipping method that calculates from price in product
+- Added wishlist product collection
+- Added range (from-to) product filter module
 - Added frontend module to enter coupon code (replaces form in cart)
 - Added lightbox option for inline gallery (#1800)
 - Added currency symbol for Vietnamese Dong
@@ -23,6 +25,7 @@ Version 2.5.0-beta1 (201?-??-??)
 - Added logging option to payment and shipping methods
 - Show the database ID in backend order list
 - Unified logging for all payment and shipping methods
+- Store source of product collection surcharge in database table
 
 
 ### Fixed
