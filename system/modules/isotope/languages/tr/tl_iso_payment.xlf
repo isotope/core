@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.quantity_mode.1">
         <source>Select a calculation mode for min/max quantity.</source>
-        <target>Min / maks adetiçin bir hesaplama modu seçin.</target>
+        <target>Min / maks adet için bir hesaplama modu seçin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quantity_mode.cart_items">
         <source>Total quantity in cart</source>
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.0">
         <source>Shipping methods</source>
-        <target>Nakliye yöntemleri</target>
+        <target>Nakliye yöntemleri </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.shipping_modules.1">
         <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
@@ -107,7 +107,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.product_types.0">
         <source>Product types</source>
-        <target>Ürün tipleri</target>
+        <target>Ürün tipleri </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.product_types.1">
         <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
@@ -131,7 +131,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.0">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.1">
         <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
@@ -177,6 +177,18 @@
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
         <target>PayPal Hesabınızdan varsayılan e-posta adresini girin. Not: Doğru harf yazımını kontrol edin ve büyük / küçük harf duyarlıdır.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.0">
+        <source>Client ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.1">
+        <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.0">
+        <source>Secret</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.1">
+        <source>Enter your PayPal API secret.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
         <target>PSPID</target>
@@ -195,7 +207,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.0">
         <source>Hash method</source>
-        <target>Hash yöntemi</target>
+        <target>Hash yöntemi </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.1">
         <source>Hashing algorithm for data transfer from and to the servers.</source>
@@ -207,7 +219,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.sha256">
         <source>SHA-256</source>
-        <target>SHA-256</target>
+        <target>SHA-256 </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.sha512">
         <source>SHA-512</source>
@@ -219,7 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_in.1">
         <source>This will be used to validate the server to server communication.</source>
-        <target>Bu, iki sunucu arasındaki iletişimi doğrulamak için kullanılacaktır.</target>
+        <target>Bu, iki sunucu arasındaki iletişimi doğrulamak için kullanılacaktır. </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_out.0">
         <source>SHA-OUT signature</source>
@@ -503,7 +515,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_secretkey.0">
         <source>Secret key</source>
-        <target>Gizli anahtar</target>
+        <target>Gizli anahtar </target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_secretkey.1">
         <source>The secret key set up in your ePay configuration.</source>
@@ -645,6 +657,69 @@
         <source>Please enter your entity or channel ID</source>
         <target>Lütfen varlık veya kanal kimliğinizi girin</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.0">
+        <source>Payment Brands</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.1">
+        <source>Select the payment brands you want to support in this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.AMEX">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DINERS">
+        <source>Diners Club</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
+        <source>SEPA Direct Debit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
+        <source>giropay</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.JCB">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
+        <source>Klarna Ratenkauf</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
+        <source>Klarna Rechnung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.MASTER">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
+        <source>paydirect</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
+        <source>PayPal</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
+        <source>Ratenkauf by easyCredit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
+        <source>SOFORTüberweisung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.VISA">
+        <source>VISA</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.0">
+        <source>Merchant ID</source>
+        <target>Tüccar ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.1">
+        <source>Please enter your merchant ID.</source>
+        <target>Lütfen satıcı kimliğinizi girin.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.0">
+        <source>Password</source>
+        <target>Parola</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.1">
+        <source>Please enter your SOAP password.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
         <target>Üye grupları</target>
@@ -677,9 +752,15 @@
         <source>For testing without actually capturing for payment.</source>
         <target>Ödeme için yakalama yapmadan test etmek için.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.0">
+        <source>Enable logging</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.1">
+        <source>Write transaction information to the system log files.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>
-        <target>v</target>
+        <target>Etkinleştirildi</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.1">
         <source>Check here if the payment method should be enabled in the store.</source>
@@ -823,7 +904,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.price_legend">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.template_legend">
         <source>Template</source>

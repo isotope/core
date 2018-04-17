@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.pages.0">
         <source>Categories</source>
-        <target>Kategoriler</target>
+        <target>Kategoriler </target>
       </trans-unit>
       <trans-unit id="tl_iso_product.pages.1">
         <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_product.name.1">
         <source>Please enter the name of this product.</source>
@@ -60,6 +60,12 @@
       <trans-unit id="tl_iso_product.shipping_weight.1">
         <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
         <target>Lütfen ürünün nakliye ağırlığını girin. Bu, gönderim bedelini hesaplamak için kullanılabilir.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.0">
+        <source>Shipping price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.1">
+        <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>
@@ -275,7 +281,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.0">
         <source>Edit product</source>
-        <target>Ürünü düzenle</target>
+        <target>Ürün düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.1">
         <source>Edit product ID %s</source>
@@ -475,7 +481,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.price_tiers.price">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.importAssetsDescr">
         <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;

@@ -79,6 +79,12 @@
       <trans-unit id="tl_module.iso_addProductJumpTo.1">
         <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.0">
+        <source>Add to wishlist jump to page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.1">
+        <source>This setting defines to which page a user will be redirected when adding a product to the wishlist, if other than the current page.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_cols.0">
         <source>Columns</source>
       </trans-unit>
@@ -249,6 +255,24 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
         <source>Show difference</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.0">
+        <source>Filter configuration</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.1">
+        <source>Please configure the range filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.min">
+        <source>Range from</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.max">
+        <source>Range to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.step">
+        <source>Steps</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>

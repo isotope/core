@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_category.name_legend">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
     </body>
   </file>

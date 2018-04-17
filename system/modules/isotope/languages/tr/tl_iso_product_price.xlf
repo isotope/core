@@ -95,11 +95,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tier_columns.price.0">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_legend">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.limit_legend">
         <source>Limitations</source>

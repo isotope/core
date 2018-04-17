@@ -134,6 +134,18 @@
       <trans-unit id="tl_iso_payment.paypal_account.1">
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.0">
+        <source>Client ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.1">
+        <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.0">
+        <source>Secret</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.1">
+        <source>Enter your PayPal API secret.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
       </trans-unit>
@@ -486,6 +498,66 @@
       <trans-unit id="tl_iso_payment.opp_entity_id.1">
         <source>Please enter your entity or channel ID</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.0">
+        <source>Payment Brands</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.1">
+        <source>Select the payment brands you want to support in this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.AMEX">
+        <source>American Express</source>
+        <target>AmericanExpress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DINERS">
+        <source>Diners Club</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
+        <source>SEPA Direct Debit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
+        <source>giropay</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.JCB">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
+        <source>Klarna Ratenkauf</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
+        <source>Klarna Rechnung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.MASTER">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
+        <source>paydirect</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
+        <source>PayPal</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
+        <source>Ratenkauf by easyCredit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
+        <source>SOFORTüberweisung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.VISA">
+        <source>VISA</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.0">
+        <source>Merchant ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.1">
+        <source>Please enter your merchant ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.0">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.1">
+        <source>Please enter your SOAP password.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
       </trans-unit>
@@ -509,6 +581,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.debug.1">
         <source>For testing without actually capturing for payment.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.0">
+        <source>Enable logging</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.1">
+        <source>Write transaction information to the system log files.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>

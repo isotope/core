@@ -105,6 +105,12 @@
         <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
         <target>Diese Einstellung gibt an, zu welcher Seite - außer der gerade aktiven - der Nutzer weitergeleitet wird, wenn er ein Produkt in den Warenkorb legt.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.0">
+        <source>Add to wishlist jump to page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.1">
+        <source>This setting defines to which page a user will be redirected when adding a product to the wishlist, if other than the current page.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_cols.0">
         <source>Columns</source>
         <target>Spalten</target>
@@ -332,6 +338,30 @@
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
         <source>Show difference</source>
         <target>Unterschied anzeigen</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.0">
+        <source>Filter configuration</source>
+        <target>Filter-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.1">
+        <source>Please configure the range filter fields.</source>
+        <target>Bitte konfigurieren Sie die Felder vom Bereichsfilter.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute">
+        <source>Attribute</source>
+        <target>Attribute</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.min">
+        <source>Range from</source>
+        <target>Bereich von</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.max">
+        <source>Range to</source>
+        <target>Bereich bis</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.step">
+        <source>Steps</source>
+        <target>Schritte</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>

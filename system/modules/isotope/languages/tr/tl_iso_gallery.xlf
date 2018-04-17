@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_gallery.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name.1">
         <source>Enter a name for this gallery.</source>
@@ -183,7 +183,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
-        <target>Filigranı uygulamak istediğiniz konumu seçin.</target>
+        <target>Filigranı uygulamak istediğiniz konumu seçin. </target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_image.0">
         <source>Gallery watermark image</source>
@@ -199,7 +199,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
-        <target>Filigranı uygulamak istediğiniz konumu seçin.</target>
+        <target>Filigranı uygulamak istediğiniz konumu seçin. </target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_image.0">
         <source>Lightbox watermark image</source>

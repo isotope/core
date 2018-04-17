@@ -71,7 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
-        <target>Koleksiyon öğelerinin hangi sırayla listeleneceğini tanımlayın</target>
+        <target>Koleksiyon öğelerinin hangi sırayla listeleneceğini tanımlayın.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.new.0">
         <source>New document</source>
