@@ -12,6 +12,7 @@
 namespace Isotope\Model\Shipping;
 
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
 
 /**
@@ -28,15 +29,18 @@ class Group extends Shipping
     const CALCULATE_SUM     = 'summarize';
 
     /**
-     * Shipping methods we're using
-     * @var array
+     * Shipping methods we're using.
+     *
+     * @var IsotopeShipping[]
      */
     protected $arrMethods = false;
 
 
     /**
      * Load shipping methods
+     *
      * @param   array
+     *
      * @return  self
      */
     public function setRow(array $arrData)
@@ -51,6 +55,7 @@ class Group extends Shipping
 
     /**
      * Is available if at least one shipping method was available
+     *
      * @return  bool
      */
     public function isAvailable()
@@ -62,6 +67,7 @@ class Group extends Shipping
 
     /**
      * Return calculated price for this shipping method
+     *
      * @return float
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
@@ -69,11 +75,10 @@ class Group extends Shipping
         $this->getGroupMethods();
 
         if (empty($this->arrMethods)) {
-            return 0;
+            return null;
         }
 
         switch ($this->group_calculation) {
-
             default:
             case self::CALCULATE_FIRST:
                 return $this->arrMethods[0]->getPrice();
@@ -82,28 +87,34 @@ class Group extends Shipping
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
-                    if (null === $fltReturn || $fltPrice < $fltReturn) {
+                    if (null !== $fltPrice && (null === $fltReturn || $fltPrice < $fltReturn)) {
                         $fltReturn = $fltPrice;
                     }
                 }
 
-                return ($fltReturn === null) ? 0 : $fltReturn;
+                return $fltReturn;
 
             case self::CALCULATE_HIGHEST:
                 $fltReturn = null;
                 foreach ($this->arrMethods as $objMethod) {
                     $fltPrice = $objMethod->getPrice();
-                    if (null === $fltReturn || $fltPrice > $fltReturn) {
+                    if (null !== $fltPrice && (null === $fltReturn || $fltPrice > $fltReturn)) {
                         $fltReturn = $fltPrice;
                     }
                 }
 
-                return ($fltReturn === null) ? 0 : $fltReturn;
+                return $fltReturn;
 
             case self::CALCULATE_SUM:
-                $fltTotal = 0;
+                $fltTotal = null;
                 foreach ($this->arrMethods as $objMethod) {
-                    $fltTotal += $objMethod->getPrice();
+                    if (null !== ($price = $objMethod->getPrice())) {
+                        if (null === $fltTotal) {
+                            $fltTotal = 0;
+                        }
+
+                        $fltTotal += $price;
+                    }
                 }
 
                 return $fltTotal;
@@ -113,6 +124,7 @@ class Group extends Shipping
     /**
      * Get shipping methods for this group
      * Must be lazy-loaded to prevent recursion
+     *
      * @return  array
      */
     protected function getGroupMethods()

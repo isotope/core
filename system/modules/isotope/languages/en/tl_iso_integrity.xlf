@@ -47,6 +47,15 @@
       <trans-unit id="tl_iso_integrity.attributeoptionorphans.2">
         <source>There are no invalid attribute options in your database.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.0">
+        <source>Multilingual Attributes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.1">
+        <source>%s invalid multilingual attributes were found.&lt;br&gt;Attributes: %s.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.2">
+        <source>There are no invalid multilingual attributes in your database.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.0">
         <source>Rules module</source>
       </trans-unit>

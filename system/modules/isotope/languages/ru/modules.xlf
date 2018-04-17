@@ -44,6 +44,12 @@
       <trans-unit id="FMD.iso_cumulativefilter.1">
         <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
       </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.0">
+        <source>Range Filter</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.1">
+        <source>Provides a range filter to find products within a value range.</source>
+      </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
         <target>Список продуктов</target>
@@ -113,6 +119,24 @@
       <trans-unit id="FMD.iso_orderdetails.1">
         <source>Order reader that allows customers to view order history details</source>
         <target>Позовляет подробно просматривать покупателям историю заказов.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.0">
+        <source>Wishlist Manager</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.1">
+        <source>Allows the current member to manage it's wishlists.</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.0">
+        <source>Public Wishlists</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.1">
+        <source>Shows published wishlists of all users.</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.0">
+        <source>Wishlist Details</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.1">
+        <source>Shows details of a given wishlist.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.0">
         <source>Store Config Switcher</source>

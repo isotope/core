@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Haste\Units\Mass\Weight;
+use Haste\Units\Mass\WeightAggregate;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
@@ -43,12 +44,15 @@ use Isotope\Translation;
  * @property array  $config_ids
  * @property string $price
  * @property int    $tax_class
+ * @property array  $shipping_weight
  * @property bool   $guests
  * @property bool   $protected
  * @property array  $groups
+ * @property bool   $debug
+ * @property bool   $logging
  * @property bool   $enabled
  */
-abstract class Shipping extends TypeAgent implements IsotopeShipping
+abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggregate
 {
     const QUANTITY_MODE_ITEMS = 'cart_items';
     const QUANTITY_MODE_PRODUCTS = 'cart_products';
@@ -261,11 +265,15 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        if (null === $objCollection) {
-            $objCollection = Isotope::getCart();
+        if ('' === (string) $this->arrData['price']) {
+            return null;
         }
 
         if ($this->isPercentage()) {
+            if (null === $objCollection) {
+                $objCollection = Isotope::getCart();
+            }
+
             $fltPrice = $objCollection->getSubtotal() / 100 * $this->getPercentage();
         } else {
             $fltPrice = (float) $this->arrData['price'];
@@ -322,10 +330,40 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping
      */
     public function getSurcharge(IsotopeProductCollection $objCollection)
     {
-        if ($this->getPrice() == 0) {
+        if (null === $this->getPrice()) {
             return null;
         }
 
         return ProductCollectionSurcharge::createForShippingInCollection($this, $objCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWeight()
+    {
+        return Weight::createFromTimePeriod($this->shipping_weight);
+    }
+
+    /**
+     * Logs information for this shipping method if enabled.
+     *
+     * @param mixed $value
+     */
+    protected function debugLog($value)
+    {
+        if (!$this->logging) {
+            return;
+        }
+
+        $pos = strrpos(get_called_class(), '\\') ?: -1;
+        $className = substr(get_called_class(), $pos+1);
+
+        $logFile = sprintf(
+            'isotope_%s.log',
+            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className)))
+        );
+
+        log_message(print_r($value, true), $logFile);
     }
 }

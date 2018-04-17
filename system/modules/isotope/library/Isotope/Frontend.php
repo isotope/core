@@ -12,8 +12,9 @@
 namespace Isotope;
 
 use Haste\Input\Input;
-use Haste\Util\Url;
 use Isotope\EventListener\ChangeLanguageListener;
+use Isotope\Frontend\ProductAction\CartAction;
+use Isotope\Frontend\ProductAction\FavoriteAction;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePrice;
@@ -25,7 +26,6 @@ use Isotope\Model\Product;
 use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
@@ -79,90 +79,6 @@ class Frontend extends \Frontend
         }
 
         return $arrSurcharges;
-    }
-
-
-    /**
-     * Callback for add_to_cart button
-     *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
-     */
-    public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        $objModule   = $arrConfig['module'];
-        $intQuantity = ($objModule->iso_use_quantity && ((int) \Input::post('quantity_requested')) > 0) ? ((int) \Input::post('quantity_requested')) : 1;
-
-        // Do not add parent of variant product to the cart
-        if ($objProduct->hasVariants() && !$objProduct->isVariant()) {
-            return;
-        }
-
-        if (Isotope::getCart()->addProduct($objProduct, $intQuantity, $arrConfig) !== false) {
-            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToCart']);
-
-            if (!$objModule->iso_addProductJumpTo) {
-                \Controller::reload();
-            }
-
-            \Controller::redirect(
-                Url::addQueryString(
-                    'continue=' . base64_encode(\Environment::get('request')),
-                    $objModule->iso_addProductJumpTo
-                )
-            );
-        }
-    }
-
-    /**
-     * Callback for add_to_cart button if a product is being edited.
-     *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
-     */
-    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        if (\Input::get('collection_item') < 1
-            || ($item = ProductCollectionItem::findByPk(\Input::get('collection_item'))) === null
-            || $item->pid != Isotope::getCart()->id
-            || !$item->hasProduct()
-            || $item->getProduct()->getProductId() != $objProduct->getProductId()
-        ) {
-            return;
-        }
-
-        Isotope::getCart()->updateProduct($objProduct, $item);
-
-        if (!$arrConfig['module']->iso_addProductJumpTo) {
-            \Controller::reload();
-        }
-
-        \Controller::redirect(
-            Url::addQueryString(
-                'continue=' . base64_encode(\Environment::get('request')),
-                $arrConfig['module']->iso_addProductJumpTo
-            )
-        );
-    }
-
-    /**
-     * Callback for toggle_favorites button
-     *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrConfig
-     */
-    public function toggleFavorites(IsotopeProduct $objProduct, array $arrConfig = array())
-    {
-        $favorites = Isotope::getFavorites();
-
-        if ($favorites->hasProduct($objProduct)) {
-            $favorites->deleteItem($favorites->getItemForProduct($objProduct));
-            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['removedFromFavorites']);
-        } elseif ($favorites->addProduct($objProduct, 1, $arrConfig) !== false) {
-            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToFavorites']);
-        }
-
-        \Controller::reload();
     }
 
     /**
@@ -269,39 +185,6 @@ class Frontend extends \Frontend
     }
 
     /**
-     * Replaces Isotope specific InsertTags in Frontend
-     *
-     * @param string $strTag
-     *
-     * @return mixed
-     *
-     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
-     */
-    public function replaceIsotopeTags($strTag)
-    {
-        $callback = new InsertTag();
-
-        return $callback->replace($strTag);
-    }
-
-
-    /**
-     * Hook callback for changelanguage extension to support language switching on product reader page
-     *
-     * @param array $arrGet
-     *
-     * @return array
-     *
-     * @deprecated Deprecated since Isotope 2.4. See Isotope\EventListener\ChangeLanguageListener
-     */
-    public function translateProductUrls($arrGet)
-    {
-        $listener = new ChangeLanguageListener();
-        return $listener->onTranslateUrlParameters($arrGet);
-    }
-
-
-    /**
      * Inject the necessary scripts here upon the "modifyFrontendPage" hook.
      * We don't use the generatePage hook here anymore as modules added via
      * InsertTags will not get those scripts added. We also don't use a combination
@@ -338,18 +221,6 @@ class Frontend extends \Frontend
         }
 
         return str_replace('</body>', $template->parse() . '</body>', $buffer);
-    }
-
-    /**
-     * Return all error, confirmation and info messages as HTML string
-     *
-     * @return string
-     *
-     * @deprecated use Isotope\Message::generate
-     */
-    public static function getIsotopeMessages()
-    {
-        return Message::generate();
     }
 
     /**
@@ -817,5 +688,90 @@ class Frontend extends \Frontend
         }
 
         return $fltAmount;
+    }
+
+    /**
+     * Callback for add_to_cart button
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     *
+     * @deprecated Deprecated since Isotope 2.5
+     */
+    public function addToCart(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        $action = new CartAction();
+        $action->handleSubmit($objProduct, $arrConfig);
+    }
+
+    /**
+     * Callback for add_to_cart button if a product is being edited.
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     *
+     * @deprecated Deprecated since Isotope 2.5
+     */
+    public function updateCart(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        $action = new CartAction();
+        $action->handleSubmit($objProduct, $arrConfig);
+    }
+
+    /**
+     * Callback for toggle_favorites button
+     *
+     * @param IsotopeProduct $objProduct
+     * @param array          $arrConfig
+     *
+     * @deprecated Deprecated since Isotope 2.5
+     */
+    public function toggleFavorites(IsotopeProduct $objProduct, array $arrConfig = array())
+    {
+        $action = new FavoriteAction();
+        $action->handleSubmit($objProduct, $arrConfig);
+    }
+
+    /**
+     * Replaces Isotope specific InsertTags in Frontend
+     *
+     * @param string $strTag
+     *
+     * @return mixed
+     *
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
+     */
+    public function replaceIsotopeTags($strTag)
+    {
+        $callback = new InsertTag();
+
+        return $callback->replace($strTag);
+    }
+
+    /**
+     * Hook callback for changelanguage extension to support language switching on product reader page
+     *
+     * @param array $arrGet
+     *
+     * @return array
+     *
+     * @deprecated Deprecated since Isotope 2.4. See Isotope\EventListener\ChangeLanguageListener
+     */
+    public function translateProductUrls($arrGet)
+    {
+        $listener = new ChangeLanguageListener();
+        return $listener->onTranslateUrlParameters($arrGet);
+    }
+
+    /**
+     * Return all error, confirmation and info messages as HTML string
+     *
+     * @return string
+     *
+     * @deprecated use Isotope\Message::generate
+     */
+    public static function getIsotopeMessages()
+    {
+        return Message::generate();
     }
 }

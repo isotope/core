@@ -490,7 +490,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_weight'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
-            'default'               => array('', 'kg'),
+            'default'               => array('unit'=>'kg'),
             'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
             'reference'             => &$GLOBALS['TL_LANG']['WGT'],
             'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
@@ -505,6 +505,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'shipping_price' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_price'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'price', 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\ShippingPrice'),
+            'sql'                   => "decimal(9,2) unsigned NOT NULL default '0.00'",
         ),
         'images' => array
         (

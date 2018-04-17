@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Module;
 
+use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 
@@ -160,17 +161,9 @@ class Callback extends \Backend
     public function getButtons()
     {
         $arrOptions = array();
-        $arrButtons = array();
 
-        // !HOOK: add product buttons
-        if (isset($GLOBALS['ISO_HOOKS']['buttons']) && is_array($GLOBALS['ISO_HOOKS']['buttons'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
-                $arrButtons = \System::importStatic($callback[0])->{$callback[1]}($arrButtons);
-            }
-        }
-
-        foreach ($arrButtons as $button => $data) {
-            $arrOptions[$button] = $data['label'];
+        foreach (Registry::all() as $action) {
+            $arrOptions[$action->getName()] = $action->getLabel();
         }
 
         return $arrOptions;

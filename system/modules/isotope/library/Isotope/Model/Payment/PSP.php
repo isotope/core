@@ -289,14 +289,13 @@ abstract class PSP extends Payment implements IsotopePostsale
             return true;
         }
 
-        log_message(
+        $this->debugLog(
             sprintf(
                 "Received invalid postsale data.\nInput hash: %s\nCalculated hash: %s\nParameters: %s\n",
                 $this->getRequestData('SHASIGN'),
                 strtoupper(hash($this->psp_hash_method, $strSHASign)),
                 print_r($arrParams, true)
-            ),
-            'isotope_psp.log'
+            )
         );
 
         return false;

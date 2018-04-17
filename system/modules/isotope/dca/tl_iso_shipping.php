@@ -127,7 +127,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         '__selector__'              => array('type', 'protected'),
         'default'                   => '{title_legend},name,label,type',
         'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token,dhl_shipping;{price_legend},price,tax_class,flatCalculation,shipping_weight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
     // Subpalettes
@@ -317,8 +319,8 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['price'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''",
+            'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'nullIfEmpty'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NULL",
         ),
         'tax_class' => array
         (
@@ -341,6 +343,17 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'shipping_weight' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['shipping_weight'],
+            'exclude'               => true,
+            'inputType'             => 'timePeriod',
+            'default'               => array('unit'=>'kg'),
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'group_methods' => array
         (
@@ -369,6 +382,66 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
         ),
+        'dhl_user' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_user'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NULL",
+        ),
+        'dhl_signature' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_signature'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NULL",
+        ),
+        'dhl_epk' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_epk'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NULL",
+        ),
+        'dhl_product' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_product'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => array('V01PAK', 'V53WPAK', 'V54EPAK', 'V06PAK', 'V06TG', 'V86PARCEL', 'V82PARCEL', 'V87PARCEL'),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_product'],
+            'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(8) NULL",
+        ),
+        'dhl_app' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_app'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NULL",
+        ),
+        'dhl_token' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_token'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NULL",
+        ),
+        'dhl_shipping' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_shipping'],
+            'exclude'               => true,
+            'inputType'             => 'timePeriod',
+            'options'               => array('days', 'weeks', 'months', 'years'),
+            'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
         'guests' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['guests'],
@@ -394,11 +467,28 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
+        'debug' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['debug'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'clr w50'],
+            'sql'                   => "char(1) NOT NULL default ''"
+        ),
+        'logging' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['logging'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'w50'],
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
         'enabled' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
+            'eval'                  => ['tl_class' => 'w50'],
             'sql'                   => "char(1) NOT NULL default ''",
         ),
     )

@@ -12,13 +12,13 @@
 namespace Isotope\Module;
 
 use Haste\Util\Url;
+use Isotope\Frontend\ProductCollectionAction\AddToCartAction;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 
 class Favorites extends AbstractProductCollection
 {
-
     /**
      * Template
      * @var string
@@ -124,16 +124,12 @@ class Favorites extends AbstractProductCollection
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function generateButtons(array $buttons = [])
+    protected function getActions()
     {
-        $this->addButton(
-            $buttons,
-            'add_to_cart',
-            $GLOBALS['TL_LANG']['MSC']['buttonLabel']['add_all_to_cart']
-        );
-
-        return $buttons;
+        return [
+            new AddToCartAction(),
+        ];
     }
 }

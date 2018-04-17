@@ -11,12 +11,14 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement TextField widget
  */
-class TextField extends Attribute
+class TextField extends Attribute implements IsotopeAttributeWithRange
 {
     /**
      * @inheritdoc
@@ -28,5 +30,21 @@ class TextField extends Attribute
         $maxlength = (int) $this->maxlength ?: 255;
 
         $arrData['fields'][$this->field_name]['sql'] = "varchar($maxlength) NOT NULL default ''";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function allowRangeFilter()
+    {
+        return 'digit' === $this->rgxp;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueRange(IsotopeProduct $product)
+    {
+        return [$this->getValue($product)];
     }
 }

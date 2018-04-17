@@ -11,13 +11,17 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\Interfaces\IsotopeAttributeWithRange;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
+use Isotope\Model\ProductPrice;
 
 /**
  * Attribute to implement base price calculation
  */
-class Price extends Attribute
+class Price extends Attribute implements IsotopeAttributeWithRange
 {
     /**
      * @inheritdoc
@@ -48,6 +52,20 @@ class Price extends Attribute
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getValue(IsotopeProduct $product)
+    {
+        $price = $product->getPrice();
+
+        if (!$price instanceof IsotopePrice) {
+            return null;
+        }
+
+        return $price->getAmount();
+    }
+
+    /**
      * @inheritdoc
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
@@ -59,5 +77,45 @@ class Price extends Attribute
         }
 
         return $objPrice->generate($objProduct->getType()->showPriceTiers());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function allowRangeFilter()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValueRange(IsotopeProduct $product)
+    {
+        $amounts = [];
+        $price = $product->getPrice();
+
+        if (!$price instanceof IsotopePrice) {
+            return null;
+        }
+
+        if ($price instanceof ProductPriceCollection) {
+            /** @var IsotopePrice $item */
+            foreach ($price as $item) {
+                if ($item instanceof ProductPrice) {
+                    $amounts[] = $item->getLowestAmount();
+                }
+
+                $amounts[] = $item->getAmount();
+            }
+        } else {
+            if ($price instanceof ProductPrice) {
+                $amounts[] = $price->getLowestAmount();
+            }
+
+            $amounts[] = $price->getAmount();
+        }
+
+        return array_filter([min($amounts), max($amounts)]);
     }
 }

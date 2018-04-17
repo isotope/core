@@ -1,0 +1,17 @@
+<?php $this->extend('block_unsearchable') ?>
+
+<?php $this->block('content') ?>
+
+<?php if($this->message): ?>
+    <p class="<?php echo $this->type; ?> message"><?php echo $this->message; ?></p>
+<?php endif; ?>
+
+<h2><?= $this->collection->getName() ?></h2>
+
+<?= $this->products; ?>
+
+<?php if ($this->share): ?>
+<a href="<?= $this->share ?>">Share Link</a>
+<?php endif; ?>
+
+<?php $this->endblock() ?>

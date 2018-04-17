@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_download.singleSRC.0">
         <source>Attachement</source>
-        <target>Ek</target>
+        <target>Ek </target>
       </trans-unit>
       <trans-unit id="tl_iso_download.singleSRC.1">
         <source>Select the file or folder content you want to sell.</source>
@@ -99,7 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.0">
         <source>Paste at the top</source>
-        <target>Tepeye yapıştır</target>
+        <target>En üste yapıştır</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.1">
         <source>Paste after download ID %s</source>

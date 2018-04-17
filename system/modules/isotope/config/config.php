@@ -170,8 +170,12 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_checkout'                  => 'Isotope\Module\Checkout',
     'iso_productfilter'             => 'Isotope\Module\ProductFilter',
     'iso_cumulativefilter'          => 'Isotope\Module\CumulativeFilter',
+    'iso_rangefilter'               => 'Isotope\Module\RangeFilter',
     'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
     'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
+    'iso_wishlistmanager'           => 'Isotope\Module\WishlistManager',
+    'iso_wishlistviewer'            => 'Isotope\Module\WishlistViewer',
+    'iso_wishlistdetails'           => 'Isotope\Module\WishlistDetails',
     'iso_configswitcher'            => 'Isotope\Module\ConfigSwitcher',
     'iso_addressbook'               => 'Isotope\Module\AddressBook',
     'iso_relatedproducts'           => 'Isotope\Module\RelatedProducts',
@@ -192,6 +196,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
  * Payment methods
  */
 \Isotope\Model\Payment::registerModelType('cash', 'Isotope\Model\Payment\Cash');
+\Isotope\Model\Payment::registerModelType('concardis', 'Isotope\Model\Payment\Concardis');
 \Isotope\Model\Payment::registerModelType('datatrans', 'Isotope\Model\Payment\Datatrans');
 \Isotope\Model\Payment::registerModelType('epay', 'Isotope\Model\Payment\EPay');
 \Isotope\Model\Payment::registerModelType('expercash', 'Isotope\Model\Payment\Expercash');
@@ -199,6 +204,7 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('paybyway', 'Isotope\Model\Payment\Paybyway');
 \Isotope\Model\Payment::registerModelType('payone', 'Isotope\Model\Payment\Payone');
 \Isotope\Model\Payment::registerModelType('paypal', 'Isotope\Model\Payment\Paypal');
+\Isotope\Model\Payment::registerModelType('paypal_plus', 'Isotope\Model\Payment\PaypalPlus');
 \Isotope\Model\Payment::registerModelType('postfinance', 'Isotope\Model\Payment\Postfinance');
 \Isotope\Model\Payment::registerModelType('quickpay', 'Isotope\Model\Payment\QuickPay');
 \Isotope\Model\Payment::registerModelType('saferpay', 'Isotope\Model\Payment\Saferpay');
@@ -209,11 +215,20 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 \Isotope\Model\Payment::registerModelType('worldpay', 'Isotope\Model\Payment\Worldpay');
 \Isotope\Model\Payment::registerModelType('opp', 'Isotope\Model\Payment\OpenPaymentPlatform');
 
+if (class_exists('Mpay24\Mpay24')) {
+    \Isotope\Model\Payment::registerModelType('mpay24', 'Isotope\Model\Payment\Mpay24');
+}
+
 /**
  * Shipping methods
  */
 \Isotope\Model\Shipping::registerModelType('flat', 'Isotope\Model\Shipping\Flat');
 \Isotope\Model\Shipping::registerModelType('group', 'Isotope\Model\Shipping\Group');
+\Isotope\Model\Shipping::registerModelType('product_price', 'Isotope\Model\Shipping\ProductPrice');
+
+if (class_exists('Petschko\DHL\BusinessShipment')) {
+    \Isotope\Model\Shipping::registerModelType('dhl_business', 'Isotope\Model\Shipping\DHLBusiness');
+}
 
 /**
  * Documents
@@ -235,9 +250,10 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 /**
  * Product collections
  */
-\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
 \Isotope\Model\ProductCollection::registerModelType('cart', 'Isotope\Model\ProductCollection\Cart');
 \Isotope\Model\ProductCollection::registerModelType('order', 'Isotope\Model\ProductCollection\Order');
+\Isotope\Model\ProductCollection::registerModelType('favorites', 'Isotope\Model\ProductCollection\Favorites');
+\Isotope\Model\ProductCollection::registerModelType('wishlist', 'Isotope\Model\ProductCollection\Wishlist');
 
 /**
  * Product collection surcharge
@@ -263,6 +279,14 @@ $GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelec
 if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
     \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
 }
+
+/**
+ * Product actions
+ */
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\UpdateAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\CartAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\FavoriteAction());
+\Isotope\Frontend\ProductAction\Registry::add(new \Isotope\Frontend\ProductAction\WishlistAction());
 
 /**
  * Notification Center notification types
@@ -367,7 +391,8 @@ $GLOBALS['ISO_INTEGRITY'] = array
     '\Isotope\IntegrityCheck\PriceTable',
     '\Isotope\IntegrityCheck\VariantOrphans',
     '\Isotope\IntegrityCheck\AttributeOptionOrphans',
-    '\Isotope\IntegrityCheck\UnusedRules'
+    '\Isotope\IntegrityCheck\MultilingualAttributes',
+    '\Isotope\IntegrityCheck\UnusedRules',
 );
 
 /**
@@ -466,6 +491,10 @@ if (\Config::getInstance()->isComplete()) {
 
         // Enable the module tables in setup
         $GLOBALS['TL_HOOKS']['initializeSystem'][]          = array('Isotope\BackendModule\InitializeListener', 'enableModuleTablesInSetup');
+    }
+
+    if (class_exists('Petschko\DHL\BusinessShipment')) {
+        $GLOBALS['ISO_HOOKS']['postCheckout'][] = array('Isotope\EventListener\DHLBusinessCheckoutListener', 'onPostCheckout');
     }
 }
 

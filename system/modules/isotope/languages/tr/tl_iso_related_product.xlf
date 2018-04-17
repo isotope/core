@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_related_product.category.0">
         <source>Category</source>
-        <target>Kategori</target>
+        <target>Kategori </target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.category.1">
         <source>Select a category.</source>
@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_product.editheader.0">
         <source>Edit product</source>
-        <target>Ürünü düzenle</target>
+        <target>Ürün düzenle</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.editheader.1">
         <source>Edit this product</source>

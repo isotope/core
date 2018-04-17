@@ -1,4 +1,4 @@
-<?php if(!empty($this->buttons)): ?>
+<?php if(!empty($this->actions)): ?>
 <form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
@@ -42,12 +42,10 @@
 </tbody>
 </table>
 
-<?php if(!empty($this->buttons)): ?>
+<?php if(!empty($this->actions)): ?>
 </div>
 <div class="submit_container">
-<?php foreach($this->buttons as $button): ?>
-<input type="<?php echo $button['type']; ?>" class="<?php echo $button['type']; ?> <?php echo $button['name']; ?>" name="<?php echo $button['name']; ?>" id="ctrl_<?php echo $button['name']; ?>_<?php echo $this->id; ?>" value="<?php echo $button['label']; ?>">
-<?php endforeach; ?>
+<?php foreach($this->actions as $action) echo $action->generate($this->collection).' '; ?>
 </div>
 </form>
 <?php endif; ?>

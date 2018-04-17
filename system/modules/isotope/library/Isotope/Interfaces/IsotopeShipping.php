@@ -27,26 +27,30 @@ interface IsotopeShipping
     public function getId();
 
     /**
-     * Return boolean flag if the shipping method is available
-     * @return  bool
+     * Return boolean flag if the shipping method is available.
+     *
+     * @return bool
      */
     public function isAvailable();
 
     /**
-     * Return true if shipping price is not a fixed amount
-     * @return  bool
+     * Return true if shipping price is not a fixed amount.
+     *
+     * @return bool
      */
     public function isPercentage();
 
     /**
-     * Get the percentage amount (if applicable)
-     * @return  float
+     * Get the percentage amount (if applicable).
+     *
+     * @return float
      */
     public function getPercentage();
 
     /**
-     * Return label for the shipping method
-     * @return  string
+     * Return label for the shipping method.
+     *
+     * @return string
      */
     public function getLabel();
 
@@ -58,36 +62,40 @@ interface IsotopeShipping
     public function getNote();
 
     /**
-     * Return percentage label if price is percentage
-     * @return  string
+     * Return percentage label if price is percentage.
+     *
+     * @return string
      */
     public function getPercentageLabel();
 
     /**
-     * Return the calculated total price for shipping
-     * @return  float
+     * Return the calculated total price for shipping.
+     *
+     * @return float|null
      */
     public function getPrice();
 
     /**
      * Return information or advanced features in the backend.
      * Use this function to present advanced features or basic shipping information for an order in the backend.
+     *
      * @param integer
+     *
      * @return string
      */
     public function backendInterface($orderId);
 
     /**
      * Return the checkout review information.
-     *
      * Use this to return custom checkout information about this shipping module.
      * Example: Information about tracking codes.
+     *
      * @return string
      */
     public function checkoutReview();
 
     /**
-     * Get the checkout surcharge for this shipping method
+     * Get the checkout surcharge for this shipping method.
      *
      * @param IsotopeProductCollection $objCollection
      *

@@ -21,6 +21,12 @@
         <source>The requested order was not found.</source>
         <target>İstenen sipariş bulunamadı.</target>
       </trans-unit>
+      <trans-unit id="ERR.emptyWishlists">
+        <source>You have not created any wishlists yet.</source>
+      </trans-unit>
+      <trans-unit id="ERR.wishlistNotFound">
+        <source>The requested wishlist was not found.</source>
+      </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
         <target>Ödeme yapmak için giriş yapmalısınız.</target>
@@ -88,6 +94,12 @@
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
         <target>Yüklenen dosya artık mevcut değil.</target>
+      </trans-unit>
+      <trans-unit id="ERR.oppIncompatible">
+        <source>Some of the selected payment brands are not compatible to each other.</source>
+      </trans-unit>
+      <trans-unit id="ERR.oppTooMany">
+        <source>The payment API currently does not support this many brands at a time.</source>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
@@ -221,6 +233,32 @@
         <source>Remove From Favorites</source>
         <target>Favorilerden Kaldır</target>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_wishlist">
+        <source>Add To Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.edit_wishlist">
+        <source>Edit</source>
+        <target>Düzenle</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.delete_wishlist">
+        <source>Delete</source>
+        <target>Sil</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.wishlist_details">
+        <source>Details</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.share_wishlist">
+        <source>Share Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.unshare_wishlist">
+        <source>Unshare Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistLabel">
+        <source>New Wishlist …</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistName">
+        <source>Wishlist 1</source>
+      </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
         <target>Sıralama türü:</target>
@@ -257,6 +295,9 @@
         <source>There are no items in your cart.</source>
         <target>Sepetinizde hiç ürün yok.</target>
       </trans-unit>
+      <trans-unit id="MSC.noItemsInWishlist">
+        <source>There are no items in this wishlist.</source>
+      </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
         <target>Seçilen ürün favorilerinize eklendi.</target>
@@ -264,6 +305,9 @@
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
         <target>Seçilen ürün favorilerinize kaldırılmıştır.</target>
+      </trans-unit>
+      <trans-unit id="MSC.addedToWishlist">
+        <source>The selected product has been added to your wishlist.</source>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
@@ -331,7 +375,7 @@
       </trans-unit>
       <trans-unit id="MSC.cartBT">
         <source>Shopping Cart</source>
-        <target>Alışveriş Sepeti</target>
+        <target>Alışveriş Sepeti </target>
       </trans-unit>
       <trans-unit id="MSC.checkoutBT">
         <source>Proceed to Checkout</source>
@@ -387,7 +431,7 @@
       </trans-unit>
       <trans-unit id="MSC.iso_order_status">
         <source>Status</source>
-        <target>Durum</target>
+        <target>Durum </target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_date">
         <source>Order date</source>
@@ -453,9 +497,17 @@
         <source>Please click on the &quot;Pay now&quot; button to continue.</source>
         <target>Devam etmek için &quot;Şimdi öde&quot; tuşuna basın</target>
       </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+      </trans-unit>
       <trans-unit id="MSC.paypalTransactionOnline">
-        <source>Click here to view this PayPal transaction online</source>
-        <target>Bu PayPal işlemini çevrimiçi görüntülemek için tıklayın</target>
+        <source>You can view this PayPal transaction online.</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
       </trans-unit>
       <trans-unit id="MSC.productSingle">
         <source>1 Product</source>
@@ -750,7 +802,7 @@
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
-        <target>Isotope eCommerce</target>
+        <target>Isotope eCommerce </target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.flat.0">
         <source>Flat-price shipping</source>
@@ -768,6 +820,18 @@
         <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
         <target>Bu yöntemle, birden fazla nakliye yöntemini gruplayabilir ve fiyat esas alınarak fiyatını hesaplayabilirsiniz.</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.dhl_business.0">
+        <source>DHL Business Shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.dhl_business.1">
+        <source>Registers the shipment for DHL business delivery, including tracking number and shipping label.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
         <target>Nakit</target>
@@ -775,6 +839,12 @@
       <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
         <target>Tüm çevrimdışı işlenmiş ödemeler için bunu kullanın.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concardis.0">
+        <source>Concardis</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concards.1">
+        <source>Payment gateway for Concardis GmbH.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
         <source>Paybyway</source>
@@ -791,6 +861,12 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
         <target>Bu PayPal modülü, IPN'yi (Anında Ödeme Bildirimleri) destekler.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_plus.0">
+        <source>PayPal PLUS</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
+        <source>Paypal PLUS is currently only available in Germany.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
@@ -871,6 +947,9 @@
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
         <target>Çeşitli ödeme sağlayıcıları için bir ödeme ağ geçidi (ör. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt; PayUnity.PAY &lt;/a&gt;).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.mpay24.0">
+        <source>mPAY24</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
@@ -1730,7 +1809,7 @@
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.DKK">
         <source>Kr.</source>
-        <target>Kr.</target>
+        <target>Kr. </target>
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.EUR">
         <source>€</source>
@@ -1749,7 +1828,7 @@
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.NOK">
         <source>Kr.</source>
-        <target>Kr.</target>
+        <target>Kr. </target>
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.SEK">
         <source>Kr.</source>

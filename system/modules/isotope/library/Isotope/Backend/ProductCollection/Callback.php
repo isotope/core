@@ -49,16 +49,16 @@ class Callback extends \Backend
 
         if (null !== $objAddress) {
             $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
-            $args[2]   = $arrTokens['hcard_fn'];
+            $args[3]   = $arrTokens['hcard_fn'];
         }
 
-        $args[3] = Isotope::formatPriceWithCurrency($row['total']);
+        $args[4] = Isotope::formatPriceWithCurrency($row['total']);
 
         /** @var \Isotope\Model\OrderStatus $objStatus */
         if (($objStatus = $objOrder->getRelated('order_status')) !== null) {
-            $args[4] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+            $args[5] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
         } else {
-            $args[4] = '<span>' . $objOrder->getStatusLabel() . '</span>';
+            $args[5] = '<span>' . $objOrder->getStatusLabel() . '</span>';
         }
 
         return $args;

@@ -67,7 +67,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'label' => array
         (
-            'fields'                => array('document_number', 'locked', 'billing_address_id', 'total', 'order_status'),
+            'fields'                => array('id', 'document_number', 'locked', 'billing_address_id', 'total', 'order_status'),
             'showColumns'           => true,
             'label_callback'        => array('Isotope\Backend\ProductCollection\Callback', 'getOrderLabel')
         ),
@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'id' => array
         (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['id'],
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array

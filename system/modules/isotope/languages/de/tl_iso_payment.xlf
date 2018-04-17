@@ -177,6 +177,18 @@
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
         <target>Geben Sie die E-Mail Adresse ein, welche als Standard ihres PayPal Kontos festgelegt ist. Beachten Sie die korrekte Schreibweise, auch Groß-Kleinschreibung!</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.0">
+        <source>Client ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.1">
+        <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.0">
+        <source>Secret</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.1">
+        <source>Enter your PayPal API secret.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
         <target>PSPID</target>
@@ -219,7 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_in.1">
         <source>This will be used to validate the server to server communication.</source>
-        <target>Dies wird zum validieren der Server-zu-Server-Verbindung genutzt.</target>
+        <target>Dies wird zum Validieren der Server-zu-Server-Verbindung genutzt.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_out.0">
         <source>SHA-OUT signature</source>
@@ -645,6 +657,69 @@
         <source>Please enter your entity or channel ID</source>
         <target>Geben Sie ihre Entity oder Channel ID ein.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.0">
+        <source>Payment Brands</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.1">
+        <source>Select the payment brands you want to support in this payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.AMEX">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DINERS">
+        <source>Diners Club</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
+        <source>SEPA Direct Debit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
+        <source>giropay</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.JCB">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
+        <source>Klarna Ratenkauf</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
+        <source>Klarna Rechnung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.MASTER">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
+        <source>paydirect</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
+        <source>PayPal</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
+        <source>Ratenkauf by easyCredit</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
+        <source>SOFORTüberweisung</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.VISA">
+        <source>VISA</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.0">
+        <source>Merchant ID</source>
+        <target>Händler-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.1">
+        <source>Please enter your merchant ID.</source>
+        <target>Bitte geben Sie Ihre Händler-ID ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.0">
+        <source>Password</source>
+        <target>Passwort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.1">
+        <source>Please enter your SOAP password.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
         <target>Mitgliedergruppen</target>
@@ -676,6 +751,12 @@
       <trans-unit id="tl_iso_payment.debug.1">
         <source>For testing without actually capturing for payment.</source>
         <target>Aktivieren Sie diese Option um ein Testsystem zu verwenden, auf dem keine echten Zahlungen ausgeführt werden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.0">
+        <source>Enable logging</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.1">
+        <source>Write transaction information to the system log files.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>

@@ -105,6 +105,12 @@
         <source>This setting defines to which page a user will be redirected when adding a product to the cart, if other than the current page.</source>
         <target>Bu ayar, geçerli sayfanın dışındaysa, sepete bir ürün eklerken bir kullanıcının hangi sayfaya yönleneceğini tanımlar.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.0">
+        <source>Add to wishlist jump to page</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_wishlistJumpTo.1">
+        <source>This setting defines to which page a user will be redirected when adding a product to the wishlist, if other than the current page.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_cols.0">
         <source>Columns</source>
         <target>Sütunlar</target>
@@ -139,7 +145,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_shipping_modules.0">
         <source>Shipping methods</source>
-        <target>Nakliye yöntemleri</target>
+        <target>Nakliye yöntemleri </target>
       </trans-unit>
       <trans-unit id="tl_module.iso_shipping_modules.1">
         <source>Select one or more shipping methods for this checkout module.</source>
@@ -187,7 +193,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.0">
         <source>Order conditions form</source>
-        <target>Sipariş koşulları formu</target>
+        <target>Sipariş koşulları formu </target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
         <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
@@ -227,7 +233,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
-        <target>Koleksiyon öğelerinin hangi sırayla listeleneceğini tanımlayın</target>
+        <target>Koleksiyon öğelerinin hangi sırayla listeleneceğini tanımlayın.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_emptyMessage.0">
         <source>Define empty message</source>
@@ -332,6 +338,26 @@
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
         <source>Show difference</source>
         <target>Farkı göster</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.0">
+        <source>Filter configuration</source>
+        <target>Filtre yapılandırma</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.1">
+        <source>Please configure the range filter fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute">
+        <source>Attribute</source>
+        <target>Özellik</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.min">
+        <source>Range from</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.max">
+        <source>Range to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.step">
+        <source>Steps</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -443,7 +469,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_related_categories.0">
         <source>Related categories</source>
-        <target>Önerilen kategoriler</target>
+        <target>İlgili kategoriler</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_related_categories.1">
         <source>Select the categories to show products of.</source>

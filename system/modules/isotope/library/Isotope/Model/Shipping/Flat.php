@@ -27,6 +27,10 @@ class Flat extends Shipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
+        if (!is_numeric($this->arrData['price'])) {
+            return null;
+        }
+
         if (null === $objCollection) {
             $objCollection = Isotope::getCart();
         }

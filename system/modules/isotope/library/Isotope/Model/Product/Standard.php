@@ -15,6 +15,8 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Url;
+use Isotope\Frontend\ProductAction\ProductActionInterface;
+use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -25,7 +27,6 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
@@ -155,8 +156,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     {
         if (null !== $objCollection && $objCollection !== Isotope::getCart()) {
             return ProductPrice::findByProductAndCollection($this, $objCollection);
+        }
 
-        } elseif (false === $this->objPrice) {
+        if (false === $this->objPrice) {
             if (null === $objCollection) {
                 $objCollection = Isotope::getCart();
             }
@@ -492,35 +494,61 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        $arrButtons = array();
-
-        // !HOOK: retrieve buttons
-        if (isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
-            && is_array($arrConfig['buttons'])
-            && is_array($GLOBALS['ISO_HOOKS']['buttons'])
-        ) {
-            foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
-                $arrButtons = \System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
+        /** @var ProductActionInterface[] $actions */
+        $handleButtons = false;
+        $actions = array_filter(
+            Registry::all(true, $this),
+            function (ProductActionInterface $action) use ($arrConfig) {
+                return in_array($action->getName(), $arrConfig['buttons']) && $action->isAvailable($this, $arrConfig);
             }
-
-            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
-        }
+        );
 
         if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
-            foreach ($arrButtons as $button => $data) {
-                if (isset($_POST[$button])) {
-                    if (isset($data['callback'])) {
-                        $objCallback = \System::importStatic($data['callback'][0]);
-                        $objCallback->{$data['callback'][1]}($this, $arrConfig);
-                    }
+            $handleButtons = true;
+
+            foreach ($actions as $action) {
+                if ($action->handleSubmit($this, $arrConfig)) {
+                    $handleButtons = false;
                     break;
                 }
             }
         }
 
+        /**
+         * @deprecated Deprecated since Isotope 2.5
+         */
+        $objTemplate->buttons = function() use ($arrConfig, $handleButtons) {
+            $arrButtons = array();
+
+            // !HOOK: retrieve buttons
+            if (isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
+                && is_array($arrConfig['buttons'])
+                && is_array($GLOBALS['ISO_HOOKS']['buttons'])
+            ) {
+                foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
+                    $arrButtons = \System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
+                }
+            }
+
+            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
+
+            if ($handleButtons) {
+                foreach ($arrButtons as $button => $data) {
+                    if (isset($_POST[$button])) {
+                        if (isset($data['callback'])) {
+                            \System::importStatic($data['callback'][0])->{$data['callback'][1]}($this, $arrConfig);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return $arrButtons;
+        };
+
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
-        $objTemplate->buttons          = $arrButtons;
+        $objTemplate->actions          = $actions;
         $objTemplate->useQuantity      = $arrConfig['useQuantity'] && !$this->blnUpdate;
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw              = $this->arrData;
@@ -587,8 +615,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
                 return '';
+            }
 
-            } elseif ($arrField['value'] != '' && in_array($arrField['value'], $arrOptions)) {
+            if ($arrField['value'] != '' && in_array($arrField['value'], $arrOptions)) {
                 $arrVariantOptions[$strField] = $arrField['value'];
             }
 
@@ -819,8 +848,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         if ($hasOptions && ($objVariant = static::findVariantOfProduct($this, $arrOptions)) !== null) {
             return $objVariant;
+        }
 
-        } elseif (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
+        if (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
             return $objVariant;
         }
 

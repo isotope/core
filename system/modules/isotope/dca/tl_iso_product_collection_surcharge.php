@@ -51,6 +51,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_surcharge'] = array
         (
             'sql'                 =>  "varchar(32) NOT NULL default ''",
         ),
+        'source_id' => array
+        (
+            'sql'                 =>  "int(10) unsigned NOT NULL default '0'",
+        ),
         'label' => array
         (
             'sql'                 =>  "varchar(255) NOT NULL default ''",

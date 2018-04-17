@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_attribute.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.name.1">
         <source>Please enter a name for this attribute.</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.0">
         <source>Options</source>
-        <target>Seçenekler</target>
+        <target>Seçenekler </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.1">
         <source>Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!</source>
@@ -287,7 +287,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.uploadFolder.0">
         <source>Target folder</source>
-        <target>Hedef Klasör</target>
+        <target>Hedef Klasör </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.uploadFolder.1">
         <source>Please select the target folder from the files directory.</source>
@@ -491,7 +491,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.price.0">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.price.1">
         <source>Checks whether the input is a valid price.</source>
@@ -707,7 +707,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options_legend">
         <source>Options</source>
-        <target>Seçenekler</target>
+        <target>Seçenekler </target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.config_legend">
         <source>Attribute configuration</source>

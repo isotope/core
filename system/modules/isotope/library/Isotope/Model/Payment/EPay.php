@@ -17,7 +17,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
 use Isotope\Model\Payment;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
@@ -170,14 +169,13 @@ class EPay extends Payment implements IsotopePostsale
         if ($strHash != \Input::get('hash')) {
             \System::log('Invalid hash for ePay payment. See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
 
-            log_message(
+            $this->debugLog(
                 sprintf(
                     "Invalid hash for ePay payment:\ngot %s, expected %s\nParameters: %s\n\n",
                     \Input::get('hash'),
                     $strHash,
                     print_r($arrValues, true)
-                ),
-                'isotope_epay.log'
+                )
             );
 
             return false;
@@ -188,7 +186,7 @@ class EPay extends Payment implements IsotopePostsale
         ) {
             \System::log('Currency or amount does not match order.  See system/logs/isotope_epay.log for more details.', __METHOD__, TL_ERROR);
 
-            log_message(
+            $this->debugLog(
                 sprintf(
                     "Currency or amount does not match order:\nCurrency: got %s (%s), expected %s\nAmount: got %s, expected %s\n\n",
                     \Input::get('currency'),
@@ -196,8 +194,7 @@ class EPay extends Payment implements IsotopePostsale
                     $orderCurrency,
                     \Input::get('amount'),
                     $orderAmount
-                ),
-                'isotope_epay.log'
+                )
             );
 
             return false;

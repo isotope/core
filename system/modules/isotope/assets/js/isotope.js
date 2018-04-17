@@ -18,6 +18,16 @@
             el.addEventListener(name, callback, false);
         }
     }
+    
+    function dispatchEvent(name, data) {
+        if (jQuery) {
+            jQuery(window).trigger(jQuery.Event(name, data));
+        } else if (MooTools) {
+            window.fireEvent(name, data);
+        } else {
+            window.dispatchEvent(new CustomEvent(name, data));
+        }
+    }
 
     function serializeForm(form) {
         if (jQuery) {
@@ -101,6 +111,11 @@
 
             parent.setAttribute('class', parent.getAttribute('class') + ' active');
             _doc.getElementById(elementId).src = el.href;
+
+            // Update the href for lightbox
+            if (el.dataset.lightboxUrl) {
+                _doc.getElementById(elementId).parentNode.href = el.dataset.lightboxUrl;
+            }
 
             return false;
         },
@@ -230,6 +245,8 @@
                     _doc.head.appendChild(script);
                     _doc.head.removeChild(script);
                 }
+
+                dispatchEvent('isotopeProductReload', { detail: config });
             }
 
             if (config.attributes) {

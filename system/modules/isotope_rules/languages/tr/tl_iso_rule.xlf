@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.1">
         <source>Please enter a name for this rule.</source>
@@ -127,7 +127,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxSubtotal.0">
         <source>Maximum subtotal</source>
-        <target>Maksimum alt toplam</target>
+        <target>Maksimum ara toplam</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxSubtotal.1">
         <source>Please specify a maximum subtotal this rule applies to.</source>
@@ -171,7 +171,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.1">
         <source>Select a calculation mode for min/max quantity.</source>
-        <target>Min / maks adetiçin bir hesaplama modu seçin.</target>
+        <target>Min / maks adet için bir hesaplama modu seçin.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.product_quantity">
         <source>Quantity of product in cart</source>
@@ -231,7 +231,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.configCondition.1">
         <source>Define if the selection should match or not.</source>
-        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın.</target>
+        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın. </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.configs.0">
         <source>Store configs</source>
@@ -251,7 +251,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.none">
         <source>No restrictions</source>
-        <target>Kısıtlama yok</target>
+        <target>Kısıtlama yok </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.guests">
         <source>Guests</source>
@@ -271,7 +271,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberCondition.1">
         <source>Define if the selection should match or not.</source>
-        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın.</target>
+        <target>Seçimin eşleşip eşleşemeyeceğini tanımlayın. </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.members.0">
         <source>Members</source>
@@ -303,11 +303,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
         <source>Product types</source>
-        <target>Ürün tipleri</target>
+        <target>Ürün tipleri </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.pages">
         <source>Categories</source>
-        <target>Kategoriler</target>
+        <target>Kategoriler </target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.products">
         <source>Products</source>
@@ -415,7 +415,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.0">
         <source>Enabled</source>
-        <target>v</target>
+        <target>Etkinleştirildi</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.1">
         <source>Please select whether this rule is currently enabled or not.</source>

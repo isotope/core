@@ -1,0 +1,25 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Published</th>
+            <th>Author</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->items as $wishlist): ?>
+        <tr class="<?= $wishlist['class'] ?>">
+            <td><?= $wishlist['name'] ?></td>
+            <td><?= $wishlist['published'] ?></td>
+            <td><?= $wishlist['member']->firstname ?> <?= $wishlist['member']->lastname ?></td>
+            <td><a href="<?= $wishlist['href'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['buttonLabel']['wishlist_details'] ?></a></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php $this->endblock(); ?>

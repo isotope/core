@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\ModuleModel;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
@@ -50,7 +51,7 @@ class Rules extends \Controller
 
         // User object must be loaded from cart, e.g. for postsale handling
         if (Isotope::getCart()->member > 0) {
-            $this->User = \Database::getInstance()->prepare("SELECT * FROM tl_member WHERE id=?")->execute(Isotope::getCart()->member);
+            $this->User = \Database::getInstance()->prepare('SELECT * FROM tl_member WHERE id=?')->execute(Isotope::getCart()->member);
         }
     }
 
@@ -207,9 +208,12 @@ class Rules extends \Controller
 
     /**
      * Returns a rule form if needed
-     * @access public
-     * @param  object $objModule
+     *
+     * @param ModuleModel $objModule
+     *
      * @return string
+     *
+     * @deprecated Deprecated since Isotope 2.5, use the Coupons front end module instead.
      */
     public function getCouponForm($objModule)
     {
@@ -250,7 +254,7 @@ class Rules extends \Controller
 
         $objRules = Rule::findForCartWithCoupons();
 
-        if (null === $objRules) {
+        if (null === $objRules || ModuleModel::countBy('type', 'iso_coupons') > 0) {
             return '';
         }
 

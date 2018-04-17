@@ -23,7 +23,7 @@
 
 <div class="details"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
 
-<?php if($this->buttons): ?>
+<?php if($this->actions): ?>
 <div class="submit_container">
 <?php if ($this->hasOptions): ?>
 <div class="options">
@@ -35,9 +35,7 @@
 <label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
 </div>
 <?php endif; ?>
-<?php foreach( $this->buttons as $name => $button ): ?>
-    <input type="submit" class="submit <?php echo $name; ?> <?= $button['class'] ?>" name="<?php echo $name; ?>" value="<?php echo $button['label']; ?>">
-<?php endforeach; ?>
+<?php foreach ($this->actions as $action) echo $action->generate($this->product); ?>
 </div>
 <?php endif; ?>
 

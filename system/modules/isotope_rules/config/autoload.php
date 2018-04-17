@@ -23,5 +23,6 @@ if (class_exists('NamespaceClassLoader')) {
  */
 TemplateLoader::addFiles(array
 (
-    'iso_coupons'    => 'system/modules/isotope_rules/templates',
+    'iso_coupons'     => 'system/modules/isotope_rules/templates',
+    'mod_iso_coupons' => 'system/modules/isotope_rules/templates',
 ));

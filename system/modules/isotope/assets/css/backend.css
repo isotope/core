@@ -373,6 +373,10 @@ body.iso_be_overview .tip-wrap{
     float:left;
     text-align: center;
 }
+.be_iso_overview .item a img {
+    width: 64px;
+    height: 64px;
+}
 .be_iso_overview .item a.disabled {
     pointer-events: none;
     cursor: default;

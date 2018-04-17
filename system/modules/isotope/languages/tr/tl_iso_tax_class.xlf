@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_tax_class.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.name.1">
         <source>Give this tax class a name that explains what it is used for.</source>
@@ -99,11 +99,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.name_legend">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.rate_legend">
         <source>Tax rates</source>
-        <target>Vergi oranları</target>
+        <target>Vergi oranları </target>
       </trans-unit>
     </body>
   </file>

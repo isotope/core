@@ -11,6 +11,8 @@
 
 namespace Isotope\RequestCache;
 
+use Isotope\Interfaces\IsotopeAttribute;
+use Isotope\Interfaces\IsotopeAttributeWithRange;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
@@ -206,12 +208,22 @@ class Filter implements \ArrayAccess
             throw new \BadMethodCallException('Filter operator is not yet configured');
         }
 
-        $varValues = $objProduct->{$this->arrConfig['attribute']};
+        $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$this->arrConfig['attribute']];
+
+        if ($attribute instanceof IsotopeAttributeWithRange && $attribute->allowRangeFilter()) {
+            $varValues = $attribute->getValueRange($objProduct);
+        } elseif ($attribute instanceof IsotopeAttribute) {
+            $varValues = $attribute->getValue($objProduct);
+        } else {
+            $varValues = $objProduct->{$this->arrConfig['attribute']};
+        }
 
         // If the attribute is not set for this product, we will ignore this attribute
-        if ($varValues === null) {
+        if (null === $varValues) {
             return false;
-        } elseif (!is_array($varValues)) {
+        }
+
+        if (!is_array($varValues)) {
             $varValues = deserialize($varValues, true);
         }
 

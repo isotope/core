@@ -49,6 +49,13 @@
         <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
         <target>Bietet einen anwachsenden Filter an. So können Besucher die Produktauswahl mit mehrfachen Bedingungen eingrenzen.</target>
       </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.0">
+        <source>Range Filter</source>
+        <target>Bereichsfilter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.1">
+        <source>Provides a range filter to find products within a value range.</source>
+      </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
         <target>Produktliste</target>
@@ -120,6 +127,30 @@
       <trans-unit id="FMD.iso_orderdetails.1">
         <source>Order reader that allows customers to view order history details</source>
         <target>Kunden können mit diesem Modul ihre vergangenen Bestellungen sehen und z.B. Download-Artikel herunterladen.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.0">
+        <source>Wishlist Manager</source>
+        <target>Wunschlisten Manager</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.1">
+        <source>Allows the current member to manage it's wishlists.</source>
+        <target>Erlaubt es dem aktuellen Mitglied, seine Wunschliste zu verwalten.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.0">
+        <source>Public Wishlists</source>
+        <target>Öffentliche Wunschlisten</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.1">
+        <source>Shows published wishlists of all users.</source>
+        <target>Zeigt veröffentlichte Wunschlisten aller Benutzer an.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.0">
+        <source>Wishlist Details</source>
+        <target>Wunschlistedetails</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.1">
+        <source>Shows details of a given wishlist.</source>
+        <target>Zeigt Details einer bestimmten Wunschliste an.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.0">
         <source>Store Config Switcher</source>

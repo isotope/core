@@ -61,6 +61,12 @@
         <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
         <target>Geben Sie bitte das Versandgewicht für dieses Produkt ein. Dies kann später für eine Versandberechnung nach Gewicht berücksichtigt werden.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.0">
+        <source>Shipping price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.1">
+        <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>
         <target>Teaser</target>
@@ -111,7 +117,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.0">
         <source>Exempt from shipping</source>
-        <target>Vom Versand ausschliessen</target>
+        <target>Vom Versand ausschließen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.1">
         <source>Check if item is not a shipped item (such as downloadable products).</source>

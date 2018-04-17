@@ -26,28 +26,28 @@ interface IsotopePayment
     public function getId();
 
     /**
-     * Returns whether the payment method is available
+     * Returns whether the payment method is available.
      *
      * @return bool
      */
     public function isAvailable();
 
     /**
-     * Return true if payment price is not a fixed amount
+     * Return true if payment price is not a fixed amount.
      *
      * @return bool
      */
     public function isPercentage();
 
     /**
-     * Get the percentage amount (if applicable)
+     * Get the percentage amount (if applicable).
      *
      * @return float
      */
     public function getPercentage();
 
     /**
-     * Return label for the payment method
+     * Return label for the payment method.
      *
      * @return string
      */
@@ -61,14 +61,14 @@ interface IsotopePayment
     public function getNote();
 
     /**
-     * Return the calculated total price for payment
+     * Return the calculated total price for payment.
      *
-     * @return float
+     * @return float|null
      */
     public function getPrice();
 
     /**
-     * Return percentage label if price is percentage
+     * Return percentage label if price is percentage.
      *
      * @return string
      */
@@ -85,7 +85,7 @@ interface IsotopePayment
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
-     * Return a html form for checkout or false
+     * Return a html form for checkout or false.
      *
      * @param IsotopeProductCollection $objOrder  The order being places
      * @param \Module                  $objModule The checkout module instance
@@ -106,7 +106,6 @@ interface IsotopePayment
 
     /**
      * Return the checkout review information.
-     *
      * Use this to return custom checkout information about this payment module.
      * Example: parial information about the used credit card.
      *
@@ -115,7 +114,7 @@ interface IsotopePayment
     public function checkoutReview();
 
     /**
-     * Get the checkout surcharge for this shipping method
+     * Get the checkout surcharge for this shipping method.
      *
      * @param IsotopeProductCollection $objCollection
      *
