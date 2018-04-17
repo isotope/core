@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.name_legend">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_orderstatus.email_legend">
         <source>E-Mail Notification</source>

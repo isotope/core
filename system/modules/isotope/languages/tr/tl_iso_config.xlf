@@ -59,7 +59,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.street_1.0">
         <source>Street</source>
-        <target>Sokak</target>
+        <target>Cadde</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_1.1">
         <source>Please enter the street name and the street number.</source>
@@ -67,7 +67,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.0">
         <source>Street 2</source>
-        <target>Cadde 2</target>
+        <target>Sokak 2 </target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
         <source>Enter a second street info if there's any.</source>
@@ -99,11 +99,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.0">
         <source>State</source>
-        <target>Eyalet</target>
+        <target>Eyalet/Bölge</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.1">
         <source>Please enter the name of the state.</source>
-        <target>Lütfen bir eyalet ismi girin</target>
+        <target>Lütfen bir eyalet/bölge ismi girin</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.country.0">
         <source>Country</source>
@@ -243,8 +243,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.currency.0">
         <source>Currency</source>
-        <target>Para birimi
-</target>
+        <target>Para birimi</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.currency.1">
         <source>Please select a currency for this store.</source>
@@ -428,7 +427,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.iwName.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_config.iwWidth.0">
         <source>Width</source>
@@ -532,7 +531,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.name_legend">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_legend">
         <source>Address configuration</source>

@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_baseprice.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name.1">
         <source>Enter a name for this base price.</source>

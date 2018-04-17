@@ -35,7 +35,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.isotope">
         <source>Isotope eCommerce</source>
-        <target>Isotope eCommerce</target>
+        <target>Isotope eCommerce </target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order_status_change.0">
         <source>Order status change</source>

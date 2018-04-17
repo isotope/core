@@ -1,9 +1,11 @@
 <?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="tr">
     <body>
+      <trans-unit id="tl_iso_product_collection.id.0">
+        <source>ID</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
-        <source>Order ID</source>
-        <target>Sipariş ID</target>
+        <source>Order Number</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
@@ -83,8 +85,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.currency.0">
         <source>Currency</source>
-        <target>Para birimi
-</target>
+        <target>Para birimi</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.language.0">
         <source>Language</source>
@@ -124,7 +125,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.0">
         <source>Order details</source>
-        <target>Sipariş Detayları</target>
+        <target>Sipariş Detayları </target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.1">
         <source>Show details of order ID %s</source>

@@ -21,6 +21,12 @@
         <source>The requested order was not found.</source>
         <target>El pedido solicitado no se encuentra.</target>
       </trans-unit>
+      <trans-unit id="ERR.emptyWishlists">
+        <source>You have not created any wishlists yet.</source>
+      </trans-unit>
+      <trans-unit id="ERR.wishlistNotFound">
+        <source>The requested wishlist was not found.</source>
+      </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
         <target>Debe estar conectado para realizar el pago.</target>
@@ -81,6 +87,12 @@
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
+      </trans-unit>
+      <trans-unit id="ERR.oppIncompatible">
+        <source>Some of the selected payment brands are not compatible to each other.</source>
+      </trans-unit>
+      <trans-unit id="ERR.oppTooMany">
+        <source>The payment API currently does not support this many brands at a time.</source>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
@@ -198,6 +210,32 @@
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
       </trans-unit>
+      <trans-unit id="MSC.buttonLabel.add_to_wishlist">
+        <source>Add To Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.edit_wishlist">
+        <source>Edit</source>
+        <target>Editar</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.delete_wishlist">
+        <source>Delete</source>
+        <target>Borrar</target>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.wishlist_details">
+        <source>Details</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.share_wishlist">
+        <source>Share Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.buttonLabel.unshare_wishlist">
+        <source>Unshare Wishlist</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistLabel">
+        <source>New Wishlist …</source>
+      </trans-unit>
+      <trans-unit id="MSC.defaultWishlistName">
+        <source>Wishlist 1</source>
+      </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
         <target>Ordenar por:</target>
@@ -233,11 +271,17 @@
         <source>There are no items in your cart.</source>
         <target>No hay artículos en su cesta.</target>
       </trans-unit>
+      <trans-unit id="MSC.noItemsInWishlist">
+        <source>There are no items in this wishlist.</source>
+      </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
       </trans-unit>
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
+      </trans-unit>
+      <trans-unit id="MSC.addedToWishlist">
+        <source>The selected product has been added to your wishlist.</source>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
@@ -419,9 +463,17 @@
       <trans-unit id="MSC.pay_with_redirect.3">
         <source>Please click on the &quot;Pay now&quot; button to continue.</source>
       </trans-unit>
+      <trans-unit id="MSC.paypalTransaction">
+        <source>Transaction ID: %s</source>
+      </trans-unit>
       <trans-unit id="MSC.paypalTransactionOnline">
-        <source>Click here to view this PayPal transaction online</source>
-        <target>Haz clic aquí para ver este transacciones PayPal en línea</target>
+        <source>You can view this PayPal transaction online.</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionButton">
+        <source>Open Website</source>
+      </trans-unit>
+      <trans-unit id="MSC.paypalTransactionDetails">
+        <source>PayPal transaction from %s</source>
       </trans-unit>
       <trans-unit id="MSC.productSingle">
         <source>1 Product</source>
@@ -707,6 +759,18 @@
       <trans-unit id="MODEL.tl_iso_shipping.group.1">
         <source>With this method, you can group multiple shipping methods into one and calculate the price based on them.</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.0">
+        <source>Product-price shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.product_price.1">
+        <source>In this method the shipping costs are based on the products individual shipping price. Make sure to have the Shipping Price attribute enabled per each product.</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.dhl_business.0">
+        <source>DHL Business Shipping</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_shipping.dhl_business.1">
+        <source>Registers the shipment for DHL business delivery, including tracking number and shipping label.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
         <target>Efectivo</target>
@@ -714,6 +778,12 @@
       <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
         <target>Usar esto para todos los pagos desconectados.</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concardis.0">
+        <source>Concardis</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.concards.1">
+        <source>Payment gateway for Concardis GmbH.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
         <source>Paybyway</source>
@@ -728,6 +798,12 @@
       <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
         <target>Este módulo soporta PayPal IPN (notificaciones de pago instantáneas).</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_plus.0">
+        <source>PayPal PLUS</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
+        <source>Paypal PLUS is currently only available in Germany.</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
@@ -794,6 +870,9 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.mpay24.0">
+        <source>mPAY24</source>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>

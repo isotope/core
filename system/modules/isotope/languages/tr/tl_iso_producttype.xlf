@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_iso_producttype.name.0">
         <source>Name</source>
-        <target>Ad</target>
+        <target>Ad </target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.name.1">
         <source>Please enter a name for this product type.</source>
@@ -135,7 +135,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variant_attributes.0">
         <source>Variant attributes</source>
-        <target>Çeşit nitelikleri</target>
+        <target>Çeşit nitelikleri </target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variant_attributes.1">
         <source>Select the collection of variant attributes that should be included for this product type. Those that are not selected will be hidden from view and inherited from the parent product.</source>

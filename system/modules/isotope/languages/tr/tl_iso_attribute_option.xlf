@@ -43,7 +43,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_short.0">
         <source>Price</source>
-        <target>Ücret</target>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.0">
         <source>Published</source>

@@ -52,6 +52,13 @@
       <trans-unit id="tl_iso_shipping.flatCalculation.1">
         <source>Select the mode of price calculation.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Peso spedizione</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.shipping_weight.1">
+        <source>Adds additional weight to the shipping to account for packaging material.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>
         <target>Paesi</target>
@@ -162,6 +169,48 @@
       <trans-unit id="tl_iso_shipping.group_calculation.1">
         <source>Select how the price of this shipping method should be calculated.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_user.0">
+        <source>Username</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_user.1">
+        <source>Please enter your username for the DHL portal.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_signature.0">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_signature.1">
+        <source>Please enter your DHL account password.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_epk.0">
+        <source>Account Number</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_epk.1">
+        <source>Please enter your DHL account number.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.0">
+        <source>DHL Product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.1">
+        <source>Please select the appropriate DHL product / shipment type.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_app.0">
+        <source>Application ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_app.1">
+        <source>Enter the Application ID for DHL API.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_token.0">
+        <source>API Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_token.1">
+        <source>Enter the Token for DHL API.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_shipping.0">
+        <source>Shipping Date Calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_shipping.1">
+        <source>Enter the period within the package will be shipped. Default is next day.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.groups.0">
         <source>Member Groups</source>
         <target>Gruppi membri</target>
@@ -186,6 +235,19 @@
         <source>Hide the module if a member is logged in.</source>
         <target>Nasconda il modulo se un membro è loggato.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.0">
+        <source>Debug mode</source>
+        <target>Modo debug</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.debug.1">
+        <source>Use test platform for shipping.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.logging.0">
+        <source>Enable logging</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.logging.1">
+        <source>Write transaction information to the system log files.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.enabled.0">
         <source>Enabled</source>
         <target>Attivato</target>
@@ -202,13 +264,15 @@
         <source>Shipping note</source>
         <target>Nota spedizione</target>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.api_legend">
+        <source>API Configuration</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.config_legend">
         <source>Configuration</source>
         <target>Configurazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price_legend">
-        <source>Pricing threshold and tax class applicability</source>
-        <target>Soglia prezzo e classe aliquota applicabile</target>
+        <source>Price and Weight</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.expert_legend">
         <source>Expert settings</source>
@@ -298,6 +362,30 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.calculation">
         <source>Calculate price for these product types</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V01PAK">
+        <source>National Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V53WPAK">
+        <source>International Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V54EPAK">
+        <source>Europa Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V06PAK">
+        <source>Same Day Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V06TG">
+        <source>Same Day Messenger</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V86PARCEL">
+        <source>Austria Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V82PARCEL">
+        <source>Austria International Package</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.dhl_product.V87PARCEL">
+        <source>Connect Package</source>
       </trans-unit>
     </body>
   </file>

@@ -59,6 +59,12 @@
         <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
         <target>Saisir le poids de ce produit. Il peut être utilisé pour calculer le coût d'expédition.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.0">
+        <source>Shipping price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.1">
+        <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>
         <target>Résumé</target>

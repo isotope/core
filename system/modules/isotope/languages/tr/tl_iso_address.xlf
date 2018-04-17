@@ -167,19 +167,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.personal_legend">
         <source>Personal data</source>
-        <target>Kişisel bilgi</target>
+        <target>Kişisel bilgi </target>
       </trans-unit>
       <trans-unit id="tl_iso_address.address_legend">
         <source>Address details</source>
-        <target>Adres detayları</target>
+        <target>Adres detayları </target>
       </trans-unit>
       <trans-unit id="tl_iso_address.contact_legend">
         <source>Contact details</source>
-        <target>Kişi detayları</target>
+        <target>Kişi detayları </target>
       </trans-unit>
       <trans-unit id="tl_iso_address.default_legend">
         <source>Default address</source>
-        <target>Varsayılan adres</target>
+        <target>Varsayılan adres </target>
       </trans-unit>
       <trans-unit id="tl_iso_address.personalData">
         <source>Personal data</source>

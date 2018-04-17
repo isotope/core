@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="tl_member.address_book.0">
         <source>Address Book</source>
-        <target>Adres Defteri</target>
+        <target>Adres Defteri </target>
       </trans-unit>
       <trans-unit id="tl_member.address_book.1">
         <source>Manage the address book for member ID %s.</source>
