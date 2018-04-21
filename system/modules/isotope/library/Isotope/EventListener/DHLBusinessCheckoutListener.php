@@ -31,10 +31,8 @@ class DHLBusinessCheckoutListener
             return;
         }
 
-        $credentials = $this->getCredentials($shipping);
-
-        $dhl = new BusinessShipment($credentials, (bool) $shipping->debug);
-        $dhl->setShipmentDetails($this->getShipmentDetails($credentials, $shipping, $order));
+        $dhl = new BusinessShipment($this->getCredentials($shipping), (bool) $shipping->debug);
+        $dhl->setShipmentDetails($this->getShipmentDetails($shipping, $order));
         $dhl->setSender($this->getSender($config->getOwnerAddress()));
         $dhl->setReceiver($this->getReceiver($shippingAddress));
         $dhl->setReceiverEmail($shippingAddress->email);
@@ -126,23 +124,16 @@ class DHLBusinessCheckoutListener
     }
 
     private function getShipmentDetails(
-        Credentials $credentials,
         DHLBusiness $shippingMethod,
         IsotopePurchasableCollection $order
     ) {
-        $accountNumber = sprintf(
-            '%s%s01',
-            $credentials->getEpk(10),
-            substr($shippingMethod->dhl_product, 1, 2)
-        );
-
         $scale = $order->addToScale();
 
         if (($shippingWeight = $shippingMethod->getWeight()) !== null) {
             $scale->add($shippingWeight);
         }
 
-        $details = new ShipmentDetails($accountNumber);
+        $details = new ShipmentDetails($shippingMethod->dhl_user);
 
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());

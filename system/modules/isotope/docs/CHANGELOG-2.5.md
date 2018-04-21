@@ -1,6 +1,15 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.5.1-stable (2018-??-??)
+---------------------------------
+
+### Fixed
+
+- DHL account number must include the product name (14 digits)
+
+
 Version 2.5.0-stable (2018-04-17)
 ---------------------------------
 
