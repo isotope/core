@@ -402,6 +402,10 @@ class Isotope extends \Controller
             new FavoriteAction(),
         ];
 
+        if (null === $objProduct) {
+            $objProduct = new Product\Standard();
+        }
+
         /** @var ProductActionInterface $action */
         foreach ($actions as $action) {
             if ($action->isAvailable($objProduct)) {
