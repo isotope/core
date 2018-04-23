@@ -133,7 +133,7 @@ class DHLBusinessCheckoutListener
             $scale->add($shippingWeight);
         }
 
-        $details = new ShipmentDetails($shippingMethod->dhl_user);
+        $details = new ShipmentDetails($shippingMethod->dhl_epk);
 
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
