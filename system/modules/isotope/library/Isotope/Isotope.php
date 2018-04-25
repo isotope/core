@@ -399,22 +399,19 @@ class Isotope extends \Controller
         $actions = [
             new UpdateAction(),
             new CartAction(),
-            new FavoriteAction(),
         ];
 
-        if (null === $objProduct) {
-            $objProduct = new Product\Standard();
+        if (true === FE_USER_LOGGED_IN) {
+            $actions[] = new FavoriteAction();
         }
 
         /** @var ProductActionInterface $action */
         foreach ($actions as $action) {
-            if ($action->isAvailable($objProduct)) {
-                $arrButtons[$action->getName()] = array(
-                    'label' => $action->getLabel(),
-                    'callback' => [get_class($action), 'handleSubmit'],
-                    'class' => (is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
-                );
-            }
+            $arrButtons[$action->getName()] = array(
+                'label' => $action->getLabel($objProduct),
+                'callback' => [get_class($action), 'handleSubmit'],
+                'class'    => ($objProduct instanceof IsotopeProduct && is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
+            );
         }
 
         return $arrButtons;
