@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.5.1-stable (2018-04-25)
+---------------------------------
+
+### Fixed
+
+- DHL account number must include the product name (14 digits)
+- Added null-check for custom product class implementations
+- Create an empty product object for BC with product actions (#1930)
+- Check method to add links for mini cart template (#1934)
+
+
 Version 2.5.0-stable (2018-04-17)
 ---------------------------------
 

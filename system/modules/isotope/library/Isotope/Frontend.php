@@ -657,7 +657,9 @@ class Frontend extends \Frontend
     {
         $fltAmount = $fltPrice;
 
-        if ($objSource instanceof IsotopePrice && ($objProduct = $objSource->getRelated('pid')) !== null) {
+        if ($objSource instanceof IsotopePrice
+            && ($objProduct = $objSource->getRelated('pid')) instanceof IsotopeProduct
+            && $objProduct->getType() !== null) {
             /** @var IsotopeProduct|Standard $objProduct */
 
             $arrAttributes = array_intersect(

@@ -44,7 +44,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.5.0';
+    const VERSION = '2.5.1';
 
     /**
      * True if the system has been initialized
@@ -399,18 +399,19 @@ class Isotope extends \Controller
         $actions = [
             new UpdateAction(),
             new CartAction(),
-            new FavoriteAction(),
         ];
+
+        if (true === FE_USER_LOGGED_IN) {
+            $actions[] = new FavoriteAction();
+        }
 
         /** @var ProductActionInterface $action */
         foreach ($actions as $action) {
-            if ($action->isAvailable($objProduct)) {
-                $arrButtons[$action->getName()] = array(
-                    'label' => $action->getLabel(),
-                    'callback' => [get_class($action), 'handleSubmit'],
-                    'class' => (is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
-                );
-            }
+            $arrButtons[$action->getName()] = array(
+                'label' => $action->getLabel($objProduct),
+                'callback' => [get_class($action), 'handleSubmit'],
+                'class'    => ($objProduct instanceof IsotopeProduct && is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
+            );
         }
 
         return $arrButtons;
