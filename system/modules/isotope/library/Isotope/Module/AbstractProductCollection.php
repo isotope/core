@@ -137,7 +137,7 @@ abstract class AbstractProductCollection extends Module
                     $buttons,
                     $action->getName(),
                     $action->getLabel($collection),
-                    $action instanceof AbstractLink ? $action->getHref() : null
+                    is_callable([$action, 'getHref']) ? $action->getHref() : null
                 );
             }
 
