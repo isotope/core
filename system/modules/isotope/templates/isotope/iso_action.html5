@@ -1,0 +1,1 @@
+<input type="submit" name="<?= $this->name ?>" class="submit <?= $this->name ?> <?= $this->classes ?>" value="<?= $this->label ?>">
