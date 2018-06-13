@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'protected'),
+        '__selector__'              => array('type', 'flatCalculation', 'protected'),
         'default'                   => '{title_legend},name,label,type',
         'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     'subpalettes' => array
     (
         'protected'                 => 'groups',
+        'flatCalculation_perWeight' => 'flatWeight',
     ),
 
     // Fields
@@ -339,10 +340,21 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('flat', 'perProduct', 'perItem'),
+            'options'               => array('flat', 'perProduct', 'perItem', 'perWeight'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'flatWeight' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatWeight'],
+            'exclude'               => true,
+            'inputType'             => 'timePeriod',
+            'default'               => array('unit'=>'kg'),
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_weight' => array
         (

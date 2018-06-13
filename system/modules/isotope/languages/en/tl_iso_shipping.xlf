@@ -44,6 +44,12 @@
       <trans-unit id="tl_iso_shipping.flatCalculation.1">
         <source>Select the mode of price calculation.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.0">
+        <source>Price per weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.1">
+        <source>Enter the weight amound the price should be multiplied by (without floating points).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.0">
         <source>Shipping weight</source>
       </trans-unit>
@@ -289,6 +295,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.perItem">
         <source>Per Item</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perWeight">
+        <source>Per Weight</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.first">
         <source>Price of the first available method</source>
