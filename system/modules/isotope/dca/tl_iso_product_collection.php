@@ -161,7 +161,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'flag'                  => 8,
             'filter'                => true,
             'sorting'               => true,
-            'eval'                  => array('rgxp'=>'date'),
+            'eval'                  => array('rgxp'=>'datim'),
             'sql'                   => "int(10) NULL",
         ),
         'store_id' => array
@@ -238,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'date', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL',
         ),
         'config_id' => array
