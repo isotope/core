@@ -351,6 +351,17 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 array('Isotope\Backend\Product\Alias', 'save'),
             ),
         ),
+        'gtin' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['gtin'],
+            'exclude'               => true,
+            'search'                => true,
+            'sorting'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>14, 'unique'=>true, 'tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'general_legend', 'fe_search'=>true, 'singular'=>true),
+            'sql'                   => "varchar(14) NOT NULL default ''",
+        ),
         'sku' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['sku'],
