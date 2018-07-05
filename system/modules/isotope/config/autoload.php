@@ -91,4 +91,5 @@ TemplateLoader::addFiles(array
     'mod_iso_productreader'             => 'system/modules/isotope/templates/modules',
     'mod_iso_rangefilter'               => 'system/modules/isotope/templates/modules',
     'mod_iso_shipping_calculator'       => 'system/modules/isotope/templates/modules',
+    'mod_iso_trustedshops'              => 'system/modules/isotope/templates/modules',
 ));

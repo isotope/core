@@ -146,6 +146,12 @@
       <trans-unit id="FMD.iso_cart_address.1">
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
       </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.0">
+        <source>Trusted Shops Badge</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.1">
+        <source>Displays a Trusted Shops Badge on your website.</source>
+      </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
       </trans-unit>

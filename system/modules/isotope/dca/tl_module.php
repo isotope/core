@@ -17,6 +17,8 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'i
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_enableLimit';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_emptyMessage';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_emptyFilter';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_tsdisplay';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_tscheckout';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']              = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,iso_category_scope,iso_list_where,iso_newFilter,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo,iso_wishlistJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_hide_list,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']       = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,iso_category_scope,iso_list_where,iso_newFilter,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_addProductJumpTo,iso_wishlistJumpTo,iso_jump_first;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_hide_list,,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']            = '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_display404Page;{redirect_legend},iso_addProductJumpTo,iso_wishlistJumpTo;{template_legend:hide},customTpl,iso_reader_layout,iso_gallery,iso_includeMessages,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -40,6 +42,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_relatedproducts']          = '{
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_messages']                 = '{title_legend},name,headline,type;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_shipping_calculator']      = '{title_legend},name,headline,type;{config_legend},iso_shipping_modules;{template_legend:hide},customTpl,iso_emptyMessage;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart_address']             = '{title_legend},name,headline,type;{config_legend},iso_address,iso_addressFields;{redirect_legend:hide},jumpTo;{template_legend:hide},memberTpl,tableless;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['iso_trustedshops']             = '{title_legend},name,headline,type;{config_legend},iso_tsid,iso_tsreviews,iso_tsdisplay,iso_tscheckout;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 
 /**
@@ -48,6 +51,9 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_cart_address']             = '{
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']       = 'iso_perPage';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']      = 'iso_noProducts';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']       = 'iso_noFilter';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_standard'] = 'iso_tsyoffset';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_custom']  = 'iso_tsdirection';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tscheckout']        = 'iso_tsproducts';
 
 
 /**
@@ -656,6 +662,76 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = array
     'sql'                       => "varchar(255) NOT NULL default ''",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_nc_notification'),
 );
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsid'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsid'],
+    'exclude'                   => true,
+    'inputType'                 => 'text',
+    'eval'                      => array('mandatory'=>true, 'maxlength'=>64, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(64) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsreviews'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsreviews'],
+    'exclude'                   => true,
+    'default'                   => '1',
+    'inputType'                 => 'checkbox',
+    'eval'                      => array('tl_class'=>'w50 m12'),
+    'sql'                       => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdisplay'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsdisplay'],
+    'exclude'                   => true,
+    'default'                   => 'standard',
+    'inputType'                 => 'select',
+    'options'                   => array('standard', 'custom'),
+    'reference'                 => $GLOBALS['TL_LANG']['tl_module']['iso_tsdisplay'],
+    'eval'                      => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "varchar(8) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsdirection'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsdirection'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options'                   => array('topLeft', 'topRight', 'bottomLeft', 'bottomRight'),
+    'reference'                 => $GLOBALS['TL_LANG']['tl_module']['iso_tsdirection'],
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "varchar(16) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsyoffset'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsyoffset'],
+    'exclude'                   => true,
+    'inputType'                 => 'text',
+    'eval'                      => array('mandatory'=>true, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+    'sql'                       => "int(10) NOT NULL default '0'",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tscheckout'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tscheckout'],
+    'exclude'                   => true,
+    'inputType'                 => 'checkbox',
+    'eval'                      => array('submitOnChange'=>true, 'tl_class'=>'clr w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_tsproducts'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_tsproducts'],
+    'exclude'                   => true,
+    'inputType'                 => 'checkbox',
+    'eval'                      => array('tl_class'=>'w50'),
+    'sql'                       => "char(1) NOT NULL default ''",
+);
+
 
 /**
  * Limit notification choices

@@ -392,6 +392,66 @@
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_tsid.0">
+        <source>Trusted Shops ID</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsid.1">
+        <source>Please enter your Trusted Shops ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.0">
+        <source>Badge Display Mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.1">
+        <source>Select how the Trusted Shops badge should be displayed.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsreviews.0">
+        <source>Show shop reviews</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsreviews.1">
+        <source>Check here to show your shop reviews in the Trusted Shops badge.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.0">
+        <source>Card Display Mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.1">
+        <source>Select how the Trusted Shops Card should be displayed.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsyoffset.0">
+        <source>Bottom offset</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsyoffset.1">
+        <source>Enter the number of pixels to offset the badge from your page bottom.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tscheckout.0">
+        <source>Enable buyer protection</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tscheckout.1">
+        <source>Automatically show the buyer protection popup on order confirmation page.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsproducts.0">
+        <source>Include product data</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsproducts.1">
+        <source>Allow users to rate individual products.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.standard">
+        <source>Default (right bottom corner)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.custom">
+        <source>Custom (where this module is placed)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.topRight">
+        <source>Top Right</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.topLeft">
+        <source>Top Left</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.bottomRight">
+        <source>Bottom Right</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.bottomLeft">
+        <source>Bottom Left</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_legend">
         <source>Order conditions form</source>
       </trans-unit>
