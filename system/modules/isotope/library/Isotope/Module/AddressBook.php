@@ -300,7 +300,7 @@ class AddressBook extends Module
      * @param \User   $objMember
      * @param Config  $objConfig
      */
-    protected function triggerNotificationCenter(Address $objAddress, array $arrOldAddress, \User $objMember, Config $objConfig)
+    protected function triggerNotificationCenter(Address $objAddress, array $arrOldAddress, $objMember, Config $objConfig)
     {
         if (!$this->nc_notification) {
             return;

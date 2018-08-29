@@ -67,6 +67,30 @@ class Upgrade extends \Controller
 
     private function handleException($step, \Exception $e)
     {
+        // Ignore irrelevant error exceptions
+        if ($e instanceof \ErrorException && E_USER_WARNING) {
+            $severity =
+                1 * E_ERROR |
+                1 * E_WARNING |
+                1 * E_PARSE |
+                0 * E_NOTICE |
+                1 * E_CORE_ERROR |
+                1 * E_CORE_WARNING |
+                1 * E_COMPILE_ERROR |
+                1 * E_COMPILE_WARNING |
+                1 * E_USER_ERROR |
+                0 * E_USER_WARNING |
+                0 * E_USER_NOTICE |
+                0 * E_STRICT |
+                1 * E_RECOVERABLE_ERROR |
+                0 * E_DEPRECATED |
+                0 * E_USER_DEPRECATED;
+
+            if (($e->getSeverity() & $severity) === 0) {
+                return;
+            }
+        }
+
 echo '
 <!DOCTYPE html>
 <html lang="en">

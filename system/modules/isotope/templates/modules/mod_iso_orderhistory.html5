@@ -8,7 +8,7 @@
             <th class="col_0 col_first order_date"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_date']; ?></th>
             <th class="col_1 document_number"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_document_number']; ?></th>
             <th class="col_2 order_total"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_total']; ?></th>
-            <th class="col_3 oder_status"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_status']; ?></th>
+            <th class="col_3 order_status"><?php echo $GLOBALS['TL_LANG']['MSC']['iso_order_status']; ?></th>
             <th class="col_4 col_last link">&nbsp;</th>
         </tr>
     </thead>

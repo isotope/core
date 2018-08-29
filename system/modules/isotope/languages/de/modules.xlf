@@ -55,6 +55,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_rangefilter.1">
         <source>Provides a range filter to find products within a value range.</source>
+        <target>Stellt einen Bereichsfilter bereit, um Produkte innerhalb eines Wertebereichs zu finden.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>

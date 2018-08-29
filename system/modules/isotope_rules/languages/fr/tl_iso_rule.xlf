@@ -193,8 +193,7 @@
         <target>End date</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.endDate.1">
-        <source>If desired, please specify the date this rule will no longer be eligible on.</source>
-        <target>If desired, please specify the date this rule will no longer be eligible on.</target>
+        <source>If desired, please specify the date after which this rule will no longer be eligible on.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startTime.0">
         <source>Start time</source>
