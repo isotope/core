@@ -63,12 +63,16 @@
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.0">
         <source>Multilingual Attributes</source>
+        <target>Mehrsprachige Attribute</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.1">
         <source>%s invalid multilingual attributes were found.&lt;br&gt;Attributes: %s.</source>
+        <target>%s ungültige mehrsprachige Attribute wurden gefunden. 
+Attribute: %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.2">
         <source>There are no invalid multilingual attributes in your database.</source>
+        <target>Es gibt keine ungültigen mehrsprachigen Attribute in Ihrer Datenbank.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.0">
         <source>Rules module</source>

@@ -179,15 +179,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.0">
         <source>Client ID</source>
+        <target>Kundennummer</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.1">
         <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+        <target>Geben Sie Ihre PayPal-Kundennummer ein. Sie müssen eine Anwendung im PayPal-Portal erstellen, um die Zugangsdaten zu erhalten.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.0">
         <source>Secret</source>
+        <target>Schlüssel</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
+        <target>Geben Sie Ihren PayPal API Schlüssel ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
@@ -659,9 +663,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.0">
         <source>Payment Brands</source>
+        <target>Zahlungsdienstleister</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.1">
         <source>Select the payment brands you want to support in this payment method.</source>
+        <target>Wählen Sie die Zahlungsdienstleister aus, die Sie bei dieser Zahlungsmethode unterstützen möchten.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.AMEX">
         <source>American Express</source>
@@ -669,12 +675,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.DINERS">
         <source>Diners Club</source>
+        <target>Diners Club</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
         <source>SEPA Direct Debit</source>
+        <target>SEPA-Lastschrift</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
         <source>giropay</source>
+        <target>giropay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.JCB">
         <source>JCB</source>
@@ -682,9 +691,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
         <source>Klarna Ratenkauf</source>
+        <target>Klarna Ratenkauf</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
         <source>Klarna Rechnung</source>
+        <target>Klarna Rechnung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.MASTER">
         <source>MasterCard</source>
@@ -692,18 +703,24 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
         <source>paydirect</source>
+        <target>paydirect</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
         <source>PayPal</source>
+        <target>PayPal</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
         <source>Ratenkauf by easyCredit</source>
+        <target>EasyCredit Ratenkauf</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
         <source>SOFORTüberweisung</source>
+        <target>
+SOFORTüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.VISA">
         <source>VISA</source>
+        <target>VISA</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_merchant.0">
         <source>Merchant ID</source>
@@ -719,6 +736,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_password.1">
         <source>Please enter your SOAP password.</source>
+        <target>BItte geben Sie Ihr SOAP Passwort ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
@@ -754,9 +772,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.logging.0">
         <source>Enable logging</source>
+        <target>Logging aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.logging.1">
         <source>Write transaction information to the system log files.</source>
+        <target>Schreiben Sie Transaktionsinformationen in die Systemprotokolldateien.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>

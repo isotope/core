@@ -63,9 +63,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_price.0">
         <source>Shipping price</source>
+        <target>Versandkosten</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_price.1">
         <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
+        <target>Bitte geben Sie die Versandkosten für dieses Produkt ein. Dies kann verwendet werden, um Versandkosten zu berechnen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>

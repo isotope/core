@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
+        <target>ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
         <source>Order Number</source>
+        <target>Bestellnummer</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
