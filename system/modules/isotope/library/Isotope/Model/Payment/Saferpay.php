@@ -28,25 +28,6 @@ use Isotope\Module\Checkout;
  */
 class Saferpay extends Postsale implements IsotopeOrderStatusAware
 {
-    /**
-     * CreatePayInit URI
-     * @var string
-     */
-    const createPayInitURI = 'https://www.saferpay.com/hosting/CreatePayInit.asp';
-
-    /**
-     * VerifyPayConfirm URI
-     * @var string
-     */
-    const verifyPayConfirmURI = 'https://www.saferpay.com/hosting/VerifyPayConfirm.asp';
-
-    /**
-     * PayCompleteURI
-     * @var string
-     */
-    const payCompleteURI = 'https://www.saferpay.com/hosting/PayCompleteV2.asp';
-
-
     protected $objXML;
 
     /**
@@ -65,7 +46,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
         // Get the Payment URL from the saferpay hosting server
         $objRequest = new \Request();
-        $objRequest->send(static::verifyPayConfirmURI . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
+        $objRequest->send($this->getApiUrl('VerifyPayConfirm.asp') . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
 
         // Stop if verification is not working
         if (0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
@@ -117,7 +98,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         // Get redirect url
         $objRequest = new \Request();
         $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-        $objRequest->send(static::createPayInitURI, http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
+        $objRequest->send($this->getApiUrl('CreatePayInit.asp'), http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
 
         if ((int) $objRequest->code !== 200 || 0 === strpos($objRequest->response, 'ERROR:')) {
             \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
@@ -248,13 +229,13 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         );
 
         // This is only for the sandbox mode where a password is required
-        if (0 === strpos($this->saferpay_accountid, '99867-')) {
-            $params['spPassword'] = 'XAjc3Kna';
+        if ($this->debug) {
+            $params['spPassword'] = '8e7Yn5yk';
         }
 
         $objRequest = new \Request();
         $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-        $objRequest->send(static::payCompleteURI, http_build_query($params, null, '&'), 'POST');
+        $objRequest->send($this->getApiUrl('PayCompleteV2.asp'), http_build_query($params, null, '&'), 'POST');
 
         // Stop if capture was not successful
         if ($objRequest->hasError() || 0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
@@ -298,5 +279,21 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         }
 
         return true;
+    }
+
+    /**
+     * Returns the base URL for Saferpay API depending on test or production mode.
+     *
+     * @param string $script
+     *
+     * @return string
+     */
+    private function getApiUrl($script)
+    {
+        if ($this->debug) {
+            return 'https://test.saferpay.com/hosting/'.$script;
+        }
+
+        return 'https://www.saferpay.com/hosting/'.$script;
     }
 }
