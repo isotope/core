@@ -12,6 +12,7 @@ Version 2.5.2-stable (2018-05-??)
 - Prevent exception in address book with Contao 4.5 (#1954)
 - Mandatory field configuration in product type was ignored (#1948)
 - Misspelled CSS class in mod_iso_orderhistory template (#1942)
+- Do not abort for warnings during upgrade migrations (#1939)
 
 
 Version 2.5.1-stable (2018-04-25)
