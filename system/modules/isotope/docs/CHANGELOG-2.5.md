@@ -5,6 +5,13 @@ Isotope eCommerce Changelog
 Version 2.5.2-stable (2018-05-??)
 ---------------------------------
 
+### Fixed
+
+- Correctly show locked and shipping date including time
+- Filter module did not work if internal cache was not built
+- Prevent exception in address book with Contao 4.5 (#1954)
+- Mandatory field configuration in product type was ignored (#1948)
+
 
 Version 2.5.1-stable (2018-04-25)
 ---------------------------------
