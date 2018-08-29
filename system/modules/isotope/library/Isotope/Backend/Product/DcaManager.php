@@ -341,8 +341,10 @@ class DcaManager extends \Backend
                         $arrFields[$name]['eval']['tl_class'] = $arrConfig[$name]['tl_class'];
                     }
 
-                    if ($arrConfig[$name]['mandatory'] > 0) {
-                        $arrFields[$name]['eval']['mandatory'] = $arrConfig[$name]['mandatory'] == 1 ? false : true;
+                    if ('yes' === $arrConfig[$name]['mandatory']) {
+                        $arrFields[$name]['eval']['mandatory'] = true;
+                    } elseif ('no' === $arrConfig[$name]['mandatory']) {
+                        $arrFields[$name]['eval']['mandatory'] = false;
                     }
 
                     if ($blnVariants

@@ -60,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'mode'                  => 1,
             'fields'                => array('legend', 'name'),
             'flag'                  => 1,
-            'panelLayout'           => 'sort,filter,search,limit'
+            'panelLayout'           => 'filter;search,limit'
         ),
         'label' => array
         (
@@ -173,6 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['name'],
             'exclude'               => true,
+            'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
@@ -181,6 +182,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['field_name'],
             'exclude'               => true,
+            'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(30) NOT NULL default ''",
@@ -193,6 +195,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['type'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
                 return \Isotope\Model\Attribute::getModelTypeOptions();
@@ -205,6 +208,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['legend'],
             'exclude'               => true,
+            'search'                => true,
             'default'               => 'options_legend',
             'inputType'             => 'select',
             'options'               => array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
@@ -216,6 +220,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['description'],
             'exclude'               => true,
+            'search'                => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'clr long'),
             'sql'                   => "varchar(255) NOT NULL default ''",
@@ -224,6 +229,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsSource'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'radio',
             'options_callback'      => function($dc) {
                 $arrOptions = [
@@ -311,6 +317,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['variant_option'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
@@ -333,6 +340,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['customer_defined'],
             'exclude'               => true,
+            'filter'                => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",

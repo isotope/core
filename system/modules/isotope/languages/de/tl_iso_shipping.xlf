@@ -63,6 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.1">
         <source>Adds additional weight to the shipping to account for packaging material.</source>
+        <target>Fügt dem Versand zusätzliches Gewicht hinzu, um Verpackungsmaterial zu berücksichtigen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>
@@ -194,9 +195,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_user.0">
         <source>Username</source>
+        <target>Benutzername</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_user.1">
         <source>Please enter your username for the DHL portal.</source>
+        <target>Bitte geben Sie Ihren Benutzernamen für das DHL Portal ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_signature.0">
         <source>Password</source>
@@ -204,36 +207,47 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_signature.1">
         <source>Please enter your DHL account password.</source>
+        <target>Bitte geben Sie Ihr DHL Passwort ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_epk.0">
         <source>Account Number</source>
+        <target>Kontonummer</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_epk.1">
         <source>Please enter your DHL account number.</source>
+        <target>Bitte geben Sie Ihre DHL Kontonummer ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.0">
         <source>DHL Product</source>
+        <target>DHL Produkt</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.1">
         <source>Please select the appropriate DHL product / shipment type.</source>
+        <target>Bitte wählen Sie das passende DHL Produkt / Versandart aus.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_app.0">
         <source>Application ID</source>
+        <target>Anwendungs-ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_app.1">
         <source>Enter the Application ID for DHL API.</source>
+        <target>Bitte geben Sie die Anwendungs-ID für die DHL API ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_token.0">
         <source>API Token</source>
+        <target>API Token</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_token.1">
         <source>Enter the Token for DHL API.</source>
+        <target>Bitte geben Sie den Token für die DHL API ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_shipping.0">
         <source>Shipping Date Calculation</source>
+        <target>Berechnung des Versanddatums</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_shipping.1">
         <source>Enter the period within the package will be shipped. Default is next day.</source>
+        <target>Geben Sie den Zeitraum ein, in dem das Paket versendet werden soll. Der Standard ist am nächsten Tag.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.groups.0">
         <source>Member Groups</source>
@@ -265,12 +279,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.debug.1">
         <source>Use test platform for shipping.</source>
+        <target>Verwenden Sie die Testplattform für den Versand.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.logging.0">
         <source>Enable logging</source>
+        <target>Logging aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.logging.1">
         <source>Write transaction information to the system log files.</source>
+        <target>Schreiben Sie Transaktionsinformationen in die Systemprotokolldateien.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.enabled.0">
         <source>Enabled</source>
@@ -290,6 +307,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.api_legend">
         <source>API Configuration</source>
+        <target>API Konfiguration</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.config_legend">
         <source>Configuration</source>
@@ -297,6 +315,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price_legend">
         <source>Price and Weight</source>
+        <target>Preis und Gewicht</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.expert_legend">
         <source>Expert settings</source>
@@ -400,27 +419,35 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V01PAK">
         <source>National Package</source>
+        <target>Nationales Paket</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V53WPAK">
         <source>International Package</source>
+        <target>Internationales Paket</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V54EPAK">
         <source>Europa Package</source>
+        <target>Europa Paket</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V06PAK">
         <source>Same Day Package</source>
+        <target>Paket für den gleichen Tag</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V06TG">
         <source>Same Day Messenger</source>
+        <target>Messenger für den gleichen Tag</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V86PARCEL">
         <source>Austria Package</source>
+        <target>Österreich Paket</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V82PARCEL">
         <source>Austria International Package</source>
+        <target>Internationales Österreich Paket</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.V87PARCEL">
         <source>Connect Package</source>
+        <target>Paket verbinden</target>
       </trans-unit>
     </body>
   </file>
