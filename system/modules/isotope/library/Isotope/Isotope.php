@@ -193,12 +193,19 @@ class Isotope extends \Controller
      */
     public static function getRequestCache()
     {
+        $cart = static::getCart();
+
+        // The system has not been initialized yet, return a temporary empty object
+        if (null === $cart) {
+            return new RequestCache();
+        }
+
         if (null === static::$objRequestCache) {
-            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), static::getCart()->store_id);
+            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), $cart->store_id);
 
             if (null === static::$objRequestCache) {
                 static::$objRequestCache = new RequestCache();
-                static::$objRequestCache->store_id = static::getCart()->store_id;
+                static::$objRequestCache->store_id = $cart->store_id;
             }
         }
 
