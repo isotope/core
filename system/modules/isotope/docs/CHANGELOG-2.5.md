@@ -2,6 +2,12 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.3-stable (2018-09-03)
+---------------------------------
+
+- Fixed system initialization script on Windows (#1909)
+
+
 Version 2.5.2-stable (2018-08-29)
 ---------------------------------
 

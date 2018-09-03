@@ -8,12 +8,11 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-foreach ([
-    '../../initialize.php',
-    '../../../../../../../system/initialize.php',
-    '../../../../../../system/initialize.php',
-         ] as $script
-) {
+$path = dirname(__DIR__);
+
+while (($path = dirname($path)) && $path !== '/') {
+    $script = $path.'/system/initialize.php';
+
     if (file_exists($script)) {
         require_once($script);
         return;
