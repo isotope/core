@@ -68,6 +68,10 @@ abstract class Gallery extends TypeAgent
 
         if (null === $objGallery) {
             $objGallery = new StandardGallery();
+        } else {
+            $objGallery = clone $objGallery;
+            $objGallery->preventSaving();
+            $objGallery->id = (int) $arrConfig['gallery'];
         }
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
