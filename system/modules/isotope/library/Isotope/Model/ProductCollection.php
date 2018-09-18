@@ -1491,7 +1491,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 return new StandardGallery();
             }
 
-            $strCacheKey         = 'product' . $objItem->product_id . '_' . $strAttribute;
+			/** use database-id instead of product_id see #1723**/
+            $strCacheKey         = 'product' . $objItem->id . '_' . $strAttribute;
             $arrConfig['jumpTo'] = $objItem->getRelated('jumpTo');
 
             if (!isset($arrGalleries[$strCacheKey])) {
