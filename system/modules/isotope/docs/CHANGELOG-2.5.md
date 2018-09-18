@@ -2,6 +2,13 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.4-stable (2018-09-18)
+---------------------------------
+
+- Fixed incorrect cart images when the same proudct was added multiple times (#1723)
+- Allow to find default product price when no collection is given (e.g. BE)
+
+
 Version 2.5.3-stable (2018-09-03)
 ---------------------------------
 
