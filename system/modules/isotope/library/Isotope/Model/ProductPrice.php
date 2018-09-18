@@ -361,10 +361,18 @@ class ProductPrice extends \Model implements IsotopePrice
      *
      * @return \Model\Collection|null
      */
-    public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection)
+    public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection = null)
     {
+        if (null === $objCollection) {
+            $configIds = '0';
+            $objMember = null;
+        } else {
+            $configIds = (int) $objCollection->config_id . ',0';
+            $objMember = $objCollection->getRelated('member');
+        }
+
         $time = \Date::floorToMinute();
-        $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
+        $arrGroups = static::getMemberGroups($objMember);
 
         $objResult = \Database::getInstance()->query("
             SELECT *
@@ -376,7 +384,7 @@ class ProductPrice extends \Model implements IsotopePrice
                 FROM tl_iso_product_price
                 LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
                 WHERE
-                    config_id IN (" . (int) $objCollection->config_id . ",0) AND
+                    config_id IN (" . $configIds . ") AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<'$time') AND
                     (stop='' OR stop>'" . ($time + 60) . "') AND
