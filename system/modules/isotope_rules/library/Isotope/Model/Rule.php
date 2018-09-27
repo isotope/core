@@ -209,7 +209,7 @@ class Rule extends \Model
             $arrTypes = [0];
 
             // Prepare product attribute condition
-            $objAttributeRules = \Database::getInstance()->execute("SELECT * FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+            $objAttributeRules = \Database::getInstance()->execute("SELECT attributeName, attributeCondition FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
             while ($objAttributeRules->next()) {
                 $arrAttributes[] = array
                 (

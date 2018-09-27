@@ -610,13 +610,18 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 
-        $arrFields[] = 'c.sorting';
-
         $arrJoins[] = sprintf(
             ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
             ProductCategory::getTable(),
             $arrOptions['table']
         );
+
+
+        if ('c.sorting' === $arrOptions['order']) {
+            $arrFields[] = 'c.sorting';
+
+            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'c.id';
+        }
 
         if ($hasTranslations) {
             $arrJoins[] = sprintf(
@@ -625,6 +630,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 $arrOptions['table'],
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
+
+            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id';
         }
 
         if ($hasVariants) {

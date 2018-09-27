@@ -374,9 +374,10 @@ class ProductPrice extends \Model implements IsotopePrice
         $time = \Date::floorToMinute();
         $arrGroups = static::getMemberGroups($objMember);
 
-        $objResult = \Database::getInstance()->query("
-            SELECT *
-            FROM (
+        $queries = [];
+
+        foreach ($arrIds as $id) {
+            $queries[] = "
                 SELECT
                     tl_iso_product_price.*,
                     GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys,
@@ -388,12 +389,14 @@ class ProductPrice extends \Model implements IsotopePrice
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<'$time') AND
                     (stop='' OR stop>'" . ($time + 60) . "') AND
-                    tl_iso_product_price.pid IN (" . implode(',', $arrIds) . ")
+                    tl_iso_product_price.pid=" . $id . "
                 GROUP BY tl_iso_product_price.id
                 ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
-            ) AS prices
-            GROUP BY prices.pid
-        ");
+                LIMIT 1
+            ";
+        }
+
+        $objResult = \Database::getInstance()->query('('.implode(") UNION (", $queries).')');
 
         if ($objResult->numRows) {
             return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
