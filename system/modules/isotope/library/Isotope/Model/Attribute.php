@@ -310,6 +310,12 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                         $arrField['default'][] = $option['value'];
                     }
                 }
+
+                if (empty($arrField['default']) || $this->isCustomerDefined()) {
+                    unset($arrField['default']);
+                } else if (!$arrField['eval']['multiple']) {
+                    $arrField['default'] = reset($arrField['default']);
+                }
             }
         }
 
