@@ -288,7 +288,11 @@ class ProductList extends Module
             Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
         );
 
-        $arrColumns[]  = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+        if (1 === \count($arrCategories)) {
+            $arrColumns[] = "c.page_id=" . $arrCategories[0];
+        } else {
+            $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+        }
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
@@ -320,7 +324,7 @@ class ProductList extends Module
             $arrColumns,
             $queryBuilder->getSqlValues(),
             array(
-                 'order'   => 'c.sorting',
+                 'order'   => 1 === \count($arrCategories) ? 'c.sorting' : null,
                  'filters' => $queryBuilder->getFilters(),
                  'sorting' => $arrSorting,
             )

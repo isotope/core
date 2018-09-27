@@ -157,12 +157,12 @@ class Callback extends \Backend
             $arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
 
             foreach ($arrLines as $foreignKey) {
-                if ($foreignKey == '' || strpos($foreignKey, '#') === 0) {
+                if (empty($foreignKey) || strpos($foreignKey, '#') === 0) {
                     continue;
                 }
 
-                if (strpos($foreignKey, '=') === 2) {
-                    $foreignKey = substr($foreignKey, 3);
+                if (preg_match('/^([a-z]{2}(-[A-Z]{2})?)=(.+)$/', $foreignKey, $matches)) {
+                    $foreignKey = $matches[3];
                 }
 
                 list($strTable, $strField) = explode('.', $foreignKey, 2);

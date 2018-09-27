@@ -56,7 +56,7 @@ class Flat extends Shipping
                     $allowedTypes = deserialize($this->product_types);
                     $productType  = $objItem->getProduct()->getType();
 
-                    if (is_array($allowedTypes) || !in_array($productType->id, $allowedTypes, false)) {
+                    if (\is_array($allowedTypes) && !\in_array($productType->id, $allowedTypes, false)) {
                         continue;
                     }
                 }

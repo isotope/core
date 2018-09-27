@@ -2,6 +2,17 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.5-stable (2018-09-27)
+---------------------------------
+
+- Added support for SQL FULL-GROUP-BY configuration (#1886)
+- Added support for language-country foreignKey translations (#1929)
+- Fixed product type based shipping calculation (#1971)
+- Fixed product type permission update for non-admins (#1976)
+- Fixed possibly incorrect default value for select menu fields (#1944)
+- Fixed a label in the product permissions (#1975)
+
+
 Version 2.5.4-stable (2018-09-18)
 ---------------------------------
 
