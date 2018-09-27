@@ -461,17 +461,19 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                 continue;
             }
 
-            // Check for a language
-            if (strpos($strLine, '=') === 2) {
-                list($language, $foreignKey) = explode('=', $strLine, 2);
+            // Check for a language1
+            if (preg_match('/^([a-z]{2}(-[A-Z]{2})?)=(.+)$/', $strLine, $matches)) {
+                $foreignKey = $matches[3];
 
-                if ($language == $strLanguage) {
+                if ($matches[1] === $strLanguage) {
                     return $foreignKey;
-                } elseif (is_null($strFallback)) {
+                }
+
+                if (null === $strFallback) {
                     $strFallback = $foreignKey;
                 }
-            } // Otherwise the first row is the fallback
-            elseif (is_null($strFallback)) {
+            } elseif (null === $strFallback) {
+                // The row without language is the fallback
                 $strFallback = $strLine;
             }
         }
