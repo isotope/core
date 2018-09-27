@@ -139,7 +139,7 @@ class Backend extends Contao_Backend
         $arrModules = array();
 
         foreach ($GLOBALS['ISO_MOD'] as $k => $v) {
-            $arrModules[$k] = array_keys($v);
+            $arrModules[str_replace(':hide', '', $k)] = array_keys($v);
         }
 
         return $arrModules;
