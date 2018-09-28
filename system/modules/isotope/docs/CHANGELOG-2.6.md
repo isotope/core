@@ -16,3 +16,4 @@ Version 2.6.0-stable (2018-??-??)
 ### Improved
 
 - Added product type edit popup in product edit view
+- Enabled drag & drop for all MultiColumnWizard fields

@@ -265,6 +265,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'eval' => array
             (
                 'mandatory'         => true,
+                'dragAndDrop'       => true,
                 'tl_class'          => 'clr',
                 'columnsCallback'   => array('Isotope\Backend\Attribute\OptionsWizard', 'getColumns'),
             ),

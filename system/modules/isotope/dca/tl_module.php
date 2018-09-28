@@ -425,6 +425,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_cumulativeFields'] = array
     'inputType'                 => 'multiColumnWizard',
     'eval'                      => array(
         'mandatory' => true,
+        'dragAndDrop' => true,
         'tl_class'  => 'clr',
         'columnsCallback' => array('Isotope\Backend\Module\CumulativeFields', 'getColumns')
     ),
@@ -441,6 +442,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_rangeFields'] = array
     'inputType'                 => 'multiColumnWizard',
     'eval'                      => array(
         'mandatory' => true,
+        'dragAndDrop' => true,
         'tl_class'  => 'clr',
         'columnsCallback' => array('Isotope\Backend\Module\RangeFields', 'getColumns')
     ),
