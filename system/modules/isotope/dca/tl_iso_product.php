@@ -284,11 +284,12 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\Backend\ProductType\Callback', 'getOptions'),
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'clr', 'helpwizard'=>true),
+            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50 wizard', 'helpwizard'=>true),
             'attributes'            => array('legend'=>'general_legend', 'fixed'=>true, 'inherit'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'explanation'           => 'tl_iso_product.type',
+            'wizard'                => [['Isotope\Backend\Product\Wizard', 'onProductTypeWizard']],
         ),
         'pages' => array
         (
