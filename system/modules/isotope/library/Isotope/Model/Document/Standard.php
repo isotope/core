@@ -184,7 +184,11 @@ class Standard extends Document implements IsotopeDocument
             if (preg_match('@^(http://|https://)@', $args[2])) {
                 return $args[1] . $args[2] . $args[3];
             }
-            return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
+            if(version_compare(VERSION.'.'.BUILD, '4.0.0', '<=')){ (( see issue #1980
+                return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
+            } else {
+                return $args[0];
+            }
         }, $strBuffer);
 
         // Handle line breaks in preformatted text
