@@ -58,7 +58,7 @@ abstract class OrderConditions extends CheckoutStep
             $this->objForm->addFieldsFromFormGenerator(
                 $this->objModule->iso_order_conditions,
                 function ($strName, &$arrDca) {
-                    $arrDca['value'] = $_SESSION['FORM_DATA'][$strName] ?: $arrDca['value'];
+                    $arrDca['value'] = $_SESSION['CHECKOUT_DATA'][$strName] ?: $arrDca['value'];
 
                     return true;
                 }
@@ -84,7 +84,7 @@ abstract class OrderConditions extends CheckoutStep
         if ($this->objForm->isSubmitted()) {
             $this->blnError = !$this->objForm->validate();
 
-            $_SESSION['FORM_DATA'] = is_array($_SESSION['FORM_DATA']) ? $_SESSION['FORM_DATA'] : array();
+            $_SESSION['CHECKOUT_DATA'] = is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     $arrFile  = $_SESSION['FILES'][$strField];
@@ -93,7 +93,7 @@ abstract class OrderConditions extends CheckoutStep
                     $varValue = $this->objForm->fetch($strField);
                 }
 
-                $_SESSION['FORM_DATA'][$strField] = $varValue;
+                $_SESSION['CHECKOUT_DATA'][$strField] = $varValue;
             }
 
         } else {
@@ -142,8 +142,8 @@ abstract class OrderConditions extends CheckoutStep
         foreach ($this->objForm->getFormFields() as $strField => $arrConfig) {
             $varValue = null;
 
-            if (isset($_SESSION['FORM_DATA'][$strField])) {
-                $varValue = $_SESSION['FORM_DATA'][$strField];
+            if (isset($_SESSION['CHECKOUT_DATA'][$strField])) {
+                $varValue = $_SESSION['CHECKOUT_DATA'][$strField];
 
                 if ('textarea' === $arrConfig['type']) {
                     $varValue = nl2br($varValue);
