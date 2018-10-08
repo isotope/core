@@ -503,6 +503,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         );
 
+        // Sort actions by order in module configuration
+        $buttonOrder = array_values($arrConfig['buttons']);
+        usort($actions, function (ProductActionInterface $a, ProductActionInterface $b) use ($buttonOrder) {
+            return array_search($a->getName(), $buttonOrder) - array_search($b->getName(), $buttonOrder);
+        });
+
         if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
             $handleButtons = true;
 
