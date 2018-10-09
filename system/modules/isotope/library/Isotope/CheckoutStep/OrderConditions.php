@@ -98,10 +98,13 @@ abstract class OrderConditions extends CheckoutStep
 
         } else {
             $blnError = false;
+
+            $_SESSION['CHECKOUT_DATA'] = is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
 
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
+                \Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField]);
                 $objClone->validate();
 
                 if ($objClone->hasErrors()) {

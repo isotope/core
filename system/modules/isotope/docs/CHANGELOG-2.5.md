@@ -2,6 +2,12 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.7-stable (2018-10-09)
+---------------------------------
+
+- Fixed form validation on checkout process confirmation page
+
+
 Version 2.5.6-stable (2018-10-09)
 ---------------------------------
 
