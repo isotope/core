@@ -2,6 +2,17 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.6-stable (2018-10-09)
+---------------------------------
+
+- Renamed session key to fix compatibility with Contao 4.6 (#1974)
+- Fixed order of product actions configured in the module (#1950)
+- Fixed member address being added to address book (#1862)
+- Fixed images in PDFs in Contao 4 (#1980)
+- Added support for templates in notification center
+- Fixed empty sku being submitted to PayPal
+
+
 Version 2.5.5-stable (2018-09-27)
 ---------------------------------
 
