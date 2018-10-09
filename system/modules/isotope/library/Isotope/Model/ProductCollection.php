@@ -52,6 +52,11 @@ use Model\Registry;
  * @property float  $tax_free_total
  * @property string $currency
  * @property string $language
+ *
+ * @property int    $nc_notification
+ * @property bool   $iso_addToAddressbook
+ * @property array  $iso_checkout_skippable
+ * @property array  $email_data
  */
 abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {
@@ -134,6 +139,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @throws \LogicException because ProductCollection cannot be cloned
      */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __clone()
     {
         throw new \LogicException(
@@ -1786,12 +1792,16 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
         }
 
+        $canSkip = deserialize($this->iso_checkout_skippable, true);
         $objBillingAddress  = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
 
         // Store address in address book
         if ($this->iso_addToAddressbook && $this->member > 0) {
-            if (null !== $objBillingAddress && $objBillingAddress->ptable != \MemberModel::getTable()) {
+            if (null !== $objBillingAddress
+                && $objBillingAddress->ptable != \MemberModel::getTable()
+                && !in_array('billing_address', $canSkip, true)
+            ) {
                 $objAddress         = clone $objBillingAddress;
                 $objAddress->pid    = $this->member;
                 $objAddress->tstamp = time();
@@ -1806,6 +1816,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 && null !== $objShippingAddress
                 && $objBillingAddress->id != $objShippingAddress->id
                 && $objShippingAddress->ptable != \MemberModel::getTable()
+                && !in_array('shipping_address', $canSkip, true)
             ) {
                 $objAddress         = clone $objShippingAddress;
                 $objAddress->pid    = $this->member;
