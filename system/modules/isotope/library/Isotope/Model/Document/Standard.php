@@ -180,12 +180,19 @@ class Standard extends Document implements IsotopeDocument
 
         // URL decode image paths (see contao/core#6411)
         // Make image paths absolute
-        $strBuffer = preg_replace_callback('@(src=")([^"]+)(")@', function ($args) {
+        $blnOverrideRoot = false;
+        $strBuffer = preg_replace_callback('@(src=")([^"]+)(")@', function ($args) use (&$blnOverrideRoot) {
             if (preg_match('@^(http://|https://)@', $args[2])) {
                 return $args[1] . $args[2] . $args[3];
             }
+
+            $blnOverrideRoot = true;
             return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
         }, $strBuffer);
+
+        if ($blnOverrideRoot) {
+            $_SERVER['DOCUMENT_ROOT'] = TL_ROOT;
+        }
 
         // Handle line breaks in preformatted text
         $strBuffer = preg_replace_callback('@(<pre.*</pre>)@Us', 'nl2br_callback', $strBuffer);
