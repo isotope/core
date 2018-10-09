@@ -34,13 +34,18 @@ abstract class PaypalApi extends Payment
     {
         $items = [];
         foreach ($order->getItems() as $item) {
-            $items[] = [
+            $row = [
                 'name'  => strip_tags($item->name),
-                'sku'   => $item->sku,
                 'price' => number_format($item->getPrice(), 2),
                 'currency' => $order->getCurrency(),
                 'quantity' => $item->quantity,
             ];
+
+            if ($item->sku) {
+                $row['sku'] = $item->sku;
+            }
+
+            $items[] = $row;
         }
 
         foreach ($order->getSurcharges() as $surcharge) {
