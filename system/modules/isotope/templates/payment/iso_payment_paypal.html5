@@ -31,7 +31,6 @@
 <input type="hidden" name="city" value="<?= specialchars($this->address->city) ?>">
 <input type="hidden" name="country" value="<?= strtoupper($this->address->country) ?>">
 <input type="hidden" name="email" value="<?= specialchars($this->address->email) ?>">
-<input type="hidden" name="night_phone_b" value="<?= specialchars($this->address->phone) ?>">
 
 <input type="hidden" name="notify_url" value="<?= $this->notify_url ?>">
 
