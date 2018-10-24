@@ -11,8 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Interfaces\IsotopePurchasableCollection;
-
 /**
  * Handle Postfinance (Swiss Post) payments
  */
@@ -92,50 +90,4 @@ class Postfinance extends PSP
         'TRXDATE',
         'VC'
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentMethods()
-    {
-        return array(
-            'CreditCard__American_Express'          => 'CreditCard - American Express',
-            'CreditCard__Billy'                     => 'CreditCard - Billy',
-            'CreditCard__CB'                        => 'CreditCard - CB',
-            'CreditCard__Diners_Club'               => 'CreditCard - Diners Club',
-            'CreditCard__JCB'                       => 'CreditCard - JCB',
-            'CreditCard__MaestroUK'                 => 'CreditCard - MaestroUK',
-            'CreditCard__MasterCard'                => 'CreditCard - MasterCard',
-            'CreditCard__VISA'                      => 'CreditCard - VISA',
-            'PostFinance_Card__PostFinance_Card'    => 'PostFinance Card',
-            'PAYPAL__PAYPAL'                        => 'PayPal'
-        );
-    }
-
-    /**
-     * Prepare PSP params
-     *
-     * @param IsotopePurchasableCollection $objOrder
-     * @param \Module                      $objModule
-     *
-     * @return array
-     */
-    protected function preparePSPParams(IsotopePurchasableCollection $objOrder, $objModule)
-    {
-        $arrParams = parent::preparePSPParams($objOrder, $objModule);
-
-        // Add PostFinance specific PSP payment methods
-        if ($this->psp_payment_method) {
-            $chunks = explode('__', $this->psp_payment_method, 2);
-            $arrParams = array_merge(
-                $arrParams,
-                array(
-                    'PM'    => str_replace('_', ' ', $chunks[0]),
-                    'BRAND' => str_replace('_', ' ', $chunks[1]),
-                )
-            );
-        }
-
-        return $arrParams;
-    }
 }
