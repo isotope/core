@@ -349,8 +349,10 @@ class Checkout extends Module
         // Hide back buttons it this is the first step
         if (array_search($this->strCurrentStep, $arrStepKeys) === 0) {
             $this->Template->showPrevious = false;
-        } // Show "confirm order" button if this is the last step
-        elseif (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
+        }
+
+        // Show "confirm order" button if this is the last step
+        if (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
             $this->Template->nextClass = 'confirm';
             $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
         }
