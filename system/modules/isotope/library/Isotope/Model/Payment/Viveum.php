@@ -11,9 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Model\Payment;
-
-
 /**
  * Class Viveum
  *
@@ -82,12 +79,4 @@ class Viveum extends PSP
         'TRXDATE',
         'VC'
     );
-
-    /**
-     * @inheritdoc
-     */
-    public function getPaymentMethods()
-    {
-        return [];
-    }
 }

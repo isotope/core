@@ -188,7 +188,21 @@ abstract class PSP extends Payment implements IsotopePostsale
      *
      * @return array
      */
-    abstract public function getPaymentMethods();
+    public function getPaymentMethods()
+    {
+        return array(
+            'CreditCard__American_Express'          => 'CreditCard - American Express',
+            'CreditCard__Billy'                     => 'CreditCard - Billy',
+            'CreditCard__CB'                        => 'CreditCard - CB',
+            'CreditCard__Diners_Club'               => 'CreditCard - Diners Club',
+            'CreditCard__JCB'                       => 'CreditCard - JCB',
+            'CreditCard__MaestroUK'                 => 'CreditCard - MaestroUK',
+            'CreditCard__MasterCard'                => 'CreditCard - MasterCard',
+            'CreditCard__VISA'                      => 'CreditCard - VISA',
+            'PostFinance_Card__PostFinance_Card'    => 'PostFinance Card',
+            'PAYPAL__PAYPAL'                        => 'PayPal'
+        );
+    }
 
     /**
      * Prepare PSP params
@@ -202,7 +216,7 @@ abstract class PSP extends Payment implements IsotopePostsale
     {
         $objBillingAddress = $objOrder->getBillingAddress();
 
-        return array
+        $arrParams = array
         (
             'PSPID'         => $this->psp_pspid,
             'ORDERID'       => $objOrder->getId(),
@@ -223,6 +237,20 @@ abstract class PSP extends Payment implements IsotopePostsale
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );
+
+        // Add PostFinance specific PSP payment methods
+        if ($this->psp_payment_method) {
+            $chunks = explode('__', $this->psp_payment_method, 2);
+            $arrParams = array_merge(
+                $arrParams,
+                array(
+                    'PM'    => str_replace('_', ' ', $chunks[0]),
+                    'BRAND' => str_replace('_', ' ', $chunks[1]),
+                )
+            );
+        }
+
+        return $arrParams;
     }
 
     /**
@@ -342,8 +370,8 @@ abstract class PSP extends Payment implements IsotopePostsale
 
             $buffer .= '
   <tr>
-    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
-    <td' . ($i % 2 ? '' : ' class="tl_bg"') . '>' . $v . '</td>
+    <td' . (($i % 2) ? '' : ' class="tl_bg"') . '><span class="tl_label">' . $k . ': </span></td>
+    <td' . (($i % 2) ? '' : ' class="tl_bg"') . '>' . $v . '</td>
   </tr>';
 
             ++$i;
