@@ -2,6 +2,14 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.8-stable (2018-10-24)
+---------------------------------
+
+- Allow to preselect payment method for Viveum (#1991)
+- Correctly show buy button if checkout only has confirmation page (#1986)
+- Dropped phone number from PayPal standard to prevent input errors (#1983)
+
+
 Version 2.5.7-stable (2018-10-09)
 ---------------------------------
 
