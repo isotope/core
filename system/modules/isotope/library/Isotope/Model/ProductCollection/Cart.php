@@ -164,8 +164,13 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                     $objOrder->setShippingMethod($this->getShippingMethod());
                     $objOrder->setPaymentMethod($this->getPaymentMethod());
 
-                    $objOrder->setShippingAddress($this->getShippingAddress());
                     $objOrder->setBillingAddress($this->getBillingAddress());
+
+                    if ($this->shipping_address_id) {
+                        $objOrder->setShippingAddress($this->getShippingAddress());
+                    } else {
+                        $objOrder->setShippingAddress($this->getBillingAddress());
+                    }
 
                     $objOrder->purge();
                     $arrItemIds = $objOrder->copyItemsFrom($this);
