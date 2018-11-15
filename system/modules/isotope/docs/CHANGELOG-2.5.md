@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.9-stable (2018-11-15)
+---------------------------------
+
+- Fixed shipping address issue when checkout was auto-forwarded to review (#1985)
+- Messages were not shown in the back end product editor (#1994)
+
 
 Version 2.5.8-stable (2018-10-24)
 ---------------------------------
