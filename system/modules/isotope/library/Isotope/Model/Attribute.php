@@ -247,11 +247,13 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                     $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
-                    $arrKey     = explode('.', $foreignKey, 2);
+                    $table      = strtok($foreignKey, '.');
+                    $label      = strtok(',');
+                    $sorting    = strtok(null) ?: $label;
 
-                    if ('' !== (string) $arrKey[0] && '' !== $arrKey[1]) {
+                    if ('' !== (string) $table && '' !== $label) {
                         $arrOptions = \Database::getInstance()
-                            ->execute("SELECT id AS value, {$arrKey[1]} AS label FROM {$arrKey[0]} ORDER BY label")
+                            ->execute("SELECT id AS value, $label AS label FROM $table ORDER BY $sorting")
                             ->fetchAllAssoc()
                         ;
                     }
