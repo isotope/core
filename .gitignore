@@ -4,10 +4,9 @@
 # Do not ignore ".gitignore"
 !.gitignore
 !.tx
-!README.md
 !composer.json
-!.scrutinizer.yml
-!.travis.yml
+!build.xml.dist
+!README.md
 
 # Isotope ignoring rules
 !isotope/

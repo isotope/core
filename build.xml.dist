@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<project name="Isotope eCommerce" default="list" basedir=".">
+    <target name="list">
+        <echo message="Available commands:" />
+        <echo message="  phing tx-pull -  Pulls language files from Transifex" />
+        <echo message="  phing tx-sync -  Syncs language files with Transifex" />
+    </target>
+
+    <target name="tx-pull">
+        <echo message="Starting Transifex sync" />
+        <exec executable="tx" passthru="true">
+            <arg value="pull" />
+            <arg value="--all" />
+            <arg value="--minimum-perc=50" />
+        </exec>
+    </target>
+
+    <target name="tx-sync">
+        <echo message="Starting Transifex sync" />
+        <exec executable="tx" passthru="true">
+            <arg value="push" />
+            <arg value="-s" />
+        </exec>
+        <echo message="Waiting 10 seconds for sources to be parsed" />
+        <exec executable="sleep">
+            <arg value="10" />
+        </exec>
+        <exec executable="tx" passthru="true">
+            <arg value="pull" />
+            <arg value="--all" />
+            <arg value="--minimum-perc=50" />
+        </exec>
+    </target>
+</project>
