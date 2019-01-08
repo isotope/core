@@ -341,14 +341,18 @@ class Rules extends \Controller
 
     /**
      * Transfer coupons from one cart to another. This happens if a guest cart is moved to user cart.
-     * @param IsotopeProductCollection
-     * @param IsotopeProductCollection
-     * @param array
+     *
+     * @param IsotopeProductCollection $oldCollection
+     * @param IsotopeProductCollection $newCollection
      */
-    public function transferCoupons($objOldCollection, $objNewCollection, $arrIds)
+    public function transferCoupons(IsotopeProductCollection $oldCollection, IsotopeProductCollection $newCollection)
     {
-        if ($objOldCollection instanceof Cart && $objNewCollection instanceof Cart) {
-            $objNewCollection->coupons = $objOldCollection->coupons;
+        if ($oldCollection instanceof Cart && $newCollection instanceof Cart) {
+            $oldCoupons = deserialize($oldCollection->coupons, true);
+            $newCoupons = deserialize($newCollection->coupons, true);
+
+            $newCollection->coupons = array_unique(array_merge($oldCoupons, $newCoupons));
+            $newCollection->save();
         }
     }
 
