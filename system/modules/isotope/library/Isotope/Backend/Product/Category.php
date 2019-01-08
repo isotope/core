@@ -28,20 +28,18 @@ class Category extends \Backend
      */
     public function updateSorting($insertId)
     {
-        $objCategories = \Database::getInstance()->query('
-            SELECT c1.*, MAX(c2.sorting) AS max_sorting 
-            FROM tl_iso_product_category c1 
-            LEFT JOIN tl_iso_product_category c2 ON c1.page_id=c2.page_id 
-            WHERE c1.pid=' . (int) $insertId . ' 
-            GROUP BY c1.page_id'
-        );
+        $objCategories = \Database::getInstance()->prepare('
+            SELECT id, page_id 
+            FROM tl_iso_product_category 
+            WHERE pid=?'
+        )->execute($insertId);
 
         while ($objCategories->next()) {
-            \Database::getInstance()->query('
+            \Database::getInstance()->prepare('
                 UPDATE tl_iso_product_category 
-                SET sorting=' . ($objCategories->max_sorting + 128) . ' 
-                WHERE id=' . $objCategories->id
-            );
+                SET sorting=(SELECT max_sorting FROM (SELECT MAX(sorting) AS max_sorting FROM tl_iso_product_category WHERE page_id=?) subq)+128 
+                WHERE id=?'
+            )->execute($objCategories->page_id, $objCategories->id);
         }
     }
 

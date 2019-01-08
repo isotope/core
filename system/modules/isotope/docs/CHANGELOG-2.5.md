@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.10-stable (2019-01-08)
+----------------------------------
+
+- Do not count skipped checkout steps in the page title (#2006)
+- Use the frontend preview event to preview category pages in Contao 4
+- Fixed coupon merging after member login (#1998)
+- Fixed SQL_FULL_GROUP_BY issue when duplicating products (#1992)
+- Fixed default value for doNotCopy in DC_ProductData
+
+
 Version 2.5.9-stable (2018-11-15)
 ---------------------------------
 

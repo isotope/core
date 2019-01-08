@@ -21,6 +21,12 @@ class Plugin implements ConfigPluginInterface
                     ->setArguments(['%kernel.root_dir%'])
                     ->addTag('kernel.event_listener', ['event' => 'console.terminate'])
             );
+
+            $container->setDefinition(
+                'isotope.listener.frontend_preview',
+                (new Definition('Isotope\EventListener\FrontendPreviewListener'))
+                    ->addTag('kernel.event_listener', ['event' => 'contao.preview_url_create', 'method' => 'onPreviewUrlCreate'])
+            );
         });
     }
 }

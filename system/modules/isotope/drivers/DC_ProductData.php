@@ -314,10 +314,22 @@ class DC_ProductData extends \DC_Table
                             continue;
                         }
 
-                        // Reset all unique, doNotCopy and fallback fields to their default value
-                        if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
+                        // Never copy passwords
+                        if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['inputType'] == 'password')
                         {
-                            $vv = '';
+                            $vv = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                        }
+
+                        // Empty unique fields or add a unique identifier in copyAll mode
+                        elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'])
+                        {
+                            $vv = (\Input::get('act') == 'copyAll') ? $vv .'-'. substr(md5(uniqid(mt_rand(), true)), 0, 8) : \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                        }
+
+                        // Reset doNotCopy and fallback fields to their default value
+                        elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
+                        {
+                            $vv = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
 
                             // Use array_key_exists to allow NULL (see #5252)
                             if (array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))

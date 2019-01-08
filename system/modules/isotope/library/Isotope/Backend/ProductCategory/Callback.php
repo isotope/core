@@ -47,6 +47,10 @@ class Callback extends \Backend
      */
     public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
     {
+        if (version_compare(VERSION, '4.0', '>=')) {
+            return '';
+        }
+
         $objPage = \PageModel::findWithDetails(\Input::get('page_id'));
 
         if (null === $objPage) {
