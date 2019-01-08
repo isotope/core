@@ -43,6 +43,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
             (
                 'id' => 'primary',
                 'pid' => 'index',
+                'page_id' => 'index',
             )
         ),
     ),
