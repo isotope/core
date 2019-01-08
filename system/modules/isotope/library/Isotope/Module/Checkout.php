@@ -328,6 +328,8 @@ class Checkout extends Module
 
             if ($this->skippableSteps[$step]) {
                 unset($arrStepKeys[array_search($step, $arrStepKeys)]);
+                $intCurrentStep -= 1;
+                $intTotalSteps -= 1;
             }
 
             if ($step == $this->strCurrentStep) {
