@@ -233,7 +233,7 @@ class Isotope extends \Controller
         array $arrOptions = array()
     ) {
         if (!is_numeric($fltPrice)) {
-            return $fltPrice;
+            return (float) $fltPrice;
         }
 
         // !HOOK: calculate price
