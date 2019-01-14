@@ -206,6 +206,11 @@ class ProductReader extends Module
             $classes[] = (string) $arrCSS[1];
         }
 
+        $objType = $objProduct->getRelated('type');
+        if (!empty($objType->cssClass)) {
+            $classes[] = $objType->cssClass;
+        }
+
         return implode(' ', $classes);
     }
 
