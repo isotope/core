@@ -2,6 +2,7 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\FrontendTemplate;
 use Isotope\Interfaces\IsotopeProduct;
 
 abstract class AbstractButton implements ProductActionInterface
@@ -19,13 +20,12 @@ abstract class AbstractButton implements ProductActionInterface
      */
     public function generate(IsotopeProduct $product, array $config = [])
     {
-        return sprintf(
-            '<input type="submit" name="%s" class="submit %s %s" value="%s">',
-            $this->getName(),
-            $this->getName(),
-            $this->getClasses($product),
-            $this->getLabel($product)
-        );
+        $objTemplate = new FrontendTemplate('iso_button');
+        $objTemplate->name = $this->getName();
+        $objTemplate->class = implode(' ', ['submit', $this->getName(), $this->getClasses($product)]);
+        $objTemplate->value = $this->getLabel($product);
+
+        return $objTemplate->parse();
     }
 
     /**
