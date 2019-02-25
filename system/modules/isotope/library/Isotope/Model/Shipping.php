@@ -28,6 +28,7 @@ use Isotope\Translation;
  * @property string $name
  * @property string $label
  * @property string $type
+ * @property bool   $inherit
  * @property string $note
  * @property array  $countries
  * @property array  $subdivisions

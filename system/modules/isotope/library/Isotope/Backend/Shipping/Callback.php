@@ -13,6 +13,7 @@ namespace Isotope\Backend\Shipping;
 
 
 use Isotope\Backend\Permission;
+use Isotope\Model\Shipping;
 
 class Callback extends Permission
 {
@@ -134,6 +135,19 @@ class Callback extends Permission
         return (\BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
     }
 
+    public function hideLabelAndNotes($dc)
+    {
+        if ($dc->id) {
+            $shipping = Shipping::findByPk($dc->id);
+
+            if ($shipping->type === 'group' && $shipping->inherit) {
+                unset(
+                    $GLOBALS['TL_DCA']['tl_iso_shipping']['fields']['label'],
+                    $GLOBALS['TL_DCA']['tl_iso_shipping']['fields']['note']
+                );
+            }
+        }
+    }
 
     /**
      * Return the "toggle visibility" button

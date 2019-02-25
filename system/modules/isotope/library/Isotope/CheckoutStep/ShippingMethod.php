@@ -199,8 +199,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                         $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
                     }
 
-                    if ($objModule->note != '') {
-                        $strLabel .= '<span class="note">' . $objModule->note . '</span>';
+                    if ($note = $objModule->getNote()) {
+                        $strLabel .= '<span class="note">' . $note . '</span>';
                     }
 
                     $this->options[] = array(

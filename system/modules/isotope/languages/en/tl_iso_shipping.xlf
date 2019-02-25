@@ -14,6 +14,12 @@
       <trans-unit id="tl_iso_shipping.type.1">
         <source>Please select the type of this shipping method</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.0">
+        <source>Inherit label and notes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.1">
+        <source>Check here to inherit the label and description from the first available shipping method.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.price.0">
         <source>Price</source>
       </trans-unit>

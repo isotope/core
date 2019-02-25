@@ -66,6 +66,38 @@ class Group extends Shipping
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        if ($this->inherit) {
+            $this->getGroupMethods();
+
+            if (!empty($this->arrMethods)) {
+                return $this->arrMethods[0]->getLabel();
+            }
+        }
+
+        return parent::getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNote()
+    {
+        if ($this->inherit) {
+            $this->getGroupMethods();
+
+            if (!empty($this->arrMethods)) {
+                return $this->arrMethods[0]->getNote();
+            }
+        }
+
+        return parent::getNote();
+    }
+
+    /**
      * Return calculated price for this shipping method
      *
      * @return float
