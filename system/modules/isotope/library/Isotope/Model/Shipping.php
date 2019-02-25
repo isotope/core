@@ -42,6 +42,7 @@ use Isotope\Translation;
  * @property array  $product_types
  * @property string $product_types_condition
  * @property array  $config_ids
+ * @property string $address_type
  * @property string $price
  * @property int    $tax_class
  * @property array  $shipping_weight
@@ -100,6 +101,19 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
     {
         if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
             return false;
+        }
+
+        if ($this->address_type) {
+            $billingAddress = Isotope::getCart()->getBillingAddress();
+            $shippingAddress = Isotope::getCart()->getShippingAddress();
+
+            if ($this->address_type === 'custom' && $billingAddress->id === $shippingAddress->id) {
+                return false;
+            }
+
+            if ($this->address_type === 'billing' && $billingAddress->id !== $shippingAddress->id) {
+                return false;
+            }
         }
 
         if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {

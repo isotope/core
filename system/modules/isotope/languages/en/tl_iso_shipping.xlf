@@ -140,6 +140,18 @@
       <trans-unit id="tl_iso_shipping.config_ids.1">
         <source>You can restrict this shipping method to certain shop configurations.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.0">
+        <source>Address type limitation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.1">
+        <source>Limit availability depending on checkout shipping address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.custom">
+        <source>Custom shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.billing">
+        <source>Shipping equals billing address</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
       </trans-unit>
