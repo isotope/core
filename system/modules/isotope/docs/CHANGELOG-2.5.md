@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.11-stable (2019-0?-??)
+----------------------------------
+
+- Allow umlauts in coupon codes but correctly compare them in lowercase
+- Fixed checkbox attributes not correctly rendering multiple items
+- Disable "new" button on shop config address fields wizard
+
+
 Version 2.5.10-stable (2019-01-08)
 ----------------------------------
 
