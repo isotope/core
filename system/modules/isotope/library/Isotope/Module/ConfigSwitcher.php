@@ -50,25 +50,20 @@ class ConfigSwitcher extends Module
             return $this->generateWildcard();
         }
 
-        if (0 === count($this->iso_config_ids)) {
+        $optionsCount = count($this->iso_config_ids);
+
+        if (0 === $optionsCount) {
             return '';
         }
 
-        if (\Input::get('config') != '') {
-            if (in_array(\Input::get('config'), $this->iso_config_ids)) {
-                Isotope::getCart()->config_id = \Input::get('config');
-                Isotope::getCart()->save();
-            }
-
-            \Controller::redirect(
-                preg_replace(
-                    '@[?|&]config=' . \Input::get('config') . '@',
-                    '',
-                    \Environment::get('request')
-                )
-            );
+        if (($configId = (int) \Input::get('config')) > 0) {
+            $this->overrideConfig($configId, true);
         }
 
+        // If the module config has only one config, always override the current cart
+        if (1 === $optionsCount) {
+            $this->overrideConfig(reset($this->iso_config_ids));
+        }
         return parent::generate();
     }
 
@@ -98,5 +93,25 @@ class ConfigSwitcher extends Module
         RowClass::withKey('class')->addFirstLast()->applyTo($arrConfigs);
 
         $this->Template->configs = $arrConfigs;
+    }
+
+    private function overrideConfig($configId, $forceReload = false)
+    {
+        if (Isotope::getCart()->config_id === $configId && !$forceReload) {
+            return;
+        }
+
+        if (in_array($configId, $this->iso_config_ids)) {
+            Isotope::getCart()->config_id = $configId;
+            Isotope::getCart()->save();
+        }
+
+        \Controller::redirect(
+            preg_replace(
+                '@[?|&]config=' . \Input::get('config') . '@',
+                '',
+                \Environment::get('request')
+            )
+        );
     }
 }

@@ -17,3 +17,4 @@ Version 2.6.0-stable (2018-??-??)
 
 - Added product type edit popup in product edit view
 - Enabled drag & drop for all MultiColumnWizard fields
+- Switch the shop config ID if config switcher module has only one option
