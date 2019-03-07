@@ -50,20 +50,21 @@ class ConfigSwitcher extends Module
             return $this->generateWildcard();
         }
 
-        $optionsCount = count($this->iso_config_ids);
-
-        if (0 === $optionsCount) {
-            return '';
-        }
-
         if (($configId = (int) \Input::get('config')) > 0) {
             $this->overrideConfig($configId, true);
         }
+
+        $optionsCount = count($this->iso_config_ids);
 
         // If the module config has only one config, always override the current cart
         if (1 === $optionsCount) {
             $this->overrideConfig(reset($this->iso_config_ids));
         }
+
+        if ($optionsCount < 2) {
+            return '';
+        }
+
         return parent::generate();
     }
 
