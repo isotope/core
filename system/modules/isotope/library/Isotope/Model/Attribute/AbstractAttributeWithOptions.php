@@ -11,12 +11,12 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
-use Isotope\Model\Product;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Translation;
 
@@ -48,7 +48,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         return $this->optionsSource;
     }
-
 
     /**
      * Get options of attribute from database
@@ -139,9 +138,15 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             default:
-                throw new \UnexpectedValueException(
-                    'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
-                );
+                $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
+
+                if (!isset($config['options']) || !\is_array($config['options'])) {
+                    throw new \UnexpectedValueException(
+                        'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
+                    );
+                }
+
+                return $config['options'];
         }
 
         // Variant options cannot have a default value (see #1546)
@@ -269,9 +274,17 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return (null === $objOptions) ? array() : $objOptions->getArrayForFrontendWidget(null, false);
 
             default:
-                throw new \UnexpectedValueException(
-                    'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
-                );
+                $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
+
+                if (!isset($config['options']) || !\is_array($config['options'])) {
+                    throw new \UnexpectedValueException(
+                        'Invalid options source "'.$this->optionsSource.'" for '.static::$strTable.'.'.$this->field_name
+                    );
+                }
+
+                return array_filter($config['options'], function ($option) use ($arrValues) {
+                    return \in_array($option['value'], $arrValues, false);
+                });
         }
     }
 
