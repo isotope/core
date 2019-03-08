@@ -403,6 +403,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $varValue = $this->getValue($objProduct);
+        $arrOptions['product'] = $objProduct;
 
         if (!is_array($varValue)) {
             return $this->generateValue($varValue, $arrOptions);
