@@ -12,6 +12,7 @@ Version 2.6.0-stable (2018-??-??)
 - Added Trusted Shops front end module
 - Added support for debug mode in Saferpay payments
 - Added shipping method limitation depending on address type
+- Added front end module to filter products by categories (pages)
 
 ### Improved
 

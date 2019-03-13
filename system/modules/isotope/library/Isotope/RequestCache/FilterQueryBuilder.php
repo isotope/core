@@ -114,7 +114,7 @@ class FilterQueryBuilder
                 }
             } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
                 $arrWhere[]  = $objFilter->sqlWhere();
-                $arrValues[] = $objFilter->sqlValue();
+                $arrValues = $this->addValue($arrValues, $objFilter->sqlValue());
                 unset($arrFilters[$k]);
             }
         }
@@ -132,7 +132,7 @@ class FilterQueryBuilder
                     $objFilter = $arrFilters[$k];
 
                     $arrGroupWhere[] = $objFilter->sqlWhere();
-                    $arrValues[]     = $objFilter->sqlValue();
+                    $arrValues = $this->addValue($arrValues, $objFilter->sqlValue());
                     unset($arrFilters[$k]);
                 }
 
@@ -180,5 +180,16 @@ class FilterQueryBuilder
         $this->filters   = $arrFilters;
         $this->sqlWhere  = $strWhere;
         $this->sqlValues = $arrValues;
+    }
+
+    private function addValue(array $arrValues, $value)
+    {
+        if (\is_array($value)) {
+            return array_merge($arrValues, $value);
+        }
+
+        $arrValues[] = $value;
+
+        return $arrValues;
     }
 }
