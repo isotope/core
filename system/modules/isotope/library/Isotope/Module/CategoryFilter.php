@@ -111,9 +111,14 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         }
 
         $ids = array_intersect($ids, $allIds);
-        $filter = Filter::attribute('c.page_id')->inArray($ids);
 
-        Isotope::getRequestCache()->setFiltersForModule([$filter], $this->id);
+        if (empty($ids)) {
+            Isotope::getRequestCache()->unsetFiltersForModule($this->id);
+        } else {
+            $filter = Filter::attribute('c.page_id')->inArray($ids);
+            Isotope::getRequestCache()->setFiltersForModule([$filter], $this->id);
+        }
+
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
         // Include \Environment::base or the URL would not work on the index page
