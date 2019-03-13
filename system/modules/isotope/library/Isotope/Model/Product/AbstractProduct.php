@@ -25,6 +25,11 @@ use Model\QueryBuilder;
 abstract class AbstractProduct extends Product
 {
     /**
+     * @var ProductType|null
+     */
+    private $objType = false;
+
+    /**
      * Assigned categories (pages)
      * @var array
      */
@@ -54,11 +59,15 @@ abstract class AbstractProduct extends Product
      */
     public function getType()
     {
-        try {
-            return $this->getRelated('type');
-        } catch (\Exception $e) {
-            return null;
+        if (false === $this->objType) {
+            try {
+                $this->objType = $this->getRelated('type');
+            } catch (\Exception $e) {
+                return null;
+            }
         }
+
+        return $this->objType;
     }
 
     /**
