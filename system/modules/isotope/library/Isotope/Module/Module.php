@@ -29,6 +29,7 @@ use PageModel;
  * @property string $iso_list_where
  * @property string $iso_includeMessages
  * @property bool   $iso_hide_list
+ * @property bool   $iso_hide_options
  * @property bool   $iso_emptyMessage
  * @property string $iso_noProducts
  * @property bool   $iso_emptyFilter
@@ -121,10 +122,14 @@ abstract class Module extends AbstractFrontendModule
     /**
      * The ids of all pages we take care of. This is what should later be used eg. for filter data.
      *
-     * @return array
+     * @return array|null
      */
     protected function findCategories()
     {
+        if ('all' === $this->iso_category_scope) {
+            return null;
+        }
+
         if (null === $this->arrCategories) {
 
             if ($this->defineRoot && $this->rootPage > 0) {
@@ -143,7 +148,6 @@ abstract class Module extends AbstractFrontendModule
             }
 
             switch ($this->iso_category_scope) {
-
                 case 'global':
                     $arrCategories = [$objPage->rootId];
                     $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);

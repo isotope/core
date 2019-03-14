@@ -412,11 +412,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $this->loadDefaults();
 
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
-        $objProduct      = $this->validateVariant();
 
-        // A variant has been loaded, generate the variant
-        if ($objProduct->id != $this->id) {
-            return $objProduct->generate($arrConfig);
+        if (!$arrConfig['hideOptions']) {
+            $objProduct = $this->validateVariant();
+
+            // A variant has been loaded, generate the variant
+            if ($objProduct->id != $this->id) {
+                return $objProduct->generate($arrConfig);
+            }
         }
 
         /** @var Template|\stdClass $objTemplate */
@@ -476,21 +479,23 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
-            $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
+        if (!$arrConfig['hideOptions']) {
+            foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
+                $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
-            if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
+                if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions);
+                    $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions);
 
-                if ($strWidget != '') {
-                    $arrProductOptions[$attribute] = array_merge($arrData, array
-                    (
-                        'name'    => $attribute,
-                        'html'    => $strWidget,
-                    ));
+                    if ($strWidget != '') {
+                        $arrProductOptions[$attribute] = array_merge($arrData, array
+                        (
+                            'name'    => $attribute,
+                            'html'    => $strWidget,
+                        ));
+                    }
+
                 }
-
             }
         }
 

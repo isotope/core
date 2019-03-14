@@ -84,12 +84,14 @@ class ProductReader extends Module
             'gallery'     => $this->iso_gallery ? : $objProduct->getType()->reader_gallery,
             'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
+            'hideOptions' => $this->iso_hide_options,
             'jumpTo'      => $objIsotopeListPage ? : $objPage,
         );
 
         if (\Environment::get('isAjaxRequest')
             && \Input::post('AJAX_MODULE') == $this->id
             && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+            && !$this->iso_hide_options
         ) {
             try {
                 $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
