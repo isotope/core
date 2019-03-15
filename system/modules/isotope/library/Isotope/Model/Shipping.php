@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -124,9 +123,9 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups)
+            if (!\is_array($arrGroups)
                 || empty($arrGroups)
-                || !count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+                || !\count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -174,22 +173,22 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         $arrConfigs = deserialize($this->config_ids);
-        if (is_array($arrConfigs) && !empty($arrConfigs) && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+        if (\is_array($arrConfigs) && !empty($arrConfigs) && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
         $arrCountries = deserialize($this->countries);
-        if (is_array($arrCountries) && !empty($arrCountries)) {
-            if (!in_array($objAddress->country, $arrCountries, true)) {
+        if (\is_array($arrCountries) && !empty($arrCountries)) {
+            if (!\in_array($objAddress->country, $arrCountries, true)) {
                 return false;
             }
 
             $arrSubdivisions = deserialize($this->subdivisions);
-            if (is_array($arrSubdivisions)
+            if (\is_array($arrSubdivisions)
                 && !empty($arrSubdivisions)
-                && !in_array($objAddress->subdivision, $arrSubdivisions, true)
+                && !\in_array($objAddress->subdivision, $arrSubdivisions, true)
             ) {
                 return false;
             }
@@ -199,7 +198,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         if ($this->postalCodes != '') {
             $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
 
-            if (!in_array($objAddress->postal, $arrCodes)) {
+            if (!\in_array($objAddress->postal, $arrCodes)) {
                 return false;
             }
         }
@@ -207,7 +206,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         if ('calculation' !== $this->product_types_condition) {
             $arrConfigTypes = deserialize($this->product_types);
 
-            if (is_array($arrConfigTypes) && count($arrConfigTypes) > 0) {
+            if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
                 $arrItems = Isotope::getCart()->getItems();
                 $arrItemTypes = array();
 
@@ -226,13 +225,13 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
 
                 switch ($this->product_types_condition) {
                     case 'onlyAvailable':
-                        return 0 === count(array_diff($arrItemTypes, $arrConfigTypes));
+                        return 0 === \count(array_diff($arrItemTypes, $arrConfigTypes));
 
                     case 'oneAvailable':
-                        return count(array_intersect($arrConfigTypes, $arrItemTypes)) > 0;
+                        return \count(array_intersect($arrConfigTypes, $arrItemTypes)) > 0;
 
                     case 'allAvailable':
-                        return count(array_intersect($arrConfigTypes, $arrItemTypes)) === count($arrConfigTypes);
+                        return \count(array_intersect($arrConfigTypes, $arrItemTypes)) === \count($arrConfigTypes);
 
                     default:
                         throw new \UnexpectedValueException(
@@ -371,8 +370,8 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             return;
         }
 
-        $pos = strrpos(get_called_class(), '\\') ?: -1;
-        $className = substr(get_called_class(), $pos+1);
+        $pos = strrpos(\get_called_class(), '\\') ?: -1;
+        $className = substr(\get_called_class(), $pos+1);
 
         $logFile = sprintf(
             'isotope_%s.log',

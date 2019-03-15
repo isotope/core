@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -52,7 +51,7 @@ class Cart extends AbstractProductCollection
 
         $strCustom = '';
 
-        if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && is_array($GLOBALS['ISO_HOOKS']['compileCart'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['compileCart']) && \is_array($GLOBALS['ISO_HOOKS']['compileCart'])) {
             foreach ($GLOBALS['ISO_HOOKS']['compileCart'] as $callback) {
                 $strCustom .= \System::importStatic($callback[0])->{$callback[1]}($this);
             }

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -199,7 +198,7 @@ class Paypal extends Postsale
 
         $arrPayment = deserialize($objOrder->payment_data, true);
 
-        if (!is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
+        if (!\is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
         }
 
@@ -224,7 +223,7 @@ class Paypal extends Postsale
   <tbody>';
 
         foreach ($arrPayment as $k => $v) {
-            if (is_array($v)) {
+            if (\is_array($v)) {
                 continue;
             }
 

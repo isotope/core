@@ -1,14 +1,12 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Load tl_iso_product language file for field legends
@@ -596,7 +594,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
 );
 
 
-if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+if (\in_array('fineuploader', \ModuleLoader::getActive(), true)) {
     $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},mandatory,extensions,minlength,maxlength,chunking,multiple;{store_legend:hide},checkoutRelocate';
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array

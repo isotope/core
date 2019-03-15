@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -222,7 +221,7 @@ class Checkout extends Module
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
                 // !HOOK: pre-process checkout
-                if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
+                if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && \is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
 
                         if (\System::importStatic($callback[0])->{$callback[1]}($objOrder, $this) === false) {
@@ -250,7 +249,7 @@ class Checkout extends Module
             /** @noinspection PhpMissingBreakStatementInspection */
             case self::STEP_FAILED:
                 $this->Template->mtype   = 'error';
-                $this->Template->message = strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
+                $this->Template->message = \strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
                 $this->strCurrentStep    = 'review';
                 // no break
 
@@ -281,7 +280,7 @@ class Checkout extends Module
     {
         $arrBuffer = array();
         $intCurrentStep = 0;
-        $intTotalSteps  = count($arrSteps);
+        $intTotalSteps  = \count($arrSteps);
 
         if (!isset($arrSteps[$this->strCurrentStep])) {
             $this->redirectToNextStep();
@@ -354,13 +353,13 @@ class Checkout extends Module
         }
 
         // Show "confirm order" button if this is the last step
-        if (array_search($this->strCurrentStep, $arrStepKeys) === (count($arrStepKeys) - 1)) {
+        if (array_search($this->strCurrentStep, $arrStepKeys) === (\count($arrStepKeys) - 1)) {
             $this->Template->nextClass = 'confirm';
             $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
         }
 
         // User pressed "back" button
-        if (strlen(\Input::post('previousStep'))) {
+        if (\strlen(\Input::post('previousStep'))) {
             $this->redirectToPreviousStep();
         } // Valid input data, redirect to next step
         elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
@@ -385,7 +384,7 @@ class Checkout extends Module
 
             $intKey = -1;
         } // redirect to step "process" if the next step is the last one
-        elseif (($intKey + 1) == count($arrSteps)) {
+        elseif (($intKey + 1) == \count($arrSteps)) {
             static::redirectToStep(self::STEP_PROCESS);
         }
 
@@ -443,7 +442,7 @@ class Checkout extends Module
 
                 $arrInfo = $objModule->review();
 
-                if (!empty($arrInfo) && is_array($arrInfo)) {
+                if (!empty($arrInfo) && \is_array($arrInfo)) {
                     /** @noinspection AdditionOperationOnArraysInspection */
                     $arrCheckoutInfo += $arrInfo;
                 }
@@ -552,7 +551,7 @@ class Checkout extends Module
      */
     public function canSkipStep($step)
     {
-        return in_array($step, $this->iso_checkout_skippable, true);
+        return \in_array($step, $this->iso_checkout_skippable, true);
     }
 
     /**
@@ -652,7 +651,7 @@ class Checkout extends Module
             $objTarget = $objPage;
         }
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !in_array('step', $GLOBALS['TL_AUTO_ITEM'], true)) {
+        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !\in_array('step', $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strStep = 'step/' . $strStep;
         }
 

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -90,7 +89,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return call_user_func_array('array_merge', $arrMatches);
+        return \call_user_func_array('array_merge', $arrMatches);
     }
 
     /**
@@ -217,7 +216,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return call_user_func_array('array_merge', $arrMatches);
+        return \call_user_func_array('array_merge', $arrMatches);
     }
 
     /**
@@ -258,7 +257,7 @@ class RequestCache extends \Model
      */
     public function getFirstSortingFieldForModule($intModule)
     {
-        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
             return '';
         }
 
@@ -292,7 +291,7 @@ class RequestCache extends \Model
      */
     public function addSortingForModule(Sort $objSort, $intModule)
     {
-        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
             $this->arrSortings[$intModule] = array();
         }
 
@@ -311,7 +310,7 @@ class RequestCache extends \Model
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
-        if (null === $this->arrSortings || !is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
             $this->arrSortings[$intModule] = array();
         }
 

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -53,7 +52,7 @@ class PriceTiers extends Attribute
         }
 
         $order = $arrOptions['order'];
-        if ($order != '' && in_array($order, array_keys($arrTiers[0]))) {
+        if ($order != '' && \in_array($order, array_keys($arrTiers[0]))) {
 
             usort($arrTiers, function ($a, $b) use ($order) {
                 return strcmp($a[$order], $b[$order]);

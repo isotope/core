@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -27,7 +26,7 @@ class Callback extends \Backend
     {
         $image = 'published';
 
-        if (!$row['published'] || (strlen($row['start']) && $row['start'] > time()) || (strlen($row['stop']) && $row['stop'] < time())) {
+        if (!$row['published'] || (\strlen($row['start']) && $row['start'] > time()) || (\strlen($row['stop']) && $row['stop'] < time())) {
             $image = 'un' . $image;
         }
 

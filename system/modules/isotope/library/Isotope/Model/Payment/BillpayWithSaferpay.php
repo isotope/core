@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -31,7 +30,7 @@ class BillpayWithSaferpay extends Saferpay
         $objBillingAddress = Isotope::getCart()->getBillingAddress();
         $objShippingAddress = Isotope::getCart()->getShippingAddress();
 
-        if (null === $objBillingAddress || !in_array($objBillingAddress->country, array('de', 'ch', 'at'), true)) {
+        if (null === $objBillingAddress || !\in_array($objBillingAddress->country, array('de', 'ch', 'at'), true)) {
             return false;
         }
 
@@ -86,7 +85,7 @@ class BillpayWithSaferpay extends Saferpay
         ) {
             $arrPayment = deserialize($objCollection->payment_data);
 
-            if (!empty($arrPayment) && is_array($arrPayment) && is_array($arrPayment['POSTSALE'])) {
+            if (!empty($arrPayment) && \is_array($arrPayment) && \is_array($arrPayment['POSTSALE'])) {
                 $doc = new \DOMDocument();
                 $doc->loadXML(end($arrPayment['POSTSALE']));
                 $this->objXML = $doc->getElementsByTagName('IDP')->item(0)->attributes;

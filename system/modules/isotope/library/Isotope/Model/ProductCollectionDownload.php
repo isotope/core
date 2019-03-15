@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -84,7 +83,7 @@ class ProductCollectionDownload extends \Model
         foreach ($objDownload->getFiles() as $objFileModel) {
             $objFile = new \File($objFileModel->path, true);
 
-            if (!in_array($objFile->extension, $allowedDownload)
+            if (!\in_array($objFile->extension, $allowedDownload)
                 || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)
             ) {
                 continue;
@@ -99,7 +98,7 @@ class ProductCollectionDownload extends \Model
                 $path = $objFileModel->path;
 
                 if (isset($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
-                    && is_array($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
+                    && \is_array($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'] as $callback) {
                         $path = \System::importStatic($callback[0])->{$callback[1]}(

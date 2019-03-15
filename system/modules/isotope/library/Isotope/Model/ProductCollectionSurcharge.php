@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -178,7 +177,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     public function addTaxNumber($intId)
     {
-        if (!in_array($intId, $this->arrTaxIds)) {
+        if (!\in_array($intId, $this->arrTaxIds)) {
             $this->arrTaxIds[] = (int) $intId;
         }
     }
@@ -205,11 +204,11 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $this->arrProducts = deserialize($arrData['products']);
         $this->arrTaxIds   = explode(',', $arrData['tax_id']);
 
-        if (!is_array($this->arrProducts)) {
+        if (!\is_array($this->arrProducts)) {
             $this->arrProducts = array();
         }
 
-        if (!is_array($this->arrTaxIds)) {
+        if (!\is_array($this->arrTaxIds)) {
             $this->arrTaxIds = array();
         }
 
@@ -255,13 +254,13 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         $arrTaxes   = [];
 
         // !HOOK: get collection surcharges
-        if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && \is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'] as $callback) {
                 $arrResult = \System::importStatic($callback[0])->{$callback[1]}($objCollection);
 
                 foreach ($arrResult as $objSurcharge) {
                     if (!($objSurcharge instanceof IsotopeProductCollectionSurcharge) || $objSurcharge instanceof Tax) {
-                        throw new \InvalidArgumentException('Instance of ' . get_class($objSurcharge) . ' is not a valid product collection surcharge.');
+                        throw new \InvalidArgumentException('Instance of ' . \get_class($objSurcharge) . ' is not a valid product collection surcharge.');
                     }
 
                     if ($objSurcharge->hasTax()) {

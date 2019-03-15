@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -198,7 +197,7 @@ class Rule extends \Model
 
 
         // Product restrictions
-        if (!is_array($arrProducts)) {
+        if (!\is_array($arrProducts)) {
             $arrProducts = Isotope::getCart()->getItems();
         }
 
@@ -252,8 +251,8 @@ class Rule extends \Model
                         $varValue = $objProduct->{$restriction['attribute']};
                     }
 
-                    if (!is_null($varValue)) {
-                        $arrAttributes[$k]['values'][] = is_array($varValue) ? serialize($varValue) : $varValue;
+                    if (!\is_null($varValue)) {
+                        $arrAttributes[$k]['values'][] = \is_array($varValue) ? serialize($varValue) : $varValue;
                     }
                 }
             }
@@ -284,7 +283,7 @@ class Rule extends \Model
                         $strRestriction .= sprintf(
                             "attributeValue %s IN (%s)",
                             ('neq' === $restriction['condition'] ? 'NOT' : ''),
-                            implode(', ', array_fill(0, count($restriction['values']), '?'))
+                            implode(', ', array_fill(0, \count($restriction['values']), '?'))
                         );
                         $arrValues = array_merge($arrValues, $restriction['values']);
                         break;

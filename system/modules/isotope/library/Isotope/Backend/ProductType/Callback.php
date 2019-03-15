@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -40,7 +39,7 @@ class Callback extends Permission
         }
 
         // Set root IDs
-        if (!is_array($objBackendUser->iso_product_types) || count($objBackendUser->iso_product_types) < 1) // Can't use empty() because its an object property (using __get)
+        if (!\is_array($objBackendUser->iso_product_types) || \count($objBackendUser->iso_product_types) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         } else {
@@ -65,7 +64,7 @@ class Callback extends Permission
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_producttype', 'iso_product_types', 'iso_product_typep')
                 ) {
                     $root[]                            = \Input::get('id');
@@ -76,7 +75,7 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
+                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -95,7 +94,7 @@ class Callback extends Permission
                 break;
 
             default:
-                if (strlen(\Input::get('act'))) {
+                if (\strlen(\Input::get('act'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' product types', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -168,7 +167,7 @@ class Callback extends Permission
 
         $arrTypes = $objUser->iso_product_types;
 
-        if (!$objUser->isAdmin && (!is_array($arrTypes) || empty($arrTypes))) {
+        if (!$objUser->isAdmin && (!\is_array($arrTypes) || empty($arrTypes))) {
             $arrTypes = array(0);
         }
 
@@ -205,7 +204,7 @@ class Callback extends Permission
         $arrAttributes = deserialize($varValue);
         $arrVariantAttributeLabels = array();
 
-        if (!empty($arrAttributes) && is_array($arrAttributes)) {
+        if (!empty($arrAttributes) && \is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
 
                 /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
@@ -249,7 +248,7 @@ class Callback extends Permission
         $variantFields  = deserialize($value);
         $singularFields = Attribute::getSingularFields();
 
-        if (!is_array($productFields) || !is_array($variantFields) || 0 === count($singularFields)) {
+        if (!\is_array($productFields) || !\is_array($variantFields) || 0 === \count($singularFields)) {
             return $value;
         }
 
@@ -275,7 +274,7 @@ class Callback extends Permission
             }
         }
 
-        if (count($error) > 0) {
+        if (\count($error) > 0) {
             throw new \LogicException(sprintf(
                 $GLOBALS['TL_LANG']['tl_iso_producttype']['singularAttributes'],
                 implode(', ', $error)

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -67,7 +66,7 @@ class Label
     {
         $arrImages = deserialize($objProduct->images);
 
-        if (!empty($arrImages) && is_array($arrImages)) {
+        if (!empty($arrImages) && \is_array($arrImages)) {
             foreach ($arrImages as $image) {
                 $strImage = 'isotope/' . strtolower(substr($image['src'], 0, 1)) . '/' . $image['src'];
 

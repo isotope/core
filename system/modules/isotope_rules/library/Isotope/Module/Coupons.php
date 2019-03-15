@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -49,7 +48,7 @@ class Coupons extends Module
     {
         $coupons = deserialize($this->cart->coupons);
 
-        if (!is_array($coupons)) {
+        if (!\is_array($coupons)) {
             $coupons = array();
         }
 
@@ -71,7 +70,7 @@ class Coupons extends Module
 
         if (null === $rule) {
             Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $coupon));
-        } elseif (in_array(strtolower($coupon), array_map('strtolower', $coupons), true)) {
+        } elseif (\in_array(strtolower($coupon), array_map('strtolower', $coupons), true)) {
             Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $coupon));
         } else {
             $coupons[] = $rule->code;

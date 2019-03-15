@@ -1,13 +1,11 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
@@ -200,7 +198,7 @@ abstract class PaypalApi extends Payment
     {
         $paymentData = deserialize($collection->payment_data, true);
 
-        return array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
+        return \array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
 
     /**
@@ -211,7 +209,7 @@ abstract class PaypalApi extends Payment
     {
         $paymentData = deserialize($collection->payment_data, true);
 
-        if (!is_array($paymentData['PAYPAL_HISTORY'])) {
+        if (!\is_array($paymentData['PAYPAL_HISTORY'])) {
             $paymentData['PAYPAL_HISTORY'] = [];
         }
 
@@ -262,7 +260,7 @@ abstract class PaypalApi extends Payment
             $response = json_decode($request->response, true);
         }
 
-        return array_key_exists('access_token', $response) ? $response : null;
+        return \array_key_exists('access_token', $response) ? $response : null;
     }
 
     /**

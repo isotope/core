@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -160,7 +159,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             // Do not show protected pages unless a back end or front end user is logged in
             if ($subpage->protected
                 && BE_USER_LOGGED_IN !== true
-                && (!is_array($_groups) || !count(array_intersect($_groups, $groups)))
+                && (!\is_array($_groups) || !\count(array_intersect($_groups, $groups)))
                 && !$this->showProtected
             ) {
                 continue;
@@ -171,7 +170,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
                 && (!$this->showLevel
                     || $this->showLevel >= $level
                     || (!$this->hardLimit
-                        && ($objPage->id == $subpage->id || in_array($objPage->id, Database::getInstance()->getChildRecords($subpage->id, 'tl_page')))
+                        && ($objPage->id == $subpage->id || \in_array($objPage->id, Database::getInstance()->getChildRecords($subpage->id, 'tl_page')))
                     )
                 )
             ) {
@@ -222,7 +221,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         // Add classes first and last
         if (!empty($items)) {
-            $last = count($items) - 1;
+            $last = \count($items) - 1;
 
             $items[0]['class'] = trim($items[0]['class'].' first');
             $items[$last]['class'] = trim($items[$last]['class'].' last');
@@ -234,7 +233,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         $objTemplate = new FrontendTemplate($this->navigationTpl);
 
         $objTemplate->pid = $pid;
-        $objTemplate->type = get_class($this);
+        $objTemplate->type = \get_class($this);
         $objTemplate->cssID = $this->cssID;
         $objTemplate->level = 'level_'.$level;
         $objTemplate->items = $items;

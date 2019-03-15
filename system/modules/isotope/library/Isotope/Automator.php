@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -164,7 +163,7 @@ class Automator extends \Controller
                 default:
                     // !HOOK: other currency providers
                     if (isset($GLOBALS['ISO_HOOKS']['convertCurrency'])
-                        && is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
+                        && \is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
                             \System::importStatic($callback[0])->{$callback[1]}($config);

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -40,7 +39,7 @@ abstract class Sales extends Report
             $arrSession[$this->name]['columns'] = '6';
         }
 
-        if (!in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
+        if (!\in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
             $arrSession[$this->name]['date_field'] = 'locked';
         }
 

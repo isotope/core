@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -38,7 +37,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return false;
         }
 
-        return in_array($this->field_name, Attribute::getPricedFields(), true);
+        return \in_array($this->field_name, Attribute::getPricedFields(), true);
     }
 
     /**
@@ -73,7 +72,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $options = deserialize($this->options);
 
-                if (!empty($options) && is_array($options)) {
+                if (!empty($options) && \is_array($options)) {
                     if ($this->isCustomerDefined()) {
                         // Build for a frontend widget
 
@@ -190,13 +189,13 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $productId = $objProduct->getId();
 
                 if ($objProduct->isVariant()
-                    && !in_array($this->field_name, $objProduct->getVariantAttributes(), true)
+                    && !\in_array($this->field_name, $objProduct->getVariantAttributes(), true)
                 ) {
                     $productId = $objProduct->getProductId();
                 }
 
-                if (!is_array($this->varOptionsCache)
-                    || !array_key_exists($productId, $this->varOptionsCache)
+                if (!\is_array($this->varOptionsCache)
+                    || !\array_key_exists($productId, $this->varOptionsCache)
                 ) {
                     $this->varOptionsCache[$productId] = AttributeOption::findByProductAndAttribute(
                         $objProduct,
@@ -229,11 +228,11 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             case IsotopeAttributeWithOptions::SOURCE_NAME:
                 $arrOptions = [];
 
-                if (array_key_exists('1', $arrValues)) {
+                if (\array_key_exists('1', $arrValues)) {
                     $arrOptions['1'] = $GLOBALS['TL_LANG']['MSC']['yes'];
                 }
 
-                if (array_key_exists('', $arrValues)) {
+                if (\array_key_exists('', $arrValues)) {
                     $arrOptions[''] = $GLOBALS['TL_LANG']['MSC']['no'];
                 }
 
@@ -244,9 +243,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $arrOptions = array();
                 $options = deserialize($this->options);
 
-                if (!empty($options) && is_array($options)) {
+                if (!empty($options) && \is_array($options)) {
                     foreach ($options as $option) {
-                        if (in_array($option['value'], $arrValues)) {
+                        if (\in_array($option['value'], $arrValues)) {
                             $option['label'] = Translation::get($option['label']);
                             $arrOptions[] = $option;
                         }
@@ -340,7 +339,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             $product
         );
 
-        if (empty($arrField['options']) && is_array($arrField['options'])) {
+        if (empty($arrField['options']) && \is_array($arrField['options'])) {
             return parent::generateValue($value, $options);
         }
 
@@ -352,14 +351,14 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $arrOptions[$k] = $option['label'];
                 unset($values[$pos]);
 
-                if (0 === count($values)) {
+                if (0 === \count($values)) {
                     break;
                 }
             }
         }
         unset($option);
 
-        if (0 !== count($values)) {
+        if (0 !== \count($values)) {
             $arrOptions = array_merge($arrOptions, $values);
         }
 

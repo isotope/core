@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -67,7 +66,7 @@ class AddressBook extends Module
         $this->arrFields = array_unique(array_merge(Isotope::getConfig()->getBillingFields(), Isotope::getConfig()->getShippingFields()));
 
         // Return if there are not editable fields
-        if (0 === count($this->arrFields)) {
+        if (0 === \count($this->arrFields)) {
             return '';
         }
 
@@ -86,7 +85,7 @@ class AddressBook extends Module
         \Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
-        if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}();
             }
@@ -98,7 +97,7 @@ class AddressBook extends Module
                 break;
 
             case 'edit':
-                if (strlen(\Input::get('address'))) {
+                if (\strlen(\Input::get('address'))) {
                     $this->edit(\Input::get('address'));
                 } else {
                     $this->show();
@@ -106,7 +105,7 @@ class AddressBook extends Module
                 break;
 
             case 'delete':
-                if (strlen(\Input::get('address'))) {
+                if (\strlen(\Input::get('address'))) {
                     $this->delete(\Input::get('address'));
                 } else {
                     $this->show();
@@ -148,7 +147,7 @@ class AddressBook extends Module
             }
         }
 
-        if (0 === count($arrAddresses)) {
+        if (0 === \count($arrAddresses)) {
             $this->Template->mtype   = 'empty';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noAddressBookEntries'];
         }
@@ -206,7 +205,7 @@ class AddressBook extends Module
         $arrFields = $this->arrFields;
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields) {
 
-            if (!in_array($strName, $arrFields, true) || !$arrDca['eval']['feEditable']) {
+            if (!\in_array($strName, $arrFields, true) || !$arrDca['eval']['feEditable']) {
                 return false;
             }
 
@@ -232,7 +231,7 @@ class AddressBook extends Module
                 $objAddress->save();
 
                 // Call onsubmit_callback
-                if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                         \System::importStatic($callback[0])->{$callback[1]}($objAddress);
                     }
@@ -240,7 +239,7 @@ class AddressBook extends Module
 
                 // HOOK: address data has been updated
                 if (isset($GLOBALS['ISO_HOOKS']['updateAddressData'])
-                    && is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
+                    && \is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateAddressData'] as $callback) {
                         \System::importStatic($callback[0])->{$callback[1]}($objAddress, $arrOldAddress, $this);

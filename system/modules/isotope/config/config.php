@@ -1,19 +1,17 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-
 /**
  * Backend modules
  */
-if (!is_array($GLOBALS['BE_MOD']['isotope']))
+if (!\is_array($GLOBALS['BE_MOD']['isotope']))
 {
     array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
@@ -278,7 +276,7 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
 
-if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+if (\in_array('fineuploader', \ModuleLoader::getActive(), true)) {
     \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
 }
 

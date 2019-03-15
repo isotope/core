@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -111,7 +110,7 @@ class ProductGroupSelector extends \Widget
         }
 
         // Check if there is at least one value
-        if ('text' === $this->fieldType && is_array($varInput)) {
+        if ('text' === $this->fieldType && \is_array($varInput)) {
             foreach ($varInput as $k => $option) {
                 if ($this->mandatory && $option != '') {
                     $this->mandatory = false;
@@ -160,12 +159,12 @@ class ProductGroupSelector extends \Widget
 
             if ($objRoot->numRows > 0) {
                 // Respect existing limitations
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
                     $arrRoot = array();
 
                     while ($objRoot->next()) {
                         // Predefined node set (see #3563)
-                        if (count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], \Database::getInstance()->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0) {
+                        if (\count(array_intersect($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], \Database::getInstance()->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0) {
                             $arrRoot[] = $objRoot->id;
                         }
                     }
@@ -179,7 +178,7 @@ class ProductGroupSelector extends \Widget
 
                     while ($objRoot->next()) {
                         // Show only mounted groups to regular users
-                        if (count(array_intersect($this->User->iso_groups, $this->Database->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0) {
+                        if (\count(array_intersect($this->User->iso_groups, $this->Database->getParentRecords($objRoot->id, 'tl_iso_group'))) > 0) {
                             $arrRoot[] = $objRoot->id;
                         }
                     }
@@ -193,7 +192,7 @@ class ProductGroupSelector extends \Widget
                 $tree .= $this->renderGrouptree($id, -20, true);
             }
         } else {
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'])) {
                 // Predefined node set (see contao/core#3563)
 
                 foreach ($this->eliminateNestedPages($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['rootNodes'], $this->strTable) as $node) {
@@ -335,7 +334,7 @@ class ProductGroupSelector extends \Widget
         $folderAttribute     = 'style="margin-left:20px;"';
         $session[$node][$id] = is_numeric($session[$node][$id]) ? $session[$node][$id] : 0;
         $level               = ($intMargin / $intSpacing + 1);
-        $blnIsOpen           = ($session[$node][$id] == 1 || in_array($id, $this->arrNodes));
+        $blnIsOpen           = ($session[$node][$id] == 1 || \in_array($id, $this->arrNodes));
 
         if (!empty($childs)) {
             $folderAttribute = '';
@@ -347,7 +346,7 @@ class ProductGroupSelector extends \Widget
         $callback = $GLOBALS['TL_DCA']['tl_iso_group']['list']['label']['label_callback'];
 
         // Load the label_callback
-        if (is_array($callback) && !empty($callback)) {
+        if (\is_array($callback) && !empty($callback)) {
             $return .= \System::importStatic($callback[0])->{$callback[1]}($objGroup->row(), $objGroup->name, null, $folderAttribute);
         }
 
@@ -371,7 +370,7 @@ class ProductGroupSelector extends \Widget
         if (!empty($childs) && ($blnIsOpen || $this->Session->get('product_group_selector_search') != '')) {
             $return .= '<li class="parent" id="' . $node . '_' . $id . '"><ul class="level_' . $level . '">';
 
-            for ($k = 0, $c = count($childs); $k < $c; $k++) {
+            for ($k = 0, $c = \count($childs); $k < $c; $k++) {
                 $return .= $this->renderGrouptree($childs[$k], $intMargin + $intSpacing);
             }
 
@@ -391,7 +390,7 @@ class ProductGroupSelector extends \Widget
             return;
         }
 
-        if (!is_array($this->varValue)) {
+        if (!\is_array($this->varValue)) {
             $this->varValue = array($this->varValue);
         }
 

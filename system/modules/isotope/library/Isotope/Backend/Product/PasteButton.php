@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -41,7 +40,7 @@ class PasteButton extends \Backend
     public function generate(\DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
     {
         // Disable all buttons if there is a circular reference
-        if ($arrClipboard !== false && ('cut' === $arrClipboard['mode'] && ($cr == 1 || $arrClipboard['id'] == $row['id']) || 'cutAll' === $arrClipboard['mode'] && ($cr == 1 || in_array($row['id'], $arrClipboard['id'])))) {
+        if ($arrClipboard !== false && ('cut' === $arrClipboard['mode'] && ($cr == 1 || $arrClipboard['id'] == $row['id']) || 'cutAll' === $arrClipboard['mode'] && ($cr == 1 || \in_array($row['id'], $arrClipboard['id'])))) {
             return '';
         }
 

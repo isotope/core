@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -157,7 +156,7 @@ class Callback extends \Backend
     {
         $arrNew = deserialize($varValue);
 
-        if (!is_array($arrNew) || empty($arrNew)) {
+        if (!\is_array($arrNew) || empty($arrNew)) {
             \Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id}");
         } else {
             $time      = time();

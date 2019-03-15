@@ -1,14 +1,12 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Table tl_iso_payment
@@ -837,12 +835,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
                 function($value) {
                     $brands = deserialize($value);
 
-                    if (!empty($brands) && is_array($brands)) {
+                    if (!empty($brands) && \is_array($brands)) {
                         if (!\Isotope\Model\Payment\OpenPaymentPlatform::supportsPaymentBrands($brands)) {
                             throw new \RuntimeException($GLOBALS['TL_LANG']['ERR']['oppIncompatible']);
                         }
 
-                        if (strlen(implode(' ', $brands)) > 32) {
+                        if (\strlen(implode(' ', $brands)) > 32) {
                             throw new \RuntimeException($GLOBALS['TL_LANG']['ERR']['oppTooMany']);
                         }
                     }

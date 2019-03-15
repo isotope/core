@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -21,13 +20,13 @@ use Haste\Http\Response\Response;
 /**
  * Set the script name
  */
-define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
+\define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
 
 /**
  * Initialize the system
  */
-define('TL_MODE', 'FE');
-define('BYPASS_TOKEN_CHECK', true);
+\define('TL_MODE', 'FE');
+\define('BYPASS_TOKEN_CHECK', true);
 
 require_once('initialize.php');
 
@@ -60,7 +59,7 @@ class PostSale extends \Frontend
         $this->setModuleId((int) (\Input::post('id') ?: \Input::get('id')));
 
         // HOOK: allow to add custom hooks for postsale script
-        if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))
+        if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && \is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))
         {
             foreach ($GLOBALS['ISO_HOOKS']['initializePostsale'] as $callback)
             {
@@ -164,7 +163,7 @@ class PostSale extends \Frontend
             $objOrder = $objMethod->getPostsaleOrder();
 
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {
-                \System::log(get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
+                \System::log(\get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
 
                 $objResponse = new Response('Failed Dependency', 424);
                 $objResponse->send();

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -34,7 +33,7 @@ class Callback extends \Backend
 
         $GLOBALS['TL_DCA']['tl_member']['fields']['country']['options_callback'] = function () use ($originalField) {
             if (isset($originalField['options_callback'])) {
-                if (is_array($originalField['options_callback'])) {
+                if (\is_array($originalField['options_callback'])) {
                     $callable = [
                         \System::importStatic($originalField['options_callback'][0]),
                         $originalField['options_callback'][1],
@@ -43,9 +42,9 @@ class Callback extends \Backend
                     $callable = $originalField['options_callback'];
                 }
 
-                $options = call_user_func_array(
+                $options = \call_user_func_array(
                     $callable,
-                    func_get_args()
+                    \func_get_args()
                 );
             } else {
                 $options = (array) $originalField['options'];
@@ -63,7 +62,7 @@ class Callback extends \Backend
                 array_flip($countries)
             );
 
-            if (1 === count($countries)) {
+            if (1 === \count($countries)) {
                 $countryCodes = array_keys($countries);
                 $GLOBALS['TL_DCA']['tl_member']['fields']['country']['default'] = $countryCodes[0];
             }

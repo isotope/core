@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -49,9 +48,9 @@ class Fallback extends \Backend
             $value = $product->fallback ? '' : '1';
             $dca   = &$GLOBALS['TL_DCA']['tl_iso_product']['fields']['fallback'];
 
-            if (!empty($dca['save_callback']) && is_array($dca['save_callback'])) {
+            if (!empty($dca['save_callback']) && \is_array($dca['save_callback'])) {
                 foreach ($dca['save_callback'] as $callback) {
-                    if (is_array($callback)) {
+                    if (\is_array($callback)) {
                         $value = \System::importStatic($callback[0])->{$callback[1]}($value, $dc);
                     } else {
                         $value = $callback($value, $dc);

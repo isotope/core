@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -77,7 +76,7 @@ abstract class Address extends CheckoutStep
         $varValue   = '0';
         $arrOptions = $this->getAddressOptions();
 
-        if (0 !== count($arrOptions)) {
+        if (0 !== \count($arrOptions)) {
             foreach ($arrOptions as $option) {
                 if ($option['default']) {
                     $varValue = $option['value'];
@@ -180,7 +179,7 @@ abstract class Address extends CheckoutStep
                 $varValue = (string) $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ('' !== $varValue && in_array($objWidget->dca_config['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
+                if ('' !== $varValue && \in_array($objWidget->dca_config['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
                     try {
                         $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
@@ -231,7 +230,7 @@ abstract class Address extends CheckoutStep
 
             // !HOOK: modify address fields in checkout process
             if (isset($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
-                && is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
+                && \is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback) {
                     $arrFields = \System::importStatic($callback[0])->{$callback[1]}($arrFields, $objAddress, $this->getStepClass());
@@ -240,7 +239,7 @@ abstract class Address extends CheckoutStep
 
             foreach ($arrFields as $field) {
 
-                if (!is_array($field['dca'])
+                if (!\is_array($field['dca'])
                     || !$field['enabled']
                     || !$field['dca']['eval']['feEditable']
                     || ($field['dca']['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
@@ -249,7 +248,7 @@ abstract class Address extends CheckoutStep
                 }
 
                 // Continue if the class is not defined
-                if (!array_key_exists($field['dca']['inputType'], $GLOBALS['TL_FFL'])
+                if (!\array_key_exists($field['dca']['inputType'], $GLOBALS['TL_FFL'])
                     || !class_exists($GLOBALS['TL_FFL'][$field['dca']['inputType']])
                 ) {
                     continue;
@@ -263,7 +262,7 @@ abstract class Address extends CheckoutStep
                     $arrCountries = $this->getAddressCountries();
                     $field['dca']['reference'] = $field['dca']['options'];
                     $field['dca']['options'] = array_values(array_intersect(array_keys($field['dca']['options']), $arrCountries));
-                } elseif (strlen($field['dca']['eval']['conditionField'])) {
+                } elseif (\strlen($field['dca']['eval']['conditionField'])) {
                     // Special field type "conditionalselect"
                     $field['dca']['eval']['conditionField'] = $this->getStepClass() . '_' . $field['dca']['eval']['conditionField'];
                 }
@@ -306,12 +305,12 @@ abstract class Address extends CheckoutStep
             $arrAddresses = $this->getAddresses();
             $arrCountries = $this->getAddressCountries();
 
-            if (0 !== count($arrAddresses) && 0 !== count($arrCountries)) {
+            if (0 !== \count($arrAddresses) && 0 !== \count($arrCountries)) {
                 $objDefault = $this->getAddress();
 
                 foreach ($arrAddresses as $objAddress) {
 
-                    if (!in_array($objAddress->country, $arrCountries, true)) {
+                    if (!\in_array($objAddress->country, $arrCountries, true)) {
                         continue;
                     }
 
@@ -415,7 +414,7 @@ abstract class Address extends CheckoutStep
             // Do not use reference, otherwise the billing address fields would affect shipping address fields
             $dca = $GLOBALS['TL_DCA'][AddressModel::getTable()]['fields'][$field['value']];
 
-            if (is_array($dca)) {
+            if (\is_array($dca)) {
                 $field['dca'] = $dca;
             }
 

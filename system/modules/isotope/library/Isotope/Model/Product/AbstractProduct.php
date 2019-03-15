@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -112,7 +111,7 @@ abstract class AbstractProduct extends Product
         }
 
         if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable'])
-            && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
+            && \is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
                 $available = \System::importStatic($callback[0])->{$callback[1]}($this, $objCollection);
@@ -148,11 +147,11 @@ abstract class AbstractProduct extends Product
             $groups       = deserialize($this->groups);
             $memberGroups = deserialize($member->groups);
 
-            if (!is_array($groups)
+            if (!\is_array($groups)
                 || empty($groups)
-                || !is_array($memberGroups)
+                || !\is_array($memberGroups)
                 || empty($memberGroups)
-                || !count(array_intersect($groups, $memberGroups))
+                || !\count(array_intersect($groups, $memberGroups))
             ) {
                 return false;
             }
@@ -229,7 +228,7 @@ abstract class AbstractProduct extends Product
      */
     public function hasVariantPrices()
     {
-        return $this->hasVariants() && in_array('price', $this->getVariantAttributes(), true);
+        return $this->hasVariants() && \in_array('price', $this->getVariantAttributes(), true);
     }
 
     /**
@@ -267,7 +266,7 @@ abstract class AbstractProduct extends Product
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
-            if (!empty($arrOrder) && is_array($arrOrder)) {
+            if (!empty($arrOrder) && \is_array($arrOrder)) {
                 $this->arrCategories[$key] = array_unique(
                     array_merge(
                         array_intersect(

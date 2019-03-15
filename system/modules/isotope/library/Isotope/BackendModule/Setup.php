@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -34,7 +33,7 @@ class Setup extends BackendOverview
             foreach ($arrModules as $strModule => $arrConfig) {
 
                 if ($this->checkUserAccess($strModule)) {
-                    if (is_array($arrConfig['tables'])) {
+                    if (\is_array($arrConfig['tables'])) {
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
 

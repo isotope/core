@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -30,7 +29,7 @@ class PriceTable extends AbstractIntegrityCheck
         $strDescription = parent::getDescription();
 
         if ($this->hasError()) {
-            return sprintf($strDescription, count($this->arrErrors), implode(', ', $this->arrErrors));
+            return sprintf($strDescription, \count($this->arrErrors), implode(', ', $this->arrErrors));
         }
 
         return $strDescription;
@@ -120,7 +119,7 @@ class PriceTable extends AbstractIntegrityCheck
                     }
 
                     // If more than one price qualifies, we will keep the first (lowest ID) one
-                    if (count($keep) > 1) {
+                    if (\count($keep) > 1) {
                         $delete = array_merge($delete, array_diff($keep, array(min($keep))));
                         $keep = min($keep);
                     }
@@ -132,7 +131,7 @@ class PriceTable extends AbstractIntegrityCheck
                     }
 
                     // Make sure $keep only holds one item
-                    if (is_array($keep)) {
+                    if (\is_array($keep)) {
                         $keep = $keep[0];
                     }
 

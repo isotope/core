@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -66,7 +65,7 @@ class Callback extends \Backend
             $arrNew = deserialize($varValue);
         }
 
-        if (!is_array($arrNew) || empty($arrNew)) {
+        if (!\is_array($arrNew) || empty($arrNew)) {
             \Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 
         } else {
@@ -101,7 +100,7 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
+        if (\strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
             \Controller::redirect($this->getReferer());
         }
@@ -142,7 +141,7 @@ class Callback extends \Backend
 //        $this->createInitialVersion('tl_iso_rule', $intId);
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'] as $callback) {
                 $objCallback = \System::importStatic($callback[0]);
                 $blnVisible = $objCallback->{$callback[1]}($blnVisible, $this);

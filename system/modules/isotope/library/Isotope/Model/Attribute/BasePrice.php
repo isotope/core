@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -52,7 +51,7 @@ class BasePrice extends Attribute
     {
         $arrData = deserialize($objProduct->{$this->field_name});
 
-        if (is_array($arrData) && $arrData['unit'] > 0 && $arrData['value'] != '') {
+        if (\is_array($arrData) && $arrData['unit'] > 0 && $arrData['value'] != '') {
             $objBasePrice = \Isotope\Model\BasePrice::findByPk((int) $arrData['unit']);
 
             if (null !== $objBasePrice && null !== $objProduct->getPrice()) {

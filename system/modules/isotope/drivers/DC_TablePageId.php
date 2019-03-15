@@ -1,14 +1,12 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Class DC_TablePageId
@@ -31,15 +29,15 @@ class DC_TablePageId extends \DC_Table
         $this->bid = 'tl_buttons';
 
         // Clean up old tl_undo and tl_log entries
-        if ($this->strTable == 'tl_undo' && strlen(\Config::get('undoPeriod')))
+        if ($this->strTable == 'tl_undo' && \strlen(\Config::get('undoPeriod')))
         {
             $this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
-                           ->execute(intval(time() - \Config::get('undoPeriod')));
+                           ->execute(\intval(time() - \Config::get('undoPeriod')));
         }
-        elseif ($this->strTable == 'tl_log' && strlen(\Config::get('logPeriod')))
+        elseif ($this->strTable == 'tl_log' && \strlen(\Config::get('logPeriod')))
         {
             $this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
-                           ->execute(intval(time() - \Config::get('logPeriod')));
+                           ->execute(\intval(time() - \Config::get('logPeriod')));
         }
 
         $this->reviseTable();
@@ -60,7 +58,7 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Custom filter
-        if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+        if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && \is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
         {
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter)
             {
@@ -118,7 +116,7 @@ class DC_TablePageId extends \DC_Table
         $cr = array();
 
         // ID and page_id are mandatory
-        if (!$this->intId || !strlen(\Input::get('page_id')))
+        if (!$this->intId || !\strlen(\Input::get('page_id')))
         {
             $this->redirect($this->getReferer());
         }
@@ -127,7 +125,7 @@ class DC_TablePageId extends \DC_Table
         $this->getNewPosition('cut', \Input::get('page_id'), (\Input::get('mode') == '2' ? true : false));
 
         // Avoid circular references when there is no parent table
-        if ($this->Database->fieldExists('page_id', $this->strTable) && !strlen($this->ptable))
+        if ($this->Database->fieldExists('page_id', $this->strTable) && !\strlen($this->ptable))
         {
             $cr = $this->Database->getChildRecords($this->intId, $this->strTable);
             $cr[] = $this->intId;
@@ -139,7 +137,7 @@ class DC_TablePageId extends \DC_Table
         $this->getSession()->set('CLIPBOARD', $arrClipboard);
 
         // Update the record
-        if (in_array($this->set['page_id'], $cr))
+        if (\in_array($this->set['page_id'], $cr))
         {
             \System::log('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)', 'DC_Table cut()', TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
@@ -170,16 +168,16 @@ class DC_TablePageId extends \DC_Table
                        ->execute($this->intId);
 
         // Call the oncut_callback
-        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback']))
+        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback']))
         {
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'] as $callback)
             {
-                if (is_array($callback))
+                if (\is_array($callback))
                 {
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($this);
                 }
-                elseif (is_callable($callback))
+                elseif (\is_callable($callback))
                 {
                     $callback($this);
                 }
@@ -205,14 +203,14 @@ class DC_TablePageId extends \DC_Table
         }
 
         // page_id is mandatory
-        if (!strlen(\Input::get('page_id')))
+        if (!\strlen(\Input::get('page_id')))
         {
             $this->redirect($this->getReferer());
         }
 
         $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
-        if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id']))
+        if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id']))
         {
             foreach ($arrClipboard[$this->strTable]['id'] as $id)
             {
@@ -349,8 +347,8 @@ class DC_TablePageId extends \DC_Table
                 }
 
                 // Set new sorting and new parent ID
-                $this->set['page_id'] = intval($newpage_id);
-                $this->set['sorting'] = intval($newSorting);
+                $this->set['page_id'] = \intval($newpage_id);
+                $this->set['sorting'] = \intval($newSorting);
             }
         }
 
@@ -438,14 +436,14 @@ class DC_TablePageId extends \DC_Table
                     else $newSorting = ($curSorting + 128);
 
                     // Set new sorting
-                    $this->set['sorting'] = intval($newSorting);
+                    $this->set['sorting'] = \intval($newSorting);
                     return;
                 }
             }
 
             // ID is not set or not found (insert at the end)
             $objNextSorting = $this->Database->execute("SELECT MAX(sorting) AS sorting FROM {$this->strTable}");
-            $this->set['sorting'] = (intval($objNextSorting->sorting) + 128);
+            $this->set['sorting'] = (\intval($objNextSorting->sorting) + 128);
         }
     }
 
@@ -462,18 +460,18 @@ class DC_TablePageId extends \DC_Table
         $new_records = \Session::getInstance()->get('new_records');
 
         // HOOK: add custom logic
-        if (isset($GLOBALS['TL_HOOKS']['reviseTable']) && is_array($GLOBALS['TL_HOOKS']['reviseTable']))
+        if (isset($GLOBALS['TL_HOOKS']['reviseTable']) && \is_array($GLOBALS['TL_HOOKS']['reviseTable']))
         {
             foreach ($GLOBALS['TL_HOOKS']['reviseTable'] as $callback)
             {
                 $status = null;
 
-                if (is_array($callback))
+                if (\is_array($callback))
                 {
                     $this->import($callback[0]);
                     $status = $this->{$callback[0]}->{$callback[1]}($this->strTable, $new_records[$this->strTable], $ptable, $ctable);
                 }
-                elseif (is_callable($callback))
+                elseif (\is_callable($callback))
                 {
                     $status = $callback($this->strTable, $new_records[$this->strTable], $ptable, $ctable);
                 }
@@ -486,7 +484,7 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Delete all new but incomplete records (tstamp=0)
-        if (!empty($new_records[$this->strTable]) && is_array($new_records[$this->strTable]))
+        if (!empty($new_records[$this->strTable]) && \is_array($new_records[$this->strTable]))
         {
             $objStmt = $this->Database->execute("DELETE FROM {$this->strTable} WHERE id IN(" . implode(',', array_map('intval', $new_records[$this->strTable])) . ") AND tstamp=0");
 
@@ -515,7 +513,7 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Delete all records of the child table that are not related to the current table
-        if (!empty($ctable) && is_array($ctable))
+        if (!empty($ctable) && \is_array($ctable))
         {
             foreach ($ctable as $v)
             {
@@ -570,7 +568,7 @@ class DC_TablePageId extends \DC_Table
             $blnClipboard = true;
             $arrClipboard = $arrClipboard[$table];
 
-            if (is_array($arrClipboard['id']))
+            if (\is_array($arrClipboard['id']))
             {
                 $blnMultiboard = true;
             }
@@ -637,7 +635,7 @@ class DC_TablePageId extends \DC_Table
             {
                 $_v = deserialize($objParent->$v);
 
-                if (is_array($_v))
+                if (\is_array($_v))
                 {
                     $_v = implode(', ', $_v);
                 }
@@ -682,7 +680,7 @@ class DC_TablePageId extends \DC_Table
                         $_v = $objLabel->value;
                     }
                 }
-                elseif (is_array($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v]))
+                elseif (\is_array($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v]))
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['reference'][$_v][0];
                 }
@@ -704,7 +702,7 @@ class DC_TablePageId extends \DC_Table
             }
 
             // Trigger the header_callback (see #3417)
-            if (is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
             {
                 $strClass = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][0];
                 $strMethod = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][1];
@@ -712,7 +710,7 @@ class DC_TablePageId extends \DC_Table
                 $this->import($strClass);
                 $add = $this->$strClass->$strMethod($add, $this);
             }
-            elseif (is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
+            elseif (\is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
             {
                 $add = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']($add, $this);
             }
@@ -724,7 +722,7 @@ class DC_TablePageId extends \DC_Table
 
             foreach ($add as $k=>$v)
             {
-                if (is_array($v))
+                if (\is_array($v))
                 {
                     $v = $v[0];
                 }
@@ -746,7 +744,7 @@ class DC_TablePageId extends \DC_Table
             // Add all records of the current table
             $query = "SELECT * FROM {$this->strTable}";
 
-            if (is_array($this->orderBy) && strlen($this->orderBy[0]))
+            if (\is_array($this->orderBy) && \strlen($this->orderBy[0]))
             {
                 $orderBy = $this->orderBy;
                 $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
@@ -759,7 +757,7 @@ class DC_TablePageId extends \DC_Table
                     $orderBy[0] = 'foreignKey';
                 }
             }
-            elseif (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields']))
+            elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields']))
             {
                 $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
                 $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
@@ -777,13 +775,13 @@ class DC_TablePageId extends \DC_Table
             {
                 $query .= " WHERE " . implode(' AND ', $this->procedure);
             }
-            if (!empty($this->root) && is_array($this->root))
+            if (!empty($this->root) && \is_array($this->root))
             {
                 $query .= (!empty($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
             }
 
             // ORDER BY
-            if (!empty($orderBy) && is_array($orderBy))
+            if (!empty($orderBy) && \is_array($orderBy))
             {
                 $query .= " ORDER BY " . implode(', ', $orderBy);
             }
@@ -791,7 +789,7 @@ class DC_TablePageId extends \DC_Table
             $objOrderByStmt = $this->Database->prepare($query);
 
             // LIMIT
-            if (strlen($this->limit))
+            if (\strlen($this->limit))
             {
                 $arrLimit = explode(',', $this->limit);
                 $objOrderByStmt->limit($arrLimit[1], $arrLimit[0]);
@@ -808,7 +806,7 @@ class DC_TablePageId extends \DC_Table
             }
 
             // Call the child_record_callback
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
             {
                 $strGroup = '';
                 $blnIndent = false;
@@ -823,7 +821,7 @@ class DC_TablePageId extends \DC_Table
 <ul id="ul_' . CURRENT_ID . '">';
                 }
 
-                for ($i=0, $c=count($row); $i<$c; $i++)
+                for ($i=0, $c=\count($row); $i<$c; $i++)
                 {
                     $this->current[] = $row[$i]['id'];
                     $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']));
@@ -848,7 +846,7 @@ class DC_TablePageId extends \DC_Table
                     // Add the group header
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] && $firstOrderBy != 'sorting')
                     {
-                        $sortingMode = (count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
+                        $sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
                         $remoteNew = $this->formatCurrentValue($firstOrderBy, $row[$i][$firstOrderBy], $sortingMode);
                         $group = $this->formatGroupHeader($firstOrderBy, $remoteNew, $sortingMode, $row);
 
@@ -859,9 +857,9 @@ class DC_TablePageId extends \DC_Table
                         }
                     }
 
-                    $blnWrapperStart = in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['start']);
-                    $blnWrapperSeparator = in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['separator']);
-                    $blnWrapperStop = in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['stop']);
+                    $blnWrapperStart = \in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['start']);
+                    $blnWrapperSeparator = \in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['separator']);
+                    $blnWrapperStop = \in_array($row[$i]['type'], $GLOBALS['TL_WRAPPERS']['stop']);
 
                     // Closing wrappers
                     if ($blnWrapperStop)
@@ -907,7 +905,7 @@ class DC_TablePageId extends \DC_Table
                             }
 
                             // Prevent circular references
-                            if ($blnClipboard && $arrClipboard['mode'] == 'cut' && $row[$i]['id'] == $arrClipboard['id'] || $blnMultiboard && $arrClipboard['mode'] == 'cutAll' && in_array($row[$i]['id'], $arrClipboard['id']))
+                            if ($blnClipboard && $arrClipboard['mode'] == 'cut' && $row[$i]['id'] == $arrClipboard['id'] || $blnMultiboard && $arrClipboard['mode'] == 'cutAll' && \in_array($row[$i]['id'], $arrClipboard['id']))
                             {
                                 $return .= ' ' . \Image::getHtml('pasteafter_.gif');
                             }
@@ -932,7 +930,7 @@ class DC_TablePageId extends \DC_Table
                         }
                     }
 
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback'][1];
@@ -940,7 +938,7 @@ class DC_TablePageId extends \DC_Table
                         $this->import($strClass);
                         $return .= '</div>'.$this->$strClass->$strMethod($row[$i]).'</div>';
                     }
-                    elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']))
                     {
                         $return .= '</div>'.$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_callback']($row[$i]).'</div>';
                     }
@@ -999,16 +997,16 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
             }
 
             // Call the buttons_callback (see #4691)
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                 {
-                    if (is_array($callback))
+                    if (\is_array($callback))
                     {
                         $this->import($callback[0]);
                         $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                     }
-                    elseif (is_callable($callback))
+                    elseif (\is_callable($callback))
                     {
                         $arrButtons = $callback($arrButtons, $this);
                     }
@@ -1043,7 +1041,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
         $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
-        if (is_array($this->orderBy) && $this->orderBy[0] != '')
+        if (\is_array($this->orderBy) && $this->orderBy[0] != '')
         {
             $orderBy = $this->orderBy;
             $firstOrderBy = $this->firstOrderBy;
@@ -1056,12 +1054,12 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
             $query .= " WHERE " . implode(' AND ', $this->procedure);
         }
 
-        if (!empty($this->root) && is_array($this->root))
+        if (!empty($this->root) && \is_array($this->root))
         {
             $query .= (!empty($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
         }
 
-        if (is_array($orderBy) && $orderBy[0] != '')
+        if (\is_array($orderBy) && $orderBy[0] != '')
         {
             foreach ($orderBy as $k=>$v)
             {
@@ -1069,7 +1067,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['findInSet'])
                 {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][1];
@@ -1077,7 +1075,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         $this->import($strClass);
                         $keys = $this->$strClass->$strMethod($this);
                     }
-                    elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
                     {
                         $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']($this);
                     }
@@ -1093,7 +1091,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                     $orderBy[$k] = $this->Database->findInSet($v, $keys);
                 }
-                elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'], array(5, 6, 7, 8, 9, 10)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'], array(5, 6, 7, 8, 9, 10)))
                 {
                     $orderBy[$k] = "CAST($key AS SIGNED)" . ($direction ? " $direction" : ""); // see #5503
                 }
@@ -1216,7 +1214,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     }
 
                     $return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">'.(is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']).'</th>';
+    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">'.(\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']).'</th>';
                 }
 
                 $return .= '
@@ -1255,7 +1253,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                         $args[$k] = $objRef->numRows ? $objRef->$strField : '';
                     }
-                    elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10)))
                     {
                         if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date')
                         {
@@ -1278,7 +1276,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     {
                         $row_v = deserialize($row[$v]);
 
-                        if (is_array($row_v))
+                        if (\is_array($row_v))
                         {
                             $args_k = array();
 
@@ -1291,7 +1289,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         }
                         elseif (isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]))
                         {
-                            $args[$k] = is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
+                            $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
                         }
                         elseif (($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'])) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
                         {
@@ -1307,7 +1305,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 // Shorten the label it if it is too long
                 $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?: '%s', $args);
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < strlen(strip_tags($label)))
+                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
                 {
                     $label = trim(\StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
@@ -1321,7 +1319,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 {
                     $current = $row[$firstOrderBy];
                     $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
-                    $sortingMode = (count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
+                    $sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
                     $remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
 
                     // Add the group header
@@ -1346,9 +1344,9 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 $colspan = 1;
 
                 // Call the label_callback ($row, $label, $this)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
                 {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
@@ -1356,7 +1354,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                         $this->import($strClass);
                         $args = $this->$strClass->$strMethod($row, $label, $this, $args);
                     }
-                    elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
                     {
                         $args = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']($row, $label, $this, $args);
                     }
@@ -1364,12 +1362,12 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     // Handle strings and arrays (backwards compatibility)
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
                     {
-                        $label = is_array($args) ? implode(' ', $args) : $args;
+                        $label = \is_array($args) ? implode(' ', $args) : $args;
                     }
-                    elseif (!is_array($args))
+                    elseif (!\is_array($args))
                     {
                         $args = array($args);
-                        $colspan = count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
+                        $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
                     }
                 }
 
@@ -1417,16 +1415,16 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 }
 
                 // Call the buttons_callback (see #4691)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
                 {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                     {
-                        if (is_array($callback))
+                        if (\is_array($callback))
                         {
                             $this->import($callback[0]);
                             $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                         }
-                        elseif (is_callable($callback))
+                        elseif (\is_callable($callback))
                         {
                             $arrButtons = $callback($arrButtons, $this);
                         }
@@ -1473,7 +1471,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
         foreach ($GLOBALS['TL_DCA'][$strTable]['list']['operations'] as $k=>$v)
         {
-            $v = is_array($v) ? $v : array($v);
+            $v = \is_array($v) ? $v : array($v);
             $id = specialchars(rawurldecode($arrRow['id']));
 
             $label = $v['label'][0] ?: $k;
@@ -1491,13 +1489,13 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
             }
 
             // Call a custom function instead of using the default button
-            if (is_array($v['button_callback']))
+            if (\is_array($v['button_callback']))
             {
                 $this->import($v['button_callback'][0]);
                 $return .= $this->$v['button_callback'][0]->$v['button_callback'][1]($arrRow, $v['href'], $label, $title, $v['icon'], $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
                 continue;
             }
-            elseif (is_callable($v['button_callback']))
+            elseif (\is_callable($v['button_callback']))
             {
                 $return .= $v['button_callback']($arrRow, $v['href'], $label, $title, $v['icon'], $attributes, $strTable, $arrRootIds, $arrChildRecordIds, $blnCircularReference, $strPrevious, $strNext);
                 continue;
@@ -1519,7 +1517,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
             }
 
             $arrDirections = array('up', 'down');
-            $arrRootIds = is_array($arrRootIds) ? $arrRootIds : array($arrRootIds);
+            $arrRootIds = \is_array($arrRootIds) ? $arrRootIds : array($arrRootIds);
 
             foreach ($arrDirections as $dir)
             {
@@ -1531,11 +1529,11 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                 if ($dir == 'up')
                 {
-                    $return .= ((is_numeric($strPrevious) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('up_.gif')).' ';
+                    $return .= ((is_numeric($strPrevious) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.\intval($strPrevious).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('up_.gif')).' ';
                     continue;
                 }
 
-                $return .= ((is_numeric($strNext) && (!in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('down_.gif')).' ';
+                $return .= ((is_numeric($strNext) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.\intval($strNext).'" title="'.specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('down_.gif')).' ';
             }
         }
 

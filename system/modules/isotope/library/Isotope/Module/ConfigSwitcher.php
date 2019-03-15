@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -54,7 +53,7 @@ class ConfigSwitcher extends Module
             $this->overrideConfig($configId, true);
         }
 
-        $optionsCount = count($this->iso_config_ids);
+        $optionsCount = \count($this->iso_config_ids);
 
         // If the module config has only one config, always override the current cart
         if (1 === $optionsCount) {
@@ -102,7 +101,7 @@ class ConfigSwitcher extends Module
             return;
         }
 
-        if (in_array($configId, $this->iso_config_ids)) {
+        if (\in_array($configId, $this->iso_config_ids)) {
             Isotope::getCart()->config_id = $configId;
             Isotope::getCart()->save();
         }

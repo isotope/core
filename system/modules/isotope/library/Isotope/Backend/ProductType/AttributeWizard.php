@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -34,7 +33,7 @@ class AttributeWizard extends \Backend
         $arrValues   = $objWidget->value;
         $blnVariants = $this->isVariants($objWidget->name);
 
-        if (!empty($arrValues) && is_array($arrValues)) {
+        if (!empty($arrValues) && \is_array($arrValues)) {
             if ($blnVariants) {
                 $arrFixed = Attribute::getVariantFixedFields($objWidget->dataContainer->activeRecord->class);
             } else {
@@ -42,7 +41,7 @@ class AttributeWizard extends \Backend
             }
 
             foreach ($arrValues as $i => $attribute) {
-                if (in_array($attribute['name'], $arrFixed, true)) {
+                if (\in_array($attribute['name'], $arrFixed, true)) {
                     $objWidget->addDataToFieldAtIndex($i, 'enabled', array('eval' => array('disabled' => true)));
                 }
 
@@ -150,7 +149,7 @@ class AttributeWizard extends \Backend
 
         $varValue = $objWidget->value;
 
-        if (!empty($varValue) && is_array($varValue)) {
+        if (!empty($varValue) && \is_array($varValue)) {
             foreach ($varValue as $arrField) {
                 if ($arrField['legend'] != '' && !isset($arrLegends[$arrField['legend']])) {
                     $arrLegends[$arrField['legend']] = $arrField['legend'];
@@ -184,7 +183,7 @@ class AttributeWizard extends \Backend
             $arrFixed = Attribute::getFixedFields($dc->activeRecord->class);
         }
 
-        if (!is_array($arrValues)) {
+        if (!\is_array($arrValues)) {
             $arrValues = array();
         }
 
@@ -211,7 +210,7 @@ class AttributeWizard extends \Backend
 
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
-            if (!is_array($arrField['attributes'])
+            if (!\is_array($arrField['attributes'])
                 || $arrField['attributes']['legend'] == ''
                 || $this->isExcluded($strName, $blnVariants)
                 || ($blnVariants && $arrField['attributes']['inherit'])
@@ -221,7 +220,7 @@ class AttributeWizard extends \Backend
             }
 
             $arrFields[$strName] = array(
-                'enabled' => in_array($strName, $arrFixed, true) ? '1' : '',
+                'enabled' => \in_array($strName, $arrFixed, true) ? '1' : '',
                 'name'    => $strName,
                 'legend'  => $arrField['attributes']['legend'],
             );
@@ -244,7 +243,7 @@ class AttributeWizard extends \Backend
         $arrFields   = deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
-        if (empty($arrFields) || !is_array($arrFields)) {
+        if (empty($arrFields) || !\is_array($arrFields)) {
             return $varValue;
         }
 
@@ -255,11 +254,11 @@ class AttributeWizard extends \Backend
         }
 
         foreach ($arrFields as $k => $arrField) {
-            if (in_array($arrField['name'], $arrFixed, true)) {
+            if (\in_array($arrField['name'], $arrFixed, true)) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
-            if (!in_array($arrField['legend'], $arrLegends, true)) {
+            if (!\in_array($arrField['legend'], $arrLegends, true)) {
                 $arrLegends[] = $arrField['legend'];
             }
         }
@@ -312,6 +311,6 @@ class AttributeWizard extends \Backend
     {
         $excludedFields = $forVariants ? Attribute::getVariantExcludedFields() : Attribute::getExcludedFields();
 
-        return in_array($attributeName, $excludedFields, true);
+        return \in_array($attributeName, $excludedFields, true);
     }
 }

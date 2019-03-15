@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -66,7 +65,7 @@ class RangeFields extends \Backend
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$field];
             if ($attribute instanceof IsotopeAttributeWithRange && $attribute->allowRangeFilter()) {
-                $arrAttributes[$field] = (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field);
+                $arrAttributes[$field] = (\strlen($arrData['label'][0]) ? $arrData['label'][0] : $field);
             }
         }
 

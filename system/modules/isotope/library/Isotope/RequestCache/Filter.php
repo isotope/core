@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -94,7 +93,7 @@ class Filter implements \ArrayAccess
      */
     public function valueNotIn(array $arrValues)
     {
-        return !in_array($this->arrConfig['value'], $arrValues, false);
+        return !\in_array($this->arrConfig['value'], $arrValues, false);
     }
 
     /**
@@ -168,7 +167,7 @@ class Filter implements \ArrayAccess
 
     public function groupBy($group)
     {
-        if (array_key_exists('group', $this->arrConfig)) {
+        if (\array_key_exists('group', $this->arrConfig)) {
             throw new \BadMethodCallException('Filter already has a group');
         }
 
@@ -188,7 +187,7 @@ class Filter implements \ArrayAccess
      */
     public function hasGroup()
     {
-        return array_key_exists('group', $this->arrConfig);
+        return \array_key_exists('group', $this->arrConfig);
     }
 
     /**
@@ -231,7 +230,7 @@ class Filter implements \ArrayAccess
             return false;
         }
 
-        if (!is_array($varValues)) {
+        if (!\is_array($varValues)) {
             $varValues = deserialize($varValues, true);
         }
 
@@ -302,7 +301,7 @@ class Filter implements \ArrayAccess
      */
     public function isDynamicAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields(), true);
+        return \in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields(), true);
     }
 
     /**
@@ -312,7 +311,7 @@ class Filter implements \ArrayAccess
      */
     public function isMultilingualAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields(), true);
+        return \in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields(), true);
     }
 
     /**
@@ -361,7 +360,7 @@ class Filter implements \ArrayAccess
                 return 'LIKE';
 
             case static::IN_ARRAY:
-                $total = count((array) $this->arrConfig['value']);
+                $total = \count((array) $this->arrConfig['value']);
 
                 return 'IN ('.implode(',', array_fill(0, $total, '?')).')';
 

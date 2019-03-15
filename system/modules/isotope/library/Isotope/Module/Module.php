@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -187,7 +186,7 @@ abstract class Module extends AbstractFrontendModule
                     break;
 
                 default:
-                    if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
+                    if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && \is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
                         foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
                             $arrCategories = \System::importStatic($callback[0])->{$callback[1]}($this);
 
@@ -283,7 +282,7 @@ abstract class Module extends AbstractFrontendModule
         }
 
         // HOOK: add custom logic
-        if (isset($GLOBALS['TL_HOOKS']['getPageIdFromUrl']) && is_array($GLOBALS['TL_HOOKS']['getPageIdFromUrl'])) {
+        if (isset($GLOBALS['TL_HOOKS']['getPageIdFromUrl']) && \is_array($GLOBALS['TL_HOOKS']['getPageIdFromUrl'])) {
             foreach ($GLOBALS['TL_HOOKS']['getPageIdFromUrl'] as $callback) {
                 $arrFragments = \System::importStatic($callback[0])->{$callback[1]}($arrFragments);
             }
@@ -293,7 +292,7 @@ abstract class Module extends AbstractFrontendModule
         $arrGet    = array();
 
         // Add fragments to URL params
-        for ($i = 1, $count = count($arrFragments); $i < $count; $i += 2) {
+        for ($i = 1, $count = \count($arrFragments); $i < $count; $i += 2) {
             if (isset($_GET[$arrFragments[$i]])) {
                 $key = urldecode($arrFragments[$i]);
                 \Input::setGet($key, null);
@@ -302,7 +301,7 @@ abstract class Module extends AbstractFrontendModule
         }
 
         // Add get parameters to URL
-        if (is_array($_GET) && !empty($_GET)) {
+        if (\is_array($_GET) && !empty($_GET)) {
             foreach ($_GET as $key => $value) {
                 // Ignore the language parameter
                 if ($key == 'language' && $GLOBALS['TL_CONFIG']['addLanguageToUrl']) {

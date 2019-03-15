@@ -1,9 +1,9 @@
 <?php
-/**
+
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -119,7 +119,7 @@ class FilterQueryBuilder
             }
         }
 
-        if (0 !== count($arrGroups)) {
+        if (0 !== \count($arrGroups)) {
             foreach ($arrGroups as $arrGroup) {
                 $arrGroupWhere = array();
 
@@ -140,7 +140,7 @@ class FilterQueryBuilder
             }
         }
 
-        if (0 !== count($arrWhere)) {
+        if (0 !== \count($arrWhere)) {
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {

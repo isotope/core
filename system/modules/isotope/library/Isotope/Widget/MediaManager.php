@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -128,7 +127,7 @@ class MediaManager extends \Widget implements \uploadable
             $arrFallback = $this->getFallbackData();
 
             // Check that image is not assigned in fallback language
-            if (is_array($arrFallback) && in_array($strCacheName, $arrFallback)) {
+            if (\is_array($arrFallback) && \in_array($strCacheName, $arrFallback)) {
                 $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
             }
 
@@ -157,7 +156,7 @@ class MediaManager extends \Widget implements \uploadable
 
         \Message::reset();
 
-        if (!is_array($varInput) || empty($varInput)) {
+        if (!\is_array($varInput) || empty($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
         }
 
@@ -171,14 +170,14 @@ class MediaManager extends \Widget implements \uploadable
     {
         $this->varValue = $this->getPost($this->strName);
 
-        if (!is_array($this->varValue)) {
+        if (!\is_array($this->varValue)) {
             $this->varValue = array();
         }
 
         // Fetch fallback language record
         $arrFallback = $this->getFallbackData();
 
-        if (is_array($arrFallback)) {
+        if (\is_array($arrFallback)) {
             foreach ($arrFallback as $k => $arrImage) {
                 if ('all' === $arrImage['translate']) {
                     unset($arrFallback[$k]);
@@ -188,7 +187,7 @@ class MediaManager extends \Widget implements \uploadable
 
         // Check that image is not assigned in fallback language
         foreach ($this->varValue as $k => $v) {
-            if (is_array($arrFallback) && in_array($v, $arrFallback)) {
+            if (\is_array($arrFallback) && \in_array($v, $arrFallback)) {
                 $this->addError($GLOBALS['TL_LANG']['ERR']['imageInFallback']);
             } elseif ($arrFallback !== false) {
                 $this->varValue[$k]['translate'] = 'all';
@@ -210,7 +209,7 @@ class MediaManager extends \Widget implements \uploadable
                 }
 
                 // Make sure the parent folder exists
-                new \Folder(dirname($strFile));
+                new \Folder(\dirname($strFile));
 
                 if (\Files::getInstance()->copy($v['src'], $strFile)) {
                     $this->varValue[$k]['src'] = basename($strFile);
@@ -228,7 +227,7 @@ class MediaManager extends \Widget implements \uploadable
                 }
             }
 
-            if (!is_array($arrFallback) || empty($arrFallback)) {
+            if (!\is_array($arrFallback) || empty($arrFallback)) {
                 $this->addError(sprintf($GLOBALS['TL_LANG']['ERR']['mandatory'], $this->strLabel));
             }
         }
@@ -253,7 +252,7 @@ class MediaManager extends \Widget implements \uploadable
         $arrFallback = $this->getFallbackData();
 
         // Adapt the temporary files
-        if (is_array($this->varValue) && is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
+        if (\is_array($this->varValue) && \is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
             foreach ($this->varValue['files'] as $v) {
                 if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
@@ -347,7 +346,7 @@ class MediaManager extends \Widget implements \uploadable
 
         $return .= '<div>';
 
-        if (!is_array($this->varValue) || empty($this->varValue)) {
+        if (!\is_array($this->varValue) || empty($this->varValue)) {
             return $return . $GLOBALS['TL_LANG']['MSC']['mmNoUploads'] . '</div>' . $upload . (!$blnIsAjax ? '</div>' : '');
         }
 
@@ -365,7 +364,7 @@ class MediaManager extends \Widget implements \uploadable
   <tbody class="sortable">';
 
         // Add input fields
-        for ($i=0, $count=count($this->varValue); $i<$count; $i++) {
+        for ($i=0, $count=\count($this->varValue); $i<$count; $i++) {
             $strFile = $this->getFilePath($this->varValue[$i]['src']);
 
             if (!is_file(TL_ROOT . '/' . $strFile)) {
@@ -440,7 +439,7 @@ class MediaManager extends \Widget implements \uploadable
     protected function getFilePath($strFile, $blnFolder = false)
     {
         if (stripos($strFile, $this->strTempFolder) !== false) {
-            return $blnFolder ? dirname($blnFolder) : $strFile;
+            return $blnFolder ? \dirname($blnFolder) : $strFile;
         }
 
         return 'isotope/' . substr($strFile, 0, 1) . (!$blnFolder ? ('/' . $strFile) : '');

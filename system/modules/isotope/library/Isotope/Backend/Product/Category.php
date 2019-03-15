@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -154,7 +153,7 @@ class Category extends \Backend
         $db = \Database::getInstance();
         $arrIds = deserialize($varValue);
 
-        if (is_array($arrIds) && !empty($arrIds)) {
+        if (\is_array($arrIds) && !empty($arrIds)) {
             $time = time();
 
             if ($db->query("DELETE FROM tl_iso_product_category WHERE pid={$dc->id} AND page_id NOT IN (" . implode(',', $arrIds) . ')')->affectedRows > 0) {

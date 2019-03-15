@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -61,7 +60,7 @@ class ProductPrice extends \Model implements IsotopePrice
      */
     public function hasTiers()
     {
-        return (count($this->arrTiers) > 1);
+        return (\count($this->arrTiers) > 1);
     }
 
     /**
@@ -418,7 +417,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrGroups = deserialize($objMember->groups);
         }
 
-        if (!isset($arrGroups) || !is_array($arrGroups)) {
+        if (!isset($arrGroups) || !\is_array($arrGroups)) {
             $arrGroups = array();
         }
 

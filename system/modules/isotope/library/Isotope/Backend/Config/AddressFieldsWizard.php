@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -64,7 +63,7 @@ class AddressFieldsWizard extends \Backend
         $arrFields = array();
         $arrValues = deserialize($varValue);
 
-        if (!is_array($arrValues)) {
+        if (!\is_array($arrValues)) {
             $arrValues = array();
         }
 
@@ -108,7 +107,7 @@ class AddressFieldsWizard extends \Backend
 
         $arrFields = deserialize($varValue);
 
-        if (empty($arrFields) || !is_array($arrFields)) {
+        if (empty($arrFields) || !\is_array($arrFields)) {
             return $varValue;
         }
 

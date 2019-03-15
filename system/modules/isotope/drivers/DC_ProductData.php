@@ -1,14 +1,12 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Class DC_ProductData
@@ -58,7 +56,7 @@ class DC_ProductData extends \DC_Table
             $objGroup = \Isotope\Model\Group::findByPk($this->intGroupId);
 
             if (null === $objGroup) {
-                if (\BackendUser::getInstance()->isAdmin || !is_array(\BackendUser::getInstance()->iso_groups)) {
+                if (\BackendUser::getInstance()->isAdmin || !\is_array(\BackendUser::getInstance()->iso_groups)) {
                     $this->intGroupId = 0;
                 }
                 elseif (!\BackendUser::getInstance()->isAdmin) {
@@ -103,7 +101,7 @@ class DC_ProductData extends \DC_Table
             );
         }
 
-        if (count($arrPageLanguages) > 1) {
+        if (\count($arrPageLanguages) > 1) {
             $this->arrTranslationLabels = \System::getLanguages();
             $this->arrTranslations      = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
         }
@@ -121,12 +119,12 @@ class DC_ProductData extends \DC_Table
         $this->bid = 'tl_buttons';
 
         // Clean up old tl_undo and tl_log entries
-        if ($this->strTable == 'tl_undo' && strlen($GLOBALS['TL_CONFIG']['undoPeriod'])) {
+        if ($this->strTable == 'tl_undo' && \strlen($GLOBALS['TL_CONFIG']['undoPeriod'])) {
             $this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
-                ->execute(intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
-        } elseif ($this->strTable == 'tl_log' && strlen($GLOBALS['TL_CONFIG']['logPeriod'])) {
+                ->execute(\intval(time() - $GLOBALS['TL_CONFIG']['undoPeriod']));
+        } elseif ($this->strTable == 'tl_log' && \strlen($GLOBALS['TL_CONFIG']['logPeriod'])) {
             $this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
-                ->execute(intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
+                ->execute(\intval(time() - $GLOBALS['TL_CONFIG']['logPeriod']));
         }
 
         $this->reviseTable();
@@ -157,7 +155,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Custom filter
-        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && !empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'])) {
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $filter) {
                 $this->procedure[] = $filter[0];
                 $this->values[] = $filter[1];
@@ -165,7 +163,7 @@ class DC_ProductData extends \DC_Table
         }
 
         $return .= $this->panel();
-        $return .= (CURRENT_ID && (\Input::get('pid') === null || (\Input::get('pid') != '' && intval(\Input::get('pid')) != 0))) ? $this->parentView() : $this->listView();
+        $return .= (CURRENT_ID && (\Input::get('pid') === null || (\Input::get('pid') != '' && \intval(\Input::get('pid')) != 0))) ? $this->parentView() : $this->listView();
 
         // Add another panel at the end of the page
         if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false && ($strLimit = $this->limitMenu(true)) != false) {
@@ -229,13 +227,13 @@ class DC_ProductData extends \DC_Table
             }
 
             // Call the oncut_callback
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'] as $callback) {
-                    if (is_array($callback)) {
+                    if (\is_array($callback)) {
                         $this->import($callback[0]);
                         $this->{$callback[0]}->{$callback[1]}($this);
-                    } elseif (is_callable($callback)) {
-                        call_user_func($callback, $this);
+                    } elseif (\is_callable($callback)) {
+                        \call_user_func($callback, $this);
                     }
                 }
             }
@@ -266,12 +264,12 @@ class DC_ProductData extends \DC_Table
         $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
 
         /** PATCH: removed check for sorting field */
-        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && strlen(\Input::get('childs')) && $this->Database->fieldExists('pid', $table))
+        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && \strlen(\Input::get('childs')) && $this->Database->fieldExists('pid', $table))
         {
             $ctable[] = $table;
         }
 
-        if (!is_array($ctable))
+        if (!\is_array($ctable))
         {
             return;
         }
@@ -282,7 +280,7 @@ class DC_ProductData extends \DC_Table
             $this->loadDataContainer($v);
             $cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'];
 
-            if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && strlen($v))
+            if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && \strlen($v))
             {
                 // Consider the dynamic parent table (see #4867)
                 if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'])
@@ -332,9 +330,9 @@ class DC_ProductData extends \DC_Table
                             $vv = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
 
                             // Use array_key_exists to allow NULL (see #5252)
-                            if (array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))
+                            if (\array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))
                             {
-                                $vv = is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
+                                $vv = \is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
                             }
 
                             // Encrypt the default value (see #3740)
@@ -386,7 +384,7 @@ class DC_ProductData extends \DC_Table
     {
         $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
-        if (isset($arrClipboard[$this->strTable]) && is_array($arrClipboard[$this->strTable]['id'])) {
+        if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id'])) {
             $arrIds = array();
 
             foreach ($arrClipboard[$this->strTable]['id'] as $id) {
@@ -463,7 +461,7 @@ class DC_ProductData extends \DC_Table
             $session = \Session::getInstance()->getData();
 
             if (\Input::post('FORM_SUBMIT') == 'tl_language') {
-                if (in_array(\Input::post('language'), $this->arrTranslations)) {
+                if (\in_array(\Input::post('language'), $this->arrTranslations)) {
                     $session['language'][$this->strTable][$this->intId] = \Input::post('language');
                 } else {
                     unset($session['language'][$this->strTable][$this->intId]);
@@ -482,7 +480,7 @@ class DC_ProductData extends \DC_Table
                 \Controller::reload();
             }
 
-            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations)) {
+            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && \in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations)) {
                 $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
@@ -517,7 +515,7 @@ class DC_ProductData extends \DC_Table
                     if (preg_match('/^\{.*\}$/', $vv)) {
                         $legends[$k] = substr($vv, 1, -1);
                         unset($boxes[$k][$kk]);
-                    } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['exclude'] || !is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv])) {
+                    } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['exclude'] || !\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv])) {
                         unset($boxes[$k][$kk]);
                     } elseif ($this->blnEditLanguage && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['attributes']['multilingual']) {
                         unset($boxes[$k][$kk]);
@@ -525,7 +523,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Unset a box if it does not contain any fields
-                if (count($boxes[$k]) < $eCount) {
+                if (\count($boxes[$k]) < $eCount) {
                     unset($boxes[$k]);
                 }
             }
@@ -592,13 +590,13 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Call load_callback
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'])) {
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'])) {
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback) {
-                            if (is_array($callback)) {
+                            if (\is_array($callback)) {
                                 $this->import($callback[0]);
                                 $this->varValue = $this->{$callback[0]}->{$callback[1]}($this->varValue, $this);
-                            } elseif (is_callable($callback)) {
-                                $this->varValue = call_user_func($callback, $this->varValue, $this);
+                            } elseif (\is_callable($callback)) {
+                                $this->varValue = \call_user_func($callback, $this->varValue, $this);
                             }
                         }
                     }
@@ -633,7 +631,7 @@ class DC_ProductData extends \DC_Table
             $undefined = '';
 
             foreach ($this->arrTranslations as $language) {
-                if (in_array($language, $arrAvailableLanguages)) {
+                if (\in_array($language, $arrAvailableLanguages)) {
                     if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language) {
                         $available .= '<option value="' . $language . '" selected="selected">' . $this->arrTranslationLabels[$language] . '</option>';
                         $_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
@@ -652,7 +650,7 @@ class DC_ProductData extends \DC_Table
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
-<select name="language" class="tl_select' . (strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '" onchange="document.id(this).getParent(\'form\').submit()">
+<select name="language" class="tl_select' . (\strlen($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]) ? ' active' : '') . '" onchange="document.id(this).getParent(\'form\').submit()">
     <option value="">' . $GLOBALS['TL_LANG']['MSC']['defaultLanguage'] . '</option>' . $available . $undefined . '
 </select>
 <noscript>
@@ -678,7 +676,7 @@ class DC_ProductData extends \DC_Table
 
         if (\Input::get('s2e')) {
             $arrButtons['saveNedit'] = '<input type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNedit']).'">';
-        } elseif (!\Input::get('popup') && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'])) {
+        } elseif (!\Input::get('popup') && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || \strlen($this->ptable) || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'])) {
             $arrButtons['saveNback'] = '<input type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNback']).'">';
         }
 
@@ -687,12 +685,12 @@ class DC_ProductData extends \DC_Table
         }
 
         // Call the buttons_callback (see #4691)
-        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback) {
-                if (is_array($callback)) {
+                if (\is_array($callback)) {
                     $this->import($callback[0]);
                     $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
-                } elseif (is_callable($callback)) {
+                } elseif (\is_callable($callback)) {
                     $arrButtons = $callback($arrButtons, $this);
                 }
             }
@@ -739,13 +737,13 @@ class DC_ProductData extends \DC_Table
             array_unshift($arrValues, time());
 
             // Trigger the onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback) {
-                    if (is_array($callback)) {
+                    if (\is_array($callback)) {
                         $this->import($callback[0]);
                         $this->{$callback[0]}->{$callback[1]}($this);
-                    } elseif (is_callable($callback)) {
-                        call_user_func($callback, $this);
+                    } elseif (\is_callable($callback)) {
+                        \call_user_func($callback, $this);
                     }
                 }
             }
@@ -755,13 +753,13 @@ class DC_ProductData extends \DC_Table
                 $objVersions->create();
 
                 // Call the onversion_callback
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback) {
-                        if (is_array($callback)) {
+                        if (\is_array($callback)) {
                             $this->import($callback[0]);
                             $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->objActiveRecord->id, $this);
-                        } elseif (is_callable($callback)) {
-                            call_user_func($callback, $this->strTable, $this->objActiveRecord->id, $this);
+                        } elseif (\is_callable($callback)) {
+                            \call_user_func($callback, $this->strTable, $this->objActiveRecord->id, $this);
                         }
                     }
                 }
@@ -875,7 +873,7 @@ class DC_ProductData extends \DC_Table
         // Add fields
         $fields = $session['CURRENT'][$this->strTable];
 
-        if (!empty($fields) && is_array($fields) && \Input::get('fields'))
+        if (!empty($fields) && \is_array($fields) && \Input::get('fields'))
         {
             $class = 'tl_tbox';
             $formFields = array();
@@ -907,7 +905,7 @@ class DC_ProductData extends \DC_Table
                     foreach ($fields as $v)
                     {
                         // Check whether field is excluded or not in palette
-                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !in_array($v, $this->strPalette))
+                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !\in_array($v, $this->strPalette))
                         {
                             continue;
                         }
@@ -927,16 +925,16 @@ class DC_ProductData extends \DC_Table
                     if (!$this->noReload)
                     {
                         // Call the onsubmit_callback
-                        if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+                        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
                         {
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
                             {
-                                if (is_array($callback))
+                                if (\is_array($callback))
                                 {
                                     $this->import($callback[0]);
                                     $this->{$callback[0]}->{$callback[1]}($this);
                                 }
-                                elseif (is_callable($callback))
+                                elseif (\is_callable($callback))
                                 {
                                     $callback($this);
                                 }
@@ -949,18 +947,18 @@ class DC_ProductData extends \DC_Table
                             $objVersions->create();
 
                             // Call the onversion_callback
-                            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
+                            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
                             {
                                 @trigger_error('Using the onversion_callback has been deprecated and will no longer work in Contao 5.0. Use the oncreate_version_callback instead.', E_USER_DEPRECATED);
 
                                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] as $callback)
                                 {
-                                    if (is_array($callback))
+                                    if (\is_array($callback))
                                     {
                                         $this->import($callback[0]);
                                         $this->{$callback[0]}->{$callback[1]}($this->strTable, $this->intId, $this);
                                     }
-                                    elseif (is_callable($callback))
+                                    elseif (\is_callable($callback))
                                     {
                                         $callback($this->strTable, $this->intId, $this);
                                     }
@@ -1029,16 +1027,16 @@ class DC_ProductData extends \DC_Table
             $arrButtons['saveNclose'] = '<input type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c" value="'.specialchars($GLOBALS['TL_LANG']['MSC']['saveNclose']).'">';
 
             // Call the buttons_callback (see #4691)
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback']))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback)
                 {
-                    if (is_array($callback))
+                    if (\is_array($callback))
                     {
                         $this->import($callback[0]);
                         $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                     }
-                    elseif (is_callable($callback))
+                    elseif (\is_callable($callback))
                     {
                         $arrButtons = $callback($arrButtons, $this);
                     }
@@ -1103,12 +1101,12 @@ class DC_ProductData extends \DC_Table
             // Add meta fields if the current user is an administrator
             if ($this->User->isAdmin)
             {
-                if ($this->Database->fieldExists('sorting', $this->strTable) && !in_array('sorting', $fields))
+                if ($this->Database->fieldExists('sorting', $this->strTable) && !\in_array('sorting', $fields))
                 {
                     array_unshift($fields, 'sorting');
                 }
 
-                if ($this->Database->fieldExists('pid', $this->strTable) && !in_array('pid', $fields))
+                if ($this->Database->fieldExists('pid', $this->strTable) && !\in_array('pid', $fields))
                 {
                     array_unshift($fields, 'pid');
                 }
@@ -1117,7 +1115,7 @@ class DC_ProductData extends \DC_Table
             // Show all non-excluded fields
             foreach ($fields as $field)
             {
-                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (\strlen($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
                 {
                     $options .= '
   <input type="checkbox" name="all_fields[]" id="all_'.$field.'" class="tl_checkbox" value="'.specialchars($field).'"> <label for="all_'.$field.'" class="tl_checkbox_label">'.($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?: $GLOBALS['TL_LANG']['MSC'][$field][0]).'</label><br>';
@@ -1141,7 +1139,7 @@ class DC_ProductData extends \DC_Table
   <legend'.($blnIsError ? ' class="error"' : '').'>'.$GLOBALS['TL_LANG']['MSC']['all_fields'][0].'</legend>
   <input type="checkbox" id="check_all" class="tl_checkbox" onclick="Backend.toggleCheckboxes(this)"> <label for="check_all" style="color:#a6a6a6"><em>'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</em></label><br>'.$options.'
 </fieldset>'.($blnIsError ? '
-<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : ((\Config::get('showHelp') && strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
+<p class="tl_error">'.$GLOBALS['TL_LANG']['ERR']['all_fields'].'</p>' : ((\Config::get('showHelp') && \strlen($GLOBALS['TL_LANG']['MSC']['all_fields'][1])) ? '
 <p class="tl_help tl_tip">'.$GLOBALS['TL_LANG']['MSC']['all_fields'][1].'</p>' : '')).'
 </div>
 
@@ -1176,7 +1174,7 @@ class DC_ProductData extends \DC_Table
         $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
-        if (is_array($this->orderBy) && $this->orderBy[0] != '') {
+        if (\is_array($this->orderBy) && $this->orderBy[0] != '') {
             $orderBy = $this->orderBy;
             $firstOrderBy = $this->firstOrderBy;
         }
@@ -1190,23 +1188,23 @@ class DC_ProductData extends \DC_Table
             $query .= " WHERE " . implode(' AND ', $this->procedure);
         }
 
-        if (!empty($this->root) && is_array($this->root)) {
+        if (!empty($this->root) && \is_array($this->root)) {
             $query .= (!empty($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
         }
 
-        if (is_array($orderBy) && $orderBy[0] != '') {
+        if (\is_array($orderBy) && $orderBy[0] != '') {
             foreach ($orderBy as $k => $v) {
                 list($key, $direction) = explode(' ', $v, 2);
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['findInSet']) {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'])) {
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'])) {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][1];
 
                         $this->import($strClass);
                         $keys = $this->$strClass->$strMethod($this);
-                    } elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'])) {
-                        $keys = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'], $this);
+                    } elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'])) {
+                        $keys = \call_user_func($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'], $this);
                     } else {
                         $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options'];
                     }
@@ -1216,7 +1214,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     $orderBy[$k] = $this->Database->findInSet($v, $keys);
-                } elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'], array(5, 6, 7, 8, 9, 10))) {
+                } elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'], array(5, 6, 7, 8, 9, 10))) {
                     $orderBy[$k] = "CAST($key AS SIGNED)" . ($direction ? " $direction" : ""); // see #5503
                 }
             }
@@ -1300,7 +1298,7 @@ class DC_ProductData extends \DC_Table
 
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f) {
                     $return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
+    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
                 }
 
                 $return .= '
@@ -1332,7 +1330,7 @@ class DC_ProductData extends \DC_Table
                             ->execute($row[$strKey]);
 
                         $args[$k] = $objRef->numRows ? $objRef->$strField : '';
-                    } elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10))) {
+                    } elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10))) {
                         if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date') {
                             $args[$k] = $row[$v] ? \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], $row[$v]) : '-';
                         } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time') {
@@ -1345,7 +1343,7 @@ class DC_ProductData extends \DC_Table
                     } else {
                         $row_v = deserialize($row[$v]);
 
-                        if (is_array($row_v)) {
+                        if (\is_array($row_v)) {
                             $args_k = array();
 
                             foreach ($row_v as $option) {
@@ -1354,7 +1352,7 @@ class DC_ProductData extends \DC_Table
 
                             $args[$k] = implode(', ', $args_k);
                         } elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]])) {
-                            $args[$k] = is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]];
+                            $args[$k] = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]];
                         } elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'])) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$row[$v]])) {
                             $args[$k] = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$row[$v]];
                         } else {
@@ -1366,7 +1364,7 @@ class DC_ProductData extends \DC_Table
                 // Shorten the label it if it is too long
                 $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ? : '%s', $args);
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < strlen(strip_tags($label))) {
+                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label))) {
                     $label = trim(\StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
 
@@ -1381,23 +1379,23 @@ class DC_ProductData extends \DC_Table
                 $colspan = 1;
 
                 // Call the label callback ($row, $label, $this)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
 
                         $this->import($strClass);
                         $args = $this->$strClass->$strMethod($row, $label, $this, $args);
                     } else {
-                        $args = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
+                        $args = \call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
                     }
 
                     // Handle strings and arrays (backwards compatibility)
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
-                        $label = is_array($args) ? implode(' ', $args) : $args;
-                    } elseif (!is_array($args)) {
+                        $label = \is_array($args) ? implode(' ', $args) : $args;
+                    } elseif (!\is_array($args)) {
                         $args = array($args);
-                        $colspan = count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
+                        $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
                     }
                 }
 
@@ -1451,16 +1449,16 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Call the buttons_callback (see #4691)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
                 {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                     {
-                        if (is_array($callback))
+                        if (\is_array($callback))
                         {
                             $this->import($callback[0]);
                             $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                         }
-                        elseif (is_callable($callback))
+                        elseif (\is_callable($callback))
                         {
                             $arrButtons = $callback($arrButtons, $this);
                         }
@@ -1501,7 +1499,7 @@ class DC_ProductData extends \DC_Table
             $blnClipboard = true;
             $arrClipboard = $arrClipboard[$this->strTable];
 
-            if (is_array($arrClipboard['id'])) {
+            if (\is_array($arrClipboard['id'])) {
                 $blnMultiboard = true;
             }
         }
@@ -1559,7 +1557,7 @@ class DC_ProductData extends \DC_Table
             foreach ($headerFields as $v) {
                 $_v = deserialize($objParent->$v);
 
-                if (is_array($_v)) {
+                if (\is_array($_v)) {
                     $_v = implode(', ', $_v);
                 } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple']) {
                     $_v = ($_v != '') ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
@@ -1588,7 +1586,7 @@ class DC_ProductData extends \DC_Table
                     if ($objLabel->numRows) {
                         $_v = $objLabel->value;
                     }
-                } elseif (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v])) {
+                } elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v])) {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v][0];
                 } elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v])) {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v];
@@ -1604,14 +1602,14 @@ class DC_ProductData extends \DC_Table
             }
 
             // Trigger the header_callback (see #3417)
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'])) {
                 $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'][0];
                 $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'][1];
 
                 $this->import($strClass);
                 $add = $this->$strClass->$strMethod($add, $this);
-            } elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'])) {
-                $add = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'], $add, $this);
+            } elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'])) {
+                $add = \call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['header_callback'], $add, $this);
             }
 
             // Output the header data
@@ -1620,7 +1618,7 @@ class DC_ProductData extends \DC_Table
 <table class="tl_header_table">';
 
             foreach ($add as $k => $v) {
-                if (is_array($v)) {
+                if (\is_array($v)) {
                     $v = $v[0];
                 }
 
@@ -1641,7 +1639,7 @@ class DC_ProductData extends \DC_Table
             // Add all records of the current table
             $query = "SELECT * FROM {$this->strTable}";
 
-            if (is_array($this->orderBy) && strlen($this->orderBy[0])) {
+            if (\is_array($this->orderBy) && \strlen($this->orderBy[0])) {
                 $orderBy = $this->orderBy;
                 $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
@@ -1651,7 +1649,7 @@ class DC_ProductData extends \DC_Table
                     $query = "SELECT *, (SELECT " . $key[1] . " FROM " . $key[0] . " WHERE " . $this->strTable . "." . $firstOrderBy . "=" . $key[0] . ".id) AS foreignKey FROM " . $this->strTable;
                     $orderBy[0] = 'foreignKey';
                 }
-            } elseif (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'])) {
+            } elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'])) {
                 $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
                 $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
             }
@@ -1669,19 +1667,19 @@ class DC_ProductData extends \DC_Table
             if (!empty($this->procedure)) {
                 $query .= " WHERE " . implode(' AND ', $this->procedure);
             }
-            if (!empty($this->root) && is_array($this->root)) {
+            if (!empty($this->root) && \is_array($this->root)) {
                 $query .= (!empty($this->procedure) ? " AND " : " WHERE ") . "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
             }
 
             // ORDER BY
-            if (!empty($orderBy) && is_array($orderBy)) {
+            if (!empty($orderBy) && \is_array($orderBy)) {
                 $query .= " ORDER BY " . implode(', ', $orderBy);
             }
 
             $objOrderByStmt = $this->Database->prepare($query);
 
             // LIMIT
-            if (strlen($this->limit)) {
+            if (\strlen($this->limit)) {
                 $arrLimit = explode(',', $this->limit);
                 $objOrderByStmt->limit($arrLimit[1], $arrLimit[0]);
             }
@@ -1732,7 +1730,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     $return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
+    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
                 }
 
                 $return .= '
@@ -1766,7 +1764,7 @@ class DC_ProductData extends \DC_Table
                             ->execute($row[$strKey]);
 
                         $args[$k] = $objRef->numRows ? $objRef->$strField : '';
-                    } elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10))) {
+                    } elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10))) {
                         if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date') {
                             $args[$k] = $row[$v] ? \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], $row[$v]) : '-';
                         } elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time') {
@@ -1779,7 +1777,7 @@ class DC_ProductData extends \DC_Table
                     } else {
                         $row_v = deserialize($row[$v]);
 
-                        if (is_array($row_v)) {
+                        if (\is_array($row_v)) {
                             $args_k = array();
 
                             foreach ($row_v as $option) {
@@ -1788,7 +1786,7 @@ class DC_ProductData extends \DC_Table
 
                             $args[$k] = implode(', ', $args_k);
                         } elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]])) {
-                            $args[$k] = is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]];
+                            $args[$k] = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$row[$v]];
                         } elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'])) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$row[$v]])) {
                             $args[$k] = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$row[$v]];
                         } else {
@@ -1800,7 +1798,7 @@ class DC_ProductData extends \DC_Table
                 // Shorten the label it if it is too long
                 $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ? : '%s', $args);
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < strlen(strip_tags($label))) {
+                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label))) {
                     $label = trim(\StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
 
@@ -1812,7 +1810,7 @@ class DC_ProductData extends \DC_Table
                 if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] > 0) {
                     $current = $row[$firstOrderBy];
                     $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
-                    $sortingMode = (count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
+                    $sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] != '' && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] == '') ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
                     $remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
 
                     // Add the group header
@@ -1836,23 +1834,23 @@ class DC_ProductData extends \DC_Table
                 $colspan = 1;
 
                 // Call the label callback ($row, $label, $this)
-                if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'])) {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
 
                         $this->import($strClass);
                         $args = $this->$strClass->$strMethod($row, $label, $this, $args);
                     } else {
-                        $args = call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
+                        $args = \call_user_func($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'], $row, $label, $this, $args);
                     }
 
                     // Handle strings and arrays (backwards compatibility)
                     if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
-                        $label = is_array($args) ? implode(' ', $args) : $args;
-                    } elseif (!is_array($args)) {
+                        $label = \is_array($args) ? implode(' ', $args) : $args;
+                    } elseif (!\is_array($args)) {
                         $args = array($args);
-                        $colspan = count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
+                        $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
                     }
                 }
 
@@ -1907,16 +1905,16 @@ class DC_ProductData extends \DC_Table
             }
 
             // Call the buttons_callback (see #4691)
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                 {
-                    if (is_array($callback))
+                    if (\is_array($callback))
                     {
                         $this->import($callback[0]);
                         $arrButtons = $this->{$callback[0]}->{$callback[1]}($arrButtons, $this);
                     }
-                    elseif (is_callable($callback))
+                    elseif (\is_callable($callback))
                     {
                         $arrButtons = $callback($arrButtons, $this);
                     }
@@ -1986,15 +1984,15 @@ class DC_ProductData extends \DC_Table
             $strSort = \Input::post('tl_sort');
 
             // Validate the user input (thanks to aulmn) (see #4971)
-            if (in_array($strSort, $sortingFields))
+            if (\in_array($strSort, $sortingFields))
             {
-                $session['sorting'][$sessionKey] = in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strSort]['flag'], array(2, 4, 6, 8, 10, 12)) ? "$strSort DESC" : $strSort;
+                $session['sorting'][$sessionKey] = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strSort]['flag'], array(2, 4, 6, 8, 10, 12)) ? "$strSort DESC" : $strSort;
                 \Session::getInstance()->setData($session);
             }
         }
 
         // Overwrite the "orderBy" value with the session value
-        elseif (strlen($session['sorting'][$sessionKey]))
+        elseif (\strlen($session['sorting'][$sessionKey]))
         {
             $overwrite = preg_quote(preg_replace('/\s+.*$/', '', $session['sorting'][$sessionKey]), '/');
             $orderBy = array_diff($orderBy, preg_grep('/^'.$overwrite.'/i', $orderBy));
@@ -2010,14 +2008,14 @@ class DC_ProductData extends \DC_Table
         // Sorting fields
         foreach ($sortingFields as $field)
         {
-            $options_label = strlen(($lbl = is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'])) ? $lbl : $GLOBALS['TL_LANG']['MSC'][$field];
+            $options_label = \strlen(($lbl = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'])) ? $lbl : $GLOBALS['TL_LANG']['MSC'][$field];
 
-            if (is_array($options_label))
+            if (\is_array($options_label))
             {
                 $options_label = $options_label[0];
             }
 
-            $options_sorter[$options_label] = '  <option value="'.specialchars($field).'"'.((!strlen($session['sorting'][$sessionKey]) && $field == $firstOrderBy || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey])) ? ' selected="selected"' : '').'>'.$options_label.'</option>';
+            $options_sorter[$options_label] = '  <option value="'.specialchars($field).'"'.((!\strlen($session['sorting'][$sessionKey]) && $field == $firstOrderBy || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey])) ? ' selected="selected"' : '').'>'.$options_label.'</option>';
         }
 
         // Sort by option values
@@ -2164,7 +2162,7 @@ class DC_ProductData extends \DC_Table
                 $this->procedure[] = "pid=0";
             }
 
-            if (!empty($this->root) && is_array($this->root)) {
+            if (!empty($this->root) && \is_array($this->root)) {
                 $this->procedure[] = 'id IN(' . implode(',', $this->root) . ')';
             }
 
@@ -2256,7 +2254,7 @@ class DC_ProductData extends \DC_Table
         // Get the sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if (intval($v['filter']) == $intFilterPanel)
+            if (\intval($v['filter']) == $intFilterPanel)
             {
                 $sortingFields[] = $k;
             }
@@ -2294,7 +2292,7 @@ class DC_ProductData extends \DC_Table
                 if (isset($session['filter'][$filter][$field]))
                 {
                     // Sort by day
-                    if (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
                     {
                         if ($session['filter'][$filter][$field] == '')
                         {
@@ -2310,7 +2308,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Sort by month
-                    elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
                     {
                         if ($session['filter'][$filter][$field] == '')
                         {
@@ -2326,7 +2324,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Sort by year
-                    elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
                     {
                         if ($session['filter'][$filter][$field] == '')
                         {
@@ -2379,13 +2377,13 @@ class DC_ProductData extends \DC_Table
                 $arrValues[] = CURRENT_ID;
             }
 
-            if (!empty($this->root) && is_array($this->root))
+            if (!empty($this->root) && \is_array($this->root))
             {
                 $arrProcedure[] = "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
             }
 
             // Check for a static filter (see #4719)
-            if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+            if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && \is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $fltr)
                 {
@@ -2401,13 +2399,13 @@ class DC_ProductData extends \DC_Table
                 $arrValues[] = $this->ptable;
             }
 
-            $objFields = $this->Database->prepare("SELECT DISTINCT " . $field . " FROM " . $this->strTable . ((is_array($arrProcedure) && strlen($arrProcedure[0])) ? ' WHERE ' . implode(' AND ', $arrProcedure) : ''))
+            $objFields = $this->Database->prepare("SELECT DISTINCT " . $field . " FROM " . $this->strTable . ((\is_array($arrProcedure) && \strlen($arrProcedure[0])) ? ' WHERE ' . implode(' AND ', $arrProcedure) : ''))
                                         ->execute($arrValues);
 
             // Begin select menu
             $fields .= '
 <select name="'.$field.'" id="'.$field.'" class="tl_select' . (isset($session['filter'][$filter][$field]) ? ' active' : '') . '">
-  <option value="tl_'.$field.'">'.(is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']).'</option>
+  <option value="tl_'.$field.'">'.(\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']).'</option>
   <option value="tl_'.$field.'">---</option>';
 
             if ($objFields->numRows)
@@ -2415,7 +2413,7 @@ class DC_ProductData extends \DC_Table
                 $options = $objFields->fetchEach($field);
 
                 // Sort by day
-                if (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
                 {
                     ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 6) ? rsort($options) : sort($options);
 
@@ -2435,7 +2433,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Sort by month
-                elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
                 {
                     ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 8) ? rsort($options) : sort($options);
 
@@ -2461,7 +2459,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Sort by year
-                elseif (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
                 {
                     ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 10) ? rsort($options) : sort($options);
 
@@ -2498,7 +2496,7 @@ class DC_ProductData extends \DC_Table
                             $doptions = deserialize($option);
                         }
 
-                        if (is_array($doptions))
+                        if (\is_array($doptions))
                         {
                             $moptions = array_merge($moptions, $doptions);
                         }
@@ -2511,9 +2509,9 @@ class DC_ProductData extends \DC_Table
                 $options_callback = array();
 
                 // Call the options_callback
-                if ((is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']) || is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'])) && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'])
+                if ((\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'])) && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'])
                 {
-                    if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][1];
@@ -2521,7 +2519,7 @@ class DC_ProductData extends \DC_Table
                         $this->import($strClass);
                         $options_callback = $this->$strClass->$strMethod($this);
                     }
-                    elseif (is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
                     {
                         $options_callback = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']($this);
                     }
@@ -2531,7 +2529,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 $options_sorter = array();
-                $blnDate = in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6, 7, 8, 9, 10));
+                $blnDate = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6, 7, 8, 9, 10));
 
                 // Options
                 foreach ($options as $kk=>$vv)
@@ -2539,7 +2537,7 @@ class DC_ProductData extends \DC_Table
                     $value = $blnDate ? $kk : $vv;
 
                     // Options callback
-                    if (!empty($options_callback) && is_array($options_callback))
+                    if (!empty($options_callback) && \is_array($options_callback))
                     {
                         $vv = $options_callback[$vv];
                     }
@@ -2591,7 +2589,7 @@ class DC_ProductData extends \DC_Table
                     // Use reference array
                     if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference']))
                     {
-                        $option_label = is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv];
+                        $option_label = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv];
                     }
 
                     // Associative array
@@ -2601,7 +2599,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // No empty options allowed
-                    if (!strlen($option_label))
+                    if (!\strlen($option_label))
                     {
                         $option_label = $vv ?: '-';
                     }
@@ -2614,7 +2612,7 @@ class DC_ProductData extends \DC_Table
                 {
                     natcasesort($options_sorter);
 
-                    if (in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(2, 4, 12)))
+                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(2, 4, 12)))
                     {
                         $options_sorter = array_reverse($options_sorter, true);
                     }
@@ -2652,7 +2650,7 @@ class DC_ProductData extends \DC_Table
         $arrDuplicate = array();
 
         foreach (trimsplit('[;,]', $this->getPalette()) as $field) {
-            if (is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual']) {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual']) {
                 $arrDuplicate[] = $field;
             }
         }

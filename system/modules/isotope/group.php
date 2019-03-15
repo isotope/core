@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -14,12 +13,12 @@ namespace Isotope;
 /**
  * Set the script name
  */
-define('TL_SCRIPT', 'system/modules/isotope/group.php');
+\define('TL_SCRIPT', 'system/modules/isotope/group.php');
 
 /**
  * Initialize the system
  */
-define('TL_MODE', 'BE');
+\define('TL_MODE', 'BE');
 
 require_once('initialize.php');
 
@@ -78,7 +77,7 @@ class ProductGroupPicker extends \Backend
         $strField = \Input::get('field');
 
         // Define the current ID
-        define('CURRENT_ID', \Input::get('id'));
+        \define('CURRENT_ID', \Input::get('id'));
 
         $this->loadDataContainer($strTable);
         \System::loadLanguageFile($strTable);
@@ -116,7 +115,7 @@ class ProductGroupPicker extends \Backend
         $this->Template->value = $this->Session->get('product_group_selector_search');
         $this->Template->addSearch = true;
 
-        if ($this->User->isAdmin || (is_array($this->User->iso_groupp) && !empty($this->User->iso_groupp))) {
+        if ($this->User->isAdmin || (\is_array($this->User->iso_groupp) && !empty($this->User->iso_groupp))) {
             $this->Template->manager = $GLOBALS['TL_LANG']['tl_iso_group']['manager'];
             $this->Template->managerHref = 'contao/main.php?do=iso_products&amp;table=tl_iso_group&amp;popup=1';
         }

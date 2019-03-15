@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -79,7 +78,7 @@ class ProductCollectionItem extends \Model
             return true;
         }
 
-        if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && \is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
             foreach ($GLOBALS['ISO_HOOKS']['itemIsAvailable'] as $callback) {
                 $available = \System::importStatic($callback[0])->{$callback[1]}($this);
 
@@ -235,7 +234,7 @@ class ProductCollectionItem extends \Model
     {
         $arrConfig = deserialize($this->configuration);
 
-        return is_array($arrConfig) ? $arrConfig : [];
+        return \is_array($arrConfig) ? $arrConfig : [];
     }
 
     /**
@@ -249,7 +248,7 @@ class ProductCollectionItem extends \Model
     {
         $arrConfig = deserialize($this->configuration);
 
-        if (empty($arrConfig) || !is_array($arrConfig)) {
+        if (empty($arrConfig) || !\is_array($arrConfig)) {
             return array();
         }
 
@@ -417,7 +416,7 @@ class ProductCollectionItem extends \Model
         $strQuery = "SELECT SUM($strField) AS sum FROM tl_iso_product_collection_item";
 
         if ($strColumn !== null) {
-            $strQuery .= ' WHERE ' . (is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
+            $strQuery .= ' WHERE ' . (\is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 
         return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
@@ -440,7 +439,7 @@ class ProductCollectionItem extends \Model
      */
     public function hasErrors()
     {
-        return 0 !== count($this->arrErrors);
+        return 0 !== \count($this->arrErrors);
     }
 
     /**

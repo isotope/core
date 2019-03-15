@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -38,7 +37,7 @@ class Callback extends Permission
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_tax_rates) || count($this->User->iso_tax_rates) < 1) // Can't use empty() because its an object property (using __get)
+        if (!\is_array($this->User->iso_tax_rates) || \count($this->User->iso_tax_rates) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         } else {
@@ -63,7 +62,7 @@ class Callback extends Permission
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_tax_rate', 'iso_tax_rates', 'iso_tax_ratep')
                 ) {
                     $root[] = \Input::get('id');
@@ -74,7 +73,7 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_tax_ratep'))
                 ) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' tax rate ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
@@ -95,7 +94,7 @@ class Callback extends Permission
                 break;
 
             default:
-                if (strlen(\Input::get('act'))) {
+                if (\strlen(\Input::get('act'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' tax rates', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }

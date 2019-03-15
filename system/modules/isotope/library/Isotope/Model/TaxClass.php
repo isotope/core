@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -111,7 +110,7 @@ class TaxClass extends \Model
      */
     public function calculateGrossPrice($fltPrice, array $arrAddresses = null)
     {
-        if (!is_array($arrAddresses)) {
+        if (!\is_array($arrAddresses)) {
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
                 'shipping' => Isotope::getCart()->getShippingAddress(),
@@ -150,7 +149,7 @@ class TaxClass extends \Model
      */
     public function calculateLegacyPrice($fltPrice, array $arrAddresses = null)
     {
-        if (!is_array($arrAddresses)) {
+        if (!\is_array($arrAddresses)) {
             $arrAddresses = array(
                 'billing'  => Isotope::getCart()->getBillingAddress(),
                 'shipping' => Isotope::getCart()->getShippingAddress(),

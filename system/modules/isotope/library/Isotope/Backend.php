@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -70,7 +69,7 @@ class Backend extends Contao_Backend
 
             foreach ($GLOBALS['TL_LANG']['DIV'] as $strCountry => $arrSubdivision) {
                 foreach ($arrSubdivision as $strCode => $varValue) {
-                    if (is_array($varValue)) {
+                    if (\is_array($varValue)) {
                         $strGroup = $varValue[''];
                         unset($varValue['']);
 
@@ -102,9 +101,9 @@ class Backend extends Contao_Backend
 
         if (isset($arrSubdivisions[$country][$subdivision])) {
             return $arrSubdivisions[$country][$subdivision];
-        } elseif (is_array($arrSubdivisions[$country])) {
+        } elseif (\is_array($arrSubdivisions[$country])) {
             foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
-                if (is_array($regionGroup)) {
+                if (\is_array($regionGroup)) {
                     foreach ($regionGroup as $groupLabel => $regions) {
                         if (isset($regions[$subdivision])) {
                             return $regions[$subdivision];
@@ -169,7 +168,7 @@ class Backend extends Contao_Backend
                 if ($objConfig->templateGroup != '') {
                     $arrConfigTemplates = glob(TL_ROOT . '/' . $objConfig->templateGroup . '/' . $strPrefix . '*');
 
-                    if (is_array($arrConfigTemplates)) {
+                    if (\is_array($arrConfigTemplates)) {
                         foreach ($arrConfigTemplates as $strFile) {
 
                             $strTemplate = basename($strFile, strrchr($strFile, '.'));
@@ -229,7 +228,7 @@ class Backend extends Contao_Backend
         if (!\BackendUser::getInstance()->isAdmin) {
             $arrConfigs = \BackendUser::getInstance()->iso_configs;
 
-            if (empty($arrConfigs) || !is_array($arrConfigs)) {
+            if (empty($arrConfigs) || !\is_array($arrConfigs)) {
                 return '';
             }
 
@@ -431,7 +430,7 @@ class Backend extends Contao_Backend
         if (
             !$arrFieldComplete ||
             !$arrFieldComplete['helpwizard'] ||
-            !is_array($arrFieldComplete['options']) ||
+            !\is_array($arrFieldComplete['options']) ||
             $arrField['explanation'] != '' ||
             isset($GLOBALS['TL_LANG']['XPL']['type'])
         ) {

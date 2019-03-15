@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -62,7 +61,7 @@ class Rules extends \Controller
      */
     public static function getInstance()
     {
-        if (!is_object(static::$objInstance)) {
+        if (!\is_object(static::$objInstance)) {
             static::$objInstance = new \Isotope\Rules();
         }
 
@@ -177,7 +176,7 @@ class Rules extends \Controller
 
         $arrCoupons = deserialize($objCart->coupons);
 
-        if (!empty($arrCoupons) && is_array($arrCoupons)) {
+        if (!empty($arrCoupons) && \is_array($arrCoupons)) {
             $arrDropped = array();
 
             foreach ($arrCoupons as $code) {
@@ -219,7 +218,7 @@ class Rules extends \Controller
     {
         $arrCoupons = deserialize(Isotope::getCart()->coupons);
 
-        if (!is_array($arrCoupons)) {
+        if (!\is_array($arrCoupons)) {
             $arrCoupons = array();
         }
 
@@ -236,7 +235,7 @@ class Rules extends \Controller
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
             } else {
 
-                if (in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons), true)) {
+                if (\in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons), true)) {
                     $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
                 } else {
                     $arrCoupons[] = $objRule->code;
@@ -296,7 +295,7 @@ class Rules extends \Controller
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);
 
-        if (is_array($arrCoupons) && !empty($arrCoupons)) {
+        if (\is_array($arrCoupons) && !empty($arrCoupons)) {
             $blnError = false;
 
             foreach ($arrCoupons as $k => $code) {

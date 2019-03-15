@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -64,7 +63,7 @@ abstract class CheckoutStep extends \Controller
      */
     public function getStepClass()
     {
-        $strClass = get_class($this);
+        $strClass = \get_class($this);
         $strClass = substr($strClass, strrpos($strClass, '\\') + 1);
 
         return standardize($strClass);

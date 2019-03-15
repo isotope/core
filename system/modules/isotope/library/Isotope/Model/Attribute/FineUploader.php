@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -83,7 +82,7 @@ class FineUploader extends Attribute implements \uploadable
             return '';
         }
 
-        $value = is_array($value) ? $value : [$value];
+        $value = \is_array($value) ? $value : [$value];
         $parsed = [];
 
         foreach ($value as $file) {
@@ -126,6 +125,6 @@ class FineUploader extends Attribute implements \uploadable
             $files[] = $file;
         }
 
-        return is_array($value) ? $files : $files[0];
+        return \is_array($value) ? $files : $files[0];
     }
 }

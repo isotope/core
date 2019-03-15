@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -31,7 +30,7 @@ class Callback extends \Backend
 
         $arrProducts = trimsplit(',', $row['products']);
 
-        if (!empty($arrProducts) && is_array($arrProducts)) {
+        if (!empty($arrProducts) && \is_array($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
             $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE " . \Database::getInstance()->findInSet('id', $arrProducts) . " ORDER BY name");
 
@@ -59,7 +58,7 @@ class Callback extends \Backend
                 SELECT * FROM tl_iso_related_category 
                 WHERE id NOT IN (
                     SELECT category FROM tl_iso_related_product 
-                    WHERE pid=' . (strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_product WHERE id=?) AND id!=?" : '?') . '
+                    WHERE pid=' . (\strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_product WHERE id=?) AND id!=?" : '?') . '
                 )
             ')
             ->execute($dc->id, $dc->id)

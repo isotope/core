@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -94,11 +93,11 @@ class Frontend extends \Frontend
         $strAlias = '';
 
         // Find products alias. Can't use Input because they're not yet initialized
-        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
+        if ($GLOBALS['TL_CONFIG']['useAutoItem'] && \in_array($strKey, $GLOBALS['TL_AUTO_ITEM'], true)) {
             $strKey = 'auto_item';
         }
 
-        for ($i = 1, $c = count($arrFragments); $i < $c; $i += 2) {
+        for ($i = 1, $c = \count($arrFragments); $i < $c; $i += 2) {
             if ($arrFragments[$i] == $strKey) {
                 $strAlias = $arrFragments[$i + 1];
             }
@@ -147,7 +146,7 @@ class Frontend extends \Frontend
                 }
 
                 // Store the page object
-                if (is_object($objNewPage)) {
+                if (\is_object($objNewPage)) {
                     $objPage = $objNewPage;
                 }
             }
@@ -200,7 +199,7 @@ class Frontend extends \Frontend
     public function injectScripts($buffer)
     {
         $messages = Message::generate();
-        $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && is_array($GLOBALS['AJAX_PRODUCTS']);
+        $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && \is_array($GLOBALS['AJAX_PRODUCTS']);
 
         if ($messages === '' && !$hasProducts) {
 
@@ -291,7 +290,7 @@ class Frontend extends \Frontend
 
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
-                        $intRemaining  = count($arrCategories);
+                        $intRemaining  = \count($arrCategories);
 
                         foreach ($arrCategories as $intPage) {
                             $objPage = \PageModel::findByPk($intPage);
@@ -355,7 +354,7 @@ class Frontend extends \Frontend
      */
     public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
     {
-        if (is_array($_SESSION['FILES'][$objWidget->name])
+        if (\is_array($_SESSION['FILES'][$objWidget->name])
             && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
             && $_SESSION['FILES'][$objWidget->name]['error'] == 0
         ) {
@@ -381,7 +380,7 @@ class Frontend extends \Frontend
             $arrCode = trimsplit('-', $strCode);
 
             // Ignore codes with more than 1 range
-            switch (count($arrCode)) {
+            switch (\count($arrCode)) {
                 case 1:
                     $arrCodes[] = $arrCode[0];
                     break;
@@ -419,7 +418,7 @@ class Frontend extends \Frontend
      */
     public static function getPagesInCurrentRoot(array $arrPages, $objMember = null)
     {
-        if (0 === count($arrPages)) {
+        if (0 === \count($arrPages)) {
             return $arrPages;
         }
 
@@ -474,13 +473,13 @@ class Frontend extends \Frontend
                 $arrPGroups = deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
-                if (!is_array($arrPGroups)) {
+                if (!\is_array($arrPGroups)) {
                     $arrUnavailable[$intMember][] = $intPage;
                     continue;
                 }
 
                 // Page groups do not match with member groups
-                if (count(array_intersect($arrGroups, $arrPGroups)) == 0) {
+                if (\count(array_intersect($arrGroups, $arrPGroups)) == 0) {
                     $arrUnavailable[$intMember][] = $intPage;
                     continue;
                 }
@@ -512,7 +511,7 @@ class Frontend extends \Frontend
         }
 
         global $objIsotopeListPage;
-        $last = count($arrItems) - 1;
+        $last = \count($arrItems) - 1;
 
         // If we have a reader page, rename the last item (the reader) to the product title
         if (null !== $objIsotopeListPage) {
@@ -596,9 +595,9 @@ class Frontend extends \Frontend
         }
 
         // Define the static URL constants
-        define('TL_FILES_URL', ($objPage->staticFiles != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
-        define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        \define('TL_SCRIPT_URL', ($objPage->staticSystem != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticSystem . TL_PATH . '/' : '');
+        \define('TL_PLUGINS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
 
         $objLayout = \Database::getInstance()->prepare("
             SELECT l.*, t.templates
@@ -610,7 +609,7 @@ class Frontend extends \Frontend
 
         if ($objLayout->numRows) {
             // Get the page layout
-            $objPage->template      = strlen($objLayout->template) ? $objLayout->template : 'fe_page';
+            $objPage->template      = \strlen($objLayout->template) ? $objLayout->template : 'fe_page';
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
@@ -681,7 +680,7 @@ class Frontend extends \Frontend
 
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
-                        if (in_array($objOption->id, $value)) {
+                        if (\in_array($objOption->id, $value)) {
                             $fltAmount += $objOption->getAmount($fltPrice, 0);
                         }
                     }

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -151,7 +150,7 @@ class Config extends \Model
             $this->arrCache['billingFieldsConfig'] = array();
             $arrFields                             = deserialize($this->address_fields);
 
-            if (is_array($arrFields)) {
+            if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
                     $this->arrCache['billingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
@@ -195,7 +194,7 @@ class Config extends \Model
             $this->arrCache['shippingFieldsConfig'] = array();
             $arrFields                              = deserialize($this->address_fields);
 
-            if (is_array($arrFields)) {
+            if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
                     $this->arrCache['shippingFieldsConfig'][] = [
                         'value'     => $arrField['name'],
@@ -219,7 +218,7 @@ class Config extends \Model
         if (!isset($this->arrCache['billingCountries'])) {
             $arrCountries = deserialize($this->billing_countries);
 
-            if (empty($arrCountries) || !is_array($arrCountries)) {
+            if (empty($arrCountries) || !\is_array($arrCountries)) {
                 $arrCountries = array_keys(\System::getCountries());
             }
 
@@ -239,7 +238,7 @@ class Config extends \Model
         if (!isset($this->arrCache['shippingCountries'])) {
             $arrCountries = deserialize($this->shipping_countries);
 
-            if (empty($arrCountries) || !is_array($arrCountries)) {
+            if (empty($arrCountries) || !\is_array($arrCountries)) {
                 $arrCountries = array_keys(\System::getCountries());
             }
 
@@ -259,7 +258,7 @@ class Config extends \Model
         $format = $this->priceDisplay;
 
         // !HOOK: calculate price
-        if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && \is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
             foreach ($GLOBALS['ISO_HOOKS']['priceDisplay'] as $callback) {
                 $format = \System::importStatic($callback[0])->{$callback[1]}($format, $this);
             }
@@ -278,7 +277,7 @@ class Config extends \Model
         if (!isset($this->arrCache['newProductLimit'])) {
             $arrPeriod = deserialize($this->newProductPeriod);
 
-            if (!empty($arrPeriod) && is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
+            if (!empty($arrPeriod) && \is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
                 $this->arrCache['newProductLimit'] = strtotime(
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );

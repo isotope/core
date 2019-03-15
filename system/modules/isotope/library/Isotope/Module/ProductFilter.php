@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -116,9 +115,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     protected function initializeFilters()
     {
         if (!$this->iso_enableLimit
-            && 0 === count($this->iso_filterFields)
-            && 0 === count($this->iso_sortingFields)
-            && 0 === count($this->iso_searchFields)
+            && 0 === \count($this->iso_filterFields)
+            && 0 === \count($this->iso_sortingFields)
+            && 0 === \count($this->iso_searchFields)
         ) {
             return false;
         }
@@ -173,7 +172,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
         $keywords = (string) \Input::get('keywords');
 
-        if (0 !== count($this->iso_searchFields)) {
+        if (0 !== \count($this->iso_searchFields)) {
             if ('' !== $keywords
                 && $keywords !== $GLOBALS['TL_LANG']['MSC']['defaultSearchText']
             ) {
@@ -219,7 +218,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $this->Template->hasFilters = false;
 
-        if (0 !== count($this->iso_filterFields)) {
+        if (0 !== \count($this->iso_filterFields)) {
             $arrFilters    = [];
             $arrInput      = \Input::post('filter');
             $arrCategories = $this->findCategories();
@@ -232,7 +231,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $this->iso_list_where
                 );
 
-                if ($this->blnUpdateCache && in_array($arrInput[$strField], $arrValues)) {
+                if ($this->blnUpdateCache && \in_array($arrInput[$strField], $arrValues)) {
                     if ($this->isCsv($strField)) {
                         $filter = CsvFilter::attribute($strField)->contains($arrInput[$strField]);
                     } else {
@@ -261,7 +260,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 } elseif (!$this->blnUpdateCache) {
                     // Only generate options if we do not reload anyway
 
-                    if (0 === count($arrValues)) {
+                    if (0 === \count($arrValues)) {
                         continue;
                     }
 
@@ -278,7 +277,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     }
 
                     // Must have options to apply the filter
-                    if (!is_array($arrWidget['options'])) {
+                    if (!\is_array($arrWidget['options'])) {
                         continue;
                     }
 
@@ -288,7 +287,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                             unset($arrWidget['options'][$k]);
                             continue;
 
-                        } elseif ('-' === $option['value'] || !in_array($option['value'], $arrValues)) {
+                        } elseif ('-' === $option['value'] || !\in_array($option['value'], $arrValues)) {
                             // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
 
                             unset($arrWidget['options'][$k]);
@@ -299,7 +298,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     }
 
                     // Hide fields with just one option (if enabled)
-                    if ($this->iso_filterHideSingle && count($arrWidget['options']) < 2) {
+                    if ($this->iso_filterHideSingle && \count($arrWidget['options']) < 2) {
                         continue;
                     }
 
@@ -308,13 +307,13 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             }
 
             // !HOOK: alter the filters
-            if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
+            if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && \is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
                     $arrFilters = \System::importStatic($callback[0])->{$callback[1]}($arrFilters);
                 }
             }
 
-            if (0 !== count($arrFilters)) {
+            if (0 !== \count($arrFilters)) {
                 $this->Template->hasFilters    = true;
                 $this->Template->filterOptions = $arrFilters;
             }
@@ -328,14 +327,14 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $this->Template->hasSorting = false;
 
-        if (0 !== count($this->iso_sortingFields)) {
+        if (0 !== \count($this->iso_sortingFields)) {
             $arrOptions = [];
 
             // Cache new request value
             // @todo should support multiple sorting fields
             list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
 
-            if ($this->blnUpdateCache && in_array($sortingField, $this->iso_sortingFields, true)) {
+            if ($this->blnUpdateCache && \in_array($sortingField, $this->iso_sortingFields, true)) {
                 Isotope::getRequestCache()->setSortingForModule(
                     $sortingField,
                     ('DESC' === $sortingDirection ? Sort::descending() : Sort::ascending()),
@@ -405,7 +404,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);
 
-            if ($this->blnUpdateCache && in_array(\Input::post('limit'), $arrLimit)) {
+            if ($this->blnUpdateCache && \in_array(\Input::post('limit'), $arrLimit)) {
                 // Cache new request value
 
                 Isotope::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);

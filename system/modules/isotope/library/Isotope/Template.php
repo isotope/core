@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -34,7 +33,7 @@ class Template extends \FrontendTemplate
     {
         $arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
 
-        if (is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !in_array($strFormat, $arrAllowed)) {
+        if (\is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !\in_array($strFormat, $arrAllowed)) {
             throw new \InvalidArgumentException("Invalid output format $strFormat");
         }
 

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -43,7 +42,7 @@ class Messages extends Module
 
         $strBuffer = parent::generate();
 
-        if (count($this->Template->messages['value']) > 0) {
+        if (\count($this->Template->messages['value']) > 0) {
             return $strBuffer;
         }
 

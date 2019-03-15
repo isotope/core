@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -69,11 +68,11 @@ class ProductType extends \Model
         $this->attributes = deserialize($this->attributes);
         $this->variant_attributes = deserialize($this->variant_attributes);
 
-        if (!is_array($this->attributes)) {
+        if (!\is_array($this->attributes)) {
             $this->attributes = array();
         }
 
-        if (!is_array($this->variant_attributes)) {
+        if (!\is_array($this->variant_attributes)) {
             $this->variant_attributes = array();
         }
 
@@ -166,7 +165,7 @@ class ProductType extends \Model
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
             return ($a['enabled']
-                && is_array($arrFields[$a['name']])
+                && \is_array($arrFields[$a['name']])
                 && $arrFields[$a['name']]['attributes']['legend'] != ''
             );
         });

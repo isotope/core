@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -50,7 +49,7 @@ class RelatedProducts extends ProductList
             return '';
         }
 
-        if (0 === count($this->iso_related_categories)) {
+        if (0 === \count($this->iso_related_categories)) {
             return '';
         }
 
@@ -86,13 +85,13 @@ class RelatedProducts extends ProductList
             foreach ($relatedProducts as $category) {
                 $ids = trimsplit(',', $category->products);
 
-                if (is_array($ids) && 0 !== count($ids)) {
+                if (\is_array($ids) && 0 !== \count($ids)) {
                     $productIds = array_unique(array_merge($productIds, $ids));
                 }
             }
         }
 
-        if (0 === count($productIds)) {
+        if (0 === \count($productIds)) {
             return [];
         }
 

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -33,7 +32,7 @@ class Sofortueberweisung extends Postsale
      */
     public function isAvailable()
     {
-        if (!in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'), true)) {
+        if (!\in_array(Isotope::getConfig()->currency, array('EUR', 'CHF', 'GBP'), true)) {
             return false;
         }
 
@@ -125,7 +124,7 @@ class Sofortueberweisung extends Postsale
             return false;
         }
 
-        $strCountry = in_array($objOrder->getBillingAddress()->country, ['de', 'ch', 'at'], true) ? $objOrder->getBillingAddress()->country : 'de';
+        $strCountry = \in_array($objOrder->getBillingAddress()->country, ['de', 'ch', 'at'], true) ? $objOrder->getBillingAddress()->country : 'de';
         $strUrl     = 'https://www.sofortueberweisung.' . $strCountry . '/payment/start';
 
         $arrParams = array

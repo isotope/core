@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -116,7 +115,7 @@ class Callback extends \Backend
 
         $arrEmail = deserialize($objOrder->email_data, true);
 
-        if (empty($arrEmail) || !is_array($arrEmail)) {
+        if (empty($arrEmail) || !\is_array($arrEmail)) {
             return '<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData'] . '</div>';
         }
 
@@ -130,7 +129,7 @@ class Callback extends \Backend
         foreach ($arrEmail as $k => $v) {
             $strClass = ++$i % 2 ? '' : ' class="tl_bg"';
 
-            if (is_array($v)) {
+            if (\is_array($v)) {
                 $strValue = implode(', ', $v);
             } else {
                 $strValue = ((strip_tags($v) == $v) ? nl2br($v) : $v);
@@ -246,7 +245,7 @@ class Callback extends \Backend
         $arrIds     = array(0);
         $arrConfigs = $this->User->iso_configs;
 
-        if (is_array($arrConfigs) && !empty($arrConfigs)) {
+        if (\is_array($arrConfigs) && !empty($arrConfigs)) {
             $objOrders = \Database::getInstance()->query(
                 'SELECT id FROM tl_iso_product_collection WHERE config_id IN (' . implode(',', $arrConfigs) . ')'
             );
@@ -258,7 +257,7 @@ class Callback extends \Backend
 
         $GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['sorting']['root'] = $arrIds;
 
-        if (\Input::get('id') != '' && !in_array(\Input::get('id'), $arrIds)) {
+        if (\Input::get('id') != '' && !\in_array(\Input::get('id'), $arrIds)) {
             \System::log('Trying to access disallowed order ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
             \Controller::redirect(TL_SCRIPT . '?act=error');
         }
@@ -472,7 +471,7 @@ class Callback extends \Backend
             }
 
             // !HOOK: add additional functionality when saving collection
-            if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
+            if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && \is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
                     \System::importStatic($callback[0])->{$callback[1]}($objOrder);
                 }

@@ -1,10 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
- *
+ * @copyright  Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
@@ -76,13 +75,13 @@ class TaxRate extends \Model
         if ($this->protected && FE_USER_LOGGED_IN === true) {
             $groups = deserialize($this->groups);
 
-            if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
+            if (!\is_array($groups) || empty($groups) || !\count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
 
         // !HOOK: use tax rate
-        if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && is_array($GLOBALS['ISO_HOOKS']['useTaxRate'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && \is_array($GLOBALS['ISO_HOOKS']['useTaxRate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback) {
                 $varValue = \System::importStatic($callback[0])->{$callback[1]}($this, $fltPrice, $arrAddresses);
 
@@ -93,17 +92,17 @@ class TaxRate extends \Model
         }
 
         $arrAddress = deserialize($this->address);
-        if (!empty($arrAddress) && is_array($arrAddress)) {
+        if (!empty($arrAddress) && \is_array($arrAddress)) {
             foreach ($arrAddresses as $name => $objAddress) {
-                if (!in_array($name, $arrAddress)) {
+                if (!\in_array($name, $arrAddress)) {
                     continue;
                 }
 
-                if ($this->countries != '' && !in_array($objAddress->country, trimsplit(',', $this->countries))) {
+                if ($this->countries != '' && !\in_array($objAddress->country, trimsplit(',', $this->countries))) {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions))) {
+                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions))) {
                     continue;
                 }
 
@@ -111,15 +110,15 @@ class TaxRate extends \Model
                 if ($this->postalCodes != '') {
                     $arrCodes = Frontend::parsePostalCodes($this->postalCodes);
 
-                    if (!in_array($objAddress->postal, $arrCodes)) {
+                    if (!\in_array($objAddress->postal, $arrCodes)) {
                         continue;
                     }
                 }
 
                 $arrPrice = deserialize($this->amount);
 
-                if (is_array($arrPrice) && !empty($arrPrice) && strlen($arrPrice[0])) {
-                    if (strlen($arrPrice[1])) {
+                if (\is_array($arrPrice) && !empty($arrPrice) && \strlen($arrPrice[0])) {
+                    if (\strlen($arrPrice[1])) {
                         if ($arrPrice[0] > $fltPrice || $arrPrice[1] < $fltPrice) {
                             continue;
                         }
@@ -132,7 +131,7 @@ class TaxRate extends \Model
 
                 if ($this->exemptOnValidVAT) {
                     $validators = deserialize(Isotope::getConfig()->vatNoValidators);
-                    if (!empty($validators) && is_array($validators)) {
+                    if (!empty($validators) && \is_array($validators)) {
                         foreach ($validators as $type) {
 
                             /** @var IsotopeVatNoValidator $service */
