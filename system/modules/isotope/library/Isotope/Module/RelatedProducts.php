@@ -75,6 +75,10 @@ class RelatedProducts extends ProductList
             return [];
         }
 
+        if ($currentProduct instanceof Product\Standard) {
+            $currentProduct = $currentProduct->validateVariant();
+        }
+
         /** @var RelatedProduct[] $relatedProducts */
         $relatedProducts = RelatedProduct::findByProductAndCategories($currentProduct, $this->iso_related_categories);
 
