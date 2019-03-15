@@ -1,0 +1,24 @@
+<?php
+
+$date = date('Y');
+
+$header = <<<EOF
+Isotope eCommerce for Contao Open Source CMS
+
+@copyright  Copyright (C) 2009 - $date terminal42 gmbh & Isotope eCommerce Workgroup
+@link       https://isotopeecommerce.org
+@license    https://opensource.org/licenses/lgpl-3.0.html
+EOF;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        'header_comment' => ['header' => $header],
+        'native_function_invocation' => ['include' => ['@compiler_optimized']],
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+        ->exclude('modules/isotope/library/UnitedPrototype')
+        ->in([__DIR__.'/system'])
+    )
+;

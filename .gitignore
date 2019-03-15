@@ -7,6 +7,7 @@
 !composer.json
 !build.xml.dist
 !README.md
+!.php_cs.dist
 
 # Isotope ignoring rules
 !isotope/
