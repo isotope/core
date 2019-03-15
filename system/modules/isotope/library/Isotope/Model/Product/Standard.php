@@ -405,7 +405,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     {
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
-        if (!$arrConfig['hideOptions']) {
+        if (!$arrConfig['disableOptions']) {
             $objProduct = $this->validateVariant();
 
             // A variant has been loaded, generate the variant
@@ -471,7 +471,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        if (!$arrConfig['hideOptions']) {
+        if (!$arrConfig['disableOptions']) {
             foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
                 $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 

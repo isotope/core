@@ -224,14 +224,14 @@ class ProductList extends Module
                 'gallery'       => $this->iso_gallery ?: $type->list_gallery,
                 'buttons'       => $this->iso_buttons,
                 'useQuantity'   => $this->iso_use_quantity,
-                'hideOptions'   => $this->iso_hide_options,
+                'disableOptions' => $this->iso_disable_options,
                 'jumpTo'        => $this->findJumpToPage($objProduct),
             );
 
             if (\Environment::get('isAjaxRequest')
                 && \Input::post('AJAX_MODULE') == $this->id
                 && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
-                && !$this->iso_hide_options
+                && !$this->iso_disable_options
             ) {
                 $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
                 $objResponse->send();

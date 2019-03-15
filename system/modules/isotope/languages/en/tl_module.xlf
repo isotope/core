@@ -44,11 +44,11 @@
       <trans-unit id="tl_module.iso_hide_list.1">
         <source>Hide product list when a product alias is found in the URL.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_hide_options.0">
-        <source>Hide product options</source>
+      <trans-unit id="tl_module.iso_disable_options.0">
+        <source>Disable product options</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_hide_options.1">
-        <source>Do not show variant options and customer editable attributes.</source>
+      <trans-unit id="tl_module.iso_disable_options.1">
+        <source>Do not show product options or load product variants.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_use_quantity.0">
         <source>Enable quantity</source>

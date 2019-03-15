@@ -29,7 +29,7 @@ use PageModel;
  * @property string $iso_list_where
  * @property string $iso_includeMessages
  * @property bool   $iso_hide_list
- * @property bool   $iso_hide_options
+ * @property bool   $iso_disable_options
  * @property bool   $iso_emptyMessage
  * @property string $iso_noProducts
  * @property bool   $iso_emptyFilter
