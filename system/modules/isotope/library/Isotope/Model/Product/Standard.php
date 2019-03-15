@@ -403,13 +403,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function generate(array $arrConfig)
     {
+        $objProduct = $this;
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
         if (!$arrConfig['disableOptions']) {
             $objProduct = $this->validateVariant();
 
             // A variant has been loaded, generate the variant
-            if ($objProduct->id != $this->id) {
+            if ($objProduct->getId() != $this->getId()) {
                 return $objProduct->generate($arrConfig);
             }
         }
