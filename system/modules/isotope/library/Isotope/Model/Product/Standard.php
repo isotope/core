@@ -74,7 +74,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * Default configuration (to predefine variant or customer editable attributes)
      * @var array
      */
-    protected $arrDefaults = array();
+    protected $arrDefaults;
 
     /**
      * Unique form ID
@@ -93,12 +93,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * @var bool
      */
     protected $doNotSubmit = false;
-
-    /**
-     * True if the collection item will be updated.
-     * @var bool
-     */
-    protected $blnUpdate = false;
 
     /**
      * @inheritdoc
@@ -409,8 +403,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     public function generate(array $arrConfig)
     {
-        $this->loadDefaults();
-
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
         if (!$arrConfig['hideOptions']) {
@@ -560,7 +552,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->actions          = $actions;
-        $objTemplate->useQuantity      = $arrConfig['useQuantity'] && !$this->blnUpdate;
+        $objTemplate->useQuantity      = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw              = $this->arrData;
         $objTemplate->raw_options      = $this->getConfiguration();
@@ -600,6 +592,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      */
     protected function generateProductOptionWidget($strField, &$arrVariantOptions, &$arrAjaxOptions)
     {
+        $arrDefaults = $this->getOptionsDefaults();
+
         /** @var IsotopeAttribute|IsotopeAttributeWithOptions|IsotopeAttributeForVariants|Attribute $objAttribute */
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
@@ -610,8 +604,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
         // Value can be predefined in the URL, e.g. to preselect a variant
-        if (!empty($this->arrDefaults[$strField])) {
-            $arrData['default'] = $this->arrDefaults[$strField];
+        if (!empty($arrDefaults[$strField])) {
+            $arrData['default'] = $arrDefaults[$strField];
         }
 
         $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
@@ -825,7 +819,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @return IsotopeProduct|$this
      */
-    protected function validateVariant()
+    public function validateVariant()
     {
         if (!$this->hasVariants()) {
             return $this;
@@ -833,6 +827,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         $hasOptions = null;
         $arrOptions = array();
+        $arrDefaults = $this->getOptionsDefaults();
 
         // We don't need to validate IsotopeAttributeForVariants interface here, because Attribute::getVariantOptionFields will check it
         foreach (array_intersect($this->getType()->getVariantAttributes(), Attribute::getVariantOptionFields()) as $attribute) {
@@ -843,8 +838,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && in_array(\Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::post($attribute);
-            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array($this->arrDefaults[$attribute], $arrValues)) {
-                $arrOptions[$attribute] = $this->arrDefaults[$attribute];
+            } elseif (\Input::post('FORM_SUBMIT') == '' && in_array($arrDefaults[$attribute], $arrValues)) {
+                $arrOptions[$attribute] = $arrDefaults[$attribute];
             } elseif (count($arrValues) == 1) {
                 $arrOptions[$attribute] = $arrValues[0];
             } else {
@@ -1043,27 +1038,41 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
     }
 
-    /**
-     * Load default values from URL
-     */
-    private function loadDefaults()
+    private function getCollectionItem()
     {
-        $this->arrDefaults = array();
-        $this->blnUpdate = false;
-
         if (\Input::get('collection_item') > 0) {
             $item = ProductCollectionItem::findByPk(\Input::get('collection_item'));
+
             if (null !== $item
                 && $item->hasProduct()
                 && $item->getProduct()->getProductId() == $this->getProductId()
             ) {
-                $this->arrDefaults = $item->getOptions();
-                $this->blnUpdate = true;
+                return $item;
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * Load default values from URL
+     */
+    private function getOptionsDefaults()
+    {
+        if (\is_array($this->arrDefaults)) {
+            return $this->arrDefaults;
+        }
+
+        $this->arrDefaults = array();
+
+        if (($item = $this->getCollectionItem()) !== null) {
+            $this->arrDefaults = $item->getOptions();
         } else {
             foreach ($_GET as $k => $v) {
                 $this->arrDefaults[$k] = \Input::get($k);
             }
         }
+
+        return $this->arrDefaults;
     }
 }
