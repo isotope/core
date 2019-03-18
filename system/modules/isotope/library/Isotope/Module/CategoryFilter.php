@@ -85,8 +85,8 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         $currentIds = [];
         $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0];
 
-        if ($filter instanceof Filter && $filter['attribute'] === 'c.page_id') {
-            $currentIds = (array) $filter['value'];
+        if ($filter instanceof \Isotope\RequestCache\CategoryFilter) {
+            $currentIds = $filter['value'];
         }
 
         $allIds = [];
@@ -122,7 +122,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         if (empty($ids)) {
             Isotope::getRequestCache()->unsetFiltersForModule($this->id);
         } else {
-            $filter = Filter::attribute('c.page_id')->inArray($ids);
+            $filter = new \Isotope\RequestCache\CategoryFilter($ids);
             Isotope::getRequestCache()->setFiltersForModule([$filter], $this->id);
         }
 

@@ -392,6 +392,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
     'default'                   => 'current_category',
     'options'                   => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
+    'explanation'               => 'iso_category_scope',
     'eval'                      => array('tl_class'=>'clr w50 w50h', 'helpwizard'=>true),
     'sql'                       => "varchar(64) NOT NULL default ''",
 );

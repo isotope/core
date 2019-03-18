@@ -285,15 +285,14 @@ class ProductList extends Module
     protected function findProducts($arrCacheIds = null)
     {
         $arrColumns    = array();
-        $arrCategories = $this->findCategories();
-        $queryBuilder  = new FilterQueryBuilder(
-            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
-        );
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrCategories = $this->findCategories($arrFilters);
+        $queryBuilder  = new FilterQueryBuilder($arrFilters);
 
         if (1 === \count($arrCategories)) {
-            $arrColumns[] = "c.page_id=" . $arrCategories[0];
+            $arrColumns[] = "c.page_id=".$arrCategories[0];
         } else {
-            $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+            $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
         }
 
         if (!empty($arrCacheIds) && \is_array($arrCacheIds)) {

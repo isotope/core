@@ -32,7 +32,8 @@ class ProductVariantList extends ProductList
     {
         $t             = Product::getTable();
         $arrColumns    = array();
-        $arrCategories = $this->findCategories();
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrCategories = $this->findCategories($arrFilters);
 
         $arrProductIds = \Database::getInstance()
             ->query("
@@ -52,9 +53,7 @@ class ProductVariantList extends ProductList
             return array();
         }
 
-        $queryBuilder = new FilterQueryBuilder(
-            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
-        );
+        $queryBuilder = new FilterQueryBuilder($arrCategories);
 
         $arrColumns[] = "(
             ($t.id IN (" . implode(',', $arrProductIds) . ") AND $t.type NOT IN (" . implode(',', $arrTypes) . "))

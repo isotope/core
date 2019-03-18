@@ -19,6 +19,7 @@ use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
+use Isotope\RequestCache\CategoryFilter;
 use PageModel;
 
 
@@ -36,10 +37,6 @@ use PageModel;
  * @property string $iso_newFilter
  * @property string $iso_noFilter
  * @property array  $iso_buttons
- * @property string $customTpl
- * @property int    $jumpTo
- * @property bool   $defineRoot
- * @property int    $rootPage
  */
 abstract class Module extends AbstractFrontendModule
 {
@@ -124,83 +121,100 @@ abstract class Module extends AbstractFrontendModule
      *
      * @return array|null
      */
-    protected function findCategories()
+    protected function findCategories(array &$arrFilters = null)
     {
-        if ('all' === $this->iso_category_scope) {
-            return null;
+        if (null !== $arrFilters) {
+            $arrCategories = null;
+
+            foreach ($arrFilters as $k => $filter) {
+                if ($filter instanceof CategoryFilter) {
+                    unset($arrFilters[$k]);
+
+                    if (!\is_array($arrCategories)) {
+                        $arrCategories = $filter['value'];
+                    } else {
+                        $arrCategories = array_intersect($arrCategories, $filter['value']);
+                    }
+                }
+            }
+
+            if (\is_array($arrCategories)) {
+                return $arrCategories;
+            }
         }
 
-        if (null === $this->arrCategories) {
+        if (null !== $this->arrCategories) {
+            return $this->arrCategories;
+        }
 
-            if ($this->defineRoot && $this->rootPage > 0) {
-                $objPage = PageModel::findWithDetails($this->rootPage);
-            } else {
-                global $objPage;
-            }
+        if ($this->defineRoot && $this->rootPage > 0) {
+            $objPage = PageModel::findWithDetails($this->rootPage);
+        } else {
+            global $objPage;
+        }
 
-            $t = PageModel::getTable();
-            $arrCategories = null;
-            $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
+        $t = PageModel::getTable();
+        $arrCategories = null;
+        $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
-            if (!BE_USER_LOGGED_IN) {
-                $time = \Date::floorToMinute();
-                $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
-            }
+        if (!BE_USER_LOGGED_IN) {
+            $time = \Date::floorToMinute();
+            $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
+        }
 
-            switch ($this->iso_category_scope) {
-                case 'global':
-                    $arrCategories = [$objPage->rootId];
-                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
-                    break;
+        switch ($this->iso_category_scope) {
+            case 'global':
+                $arrCategories = [$objPage->rootId];
+                $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
+                break;
 
-                case 'current_and_first_child':
-                    $arrCategories   = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id} AND $strWhere")->fetchEach('id');
-                    $arrCategories[] = $objPage->id;
-                    break;
+            case 'current_and_first_child':
+                $arrCategories   = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id} AND $strWhere")->fetchEach('id');
+                $arrCategories[] = $objPage->id;
+                break;
 
-                case 'current_and_all_children':
-                    $arrCategories = [$objPage->id];
-                    $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
-                    break;
+            case 'current_and_all_children':
+                $arrCategories = [$objPage->id];
+                $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
+                break;
 
-                case 'parent':
-                    $arrCategories = [$objPage->pid];
-                    break;
+            case 'parent':
+                $arrCategories = [$objPage->pid];
+                break;
 
-                case 'product':
-                    /** @var \Isotope\Model\Product\Standard $objProduct */
-                    $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
-                    $arrCategories = [0];
+            case 'product':
+                /** @var \Isotope\Model\Product\Standard $objProduct */
+                $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
+                $arrCategories = [0];
 
-                    if ($objProduct !== null) {
-                        $arrCategories = $objProduct->getCategories(true);
-                    }
-                    break;
+                if ($objProduct !== null) {
+                    $arrCategories = $objProduct->getCategories(true);
+                }
+                break;
 
-                case 'article':
-                    $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ? : $objPage->id);
-                    break;
+            case 'article':
+                $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ? : $objPage->id);
+                break;
 
-                case '':
-                case 'current_category':
-                    $arrCategories = [$objPage->id];
-                    break;
+            case '':
+            case 'current_category':
+                $arrCategories = [$objPage->id];
+                break;
 
-                default:
-                    if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && \is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
-                        foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
-                            $arrCategories = \System::importStatic($callback[0])->{$callback[1]}($this);
+            default:
+                if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && \is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
+                    foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
+                        $arrCategories = \System::importStatic($callback[0])->{$callback[1]}($this);
 
-                            if ($arrCategories !== false) {
-                                break;
-                            }
+                        if ($arrCategories !== false) {
+                            break;
                         }
                     }
-                    break;
-            }
-
-            $this->arrCategories = empty($arrCategories) ? array(0) : array_map('intval', $arrCategories);
+                }
+                break;
         }
+
+        $this->arrCategories = empty($arrCategories) ? array(0) : array_map('intval', $arrCategories);
 
         return $this->arrCategories;
     }
@@ -218,11 +232,11 @@ abstract class Module extends AbstractFrontendModule
         global $objIsotopeListPage;
 
         $productCategories = $objProduct->getCategories(true);
-        $arrCategories     = array();
+        $arrCategories = array();
 
-        if ($this->iso_category_scope != 'current_category'
-            && $this->iso_category_scope != ''
-            && $objPage->alias != 'index'
+        if ('current_category' !== $this->iso_category_scope
+            && !empty($this->iso_category_scope)
+            && 'index' !== $objPage->alias
         ) {
             $arrCategories = array_intersect(
                 $productCategories,

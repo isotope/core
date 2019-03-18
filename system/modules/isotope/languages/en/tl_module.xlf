@@ -45,10 +45,10 @@
         <source>Hide product list when a product alias is found in the URL.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_disable_options.0">
-        <source>Disable product options</source>
+        <source>Disable product options (performance!)</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_disable_options.1">
-        <source>Do not show product options or load product variants.</source>
+        <source>Do not generate product options or load product variants. If the list does not show product options, make sure to enable this option for faster product list rendering!</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_use_quantity.0">
         <source>Enable quantity</source>
