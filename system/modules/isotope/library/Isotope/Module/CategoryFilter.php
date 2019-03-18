@@ -15,7 +15,6 @@ use Contao\Database;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
-use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -63,10 +62,6 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             return '';
         }
 
-        if (!$this->rootPage) {
-            return '';
-        }
-
         return parent::generate();
     }
 
@@ -75,6 +70,18 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
      */
     protected function compile()
     {
+        // Set the trail and level
+        if ($this->defineRoot && $this->rootPage > 0) {
+            $trail = [$this->rootPage];
+            $level = 0;
+        } else {
+            /** @var PageModel $objPage */
+            global $objPage;
+
+            $trail = $objPage->trail;
+            $level = ($this->levelOffset > 0) ? $this->levelOffset : 0;
+        }
+
         $currentIds = [];
         $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0];
 
@@ -86,8 +93,8 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $this->Template->request = ampersand(\Environment::get('indexFreeRequest'));
         $this->Template->skipId = 'skipNavigation' . $this->id;
-        $this->Template->skipNavigation = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
-        $this->Template->items = $this->renderFilterTree($this->rootPage, 1, $currentIds, $trail, $allIds);
+        $this->Template->skipNavigation = specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
+        $this->Template->items = $this->renderFilterTree($trail[$level], 1, $currentIds, $trail, $allIds);
 
         if ($input = \Input::get('categoryfilter', true)) {
             $arrFilter = explode(';', base64_decode($input), 3);
@@ -158,23 +165,16 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             $_groups = deserialize($subpage->groups);
 
             // Do not show protected pages unless a back end or front end user is logged in
-            if ($subpage->protected
+            if (!$this->showProtected
+                && $subpage->protected
                 && BE_USER_LOGGED_IN !== true
                 && (!\is_array($_groups) || !\count(array_intersect($_groups, $groups)))
-                && !$this->showProtected
             ) {
                 continue;
             }
 
             // Check whether there will be subpages
-            if ($subpage->subpages > 0
-                && (!$this->showLevel
-                    || $this->showLevel >= $level
-                    || (!$this->hardLimit
-                        && ($objPage->id == $subpage->id || \in_array($objPage->id, Database::getInstance()->getChildRecords($subpage->id, 'tl_page')))
-                    )
-                )
-            ) {
+            if ($subpage->subpages > 0 && (!$this->showLevel || $this->showLevel >= $level)) {
                 $subitems = $this->renderFilterTree($subpage->id, $level + 1, $currentIds, $trail, $allIds);
             }
 
