@@ -441,7 +441,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objPrice = $objProduct->getPrice();
 
             /** @var ProductType $objType */
-            $objType = $objProduct->getRelated('type');
+            $objType = $objProduct->getType();
 
             if (null === $objPrice) {
                 return '';
@@ -466,7 +466,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             return $currentGallery;
         };
-
 
         $arrVariantOptions = array();
         $arrProductOptions = array();
@@ -618,7 +617,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
-            if (\count($arrOptions) == 1 && !$this->getRelated('type')->force_variant_options) {
+            if (\count($arrOptions) == 1 && !$this->getType()->force_variant_options) {
                 $arrVariantOptions[$strField] = $arrOptions[0];
                 return '';
             }

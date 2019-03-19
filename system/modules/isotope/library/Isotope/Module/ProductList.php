@@ -215,8 +215,7 @@ class ProductList extends Module
 
         /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
-            /** @var ProductType $type */
-            $type = $objProduct->getRelated('type');
+            $type = $objProduct->getType();
 
             $arrConfig = array(
                 'module'        => $this,

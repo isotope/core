@@ -215,7 +215,7 @@ class ProductType extends \Model
     public static function findByProductData(array $row, array $arrOptions = array())
     {
         if ($row['pid'] > 0 && ($objProduct = Product::findByPk($row['pid'])) !== null) {
-            return $objProduct->getRelated('type');
+            return $objProduct->getType();
         }
 
         return static::findByPk($row['type'], $arrOptions);

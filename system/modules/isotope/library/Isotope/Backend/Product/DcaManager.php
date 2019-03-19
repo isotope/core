@@ -412,12 +412,10 @@ class DcaManager extends \Backend
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields']  = ['id'];
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
 
-        $arrFields         = array();
+        $arrFields = array();
+        $objType = $objProduct->getType();
 
-        /** @var ProductType $objType */
-        $objType           = $objProduct->getRelated('type');
-
-        $arrVariantFields  = $objType->getVariantAttributes();
+        $arrVariantFields = $objType->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
         if (\in_array('images', $arrVariantFields, true)) {

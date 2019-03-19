@@ -214,14 +214,9 @@ abstract class AbstractProduct extends Product
      */
     public function hasVariants()
     {
-        try {
-            /** @var ProductType $type */
-            $type = $this->getRelated('type');
-        } catch (\Exception $e) {
-            return false;
-        }
+        $type = $this->getType();
 
-        return $type->hasVariants();
+        return null !== $type && $type->hasVariants();
     }
 
     /**
@@ -237,10 +232,9 @@ abstract class AbstractProduct extends Product
      */
     public function hasAdvancedPrices()
     {
-        /** @var ProductType $objType */
-        $objType = $this->getRelated('type');
+        $type = $this->getType();
 
-        return $objType->hasAdvancedPrices();
+        return null !== $type && $type->hasAdvancedPrices();
     }
 
     /**
