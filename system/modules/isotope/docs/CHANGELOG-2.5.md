@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.5.11-stable (2019-0?-??)
+Version 2.5.11-stable (2019-03-19)
 ----------------------------------
 
 - Allow umlauts in coupon codes but correctly compare them in lowercase
