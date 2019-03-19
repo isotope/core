@@ -114,6 +114,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return false;
         }
 
+        if ($this->hasVariants() && !count($this->getVariantIds())) {
+            return false;
+        }
+
         // Check if "advanced price" is available
         if ($this->getType()->hasAdvancedPrices()
             && (in_array('price', $this->getType()->getAttributes(), true) || $this->hasVariantPrices())
