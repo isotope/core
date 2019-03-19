@@ -15,6 +15,7 @@ use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
+use Isotope\Model\Product\AbstractProduct;
 
 /**
  * Class ProductReader
@@ -72,6 +73,7 @@ class ProductReader extends Module
         global $objPage;
         global $objIsotopeListPage;
 
+        /** @var AbstractProduct $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
@@ -103,8 +105,8 @@ class ProductReader extends Module
         $this->addCanonicalProductUrls($objProduct);
 
         $this->Template->product       = $objProduct->generate($arrConfig);
-        $this->Template->product_id    = $this->getCssId($objProduct);
-        $this->Template->product_class = $this->getCssClass($objProduct);
+        $this->Template->product_id    = $objProduct->getCssId();
+        $this->Template->product_class = $objProduct->getCssClass();
         $this->Template->referer       = 'javascript:history.go(-1)';
         $this->Template->back          = $GLOBALS['TL_LANG']['MSC']['goBack'];
     }
@@ -178,6 +180,8 @@ class ProductReader extends Module
      * @param Product $objProduct
      *
      * @return string|null
+     *
+     * @deprecated Use AbstractProduct::getCssId()
      */
     protected function getCssId(Product $objProduct)
     {
@@ -192,9 +196,15 @@ class ProductReader extends Module
      * @param Product $objProduct
      *
      * @return string
+     *
+     * @deprecated Use AbstractProduct::getCssClass()
      */
     protected function getCssClass(Product $objProduct)
     {
+        if ($objProduct instanceof AbstractProduct) {
+            return $objProduct->getCssClass();
+        }
+
         $classes = ['product'];
 
         if ($objProduct->isNew()) {

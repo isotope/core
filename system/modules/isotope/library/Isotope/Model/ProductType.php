@@ -27,6 +27,7 @@ namespace Isotope\Model;
  * @property string $reader_template
  * @property int    $list_gallery
  * @property int    $reader_gallery
+ * @property string $cssClass
  * @property array  $attributes
  * @property bool   $variants
  * @property array  $variant_attributes
