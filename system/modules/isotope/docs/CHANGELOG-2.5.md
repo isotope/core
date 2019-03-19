@@ -11,6 +11,7 @@ Version 2.5.11-stable (2019-0?-??)
 - CSS class in product type was not added to reader or list (#2010)
 - Fixed SQL GROUP_BY error when checking user permissions (#2019)
 - Fixed SVG support and fallback icon in media manager (#2008)
+- Fixed sorting of product variants by current page ID (#2001)
 
 
 Version 2.5.10-stable (2019-01-08)
