@@ -374,10 +374,10 @@ class MediaManager extends \Widget implements \uploadable
 
             $objFile = new \File($strFile);
 
-            if ($objFile->isGdImage) {
+            if ($objFile->isGdImage || $objFile->isSvgImage) {
                 $strPreview = \Image::get($strFile, 50, 50, 'box');
             } else {
-                $strPreview = 'system/themes/' . \Backend::getTheme() . '/images/' . $objFile->icon;
+                $strPreview = 'assets/contao/images/' . $objFile->icon;
             }
 
             $strTranslateText = ($blnLanguage && 'all' !== $this->varValue[$i]['translate']) ? ' disabled="disabled"' : '';

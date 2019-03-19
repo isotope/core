@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.foreignKey">
         <source>Custom database table (foreignKey)</source>
-        <target>Eigene Datanbank-Tabelle (foreignKey)</target>
+        <target>Eigene Datenbank-Tabelle (foreignKey)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.attribute">
         <source>Options Wizard (deprecated)</source>

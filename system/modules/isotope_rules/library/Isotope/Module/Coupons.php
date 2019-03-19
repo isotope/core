@@ -71,7 +71,7 @@ class Coupons extends Module
 
         if (null === $rule) {
             Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $coupon));
-        } elseif (in_array(strtolower($coupon), array_map('strtolower', $coupons), true)) {
+        } elseif (in_array(mb_strtolower($coupon), array_map('mb_strtolower', $coupons), true)) {
             Message::addError(sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $coupon));
         } else {
             $coupons[] = $rule->code;

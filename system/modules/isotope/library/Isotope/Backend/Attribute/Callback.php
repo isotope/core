@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\System;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 
@@ -81,6 +82,15 @@ class Callback extends \Backend
             && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']
         ) {
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
+        }
+
+        if (method_exists('Contao\System', 'getContainer')) {
+            $platform = System::getContainer()->get('database_connection')->getDatabasePlatform();
+            $keywords = $platform->getReservedKeywordsList();
+
+            if ($keywords->isKeyword($varValue)) {
+                throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
+            }
         }
 
         return $varValue;
