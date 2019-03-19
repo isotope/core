@@ -629,6 +629,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        $arrFields[] = 'GROUP_CONCAT(c.page_id) AS product_categories';
         $arrJoins[] = sprintf(
             ' LEFT OUTER JOIN %s c ON %s=c.pid',
             ProductCategory::getTable(),

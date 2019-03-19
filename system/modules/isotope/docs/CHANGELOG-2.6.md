@@ -21,3 +21,5 @@ Version 2.6.0-stable (2018-??-??)
 - Enabled drag & drop for all MultiColumnWizard fields
 - Switch the shop config ID if config switcher module has only one option
 - Support DCA options in product attributes
+- Added template for product actions (#1949)
+- Reduced database queries by fetching the product categories from JOIN

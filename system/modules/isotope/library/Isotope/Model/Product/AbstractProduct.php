@@ -15,7 +15,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductType;
 use Model\QueryBuilder;
 
@@ -320,6 +319,11 @@ abstract class AbstractProduct extends Product
     public function setRow(array $arrData)
     {
         $this->arrCategories = null;
+
+        if (isset($arrData['product_categories'])) {
+            $this->arrCategories['all'] = explode(',', $arrData['product_categories']);
+            unset($arrData['product_categories']);
+        }
 
         return parent::setRow($arrData);
     }
