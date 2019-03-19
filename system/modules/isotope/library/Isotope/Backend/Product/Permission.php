@@ -175,7 +175,12 @@ class Permission extends \Backend
             }
 
             $arrProducts = $objProducts->fetchEach('id');
-            $arrProducts = array_merge($arrProducts, \Database::getInstance()->getChildRecords($arrProducts, 'tl_iso_product'));
+            $arrProducts = array_merge(
+                $arrProducts,
+                \Database::getInstance()->execute(
+                    "SELECT id FROM tl_iso_product WHERE language='' AND ".\Database::getInstance()->findInSet('pid', $arrProducts)
+                )->fetchEach('id')
+            );
         }
 
         // HOOK: allow extensions to define allowed products
@@ -195,8 +200,10 @@ class Permission extends \Backend
             }
         }
 
+        $totalProducts = \Database::getInstance()->execute("SELECT COUNT(*) AS count FROM tl_iso_product WHERE language=''")->count;
+
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || \count($arrProducts) == Product::countAll()) {
+        if ($arrProducts === true || \count($arrProducts) == $totalProducts) {
             return true;
         }
 

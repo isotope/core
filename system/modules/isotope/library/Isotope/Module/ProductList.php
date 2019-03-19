@@ -243,11 +243,9 @@ class ProductList extends Module
                 \Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
             }
 
-            $arrCSS = deserialize($objProduct->cssID, true);
-
             $arrBuffer[] = array(
-                'cssID'     => ($arrCSS[0] != '') ? ' id="' . $arrCSS[0] . '"' : '',
-                'class'     => trim('product ' . ($objProduct->isNew() ? 'new ' : '') . $arrCSS[1]),
+                'cssID'     => $objProduct->getCssId(),
+                'class'     => $objProduct->getCssClass(),
                 'html'      => $objProduct->generate($arrConfig),
                 'product'   => $objProduct,
             );

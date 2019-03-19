@@ -1,6 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.11-stable (2019-03-19)
+----------------------------------
+
+- Allow umlauts in coupon codes but correctly compare them in lowercase
+- Fixed checkbox attributes not correctly rendering multiple items
+- Disable "new" button on shop config address fields wizard
+- Do not show variant-enabled product if it has no variants
+- CSS class in product type was not added to reader or list (#2010)
+- Fixed SQL GROUP_BY error when checking user permissions (#2019)
+- Fixed SVG support and fallback icon in media manager (#2008)
+- Fixed sorting of product variants by current page ID (#2001)
+- Added database keyword validation for attribute field name (#1999)
+
+
 Version 2.5.10-stable (2019-01-08)
 ----------------------------------
 

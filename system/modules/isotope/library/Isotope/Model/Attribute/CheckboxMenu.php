@@ -38,6 +38,8 @@ class CheckboxMenu extends AbstractAttributeWithOptions
     {
         parent::saveToDCA($arrData);
 
+        $this->multiple = true;
+
         if (!$this->variant_option && $this->optionsSource === IsotopeAttributeWithOptions::SOURCE_NAME) {
             $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
             $arrData['fields'][$this->field_name]['sql'] = "char(1) NOT NULL default ''";

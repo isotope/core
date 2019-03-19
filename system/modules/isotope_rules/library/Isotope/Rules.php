@@ -235,8 +235,7 @@ class Rules extends \Controller
             if (null === $objRule) {
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
             } else {
-
-                if (\in_array(strtolower($strCoupon), array_map('strtolower', $arrCoupons), true)) {
+                if (\in_array(mb_strtolower($strCoupon), array_map('mb_strtolower', $arrCoupons), true)) {
                     $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
                 } else {
                     $arrCoupons[] = $objRule->code;

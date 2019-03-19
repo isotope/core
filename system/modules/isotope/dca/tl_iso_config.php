@@ -312,7 +312,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             (
                 'tl_class'          => 'clr',
                 'dragAndDrop'       => true,
-                'buttons'           => array('copy'=>false, 'delete'=>false),
+                'buttons'           => array('new'=>false, 'copy'=>false, 'delete'=>false),
                 'columnFields'      => array
                 (
                     'name' => array

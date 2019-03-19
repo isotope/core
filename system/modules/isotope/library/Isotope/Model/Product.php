@@ -610,19 +610,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $arrFields[] = "{$arrOptions['table']}.$attribute AS {$attribute}_fallback";
         }
 
-        $arrJoins[] = sprintf(
-            ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
-            ProductCategory::getTable(),
-            $arrOptions['table']
-        );
-
-
-        if ('c.sorting' === $arrOptions['order']) {
-            $arrFields[] = 'c.sorting';
-
-            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'c.id';
-        }
-
         if ($hasTranslations) {
             $arrJoins[] = sprintf(
                 " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
@@ -642,6 +629,17 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        $arrJoins[] = sprintf(
+            ' LEFT OUTER JOIN %s c ON %s=c.pid',
+            ProductCategory::getTable(),
+            ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
+        );
+
+        if ('c.sorting' === $arrOptions['order']) {
+            $arrFields[] = 'c.sorting';
+
+            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'c.id';
+        }
 
         if ($objBase->hasRelations()) {
             $intCount = 0;

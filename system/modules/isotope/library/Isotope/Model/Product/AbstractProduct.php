@@ -278,6 +278,43 @@ abstract class AbstractProduct extends Product
     }
 
     /**
+     * Gets the CSS ID for this product
+     *
+     * @return string|null
+     */
+    public function getCssId()
+    {
+        $css = deserialize($this->cssID, true);
+
+        return $css[0] ? ' id="' . $css[0] . '"' : null;
+    }
+
+    /**
+     * Gets the CSS classes for this product
+     *
+     * @return string
+     */
+    public function getCssClass()
+    {
+        $classes = ['product'];
+
+        if ($this->isNew()) {
+            $classes[] = 'new';
+        }
+
+        $arrCSS = deserialize($this->cssID, true);
+        if ('' !== (string) $arrCSS[1]) {
+            $classes[] = (string) $arrCSS[1];
+        }
+
+        if (null !== ($type = $this->getType()) && !empty($type->cssClass)) {
+            $classes[] = $type->cssClass;
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
      * @inheritDoc
      */
     public function setRow(array $arrData)
