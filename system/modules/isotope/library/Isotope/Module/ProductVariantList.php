@@ -30,45 +30,31 @@ class ProductVariantList extends ProductList
      */
     protected function findProducts($arrCacheIds = null)
     {
-        $t             = Product::getTable();
         $arrColumns    = array();
         $arrCategories = $this->findCategories();
-
-        $arrProductIds = \Database::getInstance()
-            ->query("
-                SELECT pid
-                FROM tl_iso_product_category
-                WHERE page_id IN (" . implode(',', $arrCategories) . ")
-            ")
-            ->fetchEach('pid')
-        ;
-
-        $arrTypes = \Database::getInstance()
-            ->query("SELECT id FROM tl_iso_producttype WHERE variants='1'")
-            ->fetchEach('id')
-        ;
-
-        if (empty($arrProductIds)) {
-            return array();
-        }
-
         $queryBuilder = new FilterQueryBuilder(
             Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
         );
 
         $arrColumns[] = "(
-            ($t.id IN (" . implode(',', $arrProductIds) . ") AND $t.type NOT IN (" . implode(',', $arrTypes) . "))
-            OR $t.pid IN (" . implode(',', $arrProductIds) . ")
+            (tl_iso_product.pid=0 AND tl_iso_product.type NOT IN (SELECT id FROM tl_iso_producttype WHERE variants='1'))
+            OR tl_iso_product.pid>0)
         )";
+
+        if (1 === \count($arrCategories)) {
+            $arrColumns[] = "c.page_id=" . $arrCategories[0];
+        } else {
+            $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+        }
 
         if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
         // Apply new/old product filter
-        if ($this->iso_newFilter == 'show_new') {
+        if ('show_new' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
-        } elseif ($this->iso_newFilter == 'show_old') {
+        } elseif ('show_old' === $this->iso_newFilter) {
             $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
         }
 
@@ -83,7 +69,7 @@ class ProductVariantList extends ProductList
         $arrSorting = Isotope::getRequestCache()->getSortingsForModules($this->iso_filterModules);
 
         if (empty($arrSorting) && $this->iso_listingSortField != '') {
-            $direction = ($this->iso_listingSortDirection == 'DESC' ? Sort::descending() : Sort::ascending());
+            $direction = ('DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending());
             $arrSorting[$this->iso_listingSortField] = $direction;
         }
 
@@ -91,7 +77,7 @@ class ProductVariantList extends ProductList
             $arrColumns,
             $queryBuilder->getSqlValues(),
             array(
-                 'order'   => 'c.sorting',
+                 'order'   => 1 === \count($arrCategories) ? 'c.sorting' : null,
                  'filters' => $queryBuilder->getFilters(),
                  'sorting' => $arrSorting,
             )
