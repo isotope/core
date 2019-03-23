@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.12-stable (2019-03-??)
+----------------------------------
+
+- Fixed product list showing all product variants
+
+
 Version 2.5.11-stable (2019-03-19)
 ----------------------------------
 
