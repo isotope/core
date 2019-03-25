@@ -155,43 +155,41 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 array($this->id)
             );
 
-            if (null !== $objOrder) {
-                try {
-                    $objOrder->config_id = (int) $this->config_id;
-                    $objOrder->store_id  = (int) $this->store_id;
-                    $objOrder->member    = (int) $this->member;
-
-                    $objOrder->setShippingMethod($this->getShippingMethod());
-                    $objOrder->setPaymentMethod($this->getPaymentMethod());
-
-                    $objOrder->setBillingAddress($this->getBillingAddress());
-
-                    if ($this->shipping_address_id) {
-                        $objOrder->setShippingAddress($this->getShippingAddress());
-                    } else {
-                        $objOrder->setShippingAddress($this->getBillingAddress());
-                    }
-
-                    $objOrder->purge();
-                    $arrItemIds = $objOrder->copyItemsFrom($this);
-
-                    $objOrder->updateDatabase();
-
-                    // HOOK: order status has been updated
-                    if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
-                        && \is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
-                    ) {
-                        foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
-                            \System::importStatic($callback[0])->{$callback[1]}($objOrder, $this, $arrItemIds);
-                        }
-                    }
-                } catch (\Exception $e) {
-                    $objOrder = null;
-                }
-            }
-
             if (null === $objOrder) {
                 $objOrder = Order::createFromCollection($this);
+            }
+
+            try {
+                $objOrder->config_id = (int) $this->config_id;
+                $objOrder->store_id  = (int) $this->store_id;
+                $objOrder->member    = (int) $this->member;
+
+                $objOrder->setShippingMethod($this->getShippingMethod());
+                $objOrder->setPaymentMethod($this->getPaymentMethod());
+
+                $objOrder->setBillingAddress($this->getBillingAddress());
+
+                if ($this->shipping_address_id) {
+                    $objOrder->setShippingAddress($this->getShippingAddress());
+                } else {
+                    $objOrder->setShippingAddress($this->getBillingAddress());
+                }
+
+                $objOrder->purge();
+                $arrItemIds = $objOrder->copyItemsFrom($this);
+
+                $objOrder->updateDatabase();
+
+                // HOOK: order status has been updated
+                if (isset($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                    && \is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
+                ) {
+                    foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
+                        \System::importStatic($callback[0])->{$callback[1]}($objOrder, $this, $arrItemIds);
+                    }
+                }
+            } catch (\Exception $e) {
+                $objOrder = null;
             }
 
             $this->objDraftOrder = $objOrder;

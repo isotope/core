@@ -232,8 +232,8 @@ class Isotope extends \Controller
         array $arrAddresses = null,
         array $arrOptions = array()
     ) {
-        if (!is_numeric($fltPrice)) {
-            return $fltPrice;
+        if (empty($fltPrice) || !is_numeric($fltPrice)) {
+            return 0;
         }
 
         // !HOOK: calculate price

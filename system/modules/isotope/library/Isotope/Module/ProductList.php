@@ -281,10 +281,12 @@ class ProductList extends Module
      */
     protected function findProducts($arrCacheIds = null)
     {
-        $arrColumns    = array();
+        $arrColumns = array();
         $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
         $arrCategories = $this->findCategories($arrFilters);
-        $queryBuilder  = new FilterQueryBuilder($arrFilters);
+        $queryBuilder = new FilterQueryBuilder($arrFilters);
+
+        $arrColumns[] = Product::getTable().'.pid=0';
 
         if (1 === \count($arrCategories)) {
             $arrColumns[] = "c.page_id=".$arrCategories[0];
