@@ -44,7 +44,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.5.11';
+    const VERSION = '2.5.12';
 
     /**
      * True if the system has been initialized
@@ -232,8 +232,8 @@ class Isotope extends \Controller
         array $arrAddresses = null,
         array $arrOptions = array()
     ) {
-        if (!is_numeric($fltPrice)) {
-            return $fltPrice;
+        if (empty($fltPrice) || !is_numeric($fltPrice)) {
+            return 0;
         }
 
         // !HOOK: calculate price
