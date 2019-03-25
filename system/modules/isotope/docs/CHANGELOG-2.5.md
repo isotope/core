@@ -6,6 +6,7 @@ Version 2.5.12-stable (2019-03-25)
 
 - Fixed product list showing all product variants
 - Fixed PHP warning when attribute option price is empty (#2007, #2025)
+- Fixed exception on checkout if shipping address equals billing address (#1997)
 
 
 Version 2.5.11-stable (2019-03-19)
