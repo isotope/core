@@ -1,10 +1,11 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.5.12-stable (2019-03-??)
+Version 2.5.12-stable (2019-03-25)
 ----------------------------------
 
 - Fixed product list showing all product variants
+- Fixed PHP warning when attribute option price is empty (#2007, #2025)
 
 
 Version 2.5.11-stable (2019-03-19)
