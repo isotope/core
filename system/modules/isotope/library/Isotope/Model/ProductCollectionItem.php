@@ -306,6 +306,26 @@ class ProductCollectionItem extends \Model
     }
 
     /**
+     * Get original product price. Automatically falls back to the collection item table if product is not found.
+     *
+     * @return string
+     */
+    public function getOriginalPrice()
+    {
+        if ($this->isLocked() || !$this->hasProduct()) {
+            return $this->price;
+        }
+
+        $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
+
+        if (null === $objPrice) {
+            return '';
+        }
+
+        return $objPrice->getOriginalAmount((int) $this->quantity, $this->getOptions());
+    }
+
+    /**
      * Get product price multiplied by the requested product quantity
      *
      * @return string
@@ -313,6 +333,16 @@ class ProductCollectionItem extends \Model
     public function getTotalPrice()
     {
         return (string) ($this->getPrice() * (int) $this->quantity);
+    }
+
+    /**
+     * Get original product price multiplied by the requested product quantity
+     *
+     * @return string
+     */
+    public function getTotalOriginalPrice()
+    {
+        return (string) ($this->getOriginalPrice() * (int) $this->quantity);
     }
 
     /**
