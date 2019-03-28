@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.5.13-stable (2019-0?-??)
+----------------------------------
+
+- Fixed definition of TL_ASSETS_URL in custom entry points
+
+
 Version 2.5.12-stable (2019-03-25)
 ----------------------------------
 
