@@ -38,7 +38,7 @@ class ProductVariantList extends ProductList
 
         $arrColumns[] = "(
             (tl_iso_product.pid=0 AND tl_iso_product.type NOT IN (SELECT id FROM tl_iso_producttype WHERE variants='1'))
-            OR tl_iso_product.pid>0)
+            OR tl_iso_product.pid>0
         )";
 
         if (1 === \count($arrCategories)) {
