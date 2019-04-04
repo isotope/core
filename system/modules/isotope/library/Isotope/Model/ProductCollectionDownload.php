@@ -62,11 +62,12 @@ class ProductCollectionDownload extends \Model
     /**
      * Generate array representation for download
      *
-     * @param bool $blnOrderPaid
+     * @param bool     $blnOrderPaid
+     * @param int|null $orderDetailsPage
      *
      * @return array
      */
-    public function getForTemplate($blnOrderPaid = false)
+    public function getForTemplate($blnOrderPaid = false, $orderDetailsPage = null)
     {
         /** @var \PageModel $objPage */
         global $objPage;
@@ -123,7 +124,10 @@ class ProductCollectionDownload extends \Model
 
             $strHref = '';
             if ('FE' === TL_MODE) {
-                $strHref = Url::addQueryString('download=' . $objDownload->id . '&amp;file=' . $objFileModel->path);
+                $strHref = Url::addQueryString(
+                    'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
+                    $orderDetailsPage > 0 ? $orderDetailsPage : null
+                );
             }
 
             // Add the image
