@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\RequestCache\FilterQueryBuilder;
@@ -84,5 +85,14 @@ class ProductVariantList extends ProductList
         );
 
         return (null === $objProducts) ? array() : $objProducts->getModels();
+    }
+
+    protected function getProductConfig(IsotopeProduct $product)
+    {
+        $config = parent::getProductConfig($product);
+
+        $config['loadFallback'] = false;
+
+        return $config;
     }
 }

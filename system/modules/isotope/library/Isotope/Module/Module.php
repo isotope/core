@@ -16,9 +16,11 @@ use Haste\Input\Input;
 use Haste\Util\Debug;
 use Haste\Util\RepositoryVersion;
 use Isotope\Frontend;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Product;
+use Isotope\Model\Product\AbstractProduct;
 use PageModel;
 
 
@@ -204,21 +206,21 @@ abstract class Module extends AbstractFrontendModule
     /**
      * Find jumpTo page for current category scope
      *
-     * @param \Isotope\Model\Product\Standard $objProduct
+     * @param IsotopeProduct $objProduct
      *
      * @return \PageModel
      */
-    protected function findJumpToPage($objProduct)
+    protected function findJumpToPage(IsotopeProduct $objProduct)
     {
         global $objPage;
         global $objIsotopeListPage;
 
-        $productCategories = $objProduct->getCategories(true);
-        $arrCategories     = array();
+        $productCategories = $objProduct instanceof AbstractProduct ? $objProduct->getCategories(true) : [];
+        $arrCategories = array();
 
-        if ($this->iso_category_scope != 'current_category'
-            && $this->iso_category_scope != ''
-            && $objPage->alias != 'index'
+        if ('current_category' !== $this->iso_category_scope
+            && !empty($this->iso_category_scope)
+            && 'index' !== $objPage->alias
         ) {
             $arrCategories = array_intersect(
                 $productCategories,

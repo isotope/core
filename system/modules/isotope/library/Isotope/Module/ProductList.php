@@ -14,11 +14,11 @@ namespace Isotope\Module;
 use Haste\Generator\RowClass;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
-use Isotope\Model\ProductType;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 use Isotope\Template;
@@ -215,17 +215,7 @@ class ProductList extends Module
 
         /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
-            /** @var ProductType $type */
-            $type = $objProduct->getRelated('type');
-
-            $arrConfig = array(
-                'module'        => $this,
-                'template'      => $this->iso_list_layout ?: $type->list_template,
-                'gallery'       => $this->iso_gallery ?: $type->list_gallery,
-                'buttons'       => $this->iso_buttons,
-                'useQuantity'   => $this->iso_use_quantity,
-                'jumpTo'        => $this->findJumpToPage($objProduct),
-            );
+            $arrConfig = $this->getProductConfig($objProduct);
 
             if (\Environment::get('isAjaxRequest')
                 && \Input::post('AJAX_MODULE') == $this->id
@@ -539,5 +529,19 @@ class ProductList extends Module
         }
 
         return $expires;
+    }
+
+    protected function getProductConfig(IsotopeProduct $product)
+    {
+        $type = $product->getType();
+
+        return array(
+            'module'        => $this,
+            'template'      => $this->iso_list_layout ?: $type->list_template,
+            'gallery'       => $this->iso_gallery ?: $type->list_gallery,
+            'buttons'       => $this->iso_buttons,
+            'useQuantity'   => $this->iso_use_quantity,
+            'jumpTo'        => $this->findJumpToPage($product),
+        );
     }
 }
