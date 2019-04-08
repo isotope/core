@@ -133,7 +133,8 @@ $GLOBALS['ISO_MOD'] = array
         'documents' => array
         (
             'tables'            => array(\Isotope\Model\Document::getTable()),
-            'icon'              => 'system/modules/isotope/assets/images/setup-documents.png'
+            'icon'              => 'system/modules/isotope/assets/images/setup-documents.png',
+            'empty'             => array('\Isotope\Backend\Document\TcpdfCheck', 'showEmptyWarning')
         ),
         'gallery' => array
         (
@@ -233,7 +234,9 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 /**
  * Documents
  */
-\Isotope\Model\Document::registerModelType('standard', 'Isotope\Model\Document\Standard');
+if (class_exists('\TCPDF')) {
+    \Isotope\Model\Document::registerModelType('standard', 'Isotope\Model\Document\Standard');
+}
 
 /**
  * Galleries

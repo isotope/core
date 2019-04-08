@@ -23,7 +23,8 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         'closed'                    => true,
         'onload_callback' => array
         (
-            array('Isotope\Backend', 'initializeSetupModule')
+            array('Isotope\Backend', 'initializeSetupModule'),
+            array('Isotope\Backend\Document\TcpdfCheck', 'redirectIfEmpty'),
         ),
         'sql' => array
         (
