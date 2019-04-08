@@ -576,7 +576,7 @@
         <source>There are no document types available for your Isotope eCommerce installation. Please install a compatible extension/package to add support for documents.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_tcpdf.bundle">
-        <source>On Contao 4.7 and later, you can install &lt;u&gt;contao/tcpdf-bundle&lt;/u&gt; to gain support for the standard document type.</source>
+        <source>In Contao 4.7 and later, you can install &lt;u&gt;contao/tcpdf-bundle&lt;/u&gt; to gain support for the standard document type.</source>
       </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>
