@@ -110,6 +110,14 @@ class OrderDetails extends AbstractProductCollection
             exit;
         }
 
+        if ('FE' === TL_MODE) {
+            /** @var \PageModel $objPage */
+            global $objPage;
+
+            $order->preventSaving(false);
+            $order->orderdetails_page = $objPage->id;
+        }
+
         return $order;
     }
 
