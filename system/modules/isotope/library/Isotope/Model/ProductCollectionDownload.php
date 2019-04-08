@@ -11,8 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\PageModel;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Model\ProductCollection\Order;
 
 /**
  * ProductCollectionDownload model represents a download in a collection (usually an order)
@@ -63,11 +65,11 @@ class ProductCollectionDownload extends \Model
      * Generate array representation for download
      *
      * @param bool     $blnOrderPaid
-     * @param int|null $orderDetailsPage
+     * @param int|null $orderDetailsPageId
      *
      * @return array
      */
-    public function getForTemplate($blnOrderPaid = false, $orderDetailsPage = null)
+    public function getForTemplate($blnOrderPaid = false, $orderDetailsPageId = null)
     {
         /** @var \PageModel $objPage */
         global $objPage;
@@ -81,6 +83,14 @@ class ProductCollectionDownload extends \Model
 
         $arrDownloads    = array();
         $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+
+        $baseUrl = null;
+        if ($orderDetailsPageId > 0 && ($orderDetailsPage = PageModel::findByPk($orderDetailsPageId)) !== null) {
+            /** @var Order $order */
+            $order = $this->getRelated('pid')->getRelated('pid');
+
+            $baseUrl = $orderDetailsPage->getFrontendUrl().'?uid='.$order->uniqid;
+        }
 
         foreach ($objDownload->getFiles() as $objFileModel) {
             $objFile = new \File($objFileModel->path, true);
@@ -126,7 +136,7 @@ class ProductCollectionDownload extends \Model
             if ('FE' === TL_MODE) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
-                    $orderDetailsPage > 0 ? $orderDetailsPage : null
+                    $baseUrl
                 );
             }
 
