@@ -76,6 +76,13 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['dynamic']
+                || ($arrData['eval']['multiple'] && !$arrData['eval']['csv'])
+            ) {
+                // Cannot search for dynamic attributes
+                continue;
+            }
+
             if ($arrData['attributes']['fe_search']) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }

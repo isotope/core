@@ -38,12 +38,6 @@
       <trans-unit id="tl_module.iso_jump_first.1">
         <source>Check here if users are redirected to the first product of the list.</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_jump_exact.0">
-        <source>Redirect exact match</source>
-      </trans-unit>
-      <trans-unit id="tl_module.iso_jump_exact.1">
-        <source>Redirects to the detail page if the keyword search matches exactly one product in these fields.</source>
-      </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.0">
         <source>Hide in reader mode</source>
       </trans-unit>
@@ -298,6 +292,12 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_searchFields.1">
         <source>Please select search fields to enable.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchExact.0">
+        <source>Redirect exact match</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchExact.1">
+        <source>Redirect to the product details if the keyword search has an exact match in one of these fields (e.g. search by SKU).</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_searchAutocomplete.0">
         <source>Autocomplete search field</source>

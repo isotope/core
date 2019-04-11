@@ -33,7 +33,6 @@ use Isotope\Template;
  * @property string $iso_listingSortField
  * @property string $iso_listingSortDirection
  * @property bool   $iso_jump_first
- * @property array  $iso_jump_exact
  */
 class ProductList extends Module
 {
@@ -61,7 +60,6 @@ class ProductList extends Module
 
         $props[] = 'iso_filterModules';
         $props[] = 'iso_productcache';
-        $props[] = 'iso_jump_exact';
 
         return $props;
     }
@@ -214,7 +212,6 @@ class ProductList extends Module
 
         $arrBuffer         = array();
         $arrDefaultOptions = $this->getDefaultProductOptions();
-        $findExactMatch = !empty($this->iso_jump_exact) && count($arrProducts);
 
         /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
@@ -240,14 +237,6 @@ class ProductList extends Module
             }
 
             $objProduct->mergeRow($arrDefaultOptions);
-
-            if ($findExactMatch) {
-                foreach ($this->iso_jump_exact as $attribute) {
-                    if ($objProduct->{$attribute} == \Input::get('keywords')) {
-                        \Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
-                    }
-                }
-            }
 
             // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && Input::getAutoItem('product', false, true) == '') {

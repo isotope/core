@@ -22,11 +22,14 @@ use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
 use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
+use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 
 /**
  * ProductFilter allows to filter a product list by attributes.
+ *
+ * @property array $iso_searchExact
  */
 class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
@@ -67,6 +70,8 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             return '';
         }
 
+        $this->searchExactKeywords();
+
         $strBuffer = parent::generate();
 
         // Cache request in the database and redirect to the unique requestcache ID
@@ -106,6 +111,18 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $objResponse = new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
             $objResponse->send();
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getSerializedProperties()
+    {
+        $props = parent::getSerializedProperties();
+
+        $props[] = 'iso_searchExact';
+
+        return $props;
     }
 
     /**
@@ -433,6 +450,52 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 $this->Template->limitLabel   = $GLOBALS['TL_LANG']['MSC']['perPageLabel'];
                 $this->Template->limitOptions = $arrOptions;
             }
+        }
+    }
+
+    protected function searchExactKeywords()
+    {
+        $keywords = (string) \Input::get('keywords');
+
+        if (empty($this->iso_searchExact) || empty($keywords)) {
+            return;
+        }
+
+        $arrColumns = [];
+        $arrValues = [];
+        $arrCategories = $this->findCategories();
+
+        foreach ($this->iso_searchExact as $field) {
+            $filter = Filter::attribute($field)->isEqualTo($keywords)->groupBy('exact-match');
+
+            $arrColumns[] = $filter->sqlWhere();
+            $arrValues[] = $filter->sqlValue();
+        }
+
+        if (1 === \count($arrCategories)) {
+            $arrColumns[] = "c.page_id=".$arrCategories[0];
+        } else {
+            $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
+        }
+
+        // Apply new/old product filter
+        if ('show_new' === $this->iso_newFilter) {
+            $arrColumns[] = Product::getTable() . ".dateAdded>=" . Isotope::getConfig()->getNewProductLimit();
+        } elseif ('show_old' === $this->iso_newFilter) {
+            $arrColumns[] = Product::getTable() . ".dateAdded<" . Isotope::getConfig()->getNewProductLimit();
+        }
+
+        if ($this->iso_list_where != '') {
+            $arrColumns[] = $this->iso_list_where;
+        }
+
+        $products = Product::findAvailableBy($arrColumns, $arrValues);
+
+        if (null !== $products && $products->count() === 1) {
+            /** @var Product $product */
+            $product = $products->current();
+
+            \Controller::redirect($product->generateUrl($this->findJumpToPage($product)));
         }
     }
 }
