@@ -15,6 +15,7 @@ Version 2.6.0-stable (2018-??-??)
 - Added shipping method limitation depending on address type
 - Added front end module to filter products by categories (pages)
 - Added module config to hide product options
+- Highlight search keywords in product list
 
 ### Improved
 

@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Product;
 
+use Contao\StringUtil;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -424,6 +425,23 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->setData($this->arrData);
         $objTemplate->product = $this;
         $objTemplate->config  = $arrConfig;
+
+        $objTemplate->highlightKeywords = function($text) {
+            $keywords = \Input::get('keywords');
+
+            if (empty($keywords)) {
+                return $text;
+            }
+
+            $keywords = StringUtil::trimsplit(' |-', $keywords);
+            $keywords = array_filter(array_unique($keywords));
+
+            foreach ($keywords as $word) {
+                $text = \StringUtil::highlight($text, $word, '<em>', '</em>');
+            }
+
+            return $text;
+        };
 
         $objTemplate->hasAttribute = function ($strAttribute) use ($objProduct) {
             return \in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
