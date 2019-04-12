@@ -18,7 +18,7 @@
             el.addEventListener(name, callback, false);
         }
     }
-    
+
     function dispatchEvent(name, data) {
         if (jQuery) {
             jQuery(window).trigger(jQuery.Event(name, data));
@@ -177,10 +177,10 @@
         var loadMessage = 'Loading product data …';
 
         function initProduct(config) {
-            var formParent = _doc.getElementById(config.formId).parentNode;
+            var form = _doc.getElementById(config.formId);
 
-            if (formParent) {
-                registerEvents(formParent, config);
+            if (form && form.parentNode) {
+                registerEvents(form.parentNode, config);
             }
         }
 

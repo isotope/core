@@ -499,16 +499,18 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
                 if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
 
-                    $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions);
+                    $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions, $objWidget);
 
                     if ($strWidget != '') {
                         $arrProductOptions[$attribute] = array_merge($arrData, array
                         (
                             'name'    => $attribute,
                             'html'    => $strWidget,
+                            'widget'  => $objWidget,
                         ));
                     }
 
+                    unset($objWidget);
                 }
             }
         }
@@ -590,7 +592,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
 
-        $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
+        if (!$arrConfig['disableOptions']) {
+            $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
+        }
 
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && \is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
@@ -612,7 +616,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @return string
      */
-    protected function generateProductOptionWidget($strField, &$arrVariantOptions, &$arrAjaxOptions)
+    protected function generateProductOptionWidget($strField, &$arrVariantOptions, &$arrAjaxOptions, &$objWidget = null)
     {
         $arrDefaults = $this->getOptionsDefaults();
 
