@@ -177,19 +177,11 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
     /**
      * Get data from POST
-     * @todo remove magic_quotes:gpc when PHP 5.4 is compulsory (it's also deprecated in PHP 5.3 so it might also be removed when PHP 5.3 is compulsory)
      */
     protected function getPostData()
     {
         // Cannot use \Input::post() here because it would kill XML data
-        $strData = $_POST['DATA'];
-
-        // catch magic_quotes_gpc is set to yes in php.ini (can be removed when PHP 5.4 is compulsory)
-        if (0 === strpos($strData, '<IDP MSGTYPE=\"')) {
-            $strData = stripslashes($strData);
-        }
-
-        return $strData;
+        return $_POST['DATA'];
     }
 
     /**
