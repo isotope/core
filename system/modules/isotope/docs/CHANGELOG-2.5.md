@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.5.13-stable (2019-0?-??)
+Version 2.5.13-stable (2019-05-29)
 ----------------------------------
 
 - Fixed definition of TL_ASSETS_URL in custom entry points
@@ -9,6 +9,12 @@ Version 2.5.13-stable (2019-0?-??)
 - Fixed SQL query error in product variant list (#2030)
 - Do not load the fallback variant for variant product list (#2004)
 - Product download links did not point to the order details page (#2032)
+- Always require tcpdf so we don't need tcpdf-bundle in Contao 4.7 (#2033)
+- Added new payment types for PSP methods (Postfinance/VIVEUM)
+- Fixed table alias for SQL queries in product filter module (#2043)
+- Dropped back end icon for Contao < 4.4 (#2039)
+- Truncate the product cache when changing related products (#2037)
+- Retain quantity value in product reader when changing options (#2035)
 
 
 Version 2.5.12-stable (2019-03-25)
