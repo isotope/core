@@ -17,9 +17,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.0">
         <source>Gender</source>
+        <target>Spol</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.1">
         <source>Please choose the gender.</source>
+        <target>Izberite spol</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.salutation.0">
         <source>Salutation</source>
@@ -33,6 +35,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.firstname.1">
         <source>Please enter the first name.</source>
+        <target>Vnesite ime</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.lastname.0">
         <source>Last name</source>
@@ -40,12 +43,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.lastname.1">
         <source>Please enter the last name.</source>
+        <target>Vnesite priimek.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.0">
         <source>Date of birth</source>
+        <target>Datum rojstva</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.1">
         <source>Please enter the date of birth.</source>
+        <target>Vnesite datum rojstva.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.company.0">
         <source>Company</source>
@@ -53,6 +59,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.company.1">
         <source>You can enter a company name here.</source>
+        <target>Vnesite ime podjetja.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.0">
         <source>VAT No.</source>
@@ -60,27 +67,31 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.1">
         <source>Please enter a VAT number.</source>
+        <target>Vnesite davčno številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.0">
         <source>Street</source>
-        <target>Ulica</target>
+        <target>Naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.1">
         <source>Please enter the street name and the street number.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.0">
         <source>Street 2</source>
-        <target>Ulica 2</target>
+        <target>Pomožni naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.1">
         <source>Enter a second street info if there's any.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.0">
         <source>Street 3</source>
-        <target>Ulica 3</target>
+        <target>Naslov 3</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
         <source>Enter a third street info if there's any.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">
         <source>Postal code</source>
@@ -88,6 +99,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.1">
         <source>Please enter the postal code.</source>
+        <target>Vnesite poštno številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.city.0">
         <source>City</source>
@@ -95,12 +107,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.city.1">
         <source>Please enter the name of the city.</source>
+        <target>Vnesite kraj.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.0">
         <source>State</source>
+        <target>Regija</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.1">
         <source>Please enter the name of the state.</source>
+        <target>Vnesite regijo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.country.0">
         <source>Country</source>
@@ -108,6 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.country.1">
         <source>Please select a country.</source>
+        <target>Izberite državo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.phone.0">
         <source>Phone number</source>
@@ -115,81 +131,107 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.phone.1">
         <source>Please enter the phone number.</source>
+        <target>Vnesite telefonsko številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.email.0">
         <source>E-mail address</source>
+        <target>E-Poštni naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.email.1">
         <source>Please enter a valid e-mail address.</source>
+        <target>Vnesite e-poštni naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultBilling.0">
         <source>Default billing address</source>
+        <target>Privzet naslov za plačilo</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultBilling.1">
         <source>Is this your default billing address?</source>
+        <target>Je to vaš privzeti naslov za plačilo?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.0">
         <source>Default shipping address</source>
+        <target>Privzeti naslov za dostavo</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.1">
         <source>Is this your default shipping address?</source>
+        <target>Je to vaš privzeti naslov za dostavo?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_legend">
         <source>Store</source>
+        <target>Trgovina</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.personal_legend">
         <source>Personal data</source>
+        <target>Osebni podatki</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.address_legend">
         <source>Address details</source>
+        <target>Podrobnosti o naslovih</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.contact_legend">
         <source>Contact details</source>
+        <target>Kontaktne podrobnosti</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.default_legend">
         <source>Default address</source>
+        <target>Privzeti naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.personalData">
         <source>Personal data</source>
+        <target>Osebni podatki</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.addressDetails">
         <source>Address details</source>
+        <target>Podrobnosti o naslovih</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.contactDetails">
         <source>Contact details</source>
+        <target>Kontaktne podrobnosti</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.loginDetails">
         <source>Default address</source>
+        <target>Privzeti naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.new.0">
         <source>New address</source>
+        <target>Nov naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.new.1">
         <source>Create a new address</source>
+        <target>Ustvari nov naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.edit.0">
         <source>Edit address</source>
+        <target>Uredi naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.edit.1">
         <source>Edit address ID %s</source>
+        <target>Uredi naslov ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.copy.0">
         <source>Duplicate address</source>
+        <target>Podvoji naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.copy.1">
         <source>Duplicate address ID %s</source>
+        <target>Podvoji naslov ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.delete.0">
         <source>Delete address</source>
+        <target>Izbriši naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.delete.1">
         <source>Delete address ID %s</source>
+        <target>Izbriši naslov ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.show.0">
         <source>Address details</source>
+        <target>Podrobnosti o naslovu</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>
+        <target>Prikaži podrobnosti o naslovu ID %s</target>
       </trans-unit>
     </body>
   </file>
