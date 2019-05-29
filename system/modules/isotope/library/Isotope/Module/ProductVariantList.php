@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\RequestCache\FilterQueryBuilder;
@@ -38,7 +39,7 @@ class ProductVariantList extends ProductList
 
         $arrColumns[] = "(
             (tl_iso_product.pid=0 AND tl_iso_product.type NOT IN (SELECT id FROM tl_iso_producttype WHERE variants='1'))
-            OR tl_iso_product.pid>0)
+            OR tl_iso_product.pid>0
         )";
 
         if (1 === \count($arrCategories)) {
@@ -84,5 +85,14 @@ class ProductVariantList extends ProductList
         );
 
         return (null === $objProducts) ? array() : $objProducts->getModels();
+    }
+
+    protected function getProductConfig(IsotopeProduct $product)
+    {
+        $config = parent::getProductConfig($product);
+
+        $config['loadFallback'] = false;
+
+        return $config;
     }
 }

@@ -53,10 +53,11 @@ use Model\Registry;
  * @property string $currency
  * @property string $language
  *
- * @property int    $nc_notification
- * @property bool   $iso_addToAddressbook
- * @property array  $iso_checkout_skippable
- * @property array  $email_data
+ * @property int|array $nc_notification
+ * @property bool      $iso_addToAddressbook
+ * @property array     $iso_checkout_skippable
+ * @property array     $email_data
+ * @property int       $orderdetails_page
  */
 abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {

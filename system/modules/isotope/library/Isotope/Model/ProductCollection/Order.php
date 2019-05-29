@@ -518,7 +518,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrItem      = $this->generateItem($objItem);
 
             foreach ($objItem->getDownloads() as $objDownload) {
-                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid()));
+                $arrDownloads = array_merge($arrDownloads, $objDownload->getForTemplate($this->isPaid(), $this->orderdetails_page));
             }
 
             $arrItem['downloads'] = $arrDownloads;

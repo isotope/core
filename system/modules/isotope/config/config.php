@@ -55,10 +55,6 @@ if ('BE' === TL_MODE) {
     if (file_exists(TL_ROOT . '/system/themes/flexible/icons')) {
         $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend-svg.css|static';
     }
-
-    if (version_compare(VERSION, '4.4', '>=')) {
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend-contao4.css|static';
-    }
 }
 
 

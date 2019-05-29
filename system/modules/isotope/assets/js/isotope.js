@@ -18,7 +18,7 @@
             el.addEventListener(name, callback, false);
         }
     }
-    
+
     function dispatchEvent(name, data) {
         if (jQuery) {
             jQuery(window).trigger(jQuery.Event(name, data));
@@ -223,10 +223,13 @@
                 div.innerHTML = txt;
 
                 // Remove all error messages
+                var skip = 0;
                 var errors = div.getElementsByTagName('p');
-                for(i=0; i<errors.length; i++) {
-                    if (errors[i].className.search(/(^| )error( |$)/) != -1) {
-                        errors[i].parentNode.removeChild(errors[i]);
+                while (skip < errors.length) {
+                    if (errors[skip].className.search(/(^| )error( |$)/) !== -1) {
+                        errors[skip].parentNode.removeChild(errors[skip]);
+                    } else {
+                        skip++;
                     }
                 }
 
