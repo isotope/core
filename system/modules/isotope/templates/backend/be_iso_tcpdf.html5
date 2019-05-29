@@ -1,7 +1,0 @@
-<div class="be_iso_introduction">
-    <h2><?= $GLOBALS['TL_LANG']['MSC']['iso_tcpdf']['headline']; ?></h2>
-    <p><?= $GLOBALS['TL_LANG']['MSC']['iso_tcpdf']['description']; ?></p>
-    <?php if (version_compare(VERSION, '4.7', '>=')): ?>
-    <p><?= $GLOBALS['TL_LANG']['MSC']['iso_tcpdf']['bundle']; ?></p>
-    <?php endif; ?>
-</div>

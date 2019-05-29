@@ -569,15 +569,6 @@
       <trans-unit id="MSC.isotopeIntroduction.5">
         <source>Isotope is a product of %s in association with &lt;a href="http://isotopeecommerce.org/de/team.html" target="_blank"&gt;the Isotope eCommerce Team&lt;/a&gt;.</source>
       </trans-unit>
-      <trans-unit id="MSC.iso_tcpdf.headline">
-        <source>No document types available</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_tcpdf.description">
-        <source>There are no document types available for your Isotope eCommerce installation. Please install a compatible extension/package to add support for documents.</source>
-      </trans-unit>
-      <trans-unit id="MSC.iso_tcpdf.bundle">
-        <source>In Contao 4.7 and later, you can install &lt;u&gt;contao/tcpdf-bundle&lt;/u&gt; to gain support for the standard document type.</source>
-      </trans-unit>
       <trans-unit id="MSC.iso_orderCollectionBy.asc_id">
         <source>by date added (ascending)</source>
       </trans-unit>

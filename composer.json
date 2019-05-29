@@ -45,8 +45,7 @@
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
         "petschko/dhl-php-sdk": "For DHL Business shipping",
-        "mpay24/mpay24-php": "For mPAY24 payment provider",
-        "contao/tcpdf-bundle": "Required for the standard document type in Contao 4.7+"
+        "mpay24/mpay24-php": "For mPAY24 payment provider"
     },
     "conflict": {
         "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
