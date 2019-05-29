@@ -409,10 +409,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     public function generate(array $arrConfig)
     {
         $objProduct = $this;
+        $loadFallback = isset($arrConfig['loadFallback']) ? (bool) $arrConfig['loadFallback'] : true;
+
         $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
         if (!$arrConfig['disableOptions']) {
-            $objProduct = $this->validateVariant();
+            $objProduct = $this->validateVariant($loadFallback);
 
             // A variant has been loaded, generate the variant
             if ($objProduct->getId() != $this->getId()) {
@@ -843,9 +845,11 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Load data of a product variant if the options match one
      *
+     * @param bool $loadDefaultVariant
+     *
      * @return IsotopeProduct|$this
      */
-    public function validateVariant()
+    public function validateVariant($loadDefaultVariant = true)
     {
         if (!$this->hasVariants()) {
             return $this;
@@ -882,7 +886,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objVariant;
         }
 
-        if (!$hasOptions && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
+        if (!$hasOptions && $loadDefaultVariant && ($objVariant = static::findDefaultVariantOfProduct($this)) !== null) {
             return $objVariant;
         }
 

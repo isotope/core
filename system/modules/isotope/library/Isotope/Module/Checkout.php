@@ -31,6 +31,7 @@ use Isotope\Template;
  * @property array $iso_notifications
  * @property bool  $iso_addToAddressbook
  * @property array $iso_checkout_skippable
+ * @property int   $orderCompleteJumpTo
  */
 class Checkout extends Module
 {
@@ -219,6 +220,7 @@ class Checkout extends Module
                 $objOrder->nc_notification      = $this->iso_notifications;
                 $objOrder->iso_addToAddressbook = $this->iso_addToAddressbook;
                 $objOrder->iso_checkout_skippable = $this->iso_checkout_skippable;
+                $objOrder->orderdetails_page = $this->orderCompleteJumpTo;
                 $objOrder->email_data           = $this->getNotificationTokensFromSteps($arrSteps, $objOrder);
 
                 // !HOOK: pre-process checkout

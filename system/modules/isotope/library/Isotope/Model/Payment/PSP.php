@@ -200,6 +200,16 @@ abstract class PSP extends Payment implements IsotopePostsale
             'CreditCard__MasterCard'                => 'CreditCard - MasterCard',
             'CreditCard__VISA'                      => 'CreditCard - VISA',
             'PostFinance_Card__PostFinance_Card'    => 'PostFinance Card',
+            'DirectEbanking__Sofort_Uberweisung'    => 'Sofortüberweisung (Deutsche Konten)',
+            'DirectEbankingAT__DirectEbankingAT'    => 'Sofortüberweisung (AT)',
+            'DirectEbankingCH__DirectEbankingCH'    => 'Sofortüberweisung (CH)',
+            'DirectEbankingDE__DirectEbankingDE'    => 'Sofortüberweisung (DE)',
+            'DirectEbankingBE__DirectEbankingBE'    => 'DirectEbanking (BE)',
+            'DirectEbankingFR__DirectEbankingFR'    => 'DirectEbanking (FR)',
+            'DirectEbankingGB__DirectEbankingGB'    => 'DirectEbanking (GB)',
+            'DirectEbankingIT__DirectEbankingIT'    => 'DirectEbanking (IT)',
+            'DirectEbankingNL__DirectEbankingNL'    => 'DirectEbanking (NL)',
+            'EPS__EPS'                              => 'EPS',
             'PAYPAL__PAYPAL'                        => 'PayPal'
         );
     }

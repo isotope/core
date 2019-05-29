@@ -14,7 +14,7 @@ const scripts = [
     '!system/modules/isotope/assets/js/*.min.js'
 ];
 const styles = [
-    'system/modules/isotope/assets/css/*.css',
+    'system/modules/isotope/assets/css/isotope.css',
     '!system/modules/isotope/assets/css/*.min.css',
     'system/modules/isotope_reports/assets/*.css',
     '!system/modules/isotope_reports/assets/*.min.css'

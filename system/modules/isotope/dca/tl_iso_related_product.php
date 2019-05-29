@@ -25,6 +25,10 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
         (
             array('Isotope\Backend\RelatedProduct\Callback', 'initDCA')
         ),
+        'onsubmit_callback' => array
+        (
+            array('Isotope\Backend', 'truncateProductCache'),
+        ),
         'sql' => array
         (
             'keys' => array

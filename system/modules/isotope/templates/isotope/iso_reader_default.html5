@@ -27,7 +27,7 @@
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
+<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" value="<?= specialchars(Input::post('quantity_requested')); ?>" maxlength="10">
 </div>
 <?php endif; ?>
 <?php foreach ($this->actions as $action) echo $action->generate($this->product); ?>
