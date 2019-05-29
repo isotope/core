@@ -30,7 +30,8 @@
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",
         "terminal42/dc_multilingual": "~2.0",
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "tecnickcom/tcpdf": "^6.2.22"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
@@ -45,7 +46,8 @@
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
         "petschko/dhl-php-sdk": "For DHL Business shipping",
-        "mpay24/mpay24-php": "For mPAY24 payment provider"
+        "mpay24/mpay24-php": "For mPAY24 payment provider",
+        "contao/tcpdf-bundle": "Required for the standard document type in Contao 4.7+"
     },
     "conflict": {
         "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
