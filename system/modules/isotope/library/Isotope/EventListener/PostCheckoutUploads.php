@@ -107,7 +107,7 @@ class PostCheckoutUploads
 
             if ($userData['assignDir']) {
                 $homeDir = FilesModel::findByPk($userData['homeDir']);
-                $tokens['member_homeDir'] = null === $homeDir ? $homeDir->path : '';
+                $tokens['member_homeDir'] = null !== $homeDir ? $homeDir->path : '';
             }
         }
 
