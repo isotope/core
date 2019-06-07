@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.5.14-stable (2019-06-??)
+----------------------------------
+
+- Fixed moving files after order for regular upload attributes
+
+
 Version 2.5.13-stable (2019-05-29)
 ----------------------------------
 
