@@ -49,31 +49,12 @@ class PostCheckoutUploads
                     continue;
                 }
 
-                foreach ($value as $i => $source) {
-                    $tokens = $this->generateTokens($order, $item, $position, $total, $attribute, $source);
-
-                    $targetFolder = StringUtil::recursiveReplaceTokensAndTags(
-                        $attribute->checkoutTargetFolder,
-                        $tokens,
-                        StringUtil::NO_TAGS | StringUtil::NO_BREAKS
-                    );
-
-                    if ($attribute->doNotOverwrite) {
-                        $tokens['file_target'] = FileUpload::getFileName($tokens['file_name'], $targetFolder);
-                    } else {
-                        $tokens['file_target'] = $tokens['file_name'];
+                if (\is_array($value)) {
+                    foreach ($value as $i => $source) {
+                        $value[$i] = $this->renameFile($order, $item, $position, $total, $attribute, $source);
                     }
-
-                    $targetFile = StringUtil::recursiveReplaceTokensAndTags(
-                        $attribute->checkoutTargetFile,
-                        $tokens,
-                        StringUtil::NO_TAGS | StringUtil::NO_BREAKS
-                    );
-
-                    $file = new File($source);
-                    $file->renameTo($targetFolder . '/' . $targetFile);
-
-                    $value[$i] = $targetFolder . '/' . $targetFile;
+                } else {
+                    $value = $this->renameFile($order, $item, $position, $total, $attribute, $value);
                 }
 
                 $configuration[$attributeName] = $value;
@@ -126,10 +107,38 @@ class PostCheckoutUploads
 
             if ($userData['assignDir']) {
                 $homeDir = FilesModel::findByPk($userData['homeDir']);
-                $tokens['member_homeDir'] = null === $homeDir ? $homeDir->path : '';
+                $tokens['member_homeDir'] = null !== $homeDir ? $homeDir->path : '';
             }
         }
 
         return $tokens;
+    }
+
+    private function renameFile(IsotopeOrderableCollection $order, $item, $position, $total, $attribute, $source)
+    {
+        $tokens = $this->generateTokens($order, $item, $position, $total, $attribute, $source);
+
+        $targetFolder = StringUtil::recursiveReplaceTokensAndTags(
+            $attribute->checkoutTargetFolder,
+            $tokens,
+            StringUtil::NO_TAGS | StringUtil::NO_BREAKS
+        );
+
+        if ($attribute->doNotOverwrite) {
+            $tokens['file_target'] = FileUpload::getFileName($tokens['file_name'], $targetFolder);
+        } else {
+            $tokens['file_target'] = $tokens['file_name'];
+        }
+
+        $targetFile = StringUtil::recursiveReplaceTokensAndTags(
+            $attribute->checkoutTargetFile,
+            $tokens,
+            StringUtil::NO_TAGS | StringUtil::NO_BREAKS
+        );
+
+        $file = new File($source);
+        $file->renameTo($targetFolder . '/' . $targetFile);
+
+        return $targetFolder . '/' . $targetFile;
     }
 }

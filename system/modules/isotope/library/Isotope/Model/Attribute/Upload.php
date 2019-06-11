@@ -100,7 +100,6 @@ class Upload extends Attribute implements \uploadable
         $folder = new Folder('isotope/uploads');
         $folder->protect();
 
-        $file = substr(md5_file($temp), 0, 8) . '-' . $file;
         $file = FileUpload::getFileName($file, $folder->path);
         $file = $folder->path . '/' . $file;
 
