@@ -364,6 +364,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.email.0">
         <source>E-mail address</source>
+        <target>E-Poštni naslov</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.email.1">
         <source>Checks whether the input is a valid e-mail address.</source>

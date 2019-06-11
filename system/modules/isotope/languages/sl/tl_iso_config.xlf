@@ -47,6 +47,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.vat_no.1">
         <source>Please enter a VAT number.</source>
+        <target>Vnesite davčno številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_1.0">
         <source>Street</source>
@@ -54,6 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.street_1.1">
         <source>Please enter the street name and the street number.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.0">
         <source>Street 2</source>
@@ -61,6 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.street_2.1">
         <source>Enter a second street info if there's any.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.0">
         <source>Street 3</source>
@@ -68,6 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.street_3.1">
         <source>Enter a third street info if there's any.</source>
+        <target>Vnesite naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.0">
         <source>Postal code</source>
@@ -75,6 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.postal.1">
         <source>Please enter the postal code.</source>
+        <target>Vnesite poštno številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.city.0">
         <source>City</source>
@@ -82,12 +87,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.city.1">
         <source>Please enter the name of the city.</source>
+        <target>Vnesite kraj.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.0">
         <source>State</source>
+        <target>Regija</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.1">
         <source>Please enter the name of the state.</source>
+        <target>Vnesite regijo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.country.0">
         <source>Country</source>
@@ -102,12 +110,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.phone.1">
         <source>Please enter the phone number.</source>
+        <target>Vnesite telefonsko številko.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.email.0">
         <source>Shipping email address</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.email.1">
         <source>Please enter a valid e-mail address.</source>
+        <target>Vnesite e-poštni naslov.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.0">
         <source>Address fields</source>

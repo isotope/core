@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.0">
         <source>Client ID</source>
-        <target>Kundennummer</target>
+        <target>Kundennummer (Client ID)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.1">
         <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
@@ -187,7 +187,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.0">
         <source>Secret</source>
-        <target>Schlüssel</target>
+        <target>Schlüssel (Secret)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
