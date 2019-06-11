@@ -1,6 +1,15 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.5.14-stable (2019-06-11)
+---------------------------------
+
+- Fixed moving files after order for regular upload attributes
+- Fixed moving files to member homedir after order is complete (#1996)
+- Removed file hash from upload file names
+
+
 Version 2.5.13-stable (2019-05-29)
 ----------------------------------
 
