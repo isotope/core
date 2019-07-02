@@ -2,7 +2,7 @@ Isotope eCommerce Changelog
 ===========================
 
 
-Version 2.5.15-stable (2019-??-??)
+Version 2.5.15-stable (2019-07-02)
 ----------------------------------
 
 - Cumulative filter incorrectly handled checkbox fields (#1933)
