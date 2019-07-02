@@ -11,6 +11,7 @@ Version 2.6.0-stable (2018-??-??)
 - Allow to redirect to product details if keywords search is an exact match
 - Added product field for GTIN (Global Trade Item Number)
 - Added Trusted Shops front end module
+- Added support for Saferpay JSON API to Saferpay payment method (#2023)
 - Added support for debug mode in Saferpay payments
 - Added shipping method limitation depending on address type
 - Added front end module to filter products by categories (pages)
