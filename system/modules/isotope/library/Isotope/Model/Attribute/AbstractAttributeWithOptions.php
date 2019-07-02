@@ -300,8 +300,10 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
         $value = parent::getValue($product);
 
         if ($this->multiple) {
-            if (IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
-                || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+            if ((
+                IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
+                    || IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY === $this->optionsSource
+                ) && $this->csv === ','
             ) {
                 $value = explode(',', $value);
             } else {

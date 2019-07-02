@@ -1,29 +1,4 @@
-# Ignore everything (useful to ignore the whole Contao installation)
-/*
-
-# Do not ignore ".gitignore"
-!.gitignore
-!.tx
-!composer.json
-!build.xml.dist
-!README.md
-!.php_cs.dist
-
-# Isotope ignoring rules
-!isotope/
-isotope/*
-!isotope/.htaccess
-!isotope/index.html
-!system/
-system/*
-!system/modules
-system/modules/*
-!system/modules/isotope/*
-!system/modules/isotope_reports/*
-!system/modules/isotope_rules/*
-/system/modules/isotope/config/runonce.php
-
-# Gulp and node modules
-!gulpfile.js
-!package.json
-node_modules/
+/vendor/
+/node_modules/
+/composer.lock
+/.php_cs.cache
