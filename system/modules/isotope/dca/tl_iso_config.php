@@ -119,8 +119,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         'default'                   => '
             {name_legend},name,label,fallback;
             {address_legend:hide},firstname,lastname,company,vat_no,street_1,street_2,street_3,postal,city,country,subdivision,email,phone;
-            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
             {bank_legend:hide},bankName,bankAccount,bankCode,taxNumber;
+            {checkout_legend},address_fields,billing_country,shipping_country,billing_countries,shipping_countries,limitMemberCountries,vatNoValidators;
             {pricing_legend},priceDisplay,currencyFormat,priceRoundPrecision,priceRoundIncrement;
             {currency_legend},currency,currencyPosition,currencySymbol;
             {converter_legend:hide},priceCalculateFactor,priceCalculateMode,currencyAutomator;
@@ -304,6 +304,38 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'eval'                  => array('maxlength'=>64, 'rgxp'=>'email', 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
+        'bankName' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankName'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
+        'bankAccount' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankAccount'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>34, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(34) NOT NULL default ''",
+        ),
+        'bankCode' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankCode'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>16, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
+        ),
+        'taxNumber' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['taxNumber'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+        ),
         'address_fields' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields'],
@@ -411,38 +443,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'reference'             => $GLOBALS['TL_LANG']['ISO_VAT'],
             'eval'                  => array('multiple'=>true, 'tl_class'=>'clr'),
             'sql'                   => "blob NULL",
-        ),
-        'bankName' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankName'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
-        ),
-        'bankAccount' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankAccount'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>34, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(34) NOT NULL default ''",
-        ),
-        'bankCode' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['bankCode'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>16, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(16) NOT NULL default ''",
-        ),
-        'taxNumber' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['taxNumber'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'priceDisplay' => array
         (
