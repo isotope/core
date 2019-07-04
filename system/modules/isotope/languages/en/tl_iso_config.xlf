@@ -158,6 +158,30 @@
       <trans-unit id="tl_iso_config.vatNoValidators.1">
         <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.0">
+        <source>Bank name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.1">
+        <source>Here you can enter your bank name.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.0">
+        <source>Bank account number (IBAN)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.1">
+        <source>Here you can enter your bank account number (IBAN).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.0">
+        <source>Bank code (BIC/SWIFT)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.1">
+        <source>Here you can enter your bank code (BIC/SWIFT).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.0">
+        <source>Tax number</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.1">
+        <source>Here you can enter your tax number.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_config.priceDisplay.0">
         <source>Price display</source>
       </trans-unit>
@@ -409,6 +433,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.checkout_legend">
         <source>Checkout</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bank_legend">
+        <source>Bank details</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.pricing_legend">
         <source>Pricing</source>

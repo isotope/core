@@ -387,6 +387,10 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false, $objConfig->currency);
         $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false, $objConfig->currency);
         $arrTokens['document_number'] = $this->document_number;
+        $arrTokens['bank_name']       = $objConfig->bankName;
+        $arrTokens['bank_account']    = $objConfig->bankAccount;
+        $arrTokens['bank_code']       = $objConfig->bankCode;
+        $arrTokens['tax_number']      = $objConfig->taxNumber;
         $arrTokens['cart_html']       = '';
         $arrTokens['cart_text']       = '';
         $arrTokens['document']        = '';
