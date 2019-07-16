@@ -43,9 +43,10 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
             $this->multiple           = false;
             $this->size               = 1;
         }
-        
-        // Use the "Chosen" JavaScript for multiple selections
-        $arrData['fields'][$this->field_name]['eval']['chosen'] = $this->multiple;
+
+        if ($this->useChosen) {
+            $arrData['fields'][$this->field_name]['eval']['chosen'] = true;
+        }
 
         parent::saveToDCA($arrData);
 
