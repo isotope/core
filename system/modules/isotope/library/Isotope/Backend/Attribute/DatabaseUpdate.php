@@ -74,7 +74,7 @@ class DatabaseUpdate extends \DcaExtractor
         } else {
             $file = sprintf(
                 '%s/contao/sql/%s.php',
-                str_replace(TL_ROOT.'/', '', \System::getContainer()->getParameter('kernel.cache_dir')),
+                str_replace(TL_ROOT.\DIRECTORY_SEPARATOR, '', \System::getContainer()->getParameter('kernel.cache_dir')),
                 $this->strTable
             );
         }
