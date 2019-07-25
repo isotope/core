@@ -44,10 +44,6 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
             $this->size               = 1;
         }
 
-        if ($this->useChosen) {
-            $arrData['fields'][$this->field_name]['eval']['chosen'] = true;
-        }
-
         parent::saveToDCA($arrData);
 
         if ($this->isVariantOption()) {
