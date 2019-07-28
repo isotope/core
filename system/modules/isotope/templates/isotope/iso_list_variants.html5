@@ -8,7 +8,7 @@
 <?php if($this->hasOptions): foreach($this->raw_options as $name => $option): ?>
 <input type="hidden" name="<?php echo $name; ?>" value="<?= $option['value'] ?>">
 <?php endforeach; endif; ?>
-<h3><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
+<h3 itemprop="name"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
 
 <?php echo $this->getGallery('images')->generateMainImage(); ?>
 
@@ -16,7 +16,7 @@
 <div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
 
-<div class="offer" itemscope itemtype="http://schema.org/Offer">
+<div class="offer" itemprop="offer" itemscope itemtype="http://schema.org/Offer">
 <div class="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 </div>
