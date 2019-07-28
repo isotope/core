@@ -72,9 +72,11 @@ class DatabaseUpdate extends \DcaExtractor
         if (version_compare(VERSION, '4.0', '<')) {
             $file = 'system/cache/sql/' . $this->strTable . '.php';
         } else {
+            $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+            $cacheDir = \System::getContainer()->getParameter('kernel.cache_dir');
             $file = sprintf(
                 '%s/contao/sql/%s.php',
-                str_replace(TL_ROOT.'/', '', \System::getContainer()->getParameter('kernel.cache_dir')),
+                $filesystem->makePathRelative($cacheDir, TL_ROOT),
                 $this->strTable
             );
         }
