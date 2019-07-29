@@ -57,6 +57,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
         $fltDiscount   = $blnPercentage ? $objRule->getPercentage() : 0;
         $fltTotal      = 0;
         $arrSubtract   = array();
+        $productCondition = (bool) $objRule->productCondition;
 
         $objSurcharge = new static();
         $objSurcharge->label = $objRule->getLabel();
@@ -84,8 +85,8 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                     $objProduct = $objItem->getProduct();
 
                     if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                            && (\in_array($objProduct->id, $arrLimit) || ($objProduct->pid > 0 && \in_array($objProduct->pid, $arrLimit))))
-                        || ($objRule->productRestrictions == 'producttypes' && \in_array($objProduct->type, $arrLimit))
+                            && (\in_array($objProduct->id, $arrLimit) === $productCondition || ($objProduct->pid > 0 && \in_array($objProduct->pid, $arrLimit) === $productCondition)))
+                        || ($objRule->productRestrictions == 'producttypes' && \in_array($objProduct->type, $arrLimit) === $productCondition)
                     ) {
                         $intTotal += $objRule->quantityMode == 'cart_items' ? $objItem->quantity : 1;
                     }
@@ -111,9 +112,10 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             $objProduct = $objItem->getProduct();
 
             // Product restrictions
+            // FIXME
             if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                    && (!\in_array($objProduct->id, $arrLimit) && ($objProduct->pid == 0 || !\in_array($objProduct->pid, $arrLimit))))
-                || ($objRule->productRestrictions == 'producttypes' && !\in_array($objProduct->type, $arrLimit))
+                    && (\in_array($objProduct->id, $arrLimit) !== $productCondition && ($objProduct->pid == 0 || \in_array($objProduct->pid, $arrLimit) !== $productCondition)))
+                || ($objRule->productRestrictions == 'producttypes' && \in_array($objProduct->type, $arrLimit) !== $productCondition)
             ) {
                 continue;
             } elseif ($objRule->productRestrictions == 'attribute') {

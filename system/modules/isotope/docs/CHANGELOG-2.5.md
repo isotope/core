@@ -2,6 +2,15 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.5.16-stable (2019-07-29)
+---------------------------------
+
+- Fixed product reload sometimes loosing child nodes of response
+- Added some missing schema attributes (#2048)
+- Fixed sql cache file creation on Windows (#2055)
+- Fixed negative product condition check in rules (#2057)
+
+
 Version 2.5.15-stable (2019-07-02)
 ----------------------------------
 

@@ -234,8 +234,8 @@
                 }
 
                 formParent.innerHTML = '';
-                for(i = 0; i<div.childNodes.length; i++) {
-                    formParent.appendChild(div.childNodes[i]);
+                while (div.childNodes.length > 0) {
+                    formParent.appendChild(div.childNodes[0]);
                 }
 
                 registerEvents(formParent, config);

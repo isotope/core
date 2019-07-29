@@ -4,8 +4,8 @@
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <input type="hidden" name="AJAX_PRODUCT" value="<?= $this->product_id; ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?= $this->module_id; ?>">
-<h3><a href="<?= $this->href; ?>" title="<?= $this->label_detail; ?>"><?= $this->highlightKeywords($this->generateAttribute('name')); ?></a></h3>
 
+<h3 itemprop="name"><a href="<?= $this->href; ?>" title="<?= $this->label_detail; ?>"><?= $this->highlightKeywords($this->generateAttribute('name')); ?></a></h3>
 
 <?= $this->getGallery('images')->generateMainImage(); ?>
 
@@ -13,7 +13,7 @@
 <div class="sku" itemprop="sku"><?= $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
 <div class="teaser"><?= $this->highlightKeywords($this->generateAttribute('teaser')); ?></div><?php endif; ?>
 
-<div class="offer" itemscope itemtype="http://schema.org/Offer">
+<div class="offer" itemprop="offer" itemscope itemtype="http://schema.org/Offer">
 <div class="price"><?= $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?= $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 </div>
