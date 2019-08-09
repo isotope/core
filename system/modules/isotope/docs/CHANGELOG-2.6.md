@@ -17,6 +17,8 @@ Version 2.6.0-stable (2018-??-??)
 - Added shipping method limitation depending on address type
 - Added front end module to filter products by categories (pages)
 - Added module config to hide product options
+- Added bank details to the store configuration (#2054)
+- Added checkbox to enable chosen script for attributes (#1989)
 - Highlight search keywords in product list
 
 ### Improved
@@ -27,3 +29,7 @@ Version 2.6.0-stable (2018-??-??)
 - Support DCA options in product attributes
 - Added template for product actions (#1949)
 - Reduced database queries by fetching the product categories from JOIN
+
+### Fixed
+
+- Fixed HTTPS URL for ECB currency updates (#2053)

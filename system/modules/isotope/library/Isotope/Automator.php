@@ -92,7 +92,7 @@ class Automator extends \Controller
                     $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
                     $objRequest = new \Request();
-                    $objRequest->send('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
+                    $objRequest->send('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
 
                     if ($objRequest->hasError()) {
                         \System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
