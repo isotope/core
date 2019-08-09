@@ -27,6 +27,7 @@ use Isotope\Translation;
  * @property string $rounding
  * @property bool   $enableCode
  * @property string $code
+ * @property bool   $singleCode
  * @property int    $limitPerMember
  * @property int    $limitPerConfig
  * @property int    $minSubtotal
@@ -136,7 +137,12 @@ class Rule extends \Model
         return static::findByConditions(array("(type='product' OR (type='cart' AND enableCode=''))"));
     }
 
-
+    /**
+     * @param string $strCode
+     * @param array $arrCollectionItems
+     *
+     * @return Rule|null
+     */
     public static function findOneByCouponCode($strCode, $arrCollectionItems)
     {
         $objRules = static::findByConditions(array("type='cart'", "enableCode='1'", 'code=?'), array($strCode), $arrCollectionItems);

@@ -178,18 +178,20 @@ class Rules extends \Controller
         $arrCoupons = deserialize($objCart->coupons);
 
         if (!empty($arrCoupons) && \is_array($arrCoupons)) {
+            $blnHasCode = false;
             $arrDropped = array();
 
             foreach ($arrCoupons as $code) {
                 $objRule = Rule::findOneByCouponCode($code, $objCollection->getItems());
 
-                if (null === $objRule) {
+                if (null === $objRule || ($blnHasCode && $objRule->singleCode)) {
                     $arrDropped[] = $code;
                 } else {
                     // cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
                     $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule, $objCollection);
 
                     if (null !== $objSurcharge) {
+                        $blnHasCode = true;
                         $arrSurcharges[] = $objSurcharge;
                     }
                 }
@@ -234,17 +236,17 @@ class Rules extends \Controller
 
             if (null === $objRule) {
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
+            } elseif (\in_array(mb_strtolower($strCoupon), array_map('mb_strtolower', $arrCoupons), true)) {
+                $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
+            } elseif ($objRule->singleCode && !empty($arrCoupons)) {
+                $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponSingle'], $strCoupon);
             } else {
-                if (\in_array(mb_strtolower($strCoupon), array_map('mb_strtolower', $arrCoupons), true)) {
-                    $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
-                } else {
-                    $arrCoupons[] = $objRule->code;
+                $arrCoupons[] = $objRule->code;
 
-                    Isotope::getCart()->coupons = serialize($arrCoupons);
-                    Isotope::getCart()->save();
+                Isotope::getCart()->coupons = serialize($arrCoupons);
+                Isotope::getCart()->save();
 
-                    $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $objRule->code);
-                }
+                $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $objRule->code);
             }
 
             \Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));

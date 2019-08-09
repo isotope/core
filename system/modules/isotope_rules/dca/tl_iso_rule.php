@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
     // Subpalettes
     'subpalettes' => array
     (
-        'enableCode'                        => 'code',
+        'enableCode'                        => 'code,singleCode',
         'configRestrictions'                => 'configs,configCondition',
         'memberRestrictions_guests'         => 'memberCondition',
         'memberRestrictions_groups'         => 'memberCondition,groups',
@@ -225,6 +225,13 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'inputType'                     => 'text',
             'eval'                          => array('mandatory'=>true, 'maxlength'=>255),
             'sql'                           => "varchar(255) NOT NULL default ''",
+        ),
+        'singleCode' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['singleCode'],
+            'exclude'                       => true,
+            'inputType'                     => 'checkbox',
+            'sql'                           => "char(1) NOT NULL default ''",
         ),
         'limitPerMember' => array
         (

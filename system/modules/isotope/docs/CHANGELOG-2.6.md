@@ -9,6 +9,7 @@ Version 2.6.0-stable (2018-??-??)
 
 - Allow shipping price calculation per cart weight (e.g. 10€ * 5kg)
 - Allow to redirect to product details if keywords search is an exact match
+- Allow to limit coupon code to a single usage (#1580)
 - Added product field for GTIN (Global Trade Item Number)
 - Added Trusted Shops front end module
 - Added support for Saferpay JSON API to Saferpay payment method (#2023)
