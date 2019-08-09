@@ -41,6 +41,10 @@ use Isotope\Translation;
  * @property array  $shipping_countries
  * @property bool   $limitMemberCountries
  * @property array  $vatNoValidators
+ * @property string $bankName
+ * @property string $bankAccount
+ * @property string $bankCode
+ * @property string $taxNumber
  * @property string $priceDisplay
  * @property string $currencyFormat
  * @property int    $priceRoundPrecision

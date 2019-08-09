@@ -306,6 +306,10 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'cart_html',
     'cart_text',
     'document',
+    'bank_name',
+    'bank_account',
+    'bank_code',
+    'tax_number',
     'collection_*', // All the collection fields
     'billing_address', // Formatted billing address
     'billing_address_*', // All the billing address model fields
