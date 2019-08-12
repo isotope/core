@@ -127,6 +127,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         '__selector__'              => array('type', 'flatCalculation', 'protected'),
         'default'                   => '{title_legend},name,label,type',
         'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flatperWeight'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,flatWeight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'group'                     => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token,dhl_shipping;{price_legend},price,tax_class,flatCalculation,shipping_weight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
@@ -136,7 +137,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     'subpalettes' => array
     (
         'protected'                 => 'groups',
-        'flatCalculation_perWeight' => 'flatWeight',
     ),
 
     // Fields
@@ -358,9 +358,9 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('flat', 'perProduct', 'perItem', 'perWeight'),
+            'options'               => array('perProduct', 'perItem', 'perWeight'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
-            'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('submitOnChange'=>true, 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_shipping']['flat'], 'tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
         ),
         'flatWeight' => array
