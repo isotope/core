@@ -236,10 +236,7 @@ abstract class Module extends AbstractFrontendModule
         $productCategories = $objProduct instanceof AbstractProduct ? $objProduct->getCategories(true) : [];
         $arrCategories = array();
 
-        if ('current_category' !== $this->iso_category_scope
-            && !empty($this->iso_category_scope)
-            && 'index' !== $objPage->alias
-        ) {
+        if ('index' !== $objPage->alias) {
             $arrCategories = array_intersect(
                 $productCategories,
                 $this->findCategories()
