@@ -162,8 +162,7 @@ table.multicolumnwizard .operations {
     white-space: nowrap;
 }
 
-.mod_iso_orderdetails .info_container
-{
+.mod_iso_orderdetails .info_container {
     float:left;
     width:200px;
     border: 1px dotted #ccc;
@@ -171,53 +170,50 @@ table.multicolumnwizard .operations {
     margin: 0 10px 10px 0;
 }
 
-.mod_iso_orderdetails .info_container h3
-{
+.mod_iso_orderdetails .info_container h3 {
     margin-top: 0;
     margin-bottom: 5px
 }
 
-.mod_iso_orderdetails table
-{
+.mod_iso_orderdetails table {
     margin-top: 20px;
     border-top: 1px dotted #ccc;
     width: 100%
 }
 
-.mod_iso_orderdetails tbody td
-{
+.mod_iso_orderdetails tbody td {
     padding: 5px;
     border-bottom: 1px dotted #ccc;
     vertical-align: top
 }
 
-.mod_iso_orderdetails ul
-{
+.mod_iso_orderdetails ul {
     margin: 0;
     padding: 0;
     padding-left: 10px;
 }
 
-.mod_iso_orderdetails li
-{
+.mod_iso_orderdetails li {
     margin-left: 10px;
     padding: 0;
     list-style-type: disc;
 }
 
-.mod_iso_orderdetails .price
-{
+.mod_iso_orderdetails .price {
     text-align: right
 }
 
-.mod_iso_orderdetails tfoot td
-{
+.mod_iso_orderdetails tfoot td {
     text-align: right;
     padding: 5px 5px 0 5px;
 }
 
-.w50h
-{
+.mod_iso_orderdetails .image_container img {
+    max-width: 100px;
+    height: auto;
+}
+
+.w50h {
     height: auto;
 }
 
