@@ -716,7 +716,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $arrJoins  = array();
         $arrFields = array(
-            $arrOptions['table'] . '.*',
+            $arrOptions['table'] . '.id',
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
@@ -734,12 +734,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        $arrJoins[] = sprintf(
-            ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
-            ProductCategory::getTable(),
-            $arrOptions['table']
-        );
-
         if ($hasTranslations) {
             $arrJoins[] = sprintf(
                 " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
@@ -747,6 +741,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 $arrOptions['table'],
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
+
+            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id, tl_iso_product.id';
         }
 
         if ($hasVariants) {
@@ -757,12 +753,17 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        $arrJoins[] = sprintf(
+            ' LEFT OUTER JOIN %s c ON %s=c.pid',
+            ProductCategory::getTable(),
+            ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
+        );
+
         // Generate the query
         $strWhere = '';
         $strQuery = '
             SELECT
-                ' . implode(', ', $arrFields) . ',
-                COUNT(DISTINCT ' . $arrOptions['table'] . '.id) AS count
+                ' . implode(', ', $arrFields) . '
             FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
@@ -782,7 +783,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
-        return $strQuery;
+        return 'SELECT COUNT(*) AS count FROM ('.$strQuery.') c1';
     }
 
     /**
