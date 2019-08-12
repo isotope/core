@@ -30,6 +30,8 @@ Version 2.6.0-stable (2018-??-??)
 - Added template for product actions (#1949)
 - Reduced database queries by fetching the product categories from JOIN
 - Automatically select the only variant option in dropdown menus (#2052)
+- Always link to the current category page if possible (#2000)
+- Also generate canonical link to the main product URL
 
 ### Fixed
 

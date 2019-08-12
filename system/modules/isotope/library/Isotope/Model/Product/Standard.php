@@ -641,7 +641,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // Prepare variant selection field
         // @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants
         if ($objAttribute->isVariantOption()) {
-dump($strField);
             $arrOptions = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrVariantOptions);
 
             // Hide selection if only one option is available (and "force_variant_options" is not set in product type)
@@ -865,8 +864,6 @@ dump($strField);
             /** @var IsotopeAttribute|Attribute $objAttribute */
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
-
-            dump($arrOptions, $arrValues);
 
             if (\Input::post('FORM_SUBMIT') == $this->getFormId() && \in_array(\Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = \Input::post($attribute);

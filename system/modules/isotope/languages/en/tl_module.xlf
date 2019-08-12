@@ -38,6 +38,12 @@
       <trans-unit id="tl_module.iso_jump_first.1">
         <source>Check here if users are redirected to the first product of the list.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_link_primary.0">
+        <source>Link to primary URL</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_link_primary.1">
+        <source>Link product details to the primary URL (canonical) instead of current category.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.0">
         <source>Hide in reader mode</source>
       </trans-unit>

@@ -39,6 +39,7 @@ use PageModel;
  * @property string $iso_newFilter
  * @property string $iso_noFilter
  * @property array  $iso_buttons
+ * @property bool   $iso_link_primary
  */
 abstract class Module extends AbstractFrontendModule
 {
@@ -236,7 +237,7 @@ abstract class Module extends AbstractFrontendModule
         $productCategories = $objProduct instanceof AbstractProduct ? $objProduct->getCategories(true) : [];
         $arrCategories = array();
 
-        if ('index' !== $objPage->alias) {
+        if (!$this->iso_link_primary) {
             $arrCategories = array_intersect(
                 $productCategories,
                 $this->findCategories()
