@@ -29,6 +29,7 @@ Version 2.6.0-stable (2018-??-??)
 - Support DCA options in product attributes
 - Added template for product actions (#1949)
 - Reduced database queries by fetching the product categories from JOIN
+- Automatically select the only variant option in dropdown menus (#2052)
 
 ### Fixed
 
