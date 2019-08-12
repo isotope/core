@@ -147,18 +147,12 @@ class ProductReader extends Module
         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
         foreach ($arrCategories as $intPage) {
-
-            // Do not use the index page as canonical link
-            if ('index' === $objPage->alias && \count($arrCategories) > 1) {
-                continue;
-            }
-
-            // Current page is the primary one, do not generate canonical link
-            if ($intPage == $objPage->id) {
-                break;
-            }
-
             if (($objJumpTo = \PageModel::findPublishedById($intPage)) !== null) {
+
+                // Do not use the index page as canonical link
+                if ('index' === $objJumpTo->alias && \count($arrCategories) > 1) {
+                    continue;
+                }
 
                 $objJumpTo->loadDetails();
                 $strDomain = \Environment::get('base');
