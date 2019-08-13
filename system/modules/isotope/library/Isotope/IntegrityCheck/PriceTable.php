@@ -63,14 +63,20 @@ class PriceTable extends AbstractIntegrityCheck
 
             if (!empty($arrProducts)) {
                 $objPrices = \Database::getInstance()->query("
-                    SELECT tl_iso_product_price.*, COUNT(*) AS total
-                    FROM tl_iso_product_price
-                    WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
-                    GROUP BY pid
-                    HAVING total>1 OR config_id>0 OR member_group>0 OR start!='' OR stop!=''
+                        SELECT tl_iso_product_price.pid, COUNT(*) AS total
+                        FROM tl_iso_product_price
+                        WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                        GROUP BY pid
+                        HAVING total>1
+                    UNION
+                        SELECT tl_iso_product_price.pid, 1 AS total
+                        FROM tl_iso_product_price
+                        WHERE 
+                            " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                            AND (tl_iso_product_price.config_id>0 OR tl_iso_product_price.member_group>0 OR tl_iso_product_price.start!='' OR tl_iso_product_price.stop!='')
                 ");
 
-                $this->arrErrors = $objPrices->fetchEach('pid');
+                $this->arrErrors = array_unique($objPrices->fetchEach('pid'));
             }
         }
 
@@ -125,7 +131,7 @@ class PriceTable extends AbstractIntegrityCheck
                         $keep = min($keep);
                     }
 
-                    // If there are no valid prices, we must take one of the unqualified and remote restrictions
+                    // If there are no valid prices, we must take one of the unqualified and remove restrictions
                     elseif (empty($keep)) {
                         $keep = min($delete);
                         unset($delete[array_search($keep, $delete)]);
