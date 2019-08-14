@@ -35,4 +35,5 @@ Version 2.6.0-stable (2018-??-??)
 
 ### Fixed
 
-- Fixed HTTPS URL for ECB currency updates (#2053)
+- Use HTTPS URL for ECB currency updates (#2053)
+- ChangeLanguage alternate links pointed to custom reader page (#2026)

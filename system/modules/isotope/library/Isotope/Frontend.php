@@ -171,17 +171,20 @@ class Frontend extends \Frontend
      */
     public function overrideReaderPage($objPage)
     {
-        global $objPage;
+        /** @var \PageModel $objIsotopeListPage */
         global $objIsotopeListPage;
 
         if (null !== $objIsotopeListPage) {
             $arrTrail   = $objIsotopeListPage->trail;
             $arrTrail[] = $objPage->id;
 
-            $objPage->pid   = $objIsotopeListPage->id;
+            $objPage->id    = $objIsotopeListPage->id;
+            $objPage->pid   = $objIsotopeListPage->pid;
             $objPage->alias = $objIsotopeListPage->alias;
             $objPage->trail = $arrTrail;
         }
+
+        dump($objPage->alias);
     }
 
     /**
