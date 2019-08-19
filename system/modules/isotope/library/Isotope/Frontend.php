@@ -183,8 +183,6 @@ class Frontend extends \Frontend
             $objPage->alias = $objIsotopeListPage->alias;
             $objPage->trail = $arrTrail;
         }
-
-        dump($objPage->alias);
     }
 
     /**
