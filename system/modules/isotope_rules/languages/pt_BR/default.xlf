@@ -22,6 +22,9 @@
       <trans-unit id="MSC.couponDuplicate">
         <source>Your coupon %s has already been applied.</source>
       </trans-unit>
+      <trans-unit id="MSC.couponSingle">
+        <source>Your coupon %s cannot be used because another coupon is already redeemed.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

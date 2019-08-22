@@ -80,6 +80,12 @@
       <trans-unit id="tl_iso_rule.code.1">
         <source>Please enter a code by which a customer will invoke this rule, as a coupon.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule.singleCode.0">
+        <source>Single usage</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.singleCode.1">
+        <source>Do not allow this coupon code if another code has already been applied.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.0">
         <source>Uses per member</source>
       </trans-unit>

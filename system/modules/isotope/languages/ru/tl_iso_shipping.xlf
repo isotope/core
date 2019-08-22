@@ -13,6 +13,12 @@
       <trans-unit id="tl_iso_shipping.type.1">
         <source>Please select the type of this shipping method</source>
       </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.0">
+        <source>Inherit label and notes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.inherit.1">
+        <source>Check here to inherit the label and description from the first available shipping method.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_shipping.price.0">
         <source>Price</source>
         <target>Цена</target>
@@ -44,6 +50,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatCalculation.1">
         <source>Select the mode of price calculation.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.0">
+        <source>Price per weight</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.flatWeight.1">
+        <source>Enter the weight amound the price should be multiplied by (without floating points).</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.0">
         <source>Shipping weight</source>
@@ -137,6 +149,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.config_ids.1">
         <source>You can restrict this shipping method to certain shop configurations.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.0">
+        <source>Address type limitation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.1">
+        <source>Limit availability depending on checkout shipping address.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.custom">
+        <source>Custom shipping address</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.address_type.billing">
+        <source>Shipping equals billing address</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
@@ -294,6 +318,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.perItem">
         <source>Per Item</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.perWeight">
+        <source>Per Weight</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.first">
         <source>Price of the first available method</source>

@@ -49,6 +49,12 @@
         <source>Check here if users are redirected to the first product of the list.</source>
         <target>Kullanıcıların listenin ilk ürününe yönlendirilip yönlendirilmediğini kontrol edin.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_link_primary.0">
+        <source>Link to primary URL</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_link_primary.1">
+        <source>Link product details to the primary URL (canonical) instead of current category.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.0">
         <source>Hide in reader mode</source>
         <target>Okuyucu modunda gizle</target>
@@ -56,6 +62,12 @@
       <trans-unit id="tl_module.iso_hide_list.1">
         <source>Hide product list when a product alias is found in the URL.</source>
         <target>URL'de bir ürün takma adı bulunursa ürün listesini gizleyin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_disable_options.0">
+        <source>Disable product options (performance!)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_disable_options.1">
+        <source>Do not generate product options or load product variants. If the list does not show product options, make sure to enable this option for faster product list rendering!</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_use_quantity.0">
         <source>Enable quantity</source>
@@ -375,6 +387,12 @@
         <source>Please select search fields to enable.</source>
         <target>Lütfen etkinleştirilecek arama alanlarını seçin.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_searchExact.0">
+        <source>Redirect exact match</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_searchExact.1">
+        <source>Redirect to the product details if the keyword search has an exact match in one of these fields (e.g. search by SKU).</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_searchAutocomplete.0">
         <source>Autocomplete search field</source>
         <target>Otomatik tamamlama arama alanı</target>
@@ -514,6 +532,66 @@
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
         <target>Görüntülemek istediğiniz adres alanlarını seçin.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsid.0">
+        <source>Trusted Shops ID</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsid.1">
+        <source>Please enter your Trusted Shops ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.0">
+        <source>Badge Display Mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.1">
+        <source>Select how the Trusted Shops badge should be displayed.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsreviews.0">
+        <source>Show shop reviews</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsreviews.1">
+        <source>Check here to show your shop reviews in the Trusted Shops badge.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.0">
+        <source>Card Display Mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.1">
+        <source>Select how the Trusted Shops Card should be displayed.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsyoffset.0">
+        <source>Bottom offset</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsyoffset.1">
+        <source>Enter the number of pixels to offset the badge from your page bottom.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tscheckout.0">
+        <source>Enable buyer protection</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tscheckout.1">
+        <source>Automatically show the buyer protection popup on order confirmation page.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsproducts.0">
+        <source>Include product data</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsproducts.1">
+        <source>Allow users to rate individual products.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.standard">
+        <source>Default (right bottom corner)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdisplay.custom">
+        <source>Custom (where this module is placed)</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.topRight">
+        <source>Top Right</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.topLeft">
+        <source>Top Left</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.bottomRight">
+        <source>Bottom Right</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_tsdirection.bottomLeft">
+        <source>Bottom Left</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_legend">
         <source>Order conditions form</source>

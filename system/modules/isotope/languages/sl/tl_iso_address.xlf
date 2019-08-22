@@ -227,7 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.show.0">
         <source>Address details</source>
-        <target>Podrobnosti o naslovu</target>
+        <target>Podrobnosti o naslovih</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>

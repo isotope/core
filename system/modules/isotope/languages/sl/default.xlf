@@ -13,6 +13,7 @@
       </trans-unit>
       <trans-unit id="ERR.emptyOrderHistory">
         <source>You have not yet placed any orders.</source>
+        <target>Ni podatka o prejšnjih naročilih.</target>
       </trans-unit>
       <trans-unit id="ERR.orderNotFound">
         <source>The requested order was not found.</source>
@@ -20,12 +21,15 @@
       </trans-unit>
       <trans-unit id="ERR.emptyWishlists">
         <source>You have not created any wishlists yet.</source>
+        <target>Trenutno nimate ustvarjenega seznam želja.</target>
       </trans-unit>
       <trans-unit id="ERR.wishlistNotFound">
         <source>The requested wishlist was not found.</source>
+        <target>Zahtevani seznam želja ni bilo mogoče najti.</target>
       </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
+        <target>Preden nadaljujete na zaključek nakupa, se morate prijaviti!</target>
       </trans-unit>
       <trans-unit id="ERR.variantDuplicate">
         <source>A variant with this attributes is already available. Please select another combination.</source>
@@ -41,6 +45,7 @@
       </trans-unit>
       <trans-unit id="ERR.noAddressBookEntries">
         <source>You have no address book entries.</source>
+        <target>Seznam shranjenih naslovov je trenutno prazen.</target>
       </trans-unit>
       <trans-unit id="ERR.cartMinSubtotal">
         <source>The minimum order amount is %s. Please add more products before checkout.</source>
@@ -67,15 +72,19 @@
       </trans-unit>
       <trans-unit id="ERR.collectionErrorInItems">
         <source>There are errors in your products.</source>
+        <target>Najdenih je nekaj napak pri izdelkih.</target>
       </trans-unit>
       <trans-unit id="ERR.cartErrorInItems">
         <source>Please resolve the errors in your cart before checking out.</source>
+        <target>Preden zaključite naročilo, odpravite napako oz. popravite naročilo!</target>
       </trans-unit>
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
+        <target>Iste lastnosti ne morete večkrat spreminjati.</target>
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
+        <target>Naložena datoteka ni več na voljo.</target>
       </trans-unit>
       <trans-unit id="ERR.oppIncompatible">
         <source>Some of the selected payment brands are not compatible to each other.</source>
@@ -114,9 +123,11 @@
       </trans-unit>
       <trans-unit id="MSC.payment_processing">
         <source>Your payment is being processed. Please be patient...</source>
+        <target>Plačilo se izvaja, počakaje trenutek ...</target>
       </trans-unit>
       <trans-unit id="MSC.mmNoUploads">
         <source>No files uploaded.</source>
+        <target>Ni pripetih datotek.</target>
       </trans-unit>
       <trans-unit id="MSC.mmUnknownError">
         <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
@@ -144,6 +155,7 @@
       </trans-unit>
       <trans-unit id="MSC.taxFree">
         <source>Tax-free</source>
+        <target>Brez DDV</target>
       </trans-unit>
       <trans-unit id="MSC.defaultSearchText">
         <source>search products</source>
@@ -154,7 +166,7 @@
       </trans-unit>
       <trans-unit id="MSC.priceRangeLabel">
         <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
-        <target>&lt;span class=&quot;from&quot;&gt;od&lt;/span&gt; %s</target>
+        <target>&lt;span class=&quot;from&quot;&gt;Od&lt;/span&gt; %s</target>
       </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
@@ -162,6 +174,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>
+        <target>Ponovno naročilo</target>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -197,14 +210,15 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_favorites">
         <source>Add To Favorites</source>
-        <target>Dodaj na Seznam želja</target>
+        <target>Med priljubljene</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
-        <target>Umakni s Seznama želja</target>
+        <target>Umakni iz priljubljenih</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_wishlist">
         <source>Add To Wishlist</source>
+        <target>Na seznam želja</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.edit_wishlist">
         <source>Edit</source>
@@ -216,18 +230,23 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.wishlist_details">
         <source>Details</source>
+        <target>Podrobnosti</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.share_wishlist">
         <source>Share Wishlist</source>
+        <target>Deli seznam</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.unshare_wishlist">
         <source>Unshare Wishlist</source>
+        <target>Blokiraj delitev</target>
       </trans-unit>
       <trans-unit id="MSC.defaultWishlistLabel">
         <source>New Wishlist …</source>
+        <target>Nov seznam</target>
       </trans-unit>
       <trans-unit id="MSC.defaultWishlistName">
         <source>Wishlist 1</source>
+        <target>Seznam 1</target>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -258,6 +277,7 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInFavorites">
         <source>There are no items in your favorites list.</source>
+        <target>Na seznamu ni izdelkov.</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
@@ -265,25 +285,31 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInWishlist">
         <source>There are no items in this wishlist.</source>
+        <target>Na seznamu ni izdelkov.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
+        <target>Izbrani izdelek je dodan med priljubljene.</target>
       </trans-unit>
       <trans-unit id="MSC.removedFromFavorites">
         <source>The selected product has been removed to your favorites.</source>
+        <target>Izbrani izdelek je umaknjen s seznama.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToWishlist">
         <source>The selected product has been added to your wishlist.</source>
+        <target>Izbrani izdelek je dodan med zaželjene.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
-        <target>Izdelek imate sedaj v nakupovalni košarici.</target>
+        <target>Izbrani izdelek je dodan v košarico.</target>
       </trans-unit>
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
+        <target>Od zadnjega obiska je vaša košarica spremenjena. Prosim, preverite ali je v redu.</target>
       </trans-unit>
       <trans-unit id="MSC.reorderConfirmation">
         <source>The products of the selected order have been added to your shopping cart.</source>
+        <target>Vsi izdelki so uspešno dodani v košarico.</target>
       </trans-unit>
       <trans-unit id="MSC.editProductLinkTitle">
         <source>Edit %s</source>
@@ -319,9 +345,11 @@
       </trans-unit>
       <trans-unit id="MSC.noPaymentModules">
         <source>No payment options are currently available</source>
+        <target>Plačilnih možnosti trenutno ni.</target>
       </trans-unit>
       <trans-unit id="MSC.noShippingModules">
         <source>No shipping options are currently available.</source>
+        <target>Možnosti dostave trenutni ni.</target>
       </trans-unit>
       <trans-unit id="MSC.noOrderEmails">
         <source>No orders emails found.</source>
@@ -335,7 +363,7 @@
       </trans-unit>
       <trans-unit id="MSC.cartBT">
         <source>Shopping Cart</source>
-        <target>Nakupovalna košarica</target>
+        <target>Košarica</target>
       </trans-unit>
       <trans-unit id="MSC.checkoutBT">
         <source>Proceed to Checkout</source>
@@ -355,7 +383,7 @@
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step &quot;%s&quot;</source>
-        <target>Nazaj na korak &quot;%s&quot;</target>
+        <target>Nazaj na &quot;%s&quot;</target>
       </trans-unit>
       <trans-unit id="MSC.createNewAddressLabel">
         <source>Create New Address</source>
@@ -383,10 +411,11 @@
       </trans-unit>
       <trans-unit id="MSC.deleteAddressConfirm">
         <source>Do you really want to delete this address? This cannot be undone.</source>
+        <target>Ali res želite izbrisati ta naslov? Brisanje bo dokončno.</target>
       </trans-unit>
       <trans-unit id="MSC.iso_invoice_title">
         <source>Invoice</source>
-        <target>Račun</target>
+        <target>Ponudba</target>
       </trans-unit>
       <trans-unit id="MSC.iso_order_status">
         <source>Status</source>
@@ -434,15 +463,19 @@
       </trans-unit>
       <trans-unit id="MSC.old_to_new">
         <source>earlier to later</source>
+        <target>novejši prej</target>
       </trans-unit>
       <trans-unit id="MSC.new_to_old">
         <source>later to earlier</source>
+        <target>starejši prej</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.0">
         <source>Processing payment</source>
+        <target>Plačilo se izvaja</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.1">
         <source>You will be redirected to the payment gateway website.</source>
+        <target>Preumerjeni boste na stran kjer plačilo opravite do konca.</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.2">
         <source>Pay now</source>
@@ -450,18 +483,23 @@
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.3">
         <source>Please click on the &quot;Pay now&quot; button to continue.</source>
+        <target>Za nadeljevanje kliknite na &quot;Plačaj takoj&quot;.</target>
       </trans-unit>
       <trans-unit id="MSC.paypalTransaction">
         <source>Transaction ID: %s</source>
+        <target>Številka transakcije: %s</target>
       </trans-unit>
       <trans-unit id="MSC.paypalTransactionOnline">
         <source>You can view this PayPal transaction online.</source>
+        <target>Ogled tega PayPal plačila si lahko ogledate.</target>
       </trans-unit>
       <trans-unit id="MSC.paypalTransactionButton">
         <source>Open Website</source>
+        <target>Poglej stran</target>
       </trans-unit>
       <trans-unit id="MSC.paypalTransactionDetails">
         <source>PayPal transaction from %s</source>
+        <target>PayPal transakcija od %s</target>
       </trans-unit>
       <trans-unit id="MSC.productSingle">
         <source>1 Product</source>
@@ -473,9 +511,11 @@
       </trans-unit>
       <trans-unit id="MSC.shipping_address_message">
         <source>Enter your shipping information or select an existing address.</source>
+        <target>Vnesite nove informacije za dostavo ali izberite obstoječi naslov.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_message">
         <source>Enter your billing information or select an existing address.</source>
+        <target>Vnesite nove informacije za plačilo ali izberite obstoječi naslov.</target>
       </trans-unit>
       <trans-unit id="MSC.billing_address_guest_message">
         <source>Enter your billing information</source>
@@ -567,24 +607,31 @@
       </trans-unit>
       <trans-unit id="MSC.cc_ccv">
         <source>CCV number (3 or 4 digit code)</source>
+        <target>CCV številka (ponavadi 3 ali 4 številke)</target>
       </trans-unit>
       <trans-unit id="MSC.cc_exp_month">
         <source>Expiration month</source>
+        <target>Mesec poteka</target>
       </trans-unit>
       <trans-unit id="MSC.cc_exp_year">
         <source>Expiration year</source>
+        <target>Leto poteka</target>
       </trans-unit>
       <trans-unit id="MSC.backendPaymentNotFound">
         <source>Payment module not found!</source>
+        <target>Ni plačilnega modula!</target>
       </trans-unit>
       <trans-unit id="MSC.backendShippingNotFound">
         <source>Shipping module not found!</source>
+        <target>Ni modula za dostavo!</target>
       </trans-unit>
       <trans-unit id="MSC.backendPaymentNoInfo">
         <source>This payment module does not provide additional information.</source>
+        <target>Ta modul ne ponuja dodatnih možnosti.</target>
       </trans-unit>
       <trans-unit id="MSC.backendShippingNoInfo">
         <source>This shipping module does not provide additional information.</source>
+        <target>Ta modul ne ponuja dodatnih možnosti.</target>
       </trans-unit>
       <trans-unit id="MSC.useDefault">
         <source>Use default value</source>

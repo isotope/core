@@ -49,6 +49,12 @@
         <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
         <target>Bietet einen anwachsenden Filter an. So können Besucher die Produktauswahl mit mehrfachen Bedingungen eingrenzen.</target>
       </trans-unit>
+      <trans-unit id="FMD.iso_categoryfilter.0">
+        <source>Category Filter</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_categoryfilter.1">
+        <source>Provides a filter by product category (page tree).</source>
+      </trans-unit>
       <trans-unit id="FMD.iso_rangefilter.0">
         <source>Range Filter</source>
         <target>Bereichsfilter</target>
@@ -192,6 +198,12 @@
       <trans-unit id="FMD.iso_cart_address.1">
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
         <target>Zeigt ein Formular zur EIngabe der Warenkorb-Adresse an, um Preise zu berechnen.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.0">
+        <source>Trusted Shops Badge</source>
+      </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.1">
+        <source>Displays a Trusted Shops Badge on your website.</source>
       </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>

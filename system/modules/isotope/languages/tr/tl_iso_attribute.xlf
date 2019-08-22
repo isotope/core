@@ -157,6 +157,12 @@
         <source>Here you can set a limit, e.g. size of the select box or number of file uploads.</source>
         <target>Burada bir sınır belirleyebilirsiniz, ör. Seçme kutusunun boyutu veya dosya yüklenmesinin sayısı.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.chosen.0">
+        <source>Use &quot;Chosen&quot; JavaScript</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chosen.1">
+        <source>This option enables the usage of the &quot;Chosen&quot; JavaScript for the select field, which enables you to select multiple values via a search function.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file types</source>
         <target>İzin verilen dosya tipleri</target>
