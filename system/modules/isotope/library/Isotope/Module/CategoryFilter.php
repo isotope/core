@@ -41,7 +41,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         // Remove setting to prevent override of the module template
         $this->iso_filterTpl = '';
-        $this->navigationTpl = $this->navigationTpl ?: 'nav_default';
+        $this->navigationTpl = $this->navigationTpl ?: 'nav_iso_categoryfilter';
 
         $this->activeFilters = Isotope::getRequestCache()->getFiltersForModules(array($this->id));
     }

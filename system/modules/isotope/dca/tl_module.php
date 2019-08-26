@@ -56,6 +56,9 @@ $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_custom']  = 'iso_t
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tscheckout']        = 'iso_tsproducts';
 
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
+
+
 /**
  * Add fields to tl_module
  */
