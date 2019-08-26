@@ -461,16 +461,16 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             return;
         }
 
-        $arrColumns = [];
-        $arrValues = [];
+        $filters = [];
         $arrCategories = $this->findCategories();
 
         foreach ($this->iso_searchExact as $field) {
-            $filter = Filter::attribute($field)->isEqualTo($keywords)->groupBy('exact-match');
-
-            $arrColumns[] = $filter->sqlWhere();
-            $arrValues[] = $filter->sqlValue();
+            $filters[] = Filter::attribute($field)->isEqualTo($keywords)->groupBy('exact-match');
         }
+
+        $filters = new FilterQueryBuilder($filters);
+        $arrColumns = [$filters->getSqlWhere()];
+        $arrValues = $filters->getSqlValues();
 
         if (1 === \count($arrCategories)) {
             $arrColumns[] = "c.page_id=".$arrCategories[0];
