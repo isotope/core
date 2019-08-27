@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -85,7 +85,7 @@ class ProductPrice extends Shipping
     {
         $attributes = array_merge($product->getType()->getAttributes(), $product->getType()->getVariantAttributes());
 
-        if (!$product->isExemptFromShipping() && in_array($this->attributeName, $attributes, true)) {
+        if (!$product->isExemptFromShipping() && \in_array($this->attributeName, $attributes, true)) {
             return true;
         }
 

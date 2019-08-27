@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -63,7 +63,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $this->iso_cumulativeFields = deserialize($this->iso_cumulativeFields);
         $fields                     = array();
 
-        if (is_array($this->iso_cumulativeFields)) {
+        if (\is_array($this->iso_cumulativeFields)) {
             foreach ($this->iso_cumulativeFields as $k => $v) {
                 $attribute = $v['attribute'];
                 unset($v['attribute']);
@@ -174,7 +174,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         $arrItems = $this->generateOptions($attribute, $options, $queryType, $countType, $isActive);
 
         // Hide fields with just one option (if enabled)
-        if (empty($arrItems) || ($this->iso_filterHideSingle && count($arrItems) < 2)) {
+        if (empty($arrItems) || ($this->iso_filterHideSingle && \count($arrItems) < 2)) {
             return null;
         }
 
@@ -337,11 +337,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         ) {
             $options = $objAttribute->getOptionsForProductFilter($usedValues);
 
-        } elseif (is_array($options)) {
+        } elseif (\is_array($options)) {
             $options = array_filter(
                 $options,
                 function ($option) use ($usedValues) {
-                    return in_array($option['value'], $usedValues);
+                    return \in_array($option['value'], $usedValues);
                 }
             );
         } else {

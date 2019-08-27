@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -39,7 +39,7 @@ class XmlSitemap extends \Backend
     {
         $session = $this->Session->get('iso_product_updater');
 
-        if (!is_array($session) || empty($session)) {
+        if (!\is_array($session) || empty($session)) {
             return;
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -63,6 +63,38 @@ class Group extends Shipping
         $this->getGroupMethods();
 
         return !empty($this->arrMethods);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        if ($this->inherit) {
+            $this->getGroupMethods();
+
+            if (!empty($this->arrMethods)) {
+                return $this->arrMethods[0]->getLabel();
+            }
+        }
+
+        return parent::getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNote()
+    {
+        if ($this->inherit) {
+            $this->getGroupMethods();
+
+            if (!empty($this->arrMethods)) {
+                return $this->arrMethods[0]->getNote();
+            }
+        }
+
+        return parent::getNote();
     }
 
     /**

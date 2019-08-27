@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -65,7 +65,7 @@ abstract class OrderConditions extends CheckoutStep
             );
         }
 
-        if (!empty($GLOBALS['ISO_HOOKS']['orderConditions']) && is_array($GLOBALS['ISO_HOOKS']['orderConditions'])) {
+        if (!empty($GLOBALS['ISO_HOOKS']['orderConditions']) && \is_array($GLOBALS['ISO_HOOKS']['orderConditions'])) {
             foreach ($GLOBALS['ISO_HOOKS']['orderConditions'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}($this->objForm, $this->objModule);
             }
@@ -84,11 +84,11 @@ abstract class OrderConditions extends CheckoutStep
         if ($this->objForm->isSubmitted()) {
             $this->blnError = !$this->objForm->validate();
 
-            $_SESSION['CHECKOUT_DATA'] = is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
+            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     $arrFile  = $_SESSION['FILES'][$strField];
-                    $varValue = str_replace(TL_ROOT . '/', '', dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                    $varValue = str_replace(TL_ROOT . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
                 } else {
                     $varValue = $this->objForm->fetch($strField);
                 }
@@ -99,7 +99,7 @@ abstract class OrderConditions extends CheckoutStep
         } else {
             $blnError = false;
 
-            $_SESSION['CHECKOUT_DATA'] = is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
+            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
 
                 // Clone widget because otherwise we add errors to the original widget instance
@@ -154,7 +154,7 @@ abstract class OrderConditions extends CheckoutStep
             }
 
             if (isset($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
-                && is_array($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
+                && \is_array($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'] as $callback) {
                     $varValue = \System::importStatic($callback[0])->{$callback[1]}(

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -132,7 +132,7 @@ class FileTree extends Attribute
                 if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
                     $tmp = deserialize($orderSource);
 
-                    if (!empty($tmp) && is_array($tmp)) {
+                    if (!empty($tmp) && \is_array($tmp)) {
                         // Remove all values
                         $order = array_map(
                             function () {
@@ -142,14 +142,14 @@ class FileTree extends Attribute
 
                         // Move the matching elements to their position in $order
                         foreach ($files as $k => $file) {
-                            if (array_key_exists($file->uuid, $order)) {
+                            if (\array_key_exists($file->uuid, $order)) {
                                 $order[$file->uuid] = $file;
                                 unset($files[$k]);
                             }
                         }
 
                         // Append the left-over images at the end
-                        if (count($files) > 0) {
+                        if (\count($files) > 0) {
                             $order = array_merge($order, array_values($files));
                         }
 

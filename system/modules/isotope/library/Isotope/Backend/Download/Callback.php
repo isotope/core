@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -52,7 +52,7 @@ class Callback extends \Backend
                 }
             }
 
-            if (0 === count($arrDownloads)) {
+            if (0 === \count($arrDownloads)) {
                 return $GLOBALS['TL_LANG']['ERR']['emptyDownloadsFolder'];
             }
 
@@ -142,7 +142,7 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
+        if (\strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
             \Controller::redirect(\System::getReferer());
         }
@@ -184,7 +184,7 @@ class Callback extends \Backend
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'] as $callback) {
                 $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }

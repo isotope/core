@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ *
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
+ */
+
 namespace Isotope\Frontend\ProductAction;
 
 class Registry
@@ -41,8 +50,8 @@ class Registry
 
         if ($includeButtons
             && isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
-            && is_array($arrConfig['buttons'])
-            && is_array($GLOBALS['ISO_HOOKS']['buttons'])
+            && \is_array($arrConfig['buttons'])
+            && \is_array($GLOBALS['ISO_HOOKS']['buttons'])
         ) {
             $buttons = [];
 

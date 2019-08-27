@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -67,13 +68,13 @@ class ChangeLanguageListener
      */
     private function getCheckoutStep()
     {
-        if (!is_array($GLOBALS['ISO_CHECKOUT_STEPS'])) {
+        if (!\is_array($GLOBALS['ISO_CHECKOUT_STEPS'])) {
             return null;
         }
 
         $step = (string) Input::getAutoItem('step', false, true);
 
-        return ('' !== $step && array_key_exists($step, $GLOBALS['ISO_CHECKOUT_STEPS'])) ? $step : null;
+        return ('' !== $step && \array_key_exists($step, $GLOBALS['ISO_CHECKOUT_STEPS'])) ? $step : null;
     }
 
     /**

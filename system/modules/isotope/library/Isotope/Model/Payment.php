@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -85,7 +85,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
         $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
 
-        if (is_array($this->arrData['allowed_cc_types'])) {
+        if (\is_array($this->arrData['allowed_cc_types'])) {
             $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);
         }
     }
@@ -121,9 +121,9 @@ abstract class Payment extends TypeAgent implements IsotopePayment
         if ($this->protected) {
             $arrGroups = deserialize($this->groups);
 
-            if (!is_array($arrGroups)
-                || 0 === count($arrGroups)
-                || 0 === count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+            if (!\is_array($arrGroups)
+                || 0 === \count($arrGroups)
+                || 0 === \count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -157,25 +157,25 @@ abstract class Payment extends TypeAgent implements IsotopePayment
         }
 
         $arrConfigs = deserialize($this->config_ids);
-        if (is_array($arrConfigs) && count($arrConfigs) > 0 && !in_array(Isotope::getConfig()->id, $arrConfigs)) {
+        if (\is_array($arrConfigs) && \count($arrConfigs) > 0 && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
         $arrCountries = deserialize($this->countries);
 
-        if (is_array($arrCountries) && count($arrCountries) > 0
-            && !in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries, true)
+        if (\is_array($arrCountries) && \count($arrCountries) > 0
+            && !\in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries, true)
         ) {
             return false;
         }
 
         $arrShippings = deserialize($this->shipping_modules);
 
-        if (is_array($arrShippings)
-            && count($arrShippings) > 0
-            && ((!Isotope::getCart()->hasShipping() && !in_array(-1, $arrShippings))
+        if (\is_array($arrShippings)
+            && \count($arrShippings) > 0
+            && ((!Isotope::getCart()->hasShipping() && !\in_array(-1, $arrShippings))
                 || (Isotope::getCart()->hasShipping() &&
-                    !in_array(Isotope::getCart()->getShippingMethod()->getId(), $arrShippings)
+                    !\in_array(Isotope::getCart()->getShippingMethod()->getId(), $arrShippings)
                 )
             )
         ) {
@@ -184,7 +184,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
         $arrConfigTypes = deserialize($this->product_types);
 
-        if (is_array($arrConfigTypes) && count($arrConfigTypes) > 0) {
+        if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
             $arrItems = Isotope::getCart()->getItems();
             $arrItemTypes = array();
 
@@ -203,19 +203,19 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
             switch ($this->product_types_condition) {
                 case 'onlyAvailable':
-                    if (count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
+                    if (\count(array_diff($arrItemTypes, $arrConfigTypes)) > 0) {
                         return false;
                     }
                     break;
 
                 case 'oneAvailable':
-                    if (count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
+                    if (\count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
                         return false;
                     }
                     break;
 
                 case 'allAvailable':
-                    if (count(array_intersect($arrConfigTypes, $arrItemTypes)) != count($arrConfigTypes)) {
+                    if (\count(array_intersect($arrConfigTypes, $arrItemTypes)) != \count($arrConfigTypes)) {
                         return false;
                     }
                     break;
@@ -383,8 +383,8 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return;
         }
 
-        $pos = strrpos(get_called_class(), '\\') ?: -1;
-        $className = substr(get_called_class(), $pos+1);
+        $pos = strrpos(\get_called_class(), '\\') ?: -1;
+        $className = substr(\get_called_class(), $pos+1);
 
         $logFile = sprintf(
             'isotope_%s.log',

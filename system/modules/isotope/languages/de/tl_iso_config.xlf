@@ -129,6 +129,38 @@
         <source>Please enter a valid e-mail address.</source>
         <target>Bitte geben Sie eine gültige E-Mail-Adresse ein.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.0">
+        <source>Bank name</source>
+        <target>Bank Name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.1">
+        <source>Please enter your bank name.</source>
+        <target>Bitte geben Sie Ihren Bank-Namen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.0">
+        <source>Bank account number (IBAN)</source>
+        <target>Bankkontonummer (z. B. IBAN)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.1">
+        <source>Please enter your bank account number (IBAN).</source>
+        <target>Bitte geben Sie Ihre Bankkontonummer (z. B. IBAN) ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.0">
+        <source>Bank code (BIC/SWIFT)</source>
+        <target>Bankleitzahl (BIC / SWIFT)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.1">
+        <source>Please enter your bank code (BIC/SWIFT).</source>
+        <target>Bitte geben Sie Ihre Bankleitzahl ein (BIC / SWIFT).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.0">
+        <source>Tax number</source>
+        <target>Steuernummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.1">
+        <source>Here you can enter your tax number.</source>
+        <target>Hier können Sie Ihre Steuernummer eingeben.</target>
+      </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.0">
         <source>Address fields</source>
         <target>Adressfelder</target>
@@ -544,6 +576,10 @@
       <trans-unit id="tl_iso_config.checkout_legend">
         <source>Checkout</source>
         <target>Kasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bank_legend">
+        <source>Bank details</source>
+        <target>Bankdaten</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.pricing_legend">
         <source>Pricing</source>

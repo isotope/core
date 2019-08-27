@@ -1,14 +1,13 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Table tl_iso_payment
@@ -131,8 +130,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'innopay'                   => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},vads_site_id,vads_certificate;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'sparkasse'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},sparkasse_paymentmethod,trans_type,sparkasse_sslmerchant,sparkasse_sslpassword,sparkasse_merchantref;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'sofortueberweisung'        => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend:hide},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,sofortueberweisung_user_id,sofortueberweisung_project_id,sofortueberweisung_project_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,logging',
-        'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled,logging',
-        'billpay_saferpay'          => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled,logging',
+        'saferpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},saferpay_accountid,trans_type,saferpay_username,saferpay_password,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
+        'billpay_saferpay'          => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types;{gateway_legend},saferpay_accountid,trans_type,saferpay_description,saferpay_vtconfig,saferpay_paymentmethods;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
         'expercash'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},expercash_popupId,expercash_profile,expercash_popupKey,expercash_paymentMethod;{price_legend:hide},price,tax_class;{template_legend},expercash_css;{expert_legend:hide},guests,protected;{enabled_legend},enabled,logging',
         'epay'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,epay_windowstate,epay_merchantnumber,epay_secretkey;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,logging',
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
@@ -571,6 +570,20 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),
+        'saferpay_username' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_username'],
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'saferpay_password' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_password'],
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'minlength'=>16, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
         'saferpay_description' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_description'],
@@ -589,32 +602,64 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['saferpay_paymentmethods'],
             'inputType'             => 'select',
-            'options'               => array(
-                1   => 'MasterCard',
-                2   => 'Visa',
-                3   => 'American Express',
-                4   => 'Diners Club',
-                5   => 'JCB',
-                6   => 'Saferpay Testkarte',
-                7   => 'Laser Card',
-                8   => 'Bonus Card',
-                9   => 'PostFinance E-Finance',
-                10  => 'PostFinance Card',
-                11  => 'Maestro International',
-                12  => 'MyOne',
-                13  => 'Lastschrift',
-                14  => 'Rechnung',
-                15  => 'Sofortüberweisung',
-                16  => 'PayPal',
-                17  => 'giropay',
-                18  => 'iDEAL',
-                19  => 'ClickandBuy',
-                20  => 'Homebanking AT (eps)',
-                21  => 'Mpass',
-                22  => 'ePrzelewy',
-            ),
+            'options_callback'      => function($dc) {
+                if (!$dc->activeRecord->saferpay_username) {
+                    return array(
+                        1   => 'MasterCard',
+                        2   => 'Visa',
+                        3   => 'American Express',
+                        4   => 'Diners Club',
+                        5   => 'JCB',
+                        6   => 'Saferpay Testkarte',
+                        7   => 'Laser Card',
+                        8   => 'Bonus Card',
+                        9   => 'PostFinance E-Finance',
+                        10  => 'PostFinance Card',
+                        11  => 'Maestro International',
+                        12  => 'MyOne',
+                        13  => 'Lastschrift',
+                        14  => 'Rechnung',
+                        15  => 'Sofortüberweisung',
+                        16  => 'PayPal',
+                        17  => 'giropay',
+                        18  => 'iDEAL',
+                        19  => 'ClickandBuy',
+                        20  => 'Homebanking AT (eps)',
+                        21  => 'Mpass',
+                        22  => 'ePrzelewy',
+                    );
+                }
+
+                return [
+                    'ALIPAY',
+                    'AMEX',
+                    'BANCONTACT',
+                    'BONUS',
+                    'DINERS',
+                    'DIRECTDEBIT',
+                    'EPRZELEWY',
+                    'EPS',
+                    'GIROPAY',
+                    'IDEAL',
+                    'INVOICE',
+                    'JCB',
+                    'MAESTRO',
+                    'MASTERCARD',
+                    'MYONE',
+                    'PAYPAL',
+                    'PAYDIREKT',
+                    'POSTCARD',
+                    'POSTFINANCE',
+                    'SAFERPAYTEST',
+                    'SOFORT',
+                    'TWINT',
+                    'UNIONPAY',
+                    'VISA',
+                    'VPAY',
+                ];
+            },
             'eval'                  => array('multiple'=>true, 'size'=>5, 'chosen'=>true, 'csv'=>',', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(64) NOT NULL default ''",
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'expercash_popupId' => array
         (
@@ -837,12 +882,12 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
                 function($value) {
                     $brands = deserialize($value);
 
-                    if (!empty($brands) && is_array($brands)) {
+                    if (!empty($brands) && \is_array($brands)) {
                         if (!\Isotope\Model\Payment\OpenPaymentPlatform::supportsPaymentBrands($brands)) {
                             throw new \RuntimeException($GLOBALS['TL_LANG']['ERR']['oppIncompatible']);
                         }
 
-                        if (strlen(implode(' ', $brands)) > 32) {
+                        if (\strlen(implode(' ', $brands)) > 32) {
                             throw new \RuntimeException($GLOBALS['TL_LANG']['ERR']['oppTooMany']);
                         }
                     }

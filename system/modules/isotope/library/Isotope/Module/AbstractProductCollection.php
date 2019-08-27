@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -92,7 +92,7 @@ abstract class AbstractProductCollection extends Module
         $arrQuantity = \Input::post('quantity');
         $arrItems    = $objTemplate->items;
 
-        if (!is_array($arrQuantity)) {
+        if (!\is_array($arrQuantity)) {
             $arrQuantity = [];
         } else {
             $arrQuantity = array_filter(
@@ -137,7 +137,7 @@ abstract class AbstractProductCollection extends Module
                     $buttons,
                     $action->getName(),
                     $action->getLabel($collection),
-                    is_callable([$action, 'getHref']) ? $action->getHref() : null
+                    \is_callable([$action, 'getHref']) ? $action->getHref() : null
                 );
             }
 
@@ -223,7 +223,7 @@ abstract class AbstractProductCollection extends Module
         // Update cart data if form has been submitted
         if ($this->canEditQuantity()
             && \Input::post('FORM_SUBMIT') === $this->strFormId
-            && array_key_exists($item->id, $quantity)
+            && \array_key_exists($item->id, $quantity)
         ) {
             $hasChanges = true;
             $collection->updateItemById($item->id, array('quantity' => $quantity[$item->id]));
@@ -293,7 +293,7 @@ abstract class AbstractProductCollection extends Module
             $additional
         );
 
-        if (is_string($action)) {
+        if (\is_string($action)) {
             $button['href'] = $action;
         }
 
@@ -301,11 +301,11 @@ abstract class AbstractProductCollection extends Module
             && \Input::post('FORM_SUBMIT') === $this->strFormId
             && '' !== (string) \Input::post('button_' . $name)
         ) {
-            if (is_string($action)) {
+            if (\is_string($action)) {
                 \Controller::redirect($action);
             }
 
-            call_user_func($action, $button);
+            \call_user_func($action, $button);
         }
 
         $buttons[$name] = $button;

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -47,7 +47,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if ('FE' === TL_MODE && 0 === count($this->iso_rangeFields)) {
+        if ('FE' === TL_MODE && 0 === \count($this->iso_rangeFields)) {
             return '';
         }
 
@@ -67,7 +67,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             foreach ($fields as $config) {
                 $values = \Input::post($config['attribute']);
 
-                if (!is_array($values)) {
+                if (!\is_array($values)) {
                     continue;
                 }
 

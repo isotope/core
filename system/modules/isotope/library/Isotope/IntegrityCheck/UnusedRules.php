@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -32,7 +32,7 @@ class UnusedRules extends AbstractIntegrityCheck
     public function hasError()
     {
         if (null === $this->blnError) {
-            $this->blnError = in_array('isotope_rules', \Config::getInstance()->getActiveModules()) && Rule::countAll() == 0;
+            $this->blnError = \in_array('isotope_rules', \Config::getInstance()->getActiveModules()) && Rule::countAll() == 0;
         }
 
         return $this->blnError;

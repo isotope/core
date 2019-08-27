@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -42,7 +42,7 @@ class Callback extends Permission
         }
 
         // Set root IDs
-        if (!is_array($this->User->iso_configs) || count($this->User->iso_configs) < 1) {
+        if (!\is_array($this->User->iso_configs) || \count($this->User->iso_configs) < 1) {
             $root = array(0);
         } else {
             $root = $this->User->iso_configs;
@@ -67,7 +67,7 @@ class Callback extends Permission
             case 'edit':
 
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_config', 'iso_configs', 'iso_configp')
                 ) {
                     $root[] = \Input::get('id');
@@ -78,7 +78,7 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
+                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' store configuration ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -97,7 +97,7 @@ class Callback extends Permission
                 break;
 
             default:
-                if (strlen(\Input::get('act'))) {
+                if (\strlen(\Input::get('act'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' store configurations', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }

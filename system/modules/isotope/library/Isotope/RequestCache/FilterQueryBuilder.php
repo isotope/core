@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -114,12 +115,12 @@ class FilterQueryBuilder
                 }
             } elseif (!$objFilter->hasGroup() && !$objFilter->isDynamicAttribute()) {
                 $arrWhere[]  = $objFilter->sqlWhere();
-                $arrValues[] = $objFilter->sqlValue();
+                $arrValues = $this->addValue($arrValues, $objFilter->sqlValue());
                 unset($arrFilters[$k]);
             }
         }
 
-        if (0 !== count($arrGroups)) {
+        if (0 !== \count($arrGroups)) {
             foreach ($arrGroups as $arrGroup) {
                 $arrGroupWhere = array();
 
@@ -132,7 +133,7 @@ class FilterQueryBuilder
                     $objFilter = $arrFilters[$k];
 
                     $arrGroupWhere[] = $objFilter->sqlWhere();
-                    $arrValues[]     = $objFilter->sqlValue();
+                    $arrValues = $this->addValue($arrValues, $objFilter->sqlValue());
                     unset($arrFilters[$k]);
                 }
 
@@ -140,7 +141,7 @@ class FilterQueryBuilder
             }
         }
 
-        if (0 !== count($arrWhere)) {
+        if (0 !== \count($arrWhere)) {
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {
@@ -180,5 +181,16 @@ class FilterQueryBuilder
         $this->filters   = $arrFilters;
         $this->sqlWhere  = $strWhere;
         $this->sqlValues = $arrValues;
+    }
+
+    private function addValue(array $arrValues, $value)
+    {
+        if (\is_array($value)) {
+            return array_merge($arrValues, $value);
+        }
+
+        $arrValues[] = $value;
+
+        return $arrValues;
     }
 }

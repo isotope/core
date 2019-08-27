@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -32,10 +32,9 @@ class ProductVariantList extends ProductList
     protected function findProducts($arrCacheIds = null)
     {
         $arrColumns    = array();
-        $arrCategories = $this->findCategories();
-        $queryBuilder = new FilterQueryBuilder(
-            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
-        );
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrCategories = $this->findCategories($arrFilters);
+        $queryBuilder = new FilterQueryBuilder($arrCategories);
 
         $arrColumns[] = "(
             (tl_iso_product.pid=0 AND tl_iso_product.type NOT IN (SELECT id FROM tl_iso_producttype WHERE variants='1'))
@@ -48,7 +47,7 @@ class ProductVariantList extends ProductList
             $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
         }
 
-        if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
+        if (!empty($arrCacheIds) && \is_array($arrCacheIds)) {
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 

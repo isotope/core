@@ -1,8 +1,18 @@
 <?php
 
+/*
+ * Isotope eCommerce for Contao Open Source CMS
+ *
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ *
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
+ */
+
 namespace Isotope\Frontend\ProductCollectionAction;
 
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Template;
 
 abstract class AbstractButton implements ProductCollectionActionInterface
 {
@@ -19,12 +29,14 @@ abstract class AbstractButton implements ProductCollectionActionInterface
      */
     public function generate(IsotopeProductCollection $collection)
     {
-        return sprintf(
-            '<input type="submit" name="button_%s" class="submit %s" value="%s">',
-            $this->getName(),
-            $this->getName(),
-            $this->getLabel($collection)
-        );
+        /** @var Template|\stdClass $objTemplate */
+        $objTemplate = new Template('iso_action');
+
+        $objTemplate->name = 'button_' . $this->getName();
+        $objTemplate->classes = '';
+        $objTemplate->label = $this->getLabel($collection);
+
+        return $objTemplate->parse();
     }
 
     /**

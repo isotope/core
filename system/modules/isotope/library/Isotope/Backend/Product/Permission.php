@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -26,14 +26,14 @@ class Permission extends \Backend
     {
         $session = \Session::getInstance()->getData();
 
-        if ('delete' === \Input::get('act') && in_array(\Input::get('id'), static::getUndeletableIds())) {
+        if ('delete' === \Input::get('act') && \in_array(\Input::get('id'), static::getUndeletableIds())) {
             \System::log('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
 
-        } elseif ('deleteAll' === \Input::get('act') && is_array($session['CURRENT']['IDS'])) {
+        } elseif ('deleteAll' === \Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
-            if (count($arrDeletable) != count($session['CURRENT']['IDS'])) {
+            if (\count($arrDeletable) != \count($session['CURRENT']['IDS'])) {
 
                 // Unpublish all undeletable records
                 \Database::getInstance()->query("
@@ -68,19 +68,19 @@ class Permission extends \Backend
             }
         } else {
             // Maybe another function has already set allowed product IDs
-            if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])) {
+            if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])) {
                 $arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], $arrProducts);
             }
 
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'] = $arrProducts;
 
             // Set allowed product IDs (edit multiple)
-            if (is_array($session['CURRENT']['IDS'])) {
+            if (\is_array($session['CURRENT']['IDS'])) {
                 $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root']);
             }
 
             // Set allowed clipboard IDs
-            if (is_array($session['CLIPBOARD']['tl_iso_product']['id'])) {
+            if (\is_array($session['CLIPBOARD']['tl_iso_product']['id'])) {
                 $session['CLIPBOARD']['tl_iso_product']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_product']['id'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], \Database::getInstance()->query("SELECT id FROM tl_iso_product WHERE pid=0")->fetchEach('id'));
 
                 if (empty($session['CLIPBOARD']['tl_iso_product']['id'])) {
@@ -93,9 +93,9 @@ class Permission extends \Backend
 
             // Check if the product is accessible by user
             if (\Input::get('id') > 0
-                && !in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])
-                && (!is_array($session['new_records']['tl_iso_product'])
-                    || !in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])
+                && !\in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])
+                && (!\is_array($session['new_records']['tl_iso_product'])
+                    || !\in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])
                 )
             ) {
                 \System::log('Cannot access product ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
@@ -146,15 +146,15 @@ class Permission extends \Backend
             $arrGroups       = array();
 
             // Return false if there are no product types
-            if (!is_array($arrProductTypes) || empty($arrProductTypes)) {
+            if (!\is_array($arrProductTypes) || empty($arrProductTypes)) {
                 return false;
             }
 
             // Find the user groups
-            if (is_array($objUser->iso_groups) && count($objUser->iso_groups) > 0) {
+            if (\is_array($objUser->iso_groups) && \count($objUser->iso_groups) > 0) {
                 $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
 
-                if (is_array($objUser->iso_groupp) && in_array('rootPaste', $objUser->iso_groupp)) {
+                if (\is_array($objUser->iso_groupp) && \in_array('rootPaste', $objUser->iso_groupp)) {
                     $arrGroups[] = 0;
                 }
             }
@@ -166,7 +166,7 @@ class Permission extends \Backend
                     " . (empty($arrGroups) ? '' : 'AND gid IN (' . implode(',', $arrGroups) . ')') . "
                     AND (
                         type IN (" . implode(',', $arrProductTypes) . ')' .
-                        ((is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
+                        ((\is_array($arrNewRecords) && !empty($arrNewRecords)) ? " OR id IN (".implode(',', $arrNewRecords).")" : '') .
                     ")
             ");
 
@@ -184,13 +184,13 @@ class Permission extends \Backend
         }
 
         // HOOK: allow extensions to define allowed products
-        if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && \is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds'])) {
             foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback) {
                 $arrAllowed = \System::importStatic($callback[0])->{$callback[1]}();
 
                 if ($arrAllowed === false) {
                     return false;
-                } elseif (is_array($arrAllowed)) {
+                } elseif (\is_array($arrAllowed)) {
                     if ($arrProducts === true) {
                         $arrProducts = $arrAllowed;
                     } else {
@@ -203,7 +203,7 @@ class Permission extends \Backend
         $totalProducts = \Database::getInstance()->execute("SELECT COUNT(*) AS count FROM tl_iso_product WHERE language=''")->count;
 
         // If all product are allowed, we don't need to filter
-        if ($arrProducts === true || count($arrProducts) == $totalProducts) {
+        if ($arrProducts === true || \count($arrProducts) == $totalProducts) {
             return true;
         }
 

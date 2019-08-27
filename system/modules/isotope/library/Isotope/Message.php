@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -76,11 +76,11 @@ class Message
             return;
         }
 
-        if (!in_array($strType, static::getTypes())) {
+        if (!\in_array($strType, static::getTypes())) {
             throw new \LogicException("Invalid message type $strType");
         }
 
-        if (!is_array($_SESSION[$strType])) {
+        if (!\is_array($_SESSION[$strType])) {
             $_SESSION[$strType] = array();
         }
 

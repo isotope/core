@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -33,7 +33,7 @@ class Permission extends \Backend
 
         $newRecords = $session->get('new_records');
 
-        if (is_array($newRecords[$table]) && in_array($id, $newRecords[$table])) {
+        if (\is_array($newRecords[$table]) && \in_array($id, $newRecords[$table])) {
 
             if ('custom' === $user->inherit || empty($groups)) {
                 // Add permissions on user level
@@ -44,7 +44,7 @@ class Permission extends \Backend
 
                 $this->addCreatePermission($id, $permissionField, $accessField, 'tl_user', $objUser);
 
-            } elseif (!empty($groups) && is_array($groups)) {
+            } elseif (!empty($groups) && \is_array($groups)) {
                 // Add permissions on group level
 
                 $objGroups = $db->execute("
@@ -80,7 +80,7 @@ class Permission extends \Backend
     {
         $arrPermissions = deserialize($record->$permissionField);
 
-        if (is_array($arrPermissions) && in_array('create', $arrPermissions, true)) {
+        if (\is_array($arrPermissions) && \in_array('create', $arrPermissions, true)) {
             $arrAccess   = deserialize($record->$accessField);
             $arrAccess[] = $id;
             $arrAccess   = array_unique($arrAccess);

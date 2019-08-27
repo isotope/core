@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -119,7 +119,7 @@ class MembersGuests extends Sales
         $arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_products;
         $arrData['rows'][$objData->dateGroup]['columns'][3]['value'] += $objData->total_items;
 
-        if (!is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value'])) {
+        if (!\is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value'])) {
             $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
         }
 
@@ -254,7 +254,7 @@ class MembersGuests extends Sales
     {
         // Format row totals
         foreach ($arrData['rows'] as $dateGroup => $arrRow) {
-            if (is_array($arrRow['columns'][4]['value'])) {
+            if (\is_array($arrRow['columns'][4]['value'])) {
                 foreach ($arrRow['columns'][4]['value'] as $currency => $varValue) {
                     /** @type Config $objConfig */
                     $objConfig = Config::findByPk($arrCurrencies[$currency]);

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -41,7 +41,7 @@ class Callback extends \Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_filter']) {
-                $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
 
@@ -59,7 +59,7 @@ class Callback extends \Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_sorting']) {
-                $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
 
@@ -76,8 +76,15 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
+            if ($arrData['attributes']['dynamic']
+                || ($arrData['eval']['multiple'] && !$arrData['eval']['csv'])
+            ) {
+                // Cannot search for dynamic attributes
+                continue;
+            }
+
             if ($arrData['attributes']['fe_search']) {
-                $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
 
@@ -95,7 +102,7 @@ class Callback extends \Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic']) {
-                $arrAttributes[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
 

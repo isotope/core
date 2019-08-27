@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -85,8 +85,8 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                     $objProduct = $objItem->getProduct();
 
                     if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                            && (in_array($objProduct->id, $arrLimit) === $productCondition || ($objProduct->pid > 0 && in_array($objProduct->pid, $arrLimit) === $productCondition)))
-                        || ($objRule->productRestrictions == 'producttypes' && in_array($objProduct->type, $arrLimit) === $productCondition)
+                            && (\in_array($objProduct->id, $arrLimit) === $productCondition || ($objProduct->pid > 0 && \in_array($objProduct->pid, $arrLimit) === $productCondition)))
+                        || ($objRule->productRestrictions == 'producttypes' && \in_array($objProduct->type, $arrLimit) === $productCondition)
                     ) {
                         $intTotal += $objRule->quantityMode == 'cart_items' ? $objItem->quantity : 1;
                     }
@@ -114,8 +114,8 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             // Product restrictions
             // FIXME
             if ((($objRule->productRestrictions == 'products' || $objRule->productRestrictions == 'variants' || $objRule->productRestrictions == 'pages')
-                    && (in_array($objProduct->id, $arrLimit) !== $productCondition && ($objProduct->pid == 0 || in_array($objProduct->pid, $arrLimit) !== $productCondition)))
-                || ($objRule->productRestrictions == 'producttypes' && in_array($objProduct->type, $arrLimit) !== $productCondition)
+                    && (\in_array($objProduct->id, $arrLimit) !== $productCondition && ($objProduct->pid == 0 || \in_array($objProduct->pid, $arrLimit) !== $productCondition)))
+                || ($objRule->productRestrictions == 'producttypes' && \in_array($objProduct->type, $arrLimit) !== $productCondition)
             ) {
                 continue;
             } elseif ($objRule->productRestrictions == 'attribute') {
@@ -163,7 +163,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                         break;
 
                     case 'ends':
-                        if (strripos($objProduct->{$objRule->attributeName}, $objRule->attributeValue) !== (strlen($objProduct->{$objRule->attributeName}) - strlen($objRule->attributeValue))) {
+                        if (strripos($objProduct->{$objRule->attributeName}, $objRule->attributeValue) !== (\strlen($objProduct->{$objRule->attributeName}) - \strlen($objRule->attributeValue))) {
                             continue(2);
                         }
                         break;

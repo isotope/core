@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -53,7 +53,7 @@ class AssetImport extends \Backend
 <div class="tl_tbox block">
   <div class="widget">
     <h3><label for="source">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][0] . '</label></h3>
-    ' . $objTree->generate() . (strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
+    ' . $objTree->generate() . (\strlen($GLOBALS['TL_LANG']['tl_iso_product']['source'][1]) ? '
     <p class="tl_help">' . $GLOBALS['TL_LANG']['tl_iso_product']['source'][1] . '</p>' : '') . '
   </div>
 </div>
@@ -92,7 +92,7 @@ class AssetImport extends \Backend
             $arrImageNames = array();
             $arrImages     = deserialize($objProducts->images);
 
-            if (!is_array($arrImages)) {
+            if (!\is_array($arrImages)) {
                 $arrImages = array();
             } else {
                 foreach ($arrImages as $row) {
@@ -109,7 +109,7 @@ class AssetImport extends \Backend
             $arrPattern[] = !empty($arrImageNames) ? implode('|', $arrImageNames) : null;
 
             // !HOOK: add custom import regex patterns
-            if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'])) {
+            if (isset($GLOBALS['ISO_HOOKS']['addAssetImportRegexp']) && \is_array($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['addAssetImportRegexp'] as $callback) {
                     $arrPattern = \System::importStatic($callback[0])->{$callback[1]}($arrPattern, $objProducts);
                 }

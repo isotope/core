@@ -1,14 +1,13 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Load tl_iso_product data container and language files
@@ -33,6 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\Shipping\Callback', 'checkPermission'),
+            array('Isotope\Backend\Shipping\Callback', 'hideLabelAndNotes'),
         ),
         'sql' => array
         (
@@ -124,12 +124,13 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'protected'),
+        '__selector__'              => array('type', 'flatCalculation', 'protected'),
         'default'                   => '{title_legend},name,label,type',
-        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'group'                     => '{title_legend},name,label,type;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
-        'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token,dhl_shipping;{price_legend},price,tax_class,flatCalculation,shipping_weight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'flat'                      => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'flatperWeight'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},price,tax_class,flatCalculation,flatWeight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'product_price'             => '{title_legend},name,label,type;{note_legend:hide},note;{price_legend},tax_class;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'group'                     => '{title_legend},name,label,type,inherit;{note_legend:hide},note;{config_legend},group_methods;{price_legend},group_calculation,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
+        'dhl_business'              => '{title_legend},name,label,type;{note_legend:hide},note;{api_legend},dhl_user,dhl_signature,dhl_epk,dhl_product,dhl_app,dhl_token,dhl_shipping;{price_legend},price,tax_class,flatCalculation,shipping_weight;{config_legend},countries,subdivisions,postalCodes,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,minimum_weight,maximum_weight,product_types,product_types_condition,config_ids,address_type;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
     // Subpalettes
@@ -179,6 +180,14 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'reference'             => &$GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'],
             'eval'                  => array('helpwizard'=>true, 'submitOnChange'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(64) NOT NULL default ''",
+        ),
+        'inherit' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['inherit'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
+            'sql'                   => "char(1) NOT NULL default ''",
         ),
         'note' => array
         (
@@ -314,6 +323,16 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'sql'                   => "blob NULL",
             'relation'              => array('type'=>'hasMany', 'load'=>'lazy'),
         ),
+        'address_type' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['address_type'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => ['custom', 'billing'],
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['address_type'],
+            'eval'                  => ['includeBlankOption' => true, 'tl_class' => 'w50'],
+            'sql'                   => "varchar(8) NOT NULL default ''",
+        ),
         'price' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['price'],
@@ -339,10 +358,21 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('flat', 'perProduct', 'perItem'),
+            'options'               => array('perProduct', 'perItem', 'perWeight'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('submitOnChange'=>true, 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['tl_iso_shipping']['flat'], 'tl_class'=>'w50'),
             'sql'                   => "varchar(10) NOT NULL default ''",
+        ),
+        'flatWeight' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatWeight'],
+            'exclude'               => true,
+            'inputType'             => 'timePeriod',
+            'default'               => array('unit'=>'kg'),
+            'options'               => array('mg', 'g', 'kg', 't', 'ct', 'oz', 'lb', 'st', 'grain'),
+            'reference'             => &$GLOBALS['TL_LANG']['WGT'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50', 'helpwizard'=>true),
+            'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'shipping_weight' => array
         (

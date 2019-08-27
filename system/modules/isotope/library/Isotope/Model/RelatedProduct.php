@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -45,10 +45,18 @@ class RelatedProduct extends \Model
     {
         $t = static::$strTable;
 
+        if ($objProduct->isVariant()) {
+            $pid = "($t.pid=? OR $t.pid=?)";
+            $value = [$objProduct->getProductId(), $objProduct->getId()];
+        } else {
+            $pid = "$t.pid=?";
+            $value = [$objProduct->getProductId()];
+        }
+
         $arrOptions = array_merge(
             array(
-                'column'    => array("$t.pid=?", "$t.category IN (" . implode(',', $arrCategories) . ')'),
-                'value'     => array($objProduct->getProductId()),
+                'column'    => [$pid, "$t.category IN (" . implode(',', $arrCategories) . ')'],
+                'value'     => $value,
                 'order'     => \Database::getInstance()->findInSet("$t.category", $arrCategories),
                 'return'    => 'Collection'
             ),

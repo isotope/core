@@ -1,14 +1,13 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Table tl_iso_producttype
@@ -267,6 +266,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
                 'tl_class'          =>'clr',
                 'columnsCallback'   => array('Isotope\Backend\ProductType\AttributeWizard', 'getColumns'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
+                'dragAndDrop'       => true,
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array
@@ -297,6 +297,7 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
                 'tl_class'          =>'clr',
                 'columnsCallback'   => array('Isotope\Backend\ProductType\AttributeWizard', 'getColumns'),
                 'buttons'           => array('copy'=>false, 'delete'=>false),
+                'dragAndDrop'       => true,
             ),
             'sql'                   => 'blob NULL',
             'load_callback'         => array

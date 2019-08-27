@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -54,8 +55,8 @@ class OpenPaymentPlatform extends Payment
         $brands = deserialize($this->opp_brands);
 
         if (!empty($brands)
-            && is_array($brands)
-            && (!static::supportsPaymentBrands($brands) || strlen(implode(' ', $brands)) > 32)
+            && \is_array($brands)
+            && (!static::supportsPaymentBrands($brands) || \strlen(implode(' ', $brands)) > 32)
         ) {
             return false;
         }
@@ -136,7 +137,7 @@ class OpenPaymentPlatform extends Payment
         $this->debugLog($response);
 
         if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
-            || !in_array($response['paymentType'], static::$paymentTypes, true)
+            || !\in_array($response['paymentType'], static::$paymentTypes, true)
             || $ndc !== $response['ndc']
             || $objOrder->getTotal() != $response['amount']
             || $objOrder->getCurrency() != $response['currency']
@@ -166,7 +167,7 @@ class OpenPaymentPlatform extends Payment
         if ('capture' === $this->trans_type
             && 'PA' === $response['paymentType']
             && isset(static::$paymentBrands[$response['paymentBrand']])
-            && in_array('CP', static::$paymentBrands[$response['paymentBrand']], true)
+            && \in_array('CP', static::$paymentBrands[$response['paymentBrand']], true)
         ) {
             $request = $this->createRequest('CP', $objOrder);
             $request->send($this->getBaseUrl() . '/v1/payments/' . $response['id']);
@@ -237,7 +238,7 @@ class OpenPaymentPlatform extends Payment
     {
         $payments = deserialize($objOrder->payment_data, true);
 
-        if (!is_array($payments['OPP'])) {
+        if (!\is_array($payments['OPP'])) {
             $payments['OPP'] = array();
         }
 
@@ -261,7 +262,7 @@ class OpenPaymentPlatform extends Payment
         $types = array_values(array_intersect_key(static::$paymentBrands, array_flip($brands)));
         array_unshift($types, static::$paymentTypes);
 
-        return call_user_func_array('array_intersect', $types);
+        return \call_user_func_array('array_intersect', $types);
     }
 
     /**

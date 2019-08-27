@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -97,7 +97,7 @@ abstract class Gallery extends TypeAgent
     {
         $arrTranslate = array();
 
-        if (is_array($arrParent) && 0 !== count($arrParent)) {
+        if (\is_array($arrParent) && 0 !== \count($arrParent)) {
 
             // Create an array of images where key = image name
             foreach ($arrParent as $image) {
@@ -107,7 +107,7 @@ abstract class Gallery extends TypeAgent
             }
         }
 
-        if (is_array($arrCurrent) && 0 !== count($arrCurrent)) {
+        if (\is_array($arrCurrent) && 0 !== \count($arrCurrent)) {
             foreach ($arrCurrent as $i => $image) {
 
                 if (isset($arrTranslate[$image['src']])) {

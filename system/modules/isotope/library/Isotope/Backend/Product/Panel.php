@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -33,10 +33,10 @@ class Panel extends \Backend
 
         // Check if user can manage groups
         if ($user->isAdmin
-            || (is_array($user->iso_groups)
-                && 0 !== count($user->iso_groups)
-                && is_array($user->iso_groupp)
-                && 0 !== count($user->iso_groupp)
+            || (\is_array($user->iso_groups)
+                && 0 !== \count($user->iso_groups)
+                && \is_array($user->iso_groupp)
+                && 0 !== \count($user->iso_groupp)
             )
         ) {
             $buttons[] = sprintf(
@@ -185,13 +185,13 @@ class Panel extends \Backend
                 // Show products with or without images
                 case 'iso_noimages':
                     $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product WHERE language='' AND images " . ($v ? 'IS NULL' : 'IS NOT NULL'));
-                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                    $arrProducts = \is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
                 // Show products with or without category
                 case 'iso_nocategory':
                     $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND (SELECT COUNT(*) FROM tl_iso_product_category c WHERE c.pid=p.id)" . ($v ? '=0' : '>0'));
-                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                    $arrProducts = \is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
                 // Show new products
@@ -213,25 +213,25 @@ class Panel extends \Backend
                     }
 
                     $objProducts = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE language='' AND dateAdded>=?")->execute($date);
-                    $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                    $arrProducts = \is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     break;
 
                 case 'iso_page':
                     // Filter the products by pages
                     if ($v > 0) {
                         $objProducts = \Database::getInstance()->execute("SELECT id FROM tl_iso_product p WHERE pid=0 AND language='' AND id IN (SELECT pid FROM tl_iso_product_category c WHERE c.pid=p.id AND c.page_id=" . (int) $v . ')');
-                        $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
+                        $arrProducts = \is_array($arrProducts) ? array_intersect($arrProducts, $objProducts->fetchEach('id')) : $objProducts->fetchEach('id');
                     }
                     break;
 
                 default:
                     // !HOOK: add custom advanced filters
-                    if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'])) {
+                    if (isset($GLOBALS['ISO_HOOKS']['applyAdvancedFilters']) && \is_array($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'])) {
                         foreach ($GLOBALS['ISO_HOOKS']['applyAdvancedFilters'] as $callback) {
                             $arrReturn = \System::importStatic($callback[0])->{$callback[1]}($k);
 
-                            if (is_array($arrReturn)) {
-                                $arrProducts = is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
+                            if (\is_array($arrReturn)) {
+                                $arrProducts = \is_array($arrProducts) ? array_intersect($arrProducts, $arrReturn) : $arrReturn;
                                 break;
                             }
                         }
@@ -242,7 +242,7 @@ class Panel extends \Backend
             }
         }
 
-        if (is_array($arrProducts) && empty($arrProducts)) {
+        if (\is_array($arrProducts) && empty($arrProducts)) {
             $arrProducts = array(0);
         }
 

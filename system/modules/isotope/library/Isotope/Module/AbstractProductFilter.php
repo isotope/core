@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -76,8 +76,8 @@ abstract class AbstractProductFilter extends Module
     {
         $attributeTypes = $this->getProductTypeIdsByAttribute($attribute);
         $variantTypes   = $this->getProductTypeIdsByAttribute($attribute, true);
-        $atypeCount     = count($attributeTypes);
-        $vtypeCount     = count($variantTypes);
+        $atypeCount     = \count($attributeTypes);
+        $vtypeCount     = \count($variantTypes);
 
         if (0 === $atypeCount && 0 === $vtypeCount) {
             return array();

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -47,7 +47,7 @@ abstract class TypeAgent extends \Model
 
         // Register model type
         if (!isset($this->arrRelations['type'])) {
-            $strType = array_search(get_called_class(), static::$arrModelTypes);
+            $strType = array_search(\get_called_class(), static::$arrModelTypes);
 
             if ($strType != '') {
                 $this->arrData['type'] = $strType;
@@ -55,7 +55,7 @@ abstract class TypeAgent extends \Model
         }
 
         if ($this->arrData['type'] == '') {
-            throw new \RuntimeException(get_called_class() . ' has no model type');
+            throw new \RuntimeException(\get_called_class() . ' has no model type');
         }
     }
 
@@ -177,12 +177,12 @@ abstract class TypeAgent extends \Model
         }
 
         // if find() method is called in a specific model type, results must be of that type
-        if (($strType = array_search(get_called_class(), static::getModelTypes())) !== false) {
+        if (($strType = array_search(\get_called_class(), static::getModelTypes())) !== false) {
 
             // Convert to array if necessary
             $arrOptions['value'] = (array) $arrOptions['value'];
 
-            if (!is_array($arrOptions['column'])) {
+            if (!\is_array($arrOptions['column'])) {
                 $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
@@ -191,7 +191,7 @@ abstract class TypeAgent extends \Model
             $arrFields = $objRelations->getFields();
 
             // @deprecated use string instead of array for HAVING (introduced in Contao 3.3)
-            if (!empty($arrOptions['having']) && is_array($arrOptions['having'])) {
+            if (!empty($arrOptions['having']) && \is_array($arrOptions['having'])) {
                 $arrOptions['having'] = implode(' AND ', $arrOptions['having']);
             }
 
@@ -272,7 +272,7 @@ abstract class TypeAgent extends \Model
 
         // Try to use the current class as fallback
         if ($strClass == '') {
-            $strClass = get_called_class();
+            $strClass = \get_called_class();
 
             $objReflection = new \ReflectionClass($strClass);
             if ($objReflection ->isAbstract()) {
@@ -283,7 +283,7 @@ abstract class TypeAgent extends \Model
         $objModel = new $strClass($objResult);
 
         if (null !== static::$strInterface && !is_a($objModel, static::$strInterface)) {
-            throw new \RuntimeException(get_class($objModel) . ' must implement interface ' . static::$strInterface);
+            throw new \RuntimeException(\get_class($objModel) . ' must implement interface ' . static::$strInterface);
         }
 
         return $objModel;

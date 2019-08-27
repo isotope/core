@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -130,14 +130,14 @@ class ProductList extends Module
                 $arrProducts = (null === $objProducts) ? array() : $objProducts->getModels();
 
                 // Cache is wrong, drop everything and run findProducts()
-                if (count($arrProducts) != count($arrCacheIds)) {
+                if (\count($arrProducts) != \count($arrCacheIds)) {
                     $arrCacheIds = null;
                     $arrProducts = null;
                 }
             }
         }
 
-        if (!is_array($arrProducts)) {
+        if (!\is_array($arrProducts)) {
             // Display "loading products" message and add cache flag
             if ($this->blnCacheProducts) {
                 $blnCacheMessage = (bool) $this->iso_productcache[$cacheKey];
@@ -204,7 +204,7 @@ class ProductList extends Module
         }
 
         // No products found
-        if (!is_array($arrProducts) || empty($arrProducts)) {
+        if (!\is_array($arrProducts) || empty($arrProducts)) {
             $this->compileEmptyMessage();
 
             return;
@@ -220,6 +220,7 @@ class ProductList extends Module
             if (\Environment::get('isAjaxRequest')
                 && \Input::post('AJAX_MODULE') == $this->id
                 && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+                && !$this->iso_disable_options
             ) {
                 $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
                 $objResponse->send();
@@ -242,7 +243,7 @@ class ProductList extends Module
 
         // HOOK: to add any product field or attribute to mod_iso_productlist template
         if (isset($GLOBALS['ISO_HOOKS']['generateProductList'])
-            && is_array($GLOBALS['ISO_HOOKS']['generateProductList'])
+            && \is_array($GLOBALS['ISO_HOOKS']['generateProductList'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback) {
                 $arrBuffer = \System::importStatic($callback[0])->{$callback[1]}($arrBuffer, $arrProducts, $this->Template, $this);
@@ -271,20 +272,19 @@ class ProductList extends Module
     protected function findProducts($arrCacheIds = null)
     {
         $arrColumns = array();
-        $arrCategories = $this->findCategories();
-        $queryBuilder = new FilterQueryBuilder(
-            Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules)
-        );
+        $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
+        $arrCategories = $this->findCategories($arrFilters);
+        $queryBuilder = new FilterQueryBuilder($arrFilters);
 
         $arrColumns[] = Product::getTable().'.pid=0';
 
         if (1 === \count($arrCategories)) {
-            $arrColumns[] = "c.page_id=" . $arrCategories[0];
+            $arrColumns[] = "c.page_id=".reset($arrCategories);
         } else {
-            $arrColumns[] = "c.page_id IN (" . implode(',', $arrCategories) . ")";
+            $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
         }
 
-        if (!empty($arrCacheIds) && is_array($arrCacheIds)) {
+        if (!empty($arrCacheIds) && \is_array($arrCacheIds)) {
             $arrColumns[] = Product::getTable() . ".id IN (" . implode(',', $arrCacheIds) . ")";
         }
 
@@ -365,7 +365,7 @@ class ProductList extends Module
 
         $pagination = '';
         $page       = 1;
-        $total      = count($arrItems);
+        $total      = \count($arrItems);
 
         // Split the results
         if ($this->perPage > 0 && (!isset($limit) || $limit > $this->perPage)) {
@@ -404,13 +404,13 @@ class ProductList extends Module
         }
 
         $this->Template->pagination = $pagination;
-        $this->Template->total      = count($arrItems);
+        $this->Template->total      = \count($arrItems);
         $this->Template->page       = $page;
         $this->Template->offset     = $offset;
         $this->Template->limit      = $limit;
 
         if (isset($limit)) {
-            $arrItems = array_slice($arrItems, $offset, $limit);
+            $arrItems = \array_slice($arrItems, $offset, $limit);
         }
 
         return $arrItems;
@@ -467,7 +467,7 @@ class ProductList extends Module
         $arrFilters = Isotope::getRequestCache()->getFiltersForModules($this->iso_filterModules);
 
         foreach ($arrFilters as $arrConfig) {
-            if (in_array($arrConfig['attribute'], $arrFields)
+            if (\in_array($arrConfig['attribute'], $arrFields)
                 && ('=' === $arrConfig['operator'] || '==' === $arrConfig['operator'] || 'eq' === $arrConfig['operator'])
             ) {
                 $arrOptions[$arrConfig['attribute']] = $arrConfig['value'];
@@ -536,12 +536,13 @@ class ProductList extends Module
         $type = $product->getType();
 
         return array(
-            'module'        => $this,
-            'template'      => $this->iso_list_layout ?: $type->list_template,
-            'gallery'       => $this->iso_gallery ?: $type->list_gallery,
-            'buttons'       => $this->iso_buttons,
-            'useQuantity'   => $this->iso_use_quantity,
-            'jumpTo'        => $this->findJumpToPage($product),
+            'module'         => $this,
+            'template'       => $this->iso_list_layout ?: $type->list_template,
+            'gallery'        => $this->iso_gallery ?: $type->list_gallery,
+            'buttons'        => $this->iso_buttons,
+            'useQuantity'    => $this->iso_use_quantity,
+            'disableOptions' => $this->iso_disable_options,
+            'jumpTo'         => $this->findJumpToPage($product),
         );
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -25,14 +25,14 @@ class Permission extends \Backend
     {
         $session = \Session::getInstance()->getData();
 
-        if ('delete' === \Input::get('act') && in_array(\Input::get('id'), static::getUndeletableIds())) {
+        if ('delete' === \Input::get('act') && \in_array(\Input::get('id'), static::getUndeletableIds())) {
             \System::log('Product type ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
 
-        } elseif ('deleteAll' === \Input::get('act') && is_array($session['CURRENT']['IDS'])) {
+        } elseif ('deleteAll' === \Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
-            if (count($arrDeletable) != count($session['CURRENT']['IDS'])) {
+            if (\count($arrDeletable) != \count($session['CURRENT']['IDS'])) {
                 $session['CURRENT']['IDS'] = array_values($arrDeletable);
                 \Session::getInstance()->setData($session);
 

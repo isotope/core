@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -65,7 +65,7 @@ class Address extends \Model
     {
         parent::__construct($objResult);
 
-        if (!is_array($GLOBALS['ISO_ADR'])) {
+        if (!\is_array($GLOBALS['ISO_ADR'])) {
             \Controller::loadDataContainer(static::$strTable);
             \System::loadLanguageFile('addresses');
         }
@@ -102,7 +102,7 @@ class Address extends \Model
         $validators = deserialize($config->vatNoValidators);
 
         // if no validators are enabled, the VAT No is always valid
-        if (!is_array($validators) || 0 === count($validators)) {
+        if (!\is_array($validators) || 0 === \count($validators)) {
             return true;
         }
 
@@ -184,7 +184,7 @@ class Address extends \Model
      */
     public function getTokens($arrFields = null)
     {
-        if (!is_array($arrFields)) {
+        if (!\is_array($arrFields)) {
             $arrFields = Isotope::getConfig()->getBillingFieldsConfig();
         }
 
@@ -363,7 +363,7 @@ class Address extends \Model
             'store_id' => (int) Isotope::getCart()->store_id,
         );
 
-        if (!empty($arrFill) && is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
+        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
@@ -399,7 +399,7 @@ class Address extends \Model
             'isDefaultShipping' => $blnDefaultShipping ? '1' : '',
         );
 
-        if (!empty($arrFill) && is_array($arrFill) && ($objMember = $objCollection->getMember()) !== null) {
+        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = $objCollection->getMember()) !== null) {
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 

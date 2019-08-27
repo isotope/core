@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -120,7 +120,7 @@ abstract class Report extends \Backend
 
     protected function getPanels()
     {
-        if (!is_array($this->arrData['panels'])) {
+        if (!\is_array($this->arrData['panels'])) {
             return array();
         }
 
@@ -128,7 +128,7 @@ abstract class Report extends \Backend
 
         foreach ($this->arrData['panels'] as $group=>$callbacks) {
             foreach ($callbacks as $callback) {
-                if (is_array($callback)) {
+                if (\is_array($callback)) {
                     $objCallback = \System::importStatic($callback[0]);
                     $buffer = $objCallback->{$callback[1]}();
                 } else {
@@ -328,7 +328,7 @@ abstract class Report extends \Backend
 
         $arrConfig = deserialize(\BackendUser::getInstance()->iso_configs);
 
-        if (empty($arrConfig) || !is_array($arrConfig)) {
+        if (empty($arrConfig) || !\is_array($arrConfig)) {
             $arrConfig = array(0);
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -44,7 +44,7 @@ class Callback extends Permission
         if ('tl_iso_product' === $dc->table || stripos(\Environment::get('request'), 'group.php') !== false) {
             $arrGroups = $user->iso_groups;
 
-            if (!is_array($arrGroups) || empty($arrGroups)) {
+            if (!\is_array($arrGroups) || empty($arrGroups)) {
                 $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['filter'][] = array('id=?', 0);
             } else {
                 $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = $arrGroups;
@@ -53,13 +53,13 @@ class Callback extends Permission
             return;
         }
 
-        if (!is_array($user->iso_groupp) || empty($user->iso_groupp)) {
+        if (!\is_array($user->iso_groupp) || empty($user->iso_groupp)) {
             \System::log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
             \Controller::redirect('contao/main.php?act=error');
         }
 
         // Set root IDs
-        if (!is_array($user->iso_groups) || empty($user->iso_groups)) {
+        if (!\is_array($user->iso_groups) || empty($user->iso_groups)) {
             $root = array();
         } else {
             try {
@@ -71,12 +71,12 @@ class Callback extends Permission
 
         $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['root'] = (empty($root) ? true : $root);
 
-        if (in_array('rootPaste', $user->iso_groupp, true)) {
+        if (\in_array('rootPaste', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
         // Check permissions to add product group
-        if (!in_array('create', $user->iso_groupp, true)) {
+        if (!\in_array('create', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
         }
 
@@ -95,7 +95,7 @@ class Callback extends Permission
             case 'edit':
 
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_group', 'iso_groups', 'iso_groupp')
                 ) {
                     $root[]           = \Input::get('id');
@@ -106,7 +106,7 @@ class Callback extends Permission
             case 'delete':
             case 'show':
             case 'cut':
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     || (
                         'delete' === \Input::get('act')
                         && !$user->hasAccess('delete', 'iso_groupp')
@@ -130,7 +130,7 @@ class Callback extends Permission
                 break;
 
             default:
-                if (strlen(\Input::get('act'))) {
+                if (\strlen(\Input::get('act'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' groups', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -196,8 +196,8 @@ class Callback extends Permission
     {
         if (!\BackendUser::getInstance()->isAdmin
             && (
-                !is_array(\BackendUser::getInstance()->iso_groupp)
-                || !in_array('create', \BackendUser::getInstance()->iso_groupp, true)
+                !\is_array(\BackendUser::getInstance()->iso_groupp)
+                || !\in_array('create', \BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
@@ -222,8 +222,8 @@ class Callback extends Permission
     {
         if (!\BackendUser::getInstance()->isAdmin
             && (
-                !is_array(\BackendUser::getInstance()->iso_groupp)
-                || !in_array('delete', \BackendUser::getInstance()->iso_groupp, true)
+                !\is_array(\BackendUser::getInstance()->iso_groupp)
+                || !\in_array('delete', \BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';

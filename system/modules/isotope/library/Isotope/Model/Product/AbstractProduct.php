@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -15,7 +15,6 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductType;
 use Model\QueryBuilder;
 
@@ -24,6 +23,11 @@ use Model\QueryBuilder;
  */
 abstract class AbstractProduct extends Product
 {
+    /**
+     * @var ProductType|null
+     */
+    private $objType = false;
+
     /**
      * Assigned categories (pages)
      * @var array
@@ -54,11 +58,15 @@ abstract class AbstractProduct extends Product
      */
     public function getType()
     {
-        try {
-            return $this->getRelated('type');
-        } catch (\Exception $e) {
-            return null;
+        if (false === $this->objType) {
+            try {
+                $this->objType = $this->getRelated('type');
+            } catch (\Exception $e) {
+                return null;
+            }
         }
+
+        return $this->objType;
     }
 
     /**
@@ -103,7 +111,7 @@ abstract class AbstractProduct extends Product
         }
 
         if (isset($GLOBALS['ISO_HOOKS']['productIsAvailable'])
-            && is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
+            && \is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
                 $available = \System::importStatic($callback[0])->{$callback[1]}($this, $objCollection);
@@ -139,11 +147,11 @@ abstract class AbstractProduct extends Product
             $groups       = deserialize($this->groups);
             $memberGroups = deserialize($member->groups);
 
-            if (!is_array($groups)
+            if (!\is_array($groups)
                 || empty($groups)
-                || !is_array($memberGroups)
+                || !\is_array($memberGroups)
                 || empty($memberGroups)
-                || !count(array_intersect($groups, $memberGroups))
+                || !\count(array_intersect($groups, $memberGroups))
             ) {
                 return false;
             }
@@ -205,14 +213,9 @@ abstract class AbstractProduct extends Product
      */
     public function hasVariants()
     {
-        try {
-            /** @var ProductType $type */
-            $type = $this->getRelated('type');
-        } catch (\Exception $e) {
-            return false;
-        }
+        $type = $this->getType();
 
-        return $type->hasVariants();
+        return null !== $type && $type->hasVariants();
     }
 
     /**
@@ -220,7 +223,7 @@ abstract class AbstractProduct extends Product
      */
     public function hasVariantPrices()
     {
-        return $this->hasVariants() && in_array('price', $this->getVariantAttributes(), true);
+        return $this->hasVariants() && \in_array('price', $this->getVariantAttributes(), true);
     }
 
     /**
@@ -228,10 +231,9 @@ abstract class AbstractProduct extends Product
      */
     public function hasAdvancedPrices()
     {
-        /** @var ProductType $objType */
-        $objType = $this->getRelated('type');
+        $type = $this->getType();
 
-        return $objType->hasAdvancedPrices();
+        return null !== $type && $type->hasAdvancedPrices();
     }
 
     /**
@@ -258,7 +260,7 @@ abstract class AbstractProduct extends Product
 
             // Sort categories by the backend drag&drop
             $arrOrder = deserialize($this->orderPages);
-            if (!empty($arrOrder) && is_array($arrOrder)) {
+            if (!empty($arrOrder) && \is_array($arrOrder)) {
                 $this->arrCategories[$key] = array_unique(
                     array_merge(
                         array_intersect(
@@ -317,6 +319,11 @@ abstract class AbstractProduct extends Product
     public function setRow(array $arrData)
     {
         $this->arrCategories = null;
+
+        if (isset($arrData['product_categories'])) {
+            $this->arrCategories['all'] = explode(',', $arrData['product_categories']);
+            unset($arrData['product_categories']);
+        }
 
         return parent::setRow($arrData);
     }

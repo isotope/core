@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -190,7 +190,7 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate->products = $objCollectionTemplate->parse();
 
         // !HOOK: customize the document template
-        if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && \is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $objCollection, $this);
             }
@@ -264,7 +264,7 @@ class Standard extends Document implements IsotopeDocument
     {
         global $objPage;
 
-        if (!is_object($objPage) && $objCollection->pageId > 0) {
+        if (!\is_object($objPage) && $objCollection->pageId > 0) {
             $objPage = \PageModel::findWithDetails($objCollection->pageId);
             $objPage = \Isotope\Frontend::loadPageConfig($objPage);
 

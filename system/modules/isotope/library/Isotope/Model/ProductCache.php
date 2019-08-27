@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -245,7 +245,7 @@ class ProductCache extends \Model
                 $user = \FrontendUser::getInstance();
                 $arrGroups = $user->groups;
 
-                if (!empty($arrGroups) && is_array($arrGroups)) {
+                if (!empty($arrGroups) && \is_array($arrGroups)) {
                     // Make sure groups array always looks the same to find it in the database
                     $arrGroups = array_unique($arrGroups);
                     sort($arrGroups, SORT_NUMERIC);

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -305,7 +305,7 @@ abstract class PSP extends Payment implements IsotopePostsale
         $arrParams  = array();
 
         foreach ($this->getRawRequestData() as $key => $value) {
-            if (in_array(strtoupper($key), static::$arrShaOut)) {
+            if (\in_array(strtoupper($key), static::$arrShaOut)) {
                 $arrParams[$key] = $value;
             }
         }
@@ -355,7 +355,7 @@ abstract class PSP extends Payment implements IsotopePostsale
 
         $paymentData = json_decode($objOrder->payment_data, true);
 
-        if (0 === count($paymentData)) {
+        if (0 === \count($paymentData)) {
 
             return parent::backendInterface($orderId);
         }
@@ -374,7 +374,7 @@ abstract class PSP extends Payment implements IsotopePostsale
   <tbody>';
 
         foreach ($paymentData as $k => $v) {
-            if (is_array($v)) {
+            if (\is_array($v)) {
                 continue;
             }
 

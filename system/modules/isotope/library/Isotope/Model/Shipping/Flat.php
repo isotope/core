@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
@@ -19,6 +20,7 @@ use Isotope\Model\Shipping;
  * Class Flat
  *
  * @property string flatCalculation
+ * @property string flatWeight
  */
 class Flat extends Shipping
 {
@@ -63,6 +65,19 @@ class Flat extends Shipping
             }
 
             $fltPrice *= $intMultiplier;
+        }
+
+        if ('perWeight' === $this->flatCalculation) {
+            $weight = Weight::createFromTimePeriod($this->flatWeight);
+
+            if ($weight) {
+                $cartWeight = floor($objCollection->addToScale()->amountIn($weight->getWeightUnit()));
+                $multiply = floor($weight->getWeightValue());
+
+                if ($multiply >= 1) {
+                    $fltPrice = $fltPrice * ($cartWeight / $multiply);
+                }
+            }
         }
 
         return Isotope::calculatePrice($fltPrice, $this, 'price', $this->arrData['tax_class']);

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -62,7 +62,7 @@ class Rules extends \Controller
      */
     public static function getInstance()
     {
-        if (!is_object(static::$objInstance)) {
+        if (!\is_object(static::$objInstance)) {
             static::$objInstance = new \Isotope\Rules();
         }
 
@@ -177,19 +177,21 @@ class Rules extends \Controller
 
         $arrCoupons = deserialize($objCart->coupons);
 
-        if (!empty($arrCoupons) && is_array($arrCoupons)) {
+        if (!empty($arrCoupons) && \is_array($arrCoupons)) {
+            $blnHasCode = false;
             $arrDropped = array();
 
             foreach ($arrCoupons as $code) {
                 $objRule = Rule::findOneByCouponCode($code, $objCollection->getItems());
 
-                if (null === $objRule) {
+                if (null === $objRule || ($blnHasCode && $objRule->singleCode)) {
                     $arrDropped[] = $code;
                 } else {
                     // cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
                     $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule, $objCollection);
 
                     if (null !== $objSurcharge) {
+                        $blnHasCode = true;
                         $arrSurcharges[] = $objSurcharge;
                     }
                 }
@@ -219,7 +221,7 @@ class Rules extends \Controller
     {
         $arrCoupons = deserialize(Isotope::getCart()->coupons);
 
-        if (!is_array($arrCoupons)) {
+        if (!\is_array($arrCoupons)) {
             $arrCoupons = array();
         }
 
@@ -234,17 +236,17 @@ class Rules extends \Controller
 
             if (null === $objRule) {
                 $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponInvalid'], $strCoupon);
+            } elseif (\in_array(mb_strtolower($strCoupon), array_map('mb_strtolower', $arrCoupons), true)) {
+                $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
+            } elseif ($objRule->singleCode && !empty($arrCoupons)) {
+                $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponSingle'], $strCoupon);
             } else {
-                if (in_array(mb_strtolower($strCoupon), array_map('mb_strtolower', $arrCoupons), true)) {
-                    $_SESSION['COUPON_FAILED'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponDuplicate'], $strCoupon);
-                } else {
-                    $arrCoupons[] = $objRule->code;
+                $arrCoupons[] = $objRule->code;
 
-                    Isotope::getCart()->coupons = serialize($arrCoupons);
-                    Isotope::getCart()->save();
+                Isotope::getCart()->coupons = serialize($arrCoupons);
+                Isotope::getCart()->save();
 
-                    $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $objRule->code);
-                }
+                $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $objRule->code);
             }
 
             \Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
@@ -295,7 +297,7 @@ class Rules extends \Controller
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);
 
-        if (is_array($arrCoupons) && !empty($arrCoupons)) {
+        if (\is_array($arrCoupons) && !empty($arrCoupons)) {
             $blnError = false;
 
             foreach ($arrCoupons as $k => $code) {

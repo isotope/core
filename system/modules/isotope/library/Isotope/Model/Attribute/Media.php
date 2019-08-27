@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -54,7 +54,7 @@ class Media extends Attribute
         $arrFiles = deserialize($objProduct->{$this->field_name}, true);
 
         // Return if there are no files
-        if (empty($arrFiles) || !is_array($arrFiles)) {
+        if (empty($arrFiles) || !\is_array($arrFiles)) {
             return '';
         }
 
@@ -67,7 +67,7 @@ class Media extends Attribute
 
         // Find poster
         while ($objFiles->next()) {
-            if (in_array($objFiles->extension, trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
+            if (\in_array($objFiles->extension, trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
                 $strPoster = $objFiles->uuid;
                 $arrFiles = array_diff($arrFiles, array($objFiles->uuid));
             }

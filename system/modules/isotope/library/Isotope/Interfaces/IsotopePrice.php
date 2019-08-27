@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -38,28 +38,31 @@ interface IsotopePrice
      * Return original price
      *
      * @param int $intQuantity
+     * @param array $arrOptions
      *
      * @return float
      */
-    public function getOriginalAmount($intQuantity = 1);
+    public function getOriginalAmount($intQuantity = 1, array $arrOptions = array());
 
     /**
      * Return net price (without taxes)
      *
      * @param int $intQuantity
+     * @param array $arrOptions
      *
      * @return float
      */
-    public function getNetAmount($intQuantity = 1);
+    public function getNetAmount($intQuantity = 1, array $arrOptions = array());
 
     /**
      * Return gross price (with all taxes)
      *
      * @param int $intQuantity
+     * @param array $arrOptions
      *
      * @return float
      */
-    public function getGrossAmount($intQuantity = 1);
+    public function getGrossAmount($intQuantity = 1, array $arrOptions = array());
 
     /**
      * Generate price for HTML rendering

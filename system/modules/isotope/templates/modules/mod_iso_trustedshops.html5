@@ -1,0 +1,18 @@
+
+<?php if ($this->customElementId): ?><div id="<?= $this->customElementId ?>"></div><?php endif ?>
+
+<?php if (!empty($this->checkoutData)): ?>
+<div id="trustedShopsCheckout" style="display: none;">
+    <?php foreach ($this->checkoutData['order'] as $id => $value): ?>
+    <span id="<?= $id ?>"><?= $value ?></span>
+    <?php endforeach; ?>
+
+    <?php foreach ($this->checkoutData['items'] as $item): ?>
+    <span class="tsCheckoutProductItem">
+        <?php foreach ($item as $class => $value): ?>
+            <span class="<?= $class ?>"><?= $value ?></span>
+        <?php endforeach; ?>
+    </span>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>

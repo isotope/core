@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Haste\Input\Input;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RelatedProduct;
@@ -24,6 +25,11 @@ use Isotope\RequestCache\Sort;
  */
 class RelatedProducts extends ProductList
 {
+    /**
+     * @var IsotopeProduct|null
+     */
+    private $currentProduct;
+
     /**
      * @inheritDoc
      */
@@ -50,12 +56,18 @@ class RelatedProducts extends ProductList
             return '';
         }
 
-        if (0 === count($this->iso_related_categories)) {
+        if (0 === \count($this->iso_related_categories)) {
             return '';
         }
 
         // Prevent hiding the list which is not supported in this module (see ProductList::generate())
         $this->iso_hide_list = false;
+
+        $this->currentProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+
+        if ($this->currentProduct instanceof Product\Standard) {
+            $this->currentProduct = $this->currentProduct->validateVariant();
+        }
 
         return parent::generate();
     }
@@ -69,26 +81,25 @@ class RelatedProducts extends ProductList
     protected function findProducts($arrCacheIds = null)
     {
         $productIds     = [];
-        $currentProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
 
-        if (null === $currentProduct) {
+        if (null === $this->currentProduct) {
             return [];
         }
 
         /** @var RelatedProduct[] $relatedProducts */
-        $relatedProducts = RelatedProduct::findByProductAndCategories($currentProduct, $this->iso_related_categories);
+        $relatedProducts = RelatedProduct::findByProductAndCategories($this->currentProduct, $this->iso_related_categories);
 
         if (null !== $relatedProducts) {
             foreach ($relatedProducts as $category) {
                 $ids = trimsplit(',', $category->products);
 
-                if (is_array($ids) && 0 !== count($ids)) {
+                if (\is_array($ids) && 0 !== \count($ids)) {
                     $productIds = array_unique(array_merge($productIds, $ids));
                 }
             }
         }
 
-        if (0 === count($productIds)) {
+        if (0 === \count($productIds)) {
             return [];
         }
 
@@ -131,7 +142,7 @@ class RelatedProducts extends ProductList
     {
         return md5(
             'relatedproducts=' . $this->id . ':'
-            . 'product=' . Input::getAutoItem('product', false, true)
+            . 'product=' . $this->currentProduct->getId()
         );
     }
 }

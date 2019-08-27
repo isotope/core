@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -30,7 +30,7 @@ class PriceTable extends AbstractIntegrityCheck
         $strDescription = parent::getDescription();
 
         if ($this->hasError()) {
-            return sprintf($strDescription, count($this->arrErrors), implode(', ', $this->arrErrors));
+            return sprintf($strDescription, \count($this->arrErrors), implode(', ', $this->arrErrors));
         }
 
         return $strDescription;
@@ -63,14 +63,20 @@ class PriceTable extends AbstractIntegrityCheck
 
             if (!empty($arrProducts)) {
                 $objPrices = \Database::getInstance()->query("
-                    SELECT tl_iso_product_price.*, COUNT(*) AS total
-                    FROM tl_iso_product_price
-                    WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
-                    GROUP BY pid
-                    HAVING total>1 OR config_id>0 OR member_group>0 OR start!='' OR stop!=''
+                        SELECT tl_iso_product_price.pid, COUNT(*) AS total
+                        FROM tl_iso_product_price
+                        WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                        GROUP BY pid
+                        HAVING total>1
+                    UNION
+                        SELECT tl_iso_product_price.pid, 1 AS total
+                        FROM tl_iso_product_price
+                        WHERE 
+                            " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                            AND (tl_iso_product_price.config_id>0 OR tl_iso_product_price.member_group>0 OR tl_iso_product_price.start!='' OR tl_iso_product_price.stop!='')
                 ");
 
-                $this->arrErrors = $objPrices->fetchEach('pid');
+                $this->arrErrors = array_unique($objPrices->fetchEach('pid'));
             }
         }
 
@@ -120,19 +126,19 @@ class PriceTable extends AbstractIntegrityCheck
                     }
 
                     // If more than one price qualifies, we will keep the first (lowest ID) one
-                    if (count($keep) > 1) {
+                    if (\count($keep) > 1) {
                         $delete = array_merge($delete, array_diff($keep, array(min($keep))));
                         $keep = min($keep);
                     }
 
-                    // If there are no valid prices, we must take one of the unqualified and remote restrictions
+                    // If there are no valid prices, we must take one of the unqualified and remove restrictions
                     elseif (empty($keep)) {
                         $keep = min($delete);
                         unset($delete[array_search($keep, $delete)]);
                     }
 
                     // Make sure $keep only holds one item
-                    if (is_array($keep)) {
+                    if (\is_array($keep)) {
                         $keep = $keep[0];
                     }
 

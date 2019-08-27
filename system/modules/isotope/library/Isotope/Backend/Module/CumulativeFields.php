@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -66,7 +66,7 @@ class CumulativeFields extends \Backend
             if ($arrData['attributes']['fe_filter']) {
                 $arrAttributes[$field] = sprintf(
                     '%s (%s)',
-                    (strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
+                    (\strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
                     ($arrData['eval']['multiple'] ? 'multiple choice' : 'single choice')
                 );
             }
@@ -89,7 +89,7 @@ class CumulativeFields extends \Backend
     {
         $value = deserialize($value);
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return '';
         }
 
@@ -105,7 +105,7 @@ class CumulativeFields extends \Backend
                 );
             }
 
-            if (in_array($option['attribute'], $attributes, true)) {
+            if (\in_array($option['attribute'], $attributes, true)) {
                 throw new \InvalidArgumentException($GLOBALS['TL_LANG']['ERR']['cumulativeDuplicateAttribute']);
             }
 

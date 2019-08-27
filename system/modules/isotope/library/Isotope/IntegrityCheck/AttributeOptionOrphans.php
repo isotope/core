@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -30,7 +30,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
         $strDescription = parent::getDescription();
 
         if ($this->hasError()) {
-            return sprintf($strDescription, count($this->arrErrors), implode(', ', $this->arrErrors));
+            return sprintf($strDescription, \count($this->arrErrors), implode(', ', $this->arrErrors));
         }
 
         return $strDescription;

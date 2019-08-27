@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -192,7 +192,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $notificationIds = array_filter(explode(',', $this->nc_notification));
 
         // Send the notifications
-        if (count($notificationIds) > 0) {
+        if (\count($notificationIds) > 0) {
             foreach ($notificationIds as $notificationId) {
                 // Generate tokens
                 $arrTokens = $this->getNotificationTokens($notificationId);
@@ -204,7 +204,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 if (($objNotification = Notification::findByPk($notificationId)) !== null) {
                     $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                    if (count($arrResult) > 0 && !in_array(false, $arrResult, true)) {
+                    if (\count($arrResult) > 0 && !\in_array(false, $arrResult, true)) {
                         $blnNotificationError = false;
                     }
                 }
@@ -223,7 +223,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         // !HOOK: post-process checkout
-        if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['postCheckout']) && \is_array($GLOBALS['ISO_HOOKS']['postCheckout'])) {
             // Generate the default notification tokens if none set yet
             if (!isset($arrTokens)) {
                 $arrTokens = $this->getNotificationTokens(0);
@@ -281,7 +281,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // !HOOK: allow to cancel a status update
         if (isset($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
-            && is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
+            && \is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
                 $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus);
@@ -314,14 +314,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             if (($objNotification = Notification::findByPk($notificationId)) !== null) {
                 $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (in_array(false, $arrResult, true)) {
+                if (\in_array(false, $arrResult, true)) {
                     $blnNotificationError = true;
                     \System::log(
                         'Error sending status update notification for order ID ' . $this->id,
                         __METHOD__,
                         TL_ERROR
                     );
-                } elseif (count($arrResult) > 0) {
+                } elseif (\count($arrResult) > 0) {
                     $blnNotificationError = false;
                 }
             } else {
@@ -346,7 +346,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // !HOOK: order status has been updated
         if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
-            && is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
+            && \is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}($this, $intOldStatus, $objNewStatus);
@@ -387,6 +387,10 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens['order_subtotal']  = Isotope::formatPriceWithCurrency($this->getSubtotal(), false, $objConfig->currency);
         $arrTokens['order_total']     = Isotope::formatPriceWithCurrency($this->getTotal(), false, $objConfig->currency);
         $arrTokens['document_number'] = $this->document_number;
+        $arrTokens['bank_name']       = $objConfig->bankName;
+        $arrTokens['bank_account']    = $objConfig->bankAccount;
+        $arrTokens['bank_code']       = $objConfig->bankCode;
+        $arrTokens['tax_number']      = $objConfig->taxNumber;
         $arrTokens['cart_html']       = '';
         $arrTokens['cart_text']       = '';
         $arrTokens['document']        = '';
@@ -489,7 +493,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         // !HOOK: add custom email tokens
         if (isset($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
-            && is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
+            && \is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
                 $arrTokens = \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
@@ -532,7 +536,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         $objTemplate->items         = $arrItems;
         $objTemplate->downloads     = $arrAllDownloads;
-        $objTemplate->total_tax_ids = count(array_count_values($taxIds));
+        $objTemplate->total_tax_ids = \count(array_count_values($taxIds));
 
         return $arrItems;
     }

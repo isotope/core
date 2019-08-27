@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -50,7 +50,7 @@ class CartAddress extends Module
             return $this->generateWildcard();
         }
 
-        if (0 === count($this->iso_address) || 0 === count($this->iso_addressFields)) {
+        if (0 === \count($this->iso_address) || 0 === \count($this->iso_addressFields)) {
             return '';
         }
 
@@ -77,14 +77,14 @@ class CartAddress extends Module
         \Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
-        if (is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
                 \System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
         $arrFields = $this->iso_addressFields;
-        $useBilling = in_array('billing', $this->iso_address, true);
+        $useBilling = \in_array('billing', $this->iso_address, true);
         $objAddress = $this->getDefaultAddress($useBilling);
 
         $objForm = new Form(
@@ -101,7 +101,7 @@ class CartAddress extends Module
         // Add form fields
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
 
-            if (!in_array($strName, $arrFields, true)
+            if (!\in_array($strName, $arrFields, true)
                 || !$arrDca['eval']['feEditable']
                 || ($arrDca['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
             ) {
@@ -139,7 +139,7 @@ class CartAddress extends Module
             $objAddress->save();
 
             // Call onsubmit_callback
-            if (is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
                     \System::importStatic($callback[0])->{$callback[1]}($objAddress);
                 }
@@ -151,7 +151,7 @@ class CartAddress extends Module
             }
 
             // Set the shipping address
-            if (in_array('shipping', $this->iso_address, true)) {
+            if (\in_array('shipping', $this->iso_address, true)) {
                 $objCart->setShippingAddress($objAddress);
             }
 

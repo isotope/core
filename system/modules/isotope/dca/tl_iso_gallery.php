@@ -1,14 +1,13 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
-
 
 /**
  * Table tl_iso_gallery
@@ -274,11 +273,11 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'explanation'           => 'elevatezoom_position',
             'load_callback' => [function ($value) {
                 $value = deserialize($value);
-                return is_array($value) && !is_array($value[0]) ? [$value] : [];
+                return \is_array($value) && !\is_array($value[0]) ? [$value] : [];
             }],
             'save_callback' => [function ($value) {
                 $value = deserialize($value);
-                return is_array($value) ? serialize($value[0]) : '';
+                return \is_array($value) ? serialize($value[0]) : '';
             }],
         ),
         'zoom_windowFade' => array

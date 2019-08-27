@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -109,7 +109,7 @@ class Favorites extends AbstractProductCollection
         // Add all items to cart based on quantity field and global button
         if (\Input::post('FORM_SUBMIT') === $this->strFormId
             && '' !== (string) \Input::post('button_add_to_cart')
-            && (0 === count($quantity) || $quantity[$item->id] > 0)
+            && (0 === \count($quantity) || $quantity[$item->id] > 0)
         ) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),

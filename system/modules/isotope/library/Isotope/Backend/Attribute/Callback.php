@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -123,7 +123,7 @@ class Callback extends \Backend
             if ('select' === $arrData['inputType']
                 || ('conditionalselect' === $arrData['inputType'] && $field != $dc->activeRecord->field_name)
             ) {
-                $arrFields[$field] = strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrFields[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
 
@@ -195,7 +195,7 @@ class Callback extends \Backend
      */
     public function validateDatepicker($varValue, $dc)
     {
-        if ($varValue && !in_array($dc->activeRecord->rgxp, ['date', 'time', 'datim'], true)) {
+        if ($varValue && !\in_array($dc->activeRecord->rgxp, ['date', 'time', 'datim'], true)) {
             throw new \UnexpectedValueException($GLOBALS['TL_LANG']['ERR']['datepickerRgxp']);
         }
 

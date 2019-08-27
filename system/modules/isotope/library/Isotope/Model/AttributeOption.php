@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -110,7 +110,7 @@ class AttributeOption extends \MultilingualModel
                     $arrPrices[] = $objPriceModel->getValueForTier($objPriceModel->getLowestTier());
                 }
 
-                return count(array_unique($arrPrices)) > 1;
+                return \count(array_unique($arrPrices)) > 1;
             }
         }
 
@@ -286,7 +286,7 @@ class AttributeOption extends \MultilingualModel
         $t = static::getTable();
         $productId = $objProduct->id;
 
-        if ($objProduct->isVariant() && !in_array($objAttribute->field_name, $objProduct->getVariantAttributes())) {
+        if ($objProduct->isVariant() && !\in_array($objAttribute->field_name, $objProduct->getVariantAttributes())) {
             $productId = $objProduct->getProductId();
         }
 

@@ -1,13 +1,12 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2014 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
- * @package    Isotope
- * @link       http://isotopeecommerce.org
- * @license    http://opensource.org/licenses/lgpl-3.0.html
+ * @link       https://isotopeecommerce.org
+ * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
 namespace Isotope\Model\Payment;
@@ -89,7 +88,7 @@ class PaypalPlus extends PaypalApi
 
         $arrPayment = deserialize($objOrder->payment_data, true);
 
-        if (!is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
+        if (!\is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
             return parent::backendInterface($orderId);
         }
 
@@ -148,11 +147,11 @@ class PaypalPlus extends PaypalApi
 
             $loop = function($data, $loop, $i=0) use ($render, &$strBuffer) {
                 foreach ($data as $k => $v) {
-                    if (in_array($k, ['potential_payer_info', 'links', 'create_time'], true)) {
+                    if (\in_array($k, ['potential_payer_info', 'links', 'create_time'], true)) {
                         continue;
                     }
 
-                    if (is_array($v)) {
+                    if (\is_array($v)) {
                         $strBuffer .= '
   <tr>
     <td' . ($i % 2 ? '' : ' class="tl_bg"') . ' style="width:auto"><span class="tl_label">' . $k . ': </span></td>
@@ -193,7 +192,7 @@ class PaypalPlus extends PaypalApi
 
         $paypalData = $this->retrievePayment($objOrder);
 
-        if (0 === count($paypalData)
+        if (0 === \count($paypalData)
             || \Input::get('paymentId') !== $paypalData['id']
             || 'created' !== $paypalData['state']
         ) {

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -37,7 +37,7 @@ class Callback extends Permission
         }
 
         // Set root IDs
-        if (!is_array($user->iso_payment_modules) || count($user->iso_payment_modules) < 1) // Can't use empty() because its an object property (using __get)
+        if (!\is_array($user->iso_payment_modules) || \count($user->iso_payment_modules) < 1) // Can't use empty() because its an object property (using __get)
         {
             $root = array(0);
         } else {
@@ -62,7 +62,7 @@ class Callback extends Permission
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!in_array(\Input::get('id'), $root)
+                if (!\in_array(\Input::get('id'), $root)
                     && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_payment', 'iso_payment_modules', 'iso_payment_modulep')
                 ) {
                     $root[]                          = \Input::get('id');
@@ -74,7 +74,7 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
+                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' payment module ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -93,7 +93,7 @@ class Callback extends Permission
                 break;
 
             default:
-                if (strlen(\Input::get('act'))) {
+                if (\strlen(\Input::get('act'))) {
                     \System::log('Not enough permissions to ' . \Input::get('act') . ' payment modules', __METHOD__, TL_ERROR);
                     \Controller::redirect('contao/main.php?act=error');
                 }
@@ -203,7 +203,7 @@ class Callback extends Permission
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
+        if (\strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
             \Controller::redirect(\System::getReferer());
         }
@@ -245,7 +245,7 @@ class Callback extends Permission
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] as $callback) {
                 $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }

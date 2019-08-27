@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -71,8 +71,8 @@ abstract class BackendOverview extends \BackendModule
             foreach ($this->arrModules as $arrGroup) {
                 if (isset($arrGroup['modules'])) {
                     foreach ($arrGroup['modules'] as $strModule => $arrConfig) {
-                        if (is_array($arrConfig['tables'])
-                            && in_array(\Input::get('table'), $arrConfig['tables'], true)
+                        if (\is_array($arrConfig['tables'])
+                            && \in_array(\Input::get('table'), $arrConfig['tables'], true)
                         ) {
                             \Controller::redirect(\Backend::addToUrl('mod=' . $strModule));
                         }
@@ -115,7 +115,7 @@ abstract class BackendOverview extends \BackendModule
         $dc = null;
 
         foreach ($this->arrModules as $arrGroup) {
-            if (!empty($arrGroup['modules']) && array_key_exists($module, $arrGroup['modules'])) {
+            if (!empty($arrGroup['modules']) && \array_key_exists($module, $arrGroup['modules'])) {
                 $arrModule =& $arrGroup['modules'][$module];
             }
         }
@@ -149,7 +149,7 @@ abstract class BackendOverview extends \BackendModule
 
         // Redirect if the current table does not belong to the current module
         if ($strTable != '') {
-            if (!in_array($strTable, (array) $arrModule['tables'], true)) {
+            if (!\in_array($strTable, (array) $arrModule['tables'], true)) {
                 \System::log('Table "' . $strTable . '" is not allowed in module "' . $module . '"', __METHOD__, TL_ERROR);
                 \Controller::redirect('contao/main.php?act=error');
             }
@@ -168,7 +168,7 @@ abstract class BackendOverview extends \BackendModule
             }
 
             // Fabricate a new data container object
-            if (!strlen($GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'])) {
+            if (!\strlen($GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'])) {
                 \System::log('Missing data container for table "' . $strTable . '"', __METHOD__, TL_ERROR);
                 trigger_error('Could not create a data container object', E_USER_ERROR);
             }
@@ -197,7 +197,7 @@ abstract class BackendOverview extends \BackendModule
 
             return $objCallback->{$arrModule[\Input::get('key')][1]}($dc, $strTable, $arrModule);
         } // Default action
-        elseif (is_object($dc)) {
+        elseif (\is_object($dc)) {
             $act = (string) \Input::get('act');
 
             if ('' === $act || 'paste' === $act || 'select' === $act) {

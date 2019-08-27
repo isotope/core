@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -136,7 +136,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function size()
     {
-        return count($this->arrFiles);
+        return \count($this->arrFiles);
     }
 
 
@@ -148,7 +148,7 @@ class Standard extends Gallery implements IsotopeGallery
     public function hasImages()
     {
         // Check files array here because we don't need to generate an image just to know if there are images
-        return count($this->arrFiles) > 0;
+        return \count($this->arrFiles) > 0;
     }
 
     /**
@@ -219,10 +219,10 @@ class Standard extends Gallery implements IsotopeGallery
 
         $strGallery = '';
         $watermark  = true;
-        $arrFiles   = array_slice($this->arrFiles, $intSkip);
+        $arrFiles   = \array_slice($this->arrFiles, $intSkip);
 
         // Add placeholder for the gallery
-        if (0 === count($arrFiles) && $intSkip < 1) {
+        if (0 === \count($arrFiles) && $intSkip < 1) {
             $arrFiles[] = $this->getPlaceholderImage();
             $watermark  = false;
         }
@@ -384,7 +384,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         $arrSize = getimagesize(TL_ROOT . '/' . rawurldecode($strImage));
 
-        if (is_array($arrSize) && $arrSize[3] !== '') {
+        if (\is_array($arrSize) && $arrSize[3] !== '') {
             $arrFile[$strType . '_size']      = $arrSize[3];
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }

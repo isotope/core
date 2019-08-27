@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -44,7 +44,7 @@ class Isotope extends \Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.5.16';
+    const VERSION = '2.6.0';
 
     /**
      * True if the system has been initialized
@@ -237,7 +237,7 @@ class Isotope extends \Controller
         }
 
         // !HOOK: calculate price
-        if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
+        if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && \is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
                 $fltPrice = \System::importStatic($callback[0])->{$callback[1]}(
                     $fltPrice,
@@ -266,7 +266,7 @@ class Isotope extends \Controller
         $sourceIsProduct = $objSource instanceof IsotopeProduct;
         $sourceIsPrice   = $objSource instanceof ProductPrice;
 
-        if (!is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
+        if (!\is_array($arrAddresses) && ($sourceIsProduct || $sourceIsPrice)) {
             $product = $sourceIsPrice ? $objSource->getRelated('pid') : $objSource;
 
             $arrAddresses = array(
@@ -321,7 +321,7 @@ class Isotope extends \Controller
         $fltPrice  = static::roundPrice($fltPrice, $blnApplyRoundingIncrement);
         $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
-        if (!is_array($arrFormat)) {
+        if (!\is_array($arrFormat)) {
             return $fltPrice;
         }
 
@@ -383,7 +383,7 @@ class Isotope extends \Controller
         } else {
             $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
 
-            if (is_array($arrFormat)) {
+            if (\is_array($arrFormat)) {
                 $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
             }
 
@@ -416,8 +416,8 @@ class Isotope extends \Controller
         foreach ($actions as $action) {
             $arrButtons[$action->getName()] = array(
                 'label' => $action->getLabel($objProduct),
-                'callback' => [get_class($action), 'handleSubmit'],
-                'class'    => ($objProduct instanceof IsotopeProduct && is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
+                'callback' => [\get_class($action), 'handleSubmit'],
+                'class'    => ($objProduct instanceof IsotopeProduct && \is_callable([$action, 'getClasses']) ? $action->getClasses($objProduct) : '')
             );
         }
 
@@ -531,9 +531,9 @@ class Isotope extends \Controller
                 $arrOptions = array();
                 $values     = $v;
 
-                if (!empty($arrField['options']) && is_array($arrField['options'])) {
+                if (!empty($arrField['options']) && \is_array($arrField['options'])) {
 
-                    if (!is_array($values)) {
+                    if (!\is_array($values)) {
                         $values = array($values);
                     }
 

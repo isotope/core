@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -58,7 +58,7 @@ class WishlistManager extends Module
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true || 0 === count($this->iso_config_ids)) {
+        if (FE_USER_LOGGED_IN !== true || 0 === \count($this->iso_config_ids)) {
             return '';
         }
 
@@ -103,7 +103,7 @@ class WishlistManager extends Module
                     $wishlist->delete();
                 }
             } else {
-                if (is_array($names) && 0 !== count($names)) {
+                if (\is_array($names) && 0 !== \count($names)) {
                     foreach ($wishlists as $wishlist) {
                         if (isset($names[$wishlist->id])) {
                             $wishlist->setName($names[$wishlist->id]);

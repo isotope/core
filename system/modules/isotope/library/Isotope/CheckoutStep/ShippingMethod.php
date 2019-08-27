@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -64,7 +64,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $this->initializeModules();
 
-        return 1 === count($this->options);
+        return 1 === \count($this->options);
     }
 
     /**
@@ -104,7 +104,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         );
 
         // If there is only one shipping method, mark it as selected by default
-        if (count($this->modules) === 1) {
+        if (\count($this->modules) === 1) {
             $objModule        = reset($this->modules);
             $objWidget->value = $objModule->id;
             Isotope::getCart()->setShippingMethod($objModule);
@@ -169,7 +169,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $arrIds = deserialize($this->objModule->iso_shipping_modules);
 
-        if (!empty($arrIds) && is_array($arrIds)) {
+        if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
             if (true !== BE_USER_LOGGED_IN) {
@@ -199,8 +199,8 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                         $strLabel .= ': ' . Isotope::formatPriceWithCurrency($fltPrice);
                     }
 
-                    if ($objModule->note != '') {
-                        $strLabel .= '<span class="note">' . $objModule->note . '</span>';
+                    if ($note = $objModule->getNote()) {
+                        $strLabel .= '<span class="note">' . $note . '</span>';
                     }
 
                     $this->options[] = array(

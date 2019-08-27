@@ -409,6 +409,22 @@
         <source>Please enter your unique Saferpay account id.</source>
         <target>Bitte geben Sie ihre eindeutige Saferpay Account ID ein.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_username.0">
+        <source>Saferpay API User</source>
+        <target>Saferpay API-Benutzer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_username.1">
+        <source>Please enter your Saferpay JSON API username.</source>
+        <target>Bitte geben Sie Ihren Saferpay JSON API-Benutzernamen ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_password.0">
+        <source>Saferpay API Password</source>
+        <target>Saferpay API-Passwort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_password.1">
+        <source>Please enter your Saferpay JSON API password.</source>
+        <target>Bitte geben Sie Ihr Saferpay JSON API-Passwort ein.</target>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_description.0">
         <source>Checkout description</source>
         <target>Checkout-Beschreibung</target>

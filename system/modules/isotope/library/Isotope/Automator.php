@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -92,7 +92,7 @@ class Automator extends \Controller
                     $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
                     $objRequest = new \Request();
-                    $objRequest->send('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
+                    $objRequest->send('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
 
                     if ($objRequest->hasError()) {
                         \System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
@@ -164,7 +164,7 @@ class Automator extends \Controller
                 default:
                     // !HOOK: other currency providers
                     if (isset($GLOBALS['ISO_HOOKS']['convertCurrency'])
-                        && is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
+                        && \is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
                             \System::importStatic($callback[0])->{$callback[1]}($config);

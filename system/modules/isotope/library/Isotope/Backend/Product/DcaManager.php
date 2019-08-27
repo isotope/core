@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -124,7 +124,7 @@ class DcaManager extends \Backend
         // Create temporary models for non-database attributes
         foreach (array_diff_key($arrData['fields'], $arrData['attributes']) as $strName => $arrConfig) {
 
-            if (is_array($arrConfig['attributes'])) {
+            if (\is_array($arrConfig['attributes'])) {
                 if ($arrConfig['attributes']['type'] != '') {
                     $strClass = $arrConfig['attributes']['type'];
                 } else {
@@ -170,11 +170,11 @@ class DcaManager extends \Backend
                     $blnAdvancedPrices = true;
                 }
 
-                if (in_array('sku', $objType->getAttributes(), true)) {
+                if (\in_array('sku', $objType->getAttributes(), true)) {
                     $blnShowSku = true;
                 }
 
-                if (in_array('price', $objType->getAttributes(), true)) {
+                if (\in_array('price', $objType->getAttributes(), true)) {
                     $blnShowPrice = true;
                 }
 
@@ -233,7 +233,7 @@ class DcaManager extends \Backend
     public function addBreadcrumb()
     {
         // Avoid the page node trap (#1701)
-        if (defined('TL_SCRIPT') && TL_SCRIPT === 'contao/page.php') {
+        if (\defined('TL_SCRIPT') && TL_SCRIPT === 'contao/page.php') {
             return;
         }
 
@@ -313,7 +313,7 @@ class DcaManager extends \Backend
 
             // Go through each enabled field and build palette
             foreach ($arrFields as $name => $arrField) {
-                if (in_array($name, $arrEnabled)) {
+                if (\in_array($name, $arrEnabled)) {
 
                     if ($arrField['inputType'] == '') {
                         continue;
@@ -348,11 +348,11 @@ class DcaManager extends \Backend
                     }
 
                     if ($blnVariants
-                        && in_array($name, $arrCanInherit)
+                        && \in_array($name, $arrCanInherit)
                         && null !== $arrAttributes[$name]
                         && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
                         && */!$arrAttributes[$name]->isVariantOption()
-                        && !in_array($name, ['price', 'published', 'start', 'stop'], true)
+                        && !\in_array($name, ['price', 'published', 'start', 'stop'], true)
                     ) {
                         $arrInherit[$name] = Format::dcaLabel('tl_iso_product', $name);
                     }
@@ -385,10 +385,10 @@ class DcaManager extends \Backend
 
         // Remove non-active fields from multi-selection
         if ($blnVariants && !$blnSingleRecord) {
-            $arrInclude = empty($arrPalette) ? array() : call_user_func_array('array_merge', $arrPalette);
+            $arrInclude = empty($arrPalette) ? array() : \call_user_func_array('array_merge', $arrPalette);
 
             foreach ($arrFields as $name => $config) {
-                if ($arrFields[$name]['attributes']['legend'] != '' && !in_array($name, $arrInclude)) {
+                if ($arrFields[$name]['attributes']['legend'] != '' && !\in_array($name, $arrInclude)) {
                     $arrFields[$name]['exclude'] = true;
                 }
             }
@@ -412,34 +412,32 @@ class DcaManager extends \Backend
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields']  = ['id'];
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
 
-        $arrFields         = array();
+        $arrFields = array();
+        $objType = $objProduct->getType();
 
-        /** @var ProductType $objType */
-        $objType           = $objProduct->getRelated('type');
-
-        $arrVariantFields  = $objType->getVariantAttributes();
+        $arrVariantFields = $objType->getVariantAttributes();
         $arrVariantOptions = array_intersect($arrVariantFields, Attribute::getVariantOptionFields());
 
-        if (in_array('images', $arrVariantFields, true)) {
+        if (\in_array('images', $arrVariantFields, true)) {
             $arrFields[] = 'images';
         }
 
-        if (in_array('name', $arrVariantFields, true)) {
+        if (\in_array('name', $arrVariantFields, true)) {
             $arrFields[] = 'name';
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = array('name');
         }
 
-        if (in_array('sku', $arrVariantFields, true)) {
+        if (\in_array('sku', $arrVariantFields, true)) {
             $arrFields[] = 'sku';
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields'] = array('sku');
         }
 
-        if (in_array('price', $arrVariantFields, true)) {
+        if (\in_array('price', $arrVariantFields, true)) {
             $arrFields[] = 'price';
         }
 
         // Limit the number of columns if there are more than 2
-        if (count($arrVariantOptions) > 2) {
+        if (\count($arrVariantOptions) > 2) {
             $arrFields[] = 'variantFields';
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['label']['variantFields'] = $arrVariantOptions;
         } else {
@@ -462,11 +460,11 @@ class DcaManager extends \Backend
 
         // Make all column fields sortable
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $arrField) {
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && in_array($name, $arrFields));
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && \in_array($name, $arrFields));
 
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? in_array($name, $arrVariantFields) : false;
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute->be_search ? in_array($name, $arrVariantFields) : false;
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? \in_array($name, $arrVariantFields) : false;
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute->be_search ? \in_array($name, $arrVariantFields) : false;
         }
     }
 

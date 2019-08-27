@@ -39,6 +39,12 @@
       <trans-unit id="tl_iso_product.name.1">
         <source>Please enter the name of this product.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.gtin.0">
+        <source>GTIN (Global Trade Item Number)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.gtin.1">
+        <source>Please enter a unique GTIN (or EAN number).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.sku.0">
         <source>SKU</source>
         <target>Учетная единица</target>

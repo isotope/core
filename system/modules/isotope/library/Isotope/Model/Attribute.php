@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -163,16 +163,16 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     {
         $arrField = &$arrData['fields'][$strName];
 
-        $this->arrData = is_array($arrField['attributes']) ? $arrField['attributes'] : array();
+        $this->arrData = \is_array($arrField['attributes']) ? $arrField['attributes'] : array();
 
-        if (is_array($arrField['eval'])) {
+        if (\is_array($arrField['eval'])) {
             $this->arrData = array_merge($arrField['eval'], $this->arrData);
         }
 
         $this->field_name  = $strName;
-        $this->type        = array_search(get_called_class(), static::getModelTypes(), true);
-        $this->name        = is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
-        $this->description = is_array($arrField['label']) ? $arrField['label'][1] : '';
+        $this->type        = array_search(\get_called_class(), static::getModelTypes(), true);
+        $this->name        = \is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
+        $this->description = \is_array($arrField['label']) ? $arrField['label'][1] : '';
         $this->be_filter   = $arrField['filter'] ? '1' : '';
         $this->be_search   = $arrField['search'] ? '1' : '';
         $this->foreignKey  = $arrField['foreignKey'];
@@ -185,7 +185,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     public function saveToDCA(array &$arrData)
     {
         // Keep field settings made through DCA code
-        $arrField = is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : [];
+        $arrField = \is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : [];
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
@@ -193,7 +193,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrField['attributes']                     = $this->row();
         $arrField['attributes']['variant_option']   = $this->isVariantOption(); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
-        $arrField['eval']                           = is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+        $arrField['eval']                           = \is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if ('' !== (string) $this->placeholder) {
             $arrField['eval']['placeholder'] = Translation::get($this->placeholder);
@@ -287,7 +287,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     }
             }
 
-            if (!empty($arrOptions) && is_array($arrOptions)) {
+            if (!empty($arrOptions) && \is_array($arrOptions)) {
                 $arrField['default'] = array();
                 $arrField['options'] = array();
                 $arrField['eval']['isAssociative'] = true;
@@ -334,7 +334,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     {
         $arrOptions = deserialize($this->options);
 
-        if (!is_array($arrOptions)) {
+        if (!\is_array($arrOptions)) {
             return array();
         }
 
@@ -352,7 +352,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      */
     public function getOptionsForVariants(array $arrIds, array $arrOptions = array())
     {
-        if (0 === count($arrIds)) {
+        if (0 === \count($arrIds)) {
             return [];
         }
 
@@ -403,13 +403,14 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $varValue = $this->getValue($objProduct);
+        $arrOptions['product'] = $objProduct;
 
-        if (!is_array($varValue)) {
+        if (!\is_array($varValue)) {
             return $this->generateValue($varValue, $arrOptions);
         }
 
         // Generate a HTML table for associative arrays
-        if (!array_is_assoc($varValue) && is_array($varValue[0])) {
+        if (!array_is_assoc($varValue) && \is_array($varValue[0])) {
             return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
         }
 
@@ -456,7 +457,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrLines    = trimsplit('@\r\n|\n|\r@', $strSettings);
 
         // Return false if there are no lines
-        if ($strSettings == '' || !is_array($arrLines) || empty($arrLines)) {
+        if ($strSettings == '' || !\is_array($arrLines) || empty($arrLines)) {
             return null;
         }
 
@@ -499,7 +500,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     {
         $arrFormat = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name]['tableformat'];
 
-        $last = count($arrValues[0]) - 1;
+        $last = \count($arrValues[0]) - 1;
 
         $strBuffer = '
 <table class="' . $this->field_name . '">
@@ -568,7 +569,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $strBuffer = "\n<ul>";
 
         $current = 0;
-        $last    = count($arrValues) - 1;
+        $last    = \count($arrValues) - 1;
         foreach ($arrValues as $value) {
             $class = trim(($current == 0 ? 'first' : '') . ($current == $last ? ' last' : ''));
 
@@ -790,9 +791,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         foreach ($arrDCA as $field => $config) {
             $fixed = $config['attributes']['fixed'];
-            $isArray = is_array($fixed);
+            $isArray = \is_array($fixed);
 
-            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && \in_array($class, $fixed, true))) {
                 $arrFields[] = $field;
             }
         }
@@ -817,9 +818,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         foreach ($arrDCA as $field => $config) {
             $fixed   = $config['attributes']['variant_fixed'];
-            $isArray = is_array($fixed);
+            $isArray = \is_array($fixed);
 
-            if ((!$isArray && $fixed) || (null !== $class && $isArray && in_array($class, $fixed, true))) {
+            if ((!$isArray && $fixed) || (null !== $class && $isArray && \in_array($class, $fixed, true))) {
                 $arrFields[] = $field;
             }
         }
@@ -944,7 +945,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         // Allow to set custom option conditions
         if (!isset($arrOptions['column'])) {
             $arrOptions['column'] = array();
-        } elseif (!is_array($arrOptions['column'])) {
+        } elseif (!\is_array($arrOptions['column'])) {
             $arrOptions['column'] = $t.'.'.$arrOptions['column'].'=?';
         }
 

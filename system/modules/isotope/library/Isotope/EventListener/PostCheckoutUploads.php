@@ -1,8 +1,9 @@
 <?php
-/**
+
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -28,7 +29,7 @@ class PostCheckoutUploads
     public function onPostCheckout(IsotopeOrderableCollection $order)
     {
         $items    = $order->getItems();
-        $total    = count($items);
+        $total    = \count($items);
         $position = 0;
 
         foreach ($items as $item) {
@@ -37,7 +38,7 @@ class PostCheckoutUploads
             $hasChanges = false;
             $configuration = deserialize($item->configuration);
 
-            if (!is_array($configuration)) {
+            if (!\is_array($configuration)) {
                 continue;
             }
 
@@ -87,7 +88,7 @@ class PostCheckoutUploads
             'product_id'       => $item->product_id,
             'product_sku'      => $item->sku,
             'product_name'     => $item->name,
-            'product_position' => str_pad($position, max(3, strlen((string) $total)), '0', STR_PAD_LEFT),
+            'product_position' => str_pad($position, max(3, \strlen((string) $total)), '0', STR_PAD_LEFT),
             'attribute_field'  => $attribute->field_name,
             'attribute_name'   => $attribute->name,
             'file_name'        => basename($source),

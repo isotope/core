@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -31,7 +31,7 @@ class Button extends \Backend
      */
     public function forGroups($href, $label, $title, $class, $attributes)
     {
-        if (!\BackendUser::getInstance()->isAdmin && (!is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp))) {
+        if (!\BackendUser::getInstance()->isAdmin && (!\is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp))) {
             return '';
         }
 
@@ -94,7 +94,7 @@ class Button extends \Backend
      */
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
     {
-        if (in_array($row['id'], Permission::getUndeletableIds())) {
+        if (\in_array($row['id'], Permission::getUndeletableIds())) {
             return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
         }
 
@@ -115,7 +115,7 @@ class Button extends \Backend
      */
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
+        if (\strlen(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
             \Controller::redirect(\System::getReferer());
         }
@@ -255,12 +255,12 @@ class Button extends \Backend
         if (!\BackendUser::getInstance()->isAdmin) {
             $groups = deserialize(\BackendUser::getInstance()->iso_groups);
 
-            if (!is_array($groups) || empty($groups)) {
+            if (!\is_array($groups) || empty($groups)) {
                 return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
             }
         }
 
-        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . \intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -333,7 +333,7 @@ window.addEvent('domready', function() {
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback) {
                 $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }

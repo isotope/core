@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -71,7 +71,7 @@ class EuViesValidator implements IsotopeVatNoValidator
         $vatCountry = $this->prepareVatCountry($vatNo);
         $vatId = $this->prepareVatId($vatNo);
 
-        if (!in_array($addressCountry, static::$european_countries)) {
+        if (!\in_array($addressCountry, static::$european_countries)) {
             return false;
         }
 

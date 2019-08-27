@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -132,7 +132,7 @@ class ProductPrice extends Collection implements IsotopePrice
      */
     public function generate($blnShowTiers = false, $intQuantity = 1, array $arrOptions = array())
     {
-        if (count($this->arrModels) > 1) {
+        if (\count($this->arrModels) > 1) {
 
             $fltPrice           = null;
             $fltOriginalPrice   = null;
@@ -150,7 +150,7 @@ class ProductPrice extends Collection implements IsotopePrice
             }
 
             $arrPrices = array_unique($arrPrices);
-            $blnShowFrom = count($arrPrices) > 1;
+            $blnShowFrom = \count($arrPrices) > 1;
 
             if ($blnShowFrom) {
                 return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], Isotope::formatPriceWithCurrency($fltPrice));

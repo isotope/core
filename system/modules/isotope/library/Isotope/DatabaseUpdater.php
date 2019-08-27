@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -30,7 +30,7 @@ class DatabaseUpdater extends Installer
 
         foreach ($arrTables as $strTable) {
 
-            if (!empty($arrCommands['ALTER_DROP']) && is_array($arrCommands['ALTER_DROP'])) {
+            if (!empty($arrCommands['ALTER_DROP']) && \is_array($arrCommands['ALTER_DROP'])) {
                 foreach ($arrCommands['ALTER_DROP'] as $strCommand) {
                     if (strpos($strCommand, 'ALTER TABLE `' . $strTable . '` DROP INDEX') === 0) {
                         \Database::getInstance()->query($strCommand);
@@ -38,7 +38,7 @@ class DatabaseUpdater extends Installer
                 }
             }
 
-            if (!empty($arrCommands['ALTER_CHANGE']) && is_array($arrCommands['ALTER_CHANGE'])) {
+            if (!empty($arrCommands['ALTER_CHANGE']) && \is_array($arrCommands['ALTER_CHANGE'])) {
                 foreach ($arrCommands['ALTER_CHANGE'] as $strCommand) {
                     if (strpos($strCommand, 'ALTER TABLE `' . $strTable . '`') === 0) {
                         \Database::getInstance()->query($strCommand);
@@ -46,7 +46,7 @@ class DatabaseUpdater extends Installer
                 }
             }
 
-            if (!empty($arrCommands['ALTER_ADD']) && is_array($arrCommands['ALTER_ADD'])) {
+            if (!empty($arrCommands['ALTER_ADD']) && \is_array($arrCommands['ALTER_ADD'])) {
                 foreach ($arrCommands['ALTER_ADD'] as $strCommand) {
                     if (strpos($strCommand, 'ALTER TABLE `' . $strTable . '`') === 0) {
                         \Database::getInstance()->query($strCommand);

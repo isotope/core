@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -91,7 +91,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     public static function getActive()
     {
-        return 0 === count(static::$arrActive) ? null : end(static::$arrActive);
+        return 0 === \count(static::$arrActive) ? null : end(static::$arrActive);
     }
 
     /**
@@ -139,7 +139,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $arrValues = (array) $arrValues;
 
-        if (!is_array($arrColumns)) {
+        if (!\is_array($arrColumns)) {
             $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
         }
 
@@ -211,7 +211,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     public static function findPublishedByIds(array $arrIds, array $arrOptions = array())
     {
-        if (0 === count($arrIds)) {
+        if (0 === \count($arrIds)) {
             return null;
         }
 
@@ -313,7 +313,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        if (0 === count($arrProducts)) {
+        if (0 === \count($arrProducts)) {
             return null;
         }
 
@@ -344,7 +344,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        if (0 === count($arrProducts)) {
+        if (0 === \count($arrProducts)) {
             return null;
         }
 
@@ -410,7 +410,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $defaultId = $cache[$objProduct->getProductId()];
 
-        if ($defaultId < 1 || !in_array($defaultId, $objProduct->getVariantIds())) {
+        if ($defaultId < 1 || !\in_array($defaultId, $objProduct->getVariantIds())) {
             return null;
         }
 
@@ -444,7 +444,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $arrValues = (array) $arrValues;
 
-        if (!is_array($arrColumns)) {
+        if (!\is_array($arrColumns)) {
             $arrColumns = array(static::$strTable . '.' . $arrColumns . '=?');
         }
 
@@ -504,8 +504,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $arrFilters = $arrOptions['filters'];
         $arrSorting = $arrOptions['sorting'];
 
-        $hasFilters = is_array($arrFilters) && 0 !== count($arrFilters);
-        $hasSorting = is_array($arrSorting) && 0 !== count($arrSorting);
+        $hasFilters = \is_array($arrFilters) && 0 !== \count($arrFilters);
+        $hasSorting = \is_array($arrSorting) && 0 !== \count($arrSorting);
 
         if ($hasFilters || $hasSorting) {
 
@@ -526,12 +526,12 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                         }
                     }
 
-                    return !in_array(false, $arrGroups, true);
+                    return !\in_array(false, $arrGroups, true);
                 });
             }
 
             // $arrProducts can be empty if the filter removed all records
-            if ($hasSorting && 0 !== count($arrProducts)) {
+            if ($hasSorting && 0 !== \count($arrProducts)) {
                 $arrParam = array();
                 $arrData  = array();
 
@@ -564,7 +564,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 // Add product array as the last item.
                 // This will sort the products array based on the sorting of the passed in arguments.
                 $arrParam[] = &$arrProducts;
-                call_user_func_array('array_multisort', $arrParam);
+                \call_user_func_array('array_multisort', $arrParam);
             }
 
             $objProducts = new Collection($arrProducts, static::$strTable);
@@ -629,6 +629,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        $arrFields[] = 'GROUP_CONCAT(c.page_id) AS product_categories';
         $arrJoins[] = sprintf(
             ' LEFT OUTER JOIN %s c ON %s=c.pid',
             ProductCategory::getTable(),
@@ -649,7 +650,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 if (('eager' === $arrConfig['load'] || $arrOptions['eager'])
                     && ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type'])
                 ) {
-                    if (is_array($arrOptions['joinAliases'])
+                    if (\is_array($arrOptions['joinAliases'])
                         && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'], true)) !== false
                     ) {
                         $strJoinAlias = $key;
@@ -681,7 +682,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $strQuery = 'SELECT ' . implode(', ', $arrFields) . ' FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
-        if (!is_array($arrOptions['column'])) {
+        if (!\is_array($arrOptions['column'])) {
             $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
         }
 
@@ -715,7 +716,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         $arrJoins  = array();
         $arrFields = array(
-            $arrOptions['table'] . '.*',
+            $arrOptions['table'] . '.id',
             "'" . str_replace('-', '_', $GLOBALS['TL_LANGUAGE']) . "' AS language",
         );
 
@@ -733,12 +734,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        $arrJoins[] = sprintf(
-            ' LEFT OUTER JOIN %s c ON %s.id=c.pid',
-            ProductCategory::getTable(),
-            $arrOptions['table']
-        );
-
         if ($hasTranslations) {
             $arrJoins[] = sprintf(
                 " LEFT OUTER JOIN %s translation ON %s.id=translation.pid AND translation.language='%s'",
@@ -746,6 +741,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 $arrOptions['table'],
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
+
+            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id, tl_iso_product.id';
         }
 
         if ($hasVariants) {
@@ -756,17 +753,22 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             );
         }
 
+        $arrJoins[] = sprintf(
+            ' LEFT OUTER JOIN %s c ON %s=c.pid',
+            ProductCategory::getTable(),
+            ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
+        );
+
         // Generate the query
         $strWhere = '';
         $strQuery = '
             SELECT
-                ' . implode(', ', $arrFields) . ',
-                COUNT(DISTINCT ' . $arrOptions['table'] . '.id) AS count
+                ' . implode(', ', $arrFields) . '
             FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
         if (!empty($arrOptions['column'])) {
-            if (!is_array($arrOptions['column'])) {
+            if (!\is_array($arrOptions['column'])) {
                 $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
             }
 
@@ -781,7 +783,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
-        return $strQuery;
+        return 'SELECT COUNT(*) AS count FROM ('.$strQuery.') c1';
     }
 
     /**

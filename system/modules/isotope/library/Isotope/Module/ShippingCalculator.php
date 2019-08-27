@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -51,7 +51,7 @@ class ShippingCalculator extends Module
             return $this->generateWildcard();
         }
 
-        if (0 === count($this->iso_shipping_modules) || (Isotope::getCart()->isEmpty() && !$this->iso_emptyMessage)) {
+        if (0 === \count($this->iso_shipping_modules) || (Isotope::getCart()->isEmpty() && !$this->iso_emptyMessage)) {
             return '';
         }
 

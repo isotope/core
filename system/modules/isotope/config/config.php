@@ -1,19 +1,18 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-
 /**
  * Backend modules
  */
-if (!is_array($GLOBALS['BE_MOD']['isotope']))
+if (!\is_array($GLOBALS['BE_MOD']['isotope']))
 {
     array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
@@ -166,6 +165,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_checkout'                  => 'Isotope\Module\Checkout',
     'iso_productfilter'             => 'Isotope\Module\ProductFilter',
     'iso_cumulativefilter'          => 'Isotope\Module\CumulativeFilter',
+    'iso_categoryfilter'            => 'Isotope\Module\CategoryFilter',
     'iso_rangefilter'               => 'Isotope\Module\RangeFilter',
     'iso_orderhistory'              => 'Isotope\Module\OrderHistory',
     'iso_orderdetails'              => 'Isotope\Module\OrderDetails',
@@ -178,6 +178,7 @@ $GLOBALS['FE_MOD']['isotope'] = array
     'iso_messages'                  => 'Isotope\Module\Messages',
     'iso_shipping_calculator'       => 'Isotope\Module\ShippingCalculator',
     'iso_cart_address'              => 'Isotope\Module\CartAddress',
+    'iso_trustedshops'              => 'Isotope\Module\Trustedshops',
 );
 
 
@@ -272,7 +273,7 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
 
-if (in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+if (\in_array('fineuploader', \ModuleLoader::getActive(), true)) {
     \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
 }
 
@@ -305,6 +306,10 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'cart_html',
     'cart_text',
     'document',
+    'bank_name',
+    'bank_account',
+    'bank_code',
+    'tax_number',
     'collection_*', // All the collection fields
     'billing_address', // Formatted billing address
     'billing_address_*', // All the billing address model fields

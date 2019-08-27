@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -112,17 +112,17 @@ class SalesProduct extends Sales
             $arrOptions = array('name'=>$objProducts->variant_name);
 
             // Use product title if name is not a variant attribute
-            if ($blnHasVariants && !in_array('name', $arrVariantAttributes, true)) {
+            if ($blnHasVariants && !\in_array('name', $arrVariantAttributes, true)) {
                 $arrOptions['name'] = $objProducts->product_name;
             }
 
             $strSku = ($blnHasVariants ? $objProducts->variant_sku : $objProducts->product_sku);
-            if (in_array('sku', $arrAttributes, true) && $strSku != '') {
+            if (\in_array('sku', $arrAttributes, true) && $strSku != '') {
                 $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $strSku);
             }
 
             if ($blnVariants && $blnHasVariants) {
-                if (in_array('sku', $arrVariantAttributes, true) && $objProducts->product_sku != '') {
+                if (\in_array('sku', $arrVariantAttributes, true) && $objProducts->product_sku != '') {
                     $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
                 }
 
@@ -202,7 +202,7 @@ class SalesProduct extends Sales
             );
         }
 
-        for ($i=1; $i<count($arrFooter); $i++) {
+        for ($i=1; $i<\count($arrFooter); $i++) {
             $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).  '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
             unset($arrFooter[$i]['total']);
         }

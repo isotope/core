@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_member.address_book.1">
         <source>Manage the address book for member ID %s.</source>
-        <target>Dieses Adressbuch verwalten.</target>
+        <target>Dieses Adressbuch für Mitglieds ID %s verwalten.</target>
       </trans-unit>
     </body>
   </file>

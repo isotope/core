@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -86,12 +86,14 @@ class ProductReader extends Module
             'gallery'     => $this->iso_gallery ? : $objProduct->getType()->reader_gallery,
             'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
+            'disableOptions' => $this->iso_disable_options,
             'jumpTo'      => $objIsotopeListPage ? : $objPage,
         );
 
         if (\Environment::get('isAjaxRequest')
             && \Input::post('AJAX_MODULE') == $this->id
             && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+            && !$this->iso_disable_options
         ) {
             try {
                 $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
@@ -145,18 +147,12 @@ class ProductReader extends Module
         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
         foreach ($arrCategories as $intPage) {
-
-            // Do not use the index page as canonical link
-            if ('index' === $objPage->alias && count($arrCategories) > 1) {
-                continue;
-            }
-
-            // Current page is the primary one, do not generate canonical link
-            if ($intPage == $objPage->id) {
-                break;
-            }
-
             if (($objJumpTo = \PageModel::findPublishedById($intPage)) !== null) {
+
+                // Do not use the index page as canonical link
+                if ('index' === $objJumpTo->alias && \count($arrCategories) > 1) {
+                    continue;
+                }
 
                 $objJumpTo->loadDetails();
                 $strDomain = \Environment::get('base');

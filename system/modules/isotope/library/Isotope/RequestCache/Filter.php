@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009-2016 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -25,6 +25,7 @@ use Isotope\Model\Product;
 class Filter implements \ArrayAccess
 {
     const CONTAINS      = 'like';
+    const IN_ARRAY      = 'in';
     const EQUAL         = 'eq';
     const NOT_EQUAL     = 'neq';
     const GREATER_THAN  = 'gt';
@@ -93,7 +94,7 @@ class Filter implements \ArrayAccess
      */
     public function valueNotIn(array $arrValues)
     {
-        return !in_array($this->arrConfig['value'], $arrValues, false);
+        return !\in_array($this->arrConfig['value'], $arrValues, false);
     }
 
     /**
@@ -111,7 +112,14 @@ class Filter implements \ArrayAccess
 
     public function contains($value)
     {
-        $this->filter('like', $value);
+        $this->filter(static::CONTAINS, $value);
+
+        return $this;
+    }
+
+    public function inArray(array $value)
+    {
+        $this->filter(static::IN_ARRAY, $value);
 
         return $this;
     }
@@ -160,7 +168,7 @@ class Filter implements \ArrayAccess
 
     public function groupBy($group)
     {
-        if (array_key_exists('group', $this->arrConfig)) {
+        if (\array_key_exists('group', $this->arrConfig)) {
             throw new \BadMethodCallException('Filter already has a group');
         }
 
@@ -180,7 +188,7 @@ class Filter implements \ArrayAccess
      */
     public function hasGroup()
     {
-        return array_key_exists('group', $this->arrConfig);
+        return \array_key_exists('group', $this->arrConfig);
     }
 
     /**
@@ -223,13 +231,19 @@ class Filter implements \ArrayAccess
             return false;
         }
 
-        if (!is_array($varValues)) {
+        if (!\is_array($varValues)) {
             $varValues = deserialize($varValues, true);
         }
 
         foreach ($varValues as $varValue) {
             switch ($this->arrConfig['operator']) {
                 case static::CONTAINS:
+                    if (stripos($varValue, $this->arrConfig['value']) !== false) {
+                        return true;
+                    }
+                    break;
+
+                case static::IN_ARRAY:
                     if (stripos($varValue, $this->arrConfig['value']) !== false) {
                         return true;
                     }
@@ -288,7 +302,7 @@ class Filter implements \ArrayAccess
      */
     public function isDynamicAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields(), true);
+        return \in_array($this->arrConfig['attribute'], Attribute::getDynamicAttributeFields(), true);
     }
 
     /**
@@ -298,7 +312,7 @@ class Filter implements \ArrayAccess
      */
     public function isMultilingualAttribute()
     {
-        return in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields(), true);
+        return \in_array($this->arrConfig['attribute'], Attribute::getMultilingualFields(), true);
     }
 
     /**
@@ -308,13 +322,19 @@ class Filter implements \ArrayAccess
      */
     public function sqlWhere()
     {
-        return $this->getFieldForSQL() . ' ' . $this->getOperatorForSQL() . ' ?';
+        $where = $this->getFieldForSQL() . ' ' . $this->getOperatorForSQL();
+
+        if (static::IN_ARRAY === $this->arrConfig['operator']) {
+            return $where;
+        }
+
+        return $where.' ?';
     }
 
     /**
      * Get value for SQL filter
      *
-     * @return string
+     * @return string|array
      */
     public function sqlValue()
     {
@@ -339,6 +359,11 @@ class Filter implements \ArrayAccess
         switch ($this->arrConfig['operator']) {
             case static::CONTAINS:
                 return 'LIKE';
+
+            case static::IN_ARRAY:
+                $total = \count((array) $this->arrConfig['value']);
+
+                return 'IN ('.implode(',', array_fill(0, $total, '?')).')';
 
             case static::GREATER_THAN:
                 return '>';
@@ -366,8 +391,8 @@ class Filter implements \ArrayAccess
     /**
      * Sets operator and value of the filter.
      *
-     * @param string $operator
-     * @param string $value
+     * @param string       $operator
+     * @param string|array $value
      *
      * @throws \BadMethodCallException
      */
@@ -376,7 +401,7 @@ class Filter implements \ArrayAccess
         $this->preventModification();
 
         $this->arrConfig['operator'] = $operator;
-        $this->arrConfig['value']    = $value;
+        $this->arrConfig['value'] = $value;
     }
 
     /**
@@ -406,7 +431,11 @@ class Filter implements \ArrayAccess
                 $this->arrConfig['attribute']
             );
         } else {
-            $field = Product::getTable() . '.' . $this->arrConfig['attribute'];
+            $field = $this->arrConfig['attribute'];
+
+            if (false === strpos($field, '.')) {
+                $field = Product::getTable().'.'.$field;
+            }
         }
 
         return $field;
