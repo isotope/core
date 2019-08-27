@@ -117,7 +117,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             $ids = array_diff($currentIds, $childIds, $page->trail);
         }
 
-        $ids = array_intersect($ids, $allIds);
+        $ids = array_values(array_intersect($ids, $allIds));
 
         if (empty($ids)) {
             Isotope::getRequestCache()->unsetFiltersForModule($this->id);

@@ -279,7 +279,7 @@ class ProductList extends Module
         $arrColumns[] = Product::getTable().'.pid=0';
 
         if (1 === \count($arrCategories)) {
-            $arrColumns[] = "c.page_id=".$arrCategories[0];
+            $arrColumns[] = "c.page_id=".reset($arrCategories);
         } else {
             $arrColumns[] = "c.page_id IN (".implode(',', $arrCategories).")";
         }
