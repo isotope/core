@@ -53,6 +53,9 @@
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+        <target>
+ Wählen Sie aus, welche Produktkategorien (Seiten) für die Produkte berücksichtigt werden sollen. &lt;br&gt;&lt;br&gt;&lt;u&gt;Wenn dies ein Produkt-Listen-Modul ist und Sie ein Kategorie-Filter-Modul konfiguriert haben, überschreibt die Kategorie-Filter-Auswahl diese Konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
+</target>
       </trans-unit>
     </body>
   </file>

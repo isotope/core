@@ -103,9 +103,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.singleCode.0">
         <source>Single usage</source>
+        <target>Einmalige Nutzung</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.singleCode.1">
         <source>Do not allow this coupon code if another code has already been applied.</source>
+        <target>Lassen Sie diesen Gutscheincode nicht zu, wenn bereits ein anderer Code angewendet wurde.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.0">
         <source>Uses per member</source>

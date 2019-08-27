@@ -51,9 +51,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_link_primary.0">
         <source>Link to primary URL</source>
+        <target>Link zur primären URL</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_link_primary.1">
         <source>Link product details to the primary URL (canonical) instead of current category.</source>
+        <target>Verknüpfen Sie Produktdetails mit der primären URL (canonical) anstelle der aktuellen Kategorie.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.0">
         <source>Hide in reader mode</source>
@@ -65,9 +67,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_disable_options.0">
         <source>Disable product options (performance!)</source>
+        <target>Produktoptionen deaktivieren (Performance)</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_disable_options.1">
         <source>Do not generate product options or load product variants. If the list does not show product options, make sure to enable this option for faster product list rendering!</source>
+        <target>Generieren Sie keine Produktoptionen und laden Sie keine Produktvarianten. Wenn die Liste keine Produktoptionen enthält, aktivieren Sie diese Option, um das Rendern der Produktliste zu beschleunigen!</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_use_quantity.0">
         <source>Enable quantity</source>
@@ -395,9 +399,11 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_searchExact.0">
         <source>Redirect exact match</source>
+        <target>Exakte Übereinstimmung umleiten</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_searchExact.1">
         <source>Redirect to the product details if the keyword search has an exact match in one of these fields (e.g. search by SKU).</source>
+        <target>Wechseln Sie zu den Produktdetails, wenn die Keyword-Suche in einem dieser Felder genau übereinstimmt (z. B. Suche nach Artikelnummer).</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_searchAutocomplete.0">
         <source>Autocomplete search field</source>
@@ -541,51 +547,67 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>
+        <target>Trusted Shops ID</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.1">
         <source>Please enter your Trusted Shops ID.</source>
+        <target>Bitte geben Sie Ihre Trusted Shops-ID ein.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdisplay.0">
         <source>Badge Display Mode</source>
+        <target>Badge-Anzeigemodus</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdisplay.1">
         <source>Select how the Trusted Shops badge should be displayed.</source>
+        <target>Wählen Sie aus, wie der Trusted Shops-Badge angezeigt werden soll.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsreviews.0">
         <source>Show shop reviews</source>
+        <target>Shopbewertungen anzeigen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsreviews.1">
         <source>Check here to show your shop reviews in the Trusted Shops badge.</source>
+        <target>Klicken Sie hier, um Ihre Shopbewertungen im Trusted Shops-Badge anzuzeigen.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.0">
         <source>Card Display Mode</source>
+        <target>Card-Anzeigemodus</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.1">
         <source>Select how the Trusted Shops Card should be displayed.</source>
+        <target>Wählen Sie aus, wie die Trusted Shops-Badge angezeigt werden soll.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsyoffset.0">
         <source>Bottom offset</source>
+        <target>Unterer Versatz</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsyoffset.1">
         <source>Enter the number of pixels to offset the badge from your page bottom.</source>
+        <target>Geben Sie die Anzahl der Pixel ein, um die das Abzeichen vom Seitenende abweicht.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tscheckout.0">
         <source>Enable buyer protection</source>
+        <target>Käuferschutz aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tscheckout.1">
         <source>Automatically show the buyer protection popup on order confirmation page.</source>
+        <target>Das Käuferschutz-Popup wird automatisch auf der Bestellbestätigungsseite angezeigt.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsproducts.0">
         <source>Include product data</source>
+        <target>Produktdaten einbeziehen</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsproducts.1">
         <source>Allow users to rate individual products.</source>
+        <target>Ermöglichen Sie Benutzern, einzelne Produkte zu bewerten.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdisplay.standard">
         <source>Default (right bottom corner)</source>
+        <target>Standard (rechte untere Ecke)</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdisplay.custom">
         <source>Custom (where this module is placed)</source>
+        <target>Benutzerdefiniert (wo dieses Modul platziert ist)</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.topRight">
         <source>Top Right</source>

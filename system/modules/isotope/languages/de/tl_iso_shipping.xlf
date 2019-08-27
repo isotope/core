@@ -19,9 +19,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.inherit.0">
         <source>Inherit label and notes</source>
+        <target>Label und Notizen übernehmen</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.inherit.1">
         <source>Check here to inherit the label and description from the first available shipping method.</source>
+        <target>Aktivieren Sie dieses Kontrollkästchen, um das Etikett und die Beschreibung der ersten verfügbaren Versandmethode zu übernehmen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.price.0">
         <source>Price</source>
@@ -65,9 +67,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatWeight.0">
         <source>Price per weight</source>
+        <target>Preis pro Gewicht</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.flatWeight.1">
         <source>Enter the weight amound the price should be multiplied by (without floating points).</source>
+        <target>Gebe das Gewicht ein, mit dem der Preis multipliziert werden soll (ohne Kommastellen).</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.0">
         <source>Shipping weight</source>
@@ -191,15 +195,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.address_type.0">
         <source>Address type limitation</source>
+        <target>Einschränkung des Adresstyps</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.address_type.1">
         <source>Limit availability depending on checkout shipping address.</source>
+        <target>Beschränken Sie die Verfügbarkeit an der Kasse abhängig von der Lieferadresse.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.address_type.custom">
         <source>Custom shipping address</source>
+        <target>Benutzerdefinierte Lieferadresse</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.address_type.billing">
         <source>Shipping equals billing address</source>
+        <target>Versand entspricht Rechnungsadresse</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.group_methods.0">
         <source>Shipping methods</source>
@@ -411,6 +419,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.perWeight">
         <source>Per Weight</source>
+        <target>Pro Gewicht</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.first">
         <source>Price of the first available method</source>
