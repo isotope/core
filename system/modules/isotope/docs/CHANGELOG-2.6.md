@@ -1,8 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.1 (2019-08-28)
+---------------------------------
 
-Version 2.6.0-stable (2019-08-27)
+
+### Fixed
+
+- Product reader page shows articles of product list page (#2060)
+
+
+
+Version 2.6.0 (2019-08-27)
 ---------------------------------
 
 ### New
