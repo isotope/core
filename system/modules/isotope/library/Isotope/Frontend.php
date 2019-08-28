@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\Controller;
 use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -175,14 +176,35 @@ class Frontend extends \Frontend
         global $objIsotopeListPage;
 
         if (null !== $objIsotopeListPage) {
+            $originalPageId = $objPage->id;
             $arrTrail   = $objIsotopeListPage->trail;
-            $arrTrail[] = $objPage->id;
+            $arrTrail[] = $originalPageId;
 
             $objPage->id    = $objIsotopeListPage->id;
             $objPage->pid   = $objIsotopeListPage->pid;
             $objPage->alias = $objIsotopeListPage->alias;
             $objPage->trail = $arrTrail;
+
+            $objIsotopeListPage->pid = $originalPageId;
         }
+    }
+
+    public function overrideArticles($pageId, $strColumn)
+    {
+        global $objPage;
+        global $objIsotopeListPage;
+
+        if (!$objIsotopeListPage || $pageId === $objIsotopeListPage->pid) {
+            return false;
+        }
+
+        $objPage->id = $objIsotopeListPage->pid;
+
+        $articles = Controller::getFrontendModule(0, $strColumn);
+
+        $objPage->id = $objIsotopeListPage->id;
+
+        return $articles;
     }
 
     /**

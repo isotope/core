@@ -453,6 +453,7 @@ if (\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
     $GLOBALS['TL_HOOKS']['getPageIdFromUrl'][]              = array('Isotope\Frontend', 'loadReaderPageFromUrl');
     $GLOBALS['TL_HOOKS']['getPageLayout'][]                 = array('Isotope\Frontend', 'overrideReaderPage');
+    $GLOBALS['TL_HOOKS']['getArticles'][]                   = array('Isotope\Frontend', 'overrideArticles');
     $GLOBALS['TL_HOOKS']['getSearchablePages'][]            = array('Isotope\Frontend', 'addProductsToSearchIndex');
     $GLOBALS['TL_HOOKS']['replaceInsertTags'][]             = array('Isotope\Frontend', 'replaceIsotopeTags');
     $GLOBALS['TL_HOOKS']['modifyFrontendPage'][]            = array('Isotope\Frontend', 'injectScripts');
