@@ -1,14 +1,24 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.6.1 (2019-08-28)
+Version 2.6.2 (2019-09-17)
 ---------------------------------
 
+### Fixed
+
+- Failed to generate product cache when showing old or new products (#2071)
+- StringUtil::trimsplit is not available in Contao 3.5 (#2067)
+- Correctly show upload errors in Contao 4 (#2070)
+- Filter error in product variant list (#2068)
+- Automatically rotate log files in Contao 4 (#2065)
+
+
+Version 2.6.1 (2019-08-28)
+---------------------------------
 
 ### Fixed
 
 - Product reader page shows articles of product list page (#2060)
-
 
 
 Version 2.6.0 (2019-08-27)
