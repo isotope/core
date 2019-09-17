@@ -517,10 +517,10 @@ class ProductList extends Module
         if ('show_new' === $this->iso_newFilter || 'show_old' === $this->iso_newFilter) {
             $added = \Database::getInstance()
                 ->execute("
-                    SELECT MIN(dateAdded)
+                    SELECT MIN(dateAdded) AS expires
                     FROM tl_iso_product
                     WHERE dateAdded>" . Isotope::getConfig()->getNewProductLimit() . "
-                ")
+                ")->expires
             ;
 
             if ($added < $expires) {
