@@ -477,7 +477,7 @@ class DC_ProductData extends \DC_Table
 
             if ($blnLanguageUpdated) {
                 \Session::getInstance()->setData($session);
-                $_SESSION['TL_INFO'] = '';
+                unset($_SESSION['TL_INFO']);
                 \Controller::reload();
             }
 

@@ -150,8 +150,12 @@ class MediaManager extends \Widget implements \uploadable
         }
 
         if ($objUploader->hasError()) {
-            foreach ($_SESSION['TL_ERROR'] as $strError) {
-                $this->addError($strError);
+            $messages = VERSION >= 4.0 ? \System::getContainer()->get('session')->getFlashBag()->peek('contao_be_error') : $_SESSION['TL_ERROR'];
+
+            if (\is_array($messages)) {
+                foreach ($messages as $strError) {
+                    $this->addError($strError);
+                }
             }
         }
 

@@ -508,6 +508,10 @@ $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
 
+if (VERSION >= 4.0) {
+    $GLOBALS['TL_CRON']['daily'][] = array('Contao\Automator', 'rotateLogs');
+}
+
 
 /**
  * Auto_item keywords

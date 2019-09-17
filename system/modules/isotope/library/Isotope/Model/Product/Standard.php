@@ -435,7 +435,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 return $text;
             }
 
-            $keywords = StringUtil::trimsplit(' |-', $keywords);
+            $keywords = trimsplit(' |-', $keywords);
             $keywords = array_filter(array_unique($keywords));
 
             foreach ($keywords as $word) {
