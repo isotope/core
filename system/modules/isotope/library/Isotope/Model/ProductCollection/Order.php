@@ -395,6 +395,10 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $arrTokens['cart_text']       = '';
         $arrTokens['document']        = '';
 
+        // Log extra tokens
+        $arrTokens['log_shipping_tracking'] = '';
+        $arrTokens['log_customer_notes'] = '';
+
         // Add all the collection fields
         foreach ($this->row() as $k => $v) {
             $arrTokens['collection_' . $k] = $v;

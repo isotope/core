@@ -265,6 +265,19 @@ class Callback extends \Backend
     }
 
     /**
+     * Add some extra style in edit mode
+     */
+    public function addExtraStyles()
+    {
+        if (\Input::get('act') !== 'edit') {
+            return;
+        }
+
+        $GLOBALS['TL_MOOTOOLS'][] = '<style>body.popup #tl_buttons, .tl_formbody_submit { display: none } body.popup .tl_edit_form .tl_formbody_edit { border-top: none }</style>';
+        $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("tl_iso_product_collection").addEventListener("submit", function(e) { e.preventDefault(); })</script>';
+    }
+
+    /**
      * Return the payment button if a payment method is available
      *
      * @param array  $row
@@ -420,63 +433,5 @@ class Callback extends \Backend
 
 </div>
 </form>';
-    }
-
-    /**
-     * Trigger order status update when changing the status in the backend
-     *
-     * @param   string
-     * @param   DataContainer
-     *
-     * @return  string
-     * @link    http://www.contao.org/callbacks.html#save_callback
-     */
-    public function updateOrderStatus($varValue, $dc)
-    {
-        $GLOBALS['ISO_ORDER_STATUS'] = false;
-
-        if ($dc->activeRecord && $dc->activeRecord->order_status != $varValue) {
-            $GLOBALS['ISO_ORDER_STATUS'] = array($dc->activeRecord->order_status => $varValue);
-        }
-
-        return $varValue;
-    }
-
-    /**
-     * Execute the saveCollection hook when a collection is saved
-     * @param   object
-     * @return  void
-     */
-    public function executeSaveHook($dc)
-    {
-        if (($objOrder = Order::findByPk($dc->id)) !== null) {
-            $objOrder->refresh();
-
-            if ('BE' === TL_MODE) {
-                if ($objOrder->pageId == 0) {
-                    unset($GLOBALS['objPage']);
-                }
-
-                Frontend::loadOrderEnvironment($objOrder);
-            }
-
-            // Status update has been cancelled, do not update
-            if (false !== $GLOBALS['ISO_ORDER_STATUS']) {
-                foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
-                    $objOrder->order_status = $from;
-                    if (!$objOrder->updateOrderStatus($to)) {
-                        // Will save the old status set in the line above
-                        $objOrder->save();
-                    }
-                }
-            }
-
-            // !HOOK: add additional functionality when saving collection
-            if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && \is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
-                foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
-                    \System::importStatic($callback[0])->{$callback[1]}($objOrder);
-                }
-            }
-        }
     }
 }

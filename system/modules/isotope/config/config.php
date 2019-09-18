@@ -30,7 +30,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     ),
     'iso_orders' => array
     (
-        'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
+        'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionLog::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
         'icon'              => 'system/modules/isotope/assets/images/shopping-basket.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
@@ -310,6 +310,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'bank_account',
     'bank_code',
     'tax_number',
+    'log_shipping_tracking',
+    'log_customer_notes',
     'collection_*', // All the collection fields
     'billing_address', // Formatted billing address
     'billing_address_*', // All the billing address model fields
@@ -362,6 +364,7 @@ $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCategory::getTable()]               
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollection::getTable()]             = 'Isotope\Model\ProductCollection';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionDownload::getTable()]     = 'Isotope\Model\ProductCollectionDownload';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionItem::getTable()]         = 'Isotope\Model\ProductCollectionItem';
+$GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionLog::getTable()]          = 'Isotope\Model\ProductCollectionLog';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCollectionSurcharge::getTable()]    = 'Isotope\Model\ProductCollectionSurcharge';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductPrice::getTable()]                  = 'Isotope\Model\ProductPrice';
 $GLOBALS['TL_MODELS'][\Isotope\Model\ProductCache::getTable()]                  = 'Isotope\Model\ProductCache';
