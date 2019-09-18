@@ -207,7 +207,13 @@ abstract class Payment extends TypeAgent implements IsotopePayment
                         return false;
                     }
                     break;
-
+                    
+                case 'notAvailable':
+                    if (\count(array_intersect($arrConfigTypes, $arrItemTypes)) > 0) {
+                        return false;
+                    }
+                    break;
+                                        
                 case 'oneAvailable':
                     if (\count(array_intersect($arrConfigTypes, $arrItemTypes)) == 0) {
                         return false;
