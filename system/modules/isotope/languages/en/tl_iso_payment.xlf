@@ -656,6 +656,9 @@
       <trans-unit id="tl_iso_payment.onlyAvailable">
         <source>Enable if only these product types are in cart</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.notAvailable">
+        <source>Disable if one of these product types are in cart</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.allAvailable">
         <source>Enable if all these product types are in cart</source>
       </trans-unit>
