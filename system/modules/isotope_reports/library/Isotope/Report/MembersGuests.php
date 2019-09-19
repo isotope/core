@@ -54,7 +54,6 @@ class MembersGuests extends Sales
             SELECT
                 c.id AS config_id,
                 c.currency,
-                o.locked AS date,
                 me.firstname AS member_firstname,
                 me.lastname AS member_lastname,
                 me.id AS member_number,
