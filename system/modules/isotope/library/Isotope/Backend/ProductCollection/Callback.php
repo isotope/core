@@ -315,7 +315,7 @@ class Callback extends \Backend
         $logs = [];
 
         // Generate log entries
-        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp'])) !== null) {
             $logFields = [];
 
             foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {
