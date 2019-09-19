@@ -20,6 +20,7 @@ use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
@@ -562,5 +563,21 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             \Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
             true
         );
+    }
+    
+    /**
+     * Check if Order has Tax
+     * @return bool
+     */
+
+    public function hasTax() {
+
+        foreach($this->getSurcharges() AS $surcharge) {
+            if($surcharge instanceof Tax) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
