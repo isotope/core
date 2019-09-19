@@ -84,7 +84,7 @@ class SalesProduct extends Sales
                 " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
                 " . static::getProductProcedure('p1') . "
                 " . static::getConfigProcedure('o', 'config_id') . "
-            GROUP BY dateGroup, product_id
+            GROUP BY dateGroup, product_id, variant_name, product_name, product_configuration
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
         ");
 
