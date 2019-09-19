@@ -324,15 +324,33 @@ class Callback extends \Backend
                 }
             }
 
+            $previousLogModel = null;
+
             /** @var ProductCollectionLog $logModel */
             foreach ($logModels as $logModel) {
                 $log = [];
 
                 foreach ($logFields as $logField) {
+                    // Skip the empty values for the first log
+                    if (count($logs) === 0 && !$logModel->$logField) {
+                        continue;
+                    }
+
+                    // Skip the notification fields if no notification was sent
+                    if (in_array($logField, ['notification', 'notification_shipping_tracking', 'notification_customer_notes'], true) && !$logModel->sendNotification) {
+                        continue;
+                    }
+
+                    // Skip the values that did not change since last log
+                    if ($previousLogModel !== null && $previousLogModel->$logField === $logModel->$logField && !in_array($logField, ['date', 'author'], true)) {
+                        continue;
+                    }
+
                     $log[Format::dcaLabel($logTable, $logField)] = $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–';
                 }
 
                 $logs[] = $log;
+                $previousLogModel = $logModel;
             }
         }
 
