@@ -11,12 +11,21 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Contao\Backend;
+use Contao\BackendTemplate;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Environment;
+use Contao\Session;
+use Contao\System;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionLog;
 use Isotope\Module\OrderDetails;
 
 
@@ -265,16 +274,71 @@ class Callback extends \Backend
     }
 
     /**
-     * Add some extra style in edit mode
+     * Generate the "show" action
+     *
+     * @param DataContainer $dc
+     *
+     * @return string
      */
-    public function addExtraStyles()
+    public function showAction(DataContainer $dc)
     {
-        if (\Input::get('act') !== 'edit') {
-            return;
+        if (($order = Order::findByPk($dc->id)) === null) {
+            Backend::redirect('contao/main.php?act=error');
         }
 
-        $GLOBALS['TL_MOOTOOLS'][] = '<style>body.popup #tl_buttons, .tl_formbody_submit { display: none } body.popup .tl_edit_form .tl_formbody_edit { border-top: none }</style>';
-        $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("tl_iso_product_collection").addEventListener("submit", function(e) { e.preventDefault(); })</script>';
+        $logTable = ProductCollectionLog::getTable();
+
+        // Load the logs data container
+        System::loadLanguageFile($logTable);
+        Controller::loadDataContainer($logTable);
+
+        // Purge obsolete records
+        Database::getInstance()->prepare("DELETE FROM $logTable WHERE tstamp=? AND pid=?")->execute(0, $dc->id);
+
+        // Fix the back button in log create view
+        $session = Session::getInstance()->get('popupReferer');
+        $session[\Input::get('ref')]['current'] = Environment::get('requestUri');
+        $session[\Input::get('ref')][$logTable] = Environment::get('requestUri');
+        Session::getInstance()->set('popupReferer', $session);
+
+        $template = new BackendTemplate('be_iso_order_show');
+        $template->table = $dc->table;
+        $template->fieldsets = Session::getInstance()->get('fieldset_states')[$dc->table];
+        $template->id = $order->getId();
+        $template->uniqid = $order->getUniqueId();
+        $template->orderDetails = $this->generateOrderDetails($dc);
+        $template->emailDetails = $this->generateEmailData($dc);
+        $template->billingAddressDetails = $this->generateBillingAddressData($dc);
+        $template->shippingAddressDetails = $this->generateShippingAddressData($dc);
+        $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&popup=1&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
+
+        $logs = [];
+
+        // Generate log entries
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
+            $logFields = [];
+
+            foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {
+                if (isset($config['eval']['showInOrderView']) && $config['eval']['showInOrderView']) {
+                    $logFields[] = $name;
+                }
+            }
+
+            /** @var ProductCollectionLog $logModel */
+            foreach ($logModels as $logModel) {
+                $log = [];
+
+                foreach ($logFields as $logField) {
+                    $log[Format::dcaLabel($logTable, $logField)] = $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–';
+                }
+
+                $logs[] = $log;
+            }
+        }
+
+        $template->logs = $logs;
+
+        return $template->parse();
     }
 
     /**
@@ -395,7 +459,7 @@ class Callback extends \Backend
             'label'      => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_choice'],
             'inputType'  => 'select',
             'foreignKey' => 'tl_iso_document.name',
-            'eval'       => array('mandatory' => true)
+            'eval'       => array('mandatory' => true),
         );
 
         $objSelect = new \SelectMenu(\SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));

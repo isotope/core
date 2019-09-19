@@ -77,18 +77,6 @@
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.edit.0">
-        <source>Edit order</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.edit.1">
-        <source>Edit order ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.0">
-        <source>Copy order</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.1">
-        <source>Copy order ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.0">
         <source>Delete order</source>
       </trans-unit>

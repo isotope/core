@@ -35,6 +35,12 @@
       <trans-unit id="tl_iso_product_collection_log.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection_log.sendNotification.0">
+        <source>Send a notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection_log.sendNotification.1">
+        <source>Send an extra notification when saving this record.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection_log.notification.0">
         <source>Notification</source>
       </trans-unit>
@@ -58,12 +64,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection_log.new.1">
         <source>Create a new log</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection_log.delete.0">
-        <source>Delete log</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection_log.delete.1">
-        <source>Delete log ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection_log.show.0">
         <source>Log details</source>

@@ -14,6 +14,7 @@ namespace Isotope\Backend\ProductCollectionLog;
 use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Config;
+use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Date;
@@ -31,24 +32,17 @@ class Callback
      */
     public function onLoadCallback()
     {
-        // Only administrator can delete records
-        if (!BackendUser::getInstance()->isAdmin) {
-            if (Input::get('act') === 'delete') {
-                System::log('Not enough permissions to delete log ID "'.Input::get('id'), __METHOD__, TL_ERROR);
-                Backend::redirect('contao/main.php?act=error');
-            }
-
-            $GLOBALS['TL_DCA']['tl_iso_product_collection_log']['config']['notDeletable'] = true;
-
-            unset(
-                $GLOBALS['TL_DCA']['tl_iso_product_collection_log']['list']['global_operations']['all'],
-                $GLOBALS['TL_DCA']['tl_iso_product_collection_log']['list']['operations']['delete']
-            );
+        // Do not allow access to any view other than edit and create
+        if ('edit' !== Input::get('act') && 'create' !== Input::get('act')) {
+            Controller::redirect(Backend::getReferer());
         }
 
         // Remove the "save" button so default action is "save and close"
         if ('edit' === Input::get('act')) {
             $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("save").remove()</script>';
+            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("saveNcreate").remove()</script>';
+            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("saveNback").remove()</script>';
+            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("sbtog").remove()</script>';
         }
     }
 
@@ -59,6 +53,10 @@ class Callback
      */
     public function onSubmitCallback(DataContainer $dc)
     {
+        if (Input::post('SUBMIT_TYPE') === 'auto') {
+            return;
+        }
+
         if (!$dc->activeRecord->author) {
             Database::getInstance()->prepare("UPDATE {$dc->table} SET author=? WHERE id=?")->execute(BackendUser::getInstance()->id, $dc->id);
         }
@@ -90,7 +88,7 @@ class Callback
             $order->save();
 
             // Send a notification
-            if ($dc->activeRecord->notification && ($notification = Notification::findByPk($dc->activeRecord->notification)) !== null) {
+            if ($dc->activeRecord->sendNotification && $dc->activeRecord->notification && ($notification = Notification::findByPk($dc->activeRecord->notification)) !== null) {
                 $tokens = $order->getNotificationTokens($dc->activeRecord->notification);
                 $tokens['log_shipping_tracking'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_shipping_tracking));
                 $tokens['log_customer_notes'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_customer_notes));

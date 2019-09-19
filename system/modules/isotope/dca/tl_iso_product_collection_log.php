@@ -19,6 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
         'dataContainer' => 'Table',
         'ptable' => \Isotope\Model\ProductCollection::getTable(),
         'notEditable' => \Contao\Input::get('act') === 'select',
+        'notDeletable' => true,
         'notCopyable' => true,
         'notSortable' => true,
         'onload_callback' => [
@@ -57,12 +58,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             ],
         ],
         'operations' => [
-            'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['delete'],
-                'href' => 'act=delete',
-                'icon' => 'delete.gif',
-                'attributes' => 'onclick="if (!confirm(\''.$GLOBALS['TL_LANG']['MSC']['deleteConfirm'].'\')) return false; Backend.getScrollOffset();"',
-            ],
             'show' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['show'],
                 'href' => 'act=show',
@@ -73,27 +68,35 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
 
     // Palettes
     'palettes' => [
-        'default' => '{status_legend},order_status,date_paid,date_shipped;{notes_legend},notes;{notification_legend},notification,notification_shipping_tracking,notification_customer_notes',
+        '__selector__' => ['sendNotification'],
+        'default' => '{status_legend},order_status,date_paid,date_shipped;{notes_legend},notes;{notification_legend},sendNotification',
+    ],
+
+    // Subpalettes
+    'subpalettes' => [
+        'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
     ],
 
     // Fields
     'fields' => [
         'id' => [
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'autoincrement' => true],
+            'sql' => "int(10) unsigned NOT NULL auto_increment",
         ],
         'tstamp' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['tstamp'],
             'flag' => 6,
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+            'eval' => ['showInOrderView' => true],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'pid' => [
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'author' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['author'],
             'filter' => true,
             'foreignKey' => 'tl_user.username',
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+            'eval' => ['showInOrderView' => true],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'order_status' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['order_status'],
@@ -103,8 +106,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'inputType' => 'select',
             'foreignKey' => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback' => ['\Isotope\Backend', 'getOrderStatus'],
-            'eval' => ['alwaysSave' => true],
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
             'load_callback' => [
                 ['Isotope\Backend\ProductCollectionLog\Callback', 'onOrderStatusLoadCallback'],
@@ -117,8 +120,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['date_paid'],
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['alwaysSave' => true, 'rgxp' => 'datim', 'datepicker' => (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class' => 'w50 wizard'],
-            'sql' => ['type' => 'integer', 'notnull' => false],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'rgxp' => 'datim', 'datepicker' => (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class' => 'w50 wizard'],
+            'sql' => 'int(10) NULL',
             'load_callback' => [
                 ['Isotope\Backend\ProductCollectionLog\Callback', 'onDatePaidLoadCallback'],
             ],
@@ -127,8 +130,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['date_shipped'],
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['alwaysSave' => true, 'rgxp' => 'datim', 'datepicker' => (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class' => 'w50 wizard'],
-            'sql' => ['type' => 'integer', 'notnull' => false],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'rgxp' => 'datim', 'datepicker' => (method_exists($this, 'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class' => 'w50 wizard'],
+            'sql' => 'int(10) NULL',
             'load_callback' => [
                 ['Isotope\Backend\ProductCollectionLog\Callback', 'onDateShippedLoadCallback'],
             ],
@@ -137,33 +140,41 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['notes'],
             'exclude' => true,
             'inputType' => 'textarea',
-            'eval' => ['alwaysSave' => true, 'style' => 'height:80px;', 'tl_class' => 'clr'],
-            'sql' => ['type' => 'text', 'notnull' => false],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'style' => 'height:80px;', 'tl_class' => 'clr'],
+            'sql' => "text NULL",
             'load_callback' => [
                 ['Isotope\Backend\ProductCollectionLog\Callback', 'onNotesLoadCallback'],
             ],
+        ],
+        'sendNotification' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['sendNotification'],
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['submitOnChange' => true, 'tl_class' => 'clr'],
+            'sql' => "char(1) NOT NULL default ''",
         ],
         'notification' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['notification'],
             'exclude' => true,
             'inputType' => 'select',
+            'foreignKey' => 'tl_nc_notification.title',
             'options_callback' => ['Isotope\Backend\ProductCollectionLog\Callback', 'onNotificationOptionsCallback'],
-            'eval' => ['alwaysSave' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
+            'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'notification_shipping_tracking' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['notification_shipping_tracking'],
             'exclude' => true,
             'inputType' => 'textarea',
-            'eval' => ['alwaysSave' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'text', 'notnull' => false],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'tl_class' => 'clr'],
+            'sql' => "text NULL",
         ],
         'notification_customer_notes' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['notification_customer_notes'],
             'exclude' => true,
             'inputType' => 'textarea',
-            'eval' => ['alwaysSave' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'text', 'notnull' => false],
+            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'tl_class' => 'clr'],
+            'sql' => "text NULL",
         ],
     ],
 ];
