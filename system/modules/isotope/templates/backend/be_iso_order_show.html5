@@ -6,7 +6,7 @@
     <legend onclick="AjaxRequest.toggleFieldset(this,'status_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['status_legend'] ?></legend>
 
     <div style="margin:1%;">
-        <a href="<?= ampersand($this->createLogUrl) ?>" title="Update order status" class="header_new">Update order status</a>
+        <a href="<?= ampersand($this->createLogUrl) ?>" title="<?= specialchars($GLOBALS['TL_LANG'][$this->table]['updateOrderStatus']) ?>" class="header_new"><?= $GLOBALS['TL_LANG'][$this->table]['updateOrderStatus'] ?></a>
     </div>
 
     <div>
@@ -25,7 +25,7 @@
                 </table>
             <?php endforeach; ?>
         <?php else: ?>
-            <div class="tl_info" style="margin-bottom: 1em;">No order logs are available.</div>
+            <div class="tl_info" style="margin-bottom: 1em;"><?= $GLOBALS['TL_LANG'][$this->table]['noLogData'] ?></div>
         <?php endif; ?>
     </div>
 </fieldset>

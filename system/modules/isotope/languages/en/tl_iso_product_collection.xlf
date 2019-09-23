@@ -137,6 +137,12 @@
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.updateOrderStatus">
+        <source>Update order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noLogData">
+        <source>No order logs are available.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>
       </trans-unit>
