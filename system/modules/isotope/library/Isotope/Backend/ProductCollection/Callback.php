@@ -301,6 +301,17 @@ class Callback extends \Backend
         $session[\Input::get('ref')][$logTable] = Environment::get('requestUri');
         Session::getInstance()->set('referer', $session);
 
+        // Revise current record
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC', 'limit' => 2])) !== null && $logModels->count() === 2) {
+            $currentLogModel = $logModels->first();
+            $currentLogData = array_diff_key($currentLogModel->row(), array_flip(['id', 'tstamp', 'author']));
+            $previousLogData = array_diff_key($logModels->last()->row(), array_flip(['id', 'tstamp', 'author']));
+
+            if (count(array_diff($currentLogData, $previousLogData)) === 0) {
+                $currentLogModel->delete();
+            }
+        }
+
         $template = new BackendTemplate('be_iso_order_show');
         $template->table = $dc->table;
         $template->fieldsets = Session::getInstance()->get('fieldset_states')[$dc->table];
