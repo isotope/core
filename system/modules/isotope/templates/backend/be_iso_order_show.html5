@@ -1,9 +1,18 @@
-<fieldset id="pal_status_legend" class="tl_tbox<?php if (!$this->fieldsets['status_legend']): ?> collapsed<?php endif; ?>">
+<div id="tl_buttons" style="border-bottom:1px solid #e6e6e8">
+    <a href="<?= ampersand($this->backUrl) ?>" class="header_back" title="<?= specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
+</div>
+
+<fieldset id="pal_status_legend" class="tl_tbox<?php if (!$this->fieldsets['status_legend']): ?> collapsed<?php endif; ?>" style="padding-bottom: 0">
     <legend onclick="AjaxRequest.toggleFieldset(this,'status_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['status_legend'] ?></legend>
+
+    <div style="margin:1%;">
+        <a href="<?= ampersand($this->createLogUrl) ?>" title="Update order status" class="header_new">Update order status</a>
+    </div>
 
     <div>
         <?php if ($this->logs): ?>
             <?php foreach ($this->logs as $log): ?>
+                <hr>
                 <table class="tl_show">
                     <tbody>
                         <?php $count = 0; foreach ($log as $k => $v): ?>
@@ -14,15 +23,10 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <hr>
             <?php endforeach; ?>
         <?php else: ?>
             <div class="tl_info" style="margin-bottom: 1em;">No order logs are available.</div>
         <?php endif; ?>
-
-        <div style="margin:0 2%;">
-            <a href="<?= ampersand($this->createLogUrl) ?>" title="Update order status" class="tl_submit">Update order status</a>
-        </div>
     </div>
 </fieldset>
 

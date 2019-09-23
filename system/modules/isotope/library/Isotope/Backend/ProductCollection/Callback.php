@@ -296,26 +296,27 @@ class Callback extends \Backend
         Database::getInstance()->prepare("DELETE FROM $logTable WHERE tstamp=? AND pid=?")->execute(0, $dc->id);
 
         // Fix the back button in log create view
-        $session = Session::getInstance()->get('popupReferer');
+        $session = Session::getInstance()->get('referer');
         $session[\Input::get('ref')]['current'] = Environment::get('requestUri');
         $session[\Input::get('ref')][$logTable] = Environment::get('requestUri');
-        Session::getInstance()->set('popupReferer', $session);
+        Session::getInstance()->set('referer', $session);
 
         $template = new BackendTemplate('be_iso_order_show');
         $template->table = $dc->table;
         $template->fieldsets = Session::getInstance()->get('fieldset_states')[$dc->table];
         $template->id = $order->getId();
+        $template->backUrl = 'contao/main.php?do=iso_orders&ref=' . \Input::get('ref');
         $template->uniqid = $order->getUniqueId();
         $template->orderDetails = $this->generateOrderDetails($dc);
         $template->emailDetails = $this->generateEmailData($dc);
         $template->billingAddressDetails = $this->generateBillingAddressData($dc);
         $template->shippingAddressDetails = $this->generateShippingAddressData($dc);
-        $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&popup=1&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
+        $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
 
         $logs = [];
 
         // Generate log entries
-        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp'])) !== null) {
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
             $logFields = [];
 
             foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {

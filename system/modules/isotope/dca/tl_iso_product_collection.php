@@ -69,18 +69,18 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'operations' => array
         (
+            'edit' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['edit'],
+                'href'              => 'key=show',
+                'icon'              => 'edit.gif',
+            ),
             'delete' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
-            ),
-            'show' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['show'],
-                'href'              => 'key=show',
-                'icon'              => 'show.gif',
             ),
             'payment' => array
             (
