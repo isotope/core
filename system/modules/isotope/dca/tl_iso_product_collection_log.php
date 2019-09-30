@@ -159,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'inputType' => 'select',
             'foreignKey' => 'tl_nc_notification.title',
             'options_callback' => ['Isotope\Backend\ProductCollectionLog\Callback', 'onNotificationOptionsCallback'],
-            'eval' => ['showInOrderView' => true, 'alwaysSave' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
+            'eval' => ['mandatory' => true, 'showInOrderView' => true, 'alwaysSave' => true, 'includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'notification_shipping_tracking' => [
