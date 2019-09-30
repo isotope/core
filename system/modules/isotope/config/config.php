@@ -297,6 +297,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'order_status_old',
     'order_status_id',
     'order_status_id_old',
+    'order_status_tracking_numbers',
+    'order_status_notes',
     'recipient_email',
     'order_id',
     'order_items',
@@ -311,8 +313,6 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'bank_account',
     'bank_code',
     'tax_number',
-    'log_shipping_tracking',
-    'log_customer_notes',
     'collection_*', // All the collection fields
     'billing_address', // Formatted billing address
     'billing_address_*', // All the billing address model fields

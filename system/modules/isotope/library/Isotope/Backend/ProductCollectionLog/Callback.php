@@ -71,29 +71,56 @@ class Callback
                 Frontend::loadOrderEnvironment($order);
             }
 
-            // Status update has been cancelled, do not update
-            if (false !== $GLOBALS['ISO_ORDER_STATUS']) {
-                foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
-                    $order->order_status = $from;
-                    if (!$order->updateOrderStatus($to)) {
-                        // Will save the old status set in the line above
-                        $order->save();
-                    }
+            $objOldStatus = OrderStatus::findByPk($order->order_status);
+            $objNewStatus = OrderStatus::findByPk($dc->activeRecord->order_status);
+
+            $updates = [
+                'order_status' => $dc->activeRecord->order_status,
+                'date_paid' => $dc->activeRecord->date_paid,
+                'date_shipped' => $dc->activeRecord->date_shipped,
+                'notes' => $dc->activeRecord->notes,
+            ];
+
+            if (!$order->updateOrderStatus($updates, false)) {
+                Database::getInstance()->prepare("DELETE FROM {$dc->table} WHERE id=?")->execute($dc->id);
+                return;
+            }
+
+            // Send a notification
+            $blnNotificationError = null;
+            if ($dc->activeRecord->sendNotification && $dc->activeRecord->notification && ($objNotification = Notification::findByPk($dc->activeRecord->notification)) !== null) {
+                $tokens = $order->getNotificationTokens($objNotification->id);
+
+                $tokens['order_status_id'] = $objNewStatus->id;
+                $tokens['order_status'] = $objNewStatus->getName();
+                $tokens['order_status_id_old'] = $objOldStatus->id;
+                $tokens['order_status_old'] = $objOldStatus->getName();
+                $tokens['order_status_tracking_numbers'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_shipping_tracking));
+                $tokens['order_status_notes'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_customer_notes));
+
+                /** @var Notification $objNotification */
+                $arrResult = $objNotification->send($tokens, $order->language);
+
+                if (\in_array(false, $arrResult, true)) {
+                    $blnNotificationError = true;
+                    \System::log(
+                        'Error sending status update notification for order ID ' . $order->id,
+                        __METHOD__,
+                        TL_ERROR
+                    );
+                } elseif (\count($arrResult) > 0) {
+                    $blnNotificationError = false;
                 }
             }
 
-            $order->setDatePaid($dc->activeRecord->date_paid);
-            $order->setDateShipped($dc->activeRecord->date_shipped);
-            $order->notes = $dc->activeRecord->notes;
-            $order->save();
+            if ('BE' === TL_MODE) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-            // Send a notification
-            if ($dc->activeRecord->sendNotification && $dc->activeRecord->notification && ($notification = Notification::findByPk($dc->activeRecord->notification)) !== null) {
-                $tokens = $order->getNotificationTokens($dc->activeRecord->notification);
-                $tokens['log_shipping_tracking'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_shipping_tracking));
-                $tokens['log_customer_notes'] = str_replace("\n", '<br>', trim($dc->activeRecord->notification_customer_notes));
-
-                $notification->send($tokens);
+                if ($blnNotificationError === true) {
+                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                } elseif ($blnNotificationError === false) {
+                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                }
             }
 
             // !HOOK: add additional functionality when saving collection
@@ -135,26 +162,6 @@ class Callback
     public function onOrderStatusLoadCallback($value, DataContainer $dc)
     {
         return $this->getOrderFieldValue($dc, $value, 'order_status');
-    }
-
-    /**
-     * On order status save callback
-     *
-     * @param string
-     * @param DataContainer
-     *
-     * @return string
-     */
-    public function onOrderStatusSaveCallback($value, DataContainer $dc)
-    {
-        $GLOBALS['ISO_ORDER_STATUS'] = false;
-
-        // Trigger order status update when changing the status in the backend
-        if ($dc->activeRecord && $dc->activeRecord->order_status != $value) {
-            $GLOBALS['ISO_ORDER_STATUS'] = array($dc->activeRecord->order_status => $value);
-        }
-
-        return $value;
     }
 
     /**

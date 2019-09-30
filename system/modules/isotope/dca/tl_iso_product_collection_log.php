@@ -112,9 +112,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
             'load_callback' => [
                 ['Isotope\Backend\ProductCollectionLog\Callback', 'onOrderStatusLoadCallback'],
             ],
-            'save_callback' => [
-                ['Isotope\Backend\ProductCollectionLog\Callback', 'onOrderStatusSaveCallback'],
-            ],
         ],
         'date_paid' => [
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['date_paid'],
