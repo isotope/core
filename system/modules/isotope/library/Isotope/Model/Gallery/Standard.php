@@ -358,11 +358,6 @@ class Standard extends Gallery implements IsotopeGallery
         try {
             $strImage = \Image::create($strFile, $size)->executeResize()->getResizedPath();
             $picture = \Picture::create($strFile, $size)->getTemplateData();
-
-            $objResizedFile = new File($strImage);
-            if(method_exists($objResizedFile, 'createIfDeferred')) {
-                $objResizedFile->createIfDeferred();
-            }
         } catch (\Exception $e) {
             \System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
@@ -370,12 +365,19 @@ class Standard extends Gallery implements IsotopeGallery
             $picture = array('img'=>array('src'=>'', 'srcset'=>''), 'sources'=>array());
         }
 
+        $objResizedFile = new File(rawurldecode($strImage));
+
         // Watermark
         if ($blnWatermark
             && $this->{$strType . '_watermark_image'} != ''
             && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
         ) {
+            if(method_exists($objResizedFile, 'createIfDeferred')) {
+                $objResizedFile->createIfDeferred();
+            }
+
             $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
+            $objResizedFile = new File(rawurldecode($strImage));
 
             // Apply watermark to the picture image source
             if ($picture['img']['src']) {
@@ -388,7 +390,7 @@ class Standard extends Gallery implements IsotopeGallery
             }
         }
 
-        $arrSize = getimagesize(TL_ROOT . '/' . rawurldecode($strImage));
+        $arrSize = $objResizedFile->imageSize;
 
         if (\is_array($arrSize) && $arrSize[3] !== '') {
             $arrFile[$strType . '_size']      = $arrSize[3];
