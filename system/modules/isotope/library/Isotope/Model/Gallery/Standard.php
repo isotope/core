@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Gallery;
 
+use Contao\File;
 use Haste\Image\Image;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
@@ -357,6 +358,11 @@ class Standard extends Gallery implements IsotopeGallery
         try {
             $strImage = \Image::create($strFile, $size)->executeResize()->getResizedPath();
             $picture = \Picture::create($strFile, $size)->getTemplateData();
+
+            $objResizedFile = new File($strImage);
+            if(method_exists($objResizedFile, 'createIfDeferred')) {
+                $objResizedFile->createIfDeferred();
+            }
         } catch (\Exception $e) {
             \System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
