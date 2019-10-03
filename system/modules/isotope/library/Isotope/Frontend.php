@@ -28,6 +28,7 @@ use Isotope\Model\Product\Standard;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Model\TaxClass;
 
 /**
  * Class Isotope\Frontend
@@ -706,7 +707,21 @@ class Frontend extends \Frontend
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->id, $value)) {
-                            $fltAmount += $objOption->getAmount($fltPrice, 0);
+                            $amount = $objOption->getAmount($fltPrice, 0);
+
+                            if ($objOption->isPercentage()
+                                || !$intTaxClass
+                                || ($objTax = TaxClass::findByPk($intTaxClass)) === null
+                            ) {
+                                $fltAmount += $amount;
+                                continue;
+                            }
+
+                            if ('net_price' === $strField) {
+                                $fltAmount += $objTax->calculateNetPrice($amount);
+                            } else {
+                                $fltAmount += $objTax->calculateGrossPrice($amount);
+                            }
                         }
                     }
                 }
