@@ -717,8 +717,10 @@ class Frontend extends \Frontend
 
                             if ('net_price' === $strField) {
                                 $fltAmount += $objTax->calculateNetPrice($amount);
-                            } else {
+                            } elseif ('gross_price' === $strField) {
                                 $fltAmount += $objTax->calculateGrossPrice($amount);
+                            } else {
+                                $fltAmount += $objTax->calculatePrice($amount);
                             }
                         }
                     }
