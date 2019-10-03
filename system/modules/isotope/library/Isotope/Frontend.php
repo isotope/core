@@ -708,11 +708,9 @@ class Frontend extends \Frontend
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->id, $value)) {
                             $amount = $objOption->getAmount($fltPrice, 0);
+                            $objTax = $objProduct->getRelated('tax_class');
 
-                            if ($objOption->isPercentage()
-                                || !$intTaxClass
-                                || ($objTax = TaxClass::findByPk($intTaxClass)) === null
-                            ) {
+                            if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
                                 $fltAmount += $amount;
                                 continue;
                             }
