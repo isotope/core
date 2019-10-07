@@ -17,7 +17,9 @@
     ],
     "support": {
         "issues": "https://github.com/isotope/core/issues",
-        "source": "https://github.com/isotope/core"
+        "source": "https://github.com/isotope/core",
+        "forum": "https://community.contao.org/de/forumdisplay.php?111-isotope",
+        "docs": "https://isotopeecommerce.org/en/manual.html"
     },
     "require":{
         "php": "~5.4 || ~7.0",
