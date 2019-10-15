@@ -81,7 +81,7 @@ class Callback
                 'notes' => $dc->activeRecord->notes,
             ];
 
-            if (!$order->updateOrderStatus($updates, false)) {
+            if (!$order->updateOrderStatus($updates, true)) {
                 Database::getInstance()->prepare("DELETE FROM {$dc->table} WHERE id=?")->execute($dc->id);
                 return;
             }
