@@ -346,12 +346,22 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return parent::generateValue($value, $options);
         }
 
-        $values     = (array) $value;
+        // Remove groups from options to find the current value
         $arrOptions = [];
+        foreach ($arrField['options'] as $v) {
+            if (!isset($v['value']) && isset($v[0])) {
+                $arrOptions = array_merge($arrOptions, $v);
+            } else {
+                $arrOptions[] = $v;
+            }
+        }
 
-        foreach ($arrField['options'] as $k => &$option) {
+        $values = (array) $value;
+        $result = [];
+
+        foreach ($arrOptions as $k => $option) {
             if (($pos = array_search($option['value'], $values)) !== false) {
-                $arrOptions[$k] = $option['label'];
+                $result[$k] = $option['label'];
                 unset($values[$pos]);
 
                 if (0 === \count($values)) {
@@ -359,13 +369,12 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 }
             }
         }
-        unset($option);
 
         if (0 !== \count($values)) {
-            $arrOptions = array_merge($arrOptions, $values);
+            $result = array_merge($result, $values);
         }
 
-        return implode(', ', $arrOptions);
+        return implode(', ', $result);
     }
 
     /**

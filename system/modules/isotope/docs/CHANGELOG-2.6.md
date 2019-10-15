@@ -1,6 +1,15 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.3 (2019-10-15)
+---------------------------------
+
+### Fixed
+
+- Correctly calculate taxes for product option surcharges (#2059)
+- Correctly generate product value for options with groups (#2082)
+
+
 Version 2.6.2 (2019-09-17)
 ---------------------------------
 

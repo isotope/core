@@ -23,9 +23,11 @@
       </trans-unit>
       <trans-unit id="ERR.emptyWishlists">
         <source>You have not created any wishlists yet.</source>
+        <target>Non ha ancora creato delle wishlist.</target>
       </trans-unit>
       <trans-unit id="ERR.wishlistNotFound">
         <source>The requested wishlist was not found.</source>
+        <target>La wishlist richiesta non è stata trovata.</target>
       </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
