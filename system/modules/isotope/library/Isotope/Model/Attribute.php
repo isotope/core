@@ -209,10 +209,8 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrField['eval']['path'] = $objFile->path;
         }
 
-        // Contao tries to load an empty tinyMCE config otherwise (see #1111)
-        if ($this->rte == '') {
-            unset($arrField['eval']['rte']);
-        }
+        // Only enable RTE config in the TextArea attribute
+        unset($arrField['eval']['rte']);
 
         if ($this->be_filter) {
             $arrField['filter'] = true;
