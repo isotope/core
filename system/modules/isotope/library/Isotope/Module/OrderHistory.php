@@ -79,7 +79,7 @@ class OrderHistory extends Module
         $objOrders = Order::findBy(
             [
                 'order_status>0',
-                'member=?',
+                '`member`=?',
                 'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'
             ],
             [\FrontendUser::getInstance()->id],
