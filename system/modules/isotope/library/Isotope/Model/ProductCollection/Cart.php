@@ -296,7 +296,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             $cookieHash = null;
 
             $objCart = static::findOneBy(
-                array('`member`=?', 'store_id=?'),
+                array('tl_iso_product_collection.member=?', 'store_id=?'),
                 array(\FrontendUser::getInstance()->id, $storeId)
             );
 

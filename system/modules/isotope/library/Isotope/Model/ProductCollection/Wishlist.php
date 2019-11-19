@@ -52,7 +52,7 @@ class Wishlist extends ProductCollection
         }
 
         return static::findOneBy(
-            array('id=?', '`member`=?', 'store_id=?'),
+            array('id=?', 'tl_iso_product_collection.member=?', 'store_id=?'),
             array((int) $id, \FrontendUser::getInstance()->id, $storeId)
         );
     }

@@ -77,7 +77,7 @@ class WishlistManager extends Module
         /** @var Wishlist[] $wishlists */
         $wishlists = Wishlist::findBy(
             [
-                '`member`=?',
+                'tl_iso_product_collection.member=?',
                 /*'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')',*/
             ],
             [\FrontendUser::getInstance()->id]

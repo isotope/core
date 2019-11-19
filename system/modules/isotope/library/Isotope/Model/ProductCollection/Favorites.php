@@ -47,7 +47,7 @@ class Favorites extends ProductCollection
         $storeId  = (int) $rootPage->iso_store_id;
 
         $collection = static::findOneBy(
-            array('`member`=?', 'store_id=?'),
+            array('tl_iso_product_collection.member=?', 'store_id=?'),
             array(\FrontendUser::getInstance()->id, $storeId)
         );
 
