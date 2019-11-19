@@ -76,7 +76,7 @@ class ProductCache extends \Model
                 'uniqid=?',
                 "(keywords=? OR keywords='')",
                 '(expires>? OR expires=0)',
-                'groups=?'
+                'tl_iso_productcache.groups=?'
             ),
             array(
                 $uniqid,
@@ -122,7 +122,7 @@ class ProductCache extends \Model
         \Database::getInstance()->prepare("
             DELETE FROM tl_iso_productcache
             WHERE
-                (uniqid=? AND groups=? AND (keywords='' OR keywords=?))
+                (uniqid=? AND tl_iso_productcache.groups=? AND (keywords='' OR keywords=?))
                 OR (expires>0 AND expires<$time)
         ")->execute(
             $uniqid,
@@ -209,7 +209,7 @@ class ProductCache extends \Model
         \Database::getInstance()->prepare("
             DELETE FROM tl_iso_productcache
             WHERE
-                (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND groups=?)
+                (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND tl_iso_productcache.groups=?)
                 OR (expires>0 AND expires<$time)
         ")->execute(
             $intPage,
