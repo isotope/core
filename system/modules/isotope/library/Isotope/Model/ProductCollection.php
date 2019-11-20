@@ -2033,15 +2033,18 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
     
     /**
-     * Check if Order has Tax
+     * Check if product collection has tax
+     *
      * @return bool
      */
-    public function hasTax() {
-        foreach($this->getSurcharges() AS $surcharge) {
-            if($surcharge instanceof Tax) {
+    public function hasTax()
+    {
+        foreach ($this->getSurcharges() as $surcharge) {
+            if ($surcharge instanceof Tax) {
                 return true;
             }
         }
+        
         return false;
     }
 }
