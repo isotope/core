@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Gallery;
 
+use Contao\File;
 use Haste\Image\Image;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
@@ -369,6 +370,10 @@ class Standard extends Gallery implements IsotopeGallery
             && $this->{$strType . '_watermark_image'} != ''
             && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
         ) {
+            if (method_exists(File::class, 'createIfDeferred')) {
+                (new File(rawurldecode($strImage)))->createIfDeferred();
+            }
+
             $strImage = Image::addWatermark($strImage, $objWatermark->path, $this->{$strType . '_watermark_position'});
 
             // Apply watermark to the picture image source
@@ -382,7 +387,7 @@ class Standard extends Gallery implements IsotopeGallery
             }
         }
 
-        $arrSize = getimagesize(TL_ROOT . '/' . rawurldecode($strImage));
+        $arrSize = (new File(rawurldecode($strImage)))->imageSize;
 
         if (\is_array($arrSize) && $arrSize[3] !== '') {
             $arrFile[$strType . '_size']      = $arrSize[3];
