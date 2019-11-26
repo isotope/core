@@ -1,13 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.6.4 (2019-11-20)
+Version 2.6.4 (2019-11-26)
 ---------------------------------
 
 - Only enable RTE config in the TextArea attribute
 - Escape MySQL 8 keywords (#2088, #2093)
 - Force image resize for watermark and size calculation (#2085)
 - Helper function to determine if a product collection has tax (#2076)
+- Fixed full group by exception in product sales report (#2069, #2077)
 
 
 Version 2.6.3 (2019-10-15)

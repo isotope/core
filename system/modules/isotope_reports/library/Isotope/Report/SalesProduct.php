@@ -66,12 +66,12 @@ class SalesProduct extends Sales
         $objProducts = \Database::getInstance()->query("
             SELECT
                 IFNULL($groupVariants, i.product_id) AS product_id,
-                IFNULL(p1.name, i.name) AS variant_name,
-                IFNULL(p2.name, i.name) AS product_name,
+                IFNULL(p1.name, ANY_VALUE(i.name)) AS variant_name,
+                IFNULL(p2.name, ANY_VALUE(i.name)) AS product_name,
                 p1.sku AS product_sku,
                 p2.sku AS variant_sku,
                 IF(p1.pid=0, p1.type, p2.type) AS type,
-                i.configuration AS product_configuration,
+                ANY_VALUE(i.configuration) AS product_configuration,
                 SUM(i.quantity) AS quantity,
                 SUM(i.tax_free_price * i.quantity) AS total,
                 $dateGroup AS dateGroup
