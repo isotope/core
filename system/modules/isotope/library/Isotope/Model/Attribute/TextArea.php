@@ -28,8 +28,9 @@ class TextArea extends Attribute
 
         $arrData['fields'][$this->field_name]['sql'] = 'text NULL';
 
-        // Textarea cannot be w50
+        // Configure for rich text editor
         if ($this->rte != '') {
+            $arrData['fields'][$this->field_name]['eval']['rte'] = $this->rte;
             $arrData['fields'][$this->field_name]['eval']['tl_class'] = 'clr';
         }
     }

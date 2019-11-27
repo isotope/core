@@ -4055,3 +4055,13 @@ $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MV'] = 'Masvingo';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MN'] = 'Matabeleland North';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MS'] = 'Matabeleland South';
 $GLOBALS['TL_LANG']['DIV']['zw']['ZW-MI'] = 'Midlands';
+
+
+$GLOBALS['TL_LANG']['DIV']['ax']['AX-AX'] = 'Åland Islands';
+$GLOBALS['TL_LANG']['DIV']['cw']['CW-CW'] = 'Curaçao';
+$GLOBALS['TL_LANG']['DIV']['gg']['GG-GG'] = 'Guernsey';
+$GLOBALS['TL_LANG']['DIV']['im']['IM-IM'] = 'Isle of Man';
+$GLOBALS['TL_LANG']['DIV']['je']['JE-JE'] = 'Jersey';
+$GLOBALS['TL_LANG']['DIV']['rs']['RS-RS'] = 'Serbia';
+$GLOBALS['TL_LANG']['DIV']['mf']['MF-MF'] = 'St. Martin';
+$GLOBALS['TL_LANG']['DIV']['sx']['SX-SX'] = 'Sint Maarten';

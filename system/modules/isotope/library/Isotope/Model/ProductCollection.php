@@ -2031,4 +2031,20 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
         $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $quantity) : 0);
     }
+    
+    /**
+     * Check if product collection has tax
+     *
+     * @return bool
+     */
+    public function hasTax()
+    {
+        foreach ($this->getSurcharges() as $surcharge) {
+            if ($surcharge instanceof Tax) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
