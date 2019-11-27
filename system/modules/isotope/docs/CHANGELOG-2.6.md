@@ -10,6 +10,7 @@ Version 2.6.4 (2019-11-27)
 - Helper function to determine if a product collection has tax (#2076)
 - Fixed full group by exception in product sales report (#2069, #2077)
 - Workaround for Contao bug to toggle product group nodes (#2087)
+- Added some missing subdivisions (#2078)
 
 
 Version 2.6.3 (2019-10-15)
