@@ -295,12 +295,22 @@ class ProductGroupSelector extends \Widget
         $session = $this->Session->getData();
 
         $flag   = substr($this->strField, 0, 2) . 'g';
-        $node   = 'tree_' . $this->strTable . '_' . $this->strField;
+        $node   = $this->strTable.'_tree';
         $xtnode = 'tree_' . $this->strTable . '_' . $this->strName;
 
         // Get session data and toggle nodes
         if (\Input::get($flag . 'tg')) {
             $session[$node][\Input::get($flag . 'tg')] = (isset($session[$node][\Input::get($flag . 'tg')]) && $session[$node][\Input::get($flag . 'tg')] == 1) ? 0 : 1;
+
+            // Temporary fix for https://github.com/contao/contao/pull/1020
+            if (\method_exists(\System::class, 'getContainer')) {
+                \System::getContainer()->get('database_connection')->update(
+                    'tl_user',
+                    ['session' => serialize($session)],
+                    ['id' => \BackendUser::getInstance()->id]
+                );
+            }
+
             $this->Session->setData($session);
             \Controller::redirect(preg_replace('/(&(amp;)?|\?)' . $flag . 'tg=[^& ]*/i', '', \Environment::get('request')));
         }
@@ -341,7 +351,7 @@ class ProductGroupSelector extends \Widget
             $folderAttribute = '';
             $img             = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt             = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="' . \Backend::addToUrl($flag . 'tg=' . $id) . '" title="' . specialchars($alt) . '" onclick="Backend.getScrollOffset(); return Isotope.toggleProductGroupTree(this, \'' . $xtnode . '_' . $id . '\', \'' . $this->strField . '\', \'' . $this->strName . '\', ' . $level . ');">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
+            $return .= '<a href="' . \Backend::addToUrl($flag . 'tg=' . $id) . '" title="' . specialchars($alt) . '" onclick="Backend.getScrollOffset(); AjaxRequest.displayBox(Contao.lang.loading + \' …\')">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
         }
 
         $callback = $GLOBALS['TL_DCA']['tl_iso_group']['list']['label']['label_callback'];
