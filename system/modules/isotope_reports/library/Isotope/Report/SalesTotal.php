@@ -55,7 +55,6 @@ class SalesTotal extends Sales
             SELECT
                 c.id AS config_id,
                 c.currency,
-                o.locked AS date,
                 COUNT(o.id) AS total_orders,
                 COUNT(i.id) AS total_products,
                 COUNT(DISTINCT o.id) AS total_orders,

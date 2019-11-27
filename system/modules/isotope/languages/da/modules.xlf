@@ -87,6 +87,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.0">
         <source>Favorites</source>
+        <target>Favoritter</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.1">
         <source>Renders the list of products on the favorites list.</source>
@@ -133,6 +134,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.0">
         <source>Wishlist Manager</source>
+        <target>Håndter ønskeliste</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
         <source>Allows the current member to manage it's wishlists.</source>
@@ -291,6 +293,7 @@
       </trans-unit>
       <trans-unit id="IMD.notifications.0">
         <source>Notifications</source>
+        <target>Notifikationer</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.1">
         <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
@@ -303,9 +306,11 @@
       </trans-unit>
       <trans-unit id="IMD.miscellaneous">
         <source>Miscellaneous</source>
+        <target>Diverse</target>
       </trans-unit>
       <trans-unit id="IMD.labels.0">
         <source>Translations</source>
+        <target>Oversættelser</target>
       </trans-unit>
       <trans-unit id="IMD.labels.1">
         <source>Replace given labels for certain languages.</source>
