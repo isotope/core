@@ -331,7 +331,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['product_types_condition'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('onlyAvailable', 'allAvailable', 'oneAvailable'),
+            'options'               => array('onlyAvailable', 'notAvailable', 'allAvailable', 'oneAvailable'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
