@@ -11,12 +11,21 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Contao\Backend;
+use Contao\BackendTemplate;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Environment;
+use Contao\Session;
+use Contao\System;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\ProductCollection\Order;
+use Isotope\Model\ProductCollectionLog;
 use Isotope\Module\OrderDetails;
 
 
@@ -265,6 +274,104 @@ class Callback extends \Backend
     }
 
     /**
+     * Generate the "show" action
+     *
+     * @param DataContainer $dc
+     *
+     * @return string
+     */
+    public function showAction(DataContainer $dc)
+    {
+        if (($order = Order::findByPk($dc->id)) === null) {
+            Backend::redirect('contao/main.php?act=error');
+        }
+
+        $logTable = ProductCollectionLog::getTable();
+
+        // Load the logs data container
+        System::loadLanguageFile($logTable);
+        Controller::loadDataContainer($logTable);
+
+        // Purge obsolete records
+        Database::getInstance()->prepare("DELETE FROM $logTable WHERE tstamp=? AND pid=?")->execute(0, $dc->id);
+
+        // Fix the back button in log create view
+        $session = Session::getInstance()->get('referer');
+        $session[\Input::get('ref')]['current'] = Environment::get('requestUri');
+        $session[\Input::get('ref')][$logTable] = Environment::get('requestUri');
+        Session::getInstance()->set('referer', $session);
+
+        // Revise current record
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC', 'limit' => 2])) !== null && $logModels->count() === 2) {
+            $currentLogModel = $logModels->first();
+            $currentLogData = array_diff_key($currentLogModel->row(), array_flip(['id', 'tstamp', 'author']));
+            $previousLogData = array_diff_key($logModels->last()->row(), array_flip(['id', 'tstamp', 'author']));
+
+            if (count(array_diff($currentLogData, $previousLogData)) === 0) {
+                $currentLogModel->delete();
+            }
+        }
+
+        $template = new BackendTemplate('be_iso_order_show');
+        $template->table = $dc->table;
+        $template->fieldsets = Session::getInstance()->get('fieldset_states')[$dc->table];
+        $template->id = $order->getId();
+        $template->backUrl = 'contao/main.php?do=iso_orders&ref=' . \Input::get('ref');
+        $template->uniqid = $order->getUniqueId();
+        $template->orderDetails = $this->generateOrderDetails($dc);
+        $template->emailDetails = $this->generateEmailData($dc);
+        $template->billingAddressDetails = $this->generateBillingAddressData($dc);
+        $template->shippingAddressDetails = $this->generateShippingAddressData($dc);
+        $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
+
+        $logs = [];
+
+        // Generate log entries
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
+            $logFields = [];
+
+            foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {
+                if (isset($config['eval']['showInOrderView']) && $config['eval']['showInOrderView']) {
+                    $logFields[] = $name;
+                }
+            }
+
+            $previousLogModel = null;
+
+            /** @var ProductCollectionLog $logModel */
+            foreach ($logModels as $logModel) {
+                $log = [];
+
+                foreach ($logFields as $logField) {
+                    // Skip the empty values for the first log
+                    if (count($logs) === 0 && !$logModel->$logField) {
+                        continue;
+                    }
+
+                    // Skip the notification fields if no notification was sent
+                    if (in_array($logField, ['notification', 'notification_shipping_tracking', 'notification_customer_notes'], true) && !$logModel->sendNotification) {
+                        continue;
+                    }
+
+                    // Skip the values that did not change since last log
+                    if ($previousLogModel !== null && $previousLogModel->$logField === $logModel->$logField && !in_array($logField, ['date', 'author'], true)) {
+                        continue;
+                    }
+
+                    $log[Format::dcaLabel($logTable, $logField)] = $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–';
+                }
+
+                $logs[] = $log;
+                $previousLogModel = $logModel;
+            }
+        }
+
+        $template->logs = $logs;
+
+        return $template->parse();
+    }
+
+    /**
      * Return the payment button if a payment method is available
      *
      * @param array  $row
@@ -382,7 +489,7 @@ class Callback extends \Backend
             'label'      => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_choice'],
             'inputType'  => 'select',
             'foreignKey' => 'tl_iso_document.name',
-            'eval'       => array('mandatory' => true)
+            'eval'       => array('mandatory' => true),
         );
 
         $objSelect = new \SelectMenu(\SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));
@@ -420,63 +527,5 @@ class Callback extends \Backend
 
 </div>
 </form>';
-    }
-
-    /**
-     * Trigger order status update when changing the status in the backend
-     *
-     * @param   string
-     * @param   DataContainer
-     *
-     * @return  string
-     * @link    http://www.contao.org/callbacks.html#save_callback
-     */
-    public function updateOrderStatus($varValue, $dc)
-    {
-        $GLOBALS['ISO_ORDER_STATUS'] = false;
-
-        if ($dc->activeRecord && $dc->activeRecord->order_status != $varValue) {
-            $GLOBALS['ISO_ORDER_STATUS'] = array($dc->activeRecord->order_status => $varValue);
-        }
-
-        return $varValue;
-    }
-
-    /**
-     * Execute the saveCollection hook when a collection is saved
-     * @param   object
-     * @return  void
-     */
-    public function executeSaveHook($dc)
-    {
-        if (($objOrder = Order::findByPk($dc->id)) !== null) {
-            $objOrder->refresh();
-
-            if ('BE' === TL_MODE) {
-                if ($objOrder->pageId == 0) {
-                    unset($GLOBALS['objPage']);
-                }
-
-                Frontend::loadOrderEnvironment($objOrder);
-            }
-
-            // Status update has been cancelled, do not update
-            if (false !== $GLOBALS['ISO_ORDER_STATUS']) {
-                foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
-                    $objOrder->order_status = $from;
-                    if (!$objOrder->updateOrderStatus($to)) {
-                        // Will save the old status set in the line above
-                        $objOrder->save();
-                    }
-                }
-            }
-
-            // !HOOK: add additional functionality when saving collection
-            if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && \is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
-                foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
-                    \System::importStatic($callback[0])->{$callback[1]}($objOrder);
-                }
-            }
-        }
     }
 }

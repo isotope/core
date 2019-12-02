@@ -20,6 +20,7 @@ use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
+use Isotope\Model\ProductCollectionLog;
 use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
@@ -261,19 +262,34 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     /**
      * Update the status of this order and trigger actions (email & hook)
      *
-     * @param int $intNewStatus
+     * @param int|array $updates
      *
      * @return bool
      */
-    public function updateOrderStatus($intNewStatus)
+    public function updateOrderStatus($updates, $blnUpdateOnly = false)
     {
-        // Status already set, nothing to do
-        if ($this->order_status == $intNewStatus) {
+        // For BC reasons the parameter can be the new order status ID
+        if (!is_array($updates)) {
+            $updates = ['order_status' => $updates];
+        }
+
+        $previous = [];
+        $hasChanges = false;
+        foreach ($updates as $k => $v) {
+            $previous[$k] = $this->{$k};
+            $hasChanges = $hasChanges ?: $v !== $previous[$k];
+        }
+
+        if (!isset($updates['order_status'])) {
+            throw new \LogicException('You must update the order status when calling Order::updateOrderStatus()');
+        }
+
+        if (!$hasChanges) {
             return true;
         }
 
         /** @var OrderStatus $objNewStatus */
-        $objNewStatus = OrderStatus::findByPk($intNewStatus);
+        $objNewStatus = OrderStatus::findByPk($updates['order_status']);
 
         if (null === $objNewStatus) {
             return false;
@@ -284,7 +300,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
-                $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus);
+                $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus, $updates);
 
                 if ($blnCancel === true) {
                     return false;
@@ -293,56 +309,71 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         // Add the payment date if there is none
-        if ($objNewStatus->isPaid() && $this->date_paid == '') {
-            $this->date_paid = time();
+        if ($objNewStatus->isPaid() && $this->date_paid == '' && !isset($updates['date_paid'])) {
+            $updates['date_paid'] = time();
         }
 
-        // Trigger notification
-        $blnNotificationError = null;
-        foreach (array_filter(explode(',', $objNewStatus->notification)) as $notificationId) {
-            $arrTokens = $this->getNotificationTokens($notificationId);
+        if (!$blnUpdateOnly) {
+            // Trigger notification
+            $blnNotificationError = null;
+            foreach (array_filter(explode(',', $objNewStatus->notification)) as $notificationId) {
+                $arrTokens = $this->getNotificationTokens($notificationId);
 
-            // Override order status and save the old one to the tokens too
-            $arrTokens['order_status_id']       = $objNewStatus->id;
-            $arrTokens['order_status']          = $objNewStatus->getName();
-            $arrTokens['order_status_old']      = $this->getStatusLabel();
-            $arrTokens['order_status_id_old']   = $this->order_status;
+                // Override order status and save the old one to the tokens too
+                $arrTokens['order_status_id']       = $objNewStatus->id;
+                $arrTokens['order_status']          = $objNewStatus->getName();
+                $arrTokens['order_status_old']      = $this->getStatusLabel();
+                $arrTokens['order_status_id_old']   = $this->order_status;
 
-            $blnNotificationError = true;
+                $blnNotificationError = true;
 
-            /** @var Notification $objNotification */
-            if (($objNotification = Notification::findByPk($notificationId)) !== null) {
-                $arrResult = $objNotification->send($arrTokens, $this->language);
+                /** @var Notification $objNotification */
+                if (($objNotification = Notification::findByPk($notificationId)) !== null) {
+                    $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                if (\in_array(false, $arrResult, true)) {
-                    $blnNotificationError = true;
-                    \System::log(
-                        'Error sending status update notification for order ID ' . $this->id,
-                        __METHOD__,
-                        TL_ERROR
-                    );
-                } elseif (\count($arrResult) > 0) {
-                    $blnNotificationError = false;
+                    if (\in_array(false, $arrResult, true)) {
+                        $blnNotificationError = true;
+                        \System::log(
+                            'Error sending status update notification for order ID ' . $this->id,
+                            __METHOD__,
+                            TL_ERROR
+                        );
+                    } elseif (\count($arrResult) > 0) {
+                        $blnNotificationError = false;
+                    }
+                } else {
+                    \System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
                 }
-            } else {
-                \System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
             }
-        }
 
-        if ('BE' === TL_MODE) {
-            \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+            if ('BE' === TL_MODE) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
-            if ($blnNotificationError === true) {
-                \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
-            } elseif ($blnNotificationError === false) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                if ($blnNotificationError === true) {
+                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                } elseif ($blnNotificationError === false) {
+                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                }
             }
         }
 
         // Store old status and set the new one
-        $intOldStatus       = $this->order_status;
-        $this->order_status = $objNewStatus->id;
+        $intOldStatus = $this->order_status;
+        foreach ($updates as $k => $v) {
+            $this->{$k} = $v;
+        }
         $this->save();
+
+        // Add a log entry
+        if (!$blnUpdateOnly) {
+            $log = new ProductCollectionLog();
+            $log->pid = $this->id;
+            $log->tstamp = time();
+            $log->order_status = $this->order_status;
+            $log->date_paid = $this->date_paid;
+            $log->date_shipped = $this->date_shipped;
+            $log->save();
+        }
 
         // !HOOK: order status has been updated
         if (isset($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
