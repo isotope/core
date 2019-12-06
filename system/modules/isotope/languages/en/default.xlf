@@ -875,6 +875,12 @@
       <trans-unit id="ATTR.fileTree.1">
         <source>A file tree for single or multiple files and folders.</source>
       </trans-unit>
+      <trans-unit id="ATTR.pageTree.0">
+        <source>Page tree</source>
+      </trans-unit>
+      <trans-unit id="ATTR.pageTree.1">
+        <source>Pick one or multiple pages from the site structure.</source>
+      </trans-unit>
       <trans-unit id="ATTR.downloads.0">
         <source>Downloads</source>
       </trans-unit>

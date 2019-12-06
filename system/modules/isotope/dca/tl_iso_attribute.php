@@ -138,6 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'conditionalselect'         => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple,conditionField;{search_filters_legend},fe_filter,fe_sorting',
         'mediaManager'              => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,mandatory',
         'fileTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
+        'pageTree'                  => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,mandatory,multilingual,rootNodes',
         'downloads'                 => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},fieldType,sortBy,path,mandatory,multilingual,files,isGallery',
         'upload'                    => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},extensions,maxlength,mandatory;{store_legend:hide},checkoutRelocate',
         'media'                     => '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},path,mandatory,multilingual',
@@ -476,7 +477,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'inputType'             => 'radio',
             'options'               => array('checkbox', 'radio'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_attribute'],
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(8) NOT NULL default ''",
         ),
         'files' => array
@@ -521,6 +522,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'tl_class'=>'clr'),
             'sql'                   =>  "binary(16) NULL",
+        ),
+        'rootNodes' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['rootNodes'],
+            'exclude'               => true,
+            'inputType'             => 'pageTree',
+            'eval'                  => array('multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr', 'rootNodes'=>[84]),
+            'sql'                   =>  "blob NULL",
         ),
         'checkoutRelocate' => array
         (
