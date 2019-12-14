@@ -320,4 +320,32 @@ class Callback extends Permission
             $objAutomator->convertCurrencies($dc->id);
         }
     }
+
+    /**
+     * Add an color to each record
+     *
+     * @param array  $row
+     * @param string $label
+     *
+     * @return string
+     */
+    public function addColoredOrderStatus($row, $label)
+    {
+        $colorStyles = 'padding: 1px 3px;vertical-align: middle';
+
+        if ($row['color'] != '') {
+            $colorStyles .= ';background-color:#' . $row['color'];
+
+            $arrRGB = array_map('hexdec', str_split($row['color'], 2));
+            $hue = 1 - (0.299 * $arrRGB[0] + 0.587 * $arrRGB[1] + 0.114 * $arrRGB[2]) / 255;
+
+            if ($hue > 0.5) {
+                $colorStyles .= ';color:#fff';
+            }
+
+            $colorStyles = sprintf(' style="%s"', $colorStyles);
+        }
+
+        return sprintf('<span%s>%s</span>', $colorStyles, $label);
+    }
 }

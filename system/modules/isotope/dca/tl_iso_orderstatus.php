@@ -53,6 +53,7 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         (
             'fields'                => array('name'),
             'format'                => '%s',
+            'label_callback'        => array('Isotope\Backend\Config\Callback', 'addColoredOrderStatus'),
         ),
         'global_operations' => array
         (
