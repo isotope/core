@@ -60,6 +60,11 @@ class Worldpay extends Postsale
             $this->postsaleError();
         }
 
+        if ($objOrder->isLocked()) {
+            \System::log('Checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            $this->postsaleSuccess($objOrder);
+        }
+
         if ('Y' === \Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
                 \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
@@ -159,7 +164,7 @@ class Worldpay extends Postsale
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>The Tulle Factory</title>
+<title>Isotope eCommerce</title>
 <meta http-equiv="refresh" content="0; url=' . $strUrl . '">
 </head>
 <body>
@@ -186,7 +191,7 @@ Redirecting back to shop...
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>The Tulle Factory</title>
+<title>Isotope eCommerce</title>
 <meta http-equiv="refresh" content="0; url=' . $strUrl . '">
 </head>
 <body>

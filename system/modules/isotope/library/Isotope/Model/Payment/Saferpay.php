@@ -43,6 +43,11 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             return;
         }
 
+        if ($objOrder->isLocked()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            return;
+        }
+
         $arrPayment = deserialize($objOrder->payment_data, true);
 
         if (!$this->saferpay_username) {

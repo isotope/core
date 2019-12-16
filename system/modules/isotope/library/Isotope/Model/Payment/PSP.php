@@ -117,8 +117,13 @@ abstract class PSP extends Payment implements IsotopePostsale
                 return false;
         }
 
+        if ($objOrder->isLocked()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            return true;
+        }
+
         if (!$objOrder->checkout()) {
-            \System::log('Post-Sale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return false;
         }
 

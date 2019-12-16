@@ -103,17 +103,24 @@ class EPay extends Payment implements IsotopePostsale
             return;
         }
 
-        if ($this->validatePayment($objOrder)) {
-            if (!$objOrder->checkout()) {
-                \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
-                return;
-            }
-
-            $objOrder->setDatePaid(time());
-            $objOrder->updateOrderStatus($this->new_order_status);
-
-            $objOrder->save();
+        if (!$this->validatePayment($objOrder)) {
+            return;
         }
+
+        if ($objOrder->isLocked()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        if (!$objOrder->checkout()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            return;
+        }
+
+        $objOrder->setDatePaid(time());
+        $objOrder->updateOrderStatus($this->new_order_status);
+
+        $objOrder->save();
     }
 
     /**
