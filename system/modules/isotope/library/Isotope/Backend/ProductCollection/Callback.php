@@ -13,6 +13,7 @@ namespace Isotope\Backend\ProductCollection;
 
 use Contao\Backend;
 use Contao\BackendTemplate;
+use Contao\BackendUser;
 use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
@@ -322,7 +323,10 @@ class Callback extends \Backend
         $template->emailDetails = $this->generateEmailData($dc);
         $template->billingAddressDetails = $this->generateBillingAddressData($dc);
         $template->shippingAddressDetails = $this->generateShippingAddressData($dc);
-        $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
+
+        if (BackendUser::getInstance()->canEditFieldsOf('tl_iso_product_collection_log')) {
+            $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
+        }
 
         $logs = [];
 

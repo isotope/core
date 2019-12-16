@@ -5,9 +5,11 @@
 <fieldset id="pal_status_legend" class="tl_tbox<?php if (!$this->fieldsets['status_legend']): ?> collapsed<?php endif; ?>" style="padding-bottom: 0">
     <legend onclick="AjaxRequest.toggleFieldset(this,'status_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['status_legend'] ?></legend>
 
+    <?php if ($this->createLogUrl): ?>
     <div style="margin:1%;">
         <a href="<?= ampersand($this->createLogUrl) ?>" title="<?= specialchars($GLOBALS['TL_LANG'][$this->table]['updateOrderStatus']) ?>" class="header_new"><?= $GLOBALS['TL_LANG'][$this->table]['updateOrderStatus'] ?></a>
     </div>
+    <?php endif; ?>
 
     <div>
         <?php if ($this->logs): ?>
