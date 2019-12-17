@@ -65,7 +65,7 @@ class Expercash extends Payment implements IsotopePostsale
             \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
 
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }

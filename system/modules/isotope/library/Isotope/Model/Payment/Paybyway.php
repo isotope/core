@@ -118,7 +118,7 @@ class Paybyway extends Payment implements IsotopePostsale
             Checkout::redirectToStep('failed');
         }
 
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             \System::log('Paybyway checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }

@@ -66,7 +66,7 @@ class Paypal extends Postsale
             return;
         }
 
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
             return;
         }

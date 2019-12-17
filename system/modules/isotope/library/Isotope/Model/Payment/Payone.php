@@ -63,7 +63,7 @@ class Payone extends Postsale
             die('TSOK');
         }
 
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             \System::log('Postsale checkout for Order ID "' . \Input::post('reference') . '" already completed', __METHOD__, TL_ERROR);
             die('TSOK');
         }

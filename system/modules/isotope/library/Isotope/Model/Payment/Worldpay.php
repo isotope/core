@@ -60,7 +60,7 @@ class Worldpay extends Postsale
             $this->postsaleError();
         }
 
-        if ($objOrder->isLocked()) {
+        if ($objOrder->isCheckoutComplete()) {
             \System::log('Checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             $this->postsaleSuccess($objOrder);
         }
