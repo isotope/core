@@ -5,6 +5,7 @@ Version 2.6.5 (2020-01-??)
 --------------------------
 
 - Do not update order on postsale if it's already locked
+- Fix incorrect surcharge calculation for default price (#2059)
 
 
 Version 2.6.4 (2019-11-27)
