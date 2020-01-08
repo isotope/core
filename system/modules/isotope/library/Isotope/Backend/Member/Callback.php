@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Member;
 
+use Contao\Database;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Cart;
 

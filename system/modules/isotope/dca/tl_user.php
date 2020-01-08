@@ -31,6 +31,7 @@
     ->addField('iso_configp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
     ->addField('iso_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
     ->addField('iso_groupp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_member_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('extend', 'tl_user')
     ->applyToPalette('custom', 'tl_user')
 ;
@@ -194,5 +195,15 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_groupp'] = array
     'options'               => array('create', 'delete', 'rootPaste'),
     'reference'             => &$GLOBALS['TL_LANG']['MSC'],
     'eval'                  => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'sql'                   => 'blob NULL',
+);
+
+$GLOBALS['TL_DCA']['tl_user']['fields']['iso_member_groups'] = array
+(
+    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_member_groups'],
+    'exclude'               => true,
+    'inputType'             => 'checkbox',
+    'options_callback'      => array('\Isotope\Backend\User\Callback', 'getMemberGroups'),
+    'eval'                  => array('multiple'=>true, 'isAssociative' => true, 'tl_class'=>'clr'),
     'sql'                   => 'blob NULL',
 );

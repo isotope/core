@@ -92,6 +92,15 @@
       <trans-unit id="tl_user.iso_groupp.1">
         <source>Here you can define the product group permissions.</source>
       </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+      </trans-unit>
       <trans-unit id="tl_user.isotope_legend">
         <source>Isotope eCommerce</source>
       </trans-unit>

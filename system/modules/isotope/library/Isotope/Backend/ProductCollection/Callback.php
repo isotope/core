@@ -253,12 +253,45 @@ class Callback extends \Backend
             \Controller::redirect('contao/main.php?act=error');
         }
 
-        $arrIds     = array(0);
-        $arrConfigs = $this->User->iso_configs;
+        $arrIds = [0];
+        $arrWhere = [];
 
+        $arrConfigs = $this->User->iso_configs;
         if (\is_array($arrConfigs) && !empty($arrConfigs)) {
+            $arrWhere[] = 'config_id IN ('.implode(',', $arrConfigs).')';
+        }
+
+        $arrGroups = $this->User->iso_member_groups;
+        if (\is_array($arrGroups) && !empty($arrGroups)) {
+            $blnGuests = \in_array(-1, $arrGroups, false);
+            $arrLike = [];
+            foreach ($arrGroups as $id) {
+                if ($id == -1) {
+                    continue;
+                }
+
+                $arrLike[] = "tl_member.groups LIKE '%\"$id\"%'";
+                $arrLike[] = "tl_member.groups LIKE '%i:$id;%'";
+            }
+
+            $memberIds = \Database::getInstance()->execute(
+                'SELECT id FROM tl_member WHERE '.implode(' OR ', $arrLike)
+            )->fetchEach('id');
+
+            if ($blnGuests) {
+                array_unshift($memberIds, 0);
+            }
+
+            if (empty($memberIds)) {
+                $arrWhere[] = false;
+            } else {
+                $arrWhere[] = 'member IN ('.implode(',', $memberIds).')';
+            }
+        }
+
+        if (!empty($arrWhere) && !\in_array(false, $arrWhere, true)) {
             $objOrders = \Database::getInstance()->query(
-                'SELECT id FROM tl_iso_product_collection WHERE config_id IN (' . implode(',', $arrConfigs) . ')'
+                'SELECT id FROM tl_iso_product_collection WHERE '.implode(' AND ', $arrWhere)
             );
 
             if ($objOrders->numRows) {
