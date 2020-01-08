@@ -43,6 +43,9 @@ use NotificationCenter\Model\Notification;
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {
+    const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
+    const STATUS_UPDATE_SKIP_LOG = 2;
+
 
     /**
      * @inheritdoc
@@ -263,10 +266,11 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      * Update the status of this order and trigger actions (email & hook)
      *
      * @param int|array $updates
+     * @param int $flags Order::STATUS_UPDATE_SKIP_NOTIFICATION and/or Order::STATUS_UPDATE_SKIP_LOG
      *
      * @return bool
      */
-    public function updateOrderStatus($updates, $blnUpdateOnly = false)
+    public function updateOrderStatus($updates, $flags = 0)
     {
         // For BC reasons the parameter can be the new order status ID
         if (!is_array($updates)) {
@@ -313,7 +317,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $updates['date_paid'] = time();
         }
 
-        if (!$blnUpdateOnly) {
+        if (!($flags & static::STATUS_UPDATE_SKIP_NOTIFICATION)) {
             // Trigger notification
             $blnNotificationError = null;
             foreach (array_filter(explode(',', $objNewStatus->notification)) as $notificationId) {
@@ -365,7 +369,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $this->save();
 
         // Add a log entry
-        if (!$blnUpdateOnly) {
+        if (!($flags & static::STATUS_UPDATE_SKIP_LOG)) {
             $log = new ProductCollectionLog();
             $log->pid = $this->id;
             $log->tstamp = time();

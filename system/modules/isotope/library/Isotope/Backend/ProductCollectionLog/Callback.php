@@ -81,7 +81,7 @@ class Callback
                 'notes' => $dc->activeRecord->notes,
             ];
 
-            if (!$order->updateOrderStatus($updates, true)) {
+            if (!$order->updateOrderStatus($updates, Order::STATUS_UPDATE_SKIP_LOG)) {
                 Database::getInstance()->prepare("DELETE FROM {$dc->table} WHERE id=?")->execute($dc->id);
                 return;
             }
