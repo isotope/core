@@ -9,6 +9,12 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+// https://github.com/isotope/core/issues/1931
+if (version_compare(VERSION, '4', '>=') && !class_exists('Database\Result'))
+{
+    class_alias(\Contao\Database\Result::class, 'Database\Result');
+}
+
 /**
  * Backend modules
  */
