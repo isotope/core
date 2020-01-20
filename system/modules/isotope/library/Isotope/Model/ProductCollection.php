@@ -1011,7 +1011,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             && \is_array($GLOBALS['ISO_HOOKS']['addProductToCollection'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addProductToCollection'] as $callback) {
-                $intQuantity = \System::importStatic($callback[0])->{$callback[1]}($objProduct, $intQuantity, $this);
+                $intQuantity = \System::importStatic($callback[0])->{$callback[1]}($objProduct, $intQuantity, $this, $arrConfig);
             }
         }
 
@@ -1070,7 +1070,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             && \is_array($GLOBALS['ISO_HOOKS']['postAddProductToCollection'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postAddProductToCollection'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($objItem, $intQuantity, $this);
+                \System::importStatic($callback[0])->{$callback[1]}($objItem, $intQuantity, $this, $arrConfig);
             }
         }
 
@@ -1539,7 +1539,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             && \is_array($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['addCollectionToTemplate'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $arrItems, $this);
+                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $arrItems, $this, $arrConfig);
             }
         }
     }
@@ -2031,7 +2031,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
         $item->tax_free_price = (float) ($product->getPrice($this) ? $product->getPrice($this)->getNetAmount((int) $quantity) : 0);
     }
-    
+
     /**
      * Check if product collection has tax
      *
@@ -2044,7 +2044,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                 return true;
             }
         }
-        
+
         return false;
     }
 }
