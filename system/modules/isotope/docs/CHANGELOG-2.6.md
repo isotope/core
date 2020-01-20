@@ -8,6 +8,7 @@ Version 2.6.5 (2020-01-??)
 - Fix incorrect surcharge calculation for default price (#2059)
 - Fix MariaDB compatibility in product sales report (#2102)
 - Pass config array to hooks in product collection (#2062)
+- Fixed Contao 4 compatibility problem (#1931)
 
 
 Version 2.6.4 (2019-11-27)
