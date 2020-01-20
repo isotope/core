@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.6.5 (2020-01-??)
+Version 2.6.5 (2020-01-20)
 --------------------------
 
 - Do not update order on postsale if it's already locked
