@@ -1,8 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.5 (2020-01-20)
+--------------------------
+
+- Do not update order on postsale if it's already locked
+- Fix incorrect surcharge calculation for default price (#2059)
+- Fix MariaDB compatibility in product sales report (#2102)
+- Pass config array to hooks in product collection (#2062)
+- Fixed Contao 4 compatibility problem (#1931)
+
+
 Version 2.6.4 (2019-11-27)
----------------------------------
+--------------------------
 
 - Only enable RTE config in the TextArea attribute
 - Escape MySQL 8 keywords (#2088, #2093)
@@ -14,7 +24,7 @@ Version 2.6.4 (2019-11-27)
 
 
 Version 2.6.3 (2019-10-15)
----------------------------------
+--------------------------
 
 ### Fixed
 
@@ -23,7 +33,7 @@ Version 2.6.3 (2019-10-15)
 
 
 Version 2.6.2 (2019-09-17)
----------------------------------
+--------------------------
 
 ### Fixed
 
@@ -35,7 +45,7 @@ Version 2.6.2 (2019-09-17)
 
 
 Version 2.6.1 (2019-08-28)
----------------------------------
+--------------------------
 
 ### Fixed
 
@@ -43,7 +53,7 @@ Version 2.6.1 (2019-08-28)
 
 
 Version 2.6.0 (2019-08-27)
----------------------------------
+--------------------------
 
 ### New
 

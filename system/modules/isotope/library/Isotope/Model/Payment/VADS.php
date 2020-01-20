@@ -73,6 +73,11 @@ abstract class VADS extends Postsale
             return;
         }
 
+        if ($objOrder->isCheckoutComplete()) {
+            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            return;
+        }
+
         if (!$objOrder->checkout()) {
             \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 

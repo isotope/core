@@ -11,11 +11,12 @@
 
 namespace Isotope\Model;
 
+use Contao\Database\Result;
 
 /**
  * Class TypeAgent
- *
  * Parent class for Isotope Type Agent models.
+ *
  * @copyright  Isotope eCommerce Workgroup 2009-2012
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
@@ -41,7 +42,7 @@ abstract class TypeAgent extends \Model
      *
      * @throws \RuntimeException if model does not have a valid type
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(Result $objResult = null)
     {
         parent::__construct($objResult);
 
@@ -245,11 +246,9 @@ abstract class TypeAgent extends \Model
     /**
      * Build model based on database result
      *
-     * @param \Database\Result $objResult
-     *
      * @return \Model
      */
-    public static function createModelFromDbResult(\Database\Result $objResult)
+    public static function createModelFromDbResult(Result $objResult)
     {
         $strClass = '';
 
@@ -292,12 +291,11 @@ abstract class TypeAgent extends \Model
     /**
      * Create array of models and return a collection of them
      *
-     * @param \Database\Result $objResult
-     * @param string           $strTable
+     * @param string $strTable
      *
      * @return \Model\Collection
      */
-    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable = null)
+    protected static function createCollectionFromDbResult(Result $objResult, $strTable = null)
     {
         // @deprecated Remove in Isotope 3.0 (only for backward compatibility Isotope < 2.1.2)
         if (null === $strTable) {
@@ -322,13 +320,11 @@ abstract class TypeAgent extends \Model
     /**
      * Build model based on database result
      *
-     * @param \Database\Result $objResult
-     *
      * @return \Model
      *
      * @deprecated use createModelFromDbResult in Contao 3.3
      */
-    public static function buildModelType(\Database\Result $objResult = null)
+    public static function buildModelType(Result $objResult = null)
     {
         if (null === $objResult) {
             return null;

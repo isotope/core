@@ -20,4 +20,5 @@ while (($path = \dirname($path)) && $path !== '/') {
     }
 }
 
+header('HTTP/1.0 500 Internal Server Error');
 die('Contao initialize.php was not found');
