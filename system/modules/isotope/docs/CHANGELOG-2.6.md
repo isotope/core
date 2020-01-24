@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.6 (2020-01-24)
+--------------------------
+
+- Generate cryptically secure unique ID for guest carts
+
+
 Version 2.6.5 (2020-01-20)
 --------------------------
 

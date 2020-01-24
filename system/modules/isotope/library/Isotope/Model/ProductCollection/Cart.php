@@ -238,8 +238,8 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     {
         parent::save();
 
-        // Create the guest cart cookie
-        if (!$this->member && !headers_sent() && '' === (string) \Input::cookie(static::$strCookie)) {
+        // Create/renew the guest cart cookie
+        if (!$this->member && !headers_sent()) {
             \System::setCookie(
                 static::$strCookie,
                 $this->uniqid,
@@ -290,29 +290,24 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         $time       = time();
         $objCart    = null;
+        $cookieHash = null;
         $storeId    = (int) $rootPage->iso_store_id;
 
         if (true === FE_USER_LOGGED_IN) {
-            $cookieHash = null;
-
             $objCart = static::findOneBy(
                 array('tl_iso_product_collection.member=?', 'store_id=?'),
                 array(\FrontendUser::getInstance()->id, $storeId)
             );
-
         } else {
             $cookieHash = (string) \Input::cookie(static::$strCookie);
 
-            if ('' === $cookieHash) {
-                $cookieHash = sha1(
-                    session_id()
-                    . (!$GLOBALS['TL_CONFIG']['disableIpCheck'] ? \Environment::get('ip') : '')
-                    . $storeId
-                    . static::$strCookie
-                );
+            if ('' !== $cookieHash) {
+                $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
             }
 
-            $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
+            if (null === $objCart) {
+                $cookieHash = self::generateCookieId();
+            }
         }
 
         // Create new cart
@@ -329,11 +324,21 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 'store_id'  => $storeId,
             )));
 
-        } else {
-            $objCart->tstamp = $time;
+            return $objCart;
 
-            // Renew the guest cart cookie
-            if (!$objCart->member && !headers_sent()) {
+        }
+
+        $objCart->tstamp = $time;
+
+        // Renew the guest cart cookie
+        if (!$objCart->member) {
+
+            // Create a new cookie ID if it's an old sha1() hash
+            if (40 == strlen($objCart->uniqid)) {
+                $objCart->uniqid = self::generateCookieId();
+            }
+
+            if (!headers_sent()) {
                 \System::setCookie(
                     static::$strCookie,
                     $objCart->uniqid,
@@ -344,5 +349,18 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         }
 
         return $objCart;
+    }
+
+    private static function generateCookieId()
+    {
+        if (!function_exists('random_bytes')) {
+            return uniqid('', true);
+        }
+
+        try {
+            return bin2hex(random_bytes(32));
+        } catch (\Exception $e) {
+            return uniqid('', true);
+        }
     }
 }
