@@ -683,7 +683,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         if ($objAttribute->isVariantOption()
             || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
-            || $arrField['attributes']['ajax_option']
+            || $arrData['attributes']['ajax_option']
+            || $arrField['attributes']['ajax_option'] // see https://github.com/isotope/core/issues/2096
         ) {
             $arrAjaxOptions[] = $strField;
         }
