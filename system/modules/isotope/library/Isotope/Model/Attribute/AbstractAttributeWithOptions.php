@@ -260,6 +260,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     SELECT id AS value, $field AS label
                     FROM $table
                     WHERE id IN (" . implode(',', $arrValues) . ")
+                    ORDER BY label
                 ");
 
                 return $result->fetchAllAssoc();
