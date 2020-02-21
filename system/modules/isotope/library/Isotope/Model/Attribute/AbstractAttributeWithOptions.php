@@ -131,11 +131,9 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 if (null === $objOptions) {
                     return array();
 
-                } else {
-                    return $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
                 }
 
-                break;
+                return $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
