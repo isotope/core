@@ -19,10 +19,13 @@
 <?php if ($this->sku): ?>
 <div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->description): ?>
 <div class="description" itemprop="description"><?php echo $this->generateAttribute('description'); ?></div><?php endif; ?>
+<?php /* @var \Isotope\Interfaces\IsotopePrice $price */ if ($price = $this->product->getPrice()): ?>
 <div class="offer" itemprop="offer" itemscope itemtype="http://schema.org/Offer">
-<div class="price" itemprop="price"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
+<meta itemprop="priceCurrency" content="<?= \Isotope\Isotope::getConfig()->currency ?>">
+<div class="price" itemprop="price" content="<?= \Isotope\Isotope::roundPrice($price->getAmount(1, $this->product->getOptions())) ?>"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
 </div>
+<?php endif; ?>
 <?php if($this->actions): ?>
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>

@@ -17,6 +17,9 @@
         <source>Enter how long an order will stay in the database if the checkout was not successful (7 days = 604800 seconds).</source>
         <target>Saisir la durée que restera une commande dans la base de données si le paiement n'a pas réussi (7 jours = 604800 secondes).</target>
       </trans-unit>
+      <trans-unit id="tl_settings.iso_timeout_legend">
+        <source>Timeout values</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

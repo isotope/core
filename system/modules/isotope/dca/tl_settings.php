@@ -13,8 +13,9 @@
  * Extend a tl_settings default palette
  */
 \Haste\Dca\PaletteManipulator::create()
-    ->addField('iso_cartTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_orderTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addLegend('iso_timeout_legend', 'uploads_legend', \Haste\Dca\PaletteManipulator::POSITION_AFTER, true)
+    ->addField('iso_cartTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND, 'iso_timeout_legend')
+    ->addField('iso_orderTimeout', 'timeout_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND, 'iso_timeout_legend')
     ->applyToPalette('default', 'tl_settings')
 ;
 

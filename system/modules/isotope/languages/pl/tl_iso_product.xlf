@@ -112,7 +112,7 @@
         <target>Słowa kluczowe meta zostaną umieszczone w nagłówku na stronie szczegółów produktu dla optymalizacji wyników wyszukiwania.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp;amp; tax class</source>
+        <source>Price &amp; tax class</source>
         <target>Cena</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
