@@ -29,7 +29,7 @@ class Flat extends Shipping
      */
     public function getPrice(IsotopeProductCollection $objCollection = null)
     {
-        if (!is_numeric($this->arrData['price'])) {
+        if ('' === (string) $this->arrData['price'])) {
             return null;
         }
 

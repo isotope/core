@@ -213,7 +213,7 @@
         <source>Show details of gallery ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
-        <source>Name &amp;amp; Type</source>
+        <source>Name &amp; Type</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>

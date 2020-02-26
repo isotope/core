@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.7 (2020-02-26)
+--------------------------
+
+- Fixed ajax_option attribute in field configuration (#2096)
+- Sort foreignKey attribute options by label (#2110)
+- Removed duplicate ampersand in language files (#2112)
+- Fixed schema.org tags for product offer (#2111)
+- Fixed percentage pricing for flat shipping method (#2105)
+- Correctly show timeout settings in Contao 4.9 (#2109)
+- Fixed back end menu icon in Contao 4.9
+
+
 Version 2.6.6 (2020-01-24)
 --------------------------
 

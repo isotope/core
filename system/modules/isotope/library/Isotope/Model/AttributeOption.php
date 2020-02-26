@@ -70,13 +70,13 @@ class AttributeOption extends \MultilingualModel
     {
         if ('tl_iso_attribute' === $this->ptable) {
             return Attribute::findByPk($this->pid);
-
-        } elseif ('tl_iso_product' === $this->ptable) {
-            return Attribute::findByFieldName($this->field_name);
-
-        } else {
-            return null;
         }
+
+        if ('tl_iso_product' === $this->ptable) {
+            return Attribute::findByFieldName($this->field_name);
+        }
+
+        return null;
     }
 
     /**
@@ -150,7 +150,6 @@ class AttributeOption extends \MultilingualModel
             $objPrice = $objProduct->getPrice();
 
             if (null !== $objPrice) {
-
                 if ($objPrice instanceof ProductPriceCollection) {
                     $fltPrice = null;
 

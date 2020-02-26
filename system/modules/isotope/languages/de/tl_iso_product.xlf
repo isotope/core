@@ -118,7 +118,7 @@
         <target>Die Meta-Keywords werden im Header der Detailseite für die Suchmaschinenoptimierung ausgegeben.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp;amp; tax class</source>
+        <source>Price &amp; tax class</source>
         <target>Preis</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">

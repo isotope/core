@@ -17,6 +17,9 @@
         <source>Enter how long an order will stay in the database if the checkout was not successful (7 days = 604800 seconds).</source>
         <target>Ödemenin başarısız olması durumunda bir siparişin veritabanında kalacağı süreyi girin (7 gün = 604800 saniye).</target>
       </trans-unit>
+      <trans-unit id="tl_settings.iso_timeout_legend">
+        <source>Timeout values</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -94,7 +94,7 @@
         <target>Details der Option ID %s anzeigen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
-        <source>Type &amp;amp; Label</source>
+        <source>Type &amp; Label</source>
         <target>Typ und Beschriftung</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_legend">

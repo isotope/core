@@ -94,8 +94,8 @@
         <target>%s ID'li seçeneğin detaylarını gör</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
-        <source>Type &amp;amp; Label</source>
-        <target>Tip &amp;amp; Etiket</target>
+        <source>Type &amp; Label</source>
+        <target>Tip &amp; Etiket</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_legend">
         <source>Price change</source>

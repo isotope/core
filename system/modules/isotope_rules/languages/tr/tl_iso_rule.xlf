@@ -319,8 +319,8 @@
         <target>Ürünler</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.variants">
-        <source>Products &amp;amp; Variants</source>
-        <target>Ürübler &amp;amp; Çeşitler</target>
+        <source>Products &amp; Variants</source>
+        <target>Ürübler &amp; Çeşitler</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.attribute">
         <source>Product attribute</source>
@@ -439,8 +439,8 @@
         <target>Limit Kullanımları</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.datim_legend">
-        <source>Date &amp;amp; Time Restrictions</source>
-        <target>Tarih &amp;amp; Zaman Kısıtlamaları</target>
+        <source>Date &amp; Time Restrictions</source>
+        <target>Tarih &amp; Zaman Kısıtlamaları</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.advanced_legend">
         <source>Advanced Restrictions</source>

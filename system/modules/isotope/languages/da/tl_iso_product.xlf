@@ -105,7 +105,7 @@
         <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp;amp; tax class</source>
+        <source>Price &amp; tax class</source>
         <target>Pris</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
