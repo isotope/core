@@ -923,7 +923,7 @@ SOFORTüberweisung</target>
         <target>Integriertes Zahlungsformular</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type_legend">
-        <source>Name &amp;amp; Type</source>
+        <source>Name &amp; Type</source>
         <target>Name &amp; Typ</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note_legend">

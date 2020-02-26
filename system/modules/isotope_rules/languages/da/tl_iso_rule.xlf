@@ -250,7 +250,7 @@
         <target>Produkter</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.variants">
-        <source>Products &amp;amp; Variants</source>
+        <source>Products &amp; Variants</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.attribute">
         <source>Product attribute</source>
@@ -342,7 +342,7 @@
         <source>Limit Uses</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.datim_legend">
-        <source>Date &amp;amp; Time Restrictions</source>
+        <source>Date &amp; Time Restrictions</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.advanced_legend">
         <source>Advanced Restrictions</source>

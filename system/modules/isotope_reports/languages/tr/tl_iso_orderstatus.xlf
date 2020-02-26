@@ -2,7 +2,7 @@
   <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="tr">
     <body>
       <trans-unit id="tl_iso_orderstatus.reports_legend">
-        <source>Reports &amp;amp; Statistics</source>
+        <source>Reports &amp; Statistics</source>
         <target>Raporlar &amp; İstatistikler</target>
       </trans-unit>
     </body>

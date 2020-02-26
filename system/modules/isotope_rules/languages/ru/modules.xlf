@@ -2,10 +2,10 @@
 <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/modules.xlf" source-language="en" target-language="ru">
   <body>
     <trans-unit id="MOD.isotope_rules.0">
-      <source>Isotope eCommerce: Rules &amp;amp; Coupons</source>
+      <source>Isotope eCommerce: Rules &amp; Coupons</source>
     </trans-unit>
       <trans-unit id="MOD.iso_rules.0">
-        <source>Rules &amp;amp; Coupons</source>
+        <source>Rules &amp; Coupons</source>
     </trans-unit>
     <trans-unit id="FMD.iso_coupons.0">
       <source>Coupon Codes</source>

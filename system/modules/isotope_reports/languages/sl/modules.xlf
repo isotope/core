@@ -2,11 +2,11 @@
   <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/modules.xlf" source-language="en" target-language="sl">
     <body>
       <trans-unit id="MOD.isotope_reports.0">
-        <source>Isotope eCommerce: Reports &amp;amp; Statistics</source>
+        <source>Isotope eCommerce: Reports &amp; Statistics</source>
       </trans-unit>
       <trans-unit id="MOD.reports.0">
-        <source>Reports &amp;amp; Statistics</source>
-        <target>Poročila &amp;amp; Statistika</target>
+        <source>Reports &amp; Statistics</source>
+        <target>Poročila &amp; Statistika</target>
       </trans-unit>
     </body>
   </file>

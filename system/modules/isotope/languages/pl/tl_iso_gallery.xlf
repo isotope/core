@@ -249,7 +249,7 @@
         <target>Pokaż szczegóły galerii ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
-        <source>Name &amp;amp; Type</source>
+        <source>Name &amp; Type</source>
         <target>Nazwa i typ</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">

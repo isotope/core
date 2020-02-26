@@ -314,8 +314,8 @@
         <target>Produits</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.variants">
-        <source>Products &amp;amp; Variants</source>
-        <target>Produits &amp;amp; Variantes</target>
+        <source>Products &amp; Variants</source>
+        <target>Produits &amp; Variantes</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.attribute">
         <source>Product attribute</source>
@@ -434,8 +434,8 @@
         <target>Limit Uses</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.datim_legend">
-        <source>Date &amp;amp; Time Restrictions</source>
-        <target>Date &amp;amp; Time Restrictions</target>
+        <source>Date &amp; Time Restrictions</source>
+        <target>Date &amp; Time Restrictions</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.advanced_legend">
         <source>Advanced Restrictions</source>

@@ -899,8 +899,8 @@
         <target>Entegre ödeme formu</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type_legend">
-        <source>Name &amp;amp; Type</source>
-        <target>İsim &amp;amp;  tip</target>
+        <source>Name &amp; Type</source>
+        <target>İsim &amp;  tip</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note_legend">
         <source>Additional notes</source>

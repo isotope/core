@@ -71,7 +71,7 @@
         <source>Show details for option ID %s.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
-        <source>Type &amp;amp; Label</source>
+        <source>Type &amp; Label</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_legend">
         <source>Price change</source>

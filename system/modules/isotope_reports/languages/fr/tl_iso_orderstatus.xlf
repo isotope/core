@@ -2,8 +2,8 @@
   <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="fr">
     <body>
       <trans-unit id="tl_iso_orderstatus.reports_legend">
-        <source>Reports &amp;amp; Statistics</source>
-        <target>Rapports &amp;amp; Statistiques</target>
+        <source>Reports &amp; Statistics</source>
+        <target>Rapports &amp; Statistiques</target>
       </trans-unit>
     </body>
   </file>

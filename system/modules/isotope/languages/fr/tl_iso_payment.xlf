@@ -811,8 +811,8 @@
         <source>Integrated payment form</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type_legend">
-        <source>Name &amp;amp; Type</source>
-        <target>Nom &amp;amp; Type</target>
+        <source>Name &amp; Type</source>
+        <target>Nom &amp; Type</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note_legend">
         <source>Additional notes</source>

@@ -246,8 +246,8 @@
         <target>Toon details van gallerij ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
-        <source>Name &amp;amp; Type</source>
-        <target>Naam &amp;amp; type</target>
+        <source>Name &amp; Type</source>
+        <target>Naam &amp; type</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>
