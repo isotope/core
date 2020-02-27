@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.8 (2020-02-27)
+--------------------------
+
+- Fixed internal server error in shipping method (#2114)
+
+
 Version 2.6.7 (2020-02-26)
 --------------------------
 
