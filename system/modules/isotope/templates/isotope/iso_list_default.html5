@@ -14,7 +14,7 @@
 <div class="teaser"><?= $this->highlightKeywords($this->generateAttribute('teaser')); ?></div><?php endif; ?>
 
 <?php /* @var \Isotope\Interfaces\IsotopePrice $price */ if ($price = $this->product->getPrice()): ?>
-<div class="offer" itemprop="offer" itemscope itemtype="http://schema.org/Offer">
+<div class="offer" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 <meta itemprop="priceCurrency" content="<?= \Isotope\Isotope::getConfig()->currency ?>">
 <div class="price" itemprop="price" content="<?= \Isotope\Isotope::roundPrice($price->getAmount(1, $this->product->getOptions())) ?>"><?= $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
 <div class="baseprice"><?= $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
