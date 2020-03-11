@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.9 (2020-03-11)
+--------------------------
+
+- Fixed schema.org offers property (#2111)
+- Payment and Shipping should always be available in the back end
+
+
 Version 2.6.8 (2020-02-27)
 --------------------------
 

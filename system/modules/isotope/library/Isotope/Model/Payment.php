@@ -110,6 +110,10 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      */
     public function isAvailable()
     {
+        if (TL_MODE === 'BE') {
+            return true;
+        }
+
         if (!$this->enabled && true !== BE_USER_LOGGED_IN) {
             return false;
         }
