@@ -186,7 +186,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option'][(\Input::get('popup') ? 'price' : 'price_short')],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount'),
+            'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
             'save_callback' => array(
                 function($varValue) {
