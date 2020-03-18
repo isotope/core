@@ -206,7 +206,7 @@ class AttributeOption extends \MultilingualModel
     public function getLabel(IsotopeProduct $objProduct = null)
     {
         $strLabel    = $this->label;
-        $priceFormat = '%s (%s)';
+        $priceFormat = $GLOBALS['TL_LANG']['MSC']['attributePriceLabel'];
 
         /** @var Attribute $objAttribute */
         $objAttribute = null;

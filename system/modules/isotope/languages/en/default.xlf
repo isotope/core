@@ -143,6 +143,9 @@
       <trans-unit id="MSC.priceRangeLabel">
         <source>&lt;span class="from"&gt;From&lt;/span&gt; %s</source>
       </trans-unit>
+      <trans-unit id="MSC.attributePriceLabel">
+        <source>%s (%s)</source>
+      </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
       </trans-unit>
