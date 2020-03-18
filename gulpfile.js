@@ -56,4 +56,4 @@ gulp.task('watch', function () {
 });
 
 // Build by default
-gulp.task('default', ['styles', 'scripts']);
+gulp.task('default', gulp.series('styles', 'scripts'));
