@@ -175,6 +175,7 @@
 
     _win.IsotopeProducts = (function() {
         var loadMessage = 'Loading product data …';
+        var forms = {};
 
         function initProduct(config) {
             var form = _doc.getElementById(config.formId);
@@ -252,21 +253,25 @@
                 dispatchEvent('isotopeProductReload', { detail: config });
             }
 
+            function submitForm() {
+                if (xhr.readyState > 1) {
+                    xhr.abort();
+                }
+
+                Isotope.displayBox(loadMessage);
+                xhr.send(serializeForm(form));
+            }
+
             if (config.attributes) {
                 for (i=0; i<config.attributes.length; i++) {
                     el = _doc.getElementById(('ctrl_'+config.attributes[i]+'_'+config.formId));
                     if (el) {
-                        addEventListener(el, 'change', function() {
-                            if (xhr.readyState > 1) {
-                                xhr.abort();
-                            }
-
-                            Isotope.displayBox(loadMessage);
-                            xhr.send(serializeForm(form));
-                        });
+                        addEventListener(el, 'change', submitForm);
                     }
                 }
             }
+
+            forms[config.formId] = submitForm;
         }
 
         return {
@@ -283,6 +288,14 @@
 
             'setLoadMessage': function(message) {
                 loadMessage = message || 'Loading product data …';
+            },
+
+            'submit': function(formId) {
+                if (!forms.hasOwnProperty(formId)) {
+                    throw 'Form "'+formId+'" does not exist.';
+                }
+
+                forms[formId]();
             }
         };
     })();
