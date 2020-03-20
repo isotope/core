@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Product;
 
+use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
@@ -308,6 +309,10 @@ abstract class AbstractProduct extends Product
 
         if (null !== ($type = $this->getType()) && !empty($type->cssClass)) {
             $classes[] = $type->cssClass;
+        }
+
+        if ($this->alias === Input::getAutoItem('product')) {
+            $classes[] = 'active';
         }
 
         return implode(' ', $classes);
