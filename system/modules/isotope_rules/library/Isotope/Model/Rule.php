@@ -164,7 +164,7 @@ class Rule extends \Model
         $arrProcedures[] = "enabled='1'";
 
         // Date & Time restrictions
-        $date = date('Y-m-d');
+        $date = date('Y-m-d H:i:s');
         $time = date('H:i:s');
         $arrProcedures[] = "(startDate='' OR startDate <= UNIX_TIMESTAMP('$date'))";
         $arrProcedures[] = "(endDate='' OR endDate >= UNIX_TIMESTAMP('$date'))";
