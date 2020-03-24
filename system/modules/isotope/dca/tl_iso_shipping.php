@@ -400,7 +400,7 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             ),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['productCalculationOptions'],
             'eval'                  => array('helpwizard'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(10) NOT NULL default ''",
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'group_methods' => array
         (
