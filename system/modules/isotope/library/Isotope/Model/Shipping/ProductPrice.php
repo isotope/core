@@ -17,8 +17,18 @@ use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\Shipping;
 
+/**
+ * @property string $productCalculation
+ */
 class ProductPrice extends Shipping
 {
+    const PRICE_HIGHEST_PRODUCT = 'highestProduct';
+    const PRICE_LOWEST_PRODUCT = 'lowestProduct';
+    const PRICE_SUM_PRODUCTS = 'sumProducts';
+    const PRICE_HIGHEST_ITEM = 'highestItem';
+    const PRICE_LOWEST_ITEM = 'lowestItem';
+    const PRICE_SUM_ITEMS = 'sumItems';
+
     /**
      * @var string
      */
@@ -55,25 +65,71 @@ class ProductPrice extends Shipping
             $objCollection = Isotope::getCart();
         }
 
-        $price   = 0;
+        $isFirst = true;
+        $price = 0;
         $product = null;
 
-        /** @var ProductCollectionItem $item */
         foreach ($objCollection->getItems() as $item) {
-            if (!$item->hasProduct() || !$this->hasShippingPrice($item->getProduct())) {
+            $cartProduct = $item->getProduct();
+
+            if (null === $cartProduct || !$this->hasShippingPrice($cartProduct)) {
                 continue;
             }
 
-            $cartProduct = $item->getProduct();
-            $cartPrice   = $item->quantity * $cartProduct->{$this->attributeName};
+            $shippingPrice = $cartProduct->{$this->attributeName};
 
-            if ($cartPrice >= $price) {
-                $price   = $cartPrice;
-                $product = $cartProduct;
+            switch ($this->productCalculation) {
+                case static::PRICE_SUM_PRODUCTS:
+                    $price += $shippingPrice;
+                    break;
+
+                case static::PRICE_LOWEST_PRODUCT:
+                    if ($isFirst || $shippingPrice < $price) {
+                        $price = $shippingPrice;
+                    }
+                    break;
+
+                case static::PRICE_HIGHEST_PRODUCT:
+                    if ($isFirst || $shippingPrice > $price) {
+                        $price = $shippingPrice;
+                    }
+                    break;
+
+                case static::PRICE_SUM_ITEMS:
+                    $price += ($item->quantity * $shippingPrice);
+                    break;
+
+                case static::PRICE_LOWEST_ITEM:
+                    $shippingPrice = $item->quantity * $shippingPrice;
+
+                    if ($isFirst || $shippingPrice < $price) {
+                        $price = $shippingPrice;
+                    }
+                    break;
+
+                case static::PRICE_HIGHEST_ITEM:
+                default:
+                    $shippingPrice = $item->quantity * $shippingPrice;
+
+                    if ($isFirst || $shippingPrice >= $price) {
+                        $price = $shippingPrice;
+
+                        if (!$this->productCalculation) {
+                            $product = $cartProduct;
+                        }
+                    }
+                    break;
             }
+
+            $isFirst = false;
         }
 
-        return Isotope::calculatePrice($price, $product, $this->attributeName, $this->arrData['tax_class']);
+        // Legacy mode
+        if (null !== $product) {
+            return Isotope::calculatePrice($price, $product, $this->attributeName, $this->arrData['tax_class']);
+        }
+
+        return Isotope::calculatePrice($price, $this, 'price', $this->arrData['tax_class']);
     }
 
     /**
