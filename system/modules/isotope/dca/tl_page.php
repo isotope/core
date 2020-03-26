@@ -23,12 +23,14 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataCon
 /**
  * Extend tl_page palettes
  */
-\Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_config', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_store_id', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->applyToPalette('root', 'tl_page')
-;
+try {
+    \Haste\Dca\PaletteManipulator::create()
+        ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+        ->addField('iso_config', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+        ->addField('iso_store_id', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+        ->applyToPalette('root', 'tl_page')
+        ->applyToPalette('rootfallback', 'tl_page');
+} catch (\InvalidArgumentException $e) {}
 
 \Haste\Dca\PaletteManipulator::create()
     ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
