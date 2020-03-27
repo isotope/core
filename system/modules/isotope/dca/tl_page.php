@@ -33,7 +33,7 @@ try {
 } catch (\InvalidArgumentException $e) {}
 
 \Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'publish_legen', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
+    ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
     ->addField('iso_setReaderJumpTo', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('regular', 'tl_page')
 ;
