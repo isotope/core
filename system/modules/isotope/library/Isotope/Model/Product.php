@@ -783,7 +783,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
-        return 'SELECT COUNT(*) AS count FROM ('.$strQuery.') c1';
+        return 'SELECT COUNT(*) AS count FROM ('.$strQuery.') c1 GROUP BY id';
     }
 
     /**
