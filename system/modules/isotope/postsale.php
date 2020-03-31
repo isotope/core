@@ -28,6 +28,7 @@ use Haste\Http\Response\Response;
  */
 \define('TL_MODE', 'FE');
 \define('BYPASS_TOKEN_CHECK', true);
+\define('FE_USER_LOGGED_IN', false);
 
 require_once('initialize.php');
 
