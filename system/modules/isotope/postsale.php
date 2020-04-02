@@ -52,6 +52,10 @@ class PostSale extends \Frontend
     public function __construct()
     {
         parent::__construct();
+        
+        if (!\defined('FE_USER_LOGGED_IN')) {
+            \define('FE_USER_LOGGED_IN', false);
+        }
 
         $this->removeUnsupportedHooks();
 

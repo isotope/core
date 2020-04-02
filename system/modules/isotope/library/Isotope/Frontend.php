@@ -528,7 +528,8 @@ class Frontend extends \Frontend
         /** @var \PageModel $objPage */
         global $objPage;
 
-        if (!($objPage instanceof \PageRegular)
+        if ($objPage->type === 'error_404'
+            || $objPage->type === 'error_403'
             || !($alias = Input::getAutoItem('product', false, true))
             || ($objProduct = Product::findAvailableByIdOrAlias($alias)) === null
         ) {
@@ -538,20 +539,30 @@ class Frontend extends \Frontend
         global $objIsotopeListPage;
         $last = \count($arrItems) - 1;
 
-        // If we have a reader page, rename the last item (the reader) to the product title
-        if (null !== $objIsotopeListPage) {
+        // If we have a reader page that is a level below the list, rename the last item (the reader) to the product title
+        if (null !== $objIsotopeListPage && $objPage->pid == $objIsotopeListPage->id) {
             $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
             $arrItems[$last]['link']  = $objProduct->name;
-        } // Otherwise we add a new item for the product at the last position
-        else {
-            $arrItems[$last]['href'] = \Controller::generateFrontendUrl($arrItems[$last]['data']);
-            $arrItems[$last]['isActive'] = false;
+        } else {
+            $listPage = $objIsotopeListPage ?: $objPage;
 
+            // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
+            $arrItems[$last] = array(
+                'isRoot'   => false,
+                'isActive' => false,
+                'href'     => $listPage->getFrontendUrl(),
+                'title'    => specialchars($listPage->pageTitle ?: $listPage->title),
+                'link'     => $listPage->title,
+                'data'     => $listPage->row(),
+                'class'    => ''
+            );
+
+            // Add a new item for the current product
             $arrItems[] = array(
                 'isRoot'   => false,
                 'isActive' => true,
                 'href'     => $objProduct->generateUrl($objPage),
-                'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                'title'    => specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
                 'link'     => $objProduct->name,
                 'data'     => $objPage->row(),
             );
