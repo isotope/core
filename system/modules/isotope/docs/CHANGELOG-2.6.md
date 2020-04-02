@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.6.10 (2020-04-??)
+Version 2.6.10 (2020-04-02)
 --------------------------
 
 - Correctly add item to breadcrumb on reader pages (#2083)
