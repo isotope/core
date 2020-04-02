@@ -551,7 +551,7 @@ class Frontend extends \Frontend
                 'isRoot'   => false,
                 'isActive' => false,
                 'href'     => $listPage->getFrontendUrl(),
-                'title'    => \StringUtil::specialchars($listPage->pageTitle ?: $listPage->title),
+                'title'    => specialchars($listPage->pageTitle ?: $listPage->title),
                 'link'     => $listPage->title,
                 'data'     => $listPage->row(),
                 'class'    => ''
@@ -562,7 +562,7 @@ class Frontend extends \Frontend
                 'isRoot'   => false,
                 'isActive' => true,
                 'href'     => $objProduct->generateUrl($objPage),
-                'title'    => $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name),
+                'title'    => specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
                 'link'     => $objProduct->name,
                 'data'     => $objPage->row(),
             );
