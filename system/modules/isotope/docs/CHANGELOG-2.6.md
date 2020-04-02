@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.10 (2020-04-02)
+--------------------------
+
+- Correctly add item to breadcrumb on reader pages (#2083)
+- Support new rootfallback palette in Contao 4.9 (#2121)
+- Set constant FE_USER_LOGGED_IN in postsale entry point (#2122)
+
+
 Version 2.6.9 (2020-03-11)
 --------------------------
 
