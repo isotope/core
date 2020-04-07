@@ -221,6 +221,7 @@ class PaypalPlus extends PaypalApi
 
         $this->storeHistory($objOrder, json_decode($responseData, true));
 
+        $objOrder->checkout();
         $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
 
