@@ -241,7 +241,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
             $strQuery        = '
-                SELECT id, protected, groups 
+                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups 
                 FROM tl_iso_product 
                 WHERE 
                     pid=' . $this->getProductId() . " 

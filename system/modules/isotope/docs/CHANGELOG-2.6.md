@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.6.11 (2020-??-??)
+--------------------------
+
+- Fixed MySQL 8 keyword exception when loading product variants
+
+
 Version 2.6.10 (2020-04-02)
 --------------------------
 
