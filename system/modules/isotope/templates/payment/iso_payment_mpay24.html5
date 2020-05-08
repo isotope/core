@@ -1,4 +1,9 @@
+<?php
+    $mpay24 = $this->mpay24;
+    $mdxi = $this->mdxi;
+    $location = $mpay24->paymentPage($mdxi)->getLocation()
+?>
 <h2><?= $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0] ?></h2>
 <p class="message"><?= $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1] ?></p>
-<p><a href="<?= $this->location ?>"><?= $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] ?></a>
-<script>window.location.href = '<?= $this->location ?>';</script>
+<p><a href="<?= $location ?>"><?= $GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2] ?></a>
+<script>window.location.href = '<?= $location ?>';</script>
