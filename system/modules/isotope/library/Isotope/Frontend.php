@@ -545,15 +545,16 @@ class Frontend extends \Frontend
             $arrItems[$last]['link']  = $objProduct->name;
         } else {
             $listPage = $objIsotopeListPage ?: $objPage;
+            $originalRow = $listPage->originalRow();
 
             // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
             $arrItems[$last] = array(
-                'isRoot'   => false,
+                'isRoot'   => (bool) $arrItems[$last]['isRoot'],
                 'isActive' => false,
                 'href'     => $listPage->getFrontendUrl(),
-                'title'    => specialchars($listPage->pageTitle ?: $listPage->title),
-                'link'     => $listPage->title,
-                'data'     => $listPage->row(),
+                'title'    => specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
+                'link'     => $originalRow['title'],
+                'data'     => $originalRow,
                 'class'    => ''
             );
 
