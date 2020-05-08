@@ -40,6 +40,8 @@ class PaypalPlus extends PaypalApi
             $responseData = $request->response;
         }
 
+        $this->debugLog($responseData);
+
         if (201 === $responseCode) {
             $paypalData = json_decode($responseData, true);
             $this->storePayment($objOrder, $paypalData);
@@ -49,6 +51,9 @@ class PaypalPlus extends PaypalApi
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
+                    if ('REDIRECT' === $link['method']) {
+                        (new RedirectResponse($link['rel']))->send();
+                    }
 
                     $template = new Template('iso_payment_paypal_plus');
                     $template->setData($this->arrData);
@@ -214,6 +219,8 @@ class PaypalPlus extends PaypalApi
             $responseCode = (int) $request->code;
             $responseData = $request->response;
         }
+
+        $this->debugLog($responseData);
 
         if (200 !== $responseCode) {
             return false;
