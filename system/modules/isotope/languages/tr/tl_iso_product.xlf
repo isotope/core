@@ -114,8 +114,8 @@
         <target>Arama motoru optimizasyonu için, meta anahtar kelimeleri ürün detay sayfasında yer alır.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp; tax class</source>
-        <target>Fiyat &amp; vergi sınıfı</target>
+        <source>Price</source>
+        <target>Fiyat</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>

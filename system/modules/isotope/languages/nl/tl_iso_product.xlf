@@ -112,8 +112,8 @@
         <target>Meta trefwoorden wordt in de header van de productlezerpagina geplaatst. Dit voor zoekmachine-optimalisatie.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp; tax class</source>
-        <target>Prijs &amp; belastingklasse</target>
+        <source>Price</source>
+        <target>Prijs</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>

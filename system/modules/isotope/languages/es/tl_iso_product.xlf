@@ -109,7 +109,8 @@
         <target>Palabras clave meta serán colocados en la cabecera de la página de detalles del producto, para la optimización de motor de búsqueda.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp; tax class</source>
+        <source>Price</source>
+        <target>Precio</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">
         <source>Please enter the price(s) for this product and select the tax class.</source>
