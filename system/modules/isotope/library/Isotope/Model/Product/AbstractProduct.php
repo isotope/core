@@ -129,19 +129,19 @@ abstract class AbstractProduct extends Product
 
         $member = $objCollection->getMember();
 
+        $arrAttributes   = $this->getType()->getAttributes();
+        $blnHasProtected = \in_array('protected', $arrAttributes, true);
+        $blnHasGuests = \in_array('guests', $arrAttributes, true);
+
         // Show to guests only
-        if ($this->guests
-            && null !== $member
-            && BE_USER_LOGGED_IN !== true
-            && !$this->protected
-        ) {
+        if ($blnHasGuests && $this->guests && null !== $member && !$this->protected) {
             return false;
         }
 
         // Protected product
-        if (BE_USER_LOGGED_IN !== true && $this->protected) {
+        if ($blnHasProtected && $this->protected) {
             if (null === $member) {
-                return false;
+                return $blnHasGuests && $this->guests;
             }
 
             $groups       = deserialize($this->groups);

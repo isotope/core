@@ -129,13 +129,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
                     (
                         'label'     => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['min'],
                         'inputType' => 'text',
-                        'eval'      => array('mandatory'=>true, 'rgxp'=>'digit', 'style'=>'width:100px'),
+                        'eval'      => array('mandatory'=>true, 'rgxp'=>'digit'),
                     ),
                     'price' => array
                     (
                         'label'     => &$GLOBALS['TL_LANG']['tl_iso_product_price']['price_tier_columns']['price'],
                         'inputType' => 'text',
-                        'eval'      => array('mandatory'=>true, 'rgxp'=>'price', 'style'=>'width:100px'),
+                        'eval'      => array('mandatory'=>true, 'rgxp'=>'digit'),
                     ),
                 ),
             ),

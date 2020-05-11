@@ -240,8 +240,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             $time            = \Date::floorToMinute();
             $blnHasProtected = false;
+            $blnHasGuests    = false;
             $strQuery        = '
-                SELECT id, protected, groups 
+                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups 
                 FROM tl_iso_product 
                 WHERE 
                     pid=' . $this->getProductId() . " 
@@ -254,13 +255,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             if (BE_USER_LOGGED_IN !== true) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = \in_array('protected', $arrAttributes, true);
+                $blnHasGuests = \in_array('guests', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && \in_array('guests', $arrAttributes, true)) {
+                if (FE_USER_LOGGED_IN === true && $blnHasGuests) {
                     $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
                 elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
-                    $strQuery .= " AND protected=''";
+                    $strQuery .= " AND (protected=''" . ($blnHasGuests ? " OR guests='1'" : '') . ")";
                 }
             }
 
@@ -268,6 +270,22 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objVariants = \Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
+                if (FE_USER_LOGGED_IN !== true
+                    && $blnHasProtected
+                    && $objVariants->protected
+                    && (!$blnHasGuests || !$objVariants->guests)
+                ) {
+                    continue;
+                }
+
+                if (FE_USER_LOGGED_IN === true
+                    && $blnHasGuests
+                    && $objVariants->guests
+                    && (!$blnHasProtected || $objVariants->protected)
+                ) {
+                    continue;
+                }
+
                 if ($blnHasProtected && $objVariants->protected) {
                     $groups = deserialize($objVariants->groups);
 

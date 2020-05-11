@@ -443,7 +443,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'price', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>13, 'rgxp'=>'digit', 'includeBlankOption'=>true, 'blankOptionLabel'=>&$GLOBALS['TL_LANG']['MSC']['taxFree'], 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'pricing_legend', 'fe_sorting'=>true, 'dynamic'=>true, 'singular'=>true, 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\Price'),
             'load_callback' => array
             (
@@ -481,7 +481,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'price' => array
                 (
                     'label'         => &$GLOBALS['TL_LANG']['tl_iso_product']['price_tiers']['price'],
-                    'rgxp'          => 'price'
+                    'rgxp'          => 'digit'
                 ),
                 'tax_class' => array
                 (
@@ -495,7 +495,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'foreignKey'            => 'tl_iso_baseprice.name',
-            'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'tl_class'=>'w50'),
             'attributes'            => array('type'=>'\Isotope\Model\Attribute\BasePrice', 'legend'=>'pricing_legend'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
@@ -525,7 +525,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_price'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'price', 'tl_class'=>'w50'),
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true, 'type'=>'\Isotope\Model\Attribute\ShippingPrice'),
             'sql'                   => "decimal(9,2) unsigned NOT NULL default '0.00'",
         ),

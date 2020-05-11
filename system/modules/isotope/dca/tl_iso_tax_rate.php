@@ -202,7 +202,7 @@ $GLOBALS['TL_DCA']['tl_iso_tax_rate'] = array
             'exclude'               => true,
             'inputType'             => 'inputUnit',
             'options'               => array('%'=>'%'),
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'price'),
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'rgxp'=>'digit'),
             'sql'                   => "varchar(255) NOT NULL default ''",
         ),
         'amount' => array
