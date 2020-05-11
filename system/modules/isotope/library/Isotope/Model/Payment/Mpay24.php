@@ -101,7 +101,13 @@ class Mpay24 extends Postsale
 
         $template = new \FrontendTemplate('iso_payment_mpay24');
         $template->setData($this->row());
-        $template->location = $mpay24->paymentPage($mdxi)->getLocation();
+        $template->mpay24 = $mpay24;
+        $template->mdxi = $mdxi;
+
+        // BC with Isotope <= 2.6.10
+        $template->location = function() use ($mpay24, $mdxi) {
+            return $mpay24->paymentPage($mdxi)->getLocation();
+        };
 
         return $template->parse();
     }

@@ -112,7 +112,7 @@
         <target>Les mots clef Meta seront placés dans l'en-tête de la page détaillée du produit pour une optimisation des moteurs de recherche.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.0">
-        <source>Price &amp; tax class</source>
+        <source>Price</source>
         <target>Prix</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price.1">

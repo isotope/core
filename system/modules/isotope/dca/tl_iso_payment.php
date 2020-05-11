@@ -256,7 +256,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'default'               => 0,
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'clr w50'),
+            'eval'                  => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'maximum_total' => array
@@ -265,7 +265,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'default'               => 0,
-            'eval'                  => array('maxlength'=>255, 'rgxp'=>'price', 'tl_class'=>'w50'),
+            'eval'                  => array('maxlength'=>255, 'rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'quantity_mode' => array

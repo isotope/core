@@ -283,7 +283,7 @@ class Backend extends Contao_Backend
             // Move multiple products
             case 'moveProducts':
                 \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
-                exit;
+                \Controller::reload();
                 break;
 
             // Filter the groups

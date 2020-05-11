@@ -635,6 +635,7 @@ class Checkout extends Module
      */
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
+        Isotope::getCart()->save();
         \Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
     }
 

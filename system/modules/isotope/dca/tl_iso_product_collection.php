@@ -125,7 +125,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'member'  =>  array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['member'],
-            'foreignKey'            => "tl_member.CONCAT(firstname, ' ', lastname)",
+            'search'                => true,
+            'foreignKey'            => "tl_member.CONCAT_WS(' ', company, firstname, lastname, street, postal, city)",
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -232,7 +233,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'billing_address_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address_id'],
-            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
+            'search'                => true,
+            'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
@@ -240,7 +242,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'shipping_address_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'],
-            'foreignKey'            => \Isotope\Model\Address::getTable().'.label',
+            'search'                => true,
+            'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
