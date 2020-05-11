@@ -2,10 +2,20 @@ Isotope eCommerce Changelog
 ===========================
 
 
-Version 2.6.11 (2020-??-??)
+Version 2.6.11 (2020-05-11)
 --------------------------
 
-- Fixed MySQL 8 keyword exception when loading product variants
+- Fixed MySQL 8 keyword exception when loading product variants (#2127)
+- Fixed PayPal PLUS not checking out the order
+- Fixed PayPal PLUS not handling redirect requests (#2139)
+- Fixed moving multiple products to a group (#2131)
+- Save cart before a redirect in checkout (#2135)
+- Adjust label for product price field (#2136)
+- Make Mpay24 design configurable in the template (#2129)
+- Use correct title for list page in breadcrumb (#2125)
+- Correctly check product permissions if "guests" and "protected" is used at the same time
+- Allow to search orders by member, billing and shipping address
+- Correctly validate & convert prices with decimal comma or point
 
 
 Version 2.6.10 (2020-04-02)
