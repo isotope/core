@@ -52,7 +52,7 @@ class PaypalPlus extends PaypalApi
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
                     if ('REDIRECT' === $link['method']) {
-                        (new RedirectResponse($link['rel']))->send();
+                        (new RedirectResponse($link['href']))->send();
                     }
 
                     $template = new Template('iso_payment_paypal_plus');

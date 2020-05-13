@@ -1,6 +1,11 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.12 (2020-05-13)
+--------------------------
+
+- Fixed PayPal PLUS redirect URL (#2139)
+
 
 Version 2.6.11 (2020-05-11)
 --------------------------
