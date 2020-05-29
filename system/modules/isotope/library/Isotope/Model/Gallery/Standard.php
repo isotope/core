@@ -357,7 +357,18 @@ class Standard extends Gallery implements IsotopeGallery
 
         try {
             $strImage = \Image::create($strFile, $size)->executeResize()->getResizedPath();
-            $picture = \Picture::create($strFile, $size)->getTemplateData();
+
+            if (!is_file(TL_ROOT . '/' . $strImage)) {
+                $image = \System::getContainer()->get('contao.image.image_factory')->create(TL_ROOT . '/' . $strImage);
+                \System::getContainer()->get('contao.image.resizer')->resizeDeferredImage($image);
+            }
+
+            $picture = \Picture::create($strFile, $size)->getTemplateData();            
+
+            if (!is_file(TL_ROOT . '/' . $picture['img']['src'])) {
+                $src = \System::getContainer()->get('contao.image.image_factory')->create(TL_ROOT . '/' . $picture['img']['src']);
+                \System::getContainer()->get('contao.image.resizer')->resizeDeferredImage($src);
+            }
         } catch (\Exception $e) {
             \System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
