@@ -12,6 +12,7 @@
 namespace Isotope\Model\Document;
 
 use Contao\Environment;
+use Contao\File;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
@@ -218,8 +219,14 @@ class Standard extends Document implements IsotopeDocument
                 return $args[1] . $args[2] . $args[3];
             }
 
+            $path = rawurldecode($args[2]);
+
+            if (method_exists(File::class, 'createIfDeferred')) {
+                (new File($path))->createIfDeferred();
+            }
+
             $blnOverrideRoot = true;
-            return $args[1] . TL_ROOT . '/' . rawurldecode($args[2]) . $args[3];
+            return $args[1] . TL_ROOT . '/' . $path . $args[3];
         }, $strBuffer);
 
         if ($blnOverrideRoot) {
