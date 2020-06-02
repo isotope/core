@@ -303,10 +303,10 @@
         <source>Your project password for sofortüberweisung.de</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.0">
-        <source>Saferpay Account-ID</source>
+        <source>Saferpay Account ID (CustomerId-TerminalId)</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.1">
-        <source>Please enter your unique Saferpay account id.</source>
+        <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-CustomerId</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.0">
         <source>Saferpay API User</source>
