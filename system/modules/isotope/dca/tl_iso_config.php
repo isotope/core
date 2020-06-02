@@ -350,9 +350,9 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                 (
                     'name' => array
                     (
-                        'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['address_fields']['name'],
+                        'label'                 => ['&nbsp;'],
                         'input_field_callback'  => array('Isotope\Backend\Config\AddressFieldsWizard', 'getNextName'),
-                        'eval'                  => array('hideHead'=>true, 'tl_class'=>'mcwUpdateFields'),
+                        'eval'                  => array('tl_class'=>'mcwUpdateFields'),
                     ),
                     'billing' => array
                     (
