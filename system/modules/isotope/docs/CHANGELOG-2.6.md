@@ -6,6 +6,8 @@ Version 2.6.13 (2020-??-??)
 
 - Fixed Datatrans payment URL and improved debug logging
 - Create deferred images before generating PDFs (#2144)
+- Fixed upload file name in cart due to removed hashing (#2128)
+
 
 Version 2.6.12 (2020-05-13)
 --------------------------
