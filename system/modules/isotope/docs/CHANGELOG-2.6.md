@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.13 (2020-??-??)
+--------------------------
+
+- Fixed Datatrans payment URL and improved debug logging
+
+
 Version 2.6.12 (2020-05-13)
 --------------------------
 
