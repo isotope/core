@@ -319,7 +319,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['startDate'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'eval'                          => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                           => "varchar(10) NOT NULL default ''",
         ),
         'endDate' => array
@@ -327,7 +327,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['endDate'],
             'exclude'                       => true,
             'inputType'                     => 'text',
-            'eval'                          => array('rgxp'=>'date', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
+            'eval'                          => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                           => "varchar(10) NOT NULL default ''",
         ),
         'startTime' => array
