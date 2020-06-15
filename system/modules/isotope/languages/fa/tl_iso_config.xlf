@@ -129,9 +129,6 @@
       <trans-unit id="tl_iso_config.address_fields.1">
         <source>Select the fields for a billing and shipping address when checking out.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_config.address_fields.name.0">
-        <source>Address field</source>
-      </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
         <source>For billing address</source>
       </trans-unit>

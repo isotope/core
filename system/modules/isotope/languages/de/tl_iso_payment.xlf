@@ -402,12 +402,10 @@
         <target>Ihr Projekt-Passwort bei sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.0">
-        <source>Saferpay Account-ID</source>
-        <target>Saferpay Account-ID</target>
+        <source>Saferpay Account ID (CustomerId-TerminalId)</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.1">
-        <source>Please enter your unique Saferpay account id.</source>
-        <target>Bitte geben Sie ihre eindeutige Saferpay Account ID ein.</target>
+        <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-TerminalId</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.0">
         <source>Saferpay API User</source>
