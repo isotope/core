@@ -136,6 +136,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['id'],
+            'search'                => true,
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
         'tstamp' => array
