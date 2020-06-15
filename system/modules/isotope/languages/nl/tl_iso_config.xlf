@@ -161,10 +161,6 @@
         <source>Select the fields for a billing and shipping address when checking out.</source>
         <target>Selecteer de velden voor factuur- en leveradressen tijdens het afrekenen.</target>
       </trans-unit>
-      <trans-unit id="tl_iso_config.address_fields.name.0">
-        <source>Address field</source>
-        <target>Adresveld</target>
-      </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
         <source>For billing address</source>
         <target>Voor factuuradres</target>

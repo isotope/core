@@ -41,6 +41,8 @@ class Datatrans extends Postsale
         // Verify payment status
         if (\Input::post('status') !== 'success') {
             \System::log('Payment for order ID "' . \Input::post('refno') . '" failed.', __METHOD__, TL_ERROR);
+            $this->debugLog('Expected status "success", got "'.\Input::post('status').'"');
+            $this->debugLog($_POST);
 
             return;
         }
@@ -50,6 +52,8 @@ class Datatrans extends Postsale
 
         if (\Input::post('sign2') != $hash) {
             \System::log('Invalid HMAC signature for Order ID ' . \Input::post('refno'), __METHOD__, TL_ERROR);
+            $this->debugLog('Expected hash "'.$hash.'", got "'.\Input::post('sign2').'"');
+            $this->debugLog($_POST);
 
             return;
         }
@@ -134,7 +138,7 @@ class Datatrans extends Postsale
 
         $objTemplate           = new \Isotope\Template('iso_payment_datatrans');
         $objTemplate->id       = $this->id;
-        $objTemplate->action   = ('https://' . ($this->debug ? 'pilot' : 'payment') . '.datatrans.biz/upp/jsp/upStart.jsp');
+        $objTemplate->action   = ('https://' . ($this->debug ? 'pay.sandbox' : 'pay') . '.datatrans.com/upp/jsp/upStart.jsp');
         $objTemplate->params   = $arrParams;
         $objTemplate->headline = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
         $objTemplate->message  = specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
@@ -159,6 +163,10 @@ class Datatrans extends Postsale
                     __METHOD__,
                     TL_ERROR
                 );
+
+                $this->debugLog('Failed to validate parameters');
+                $this->debugLog($arrData);
+                $this->debugLog($_POST);
 
                 return false;
             }

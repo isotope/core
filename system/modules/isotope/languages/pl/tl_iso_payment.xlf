@@ -378,12 +378,10 @@
         <target>Twoje hasło projektu dla sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.0">
-        <source>Saferpay Account-ID</source>
-        <target>ID konta Saferpay</target>
+        <source>Saferpay Account ID (CustomerId-TerminalId)</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.1">
-        <source>Please enter your unique Saferpay account id.</source>
-        <target>Proszę wprowadzić unikalne ID konta Saferpay.</target>
+        <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-TerminalId</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.0">
         <source>Saferpay API User</source>

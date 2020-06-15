@@ -76,7 +76,7 @@ class Upload extends Attribute implements \uploadable
             $item->addError('File does not exist.'); // TODO add real error message
         }
 
-        return substr(basename($value), 9);
+        return basename($value);
     }
 
     /**

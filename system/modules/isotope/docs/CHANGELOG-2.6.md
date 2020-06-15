@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.13 (2020-06-15)
+--------------------------
+
+- Fixed Datatrans payment URL and improved debug logging
+- Create deferred images before generating PDFs (#2144)
+- Fixed upload file name in cart due to removed hashing (#2128)
+- Fixed labels for address fields in shop config (#2143)
+- Improved description for Saferpay account ID (#2147)
+- Allow searching for order ID in the back end
+
+
 Version 2.6.12 (2020-05-13)
 --------------------------
 
