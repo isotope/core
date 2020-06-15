@@ -1,53 +1,53 @@
-<div id="tl_buttons" style="border-bottom:1px solid #e6e6e8">
+<div id="tl_buttons"<?php if (VERSION >= 4): ?> style="border-bottom:1px solid #e6e6e8"<?php endif; ?>>
     <a href="<?= ampersand($this->backUrl) ?>" class="header_back" title="<?= specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) ?>"><?= $GLOBALS['TL_LANG']['MSC']['backBT'] ?></a>
-</div>
-
-<fieldset id="pal_status_legend" class="tl_tbox<?php if (!$this->fieldsets['status_legend']): ?> collapsed<?php endif; ?>" style="padding-bottom: 0">
-    <legend onclick="AjaxRequest.toggleFieldset(this,'status_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['status_legend'] ?></legend>
 
     <?php if ($this->createLogUrl): ?>
-    <div style="margin:1%;">
         <a href="<?= ampersand($this->createLogUrl) ?>" title="<?= specialchars($GLOBALS['TL_LANG'][$this->table]['updateOrderStatus']) ?>" class="header_new"><?= $GLOBALS['TL_LANG'][$this->table]['updateOrderStatus'] ?></a>
-    </div>
     <?php endif; ?>
+</div>
 
-    <div>
-        <?php if ($this->logs): ?>
-            <?php foreach ($this->logs as $log): ?>
-                <hr>
-                <table class="tl_show">
-                    <tbody>
-                        <?php $count = 0; foreach ($log as $k => $v): ?>
-                            <tr>
-                                <td class="<?= ++$count % 2 ? '' : 'tl_bg' ?>"><span class="tl_label"><?= $k ?></span></td>
-                                <td class="<?= $count % 2 ? '' : 'tl_bg' ?>"><?= $v ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="tl_info" style="margin-bottom: 1em;"><?= $GLOBALS['TL_LANG'][$this->table]['noLogData'] ?></div>
-        <?php endif; ?>
-    </div>
-</fieldset>
+<div class="tl_formbody_edit">
+    <fieldset id="pal_status_legend" class="tl_tbox<?php if (!$this->fieldsets['status_legend']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'status_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['status_legend'] ?></legend>
 
-<fieldset id="pal_details_legend" class="tl_box<?php if (!$this->fieldsets['details_legend']): ?> collapsed<?php endif; ?>">
-    <legend onclick="AjaxRequest.toggleFieldset(this,'details_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['details_legend'] ?></legend>
-    <?= $this->orderDetails ?>
-</fieldset>
+        <div>
+            <?php if ($this->logs): ?>
+                <?php foreach ($this->logs as $log): ?>
+                    <?php if ($count > 0): ?><hr style="margin: 18px 2%"><?php endif; ?>
+                    <table class="tl_show"<?php if(VERSION < 4): ?> style="margin-left:0; margin-right:0"<?php endif; ?>>
+                        <tbody>
+                            <?php $count = 0; foreach ($log as $k => $v): ?>
+                                <tr>
+                                    <td class="<?= (++$count % 2) ? '' : 'tl_bg' ?>"><span class="tl_label"><?= $k ?></span></td>
+                                    <td class="<?= ($count % 2) ? '' : 'tl_bg' ?>"><?= $v ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="tl_info" style="margin-bottom: 1em;"><?= $GLOBALS['TL_LANG'][$this->table]['noLogData'] ?></div>
+            <?php endif; ?>
+        </div>
+    </fieldset>
 
-<fieldset id="pal_email_legend" class="tl_box<?php if (!$this->fieldsets['email_legend']): ?> collapsed<?php endif; ?>">
-    <legend onclick="AjaxRequest.toggleFieldset(this,'email_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['email_legend'] ?></legend>
-    <?= $this->emailDetails ?>
-</fieldset>
+    <fieldset id="pal_details_legend" class="tl_box<?php if (!$this->fieldsets['details_legend']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'details_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['details_legend'] ?></legend>
+        <?= $this->orderDetails ?>
+    </fieldset>
 
-<fieldset id="pal_billing_address_legend" class="tl_box<?php if (!$this->fieldsets['billing_address_legend']): ?> collapsed<?php endif; ?>">
-    <legend onclick="AjaxRequest.toggleFieldset(this,'billing_address_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['billing_address_legend'] ?></legend>
-    <?= $this->billingAddressDetails ?>
-</fieldset>
+    <fieldset id="pal_email_legend" class="tl_box<?php if (!$this->fieldsets['email_legend']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'email_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['email_legend'] ?></legend>
+        <?= $this->emailDetails ?>
+    </fieldset>
 
-<fieldset id="pal_shipping_address_legend" class="tl_box<?php if (!$this->fieldsets['shipping_address_legend']): ?> collapsed<?php endif; ?>">
-    <legend onclick="AjaxRequest.toggleFieldset(this,'shipping_address_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['shipping_address_legend'] ?></legend>
-    <?= $this->shippingAddressDetails ?>
-</fieldset>
+    <fieldset id="pal_billing_address_legend" class="tl_box<?php if (!$this->fieldsets['billing_address_legend']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'billing_address_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['billing_address_legend'] ?></legend>
+        <?= $this->billingAddressDetails ?>
+    </fieldset>
+
+    <fieldset id="pal_shipping_address_legend" class="tl_box<?php if (!$this->fieldsets['shipping_address_legend']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'shipping_address_legend','<?= $this->table ?>')"><?= $GLOBALS['TL_LANG'][$this->table]['shipping_address_legend'] ?></legend>
+        <?= $this->shippingAddressDetails ?>
+    </fieldset>
+</div>

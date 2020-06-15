@@ -208,7 +208,7 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table cellpadding="0" cellspacing="0" class="tl_show">
+<table class="tl_show"'. (VERSION < 4 ? 'style="margin-left:0; margin-right:0"' : '') .'>
   <tbody>';
 
         $i = 0;
