@@ -120,4 +120,23 @@ class Callback extends \Backend
 
         return $arrChoices;
     }
+
+    /**
+     * Generate the order label and return it as string
+     *
+     * @param array  $row
+     * @param string $label
+     *
+     * @return string
+     */
+    public function getColoredLabel($row, $label)
+    {
+        $status = OrderStatus::findByPk($row['id']);
+
+        if (null === $status) {
+            return $label;
+        }
+
+        return '<span style="padding: 2px 5px 3px;border-radius: 2px;vertical-align: middle;'.$status->getColorStyles().'">'.$label.'</span>';
+    }
 }
