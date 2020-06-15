@@ -139,6 +139,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_user_id,opp_password,opp_entity_id,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'mpay24'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},mpay24_merchant,mpay24_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'swissbilling'              => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},swissbilling_id,swissbilling_pwd,swissbilling_prescreening,swissbilling_b2b;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
     // Subpalettes
@@ -911,6 +912,38 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'swissbilling_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['swissbilling_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
+        ),
+        'swissbilling_pwd' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['swissbilling_pwd'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'swissbilling_prescreening' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['swissbilling_prescreening'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default '0'",
+            'eval'                  => array('tl_class' => 'w50'),
+        ),
+        'swissbilling_b2b' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['swissbilling_b2b'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'sql'                   => "char(1) NOT NULL default '0'",
+            'eval'                  => array('tl_class' => 'w50'),
         ),
         'requireCCV' => array
         (

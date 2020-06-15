@@ -737,6 +737,12 @@
       <trans-unit id="MODEL.tl_iso_payment.mpay24.0">
         <source>mPAY24</source>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.0">
+        <source>SwissBilling</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.1">
+        <source>Swiss payment provider for invoice payments.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
       </trans-unit>

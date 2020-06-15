@@ -566,6 +566,30 @@
       <trans-unit id="tl_iso_payment.mpay24_password.1">
         <source>Please enter your SOAP password.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.0">
+        <source>SwissBilling ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.1">
+        <source>Please enter your SwissBilling ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.0">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.1">
+        <source>Please enter your SwissBilling password.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.0">
+        <source>Enable PreScreening</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.1">
+        <source>Only show payment option if allowed by SwissBilling. Please check with SwissBilling before activating this option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.0">
+        <source>Enable B2B support</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
+        <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
       </trans-unit>
