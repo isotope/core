@@ -14,7 +14,7 @@ namespace Isotope\Model\Shipping;
 /**
  * @property string $dhl_user
  * @property string $dhl_signature
- * @property string $dhl_epk
+ * @property string $dhl_ekp
  * @property string $dhl_product
  * @property string $dhl_app
  * @property string $dhl_token

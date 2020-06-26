@@ -187,10 +187,10 @@
       <trans-unit id="tl_iso_shipping.dhl_signature.1">
         <source>Please enter your DHL account password.</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.dhl_epk.0">
+      <trans-unit id="tl_iso_shipping.dhl_ekp.0">
         <source>Account Number</source>
       </trans-unit>
-      <trans-unit id="tl_iso_shipping.dhl_epk.1">
+      <trans-unit id="tl_iso_shipping.dhl_ekp.1">
         <source>Please enter your DHL account number.</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.dhl_product.0">

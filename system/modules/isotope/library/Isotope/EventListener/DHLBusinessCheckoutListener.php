@@ -77,7 +77,7 @@ class DHLBusinessCheckoutListener
 
         $credentials->setUser($shipping->dhl_user);
         $credentials->setSignature($shipping->dhl_signature);
-        $credentials->setEpk($shipping->dhl_epk);
+        $credentials->setEkp($shipping->dhl_ekp);
         $credentials->setApiUser($shipping->dhl_app);
         $credentials->setApiPassword($shipping->dhl_token);
 
@@ -142,7 +142,7 @@ class DHLBusinessCheckoutListener
             $scale->add($shippingWeight);
         }
 
-        $details = new ShipmentDetails($shippingMethod->dhl_epk);
+        $details = new ShipmentDetails($shippingMethod->dhl_ekp);
 
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
