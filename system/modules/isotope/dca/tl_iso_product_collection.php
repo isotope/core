@@ -3,7 +3,7 @@
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2020 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -217,6 +217,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
             'save_callback' => array
@@ -229,7 +230,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard'),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
