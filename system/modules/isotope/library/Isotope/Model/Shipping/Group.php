@@ -18,8 +18,8 @@ use Isotope\Model\Shipping;
 /**
  * Class Group
  *
- * @property array  group_methods
- * @property string group_calculation
+ * @property array  $group_methods
+ * @property string $group_calculation
  */
 class Group extends Shipping
 {

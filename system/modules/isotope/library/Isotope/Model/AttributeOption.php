@@ -20,19 +20,19 @@ use Isotope\Isotope;
 /**
  * Class AttributeOption
  *
- * @property int    id
- * @property int    pid
- * @property int    sorting
- * @property int    tstamp
- * @property string ptable
- * @property int    langPid
- * @property string language
- * @property string field_name
- * @property string type
- * @property bool   isDefault
- * @property string label
- * @property string price
- * @property bool   published
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $sorting
+ * @property int    $tstamp
+ * @property string $ptable
+ * @property int    $langPid
+ * @property string $language
+ * @property string $field_name
+ * @property string $type
+ * @property bool   $isDefault
+ * @property string $label
+ * @property string $price
+ * @property bool   $published
  */
 class AttributeOption extends \MultilingualModel
 {
