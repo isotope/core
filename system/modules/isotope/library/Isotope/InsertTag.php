@@ -266,6 +266,10 @@ class InsertTag
 
             case 'gross_amount':
                 return Isotope::formatPriceWithCurrency($product->getPrice()->getGrossAmount());
+
+            case 'html':
+            default:
+                return Isotope::formatPriceWithCurrency($product->getPrice()->generate());
         }
     }
 }
