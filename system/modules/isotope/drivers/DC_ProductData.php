@@ -79,13 +79,6 @@ class DC_ProductData extends \DC_Table
             }
         }
 
-        $arrClipboard = $this->getSession()->get('CLIPBOARD');
-
-        // Cut all records
-        if ($arrClipboard[$strTable]['mode'] == 'cutAll' && \Input::get('act') != 'cutAll') {
-            \Controller::redirect(\Backend::addToUrl('&act=cutAll'));
-        }
-
         parent::__construct($strTable);
 
         // Allow to customize languages via the onload_callback
