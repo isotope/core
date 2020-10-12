@@ -22,9 +22,11 @@ use Isotope\Template;
 /**
  * Base class for Open Payment Platform
  *
+ * @property string $opp_entity_id
+ * @property string $opp_auth
+ * @property string $opp_token
  * @property string $opp_user_id
  * @property string $opp_password
- * @property string $opp_entity_id
  * @property array  $opp_brands
  */
 class OpenPaymentPlatform extends Payment
@@ -215,15 +217,24 @@ class OpenPaymentPlatform extends Payment
      */
     private function createRequest($paymentType, IsotopePurchasableCollection $objOrder, array $params = [])
     {
-        $params['authentication.userId']   = $this->opp_user_id;
-        $params['authentication.password'] = $this->opp_password;
         $params['authentication.entityId'] = $this->opp_entity_id;
+
+        if ('token' !== $this->opp_auth) {
+            $params['authentication.userId']   = $this->opp_user_id;
+            $params['authentication.password'] = $this->opp_password;
+        }
+
         $params['amount']                  = number_format($objOrder->getTotal(), 2, '.', '');
         $params['currency']                = $objOrder->getCurrency();
         $params['paymentType']             = $paymentType;
 
         $request = new Request();
         $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        if ('token' === $this->opp_auth) {
+            $request->setHeader('Authorization', 'Bearer '.$this->opp_token);
+        }
+
         $request->method = 'post';
         $request->data = http_build_query($params);
 
