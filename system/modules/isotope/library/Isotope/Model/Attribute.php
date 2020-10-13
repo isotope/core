@@ -256,27 +256,23 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_TABLE:
-                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
-                    $arrOptions = $query
-                        ->addField('t1.id AS value')
-                        ->addOrder('t1.label')
-                        ->addWhere('t1.pid = ?')
-                        ->getStatement()
-                        ->execute($this->id)
-                        ->fetchAllAssoc()
-                    ;
+                    $arrOptions = [];
+                    foreach (AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
+                        $arrOptions[] = [
+                            'value' => $model->id,
+                            'label' => $model->label,
+                        ];
+                    }
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                    $query = new \DC_Multilingual_Query(AttributeOption::getTable());
-                    $arrOptions = $query
-                        ->addField('t1.id AS value')
-                        ->addOrder('t1.label')
-                        ->addWhere('t1.field_name = ?')
-                        ->getStatement()
-                        ->execute($this->field_name)
-                        ->fetchAllAssoc()
-                    ;
+                    $arrOptions = [];
+                    foreach (AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
+                        $arrOptions[] = [
+                            'value' => $model->id,
+                            'label' => $model->label,
+                        ];
+                    }
                     break;
 
                 default:

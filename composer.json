@@ -31,7 +31,7 @@
         "menatwork/contao-multicolumnwizard": "~3.2",
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",
-        "terminal42/dc_multilingual": "~2.0",
+        "terminal42/dc_multilingual": "~2.0 || ~4.0",
         "guzzlehttp/guzzle": "~6.0",
         "tecnickcom/tcpdf": "^6.2.22",
         "symfony/filesystem": "^3.4 || ^4.0"

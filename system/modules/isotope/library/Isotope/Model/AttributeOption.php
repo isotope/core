@@ -8,14 +8,18 @@
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
+namespace {
+    if (!\class_exists('\MultilingualModel')) {
+        class MultilingualModel extends Terminal42\DcMultilingualBundle\Model\Multilingual {}
+    }
+}
 
-namespace Isotope\Model;
+namespace Isotope\Model {
 
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
-
 
 /**
  * Class AttributeOption
@@ -247,7 +251,7 @@ class AttributeOption extends \MultilingualModel
      *
      * @throws \LogicException if attribute option source is not the database table
      */
-    public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute)
+    public static function findByAttribute(IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
     {
         if (IsotopeAttributeWithOptions::SOURCE_TABLE !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not the database table');
@@ -262,7 +266,35 @@ class AttributeOption extends \MultilingualModel
                 "$t.published='1'"
             ],
             [$objAttribute->id],
-            ['order' => "$t.sorting"]
+            array_merge(['order' => "$t.sorting"], $arrOptions)
+        );
+    }
+
+    /**
+     * Find all options by field name
+     *
+     * @param IsotopeAttributeWithOptions|Attribute $objAttribute
+     *
+     * @return \Isotope\Collection\AttributeOption|null
+     *
+     * @throws \LogicException if attribute option source is not the database table
+     */
+    public static function findByProducts(IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
+    {
+        if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
+            throw new \LogicException('Options source for attribute "' . $objAttribute->field_name . '" is not products');
+        }
+
+        $t = static::getTable();
+
+        return static::findBy(
+            [
+                "$t.ptable='tl_iso_product'",
+                "$t.field_name=?",
+                "$t.published='1'"
+            ],
+            [$objAttribute->field_name],
+            array_merge(['order' => "$t.sorting"], $arrOptions)
         );
     }
 
@@ -276,7 +308,7 @@ class AttributeOption extends \MultilingualModel
      *
      * @throws \LogicException if attribute options source is not the product
      */
-    public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute)
+    public static function findByProductAndAttribute(IsotopeProduct $objProduct, IsotopeAttributeWithOptions $objAttribute, array $arrOptions = [])
     {
         if (IsotopeAttributeWithOptions::SOURCE_PRODUCT !== $objAttribute->getOptionsSource()) {
             throw new \LogicException('Options source for attribute "' . $objAttribute->getFieldName() . '" is not the product');
@@ -300,7 +332,7 @@ class AttributeOption extends \MultilingualModel
                 $productId,
                 $objAttribute->getFieldName()
             ),
-            ['order' => "$t.sorting"]
+            array_merge(['order' => "$t.sorting"], $arrOptions)
         );
     }
 
@@ -356,4 +388,6 @@ class AttributeOption extends \MultilingualModel
     {
         return \Isotope\Collection\AttributeOption::createFromDbResult($objResult, $strTable);
     }
+}
+
 }
