@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\CoreBundle\Exception\ResponseException;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
@@ -19,6 +20,7 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -238,6 +240,10 @@ class Checkout extends Module
                 $objOrder->lock();
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->checkoutForm($objOrder, $this) : false;
+
+                if ($strBuffer instanceof Response) {
+                    throw new ResponseException($strBuffer);
+                }
 
                 if (false === $strBuffer) {
                     static::redirectToStep(self::STEP_COMPLETE, $objOrder);
