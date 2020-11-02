@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="ISO_REPORT.sales">
         <source>Sales Statistics</source>
+        <target>Статистика продаж</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.member">
         <source>Member Statistics</source>
@@ -12,21 +13,26 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.custom">
         <source>Custom Reports</source>
+        <target>Настраиваемые отчеты</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_total.0">
         <source>Total</source>
+        <target>Всего</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_total.1">
         <source>Total sales of all products</source>
+        <target>Всего продаж всех товаров</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_product.0">
         <source>Per product</source>
+        <target>за товар</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_product.1">
         <source>Sales per product</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_total.0">
         <source>Total</source>
+        <target>Всего</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_total.1">
         <source>Sales statistics by member</source>
@@ -45,6 +51,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_registration.0">
         <source>Registrations</source>
+        <target>Регистрации</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_registration.1">
         <source>Statistics about member registrations</source>
@@ -57,21 +64,26 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.rules_usage.0">
         <source>Rules Usage</source>
+        <target>Использование правил</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.rules_usage.1">
         <source>Statistics about rules usage</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.rules_coupons.0">
         <source>Coupons</source>
+        <target>Купоны</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.rules_coupons.1">
         <source>Statistics about coupon usage</source>
+        <target>Статистика использования купонов</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
         <source>Sales in the last 24 hours</source>
+        <target>Продаж за 24 часа</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.24h_empty">
         <source>No orders have been placed in the last 24 hours.</source>
+        <target>Ни одного заказа не размещено за 24 часа.</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -82,51 +94,65 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.orders#">
         <source>Number of orders</source>
+        <target>Число заказов</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.products#">
         <source>Number of products</source>
+        <target>Количество товаров</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.items#">
         <source>Number of items</source>
+        <target>Число товаров</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
+        <target>Всего продаж</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.all">
         <source>All</source>
+        <target>Все</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sums">
         <source>Sums</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.show">
         <source>Show</source>
+        <target>Показать</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.search">
         <source>Search</source>
+        <target>Поиск</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sort">
         <source>Sort</source>
+        <target>Сортировать</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.period">
         <source>Period</source>
+        <target>Период</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.day">
         <source>Day</source>
+        <target>День</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.week">
         <source>Week</source>
+        <target>Неделя</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.month">
         <source>Month</source>
+        <target>Месяц</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.year">
         <source>Year</source>
+        <target>Год</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.from">
         <source>From</source>
+        <target>От</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.to">
         <source>To</source>
@@ -137,6 +163,7 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.date_field">
         <source>Report</source>
+        <target>Отчет</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.locked">
         <source>Order date</source>
@@ -144,15 +171,19 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.date_paid">
         <source>Payment date</source>
+        <target>Дата оплаты</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.date_shipped">
         <source>Shiping date</source>
+        <target>Дата доставки</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.total_sales">
         <source>Total sales</source>
+        <target>Всего продаж</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.product_name">
         <source>Product name</source>
+        <target>Название товара</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.columns">
         <source>Columns</source>

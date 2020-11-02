@@ -7,15 +7,19 @@
       </trans-unit>
       <trans-unit id="tl_settings.iso_cartTimeout.1">
         <source>Enter the maximum lifetime of a guest cart in seconds (30 days = 2592000 seconds).</source>
+        <target>Inserire la durata massima di vita di un carrello ospite in secondi (30 giorni = 2592000 secondi).</target>
       </trans-unit>
       <trans-unit id="tl_settings.iso_orderTimeout.0">
         <source>Order timeout</source>
+        <target>Timeout ordine</target>
       </trans-unit>
       <trans-unit id="tl_settings.iso_orderTimeout.1">
         <source>Enter how long an order will stay in the database if the checkout was not successful (7 days = 604800 seconds).</source>
+        <target>Inserire la durata della permanenza di un ordine nel database se il checkout non è andato a buon fine (7 giorni = 604800 secondi).</target>
       </trans-unit>
       <trans-unit id="tl_settings.iso_timeout_legend">
         <source>Timeout values</source>
+        <target>Valori timeout</target>
       </trans-unit>
     </body>
   </file>

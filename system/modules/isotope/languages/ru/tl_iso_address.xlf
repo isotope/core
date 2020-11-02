@@ -15,12 +15,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.label.1">
         <source>Please enter a custom label for this address.</source>
+        <target>Пожалуйста, введите настраиваемую метку для этого адреса.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.0">
         <source>Gender</source>
+        <target>Пол</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.1">
         <source>Please choose the gender.</source>
+        <target>Пожалуйста, выберите пол.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.salutation.0">
         <source>Salutation</source>
@@ -36,7 +39,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.firstname.1">
         <source>Please enter the first name.</source>
-        <target>Введите имя.</target>
+        <target>Пожалуйста, введите имя.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.lastname.0">
         <source>Last name</source>
@@ -44,13 +47,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.lastname.1">
         <source>Please enter the last name.</source>
-        <target>Введите фамилию.</target>
+        <target>Пожалуйста, введите фамилию.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.0">
         <source>Date of birth</source>
+        <target>Дата рождения</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.1">
         <source>Please enter the date of birth.</source>
+        <target>Пожалуйста, введите дату рождения.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.company.0">
         <source>Company</source>
@@ -58,13 +63,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.company.1">
         <source>You can enter a company name here.</source>
-        <target>Вы можете ввести название компании сюда.</target>
+        <target>Вы можете ввести название компании здесь.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.0">
         <source>VAT No.</source>
+        <target>Номер VAT</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.1">
         <source>Please enter a VAT number.</source>
+        <target>Пожалуйста, введите номер VAT.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.0">
         <source>Street</source>
@@ -72,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.1">
         <source>Please enter the street name and the street number.</source>
-        <target>Введите название улицы и номер улицы.</target>
+        <target>Пожалуйста, введите название улицы и номер улицы.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.0">
         <source>Street 2</source>
@@ -80,7 +87,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.1">
         <source>Enter a second street info if there's any.</source>
-        <target>Введитье информацию о улице 2, если есть.</target>
+        <target>Введите информацию об улице 2, если она есть.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.0">
         <source>Street 3</source>
@@ -88,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
         <source>Enter a third street info if there's any.</source>
-        <target>Введитье информацию о улице 3, если есть.</target>
+        <target>Введите информацию о улице 3, если она есть.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">
         <source>Postal code</source>
@@ -104,6 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.city.1">
         <source>Please enter the name of the city.</source>
+        <target>Пожалуйста, введите название города.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.0">
         <source>State</source>
@@ -111,6 +119,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.1">
         <source>Please enter the name of the state.</source>
+        <target>Пожалуйста, укажите название региона.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.country.0">
         <source>Country</source>
@@ -138,19 +147,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultBilling.0">
         <source>Default billing address</source>
-        <target>Адрес платежа по-умолчанию</target>
+        <target>Адрес платежа по умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultBilling.1">
         <source>Is this your default billing address?</source>
-        <target>Это ваш адрес платежа по-умолчанию?</target>
+        <target>Это ваш адрес платежа по умолчанию?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.0">
         <source>Default shipping address</source>
-        <target>Адрес доставки по-умолчанию</target>
+        <target>Адрес доставки по умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.isDefaultShipping.1">
         <source>Is this your default shipping address?</source>
-        <target>Это ваш адрес доставки по-умолчанию?</target>
+        <target>Это ваш адрес доставки по умолчанию?</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_legend">
         <source>Store</source>
@@ -170,7 +179,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.default_legend">
         <source>Default address</source>
-        <target>Адрес по-умолчанию</target>
+        <target>Адрес по умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.personalData">
         <source>Personal data</source>
@@ -186,7 +195,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.loginDetails">
         <source>Default address</source>
-        <target>Адрес по-умолчанию</target>
+        <target>Адрес по умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.new.0">
         <source>New address</source>
@@ -218,7 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.delete.1">
         <source>Delete address ID %s</source>
-        <target>Удалить адрес ID %s</target>
+        <target>Удалить ID адреса %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.show.0">
         <source>Address details</source>
@@ -226,7 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.show.1">
         <source>Show details of address ID %s</source>
-        <target>Показать полный адрес ID %s</target>
+        <target>Показать полный ID адреса %s</target>
       </trans-unit>
     </body>
   </file>

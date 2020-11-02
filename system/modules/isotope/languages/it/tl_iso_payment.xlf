@@ -59,15 +59,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.minimum_quantity.0">
         <source>Minimum quantity</source>
+        <target>Quantità minima</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.minimum_quantity.1">
         <source>Enter a number greater zero to exclude this payment method for orders with lower quantity.</source>
+        <target>Inserire un numero maggiore di zero per escludere questo metodo di pagamento per ordini con quantità inferiori.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.maximum_quantity.0">
         <source>Maximum quantity</source>
+        <target>Quantità massima</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.maximum_quantity.1">
         <source>Enter a number greater zero to exclude this payment method for orders with higher quantity.</source>
+        <target>Inserire un numero maggiore di zero per escludere questo metodo di pagamento per ordini con quantità maggiori.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quantity_mode.0">
         <source>Quantity calculation mode</source>
@@ -111,9 +115,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.product_types_condition.0">
         <source>Product type condition</source>
+        <target>Stato del tipo di prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.product_types_condition.1">
         <source>Select how the product type filter should be applied.</source>
+        <target>Selezionare come deve essere applicato il filtro del tipo di prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.config_ids.0">
         <source>Store configurations</source>
@@ -121,6 +127,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.config_ids.1">
         <source>You can restrict this payment method to certain shop configurations.</source>
+        <target>È possibile limitare questo metodo di pagamento a determinate configurazioni del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.0">
         <source>Price</source>
@@ -128,13 +135,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.price.1">
         <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
+        <target>Inserite un prezzo o un valore percentuale (ad es. &quot;10&quot; o &quot;10%&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.tax_class.0">
         <source>Tax Class</source>
-        <target>Classe aliquota</target>
+        <target>Classe fiscale</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.tax_class.1">
         <source>Please select a tax class for the price.</source>
+        <target>Si prega di selezionare una classe fiscale per il prezzo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.trans_type.0">
         <source>Transaction type</source>
@@ -146,15 +155,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paybyway_merchant_id.0">
         <source>Merchant ID</source>
+        <target>ID Mercante</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paybyway_merchant_id.1">
         <source>Please enter your Paybyway merchant ID. The sub-merchant ID is listed in the sub-merchants page in the merchant UI.</source>
+        <target>Inserisci il tuo codice identificativo del commerciante Paybyway. Il sub-merchant ID è elencato nella pagina dei sub-merchant ID nell'interfaccia utente del commerciante.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paybyway_private_key.0">
         <source>Private Key</source>
+        <target>Chiave privata</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paybyway_private_key.1">
         <source>Please enter your Paybyway private key.</source>
+        <target>Inserire la chiave privata Paybyway.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_account.0">
         <source>PayPal Account</source>
@@ -166,60 +179,79 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.0">
         <source>Client ID</source>
+        <target>ID cliente</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.1">
         <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+        <target>Inserire il proprio codice cliente PayPal. Per ottenere i dati di accesso è necessario creare un'applicazione sul portale PayPal.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.0">
         <source>Secret</source>
+        <target>Segreto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_secret.1">
         <source>Enter your PayPal API secret.</source>
+        <target>Inserire il vostro segreto API PayPal.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.0">
         <source>PSPID</source>
+        <target>PSPID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_pspid.1">
         <source>The PSPID is your unique identification for the payment method.</source>
+        <target>Il PSPID è la vostra identificazione unica per il metodo di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_http_method.0">
         <source>HTTP method</source>
+        <target>Metodo HTTP</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_http_method.1">
         <source>Type of HTTP data transfer from and to the servers.</source>
+        <target>Tipo di trasferimento dati HTTP da e verso il server</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.0">
         <source>Hash method</source>
+        <target>Metodo Hash</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.1">
         <source>Hashing algorithm for data transfer from and to the servers.</source>
+        <target>Algoritmo di Hashing per il trasferimento dei dati da e verso i server.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.sha1">
         <source>SHA-1</source>
+        <target>SHA-1</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.sha256">
         <source>SHA-256</source>
+        <target>SHA-256</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_method.sha512">
         <source>SHA-512</source>
+        <target>SHA-512</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_in.0">
         <source>SHA-IN signature</source>
+        <target>Firma SHA-IN</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_in.1">
         <source>This will be used to validate the server to server communication.</source>
+        <target>Questo verrà utilizzato per convalidare la comunicazione da server a server.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_out.0">
         <source>SHA-OUT signature</source>
+        <target>Firma SHA-OUT</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_hash_out.1">
         <source>This will be used to validate the server to server communication.</source>
+        <target>Questo verrà utilizzato per convalidare la comunicazione da server a server.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.0">
         <source>Dynamic template URL</source>
+        <target>URL modello dinamico</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_dynamic_template.1">
         <source>Enter a valid &lt;strong&gt;absolute&lt;/strong&gt; URL to a dynamic template here.</source>
+        <target>Inserire qui un URL &lt;strong&gt;assoluto&lt;/strong&gt; valido per un modello dinamico.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.0">
         <source>Payment method</source>
@@ -227,6 +259,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.psp_payment_method.1">
         <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don't select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
+        <target>Qui potete selezionare un metodo di pagamento. Assicuratevi che il vostro contratto PSP includa anche questo metodo di pagamento! Se non selezionate nulla qui, il cliente dovrà scegliere il metodo di pagamento preferito sull'interfaccia PSP!</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.requireCCV.0">
         <source>Require Card Code Verification (CCV) Number</source>
@@ -246,45 +279,59 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_id.0">
         <source>Merchant-ID</source>
+        <target>Merchant-ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_id.1">
         <source>Please enter your merchant ID.</source>
+        <target>Inserire il vostro Merchant-ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_sign.0">
         <source>HMAC Key</source>
+        <target>HMAC Key</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_sign.1">
         <source>Please enter your HMAC key from the Datatrans control panel.</source>
+        <target>Inserite la vostra chiave HMAC dal pannello di controllo Datatrans.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.0">
         <source>Hash method</source>
+        <target>Metodo Hash</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.1">
         <source>Please select the hashing method configured in your Datatrans control panel.</source>
+        <target>Selezionare il metodo di hashing configurato nel vostro pannello di controllo Datatrans.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.md5">
         <source>MD5 (outdated)</source>
+        <target>MD5 (obsoleto)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
         <source>SHA-256</source>
+        <target>SHA-256</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_convert.0">
         <source>Convert hash to binary</source>
+        <target>Convertire hash in binario</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.datatrans_hash_convert.1">
         <source>Check here if the hash key needs to be converted to binary.</source>
+        <target>Verificate qui se la chiave hash deve essere convertita in binario.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_site_id.0">
         <source>Site Identifier</source>
+        <target>Identificatore del sito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_site_id.1">
         <source>Please enter your payment site identifier.</source>
+        <target>Inserisci il vostro identificativo del sito di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_certificate.0">
         <source>Certificate</source>
+        <target>Certificato</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.vads_certificate.1">
         <source>Please enter your TEST or PRODUCTION certificate.</source>
+        <target>Inserire il vostro certificato di TEST o di PRODUZIONE.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.0">
         <source>Payment method</source>
@@ -292,81 +339,107 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.1">
         <source>Please select a payment method for this method.</source>
+        <target>Si prega di selezionare un metodo di pagamento per questo metodo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.creditcard">
         <source>Credit card</source>
+        <target>Carta di credito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.maestro">
         <source>Debig card</source>
+        <target>Carta di debito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.directdebit">
         <source>Direct debit</source>
+        <target>Addebito diretto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslmerchant.0">
         <source>Seller ID</source>
+        <target>ID venditore</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslmerchant.1">
         <source>Please enter your seller ID (Händlerkennung).</source>
+        <target>Inserire il proprio identificativo del venditore.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslpassword.0">
         <source>Password</source>
+        <target>Password</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_sslpassword.1">
         <source>Please enter your SSL-Password.</source>
+        <target>Inserire la propria password SSL.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_merchantref.0">
         <source>Reference</source>
+        <target>Referenza</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sparkasse_merchantref.1">
         <source>A reference that will be shown on the seller details page instead of the cart ID.</source>
+        <target>Una referenza che verrà mostrata nella pagina dei dettagli del venditore al posto dell'ID del carrello.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.0">
         <source>Customer ID</source>
+        <target>ID cliente</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.1">
         <source>Your customer ID for sofortüberweisung.de</source>
+        <target>Il vostro ID cliente per sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.0">
         <source>Project ID</source>
+        <target>ID del progetto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.1">
         <source>Your project ID for sofortüberweisung.de</source>
+        <target>Il vostro progetto ID per sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.0">
         <source>Projekt password</source>
+        <target>Password del progetto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.1">
         <source>Your project password for sofortüberweisung.de</source>
+        <target>La password del progetto per sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.0">
         <source>Saferpay Account ID (CustomerId-TerminalId)</source>
+        <target>ID del conto Saferpay (CustomerId-TerminalId)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.1">
         <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-TerminalId</source>
+        <target>Inserire l'ID del proprio account Saferpay. Dovrebbe essere nella forma CustomerID-TerminalID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.0">
         <source>Saferpay API User</source>
+        <target>Utente API Saferpay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.1">
         <source>Please enter your Saferpay JSON API username.</source>
+        <target>Inserire il proprio nome utente Saferpay JSON API.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_password.0">
         <source>Saferpay API Password</source>
+        <target>Password API Saferpay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_password.1">
         <source>Please enter your Saferpay JSON API password.</source>
+        <target>Inserisci la tua password Saferpay JSON API.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_description.0">
         <source>Checkout description</source>
+        <target>Descrizione della cassa</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_description.1">
         <source>The customer will see this description on the Saferpay checkout page.</source>
+        <target>Il cliente vedrà questa descrizione nella pagina di pagamento Saferpay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_vtconfig.0">
         <source>Payment page configuration (VTCONFIG)</source>
+        <target>Configurazione della pagina di pagamento (VTCONFIG)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_vtconfig.1">
         <source>You can create different Payment Page configurations. If you want to use a specific one of them, enter its &quot;Parameter for the request&quot; value here.</source>
+        <target>È possibile creare diverse configurazioni della pagina di pagamento. Se volete utilizzarne una specifica, inserite qui il suo valore &quot;Parametro per la richiesta&quot;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
         <source>Payment methods</source>
@@ -374,69 +447,91 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_paymentmethods.1">
         <source>You can limit the available payment methods (e.g. only MasterCard). If you do not select anything, all payment methods will be allowed.</source>
+        <target>È possibile limitare i metodi di pagamento disponibili (ad es. solo MasterCard). Se non si seleziona nulla, tutti i metodi di pagamento saranno consentiti.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_popupId.0">
         <source>ExperCash Popup-ID</source>
+        <target>ExperCash Popup-ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_popupId.1">
         <source>Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.</source>
+        <target>Inserire l'ID pop-up dal portale ExperCash.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_profile.0">
         <source>ExperCash Profile</source>
+        <target>Profilo ExperCash</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_profile.1">
         <source>Geben Sie die dreistellige Profilnummer ein.</source>
+        <target>Inserire il numero del profilo a tre cifre.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_popupKey.0">
         <source>ExperCash Popup-Key</source>
+        <target>ExperCash Popup-Key</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_popupKey.1">
         <source>Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.</source>
+        <target>Inserite il tasto pop-up del vostro portale ExperCash.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.0">
         <source>Transaktionsart</source>
+        <target>Tipo di transazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.1">
         <source>Sie können eine Transaktionsart vordefinieren oder den Kunden wählen lassen.</source>
+        <target>È possibile predefinire un tipo di transazione o lasciare che il cliente ne scelga uno.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.automatic_payment_method">
         <source>Auswahl der Zahlart durch den Endkunden</source>
+        <target>Selezione del metodo di pagamento da parte del cliente finale</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.elv_buy">
         <source>Zahlung per Lastschrift (ELV)</source>
+        <target>Pagamento con addebito diretto (ELV)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.elv_authorize">
         <source>Prüfung und Speicherung von Kontodaten zum späteren Einzug</source>
+        <target>Verifica e archiviazione dei dati del conto per una successiva raccolta</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_buy">
         <source>Kreditkartenzahlung</source>
+        <target>Pagamento con carta di credito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_authorize">
         <source>verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug</source>
+        <target>prenotazione vincolante su carta di credito per un pagamento successivo</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.giropay">
         <source>Transaktion über giropay</source>
+        <target>Transazione via giropay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_paymentMethod.sofortueberweisung">
         <source>Transaktion über Sofortüberweisung</source>
+        <target>Transazione tramite Sofortüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_css.0">
         <source>CSS-Vorlage</source>
+        <target>Modello CSS</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.expercash_css.1">
         <source>Wählen Sie eine CSS-Datei für die Übergabe an ExperCash.</source>
+        <target>Selezionare un file CSS per il trasferimento a ExperCash</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_merchantnumber.0">
         <source>Merchant number</source>
+        <target>Numero del commerciante</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_merchantnumber.1">
         <source>The unique merchant number created in ePay. This merchant number is to be found in your contract with PBS.</source>
+        <target>l numero unico del commerciante creato in ePay. Questo numero di commerciante si trova nel vostro contratto con PBS.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_windowstate.0">
         <source>Integration type</source>
+        <target>Tipo di integrazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_windowstate.1">
         <source>Select on of the available integration options. Please note that when using the integrated payment form, you can only accept payment cards.</source>
+        <target>Selezionare una delle opzioni di integrazione disponibili. Si prega di notare che, utilizzando il modulo di pagamento integrato, è possibile accettare solo carte di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_secretkey.0">
         <source>Secret key</source>
@@ -444,6 +539,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_secretkey.1">
         <source>The secret key set up in your ePay configuration.</source>
+        <target>La chiave segreta impostata nella vostra configurazione ePay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_clearingtype.0">
         <source>Clearing type</source>
@@ -455,12 +551,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_aid.0">
         <source>PAYONE subaccount ID (aid)</source>
+        <target>ID del sottoconto PAYONE (aid)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_aid.1">
         <source>Please enter your unique PAYONE subaccount ID (aid).</source>
+        <target>Inserisci il tuo ID unico del sottoconto PAYONE (aid).</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_portalid.0">
         <source>PAYONE Portal ID</source>
+        <target>ID portale PAYONE</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone_portalid.1">
         <source>Please enter your unique PAYONE portal ID.</source>
@@ -476,27 +575,35 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_instId.0">
         <source>Installation ID</source>
+        <target>ID installazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_instId.1">
         <source>Please enter your WorldPay Installation ID</source>
+        <target>Inserire il proprio ID di installazione WorldPay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_callbackPW.0">
         <source>Transaction Password</source>
+        <target>Password della transazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_callbackPW.1">
         <source>Enter the same transaction password as in your WorldPay configuration.</source>
+        <target>Inserite la stessa password della transazione come nella vostra configurazione WorldPay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_signatureFields.0">
         <source>SignatureFields</source>
+        <target>SignatureFields</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_signatureFields.1">
         <source>Enter the same SignatureField value as in your WorldPay configuration.</source>
+        <target>Immettere lo stesso valore di SignatureField della configurazione WorldPay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_md5secret.0">
         <source>MD5 Secret</source>
+        <target>Segreto MD5</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_md5secret.1">
         <source>Enter the same MD5 secret value as in your WorldPay configuration.</source>
+        <target>Immettere lo stesso valore segreto MD5 della configurazione WorldPay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_description.0">
         <source>Description</source>
@@ -504,30 +611,39 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.worldpay_description.1">
         <source>Enter a description for your store. It will be shown to the customer on the worldpay checkout process.</source>
+        <target>Inserire una descrizione per il vostro negozio. Sarà mostrata al cliente durante il processo di checkout worldpay.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_merchantId.0">
         <source>Merchant ID</source>
+        <target>ID Mercante</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_merchantId.1">
         <source>Please enter your merchant ID.</source>
+        <target>Inserire il vostro Merchant-ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_agreementId.0">
         <source>Agreement ID</source>
+        <target>ID accordo</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_agreementId.1">
         <source>Please enter your agreement ID.</source>
+        <target>Inserire l'ID del contratto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_apiKey.0">
         <source>API key</source>
+        <target>Chiave API</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_apiKey.1">
         <source>Please enter your API key.</source>
+        <target>Inserire la chiave API.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_privateKey.0">
         <source>Private key</source>
+        <target>Chiave privata</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_privateKey.1">
         <source>Please enter your private key.</source>
+        <target>Inserire la propria chiave privata.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_paymentMethods.0">
         <source>Payment methods</source>
@@ -535,30 +651,57 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.quickpay_paymentMethods.1">
         <source>Enter a configuration string to limit the payment methods. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;More Information&lt;/a&gt;.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_user_id.0">
-        <source>User ID</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_user_id.1">
-        <source>Please enter your user ID.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_password.0">
-        <source>Password</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_password.1">
-        <source>Please enter your user password.</source>
+        <target>Inserire una stringa di configurazione per limitare i metodi di pagamento. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;Ulteriori informazioni&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_entity_id.0">
         <source>Entity/Channel ID</source>
+        <target>Entità/identità del canale</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_entity_id.1">
         <source>Please enter your entity or channel ID</source>
+        <target>Inserire l'ID della propria entità o del canale</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.0">
+        <source>Authentication Scheme</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.1">
+        <source>Select the authentication scheme of your Open Payment provider.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.user">
+        <source>User ID &amp; Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.token">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.0">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.1">
+        <source>Please enter your authentication token.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.0">
+        <source>User ID</source>
+        <target>ID utente</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.1">
+        <source>Please enter your user ID.</source>
+        <target>Inserire il proprio ID utente.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.0">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.1">
+        <source>Please enter your user password.</source>
+        <target>Inserire la password utente.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.0">
         <source>Payment Brands</source>
+        <target>Marchi di pagamenti</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.1">
         <source>Select the payment brands you want to support in this payment method.</source>
+        <target>Selezionare i marchi di pagamenti che si desidera supportare in questo metodo di pagamento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.AMEX">
         <source>American Express</source>
@@ -566,12 +709,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.DINERS">
         <source>Diners Club</source>
+        <target>Diners Club</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
         <source>SEPA Direct Debit</source>
+        <target>SEPA Direct Debit</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
         <source>giropay</source>
+        <target>giropay</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.JCB">
         <source>JCB</source>
@@ -579,9 +725,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
         <source>Klarna Ratenkauf</source>
+        <target>Klarna Ratenkauf</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
         <source>Klarna Rechnung</source>
+        <target>Klarna Fattura</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.MASTER">
         <source>MasterCard</source>
@@ -589,30 +737,39 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
         <source>paydirect</source>
+        <target>paydirect</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
         <source>PayPal</source>
+        <target>PayPal</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
         <source>Ratenkauf by easyCredit</source>
+        <target>Acquisto rateale con easyCredit</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
         <source>SOFORTüberweisung</source>
+        <target>SOFORTüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.VISA">
         <source>VISA</source>
+        <target>VISA</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_merchant.0">
         <source>Merchant ID</source>
+        <target>ID Mercante</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_merchant.1">
         <source>Please enter your merchant ID.</source>
+        <target>Inserire il vostro Merchant-ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_password.0">
         <source>Password</source>
+        <target>Password</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_password.1">
         <source>Please enter your SOAP password.</source>
+        <target>Inserire la password di SOAP.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
@@ -648,9 +805,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.logging.0">
         <source>Enable logging</source>
+        <target>Attivare il logging</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.logging.1">
         <source>Write transaction information to the system log files.</source>
+        <target>Scrivere le informazioni sulle transazioni nei file di log del sistema.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled.0">
         <source>Enabled</source>
@@ -694,9 +853,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.toggle.0">
         <source>Enable/disable payment method</source>
+        <target>Abilitare/disabilitare il metodo di pagamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.toggle.1">
         <source>Enable/disable payment method ID %s</source>
+        <target>Abilitazione/disabilitazione del metodo di pagamento ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.show.0">
         <source>Payment method details</source>
@@ -708,15 +869,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.capture.0">
         <source>Authorize and Capture</source>
+        <target>Autorizzare e catturare</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.capture.1">
         <source>Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved.</source>
+        <target>Le transazioni di questo tipo saranno inviate per l'autorizzazione. La transazione sarà automaticamente ritirata per il regolamento se approvata.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.auth.0">
         <source>Authorize Only</source>
+        <target>Autorizzare soltanto</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.auth.1">
         <source>Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted.</source>
+        <target>Le transazioni di questo tipo vengono presentate se l'esercente desidera convalidare la carta di credito per l'importo della merce venduta. Se il commerciante non ha merce in magazzino o desidera esaminare gli ordini prima di spedire la merce, questo tipo di transazione deve essere presentato.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.no_shipping">
         <source>Orders without shipping</source>
@@ -724,24 +889,31 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.onlyAvailable">
         <source>Enable if only these product types are in cart</source>
+        <target>Attivare se solo questi tipi di prodotto sono nel carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.allAvailable">
         <source>Enable if all these product types are in cart</source>
+        <target>Attivare se tutti questi tipi di prodotto sono nel carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.oneAvailable">
         <source>Enable if one of these product types is in cart</source>
+        <target>Attivare se uno di questi tipi di prodotto è nel carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.elv">
         <source>Debit withdrawal</source>
+        <target>Ritiro dell'addebito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.cc">
         <source>Credit card</source>
+        <target>Carta di credito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.dc">
         <source>Debit card</source>
+        <target>Carta di debito</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.vor">
         <source>Prepayment</source>
+        <target>Pagamento in anticipo</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.rec">
         <source>Invoice</source>
@@ -749,18 +921,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.sb">
         <source>Online bank transfer (SOFORT/Giropay/PostFinance/iDEAL)</source>
+        <target>Bonifico bancario online (SOFORT/Giropay/PostFinance/iDEAL)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.wlt">
         <source>e-Wallet (PayPal)</source>
+        <target>e-Wallet (PayPal)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.payone.fnc">
         <source>Financing (BillSAFE Invoice)</source>
+        <target>Finanziamento (Fattura BillSAFE)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_windowstate_options.3">
         <source>Full screen</source>
+        <target>Schermo intero</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.epay_windowstate_options.4">
         <source>Integrated payment form</source>
+        <target>Modulo di pagamento integrato</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.type_legend">
         <source>Name &amp; Type</source>
@@ -792,6 +969,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.enabled_legend">
         <source>Approval</source>
+        <target>Approvazione</target>
       </trans-unit>
     </body>
   </file>

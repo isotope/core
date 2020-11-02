@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
+        <target>ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
         <source>Order Number</source>
+        <target>Numero d'ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
@@ -29,6 +31,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.source_collection_id.0">
         <source>Source (Cart ID)</source>
+        <target>Fonte (ID carrello)</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_paid.0">
         <source>Payment date</source>
@@ -180,15 +183,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
         <source>Saferpay payment was sucessfully captured.</source>
+        <target>Il pagamento Saferpay è stato registrato con successo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusError">
         <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
+        <target>Il pagamento Saferpay non poteva essere effettuato! Si prega di controllare &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l'interfaccia web di Saferpay&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
         <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
+        <target>Il pagamento Saferpay non può essere annullato automaticamente. Utilizza &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;l'interfaccia web di Saferpay&lt;/a&gt; per ottenere un rimborso.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
+        <target>Non sono disponibili ulteriori dati per e-mail.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>

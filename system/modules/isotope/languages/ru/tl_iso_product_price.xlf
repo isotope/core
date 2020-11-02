@@ -3,12 +3,14 @@
     <body>
       <trans-unit id="tl_iso_product_price.price_tiers.0">
         <source>Price Tiers</source>
+        <target>Уровни цен</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tiers.1">
         <source>Setup at least one price tier for &quot;Quantity 1&quot;. You can enter discount prices if the user orders more than one product.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.0">
         <source>Tax Class</source>
+        <target>Класс налогов</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.1">
         <source>Please select a tax class for this price.</source>
@@ -34,42 +36,54 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.0">
         <source>Use until</source>
+        <target>Использовать до</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.stop.1">
         <source>Do not use the price on the website after this day.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.new.0">
         <source>Add price</source>
+        <target>Добавить цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.new.1">
         <source>Add a new price to this product</source>
+        <target>Добавить новую цену товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.edit.0">
         <source>Edit price</source>
+        <target>Изменить цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.edit.1">
         <source>Edit price ID %s</source>
+        <target>Изменить ID цены %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.copy.0">
         <source>Duplicate price</source>
+        <target>Дублировать цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.copy.1">
         <source>Duplicate price ID %s</source>
+        <target>Дублировать ID цены %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.delete.0">
         <source>Delete price</source>
+        <target>Удалить цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.delete.1">
         <source>Delete price ID %s</source>
+        <target>Удалить ID цены %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.show.0">
         <source>Price details</source>
+        <target>Свойства цены</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.show.1">
         <source>Show details of price ID %s</source>
+        <target>Показать информацию об ID цены %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tier_columns.min.0">
         <source>Quantity (min)</source>
+        <target>Количество (мин)</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.price_tier_columns.price.0">
         <source>Price</source>

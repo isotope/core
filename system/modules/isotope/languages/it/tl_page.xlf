@@ -11,21 +11,27 @@
       </trans-unit>
       <trans-unit id="tl_page.iso_setReaderJumpTo.0">
         <source>Use reader page</source>
+        <target>Utilizzare la pagina di lettura</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_setReaderJumpTo.1">
         <source>Overwrite the configuration of this page if product details are shown. See help wizard of the page selection for more information.</source>
+        <target>Sovrascrivere la configurazione di questa pagina se vengono mostrati i dettagli del prodotto. Per ulteriori informazioni, consultare la procedura guidata della selezione della pagina.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.0">
         <source>Reader page</source>
+        <target>Pagina di lettura.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.1">
         <source>Select a page for your page reader.</source>
+        <target>Selezionate una pagina per il vostro lettore di pagine.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_store_id.0">
         <source>Store ID</source>
+        <target>ID negozio</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_store_id.1">
         <source>Use different store IDs to group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Utilizzare diversi ID negozio per raggruppare un negozio su più siti root. Il carrello e gli indirizzi di un membro saranno condivisi tra gli stessi negozi ID.</target>
       </trans-unit>
       <trans-unit id="tl_page.isotope_legend">
         <source>Isotope eCommerce</source>

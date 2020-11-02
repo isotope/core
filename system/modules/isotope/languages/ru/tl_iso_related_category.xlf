@@ -3,39 +3,51 @@
     <body>
       <trans-unit id="tl_iso_related_category.name.0">
         <source>Category name</source>
+        <target>Название категории</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.name.1">
         <source>Please enter a name for this category.</source>
+        <target>Пожалуйста, введите название категории.</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.new.0">
         <source>New category</source>
+        <target>Новая категория</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.new.1">
         <source>Create a new category</source>
+        <target>Создать новую категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.edit.0">
         <source>Edit category</source>
+        <target>Изменить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.edit.1">
         <source>Edit category ID %s</source>
+        <target>Изменить ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.copy.0">
         <source>Duplicate category</source>
+        <target>Дублировать категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.copy.1">
         <source>Duplicate category ID %s</source>
+        <target>Дублировать ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.delete.0">
         <source>Delete category</source>
+        <target>Удалить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.delete.1">
         <source>Delete category ID %s</source>
+        <target>Удалить ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.show.0">
         <source>Category details</source>
+        <target>Информация о категории</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.show.1">
         <source>Show details of category ID %s</source>
+        <target>Показать информацию об ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_category.name_legend">
         <source>Name</source>

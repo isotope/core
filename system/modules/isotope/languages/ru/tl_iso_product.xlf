@@ -38,6 +38,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.name.1">
         <source>Please enter the name of this product.</source>
+        <target>Пожалуйста, введите название товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.gtin.0">
         <source>GTIN (Global Trade Item Number)</source>
@@ -61,9 +62,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_price.0">
         <source>Shipping price</source>
+        <target>Стоимость доставки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_price.1">
         <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
+        <target>Пожалуйста, введите стоимость доставки товара. Это будет использовано для расчета стоимости доставки.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.teaser.0">
         <source>Teaser</source>
@@ -77,9 +80,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.description.1">
         <source>Please enter the product description.</source>
+        <target>Пожалуйста, введите описание товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_title.0">
         <source>Meta title</source>
+        <target>Мета-заголовок</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_title.1">
         <source>Meta title is used as page title in the product detail view. If you leave it empty, the product name will be used.</source>
@@ -126,6 +131,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.0">
         <source>Protect product</source>
+        <target>Защитить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.protected.1">
         <source>Restrict product access to certain member groups.</source>
@@ -138,6 +144,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.guests.0">
         <source>Show to guests only</source>
+        <target>Показывать только гостям</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.guests.1">
         <source>Hide the product if there is an authenticated user.</source>
@@ -150,12 +157,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.published.0">
         <source>Publish product</source>
+        <target>Публиковать товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.published.1">
         <source>Click here to show this product on your website.</source>
+        <target>Нажмите здесь, чтобы показать товар на сайте</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.start.0">
         <source>Start date</source>
+        <target>Дата начала</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.start.1">
         <source>Do not show this product before the date specified.</source>
@@ -174,12 +184,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.source.0">
         <source>Source folder</source>
+        <target>Папка-источник</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.source.1">
         <source>Please choose the folder where product assets are located.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
+        <target>Предпросмотр</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmAlt">
         <source>Alternate text</source>
@@ -193,21 +205,25 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslate">
         <source>Translate</source>
+        <target>Перевести</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateNone.0">
         <source>None</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateNone.1">
         <source>Do not translate this image.</source>
+        <target>Не переводить изображение</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateText.0">
         <source>Text</source>
+        <target>Текст</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateText.1">
         <source>Translate alt text and description for this image.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateAll.0">
         <source>All</source>
+        <target>Все</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.mmTranslateAll.1">
         <source>Do not include this image in translated version.</source>
@@ -220,9 +236,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.new.0">
         <source>New product</source>
+        <target>Новый товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.new.1">
         <source>Create new product</source>
+        <target>Создать новый товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.new_variant.0">
         <source>Add variant</source>
@@ -232,84 +250,107 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.0">
         <source>Edit product</source>
+        <target>Изменить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.edit.1">
         <source>Edit product ID %s</source>
+        <target>Изменить ID товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.copy.0">
         <source>Copy product</source>
+        <target>Копировать товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.copy.1">
         <source>Copy product ID %s</source>
+        <target>Копировать ID товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.cut.0">
         <source>Move product</source>
+        <target>Переместить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.cut.1">
         <source>Move product ID %s</source>
+        <target>Переместить ID товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.delete.0">
         <source>Delete product</source>
+        <target>Удалить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.delete.1">
         <source>Delete product ID %s</source>
+        <target>Удалить ID товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.toggle.0">
         <source>Publish/unpublish product</source>
+        <target>Публиковать/не публиковать товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.toggle.1">
         <source>Publish/unpublish product ID %s</source>
+        <target>Публиковать/не публиковать ID товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.show.0">
         <source>Product details</source>
+        <target>Описание товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.show.1">
         <source>Show details of product ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter">
         <source>Advanced filter:</source>
+        <target>Расширенный фильтр:</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_noimages">
         <source>Without images</source>
+        <target>Без изображений</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_nocategory">
         <source>Unassigned products</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new">
         <source>New products</source>
+        <target>Новые товары</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_today">
         <source>Added today</source>
+        <target>Добавлено сегодня</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_week">
         <source>Added this week</source>
+        <target>Добавлено на этой неделе</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.filter_new_month">
         <source>Added this month</source>
+        <target>Добавлено в этом месяце</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.sorting">
         <source>Manually sort products in a page</source>
+        <target>Ручная сортировка товаров на странице</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.product_groups.0">
         <source>Product groups</source>
+        <target>Группы товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.product_groups.1">
         <source>Manage product groups</source>
+        <target>Управлять группами товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.import.0">
         <source>Import assets</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.import.1">
         <source>Import images and other media from a folder</source>
+        <target>Импорт изображений и другого медиа из папки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.0">
         <source>Manage prices</source>
+        <target>Управлять ценами</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.1">
         <source>Click the button to manage advanced prices for this product.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.prices.apply_and_close">
         <source>Apply and close</source>
+        <target>Применить и закрыть</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.variants.0">
         <source>Product variants</source>
@@ -332,6 +373,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.0">
         <source>Downloads</source>
+        <target>Загрузки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.downloads.1">
         <source>Edit downloads for product ID %s</source>
@@ -341,27 +383,34 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.group.0">
         <source>Move to group</source>
+        <target>Переместить в группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.group.1">
         <source>Move product ID %s to a group</source>
+        <target>Переместить ID товара %s в группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.groupSelected">
         <source>Group</source>
+        <target>Группа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.general_legend">
         <source>General Settings</source>
+        <target>Общие настройки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.meta_legend">
         <source>Meta data</source>
+        <target>Метаданные</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.pricing_legend">
         <source>Pricing Settings</source>
+        <target>Настройки ценообразования</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.inventory_legend">
         <source>Inventory Settings</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_legend">
         <source>Shipping Settings</source>
+        <target>Настройки доставки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.options_legend">
         <source>Product Options Settings</source>
@@ -371,9 +420,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.expert_legend">
         <source>Expert settings</source>
+        <target>Расширенные настройки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.publish_legend">
         <source>Publishing</source>
+        <target>Публикация</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price_tiers.min">
         <source>Quantity</source>
@@ -381,6 +432,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.price_tiers.min_format">
         <source>from %s pcs.</source>
+        <target>от %s шт.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.price_tiers.price">
         <source>Price</source>

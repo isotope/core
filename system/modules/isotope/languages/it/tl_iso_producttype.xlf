@@ -43,9 +43,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show_price_tiers.0">
         <source>Show price tiers</source>
+        <target>Mostra livelli di prezzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show_price_tiers.1">
         <source>Show highest tier as lowest product price.</source>
+        <target>Mostra il livello più alto come prezzo più basso del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_template.0">
         <source>List template</source>
@@ -65,21 +67,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_gallery.0">
         <source>List gallery</source>
+        <target>Elenco galleria</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_gallery.1">
         <source>Select a gallery for product listing.</source>
+        <target>Selezionare una galleria per l'elenco dei prodotti.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.reader_gallery.0">
         <source>Reader gallery</source>
+        <target>Galleria lettori</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.reader_gallery.1">
         <source>Select a gallery for product details.</source>
+        <target>Selezionare una galleria per i dettagli del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.0">
         <source>CSS class</source>
+        <target>Classe CSS</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.1">
         <source>The class(es) will be added to the product list and reader templates.</source>
+        <target>La classe o le classi saranno aggiunte all'elenco dei prodotti e ai modelli di lettore.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.0">
         <source>Attributes</source>
@@ -91,21 +99,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.legend.0">
         <source>Grouping</source>
+        <target>Raggruppamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.legend.1">
         <source>Group fields by topic (legends)</source>
+        <target>Campi del raggruppamento per argomento (leggende)</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.tl_class.0">
         <source>Alignment</source>
+        <target>Allineamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.tl_class.1">
         <source>Enter a tl_class to override alignment for this attribute.</source>
+        <target>Inserire una tl_classe per sovrascrivere l'allineamento per questo attributo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.mandatory.0">
         <source>Mandatory</source>
+        <target>Obbligatorio</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.mandatory.1">
         <source>You can override the default mandatory-ness here.</source>
+        <target>Qui è possibile sovrascrivere l'obbligatorietà di default.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.default">
         <source>Default</source>
@@ -129,9 +143,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.force_variant_options.0">
         <source>Always show variant attributes</source>
+        <target>Mostra sempre gli attributi della variante</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.force_variant_options.1">
         <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
+        <target>Mostra un attributo della variante (select, radio) anche se c'è una sola scelta.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
         <source>Exempt from shipping</source>
@@ -139,6 +155,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.1">
         <source>Check if items of this product type are not a shipped item (such as downloadable products).</source>
+        <target>Controlla se gli articoli di questo tipo di prodotto non sono un articolo spedito (come i prodotti scaricabili).</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.downloads.0">
         <source>Enable downloads</source>
@@ -198,6 +215,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.prices_legend">
         <source>Prices</source>
+        <target>Prezzi</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.template_legend">
         <source>Templates</source>
@@ -217,9 +235,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.noVariantAttributes">
         <source>You must select at least one variant option (one of those: %s).</source>
+        <target>È necessario selezionare almeno una variante (una di queste: %s).</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.singularAttributes">
         <source>Attribute(s) &quot;%s&quot; cannot be enabled for both attributes and variant attributes.</source>
+        <target>L'attributo o gli attributi &quot;%s&quot; non possono essere abilitati sia per gli attributi che per gli attributi della variante.</target>
       </trans-unit>
     </body>
   </file>

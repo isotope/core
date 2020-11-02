@@ -7,12 +7,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.type.1">
         <source>Please choose the type of rule.</source>
+        <target>Пожалуйста, выберите тип правила.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.type.product">
         <source>Product</source>
+        <target>Товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.type.cart">
         <source>Cart</source>
+        <target>Корзина</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
@@ -20,6 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.1">
         <source>Please enter a name for this rule.</source>
+        <target>Пожалуйста, введите название правила.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.label.0">
         <source>Label</source>
@@ -37,18 +41,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.tax_class.0">
         <source>Tax Class</source>
+        <target>Класс налогов</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.0">
         <source>Apply discount to</source>
+        <target>Применить скидку к</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.1">
         <source>Select how the discount is applied.</source>
+        <target>Выбрать, как будет применяться скидка.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.products">
         <source>to each product</source>
+        <target>к каждому товару</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.items">
         <source>to each unit of a product</source>
+        <target>к каждой единице товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.subtotal">
         <source>to the cart subtotal</source>
@@ -70,6 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.enableCode.0">
         <source>Enable coupon code</source>
+        <target>Включить код купона</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enableCode.1">
         <source>Require a code to be entered to invoke this rule, as a coupon.</source>
@@ -85,9 +95,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.singleCode.1">
         <source>Do not allow this coupon code if another code has already been applied.</source>
+        <target>Не разрешать применять код купона, если другой код уже был применен.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.0">
         <source>Uses per member</source>
+        <target>Использований на члена</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.1">
         <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each customer.</source>
@@ -100,75 +112,89 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.minSubtotal.0">
         <source>Minimum subtotal</source>
+        <target>Минимальный подытог</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minSubtotal.1">
         <source>Please specify a minimum subtotal this rule applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxSubtotal.0">
         <source>Maximum subtotal</source>
+        <target>Максимальный подытог</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxSubtotal.1">
         <source>Please specify a maximum subtotal this rule applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minWeight.0">
         <source>Minimum weight</source>
+        <target>Минимальный вес</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minWeight.1">
         <source>Enter a minimum weight to control availability based on the products in cart.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxWeight.0">
         <source>Maximum weight</source>
+        <target>Максимальный вес</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxWeight.1">
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minItemQuantity.0">
         <source>Minimum item quantity</source>
+        <target>Минимальное количество товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minItemQuantity.1">
         <source>Please specify a minimum quantity of an item this rule applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxItemQuantity.0">
         <source>Maximum item quantity</source>
+        <target>Максимальное количество товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxItemQuantity.1">
         <source>Please specify a maximum quantity of a single item this rule applies to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.0">
         <source>Quantity calculation mode</source>
+        <target>Режим расчета количества</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.1">
         <source>Select a calculation mode for min/max quantity.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.product_quantity">
         <source>Quantity of product in cart</source>
+        <target>Количество товаров в корзине</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.cart_products">
         <source>Total products in cart</source>
+        <target>Всего товаров в корзине</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.quantityMode.cart_items">
         <source>Total quantity in cart</source>
+        <target>Общее количество в корзине</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startDate.0">
         <source>Start date</source>
+        <target>Дата начала</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startDate.1">
         <source>If desired, please specify the date this rule will become eligible on.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.endDate.0">
         <source>End date</source>
+        <target>Дата окончания</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.endDate.1">
         <source>If desired, please specify the date after which this rule will no longer be eligible on.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startTime.0">
         <source>Start time</source>
+        <target>Время начала</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startTime.1">
         <source>If desired, please specify the time this rule will become eligible at.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.endTime.0">
         <source>End time</source>
+        <target>Время окончания</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.endTime.1">
         <source>If desired, please specify the time this rule will not longer be eligible at.</source>
@@ -202,12 +228,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.guests">
         <source>Guests</source>
+        <target>Гости</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.groups">
         <source>Specific groups</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.members">
         <source>Specific members</source>
+        <target>Определенные члены</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberCondition.0">
         <source>Member condition</source>
@@ -217,12 +245,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.members.0">
         <source>Members</source>
+        <target>Члены</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.members.1">
         <source>Select members this rule is restricted to.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groups.0">
         <source>Groups</source>
+        <target>Группы</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groups.1">
         <source>Select groups this rule is restricted to.</source>
@@ -253,15 +283,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.attribute">
         <source>Product attribute</source>
+        <target>Атрибут товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productCondition.0">
         <source>Product condition</source>
+        <target>Состояние товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productCondition.1">
         <source>Define if the selection should match or not.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.producttypes.0">
         <source>Product Types</source>
+        <target>Типы товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.producttypes.1">
         <source>Select the product types this rule is restricted to. If none, all are eligible.</source>
@@ -281,6 +314,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeName.0">
         <source>Attribute name</source>
+        <target>Имя атрибута</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeName.1">
         <source>Select the product attribute you want to restrict.</source>
@@ -293,30 +327,39 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.eq">
         <source>equals</source>
+        <target>равно</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.neq">
         <source>not equal</source>
+        <target>не равно</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.lt">
         <source>less than</source>
+        <target>меньше, чем</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.gt">
         <source>greater than</source>
+        <target>больше, чем</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.elt">
         <source>less than or equal to</source>
+        <target>меньше или равно</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.egt">
         <source>greater than or equal to</source>
+        <target>больше или равно</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.starts">
         <source>starts with</source>
+        <target>начинается с</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.ends">
         <source>ends with</source>
+        <target>оканчивается на</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.contains">
         <source>contains</source>
+        <target>содержит</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.pages.0">
         <source>Categories</source>
@@ -327,6 +370,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.0">
         <source>Enabled</source>
+        <target>Разрешено</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.1">
         <source>Please select whether this rule is currently enabled or not.</source>
@@ -336,6 +380,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>
+        <target>Код купона</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limit_legend">
         <source>Limit Uses</source>
@@ -348,57 +393,73 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled_legend">
         <source>Availability</source>
+        <target>Доступность</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.all">
         <source>Exclude all other rules</source>
+        <target>Исключить все остальные правила</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.none">
         <source>No rule exclusions</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.rules">
         <source>Exclude certain rules</source>
+        <target>Исключить определенные правила</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.condition_true">
         <source>true</source>
+        <target>верно</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.condition_false">
         <source>false</source>
+        <target>ложь</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.new.0">
         <source>Add rule</source>
+        <target>Добавить правило</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.new.1">
         <source>Create a new rule</source>
+        <target>Создать новое правило</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.edit.0">
         <source>Edit rule</source>
+        <target>Изменить правило</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.edit.1">
         <source>Edit rule ID %s</source>
+        <target>Изменить ID правила %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.copy.0">
         <source>Duplicate rule</source>
+        <target>Дублировать правило</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.copy.1">
         <source>Duplicate rule ID %s</source>
+        <target>Дублировать ID правила %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.delete.0">
         <source>Delete rule</source>
+        <target>Удалить правило</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.delete.1">
         <source>Delete rule ID %s</source>
+        <target>Удалить ID правила %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.toggle.0">
         <source>Publish/unpublish rule</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.toggle.1">
         <source>Publish/unpublish rule ID %s</source>
+        <target>Публиковать/не публиковать ID правила %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.show.0">
         <source>Rule details</source>
+        <target>Свойства правила</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.show.1">
         <source>Show the details of rule ID %s</source>
+        <target>Показать детали ID правила %s</target>
       </trans-unit>
     </body>
   </file>

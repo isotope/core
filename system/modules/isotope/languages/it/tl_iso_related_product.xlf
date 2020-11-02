@@ -15,6 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_product.products.1">
         <source>Enter a comma-separated list of product or variant IDs to show as related products.</source>
+        <target>Inserire un elenco separato da virgole di prodotti o varianti da mostrare come prodotti correlati.</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.new.0">
         <source>Add category</source>
