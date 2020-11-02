@@ -43,15 +43,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.0">
         <source>Apply rounding increment</source>
+        <target>Applicare l'incremento di arrotondamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.1">
         <source>Check here if you want to apply the rounding increment of your shop config.</source>
+        <target>Controllate qui se volete applicare l'incremento di arrotondamento della configurazione del vostro negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.notNegative.0">
         <source>Not negative</source>
+        <target>Non negativo</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.notNegative.1">
         <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
+        <target>Previene il valore negativo di questa imposta (l'importo negativo sarà adeguato a 0,00).</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_class.new.0">
         <source>New tax class</source>

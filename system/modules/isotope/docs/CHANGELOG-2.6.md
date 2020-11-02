@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.14 (2020-11-02)
+--------------------------
+
+- Added support for token authentication for Open Payment Platform
+- Mark cumulative filter links as "nofollow" for the crawler (#2157)
+- Fixed HTTP response handling in Contao 4.10 (#2161)
+- Fixed a Composer autoloader error message (#2166)
+- Fixed moving multiple product variants (#2117)
+- Fixed a spelling mistake in user settings
+
+
 Version 2.6.13 (2020-06-15)
 --------------------------
 

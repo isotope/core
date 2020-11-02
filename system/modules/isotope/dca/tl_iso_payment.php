@@ -117,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'              => array('type', 'protected'),
+        '__selector__'              => array('type', 'opp_auth', 'protected'),
         'default'                   => '{type_legend},name,label,type',
         'cash'                      => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled',
         'concardis'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
@@ -137,7 +137,8 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'payone'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},trans_type,payone_clearingtype,payone_aid,payone_portalid,payone_key;{price_legend:hide},price,tax_class;{enabled_legend},enabled,debug,logging',
         'worldpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},worldpay_instId,worldpay_callbackPW,worldpay_signatureFields,worldpay_md5secret,worldpay_description;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'quickpay'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},quickpay_merchantId,quickpay_agreementId,quickpay_apiKey,quickpay_privateKey,quickpay_paymentMethods;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
-        'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_user_id,opp_password,opp_entity_id,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'opp'                       => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_entity_id,opp_auth,opp_user_id,opp_password,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'opptoken'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},opp_entity_id,opp_auth,opp_token,opp_brands;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'mpay24'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},mpay24_merchant,mpay24_password;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
     ),
 
@@ -845,6 +846,32 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'eval'                  => array('decodeEntities'=>true, 'tl_class'=>'clr long'),
             'sql'                   => "text NULL",
         ),
+        'opp_entity_id' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_entity_id'],
+            'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(32) NOT NULL default ''",
+        ),
+        'opp_auth' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_auth'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => ['user', 'token'],
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_auth'],
+            'eval'                  => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                   => "varchar(8) NOT NULL default ''",
+        ),
+        'opp_token' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_token'],
+            'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'useRawRequestData'=>true, 'tl_class'=>'clr'),
+            'sql'                   => "text NULL",
+        ),
         'opp_user_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_user_id'],
@@ -859,14 +886,6 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgxp'=>'alnum', 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
-            'sql'                   => "varchar(32) NOT NULL default ''",
-        ),
-        'opp_entity_id' => array
-        (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_payment']['opp_entity_id'],
-            'exclude'               => true,
-            'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'rgpx'=>'alnum', 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
         ),
         'opp_brands' => array

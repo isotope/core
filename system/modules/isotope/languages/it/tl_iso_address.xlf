@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_iso_address.store_id.0">
         <source>Store ID</source>
+        <target>ID negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.store_id.1">
         <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Diversi store ID raggruppano un negozio su più siti root. Il carrello e gli indirizzi di un membro saranno condivisi tra gli stessi store ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.label.0">
         <source>Label</source>
@@ -13,18 +15,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.label.1">
         <source>Please enter a custom label for this address.</source>
+        <target>Si prega di inserire un'etichetta personalizzata per questo indirizzo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.0">
         <source>Gender</source>
+        <target>Sesso</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.gender.1">
         <source>Please choose the gender.</source>
+        <target>Scegliere il tipo di sesso.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.salutation.0">
         <source>Salutation</source>
+        <target>Saluto</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.salutation.1">
         <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Si prega di inserire il saluto (Sig., Sig.ra, Dr., Prof.).</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.firstname.0">
         <source>First name</source>
@@ -44,9 +51,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.0">
         <source>Date of birth</source>
+        <target>Data di nascita</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.dateOfBirth.1">
         <source>Please enter the date of birth.</source>
+        <target>Inserire la data di nascita.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.company.0">
         <source>Company</source>
@@ -58,9 +67,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.0">
         <source>VAT No.</source>
+        <target>Partita IVA</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.vat_no.1">
         <source>Please enter a VAT number.</source>
+        <target>Si prega di inserire un numero di partita IVA.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.0">
         <source>Street</source>
@@ -100,6 +111,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.city.1">
         <source>Please enter the name of the city.</source>
+        <target>Inserire il nome della città.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.0">
         <source>State</source>
@@ -107,6 +119,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.subdivision.1">
         <source>Please enter the name of the state.</source>
+        <target>Inserire il nome stato/provincia.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.country.0">
         <source>Country</source>
@@ -150,6 +163,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.store_legend">
         <source>Store</source>
+        <target>Negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.personal_legend">
         <source>Personal data</source>

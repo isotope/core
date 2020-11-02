@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name.1">
         <source>Enter a name for this base price.</source>
+        <target>Введите имя базовой цены.</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.amount.0">
         <source>Base amount</source>
@@ -23,36 +24,44 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.0">
         <source>New base price</source>
+        <target>Новая базовая цена</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.1">
         <source>Create a new base price</source>
+        <target>Создать новую базовую цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.0">
         <source>Edit base price</source>
+        <target>Изменить базовую цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.1">
         <source>Edit base price ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.0">
         <source>Duplicate base price</source>
+        <target>Дублировать базовую цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.1">
         <source>Duplicate base price ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.0">
         <source>Delete base price</source>
+        <target>Удалить базовую цену</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.1">
         <source>Delete base price ID %s</source>
+        <target>Удалить ID базовой цены %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.0">
         <source>Base price details</source>
+        <target>Детали базовой цены</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.1">
         <source>Show details of base price ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name_legend">
         <source>Base price</source>
+        <target>Базовая цена</target>
       </trans-unit>
     </body>
   </file>

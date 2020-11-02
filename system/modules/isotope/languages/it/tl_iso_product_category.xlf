@@ -19,6 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_category.hint">
         <source>The frontend module must not have a sorting field configured for the manual sorting to be applied.</source>
+        <target>Il modulo frontend non deve avere un campo di ordinamento configurato per l'applicazione dell'ordinamento manuale.</target>
       </trans-unit>
     </body>
   </file>

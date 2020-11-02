@@ -11,6 +11,7 @@
       </trans-unit>
       <trans-unit id="MOD.iso_products.1">
         <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Настроить товары для вашего магазина Isotope eCommerce</target>
       </trans-unit>
       <trans-unit id="MOD.iso_orders.0">
         <source>Orders</source>
@@ -36,7 +37,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productfilter.1">
         <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
-        <target>Определите названия отдельных фильтров для Isotope, таких как деревья категроий и фильтры атрибутов товара.</target>
+        <target>Определите названия отдельных фильтров для Isotope, таких как деревья категорий и фильтры атрибутов товара.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cumulativefilter.0">
         <source>Cumulative Filter</source>
@@ -46,6 +47,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_categoryfilter.0">
         <source>Category Filter</source>
+        <target>Фильтр категорий</target>
       </trans-unit>
       <trans-unit id="FMD.iso_categoryfilter.1">
         <source>Provides a filter by product category (page tree).</source>
@@ -62,15 +64,15 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.1">
         <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
-        <target>Общий модуль списоков. Может быть использован для вывода списка товаров или их атрибутов. Может комбинироваться с другими модулями (например Модуль Фильтр) для предоставлени более широких возможностей.</target>
+        <target>Общий модуль списков. Может быть использован для вывода списка товаров или их атрибутов. Может комбинироваться с другими модулями (например Модуль Фильтр) для предоставления более широких возможностей.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productvariantlist.0">
         <source>Product Variant List</source>
-        <target>Спиок модификаций товара</target>
+        <target>Список модификаций товара</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productvariantlist.1">
         <source>Lists each variant of a product. Make sure you use the iso_list_variants template.</source>
-        <target>Выводит в список каждую модификацию товара. Удостоверьтесь, что выбраои шаблон iso_list_variants.</target>
+        <target>Выводит в список каждую модификацию товара. Удостоверьтесь, что выбран шаблон iso_list_variants.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productreader.0">
         <source>Product Reader</source>
@@ -78,10 +80,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productreader.1">
         <source>Product reader module. This is used to display product details.</source>
-        <target>Средство отображения товара. Модкль используемый для отображения дополнительной информации о товаре.</target>
+        <target>Средство отображения товара. Модуль, используемый для отображения дополнительной информации о товаре.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.0">
         <source>Favorites</source>
+        <target>Избранное</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.1">
         <source>Renders the list of products on the favorites list.</source>
@@ -108,7 +111,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_addressbook.1">
         <source>Allow customers to manage their address book.</source>
-        <target>Позволяет покупателям управлять своей адресной книге.</target>
+        <target>Позволяет покупателям управлять своей адресной книгой.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_orderhistory.0">
         <source>Order History</source>
@@ -124,25 +127,30 @@
       </trans-unit>
       <trans-unit id="FMD.iso_orderdetails.1">
         <source>Order reader that allows customers to view order history details</source>
-        <target>Позовляет подробно просматривать покупателям историю заказов.</target>
+        <target>Позволяет подробно просматривать покупателям историю заказов.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.0">
         <source>Wishlist Manager</source>
+        <target>Менеджер вишлистов</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
         <source>Allows the current member to manage it's wishlists.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
         <source>Public Wishlists</source>
+        <target>Публичные вишлисты</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.1">
         <source>Shows published wishlists of all users.</source>
+        <target>Показывает опубликованные вишлисты всех пользователей</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistdetails.0">
         <source>Wishlist Details</source>
+        <target>Детали вишлиста</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistdetails.1">
         <source>Shows details of a given wishlist.</source>
+        <target>Показывает детали данного вишлиста.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.0">
         <source>Store Config Switcher</source>
@@ -158,19 +166,22 @@
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.1">
         <source>List products related to the current one.</source>
-        <target>Список товаров сопутсвующих текущему товару.</target>
+        <target>Список товаров, сопутствующих текущему товару.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_messages.0">
         <source>Messages</source>
+        <target>Сообщения</target>
       </trans-unit>
       <trans-unit id="FMD.iso_messages.1">
         <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
       </trans-unit>
       <trans-unit id="FMD.iso_shipping_calculator.0">
         <source>Shipping cost calculator</source>
+        <target>Калькулятор стоимости доставки</target>
       </trans-unit>
       <trans-unit id="FMD.iso_shipping_calculator.1">
         <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+        <target>Показывает модуль для расчета стоимости доставки перед переходом на страницу оплаты.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart_address.0">
         <source>Cart address</source>
@@ -180,9 +191,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_trustedshops.0">
         <source>Trusted Shops Badge</source>
+        <target>Trusted Shops Badge</target>
       </trans-unit>
       <trans-unit id="FMD.iso_trustedshops.1">
         <source>Displays a Trusted Shops Badge on your website.</source>
+        <target>Показывает Trusted Shops Badge на вашем сайте.</target>
       </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
@@ -210,19 +223,22 @@
       </trans-unit>
       <trans-unit id="IMD.related_categories.1">
         <source>Define categories for product relations.</source>
-        <target>Определите категории связанные с товаром.</target>
+        <target>Определите категории, связанные с товаром.</target>
       </trans-unit>
       <trans-unit id="IMD.gallery.0">
         <source>Galleries</source>
+        <target>Галереи</target>
       </trans-unit>
       <trans-unit id="IMD.gallery.1">
         <source>Define how you want the images in your product to be rendered.</source>
       </trans-unit>
       <trans-unit id="IMD.baseprice.0">
         <source>Base prices</source>
+        <target>Базовые цены</target>
       </trans-unit>
       <trans-unit id="IMD.baseprice.1">
         <source>Define base price.</source>
+        <target>Определить базовую цену.</target>
       </trans-unit>
       <trans-unit id="IMD.checkout">
         <source>Checkout Flow</source>
@@ -230,11 +246,11 @@
       </trans-unit>
       <trans-unit id="IMD.shipping.0">
         <source>Shipping methods</source>
-        <target>Методы доставки</target>
+        <target>Способы доставки</target>
       </trans-unit>
       <trans-unit id="IMD.shipping.1">
         <source>Set up shipping methods.</source>
-        <target>Настройте спрособы дотсавки, такие как EMS, DHL, Почта России, и т.д.</target>
+        <target>Настройте способы доставки, такие как EMS, DHL, Почта России, и т.д.</target>
       </trans-unit>
       <trans-unit id="IMD.payment.0">
         <source>Payment methods</source>
@@ -242,7 +258,7 @@
       </trans-unit>
       <trans-unit id="IMD.payment.1">
         <source>Set up payment methods.</source>
-        <target>Настройте способы оплаты, такие как Authorize.net, PayPal Pro, и другие.</target>
+        <target>Настройте способы оплаты, такие как Authorize.net, PayPal Pro и другие.</target>
       </trans-unit>
       <trans-unit id="IMD.tax_class.0">
         <source>Tax classes</source>
@@ -258,7 +274,7 @@
       </trans-unit>
       <trans-unit id="IMD.tax_rate.1">
         <source>Set up tax rates based on things like shipping/billing location and order total.</source>
-        <target>Настройте ставки налогов основанные на суммах доставки/местоположении выставления счета и общей сумме заказа.</target>
+        <target>Настройте ставки налогов, основанные на суммах доставки/местоположении выставления счета и общей сумме заказа.</target>
       </trans-unit>
       <trans-unit id="IMD.config">
         <source>General settings</source>
@@ -274,27 +290,34 @@
       </trans-unit>
       <trans-unit id="IMD.orderstatus.0">
         <source>Order status</source>
+        <target>Статус заказа</target>
       </trans-unit>
       <trans-unit id="IMD.orderstatus.1">
         <source>Define order status.</source>
+        <target>Определить статус заказа.</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.0">
         <source>Notifications</source>
+        <target>Уведомления</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.1">
         <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+        <target>Используйте Центр уведомления для настройки электронных писем и др. для Isotope eCommerce.</target>
       </trans-unit>
       <trans-unit id="IMD.documents.0">
         <source>Documents</source>
+        <target>Документы</target>
       </trans-unit>
       <trans-unit id="IMD.documents.1">
         <source>Define documents.</source>
+        <target>Определить документы.</target>
       </trans-unit>
       <trans-unit id="IMD.miscellaneous">
         <source>Miscellaneous</source>
       </trans-unit>
       <trans-unit id="IMD.labels.0">
         <source>Translations</source>
+        <target>Переводы</target>
       </trans-unit>
       <trans-unit id="IMD.labels.1">
         <source>Replace given labels for certain languages.</source>

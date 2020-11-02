@@ -51,15 +51,19 @@
       </trans-unit>
       <trans-unit id="FMD.iso_categoryfilter.0">
         <source>Category Filter</source>
+        <target>Filtro di categoria</target>
       </trans-unit>
       <trans-unit id="FMD.iso_categoryfilter.1">
         <source>Provides a filter by product category (page tree).</source>
+        <target>Fornisce un filtro per categoria di prodotto (albero delle pagine).</target>
       </trans-unit>
       <trans-unit id="FMD.iso_rangefilter.0">
         <source>Range Filter</source>
+        <target>Filtro della fascia</target>
       </trans-unit>
       <trans-unit id="FMD.iso_rangefilter.1">
         <source>Provides a range filter to find products within a value range.</source>
+        <target>Fornisce un filtro di fascia per trovare i prodotti all'interno di una fascia di valori.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_productlist.0">
         <source>Product List</source>
@@ -87,9 +91,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.0">
         <source>Favorites</source>
+        <target>Favoriti</target>
       </trans-unit>
       <trans-unit id="FMD.iso_favorites.1">
         <source>Renders the list of products on the favorites list.</source>
+        <target>Rende l'elenco dei prodotti nella lista dei favoriti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart.0">
         <source>Shopping Cart</source>
@@ -133,21 +139,27 @@
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.0">
         <source>Wishlist Manager</source>
+        <target>Manager della lista dei favoriti </target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistmanager.1">
         <source>Allows the current member to manage it's wishlists.</source>
+        <target>Permette al membro attuale di gestire le sue liste dei favoriti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.0">
         <source>Public Wishlists</source>
+        <target>Lista dei favoriti pubblico</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistviewer.1">
         <source>Shows published wishlists of all users.</source>
+        <target>Mostra le liste dei desideri pubblicate di tutti gli utenti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistdetails.0">
         <source>Wishlist Details</source>
+        <target>Dettagli della lista dei favoriti</target>
       </trans-unit>
       <trans-unit id="FMD.iso_wishlistdetails.1">
         <source>Shows details of a given wishlist.</source>
+        <target>Mostra i dettagli di una determinata lista dei favoriti.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_configswitcher.0">
         <source>Store Config Switcher</source>
@@ -175,21 +187,27 @@
       </trans-unit>
       <trans-unit id="FMD.iso_shipping_calculator.0">
         <source>Shipping cost calculator</source>
+        <target>Calcolatore dei costi di spedizione</target>
       </trans-unit>
       <trans-unit id="FMD.iso_shipping_calculator.1">
         <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+        <target>Visualizza un modulo per calcolare le spese di spedizione prima di andare alla pagina di checkout.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart_address.0">
         <source>Cart address</source>
+        <target>Indirizzo del carrello</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cart_address.1">
         <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
+        <target>Visualizza un modulo per l'inserimento dei dati dell'indirizzo del carrello che verrà utilizzato per il calcolo dei prezzi.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_trustedshops.0">
         <source>Trusted Shops Badge</source>
+        <target>Badge Negozi di fiducia</target>
       </trans-unit>
       <trans-unit id="FMD.iso_trustedshops.1">
         <source>Displays a Trusted Shops Badge on your website.</source>
+        <target>Mostra un Badge dei negozi di fiducia sul tuo sito web.</target>
       </trans-unit>
       <trans-unit id="IMD.product">
         <source>Products</source>
@@ -321,9 +339,11 @@
       </trans-unit>
       <trans-unit id="IMD.integrity.0">
         <source>Integrity Check</source>
+        <target>Controllo integrità</target>
       </trans-unit>
       <trans-unit id="IMD.integrity.1">
         <source>Validate your shop configuration against common errors.</source>
+        <target>Convalidate la configurazione del vostro negozio contro gli errori più comuni.</target>
       </trans-unit>
     </body>
   </file>

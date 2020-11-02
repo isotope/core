@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_user.iso_reports.0">
         <source>Isotope Reports</source>
+        <target>Отчеты Isotope</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_reports.1">
         <source>Select what reports should be visible to the user.</source>
+        <target>Выберите, какие отчеты показывать пользователям.</target>
       </trans-unit>
     </body>
   </file>

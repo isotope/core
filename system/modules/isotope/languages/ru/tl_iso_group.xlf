@@ -3,78 +3,101 @@
     <body>
       <trans-unit id="tl_iso_group.name.0">
         <source>Group name</source>
+        <target>Название группы</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.name.1">
         <source>Please enter a name for this group.</source>
+        <target>Пожалуйста, введите название группы.</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.product_type.0">
         <source>Default product type</source>
+        <target>Тип товара по умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.product_type.1">
         <source>Here you can specify a default product type for this product group.</source>
       </trans-unit>
       <trans-unit id="tl_iso_group.new.0">
         <source>New group</source>
+        <target>Новая группа</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.new.1">
         <source>Create a new group</source>
+        <target>Создать новую группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.edit.0">
         <source>Edit group</source>
+        <target>Изменить группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.edit.1">
         <source>Edit group ID %s</source>
+        <target>Изменить ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copy.0">
         <source>Duplicate group</source>
+        <target>Дублировать группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copy.1">
         <source>Duplicate group ID %s</source>
+        <target>Дублировать ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.0">
         <source>Duplicate with subgroups</source>
+        <target>Дублировать с подгруппами</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.copyChilds.1">
         <source>Duplicate group ID %s with subgroups</source>
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.0">
         <source>Move group</source>
+        <target>Переместить группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.cut.1">
         <source>Move group ID %s</source>
+        <target>Переместить ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.0">
         <source>Delete group</source>
+        <target>Удалить группу</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.delete.1">
         <source>Delete group ID %s</source>
+        <target>Удалить ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.show.0">
         <source>Group details</source>
+        <target>Свойства группы</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.show.1">
         <source>Show details of group ID %s</source>
+        <target>Показать свойства ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.0">
         <source>Paste after</source>
+        <target>Вставить после</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteafter.1">
         <source>Paste after group ID %s</source>
+        <target>Вставить после ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteinto.0">
         <source>Paste into</source>
+        <target>Вставить в</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.pasteinto.1">
         <source>Paste into group ID %s</source>
+        <target>Вставить в ID группы %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.group_legend">
         <source>Product group settings</source>
+        <target>Настройки группы товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.label">
         <source>Product Groups</source>
+        <target>Группы товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_group.manager">
         <source>Manage product groups</source>
+        <target>Управлять группами товаров</target>
       </trans-unit>
     </body>
   </file>

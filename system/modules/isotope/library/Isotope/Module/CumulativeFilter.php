@@ -299,6 +299,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             'link'  => $link,
             'label' => $label,
             'count' => $matchCount,
+            'nofollow' => true,
         );
     }
 

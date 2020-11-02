@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="UPG.headline">
         <source>Migration Assistant (Version: %s)</source>
+        <target>Assistente per la migrazione (Version: %s)</target>
       </trans-unit>
       <trans-unit id="UPG.submit">
         <source>Update</source>
@@ -10,6 +11,7 @@
       </trans-unit>
       <trans-unit id="UPG.20010000">
         <source>Isotope needs to know which JavaScript template is responsible to render the lightbox for a gallery. Please select the appropriate template for each gallery (usually &lt;i&gt;moo_mediabox&lt;/i&gt; or &lt;i&gt;j_colorbox&lt;/i&gt;) depending on if you use MooTools or jQuery on your website. You can always change this later in the gallery settings.</source>
+        <target>Isotope ha bisogno di sapere quale modello JavaScript è responsabile per rendere la lightbox di una galleria. Si prega di selezionare il template appropriato per ogni galleria (di solito &lt;i&gt;moo_mediabox&lt;/i&gt; o &lt;i&gt;j_colorbox&lt;/i&gt;) a seconda che si utilizzi MooTools o jQuery sul proprio sito web. È sempre possibile modificarlo in seguito nelle impostazioni della galleria.</target>
       </trans-unit>
     </body>
   </file>

@@ -102,7 +102,7 @@
         <target>Mağaza yapılandırma izinlerini </target>
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
-        <source>Her you can define the store configuration permissions.</source>
+        <source>Here you can define the store configuration permissions.</source>
         <target>Burada  mağaza yapılandırma izinlerini tanımlayabilirsiniz.</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.0">

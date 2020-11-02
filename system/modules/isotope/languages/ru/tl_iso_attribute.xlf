@@ -64,9 +64,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.table">
         <source>Options Manager</source>
+        <target>Менеджер настроек</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.product">
         <source>Product</source>
+        <target>Товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsSource.foreignKey">
         <source>Custom database table (foreignKey)</source>
@@ -83,6 +85,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.value.0">
         <source>Value</source>
+        <target>Значение</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.label.0">
         <source>Label</source>
@@ -90,9 +93,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.default.0">
         <source>Default</source>
+        <target>По умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.options.group.0">
         <source>Group</source>
+        <target>Группа</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsTable.0">
         <source>Options</source>
@@ -119,6 +124,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.mandatory.1">
         <source>The field must be filled when editing a product.</source>
+        <target>Поле должно быть заполнено при изменении товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multiple.0">
         <source>Multiple selection</source>
@@ -126,6 +132,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multiple.1">
         <source>Allow visitors to select more than one option.</source>
+        <target>Разрешить гостям выбирать больше одной опции.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.size.0">
         <source>Size/Amount</source>
@@ -135,15 +142,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chosen.0">
         <source>Use &quot;Chosen&quot; JavaScript</source>
+        <target>Использовать &quot;Выбранный&quot; JavaScript</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.chosen.1">
         <source>This option enables the usage of the &quot;Chosen&quot; JavaScript for the select field, which enables you to select multiple values via a search function.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.0">
         <source>Allowed file types</source>
+        <target>Разрешенные типы файлов</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.extensions.1">
         <source>A comma separated list of valid file extensions.</source>
+        <target>Список действительных расширений файлов, разделенных запятыми.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rte.0">
         <source>Use HTML editor</source>
@@ -158,9 +168,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.multilingual.1">
         <source>Check here if this field should be translated.</source>
+        <target>Отметьте здесь, если поле должно быть переведено.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rgxp.0">
         <source>Input validation</source>
+        <target>Проверка ввода</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rgxp.1">
         <source>Validate the input against a regular expression.</source>
@@ -173,13 +185,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minlength.0">
         <source>Minimum length</source>
+        <target>Минимальная длина</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minlength.1">
         <source>Require the field value to be a certain number of characters (text) or bytes (file uploads).</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxlength.0">
         <source>Maximum length</source>
-        <target>Максимальная длинна</target>
+        <target>Максимальная длина</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxlength.1">
         <source>Limit the field length to a certain number of characters (text) or bytes (file uploads).</source>
@@ -199,12 +212,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.files.0">
         <source>Show files</source>
+        <target>Показать файлы</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.files.1">
         <source>Show both files and folders.</source>
+        <target>Показать и файлы, и папки</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.filesOnly.0">
         <source>Files only</source>
+        <target>Только файлы</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.filesOnly.1">
         <source>Remove the radio buttons or checkboxes next to folders.</source>
@@ -217,18 +233,22 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fieldType.0">
         <source>Field type</source>
+        <target>Тип поля</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fieldType.1">
         <source>Display radio buttons or checkboxes next to folders.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.sortBy.0">
         <source>Order by</source>
+        <target>Упорядочить по</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.sortBy.1">
         <source>Please choose the sort order.</source>
+        <target>Пожалуйста, выберите порядок сортировки.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.path.0">
         <source>Root directory</source>
+        <target>Корневая папка</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.path.1">
         <source>You can limit the file tree by defining a root directory here.</source>
@@ -238,15 +258,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.storeFile.1">
         <source>Move the uploaded files to a folder on the server.</source>
+        <target>Переместить загруженные файлы в папку на сервере.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.uploadFolder.0">
         <source>Target folder</source>
+        <target>Целевая папка</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.uploadFolder.1">
         <source>Please select the target folder from the files directory.</source>
+        <target>Пожалуйста, выберите целевую папку из директории файлов.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.useHomeDir.0">
         <source>Use home directory</source>
+        <target>Использовать домашнюю директорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.useHomeDir.1">
         <source>Store the file in the home directory if there is an authenticated user.</source>
@@ -265,15 +289,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFolder.0">
         <source>Target folder</source>
+        <target>Целевая папка</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFolder.1">
         <source>Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFile.0">
         <source>Target file name</source>
+        <target>Имя целевого файла</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutTargetFile.1">
         <source>Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+        <target>Введите имя целевого файла. Используйте простые токены и добавьте теги для генерации динамического имени (см. мастер помощи).</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.fe_sorting.0">
         <source>Add to &quot;Order By&quot; option list</source>
@@ -325,9 +352,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.optionsTable_edit">
         <source>Edit options</source>
+        <target>Изменить настройки</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkbox">
         <source>Checkbox</source>
+        <target>Чекбокс</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.radio">
         <source>Radio</source>
@@ -358,18 +387,21 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.date.0">
         <source>Date</source>
+        <target>Дата</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.date.1">
         <source>Checks whether the input matches the global date format.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.time.0">
         <source>Time</source>
+        <target>Время</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.time.1">
         <source>Checks whether the input matches the global time format.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.datim.0">
         <source>Date and time</source>
+        <target>Дата и время</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.datim.1">
         <source>Checks whether the input matches the global date and time format.</source>
@@ -390,9 +422,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.url.0">
         <source>URL format</source>
+        <target>формат URL</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.url.1">
         <source>Checks whether the input is a valid URL.</source>
+        <target>Проверяет, что ввод является верным URL.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.price.0">
         <source>Price</source>
@@ -419,15 +453,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.name_asc">
         <source>File name (ascending)</source>
+        <target>Имя файла (по возрастанию)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.name_desc">
         <source>File name (descending)</source>
+        <target>Имя файла (по убыванию)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.date_asc">
         <source>Date (ascending)</source>
+        <target>Дата (по возрастанию)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.date_desc">
         <source>Date (descending)</source>
+        <target>Дата (по убыванию)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.random">
         <source>Random order</source>
@@ -442,6 +480,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.1">
         <source>Generated document number for the order.</source>
+        <target>Сгенерированный номер документа для заказа.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
         <source>##order_id##</source>
@@ -452,63 +491,77 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.0">
         <source>##order_date##</source>
+        <target>##order_date##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.3.1">
         <source>Date of the order as timestamp. Use insert tags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt; to convert timestamp to formatted date.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.0">
         <source>##product_id##</source>
+        <target>##product_id##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.4.1">
         <source>Database ID of the product.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.0">
         <source>##product_sku##</source>
+        <target>##product_sku##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
         <source>SKU of the product.</source>
+        <target>SKU товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
         <source>##product_name##</source>
+        <target>##product_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.6.1">
         <source>Name of the product.</source>
+        <target>Название товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.7.0">
         <source>##product_position##</source>
+        <target>##product_position##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.7.1">
         <source>Position of the product on the order document, starting from 1.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.8.0">
         <source>##attribute_field##</source>
+        <target>##attribute_field##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.8.1">
         <source>Database field name of the attribute.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.9.0">
         <source>##attribute_name##</source>
+        <target>##attribute_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.9.1">
         <source>Name of the attribute.</source>
+        <target>Имя атрибута.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.10.0">
         <source>##file_name##</source>
+        <target>##file_name##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.10.1">
         <source>Full file name and extension as uploaded by the user.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.0">
         <source>##file_target##</source>
+        <target>##file_target##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.11.1">
         <source>Full file name and extension as uploaded by the user, but renamed if &quot;Preserve existing files&quot; is enabled and a file with same name exists in target folder. &lt;br&gt;&lt;strong&gt;Only available for the file name, not for the folder!&lt;/strong&gt;</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.12.0">
         <source>##file_extension##</source>
+        <target>##file_extension##</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.12.1">
         <source>The original file extension.</source>
+        <target>Оригинальное расширение файла.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.13.0">
         <source>##has_member##</source>
@@ -524,39 +577,49 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.new.0">
         <source>New attribute</source>
+        <target>Новый атрибут</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.new.1">
         <source>Create a new attribute.</source>
+        <target>Создать новый атрибут.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.edit.0">
         <source>Edit attribute</source>
+        <target>Изменить атрибут</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.edit.1">
         <source>Edit attribute ID %s.</source>
+        <target>Изменить ID атрибута %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.0">
         <source>Copy attribute</source>
+        <target>Копировать атрибут</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.copy.1">
         <source>Copy attribute ID %s.</source>
+        <target>Копировать ID атрибута %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.0">
         <source>Delete attribute</source>
+        <target>Удалить атрибут</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.delete.1">
         <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.0">
         <source>Attribute details</source>
+        <target>Детали атрибута</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.show.1">
         <source>Show details for attribute ID %s.</source>
+        <target>Показать детали ID атрибута %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.deleteConfirm">
         <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.attribute_legend">
         <source>Attribute name &amp; type</source>
+        <target>Имя и тип атрибута</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.description_legend">
         <source>Description</source>
@@ -568,9 +631,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.config_legend">
         <source>Attribute configuration</source>
+        <target>Настройка атрибута</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.search_filters_legend">
         <source>Search &amp; Filtering Settings</source>
+        <target>Настройки поиска и фильтрования</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.store_legend">
         <source>Store file</source>

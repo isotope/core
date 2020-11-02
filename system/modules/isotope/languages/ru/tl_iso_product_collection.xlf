@@ -3,33 +3,41 @@
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
         <source>ID</source>
+        <target>ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_number.0">
         <source>Order Number</source>
+        <target>Номер заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.member.0">
         <source>Member (empty for guests)</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.uniqid.0">
         <source>Unique ID</source>
+        <target>Уникальный ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.order_status.0">
         <source>Order status</source>
+        <target>Статус заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.order_status.1">
         <source>Select the status of this order.</source>
+        <target>Выберите статус заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.locked.0">
         <source>Placed</source>
+        <target>Размещено</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.source_collection_id.0">
         <source>Source (Cart ID)</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_paid.0">
         <source>Payment date</source>
+        <target>Дата оплаты</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_paid.1">
         <source>Enter a date when this order has been paid.</source>
+        <target>Введите дату оплаты заказа.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_shipped.0">
         <source>Shipped date</source>
@@ -42,15 +50,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment_id.0">
         <source>Payment method</source>
+        <target>Способ оплаты</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_id.0">
         <source>Shipping method</source>
+        <target>Способ доставки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.billing_address_id.0">
         <source>Billing address</source>
+        <target>Платежный адрес</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_id.0">
         <source>Shipping address</source>
+        <target>Адрес доставки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.subtotal.0">
         <source>Subtotal</source>
@@ -58,12 +70,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.tax_free_subtotal.0">
         <source>Subtotal without tax</source>
+        <target>Подытог без налогов</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.total.0">
         <source>Total</source>
+        <target>Всего</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.tax_free_total.0">
         <source>Total without tax</source>
+        <target>Всего без налогов</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.currency.0">
         <source>Currency</source>
@@ -75,63 +90,78 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.0">
         <source>Order notes</source>
+        <target>Примечания к заказу</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.notes.1">
         <source>If you would like to convey information to other backend users, please do so here.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.edit.0">
         <source>Edit order</source>
+        <target>Изменить заказ</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
+        <target>Изменить ID заказа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.copy.0">
         <source>Copy order</source>
+        <target>Копировать заказ</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.copy.1">
         <source>Copy order ID %s</source>
+        <target>Копировать ID заказа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.0">
         <source>Delete order</source>
+        <target>Удалить заказ</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.1">
         <source>Delete order ID %s</source>
+        <target>Удалить ID заказа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.0">
         <source>Order details</source>
+        <target>Свойства заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.1">
         <source>Show details of order ID %s</source>
+        <target>Показать детали ID заказа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
+        <target>Информация об оплате</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.1">
         <source>Show payment details of order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.0">
         <source>Shipping details</source>
+        <target>Детали доставки</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping.1">
         <source>Show shipping details of order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.0">
         <source>Print a document</source>
+        <target>Печать документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print_document.1">
         <source>Print order ID %s with a document of your choice</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_choice.0">
         <source>Document</source>
+        <target>Документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.document_choice.1">
         <source>Choose the document you would like to print the data with.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.print">
         <source>Print</source>
+        <target>Печать</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
         <source>The status of your order has been updated.</source>
+        <target>Статус заказа обновлен.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
         <source>Notifications (e.g. email to client) have been sent.</source>
@@ -153,18 +183,22 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>
+        <target>Статус заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details_legend">
         <source>Order details</source>
+        <target>Свойства заказа</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.billing_address_legend">
         <source>Billing address data</source>
+        <target>Данные платежного адреса</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.shipping_address_legend">
         <source>Shipping address data</source>
+        <target>Данные адреса доставки</target>
       </trans-unit>
     </body>
   </file>

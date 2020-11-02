@@ -7,9 +7,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.type.1">
         <source>Select a type for this label.</source>
+        <target>Selezionare un tipo per questa etichetta.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.type.option">
         <source>Option</source>
+        <target>Opzione</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.type.group">
         <source>Group</source>
@@ -21,6 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.isDefault.1">
         <source>Check here if this should be the default option.</source>
+        <target>Controllare qui se questa dovrebbe essere l'opzione predefinita.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label.0">
         <source>Label</source>
@@ -28,12 +31,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label.1">
         <source>Enter the label for this option.</source>
+        <target>Inserire l'etichetta per questa opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price.0">
         <source>Price surcharge or deduction</source>
+        <target>Sovrapprezzo o detrazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price.1">
         <source>You can enter a positive or negative amount to alter the product price if this option is selected.</source>
+        <target>Se questa opzione è selezionata, è possibile inserire un importo positivo o negativo per modificare il prezzo del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_short.0">
         <source>Price</source>
@@ -41,45 +47,59 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.0">
         <source>Published</source>
+        <target>Pubblicato</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.1">
         <source>Make this option available in the product.</source>
+        <target>Rendere disponibile questa opzione nel prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.new.0">
         <source>New option</source>
+        <target>Nuova opzione</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.new.1">
         <source>Create a new option.</source>
+        <target>Creare una nuova opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.edit.0">
         <source>Edit option</source>
+        <target>Modifica opzione</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.edit.1">
         <source>Edit option ID %s.</source>
+        <target>Modificare l'opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.0">
         <source>Copy option</source>
+        <target>Opzione copia</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.copy.1">
         <source>Copy option ID %s.</source>
+        <target>Copiare l'opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.0">
         <source>Delete option</source>
+        <target>Opzione Cancella</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.delete.1">
         <source>Delete option ID %s.</source>
+        <target>Cancellare l'opzione ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.0">
         <source>Option details</source>
+        <target>Dettagli opzione</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.show.1">
         <source>Show details for option ID %s.</source>
+        <target>Mostrare i dettagli per l'ID dell'opzione %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.label_legend">
         <source>Type &amp; Label</source>
+        <target>Tipo &amp; etichetta</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.price_legend">
         <source>Price change</source>
+        <target>Cambio di prezzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.publish_legend">
         <source>Publishing</source>

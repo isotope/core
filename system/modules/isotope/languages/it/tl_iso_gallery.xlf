@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name.1">
         <source>Enter a name for this gallery.</source>
+        <target>Inserire un nome per questa galleria.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.type.0">
         <source>Type</source>
@@ -14,174 +15,231 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.type.1">
         <source>Please select a gallery type.</source>
+        <target>Selezionare un tipo di galleria.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.anchor.0">
         <source>Image anchor</source>
+        <target>Ancoraggio immagine</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.anchor.1">
         <source>Select what anchor type should be generated on the image.</source>
+        <target>Selezionare quale tipo di ancoraggio deve essere generato sull'immagine.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.placeholder.0">
         <source>Placeholder image</source>
+        <target>Immagine segnaposto</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.placeholder.1">
         <source>This image will be used if an image file cannot be found or none are associated with a product.</source>
+        <target>Questa immagine verrà utilizzata se non è possibile trovare un file immagine o se non ne è associata nessuna ad un prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_size.0">
         <source>Main image size</source>
+        <target>Dimensioni immagine principale</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_size.1">
         <source>Please enter a width and height for the main product image.</source>
+        <target>Inserire larghezza e altezza per l'immagine principale del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.0">
         <source>Gallery image size</source>
+        <target>Dimensione immagine della galleria</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.1">
         <source>Please enter a width and height for the additional images.</source>
+        <target>Inserire una larghezza e un'altezza per le immagini aggiuntive.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_template.0">
         <source>Lightbox template</source>
+        <target>Modello Lightbox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_template.1">
         <source>Please select the lightbox template from your page-layout to reload the image gallery after an AJAX request.</source>
+        <target>Seleziona il modello di lightbox dal layout della pagina per ricaricare la galleria di immagini dopo una richiesta AJAX.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_size.0">
         <source>Lightbox image size</source>
+        <target>Dimensioni immagine Lightbox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_size.1">
         <source>Please enter a width and height for lightbox images.</source>
+        <target>Inserire una larghezza e un'altezza per le immagini lightbox.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_size.0">
         <source>Zoom image size</source>
+        <target>Dimensione immagine in zoom</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_size.1">
         <source>Please enter a width and height for zoom images.</source>
+        <target>Inserire una larghezza e un'altezza per le immagini zoomate.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowSize.0">
         <source>Zoom window size</source>
+        <target>Dimensione finestra zoom</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowSize.1">
         <source>Optionally enter a width and height for the zoom window (defaults to 400x400).</source>
+        <target>Inserire opzionalmente una larghezza e un'altezza per la finestra di zoom (default 400x400).</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.0">
         <source>Zoom window position</source>
+        <target>Posizione finestra zoom</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.1">
         <source>Optionally enter a horizontal and vertical offset and a position for the zoom window.</source>
+        <target>Opzionalmente inserire un offset orizzontale e verticale e una posizione per la finestra di zoom.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos1">
         <source>Right Top (Pos. #1)</source>
+        <target>In alto a destra (pos. 1)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos2">
         <source>Right Center (Pos. #2)</source>
+        <target>Centro destro (pos. 2)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos3">
         <source>Right Bottom (Pos. #3)</source>
+        <target>In basso a destra (pos. 3)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos4">
         <source>Right Bottom Corner (Pos. #4)</source>
+        <target>Angolo in basso a destra (pos. 4)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos5">
         <source>Bottom Right (Pos. #5)</source>
+        <target>In basso a destra (pos. 5)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos6">
         <source>Bottom Center (Pos. #6)</source>
+        <target>In basso al centro (pos. 6)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos7">
         <source>Bottom Left (Pos. #7)</source>
+        <target>In basso a sinistra (pos. 7)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos8">
         <source>Left Bottom Corner (Pos. #8)</source>
+        <target>Angolo in basso a sinistra (pos. 8)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos9">
         <source>Left Bottom (Pos. #9)</source>
+        <target>In basso a sinistra (pos. 9)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos10">
         <source>Left Center (Pos. #10)</source>
+        <target>Sinistra centro (pos. 10)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos11">
         <source>Left Top (Pos. #11)</source>
+        <target>In alto a sinistra (pos. 11)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos12">
         <source>Left Top Corner (Pos. #12)</source>
+        <target>Angolo in alto a sinistra (pos. 12)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos13">
         <source>Top Left (Pos. #13)</source>
+        <target>In alto a sinistra (pos. 13)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos14">
         <source>Top Center (Pos. #14)</source>
+        <target>Centro superiore (pos. 14)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos15">
         <source>Top Right (Pos. #15)</source>
+        <target>In alto a destra (pos. 15)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_position.pos16">
         <source>Top Right Corner (Pos. #16)</source>
+        <target>Angolo in alto a destra (pos. 16)</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowFade.0">
         <source>Zoom window fade effect</source>
+        <target>Effetto di sfumatura della finestra di zoom</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_windowFade.1">
         <source>Optionally enter miliseconds to fade in and fade out the zoom window.</source>
+        <target>Facoltativamente inserire milisecondi per sfumare la finestra di zoom.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_border.0">
         <source>Zoom window border</source>
+        <target>Zoom bordo finestra</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_border.1">
         <source>Optionally enter a hex color and size in pixels for the zoom window.</source>
+        <target>Opzionalmente inserire un colore esagonale e una dimensione in pixel per la finestra di zoom.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_image.0">
         <source>Main watermark image</source>
+        <target>Immagine principale della filigrana</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_image.1">
         <source>Select an image if you want to add a watermark to the main product image.</source>
+        <target>Selezionare un'immagine se si desidera aggiungere una filigrana all'immagine principale del prodotto.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_position.0">
         <source>Main watermark position</source>
+        <target>Posizione della filigrana principale</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
+        <target>Selezionare la posizione a cui applicare la filigrana.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_image.0">
         <source>Gallery watermark image</source>
+        <target>Galleria immagine filigrana</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_image.1">
         <source>Select an image if you want to add a watermark to the gallery images.</source>
+        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini della galleria.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_position.0">
         <source>Gallery watermark position</source>
+        <target>Posizione della filigrana della galleria</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
+        <target>Selezionare la posizione a cui applicare la filigrana.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_image.0">
         <source>Lightbox watermark image</source>
+        <target>Immagine filigrana Lightbox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_image.1">
         <source>Select an image if you want to add a watermark to the lightbox images.</source>
+        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini della lightbox.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_position.0">
         <source>Lightbox watermark position</source>
+        <target>Posizione della filigrana Lightbox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
+        <target>Selezionare la posizione a cui applicare la filigrana.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_image.0">
         <source>Zoom watermark image</source>
+        <target>Zoom filigrana immagine</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_image.1">
         <source>Select an image if you want to add a watermark to the zoom images.</source>
+        <target>Selezionare un'immagine se si desidera aggiungere una filigrana alle immagini zoomate.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_position.0">
         <source>Zoom watermark position</source>
+        <target>Zoom posizione filigrana</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.zoom_watermark_position.1">
         <source>Select the position where to apply the watermark to.</source>
+        <target>Selezionare la posizione a cui applicare la filigrana.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.0">
         <source>Custom gallery template</source>
+        <target>Modelli galleria personalizzati</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.1">
         <source>Here you can overwrite the default gallery template.</source>
+        <target>Qui è possibile sovrascrivere il modello di galleria predefinito.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.new.0">
         <source>New gallery</source>
@@ -197,12 +255,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.edit.1">
         <source>Edit gallery ID %s</source>
+        <target>Modifica ID %s galleria</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.0">
         <source>Duplicate gallery</source>
+        <target>Galleria duplicati</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.1">
         <source>Duplicate gallery ID %s</source>
+        <target>ID %s galleria duplicato</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.0">
         <source>Delete gallery</source>
@@ -210,12 +271,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.1">
         <source>Delete gallery ID %s</source>
+        <target>Cancella ID galleria %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.0">
         <source>Gallery details</source>
+        <target>Dettagli galleria</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.1">
         <source>Show details of gallery ID %s</source>
+        <target>Mostra i dettagli galleria ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
         <source>Name &amp; Type</source>
@@ -223,6 +287,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>
+        <target>Dimensioni immagine</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.config_legend">
         <source>Configuration</source>
@@ -230,24 +295,31 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.watermark_legend">
         <source>Watermark</source>
+        <target>Filigrana</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_legend">
         <source>Lightbox/Mediabox</source>
+        <target>Lightbox/Mediabox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.template_legend">
         <source>Template settings</source>
+        <target>Impostazioni modello</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.none">
         <source>No link action</source>
+        <target>Nessuna azione di link</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.reader">
         <source>Link to the product reader</source>
+        <target>Collegamento lettore del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox">
         <source>Open lightbox/mediabox</source>
+        <target>Aprire lightbox/mediabox</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.includeJQuery">
         <source>Make sure to include jQuery in your page layout for this gallery to work correctly.</source>
+        <target>Assicurarsi di includere jQuery nell'impaginazione affinché questa galleria funzioni correttamente.</target>
       </trans-unit>
     </body>
   </file>

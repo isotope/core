@@ -78,7 +78,7 @@
         <source>Store configuration permissions</source>
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
-        <source>Her you can define the store configuration permissions.</source>
+        <source>Here you can define the store configuration permissions.</source>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.0">
         <source>Allowed product groups</source>

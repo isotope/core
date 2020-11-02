@@ -67,18 +67,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.rounding.0">
         <source>Discount rounding</source>
+        <target>Sconto arrotondamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.rounding.1">
         <source>Define how percentual discounts should be rounded.</source>
+        <target>Definire come arrotondare gli sconti percentuali.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.rounding.normal">
         <source>Commercial rounding</source>
+        <target>Arrotondamento commerciale</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.rounding.down">
         <source>Always round down (in favor of shop owner)</source>
+        <target>Sempre arrotondare verso il basso (a favore del proprietario del negozio)</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.rounding.up">
         <source>Always round up (in favor of shop visitor)</source>
+        <target>Arrotondare sempre (a favore dei visitatori del negozio)</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enableCode.0">
         <source>Enable coupon code</source>
@@ -98,9 +103,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.singleCode.0">
         <source>Single usage</source>
+        <target>Utilizzo singolo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.singleCode.1">
         <source>Do not allow this coupon code if another code has already been applied.</source>
+        <target>Non accettare questo codice coupon se è già stato applicato un altro codice.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limitPerMember.0">
         <source>Uses per member</source>
@@ -136,15 +143,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.minWeight.0">
         <source>Minimum weight</source>
+        <target>Peso minimo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minWeight.1">
         <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Inserire un peso minimo per controllare la disponibilità in base ai prodotti nel carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxWeight.0">
         <source>Maximum weight</source>
+        <target>Peso massimo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.maxWeight.1">
         <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Inserire un peso massimo per controllare la disponibilità in base ai prodotti nel carrello.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.minItemQuantity.0">
         <source>Minimum item quantity</source>
@@ -196,6 +207,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.endDate.1">
         <source>If desired, please specify the date after which this rule will no longer be eligible on.</source>
+        <target>Se lo si desidera, specificare la data oltre la quale questa regola non sarà più valida.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.startTime.0">
         <source>Start time</source>
@@ -219,48 +231,63 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.configRestrictions.1">
         <source>Restrict a rule to certain store configs.</source>
+        <target>Limitare una regola a determinate configurazioni del negozio.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.configCondition.0">
         <source>Store config condition</source>
+        <target>Condizione di configurazione del negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.configCondition.1">
         <source>Define if the selection should match or not.</source>
+        <target>Definire se la selezione deve corrispondere o meno.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.configs.0">
         <source>Store configs</source>
+        <target>Configurazioni del negozio</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.configs.1">
         <source>Select configs this rule is restricted to.</source>
+        <target>Selezionare la configurazione a cui questa regola è limitata.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.0">
         <source>Member restrictions</source>
+        <target>Restrizioni per i membri</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.1">
         <source>Restrict a rule to certain groups or members.</source>
+        <target>Limitare una regola a determinati gruppi o membri.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.none">
         <source>No restrictions</source>
+        <target>Nessuna restrizione</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.guests">
         <source>Guests</source>
+        <target>Ospiti</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.groups">
         <source>Specific groups</source>
+        <target>Gruppi specifici</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberRestrictions.members">
         <source>Specific members</source>
+        <target>Membri specifici</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberCondition.0">
         <source>Member condition</source>
+        <target>Condizione di membro</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.memberCondition.1">
         <source>Define if the selection should match or not.</source>
+        <target>Definire se la selezione deve corrispondere o meno.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.members.0">
         <source>Members</source>
+        <target>Membri</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.members.1">
         <source>Select members this rule is restricted to.</source>
+        <target>Selezionare i membri a cui questa regola è limitata.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groups.0">
         <source>Groups</source>
@@ -268,15 +295,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.groups.1">
         <source>Select groups this rule is restricted to.</source>
+        <target>Selezionare i gruppi a cui questa regola è limitata.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.0">
         <source>Product restrictions</source>
+        <target>Restrizioni sui prodotti</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.1">
         <source>Restrict this rule to certain product types, categories, or to individual products.</source>
+        <target>Limitare questa regola a determinati tipi di prodotti, categorie o singoli prodotti.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.none">
         <source>No restrictions</source>
+        <target>Nessuna restrizione</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
         <source>Product types</source>
@@ -292,21 +323,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.variants">
         <source>Products &amp; Variants</source>
+        <target>Prodotti e varianti</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productRestrictions.attribute">
         <source>Product attribute</source>
+        <target>Attributo del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productCondition.0">
         <source>Product condition</source>
+        <target>Condizioni del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.productCondition.1">
         <source>Define if the selection should match or not.</source>
+        <target>Definire se la selezione deve corrispondere o meno.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.producttypes.0">
         <source>Product Types</source>
+        <target>Tipi di prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.producttypes.1">
         <source>Select the product types this rule is restricted to. If none, all are eligible.</source>
+        <target>Selezionare i tipi di prodotto a cui questa regola è limitata. Se non ce n'è nessuno, sono tutti ammissibili.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.products.0">
         <source>Products</source>
@@ -314,51 +351,67 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.products.1">
         <source>Select products this rule is restricted to. If none, all are eligible.</source>
+        <target>Selezionare i prodotti a cui questa regola è limitata. Se non ce n'è nessuno, sono tutti ammissibili.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.variants.0">
         <source>Products &amp; Variants</source>
+        <target>Prodotti e varianti</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.variants.1">
         <source>Enter a comma-separated list of product or variant IDs to limit this rule to.</source>
+        <target>Inserire un elenco separato da virgole di prodotti o varianti per limitare questa regola.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeName.0">
         <source>Attribute name</source>
+        <target>Nome dell'attributo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeName.1">
         <source>Select the product attribute you want to restrict.</source>
+        <target>Selezionare l'attributo del prodotto che si desidera limitare.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.0">
         <source>Attribute condition</source>
+        <target>Condizione dell'attributo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.1">
         <source>Select the product attribute you want to restrict.</source>
+        <target>Selezionare l'attributo del prodotto che si desidera limitare.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.eq">
         <source>equals</source>
+        <target>uguale</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.neq">
         <source>not equal</source>
+        <target>non uguale</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.lt">
         <source>less than</source>
+        <target>meno di</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.gt">
         <source>greater than</source>
+        <target>superiore a</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.elt">
         <source>less than or equal to</source>
+        <target>inferiore o uguale a</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.egt">
         <source>greater than or equal to</source>
+        <target>superiore o uguale a</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.starts">
         <source>starts with</source>
+        <target>inizia con</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.ends">
         <source>ends with</source>
+        <target>termina con</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.attributeCondition.contains">
         <source>contains</source>
+        <target>contiene</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.pages.0">
         <source>Categories</source>
@@ -366,6 +419,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.pages.1">
         <source>Select categories this rule is restricted to. If none, all are eligible.</source>
+        <target>Selezionare le categorie a cui questa regola è limitata. Se nessuna, sono tutte ammissibili.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.0">
         <source>Enabled</source>
@@ -373,75 +427,99 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled.1">
         <source>Please select whether this rule is currently enabled or not.</source>
+        <target>Si prega di selezionare se questa regola è attualmente abilitata o meno.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.basic_legend">
         <source>Basic rule setup</source>
+        <target>Impostazione delle regole di base</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>
+        <target>Codice Coupon</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.limit_legend">
         <source>Limit Uses</source>
+        <target>Limiti di utilizzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.datim_legend">
         <source>Date &amp; Time Restrictions</source>
+        <target>Restrizioni per data e ora</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.advanced_legend">
         <source>Advanced Restrictions</source>
+        <target>Restrizioni avanzate</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.enabled_legend">
         <source>Availability</source>
+        <target>Disponibilità</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.all">
         <source>Exclude all other rules</source>
+        <target>Escludere tutte le altre regole</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.none">
         <source>No rule exclusions</source>
+        <target>Nessuna esclusione di regole</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.ruleRestrictions.rules">
         <source>Exclude certain rules</source>
+        <target>Escludere alcune regole</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.condition_true">
         <source>true</source>
+        <target>vero</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.condition_false">
         <source>false</source>
+        <target>falso</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.new.0">
         <source>Add rule</source>
+        <target>Aggiungere regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.new.1">
         <source>Create a new rule</source>
+        <target>Creare una nuova regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.edit.0">
         <source>Edit rule</source>
+        <target>Modifica regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.edit.1">
         <source>Edit rule ID %s</source>
+        <target>Modifica ID regola %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.copy.0">
         <source>Duplicate rule</source>
+        <target>Duplicare la regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.copy.1">
         <source>Duplicate rule ID %s</source>
+        <target>Duplicare ID della regola %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.delete.0">
         <source>Delete rule</source>
+        <target>Cancella regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.delete.1">
         <source>Delete rule ID %s</source>
+        <target>Cancellare ID della regola %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.toggle.0">
         <source>Publish/unpublish rule</source>
+        <target>Pubblicare/non pubblicare regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.toggle.1">
         <source>Publish/unpublish rule ID %s</source>
+        <target>Pubblicare/non pubblicare ID della regola %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.show.0">
         <source>Rule details</source>
+        <target>Dettagli della regola</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.show.1">
         <source>Show the details of rule ID %s</source>
+        <target>Mostra i dettagli della regola ID %s</target>
       </trans-unit>
     </body>
   </file>
