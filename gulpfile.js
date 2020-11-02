@@ -1,4 +1,5 @@
 'use strict';
+var path = require('path');
 
 var gulp = require('gulp'),
     csso = require('gulp-csso'),
@@ -46,7 +47,8 @@ gulp.task('styles', function (cb) {
             rename({
                 suffix: '.min'
             }),
-            gulp.dest('core-bundle/src/Resources/contao/themes/flexible')
+            // gulp.dest('.')
+            gulp.dest( function( file ) { return path.dirname(file.path) } )
         ],
         cb
     );
