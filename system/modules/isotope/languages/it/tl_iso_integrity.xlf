@@ -3,66 +3,87 @@
     <body>
       <trans-unit id="tl_iso_integrity.headline">
         <source>Integrity Check</source>
+        <target>Controllo integrità</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.columns.0">
         <source>Problem</source>
+        <target>Problema</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.columns.1">
         <source>Result of the check</source>
+        <target>Risultato della verifica</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.description">
         <source>Please choose the errors to be fixed.</source>
+        <target>Si prega di scegliere gli errori da correggere.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.action">
         <source>Resolve problems</source>
+        <target>Risolvere problemi</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.permission">
         <source>Only admin can perform integrity check.</source>
+        <target>Solo l'amministratore può eseguire il controllo di integrità.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.0">
         <source>Advanced prices</source>
+        <target>Prezzi avanzati</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.1">
         <source>%s invalid andvanced prices were found.&lt;br&gt;PIDs: %s.</source>
+        <target>%s sono stati trovati prezzi avanzati non validi.&lt;br&gt;PID: %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.2">
         <source>There are no invalid prices in your database.</source>
+        <target>Non ci sono prezzi non validi nel vostro database.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.variantorphans.0">
         <source>Invalid product variants</source>
+        <target>Varianti di prodotto non valide</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.variantorphans.1">
         <source>You have %s variants that belong to products without active variant support.&lt;br&gt;IDs: %s</source>
+        <target>Esistono %s varianti che appartengono a prodotti senza supporto di varianti attivo.&lt;br&gt;IDs: %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.variantorphans.2">
         <source>There are no invalid variants in your database.</source>
+        <target>Non ci sono varianti non valide nel vostro database.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.attributeoptionorphans.0">
         <source>Invalid attribute options</source>
+        <target>Opzioni attributo non valide</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.attributeoptionorphans.1">
         <source>You have %s attribute options that belong to non-existant variants or products or have a wrong optionsSource set.&lt;br&gt;IDs: %s</source>
+        <target>Avete %s opzioni di attributo che appartengono a varianti o prodotti inesistenti o che hanno un set di opzioni erratoSource set.&lt;br&gt;IDs: %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.attributeoptionorphans.2">
         <source>There are no invalid attribute options in your database.</source>
+        <target>Non ci sono opzioni di attributi non validi nel vostro database.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.0">
         <source>Multilingual Attributes</source>
+        <target>Attributi multilingua</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.1">
         <source>%s invalid multilingual attributes were found.&lt;br&gt;Attributes: %s.</source>
+        <target>%s sono stati trovati attributi multilingue non validi.&lt;br&gt;Attributi: %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.2">
         <source>There are no invalid multilingual attributes in your database.</source>
+        <target>Non ci sono attributi multilingue non validi nel vostro database.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.0">
         <source>Rules module</source>
+        <target>Modulo di regole</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.1">
         <source>The rules module should be disabled if you do not use it.</source>
+        <target>Il modulo delle regole dovrebbe essere disabilitato se non lo si utilizza.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.2">
         <source>The rules module is disabled or in use.</source>
+        <target>Il modulo delle regole è disabilitato o in uso.</target>
       </trans-unit>
     </body>
   </file>

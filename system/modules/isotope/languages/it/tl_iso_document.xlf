@@ -3,15 +3,19 @@
     <body>
       <trans-unit id="tl_iso_document.name.0">
         <source>Document name</source>
+        <target>Documento </target>
       </trans-unit>
       <trans-unit id="tl_iso_document.name.1">
         <source>Enter a name for this document. This will only be used in the backend.</source>
+        <target>Inserire un nome per questo documento. Questo verrà utilizzato solo nel backend.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type.0">
         <source>Type of document</source>
+        <target>Tipo di documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type.1">
         <source>Select a particular document rendering class.</source>
+        <target>Selezionare una determinata classe di rendering del documento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.logo.0">
         <source>Logo</source>
@@ -27,6 +31,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;Invoice title ##collection_document_number##&quot;).</source>
+        <target>Potete usare semplici token (&quot;collection_*&quot; whereas * equivale alla colonna del database della collezione) per rendere il titolo del vostro file (ad es. &quot;Titolo della fattura ##collection_document_number##&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.0">
         <source>File title</source>
@@ -34,12 +39,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;invoice_##collection_document_number##&quot;).</source>
+        <target>Potete usare semplici token (&quot;collection_*&quot; whereas * equivale alla colonna del database della collezione) per rendere il titolo del vostro file (ad es. &quot;Titolo della fattura ##collection_document_number##&quot;).</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTpl.0">
         <source>Document template</source>
+        <target>Modello documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTpl.1">
         <source>Choose a template you want to render this document with.</source>
+        <target>Scegliere un modello con cui renderizzare questo documento.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.gallery.0">
         <source>Gallery</source>
@@ -51,9 +59,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.0">
         <source>Collection template</source>
+        <target>Modello collezione</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.1">
         <source>Choose a collection template you want to render the products with.</source>
+        <target>Scegliere un modello di raccolta con cui renderizzare i prodotti.</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.orderCollectionBy.0">
         <source>Sorting</source>
@@ -77,27 +87,35 @@
       </trans-unit>
       <trans-unit id="tl_iso_document.edit.1">
         <source>Edit document ID %s</source>
+        <target>Modifica documento ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.0">
         <source>Copy document</source>
+        <target>Copiare documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.1">
         <source>Copy document ID %s</source>
+        <target>Copiare ID %s documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.0">
         <source>Delete document</source>
+        <target>Cancella documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.1">
         <source>Delete document ID %s</source>
+        <target>Cancella ID %s documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.show.0">
         <source>Document details</source>
+        <target>Dettagli documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.show.1">
         <source>Show details of document ID %s</source>
+        <target>Mostra i dettagli ID %s del documento</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type_legend">
         <source>Name &amp; type</source>
+        <target>Nome e tipo</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.config_legend">
         <source>General configuration</source>

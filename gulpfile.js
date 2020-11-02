@@ -1,12 +1,12 @@
 'use strict';
+var path = require('path');
 
-const gulp = require('gulp');
-const rename = require('gulp-rename');
-const gutil = require('gulp-util');
-const uglify = require('gulp-uglify');
-const cleanCSS = require('gulp-clean-css');
-
-const production = true;
+var gulp = require('gulp'),
+    csso = require('gulp-csso'),
+    ignore = require('gulp-ignore'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
+    pump = require('pump');
 
 // Configuration
 const scripts = [
@@ -20,40 +20,50 @@ const styles = [
     '!system/modules/isotope_reports/assets/*.min.css'
 ];
 
-// Build scripts
-gulp.task('scripts', function () {
-    return gulp.src(scripts, {base: './'})
-        .pipe(production ? uglify() : gutil.noop())
-        .pipe(rename(function (path) {
-            path.extname = '.min' + path.extname;
-        }))
-        .pipe(gulp.dest('./'));
+gulp.task('scripts', function (cb) {
+    pump(
+        [
+            gulp.src(scripts),
+            ignore.exclude('*.min.js'),
+            uglify(),
+            rename({
+                suffix: '.min'
+            }),
+            gulp.dest('system/modules/isotope/assets/js')
+        ],
+        cb
+    );
 });
 
-// Build styles
-gulp.task('styles', function () {
-    return gulp.src(styles, {base: './'})
-        .pipe(production ? cleanCSS({'restructuring': false, 'processImport': false}) : gutil.noop())
-        .pipe(rename(function (path) {
-            path.extname = '.min' + path.extname;
-        }))
-        .pipe(gulp.dest('./'));
+gulp.task('styles', function (cb) {
+    pump(
+        [
+            gulp.src(styles),
+            ignore.exclude('*.min.css'),
+            csso({
+                comments: false,
+                restructure: false
+            }),
+            rename({
+                suffix: '.min'
+            }),
+            // gulp.dest('.')
+            gulp.dest( function( file ) { return path.dirname(file.path) } )
+        ],
+        cb
+    );
 });
 
-// Watch task
 gulp.task('watch', function () {
     gulp.watch(
-        ['system/modules/isotope/assets/js/*.js'],
-        ['scripts']
+        scripts,
+        gulp.series('scripts')
     );
+
     gulp.watch(
-        [
-            'system/modules/isotope/assets/css/*.css',
-            'system/modules/isotope_reports/assets/*.css'
-        ],
-        ['styles']
+        styles,
+        gulp.series('styles')
     );
 });
 
-// Build by default
-gulp.task('default', gulp.series('styles', 'scripts'));
+gulp.task('default', gulp.parallel('scripts', 'styles'));

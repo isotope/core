@@ -19,15 +19,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.0">
         <source>Expiration</source>
+        <target>Scadenza</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.1">
         <source>Define if the download(s) expires after a certain time period.</source>
+        <target>Definire se il/i download scadono dopo un certo periodo di tempo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.published.0">
         <source>Download available</source>
+        <target>Download disponibile</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.published.1">
         <source>Click here to include this download in new orders.</source>
+        <target>Clicca qui per includere questo download nei nuovi ordini.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.new.0">
         <source>Add download</source>
@@ -55,9 +59,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.0">
         <source>Move download</source>
+        <target>Trasferire il download</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.1">
         <source>Move download ID %s</source>
+        <target>Trasferimento dell'ID %s di download </target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>
@@ -69,9 +75,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.0">
         <source>Publish/unpublish download</source>
+        <target>Pubblicare/non pubblicare il download</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.1">
         <source>Publish/unpublish download ID %s</source>
+        <target>Pubblicare/non pubblicare il download ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.show.0">
         <source>Download details</source>
@@ -95,12 +103,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.1">
         <source>Paste after download ID %s</source>
+        <target>Incolla dopo il download ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.0">
         <source>Add new at the top</source>
+        <target>Aggiungi nuovo in alto</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pastenew.1">
         <source>Add new after download ID %s</source>
+        <target>Aggiungi nuovo dopo il download ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.file_legend">
         <source>Attachement</source>

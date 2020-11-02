@@ -3,96 +3,119 @@
     <body>
       <trans-unit id="tl_iso_document.name.0">
         <source>Document name</source>
+        <target>Название документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.name.1">
         <source>Enter a name for this document. This will only be used in the backend.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.type.0">
         <source>Type of document</source>
+        <target>Тип документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type.1">
         <source>Select a particular document rendering class.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.logo.0">
         <source>Logo</source>
+        <target>Лого</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.logo.1">
         <source>Select a logo.</source>
+        <target>Выбрать лого</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTitle.0">
         <source>Document title</source>
+        <target>Название документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;Invoice title ##collection_document_number##&quot;).</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.0">
         <source>File title</source>
+        <target>Заголовок файла</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.fileTitle.1">
         <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;invoice_##collection_document_number##&quot;).</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTpl.0">
         <source>Document template</source>
+        <target>Шаблон документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.documentTpl.1">
         <source>Choose a template you want to render this document with.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.gallery.0">
         <source>Gallery</source>
+        <target>Галерея</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.gallery.1">
         <source>Select a gallery to render images.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.0">
         <source>Collection template</source>
+        <target>Шаблон коллекции</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.collectionTpl.1">
         <source>Choose a collection template you want to render the products with.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.orderCollectionBy.0">
         <source>Sorting</source>
+        <target>Сортировка</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
       </trans-unit>
       <trans-unit id="tl_iso_document.new.0">
         <source>New document</source>
+        <target>Новый документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.new.1">
         <source>Create a new document</source>
+        <target>Создать новый документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.edit.0">
         <source>Edit document</source>
+        <target>Изменить документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.edit.1">
         <source>Edit document ID %s</source>
+        <target>Изменить ID документа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.0">
         <source>Copy document</source>
+        <target>Копировать документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.copy.1">
         <source>Copy document ID %s</source>
+        <target>Копировать ID документа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.0">
         <source>Delete document</source>
+        <target>Удалить документ</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.delete.1">
         <source>Delete document ID %s</source>
+        <target>Удалить ID документа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.show.0">
         <source>Document details</source>
+        <target>Детали документа</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.show.1">
         <source>Show details of document ID %s</source>
+        <target>Показать детали ID документа %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.type_legend">
         <source>Name &amp; type</source>
+        <target>Имя и тип</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.config_legend">
         <source>General configuration</source>
+        <target>Общие настройки</target>
       </trans-unit>
       <trans-unit id="tl_iso_document.template_legend">
         <source>Template</source>
+        <target>Шаблон</target>
       </trans-unit>
     </body>
   </file>

@@ -3,60 +3,73 @@
     <body>
       <trans-unit id="tl_iso_download.singleSRC.0">
         <source>Attachement</source>
+        <target>Вложение</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.singleSRC.1">
         <source>Select the file or folder content you want to sell.</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.downloads_allowed.0">
         <source>Downloads allowed</source>
+        <target>Загрузки разрешены</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.downloads_allowed.1">
         <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
+        <target>Число загрузок файла(ов) на заказ (умноженное на количество проданного). Введите 0 для снятия ограничений на загрузки.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.0">
         <source>Expiration</source>
+        <target>Срок действия</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.expires.1">
         <source>Define if the download(s) expires after a certain time period.</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.published.0">
         <source>Download available</source>
+        <target>Загрузить доступное</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.published.1">
         <source>Click here to include this download in new orders.</source>
+        <target>Нажмите здесь, чтобы включить загрузку в новые заказы.</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.new.0">
         <source>Add download</source>
+        <target>Добавить загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.new.1">
         <source>Add a new download to this product</source>
+        <target>Добавить новую загрузку к товару</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.edit.0">
         <source>Edit download</source>
+        <target>Изменить загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.edit.1">
         <source>Edit download ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.copy.0">
         <source>Duplicate download</source>
+        <target>Дублировать загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.copy.1">
         <source>Duplicate download ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.0">
         <source>Move download</source>
+        <target>Переместить загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.cut.1">
         <source>Move download ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.0">
         <source>Delete download</source>
+        <target>Удалить загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.delete.1">
         <source>Delete download ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.0">
         <source>Publish/unpublish download</source>
+        <target>Публиковать/не публиковать загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.toggle.1">
         <source>Publish/unpublish download ID %s</source>
@@ -69,9 +82,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.editheader.0">
         <source>Edit product</source>
+        <target>Изменить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.editheader.1">
         <source>Edit this product</source>
+        <target>Изменить этот товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.pasteafter.0">
         <source>Paste at the top</source>
@@ -87,12 +102,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_download.file_legend">
         <source>Attachement</source>
+        <target>Вложение</target>
       </trans-unit>
       <trans-unit id="tl_iso_download.limit_legend">
         <source>Limits</source>
       </trans-unit>
       <trans-unit id="tl_iso_download.publish_legend">
         <source>Publishing</source>
+        <target>Публикация</target>
       </trans-unit>
     </body>
   </file>

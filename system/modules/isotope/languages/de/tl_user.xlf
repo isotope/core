@@ -102,7 +102,7 @@
         <target>Shop-Konfiguration-Berechtigungen</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
-        <source>Her you can define the store configuration permissions.</source>
+        <source>Here you can define the store configuration permissions.</source>
         <target>Hier können Sie die Berechtigungen für die Shop-Konfigurationen definieren.</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.0">

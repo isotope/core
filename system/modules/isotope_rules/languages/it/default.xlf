@@ -31,6 +31,7 @@
       </trans-unit>
       <trans-unit id="MSC.couponSingle">
         <source>Your coupon %s cannot be used because another coupon is already redeemed.</source>
+        <target>Il vostro coupon %s non può essere utilizzato perché un altro coupon è già stato riscattato.</target>
       </trans-unit>
     </body>
   </file>

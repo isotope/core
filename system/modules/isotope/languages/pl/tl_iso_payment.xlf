@@ -606,6 +606,30 @@
       <trans-unit id="tl_iso_payment.quickpay_paymentMethods.1">
         <source>Enter a configuration string to limit the payment methods. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;More Information&lt;/a&gt;.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.0">
+        <source>Entity/Channel ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.1">
+        <source>Please enter your entity or channel ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.0">
+        <source>Authentication Scheme</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.1">
+        <source>Select the authentication scheme of your Open Payment provider.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.user">
+        <source>User ID &amp; Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.token">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.0">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.1">
+        <source>Please enter your authentication token.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.0">
         <source>User ID</source>
       </trans-unit>
@@ -618,12 +642,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.1">
         <source>Please enter your user password.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_entity_id.0">
-        <source>Entity/Channel ID</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_entity_id.1">
-        <source>Please enter your entity or channel ID</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.0">
         <source>Payment Brands</source>

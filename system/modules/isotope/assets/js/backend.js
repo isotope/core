@@ -108,7 +108,7 @@ var Isotope = {};
                     }
                 },
                 onFailure: function(xhr) {
-                    if (xhr.status === 302 && xhr.responseText != '') {
+                    if ([302,303,307].indexOf(xhr.status) > -1 && xhr.responseText != '') {
                         window.location.href = xhr.responseText;
                     }
                 }
@@ -188,7 +188,7 @@ var Isotope = {};
                     }
                 },
                 onFailure: function(xhr) {
-                    if (xhr.status === 302 && xhr.responseText != '') {
+                    if ([302,303,307].indexOf(xhr.status) > -1 && xhr.responseText != '') {
                         window.location.href = xhr.responseText;
                     }
                 }

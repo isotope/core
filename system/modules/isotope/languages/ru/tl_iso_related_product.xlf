@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_iso_related_product.category.0">
         <source>Category</source>
+        <target>Категория</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.category.1">
         <source>Select a category.</source>
+        <target>Выбрать категорию.</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.products.0">
         <source>Products</source>
@@ -16,48 +18,63 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_product.new.0">
         <source>Add category</source>
+        <target>Добавить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.new.1">
         <source>Add a new category with products</source>
+        <target>Добавить новую категорию товаров</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.edit.0">
         <source>Edit category</source>
+        <target>Изменить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.edit.1">
         <source>Edit category ID %s</source>
+        <target>Изменить ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.copy.0">
         <source>Duplicate category</source>
+        <target>Дублировать категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.copy.1">
         <source>Duplicate category ID %s</source>
+        <target>Дублировать ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.cut.0">
         <source>Move category</source>
+        <target>Переместить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.cut.1">
         <source>Move category ID %s</source>
+        <target>Переместить ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.delete.0">
         <source>Delete category</source>
+        <target>Удалить категорию</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.delete.1">
         <source>Delete category ID %s</source>
+        <target>Удалить ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.show.0">
         <source>Category details</source>
+        <target>Информация о категории</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.show.1">
         <source>Show details of category ID %s</source>
+        <target>Показать информацию об ID категории %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.editheader.0">
         <source>Edit product</source>
+        <target>Изменить товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.editheader.1">
         <source>Edit this product</source>
+        <target>Изменить этот товар</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.category_legend">
         <source>Category</source>
+        <target>Категория</target>
       </trans-unit>
       <trans-unit id="tl_iso_related_product.products_legend">
         <source>Related products</source>

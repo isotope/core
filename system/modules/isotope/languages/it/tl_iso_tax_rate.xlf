@@ -23,6 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.address.1">
         <source>Select to which address this rate should use to apply its calculation. Be aware that for non-shippable products, the shipping address will equal to billing address.</source>
+        <target>Scegliere a quale indirizzo questa tariffa deve essere utilizzata per applicare il suo calcolo. Ricordate che per i prodotti non spedibili, l'indirizzo di spedizione sarà uguale all'indirizzo di fatturazione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.countries.0">
         <source>Countries</source>
@@ -30,18 +31,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.countries.1">
         <source>Select the countries this tax class applies to.</source>
+        <target>Selezionare i paesi a cui si applica questa classe fiscale.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.subdivisions.0">
         <source>States/Regions</source>
+        <target>Stati/Regioni</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.subdivisions.1">
         <source>Select the states or regions this tax class applies to.</source>
+        <target>Selezionare stati/regioni a cui si applica questa classe d'imposta.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.postalCodes.0">
         <source>Postal codes</source>
+        <target>Codice postali</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.postalCodes.1">
         <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Limitare il tasso d'imposta ai codici postali. È possibile inserire una lista e intervalli separati da virgole (ad es. 1234,1235,1236-1239,1100-1200).</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.amount.0">
         <source>Subtotal amount restriction</source>
@@ -69,9 +75,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
         <source>Exempt on valid VAT number</source>
+        <target>Esente da partita IVA valida</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
         <source>Do not apply tax if the VAT number is valid.</source>
+        <target>Non applicare l'imposta se il numero di partita IVA è valido.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.stop.0">
         <source>Stop calculations on trigger?</source>
@@ -87,18 +95,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.groups.1">
         <source>Restrict this tax rate to certain member groups.</source>
+        <target>Limitare questa tassa ad alcuni gruppi di membri.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.protected.0">
         <source>Protect tax rate</source>
+        <target>Proteggete il tasso d'imposta</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.protected.1">
         <source>Apply the tax rate to certain member groups only.</source>
+        <target>Applicare il tasso d'imposta solo a determinati gruppi di membri.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.guests.0">
         <source>Apply to guests only</source>
+        <target>Solo per i visitatori</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.guests.1">
         <source>Do not apply tax rate if a member is logged in.</source>
+        <target>Non applicare il tasso d'imposta se un membro è registrato.</target>
       </trans-unit>
       <trans-unit id="tl_iso_tax_rate.new.0">
         <source>New tax rate</source>

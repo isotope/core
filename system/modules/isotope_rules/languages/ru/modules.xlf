@@ -3,12 +3,15 @@
   <body>
     <trans-unit id="MOD.isotope_rules.0">
       <source>Isotope eCommerce: Rules &amp; Coupons</source>
+      <target>Isotope eCommerce: Правила и купоны</target>
     </trans-unit>
       <trans-unit id="MOD.iso_rules.0">
         <source>Rules &amp; Coupons</source>
+        <target>Правила и купоны</target>
     </trans-unit>
     <trans-unit id="FMD.iso_coupons.0">
       <source>Coupon Codes</source>
+      <target>Коды купонов</target>
     </trans-unit>
   </body>
 </file>
