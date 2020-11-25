@@ -387,10 +387,10 @@ $GLOBALS['TL_MODELS'][\Isotope\Model\TaxRate::getTable()]                       
  */
 $GLOBALS['ISO_CHECKOUTSTEP'] = array
 (
-    'address'   => array('\Isotope\CheckoutStep\BillingAddress', '\Isotope\CheckoutStep\ShippingAddress'),
-    'shipping'  => array('\Isotope\CheckoutStep\ShippingMethod'),
-    'payment'   => array('\Isotope\CheckoutStep\PaymentMethod'),
-    'review'    => array('\Isotope\CheckoutStep\OrderConditionsOnTop', '\Isotope\CheckoutStep\OrderInfo', '\Isotope\CheckoutStep\OrderConditionsBeforeProducts', '\Isotope\CheckoutStep\OrderProducts', '\Isotope\CheckoutStep\OrderConditionsAfterProducts'),
+    'address'   => array('Isotope\CheckoutStep\BillingAddress', 'Isotope\CheckoutStep\ShippingAddress'),
+    'shipping'  => array('Isotope\CheckoutStep\ShippingMethod'),
+    'payment'   => array('Isotope\CheckoutStep\PaymentMethod'),
+    'review'    => array('Isotope\CheckoutStep\OrderInfo', 'Isotope\CheckoutStep\OrderProducts'),
 );
 
 /**

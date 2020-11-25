@@ -1415,6 +1415,24 @@
       <trans-unit id="CUR_SYMBOL.USD">
         <source>$</source>
       </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\BillingAddress">
+          <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingAddress">
+          <source>Shipping address</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingMethod">
+          <source>Shipping method</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\PaymentMethod">
+          <source>Payment method</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderInfo">
+          <source>Order summary</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderProducts">
+          <source>Order products</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

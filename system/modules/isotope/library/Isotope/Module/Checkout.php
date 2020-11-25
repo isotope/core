@@ -15,6 +15,7 @@ use Contao\CoreBundle\Exception\ResponseException;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CheckoutStep\OrderConditions;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -33,6 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @property array $iso_notifications
  * @property bool  $iso_addToAddressbook
  * @property array $iso_checkout_skippable
+ * @property array $iso_order_conditions
  * @property int   $orderCompleteJumpTo
  */
 class Checkout extends Module
@@ -570,19 +572,35 @@ class Checkout extends Module
      */
     protected function getSteps()
     {
+        $arrOrderConditions = array();
         $arrSteps = array();
+
+        foreach (deserialize($this->iso_order_conditions, true) as $config) {
+            $arrOrderConditions[$config['step']][$config['position']][] = $config['form'];
+        }
 
         foreach ($GLOBALS['ISO_CHECKOUTSTEP'] as $strStep => $arrModules) {
             foreach ($arrModules as $strClass) {
-
                 $objModule = new $strClass($this);
 
                 if (!$objModule instanceof IsotopeCheckoutStep) {
                     throw new \RuntimeException("$strClass has to implement Isotope\\Interfaces\\IsotopeCheckoutStep");
                 }
 
+                if (isset($arrOrderConditions[$strClass]['before'])) {
+                    foreach ($arrOrderConditions[$strClass]['before'] as $form) {
+                        $arrSteps[$strStep][] = new OrderConditions($this, $form);
+                    }
+                }
+
                 if ($objModule->isAvailable()) {
                     $arrSteps[$strStep][] = $objModule;
+                }
+
+                if (isset($arrOrderConditions[$strClass]['after'])) {
+                    foreach ($arrOrderConditions[$strClass]['after'] as $form) {
+                        $arrSteps[$strStep][] = new OrderConditions($this, $form);
+                    }
                 }
             }
         }

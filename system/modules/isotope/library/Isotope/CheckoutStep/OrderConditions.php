@@ -12,17 +12,30 @@
 namespace Isotope\CheckoutStep;
 
 use Haste\Form\Form;
+use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
+use Isotope\Module\Checkout;
 
-
-abstract class OrderConditions extends CheckoutStep
+class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep
 {
+    /**
+     * @var int
+     */
+    private $formId;
 
     /**
      * Haste form
      * @var \Haste\Form\Form
      */
     protected $objForm;
+
+    public function __construct(Checkout $objModule, $formId)
+    {
+        parent::__construct($objModule);
+
+        $this->formId = $formId;
+    }
+
 
     /**
      * Returns true if order conditions are defined
@@ -43,27 +56,24 @@ abstract class OrderConditions extends CheckoutStep
             return \Input::post('FORM_SUBMIT') === $form->getFormId();
         });
 
+        $objFormConfig = \FormModel::findByPk($this->formId);
 
-        if ($this->objModule->iso_order_conditions) {
-            $objFormConfig = \FormModel::findByPk($this->objModule->iso_order_conditions);
-
-            if (null === $objFormConfig) {
-                throw new \InvalidArgumentException('Order condition form "' . $this->objModule->iso_order_conditions . '" not found.');
-            }
-
-            if (isset($objFormConfig->tableless)) {
-                $this->objForm->setTableless($objFormConfig->tableless);
-            }
-
-            $this->objForm->addFieldsFromFormGenerator(
-                $this->objModule->iso_order_conditions,
-                function ($strName, &$arrDca) {
-                    $arrDca['value'] = $_SESSION['CHECKOUT_DATA'][$strName] ?: $arrDca['value'];
-
-                    return true;
-                }
-            );
+        if (null === $objFormConfig) {
+            throw new \InvalidArgumentException('Order condition form "' . $this->formId . '" not found.');
         }
+
+        if (isset($objFormConfig->tableless)) {
+            $this->objForm->setTableless($objFormConfig->tableless);
+        }
+
+        $this->objForm->addFieldsFromFormGenerator(
+            $this->formId,
+            function ($strName, &$arrDca) {
+                $arrDca['value'] = $_SESSION['CHECKOUT_DATA'][$strName] ?: $arrDca['value'];
+
+                return true;
+            }
+        );
 
         if (!empty($GLOBALS['ISO_HOOKS']['orderConditions']) && \is_array($GLOBALS['ISO_HOOKS']['orderConditions'])) {
             foreach ($GLOBALS['ISO_HOOKS']['orderConditions'] as $callback) {
