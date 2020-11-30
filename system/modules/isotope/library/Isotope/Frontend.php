@@ -181,10 +181,11 @@ class Frontend extends \Frontend
             $arrTrail   = $objIsotopeListPage->trail;
             $arrTrail[] = $originalPageId;
 
-            $objPage->id    = $objIsotopeListPage->id;
-            $objPage->pid   = $objIsotopeListPage->pid;
+            $objPage->id = $objIsotopeListPage->id;
+            $objPage->pid = $objIsotopeListPage->pid;
             $objPage->alias = $objIsotopeListPage->alias;
             $objPage->trail = $arrTrail;
+            $objPage->languageMain = $objIsotopeListPage->languageMain;
 
             $objIsotopeListPage->pid = $originalPageId;
         }
