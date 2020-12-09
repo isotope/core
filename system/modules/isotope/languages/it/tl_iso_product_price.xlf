@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.0">
         <source>Tax Class</source>
-        <target>Classe aliquota</target>
+        <target>Classe fiscale</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_price.tax_class.1">
         <source>Please select a tax class for this price.</source>

@@ -77,6 +77,12 @@
         <source>Tax number entered in store config.</source>
         <target>Steuernummer in der Shop-Konfiguration eingegeben.</target>
       </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.log_shipping_tracking">
+        <source>Shipping tracking entered in order status log.</source>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.log_customer_notes">
+        <source>Customer notes entered in order status log.</source>
+      </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.iso_order_status_change.collection_*">
         <source>All the collection/order column fields as stored in the database</source>
         <target>Alle Collection/Bestell-Spalten-Felder wie in der Datenbank gespeichert.</target>

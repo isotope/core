@@ -208,16 +208,23 @@
         <target>Sipariş koşulları formu </target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
-        <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
-        <target>Sipariş şartlarınızı ve koşullarınızı görüntülemek için kullanılan özel bir form seçin (isteğe bağlı).</target>
+        <source>Configure custom forms that are display in the checkout process (e.g. for your order terms and conditions).</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.0">
-        <source>Position of order conditions form</source>
-        <target>Sipariş koşullarının konumu</target>
+      <trans-unit id="tl_module.iso_order_conditions.form.0">
+        <source>Form</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.1">
-        <source>Define if the order condition form should be shown before or after the products list.</source>
-        <target>Sipariş durumu formunun, ürün listesinden önce veya sonra gösterilip gösterilmeyeceğini tanımlayın.</target>
+      <trans-unit id="tl_module.iso_order_conditions.step.0">
+        <source>Checkout Step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.0">
+        <source>Position</source>
+        <target>Konum</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.before">
+        <source>Before step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.after">
+        <source>After step</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.top">
         <source>On top (before address)</source>

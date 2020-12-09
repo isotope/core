@@ -254,7 +254,7 @@
       </trans-unit>
       <trans-unit id="IMD.payment.0">
         <source>Payment methods</source>
-        <target>Методы оплаты</target>
+        <target>Способы оплаты</target>
       </trans-unit>
       <trans-unit id="IMD.payment.1">
         <source>Set up payment methods.</source>
@@ -282,7 +282,7 @@
       </trans-unit>
       <trans-unit id="IMD.configs.0">
         <source>Store configurations</source>
-        <target>Конфигурации магазинов</target>
+        <target>Конфигурации магазина</target>
       </trans-unit>
       <trans-unit id="IMD.configs.1">
         <source>Configure general settings for this store.</source>

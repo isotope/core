@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.street_1.1">
         <source>Please enter the street name and the street number.</source>
-        <target>Пожалуйста, введите название улицы и номер улицы.</target>
+        <target>Введите название и номер улицы.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.street_2.0">
         <source>Street 2</source>
@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_address.street_3.1">
         <source>Enter a third street info if there's any.</source>
-        <target>Введите информацию о улице 3, если она есть.</target>
+        <target>Введите информацию об улице 3, если она есть.</target>
       </trans-unit>
       <trans-unit id="tl_iso_address.postal.0">
         <source>Postal code</source>

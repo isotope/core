@@ -189,6 +189,9 @@
         <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
         <target>&lt;span class=&quot;from&quot;&gt;Ab&lt;/span&gt; %s</target>
       </trans-unit>
+      <trans-unit id="MSC.attributePriceLabel">
+        <source>%s (%s)</source>
+      </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
         <target>Details sehen</target>
@@ -977,6 +980,12 @@
         <source>mPAY24</source>
         <target>mPAY24</target>
       </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.0">
+        <source>SwissBilling</source>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.1">
+        <source>Swiss payment provider for invoice payments.</source>
+      </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
         <target>Standard</target>
@@ -1164,6 +1173,12 @@
       <trans-unit id="ATTR.fileTree.1">
         <source>A file tree for single or multiple files and folders.</source>
         <target>Ein Dateibaum für eine oder mehrere Dateien und Ordner.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.pageTree.0">
+        <source>Page tree</source>
+      </trans-unit>
+      <trans-unit id="ATTR.pageTree.1">
+        <source>Pick one or multiple pages from the site structure.</source>
       </trans-unit>
       <trans-unit id="ATTR.downloads.0">
         <source>Downloads</source>
@@ -1864,6 +1879,28 @@
       <trans-unit id="CUR_SYMBOL.USD">
         <source>$</source>
         <target>$</target>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\BillingAddress">
+          <source>Billing address</source>
+          <target>Rechnungsadresse</target>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingAddress">
+          <source>Shipping address</source>
+          <target>Versandadresse</target>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingMethod">
+          <source>Shipping method</source>
+          <target>Versandart</target>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\PaymentMethod">
+          <source>Payment method</source>
+          <target>Zahlungsart</target>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderInfo">
+          <source>Order summary</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderProducts">
+          <source>Order products</source>
       </trans-unit>
     </body>
   </file>

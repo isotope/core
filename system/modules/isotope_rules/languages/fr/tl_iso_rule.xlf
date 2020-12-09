@@ -17,6 +17,9 @@
         <source>Cart</source>
         <target>Panier</target>
       </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart_group">
+        <source>Cart Group</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
         <target>Nom</target>
@@ -44,6 +47,28 @@
       <trans-unit id="tl_iso_rule.tax_class.0">
         <source>Tax Class</source>
         <target>Taxe</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.1">
+        <source>Select a tax class that should be applied to the rule.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.0">
+        <source>Grouped rules</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.1">
+        <source>Select the rules that belong to this group.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.0">
+        <source>Conditions</source>
+        <target>Conditions</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.1">
+        <source>Choose how multiple rules should be applied.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.first">
+        <source>Apply first matching rule</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.all">
+        <source>Apply all matching rules</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.0">
         <source>Apply discount to</source>
@@ -347,7 +372,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.variants.0">
         <source>Products &amp; Variants</source>
-        <target>Products &amp; Variants</target>
+        <target>Produits &amp; Variantes</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.variants.1">
         <source>Enter a comma-separated list of product or variant IDs to limit this rule to.</source>
@@ -420,6 +445,12 @@
       <trans-unit id="tl_iso_rule.enabled.1">
         <source>Please select whether this rule is currently enabled or not.</source>
         <target>Please select whether this rule is currently enabled or not.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.0">
+        <source>Only for groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.1">
+        <source>Only apply this rule as part of a rule group.</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.basic_legend">
         <source>Basic rule setup</source>

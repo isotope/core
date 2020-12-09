@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.subdivision.1">
         <source>Please enter the name of the state.</source>
-        <target>Inserire il nome dello stato.</target>
+        <target>Inserire il nome stato/provincia.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.country.0">
         <source>Country</source>

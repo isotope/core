@@ -103,7 +103,6 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
         <source>Here you can define the store configuration permissions.</source>
-        <target>Aquí puede definir los permisos de configuración de la tienda.</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.0">
         <source>Allowed product groups</source>
@@ -120,6 +119,16 @@
       <trans-unit id="tl_user.iso_groupp.1">
         <source>Here you can define the product group permissions.</source>
         <target>Aquí puede definir los permisos del grupo de productos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Invitados</target>
       </trans-unit>
       <trans-unit id="tl_user.isotope_legend">
         <source>Isotope eCommerce</source>

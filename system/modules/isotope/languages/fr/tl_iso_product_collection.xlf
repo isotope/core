@@ -106,22 +106,6 @@
         <source>Edit order ID %s</source>
         <target>Éditer la commande ID %s</target>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.0">
-        <source>Copy order</source>
-        <target>Dupliquer une commande</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.1">
-        <source>Copy order ID %s</source>
-        <target>Dupliquer la commande ID %s</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.delete.0">
-        <source>Delete order</source>
-        <target>Supprimer une commande</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.delete.1">
-        <source>Delete order ID %s</source>
-        <target>Supprimer la commande ID %s</target>
-      </trans-unit>
       <trans-unit id="tl_iso_product_collection.show.0">
         <source>Order details</source>
         <target>Détails de la commande</target>
@@ -189,6 +173,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.updateOrderStatus">
+        <source>Update order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noLogData">
+        <source>No order logs are available.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>

@@ -120,6 +120,17 @@
         <source>Here you can define the product group permissions.</source>
         <target>Qui potete definire le autorizzazioni per i gruppi di prodotti.</target>
       </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+        <target>Gruppi di membri ammessi</target>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Ospiti</target>
+      </trans-unit>
       <trans-unit id="tl_user.isotope_legend">
         <source>Isotope eCommerce</source>
         <target>Isotope eCommerce</target>

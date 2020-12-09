@@ -195,16 +195,23 @@
         <target>Conditions de commande</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
-        <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
-        <target>Choisissez un formulaire personnalisé utilisé pour afficher vos termes et conditions de vente (en option).</target>
+        <source>Configure custom forms that are display in the checkout process (e.g. for your order terms and conditions).</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.0">
-        <source>Position of order conditions form</source>
-        <target>Position of order conditions form</target>
+      <trans-unit id="tl_module.iso_order_conditions.form.0">
+        <source>Form</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.1">
-        <source>Define if the order condition form should be shown before or after the products list.</source>
-        <target>Define if the order condition form should be shown before or after the products list.</target>
+      <trans-unit id="tl_module.iso_order_conditions.step.0">
+        <source>Checkout Step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.0">
+        <source>Position</source>
+        <target>Position</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.before">
+        <source>Before step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.after">
+        <source>After step</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.top">
         <source>On top (before address)</source>
