@@ -1,6 +1,12 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.6.15 (2020-12-09)
+--------------------------
+
+- Fixed ChangeLanguage alternate links for non-fallback reader
+
+
 Version 2.6.14 (2020-11-02)
 --------------------------
 
