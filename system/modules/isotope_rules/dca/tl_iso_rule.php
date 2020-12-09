@@ -104,10 +104,11 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
     'palettes' => array
     (
         '__selector__'                      => array('type', 'applyTo', 'enableCode', 'configRestrictions', 'memberRestrictions', 'productRestrictions'),
-        'default'                           => '{basic_legend},type',
+        'default'                           => '{basic_legend},type,name',
         'product'                           => '{basic_legend},type,name,discount,rounding;{limit_legend:hide},limitPerMember,limitPerConfig,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cart'                              => '{basic_legend},type,applyTo,name,label,discount,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
-        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled',
+        'cart'                              => '{basic_legend},type,applyTo,name,label,discount,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled,groupOnly',
+        'cartsubtotal'                      => '{basic_legend},type,applyTo,name,label,discount,tax_class,rounding;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled,groupOnly',
+        'cart_group'                        => '{basic_legend},type,name;{group_legend},groupRules,groupCondition;{coupon_legend:hide},enableCode;{limit_legend:hide},limitPerMember,limitPerConfig,minSubtotal,maxSubtotal,minWeight,maxWeight,minItemQuantity,maxItemQuantity,quantityMode;{datim_legend:hide},startDate,endDate,startTime,endTime;{advanced_legend:hide},configRestrictions,memberRestrictions,productRestrictions;{enabled_legend},enabled,groupOnly',
     ),
 
     // Subpalettes
@@ -143,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'filter'                        => true,
             'default'                       => 'product',
             'inputType'                     => 'select',
-            'options'                       => array('product', 'cart'),
+            'options'                       => array('product', 'cart', 'cart_group'),
             'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['type'],
             'eval'                          => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                           => "varchar(32) NOT NULL default ''",
@@ -186,6 +187,32 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'eval'                          => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                           => "int(10) NOT NULL default '0'",
             'relation'                      => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'groupRules' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['groupRules'],
+            'exclude'                       => true,
+            'inputType'                     => 'checkboxWizard',
+            'foreignKey'                    => 'tl_iso_rule.name',
+            'options_callback'              => static function ($dc) {
+                return \Contao\Database::getInstance()
+                    ->prepare("SELECT id, name FROM tl_iso_rule WHERE (type='cart' OR type='cart_group') AND id!=?")
+                    ->execute($dc->id)
+                    ->fetchEach('name');
+            },
+            'eval'                          => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "blob NULL",
+            'relation'                      => array('type'=>'hasMany', 'load'=>'lazy'),
+        ),
+        'groupCondition' => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['groupCondition'],
+            'exclude'                       => true,
+            'inputType'                     => 'radio',
+            'options'                       => array(\Isotope\Model\Rule::GROUP_FIRST, \Isotope\Model\Rule::GROUP_ALL),
+            'reference'                     => &$GLOBALS['TL_LANG']['tl_iso_rule']['groupCondition'],
+            'eval'                          => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                           => "varchar(8) NOT NULL default 'first'",
         ),
         'applyTo' => array
         (
@@ -586,7 +613,17 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'exclude'                       => true,
             'inputType'                     => 'checkbox',
             'filter'                        => true,
+            'eval'                          => array('doNotCopy'=>true, 'tl_class'=>'w50'),
             'sql'                           => "char(1) NOT NULL default ''",
-        )
+        ),
+        'groupOnly'    => array
+        (
+            'label'                         => &$GLOBALS['TL_LANG']['tl_iso_rule']['groupOnly'],
+            'exclude'                       => true,
+            'inputType'                     => 'checkbox',
+            'filter'                        => true,
+            'eval'                          => array('tl_class'=>'w50'),
+            'sql'                           => "char(1) NOT NULL default ''",
+        ),
     )
 );

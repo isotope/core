@@ -11,7 +11,9 @@
 
 namespace Isotope;
 
+use Contao\Database;
 use Contao\ModuleModel;
+use Isotope\Exception\RuleConditionException;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
@@ -83,10 +85,10 @@ class Rules extends \Controller
     {
         if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
 
-            // @todo try not to use getRelated() because it loads variants
+        // @todo try not to use getRelated() because it loads variants
             $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
-            if (null !== $objRules) {
+        if (null !== $objRules) {
                 while ($objRules->next()) {
                     // Check cart quantity
                     if ($objRules->minItemQuantity > 0 || $objRules->maxItemQuantity > 0) {
@@ -100,7 +102,7 @@ class Rules extends \Controller
                         }
 
                         if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
-                            continue;
+                    continue;
                         }
                     }
 
@@ -166,12 +168,8 @@ class Rules extends \Controller
         $arrSurcharges = array();
         $objRules = Rule::findForCart();
         if (null !== $objRules) {
-            while ($objRules->next()) {
-                $objSurcharge = RuleSurcharge::createForRuleInCollection($objRules->current(), $objCollection);
-
-                if (null !== $objSurcharge) {
-                    $arrSurcharges[] = $objSurcharge;
-                }
+            foreach ($objRules as $objRule) {
+                $this->addSurchargesForRule($objRule, $objCollection, $arrSurcharges);
             }
         }
 
@@ -187,13 +185,7 @@ class Rules extends \Controller
                 if (null === $objRule || ($blnHasCode && $objRule->singleCode)) {
                     $arrDropped[] = $code;
                 } else {
-                    // cart rules should total all eligible products for the cart discount and apply the discount to that amount rather than individual products.
-                    $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule, $objCollection);
-
-                    if (null !== $objSurcharge) {
-                        $blnHasCode = true;
-                        $arrSurcharges[] = $objSurcharge;
-                    }
+                    $blnHasCode = $this->addSurchargesForRule($objRule, $objCollection, $arrSurcharges) ?: $blnHasCode;
                 }
             }
 
@@ -293,7 +285,7 @@ class Rules extends \Controller
     {
         $objCart = Cart::findByPk($objOrder->source_collection_id);
 
-        $objRules = Rule::findActiveWitoutCoupons();
+        $objRules = Rule::findActiveWithoutCoupons();
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
         $arrCoupons = deserialize($objCart->coupons);
 
@@ -366,5 +358,45 @@ class Rules extends \Controller
     public function deleteRuleUsages($objCollection, $intId)
     {
         \Database::getInstance()->prepare("DELETE FROM tl_iso_rule_usage WHERE order_id=?")->execute($intId);
+    }
+
+    private function addSurchargesForRule(Rule $objRule, IsotopeProductCollection $objCollection, array &$arrSurcharges)
+    {
+        switch ($objRule->type) {
+            case 'cart':
+                $objSurcharge = RuleSurcharge::createForRuleInCollection($objRule, $objCollection);
+
+                if (null === $objSurcharge) {
+                    return false;
+                }
+
+                $arrSurcharges[] = $objSurcharge;
+                return true;
+
+            case 'cart_group':
+                $blnResult = false;
+                $ids = deserialize($objRule->groupRules);
+
+                if (!empty($ids) && \is_array($ids)) {
+                    foreach ($ids as $id) {
+                        $objRules = Rule::findForCart($id);
+
+                        if (null === $objRules) {
+                            continue;
+                        }
+
+                        $blnResult = $this->addSurchargesForRule($objRules->current(), $objCollection, $arrSurcharges) ?: $blnResult;
+
+                        if ($blnResult && $objRule->groupCondition === Rule::GROUP_FIRST) {
+                            break;
+                        }
+                    }
+                }
+
+                return $blnResult;
+
+            default:
+                throw new \RuntimeException('Unsupported rule type "'.$objRule->type.'" for cart group');
+        }
     }
 }

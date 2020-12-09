@@ -23,6 +23,8 @@ use Isotope\Translation;
  * @property string $label
  * @property string $discount
  * @property int    $tax_class
+ * @property array  $groupRules
+ * @property string $groupCondition
  * @property string $applyTo
  * @property string $rounding
  * @property bool   $enableCode
@@ -51,12 +53,16 @@ use Isotope\Translation;
  * @property string $attributeCondition
  * @property string $attributeValue
  * @property bool   $enabled
+ * @property bool   $groupOnly
  */
 class Rule extends \Model
 {
     const ROUND_NORMAL = 'normal';
     const ROUND_UP = 'up';
     const ROUND_DOWN = 'down';
+
+    const GROUP_FIRST = 'first';
+    const GROUP_ALL = 'all';
 
     /**
      * Name of the current table
@@ -111,16 +117,22 @@ class Rule extends \Model
         return static::findByConditions(array("type='product'"), array(), array($objProduct), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
     }
 
-
-    public static function findForCart()
+    public static function findForCart($intId = null)
     {
-        return static::findByConditions(array("type='cart'", "enableCode=''"));
-    }
+        $arrProcedures = array("(type='cart' OR type='cart_group')", "enableCode=''");
 
+        if (null === $intId) {
+            $arrProcedures[] = "groupOnly=''";
+        } else {
+            $arrProcedures[] = 'id='.(int)$intId;
+        }
+
+        return static::findByConditions($arrProcedures);
+    }
 
     public static function findForCartWithCoupons()
     {
-        return static::findByConditions(array("type='cart'", "enableCode='1'"));
+        return static::findByConditions(array("(type='cart' OR type='cart_group')", "enableCode='1'"));
     }
 
     /**
@@ -134,7 +146,7 @@ class Rule extends \Model
 
     public static function findActiveWithoutCoupons()
     {
-        return static::findByConditions(array("(type='product' OR (type='cart' AND enableCode=''))"));
+        return static::findByConditions(array("(type='product' OR ((type='cart' OR type='cart_group') AND enableCode=''))"));
     }
 
     /**
@@ -145,7 +157,7 @@ class Rule extends \Model
      */
     public static function findOneByCouponCode($strCode, $arrCollectionItems)
     {
-        $objRules = static::findByConditions(array("type='cart'", "enableCode='1'", 'code=?'), array($strCode), $arrCollectionItems);
+        $objRules = static::findByConditions(array("(type='cart' OR type='cart_group')", "enableCode='1'", 'code=?', "groupOnly=''"), array($strCode), $arrCollectionItems);
 
         if (null !== $objRules) {
             return $objRules->current();
