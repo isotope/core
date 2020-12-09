@@ -17,15 +17,15 @@ use Isotope\Translation;
 /**
  * TaxRate implements the tax class model.
  *
- * @property int    id
- * @property int    tstamp
- * @property string name
- * @property bool   fallback
- * @property int    includes
- * @property string label
- * @property array  rates
- * @property bool   applyRoundingIncrement
- * @property bool   notNegative
+ * @property int    $id
+ * @property int    $tstamp
+ * @property string $name
+ * @property bool   $fallback
+ * @property int    $includes
+ * @property string $label
+ * @property array  $rates
+ * @property bool   $applyRoundingIncrement
+ * @property bool   $notNegative
  */
 class TaxClass extends \Model
 {

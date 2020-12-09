@@ -22,7 +22,7 @@ use Isotope\Template;
  *
  * @property string $sofortueberweisung_user_id
  * @property string $sofortueberweisung_project_id
- * @property string sofortueberweisung_project_password
+ * @property string $sofortueberweisung_project_password
  */
 class Sofortueberweisung extends Postsale
 {

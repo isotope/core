@@ -19,23 +19,23 @@ use Isotope\Translation;
 /**
  * TaxRate implements the tax rate model.
  *
- * @property int    id
- * @property int    pid
- * @property int    tstamp
- * @property string name
- * @property string label
- * @property array  address
- * @property array  countries
- * @property array  subdivisions
- * @property string postalCodes
- * @property array  rate
- * @property array  amount
- * @property int    config
- * @property bool   exemptOnValidVAT
- * @property bool   stop
- * @property bool   guests
- * @property bool   protected
- * @property array  groups
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $tstamp
+ * @property string $name
+ * @property string $label
+ * @property array  $address
+ * @property array  $countries
+ * @property array  $subdivisions
+ * @property string $postalCodes
+ * @property array  $rate
+ * @property array  $amount
+ * @property int    $config
+ * @property bool   $exemptOnValidVAT
+ * @property bool   $stop
+ * @property bool   $guests
+ * @property bool   $protected
+ * @property array  $groups
  */
 class TaxRate extends \Model
 {

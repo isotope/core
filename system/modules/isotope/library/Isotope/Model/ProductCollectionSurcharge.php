@@ -24,21 +24,21 @@ use Isotope\Model\ProductCollectionSurcharge\Tax;
  *
  * Provide methods to handle Isotope product collection surcharges.
  *
- * @property int    id
- * @property int    pid
- * @property int    sorting
- * @property int    tstamp
- * @property string type
- * @property int    source_id
- * @property string label
- * @property string price
- * @property float  total_price
- * @property float  tax_free_total_price
- * @property string tax_id
- * @property bool   before_tax
- * @property bool   addToTotal
- * @property bool   applyRoundingIncrement
- * @property array  products
+ * @property int    $id
+ * @property int    $pid
+ * @property int    $sorting
+ * @property int    $tstamp
+ * @property string $type
+ * @property int    $source_id
+ * @property string $label
+ * @property string $price
+ * @property float  $total_price
+ * @property float  $tax_free_total_price
+ * @property string $tax_id
+ * @property bool   $before_tax
+ * @property bool   $addToTotal
+ * @property bool   $applyRoundingIncrement
+ * @property array  $products
  */
 abstract class ProductCollectionSurcharge extends TypeAgent
 {

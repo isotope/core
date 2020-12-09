@@ -20,10 +20,10 @@ use Isotope\Template;
 /**
  * Standard implements a lightbox gallery
  *
- * @property string lightbox_size
- * @property string lightbox_watermark_image
- * @property string lightbox_watermark_position
- * @property string lightbox_template
+ * @property string $lightbox_size
+ * @property string $lightbox_watermark_image
+ * @property string $lightbox_watermark_position
+ * @property string $lightbox_template
  */
 class Standard extends Gallery implements IsotopeGallery
 {

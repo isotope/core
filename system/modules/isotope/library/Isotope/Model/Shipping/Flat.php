@@ -19,8 +19,8 @@ use Isotope\Model\Shipping;
 /**
  * Class Flat
  *
- * @property string flatCalculation
- * @property string flatWeight
+ * @property string $flatCalculation
+ * @property string $flatWeight
  */
 class Flat extends Shipping
 {

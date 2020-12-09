@@ -17,7 +17,7 @@ use Isotope\Interfaces\IsotopeIntegrityCheck;
 /**
  * Class Integrity
  *
- * @property \Template|object Template
+ * @property \Template|object $Template
  */
 class Integrity extends \BackendModule
 {
