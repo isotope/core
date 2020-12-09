@@ -3,7 +3,7 @@
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2020 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -57,6 +57,13 @@ class InsertTag
             case 'isotope':
             case 'cache_isotope':
                 return $this->getValueForIsotopeTag($tokens[1]);
+
+            case 'product_price':
+                if (($product = $this->findCurrentProduct($tokens[2])) === null) {
+                    return '';
+                }
+
+                return $this->getPriceForProductTag($product, $tokens[1]);
         }
 
         return false;
@@ -229,6 +236,40 @@ class InsertTag
             return Product::getActive();
         } else {
             return Product::findAvailableByIdOrAlias(Input::getAutoItem('product', false, true));
+        }
+    }
+
+    /**
+     * Replace InsertTag for a product price
+     *
+     * 2 possible use cases:
+     * {{product_price::type}}               - gets the price of the current product
+     *                                         (Product::getActive() or GET parameter "product")
+     * {{productPrice::type::product_id}}    - gets the price of the specified product ID
+     *
+     * @param IsotopeProduct $product
+     * @param string         $type
+     *
+     * @return string
+     */
+    private function getPriceForProductTag(IsotopeProduct $product, $type)
+    {
+        switch ($type) {
+            case 'amount':
+                return Isotope::formatPriceWithCurrency($product->getPrice()->getAmount());
+
+            case 'original_amount':
+                return Isotope::formatPriceWithCurrency($product->getPrice()->getOriginalAmount());
+
+            case 'net_amount':
+                return Isotope::formatPriceWithCurrency($product->getPrice()->getNetAmount());
+
+            case 'gross_amount':
+                return Isotope::formatPriceWithCurrency($product->getPrice()->getGrossAmount());
+
+            case 'html':
+            default:
+                return Isotope::formatPriceWithCurrency($product->getPrice()->generate());
         }
     }
 }
