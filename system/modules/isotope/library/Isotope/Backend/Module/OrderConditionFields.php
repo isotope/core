@@ -22,32 +22,57 @@ class OrderConditionFields extends \Backend
     {
         return [
             'form' => [
-                'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['form'],
-                'exclude'                   => true,
-                'inputType'                 => 'select',
-                'foreignKey'                => 'tl_form.title',
-                'eval'                      => [
+                'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['form'],
+                'exclude' => true,
+                'inputType' => 'select',
+                'foreignKey' => 'tl_form.title',
+                'eval' => [
                     'includeBlankOption' => true,
-                    'style'              => 'width:300px',
-                    'chosen'             => true
+                    'style' => 'width:300px',
+                    'chosen' => true,
+                    'columnPos' => 'checkout',
                 ],
             ],
             'step' => [
-                'label'            => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['step'],
-                'inputType'        => 'select',
+                'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['step'],
+                'inputType' => 'select',
                 'options_callback' => ['Isotope\Backend\Module\OrderConditionFields', 'getSteps'],
-                'eval'             => [
+                'eval' => [
                     'includeBlankOption' => true,
-                    'style'              => 'width:300px'
+                    'style' => 'width:300px',
+                    'columnPos' => 'checkout',
                 ],
             ],
             'position' => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['position'],
-                'default'   => 'before',
+                'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['position'],
+                'default' => 'before',
                 'inputType' => 'select',
-                'options'   => ['before', 'after'],
+                'options' => ['before', 'after'],
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['position'],
-                'eval'      => ['style' => 'width:150px'],
+                'eval' => [
+                    'style' => 'width:300px',
+                    'columnPos' => 'checkout',
+                ],
+            ],
+            'product_types' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types'],
+                'inputType' => 'select',
+                'foreignKey' => 'tl_iso_producttype.name',
+                'eval' => [
+                    'multiple' => true,
+                    'style' => 'width:300px',
+                    'columnPos' => 'product_type',
+                ],
+            ],
+            'product_types_condition' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types_condition'],
+                'inputType' => 'select',
+                'options' => ['oneAvailable', 'allAvailable', 'onlyAvailable'],
+                'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_order_conditions']['product_types_condition'],
+                'eval' => [
+                    'style' => 'width:300px',
+                    'columnPos' => 'product_type',
+                ],
             ],
         ];
     }
@@ -60,7 +85,7 @@ class OrderConditionFields extends \Backend
             $groupLabel = $GLOBALS['TL_LANG']['MSC']['checkout_'.$group];
 
             foreach ($steps as $step) {
-                $options[$groupLabel][$step] = $GLOBALS['TL_LANG']['CHECKOUT'][$step] ?: substr($step, strrpos($step, '\\')+1);
+                $options[$groupLabel][$step] = $GLOBALS['TL_LANG']['CHECKOUT'][$step] ?: substr($step, strrpos($step, '\\') + 1);
             }
         }
 

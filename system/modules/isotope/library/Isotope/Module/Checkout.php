@@ -572,10 +572,43 @@ class Checkout extends Module
      */
     protected function getSteps()
     {
-        $arrOrderConditions = array();
-        $arrSteps = array();
+        $arrOrderConditions = [];
+        $arrSteps = [];
+
+        $productTypeIds = [];
+        foreach (Isotope::getCart()->getItems() as $objItem) {
+            if ($objItem->hasProduct()) {
+                $productType = $objItem->getProduct()->getType();
+                $productTypeIds[] = null === $productType ? 0 : (int) $productType->id;
+            }
+        }
+        $productTypeIds = array_unique($productTypeIds);
 
         foreach (deserialize($this->iso_order_conditions, true) as $config) {
+            $configProductTypes = deserialize($config['product_types']);
+
+            if (!empty($configProductTypes) && \is_array($configProductTypes)) {
+                switch ($config['product_types_condition']) {
+                    case 'onlyAvailable':
+                        if (\count(array_diff($productTypeIds, $configProductTypes)) > 0) {
+                            continue(2);
+                        }
+                        break;
+
+                    case 'oneAvailable':
+                        if (\count(array_intersect($configProductTypes, $productTypeIds)) === 0) {
+                            continue(2);
+                        }
+                        break;
+
+                    case 'allAvailable':
+                        if (\count(array_intersect($configProductTypes, $productTypeIds)) !== \count($configProductTypes)) {
+                            continue(2);
+                        }
+                        break;
+                }
+            }
+
             $arrOrderConditions[$config['step']][$config['position']][] = $config['form'];
         }
 

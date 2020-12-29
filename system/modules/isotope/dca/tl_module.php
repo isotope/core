@@ -324,9 +324,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_order_conditions'] = array
     'exclude'                   => true,
     'inputType'                 => 'multiColumnWizard',
     'eval'                      => array(
-        'dragAndDrop' => true,
         'decodeEntities' => true,
         'tl_class'  => 'clr',
+        'disableSorting' => true,
         'columnsCallback' => array('Isotope\Backend\Module\OrderConditionFields', 'getColumns')
     ),
     'sql'                       => "blob NULL",
