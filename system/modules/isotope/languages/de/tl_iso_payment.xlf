@@ -403,9 +403,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.0">
         <source>Saferpay Account ID (CustomerId-TerminalId)</source>
+        <target>Saferpay Account ID (Customer Id-Terminal Id)</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_accountid.1">
         <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-TerminalId</source>
+        <target>Bitte geben Sie Ihre eindeutige Saferpay-Kontonummer (CustomerId-TerminalId) ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.saferpay_username.0">
         <source>Saferpay API User</source>
@@ -661,21 +663,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.0">
         <source>Authentication Scheme</source>
+        <target>Authentifizierungs-Schema</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.1">
         <source>Select the authentication scheme of your Open Payment provider.</source>
+        <target>Wählen Sie das Authentifizierungs-Schema Ihres Open Payment-Anbieters.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.user">
         <source>User ID &amp; Password</source>
+        <target>Benutzer-ID &amp; Passwort</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.token">
         <source>Authentication Token</source>
+        <target>Authentifizierungs-Token</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_token.0">
         <source>Authentication Token</source>
+        <target>Authentifizierungs-Token</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_token.1">
         <source>Please enter your authentication token.</source>
+        <target>Bitte geben Sie Ihr Authentifizierungs-Token ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.0">
         <source>User ID</source>
@@ -772,9 +780,11 @@ SOFORTüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_id.0">
         <source>SwissBilling ID</source>
+        <target> SwissBilling-ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_id.1">
         <source>Please enter your SwissBilling ID.</source>
+        <target>Bitte geben Sie Ihre SwissBilling-ID ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_pwd.0">
         <source>Password</source>
@@ -782,18 +792,23 @@ SOFORTüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_pwd.1">
         <source>Please enter your SwissBilling password.</source>
+        <target>Bitte geben Sie Ihr SwissBilling-Passwort ein.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_prescreening.0">
         <source>Enable PreScreening</source>
+        <target>Vorab-Screening aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_prescreening.1">
         <source>Only show payment option if allowed by SwissBilling. Please check with SwissBilling before activating this option.</source>
+        <target>Zahlungsoption nur anzeigen, wenn von SwissBilling erlaubt. Bitte informieren Sie sich bei SwissBilling, bevor Sie diese Option aktivieren.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_b2b.0">
         <source>Enable B2B support</source>
+        <target>B2B-Unterstützung aktivieren</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
         <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
+        <target>Aktivieren Sie die B2B-Unterstützung für SwissBill-Zahlungen. Bitte informieren Sie sich bei SwissBilling, bevor Sie diese Option aktivieren.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
@@ -917,6 +932,7 @@ SOFORTüberweisung</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.notAvailable">
         <source>Disable if one of these product types are in cart</source>
+        <target>Deaktivieren, wenn sich einer dieser Produkttypen im Warenkorb befindet</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.allAvailable">
         <source>Enable if all these product types are in cart</source>

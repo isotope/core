@@ -183,9 +183,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.updateOrderStatus">
         <source>Update order status</source>
+        <target>Aggiornare lo stato dell'ordine</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.noLogData">
         <source>No order logs are available.</source>
+        <target>Non sono disponibili registri degli ordini.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>

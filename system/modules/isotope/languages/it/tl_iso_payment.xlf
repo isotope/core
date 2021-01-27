@@ -23,7 +23,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.type.1">
         <source>Select a particular payment gateway</source>
-        <target>Selezioni un gateway di pagamento (ad es. Authorize.net)</target>
+        <target>Selezioni un gateway di pagamento</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.note.0">
         <source>Payment Note</source>
@@ -175,7 +175,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_account.1">
         <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
-        <target>Inserisca il suo conto di paypal (indirizzo di mail).</target>
+        <target>Inserisca il suo conto di paypal (indirizzo di mail). Nota: controllare l'ortografia corretta e le maiuscole e minuscole.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.paypal_client.0">
         <source>Client ID</source>
@@ -663,21 +663,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.0">
         <source>Authentication Scheme</source>
+        <target>Schema di autenticazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.1">
         <source>Select the authentication scheme of your Open Payment provider.</source>
+        <target>Selezionate lo schema di autenticazione del vostro Open Payment provider.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.user">
         <source>User ID &amp; Password</source>
+        <target>Utente e password</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_auth.token">
         <source>Authentication Token</source>
+        <target>Token di autenticazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_token.0">
         <source>Authentication Token</source>
+        <target>Token di autenticazione</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_token.1">
         <source>Please enter your authentication token.</source>
+        <target>Inserisci il token di autenticazione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.0">
         <source>User ID</source>
@@ -773,9 +779,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_id.0">
         <source>SwissBilling ID</source>
+        <target>SwissBilling ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_id.1">
         <source>Please enter your SwissBilling ID.</source>
+        <target>Inserire SwissBilling ID.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_pwd.0">
         <source>Password</source>
@@ -783,18 +791,23 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_pwd.1">
         <source>Please enter your SwissBilling password.</source>
+        <target>Inserire la password die SwissBilling.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_prescreening.0">
         <source>Enable PreScreening</source>
+        <target>Attivare il PreScreening</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_prescreening.1">
         <source>Only show payment option if allowed by SwissBilling. Please check with SwissBilling before activating this option.</source>
+        <target>Visualizzare l'opzione di pagamento solo se consentita da SwissBilling. Si prega di verificare con SwissBilling prima di attivare questa opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_b2b.0">
         <source>Enable B2B support</source>
+        <target>Attivare il supporto B2B</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
         <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
+        <target>Attivare il supporto B2B per i pagamenti SwissBilling. Si prega di verificare con SwissBilling prima di attivare questa opzione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
@@ -918,6 +931,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.notAvailable">
         <source>Disable if one of these product types are in cart</source>
+        <target>Disattivare se uno di questi tipi di prodotto è nel carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_payment.allAvailable">
         <source>Enable if all these product types are in cart</source>

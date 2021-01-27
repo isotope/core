@@ -19,6 +19,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.type.cart_group">
         <source>Cart Group</source>
+        <target>Gruppo Carrello</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
@@ -50,12 +51,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.tax_class.1">
         <source>Select a tax class that should be applied to the rule.</source>
+        <target>Selezionare una classe fiscale da applicare alla regola.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupRules.0">
         <source>Grouped rules</source>
+        <target>Regole raggruppate</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupRules.1">
         <source>Select the rules that belong to this group.</source>
+        <target>Selezionare le regole che appartengono a questo gruppo.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupCondition.0">
         <source>Conditions</source>
@@ -63,12 +67,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupCondition.1">
         <source>Choose how multiple rules should be applied.</source>
+        <target>Scegliere come applicare più di una regola.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupCondition.first">
         <source>Apply first matching rule</source>
+        <target>Applicare la prima regola di corrispondenza</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupCondition.all">
         <source>Apply all matching rules</source>
+        <target>Applicare tutte le regole di corrispondenza</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.0">
         <source>Apply discount to</source>
@@ -456,9 +463,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupOnly.0">
         <source>Only for groups</source>
+        <target>Solo per gruppi</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.groupOnly.1">
         <source>Only apply this rule as part of a rule group.</source>
+        <target>Applicare questa regola solo come parte di un gruppo di regole.</target>
       </trans-unit>
       <trans-unit id="tl_iso_rule.basic_legend">
         <source>Basic rule setup</source>

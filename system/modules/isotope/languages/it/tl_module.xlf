@@ -215,22 +215,54 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
         <source>Configure custom forms that are display in the checkout process (e.g. for your order terms and conditions).</source>
+        <target>Configurare moduli personalizzati che vengono visualizzati nel processo di checkout (ad es. per i termini e le condizioni dell'ordine).</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.form.0">
         <source>Form</source>
+        <target>Modulo</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.step.0">
         <source>Checkout Step</source>
+        <target>Passo alla cassa</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.position.0">
         <source>Position</source>
         <target>Posizione</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.0">
+        <source>Product types</source>
+        <target>Tipi prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.1">
+        <source>You can restrict this checkout form to certain product types. If the cart contains a product type you have not selected, the checkout form is not shown.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Stato del tipo di prodotto</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Selezionare come deve essere applicato il filtro del tipo di prodotto.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+        <target>Attivare se uno di questi tipi di prodotto è nel carrello</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+        <target>Attivare se solo questi tipi di prodotto sono nel carrello</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+        <target>Attivare se tutti questi tipi di prodotto sono nel carrello</target>
+      </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.position.before">
         <source>Before step</source>
+        <target>Prima del passo</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.position.after">
         <source>After step</source>
+        <target>Dopo il passo</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.top">
         <source>On top (before address)</source>

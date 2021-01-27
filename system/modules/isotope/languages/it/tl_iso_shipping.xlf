@@ -83,45 +83,59 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculation.0">
         <source>Price calculation</source>
+        <target>Calcolo del prezzo</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculation.1">
         <source>Select how the shipping price should be calculated.</source>
+        <target>Selezionare come deve essere calcolato il prezzo di spedizione.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.0">
         <source>Highest price of product</source>
+        <target>Prezzo più alto del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.1">
         <source>Uses the highest shipping price of one product in the cart.</source>
+        <target>Utilizza il prezzo di spedizione più alto di un prodotto nel carrello.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.0">
         <source>Lowest price of product</source>
+        <target>Prezzo più basso del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.1">
         <source>Uses the lowest shipping price of one product in the cart.</source>
+        <target>Utilizza il prezzo di spedizione più basso di un prodotto nel carrello.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.0">
         <source>Sum of price per product</source>
+        <target>Somma del prezzo per prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.1">
         <source>Uses a summary of all shipping prices of all products in the cart.</source>
+        <target>Utilizza un riepilogo di tutti i prezzi di spedizione di tutti i prodotti nel carrello.</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.0">
         <source>Highest price of items</source>
+        <target>Prezzo più alto del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.1">
         <source>Uses the highest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Utilizza il prezzo di spedizione più alto di un prodotto (prezzo di spedizione moltiplicato per la quantità nel carrello).</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.0">
         <source>Lowest price of items</source>
+        <target>Prezzo più basso dei prodotti</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.1">
         <source>Uses the lowest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+        <target>Utilizza il prezzo di spedizione più basso di un prodotto (prezzo di spedizione moltiplicato per la quantità nel carrello).</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.0">
         <source>Sum of price per items</source>
+        <target>Somma del prezzo per ogni produtto</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.1">
         <source>Uses a summary of all shipping prices of all product items (shipping price multiplied by quantity in cart).</source>
+        <target>Utilizza un riepilogo di tutti i prezzi di spedizione di tutti i prodotti (prezzo di spedizione moltiplicato per la quantità nel carrello).</target>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>

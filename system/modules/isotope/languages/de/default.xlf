@@ -191,6 +191,7 @@
       </trans-unit>
       <trans-unit id="MSC.attributePriceLabel">
         <source>%s (%s)</source>
+        <target>%s (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
@@ -982,9 +983,11 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.swissbilling.0">
         <source>SwissBilling</source>
+        <target>SwissBilling</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.swissbilling.1">
         <source>Swiss payment provider for invoice payments.</source>
+        <target>Schweizer Zahlungsanbieter für Rechnungszahlungen.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
@@ -1176,9 +1179,11 @@
       </trans-unit>
       <trans-unit id="ATTR.pageTree.0">
         <source>Page tree</source>
+        <target>Seitenbaum</target>
       </trans-unit>
       <trans-unit id="ATTR.pageTree.1">
         <source>Pick one or multiple pages from the site structure.</source>
+        <target>Wählen Sie eine oder mehrere Seiten aus dem Seitenbaum aus.</target>
       </trans-unit>
       <trans-unit id="ATTR.downloads.0">
         <source>Downloads</source>
@@ -1898,9 +1903,11 @@
       </trans-unit>
       <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderInfo">
           <source>Order summary</source>
+          <target>Zusammenfassung der Bestellung</target>
       </trans-unit>
       <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderProducts">
           <source>Order products</source>
+          <target>Produkte bestellen</target>
       </trans-unit>
     </body>
   </file>
