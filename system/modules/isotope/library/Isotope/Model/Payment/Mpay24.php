@@ -17,6 +17,7 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Mpay24\Mpay24Config;
 use Mpay24\Mpay24Order;
+use Isotope\Model\Address;
 
 /**
  * mPAY24 payment method
@@ -95,6 +96,15 @@ class Mpay24 extends Postsale
         $mdxi = new Mpay24Order();
         $mdxi->Order->Tid = $objOrder->getId();
         $mdxi->Order->Price = $objOrder->getTotal();
+
+        if ($billingAddress = $objOrder->getBillingAddress()) {
+            $this->setAddress($mdxi, $billingAddress, 'BillingAddr');
+        }
+
+        if (($shippingAddress = $objOrder->getShippingAddress()) && $shippingAddress->id !== $billingAddress->id) {
+            $this->setAddress($mdxi, $shippingAddress, 'ShippingAddr');
+        }
+
         $mdxi->Order->URL->Success = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $mdxi->Order->URL->Error = \Environment::get('base') . Checkout::generateUrlForStep('failed');
         $mdxi->Order->URL->Confirmation = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
@@ -128,5 +138,17 @@ class Mpay24 extends Postsale
         $config->setLogFile('isotope_mpay24.log');
 
         return new \Mpay24\Mpay24($config);
+    }
+
+    private function setAddress(Mpay24Order $mdxi, Address $address, $addressKey)
+    {
+        $mdxi->Order->{$addressKey}->setMode('ReadOnly');
+        $mdxi->Order->{$addressKey}->Name = $address->firstname.' '.$address->lastname;
+        $mdxi->Order->{$addressKey}->Street = $address->street_1;
+        $mdxi->Order->{$addressKey}->Zip = $address->postal;
+        $mdxi->Order->{$addressKey}->City = $address->city;
+        $mdxi->Order->{$addressKey}->Country->setCode(strtoupper($address->country));
+        $mdxi->Order->{$addressKey}->Email = $address->email;
+        $mdxi->Order->{$addressKey}->Phone = $address->phone;
     }
 }
