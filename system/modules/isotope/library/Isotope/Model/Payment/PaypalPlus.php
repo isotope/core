@@ -12,7 +12,6 @@
 namespace Isotope\Model\Payment;
 
 use GuzzleHttp\Psr7\Response;
-use Haste\Http\Response\RedirectResponse;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -73,8 +72,7 @@ class PaypalPlus extends PaypalApi
             )
         );
 
-        $response = new RedirectResponse(Checkout::redirectToStep(Checkout::STEP_FAILED), 303);
-        $response->send();
+        Checkout::redirectToStep(Checkout::STEP_FAILED);
         exit;
     }
 
@@ -227,6 +225,7 @@ class PaypalPlus extends PaypalApi
         $objOrder->checkout();
         $objOrder->setDatePaid(time());
         $objOrder->updateOrderStatus($this->new_order_status);
+        $objOrder->save();
 
         return true;
     }
