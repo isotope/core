@@ -17,3 +17,6 @@ Version 2.7.0 (2020-??-??)
 - Added configurable forms in every step of the checkout process
 - Make attribute price label configurable through language files (#2097)
 - Allow payment methods to return a response object
+- Updated mPay24 API to include billing and shipping address (#2184)
+- Fixed PayPal PLUS checkout iframe (#2145)
+- Fixed possibly incorrect price in PayPal Standard when product has no name (#2176)

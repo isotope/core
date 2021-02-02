@@ -139,11 +139,19 @@ class Paypal extends Postsale
                 $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
-            $arrData['item_number_' . ++$i] = $objItem->getSku();
-            $arrData['item_name_' . $i]     = StringUtil::convertToText(
+            $strName = StringUtil::convertToText(
                 $objItem->getName() . $strConfig,
                 StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
             );
+
+            // Make sure name is not empty, otherwise PayPal ignores all subsequent products
+            // @see https://github.com/isotope/core/issues/2176
+            if (empty($strName)) {
+                $strName = 'ID '.$objItem->id;
+            }
+
+            $arrData['item_number_' . ++$i] = $objItem->getSku();
+            $arrData['item_name_' . $i]     = $strName;
             $arrData['amount_' . $i]        = $objItem->getPrice();
             $arrData['quantity_' . $i]      = $objItem->quantity;
         }
