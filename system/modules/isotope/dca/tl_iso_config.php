@@ -533,8 +533,8 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'default'               => 1,
             'inputType'             => 'text',
-            'eval'                  => array('mandatory'=>true, 'maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
-            'sql'                   => "varchar(10) NOT NULL default ''",
+            'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'priceCalculateMode' => array
         (
