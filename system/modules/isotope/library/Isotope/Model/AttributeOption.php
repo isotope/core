@@ -57,7 +57,7 @@ class AttributeOption extends \MultilingualModel
     public function getAsArray(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
     {
         return array(
-            'value'     => $this->id,
+            'value'     => \method_exists($this, 'getLanguageId') ? $this->getLanguageId() : $this->id,
             'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
             'group'     => 'group' === $this->type ? '1' : '',
             'default'   => $this->isDefault ? '1' : '',
