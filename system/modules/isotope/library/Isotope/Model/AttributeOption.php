@@ -10,7 +10,7 @@
  */
 namespace {
     if (!\class_exists('\MultilingualModel')) {
-        class MultilingualModel extends Terminal42\DcMultilingualBundle\Model\Multilingual {}
+        class MultilingualModel extends \Terminal42\DcMultilingualBundle\Model\Multilingual {}
     }
 }
 
@@ -52,7 +52,7 @@ class AttributeOption extends \MultilingualModel
      */
     public function getLanguageId()
     {
-        if ($this instanceof Terminal42\DcMultilingualBundle\Model\MultilingualTrait) {
+        if ($this instanceof \Terminal42\DcMultilingualBundle\Model\Multilingual) {
             return parent::getLanguageId();
         }
 
