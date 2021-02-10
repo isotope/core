@@ -259,7 +259,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     $arrOptions = [];
                     foreach (AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
                         $arrOptions[] = [
-                            'value' => $model->id,
+                            'value' => $model->getLanguageId(),
                             'label' => $model->label,
                         ];
                     }
@@ -269,7 +269,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                     $arrOptions = [];
                     foreach (AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
                         $arrOptions[] = [
-                            'value' => $model->id,
+                            'value' => $model->getLanguageId(),
                             'label' => $model->label,
                         ];
                     }

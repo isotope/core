@@ -719,7 +719,7 @@ class Frontend extends \Frontend
 
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
-                        if (\in_array($objOption->id, $value)) {
+                        if (\in_array($objOption->getLanguageId(), $value)) {
                             $amount = $objOption->getAmount($fltPrice, 0);
                             $objTax = $objSource->getRelated('tax_class');
 

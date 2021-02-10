@@ -47,6 +47,19 @@ class AttributeOption extends \MultilingualModel
     protected static $strTable = 'tl_iso_attribute_option';
 
     /**
+     * Backwards compatibility with DC_Multi
+     * @return int
+     */
+    public function getLanguageId()
+    {
+        if ($this instanceof Terminal42\DcMultilingualBundle\Model\MultilingualTrait) {
+            return parent::getLanguageId();
+        }
+
+        return $this->id;
+    }
+
+    /**
      * Get array representation of the attribute option
      *
      * @param IsotopeProduct $objProduct
@@ -57,7 +70,7 @@ class AttributeOption extends \MultilingualModel
     public function getAsArray(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
     {
         return array(
-            'value'     => \method_exists($this, 'getLanguageId') ? $this->getLanguageId() : $this->id,
+            'value'     => $this->getLanguageId(),
             'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
             'group'     => 'group' === $this->type ? '1' : '',
             'default'   => $this->isDefault ? '1' : '',
