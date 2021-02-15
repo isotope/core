@@ -47,7 +47,7 @@ class AttributeOption extends \MultilingualModel
     protected static $strTable = 'tl_iso_attribute_option';
 
     /**
-     * Backwards compatibility with DC_Multi
+     * Backwards compatibility with DC_Multilingual v2
      * @return int
      */
     public function getLanguageId()
