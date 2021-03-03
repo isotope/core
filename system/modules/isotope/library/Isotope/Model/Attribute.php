@@ -257,7 +257,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_TABLE:
                     $arrOptions = [];
-                    foreach (AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
+                    foreach (AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']) ?? [] as $model) {
                         $arrOptions[] = [
                             'value' => $model->getLanguageId(),
                             'label' => $model->label,
@@ -267,7 +267,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                     $arrOptions = [];
-                    foreach (AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
+                    foreach (AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']) ?? [] as $model) {
                         $arrOptions[] = [
                             'value' => $model->getLanguageId(),
                             'label' => $model->label,
