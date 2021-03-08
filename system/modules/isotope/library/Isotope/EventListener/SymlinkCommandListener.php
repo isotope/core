@@ -21,16 +21,16 @@ class SymlinkCommandListener
     /**
      * @var string
      */
-    private $rootDir;
+    private $projectDir;
 
     /**
      * Constructor.
      *
-     * @param string $rootDir
+     * @param string $projectDir
      */
-    public function __construct($rootDir)
+    public function __construct($projectDir)
     {
-        $this->rootDir = \dirname($rootDir);
+        $this->projectDir = $projectDir;
     }
 
     /**
@@ -44,8 +44,8 @@ class SymlinkCommandListener
             return;
         }
 
-        (new Filesystem())->mkdir($this->rootDir . '/isotope');
+        (new Filesystem())->mkdir($this->projectDir . '/isotope');
 
-        SymlinkUtil::symlink('isotope', 'web/isotope', $this->rootDir);
+        SymlinkUtil::symlink('isotope', 'web/isotope', $this->projectDir);
     }
 }
