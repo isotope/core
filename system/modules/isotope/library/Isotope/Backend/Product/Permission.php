@@ -178,7 +178,7 @@ class Permission extends \Backend
             $arrProducts = array_merge(
                 $arrProducts,
                 \Database::getInstance()->execute(
-                    "SELECT id FROM tl_iso_product WHERE language='' AND ".\Database::getInstance()->findInSet('pid', $arrProducts)
+                    "SELECT id FROM tl_iso_product WHERE language='' AND pid IN(".implode(',', $arrProducts).")"
                 )->fetchEach('id')
             );
         }
