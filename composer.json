@@ -15,6 +15,12 @@
             "homepage":"https://isotopeecommerce.org"
         }
     ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        }
+    ],
     "support": {
         "issues": "https://github.com/isotope/core/issues",
         "source": "https://github.com/isotope/core",
