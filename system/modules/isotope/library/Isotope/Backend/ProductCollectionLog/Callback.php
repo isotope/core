@@ -28,25 +28,6 @@ use NotificationCenter\Model\Notification;
 class Callback
 {
     /**
-     * On data container load callback
-     */
-    public function onLoadCallback()
-    {
-        // Do not allow access to any view other than edit and create
-        if ('edit' !== Input::get('act') && 'create' !== Input::get('act')) {
-            Controller::redirect(Backend::getReferer());
-        }
-
-        // Remove the "save" button so default action is "save and close"
-        if ('edit' === Input::get('act')) {
-            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("save").remove()</script>';
-            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("saveNcreate").remove()</script>';
-            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("saveNback").remove()</script>';
-            $GLOBALS['TL_MOOTOOLS'][] = '<script>document.getElementById("sbtog").remove()</script>';
-        }
-    }
-
-    /**
      * On data container submit callback
      *
      * @param DataContainer $dc

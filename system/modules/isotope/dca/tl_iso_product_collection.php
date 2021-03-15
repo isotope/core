@@ -30,13 +30,16 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'ctable'                    => array(\Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionLog::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\Address::getTable()),
         'closed'                    => true,
         'notCreatable'              => true,
-        'notEditable'               => true,
         'notCopyable'               => true,
         'notSortable'               => true,
         'notDeletable'              => ('select' === \Input::get('act')),
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
+        ),
+        'onsubmit_callback' => array
+        (
+            array('Isotope\Backend\ProductCollection\Callback', 'onSubmitCallback'),
         ),
         'sql' => array
         (
@@ -67,12 +70,22 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'showColumns'           => true,
             'label_callback'        => array('Isotope\Backend\ProductCollection\Callback', 'getOrderLabel')
         ),
+        'global_operations' => array
+        (
+            'all' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'              => 'act=select',
+                'class'             => 'header_edit_all',
+                'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+            ),
+        ),
         'operations' => array
         (
             'edit' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['edit'],
-                'href'              => 'key=show',
+                'href'              => 'act=edit',
                 'icon'              => 'edit.gif',
             ),
             'delete' => array
@@ -81,6 +94,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+            ),
+            'show' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['show'],
+                'href'              => 'act=show',
+                'icon'              => 'show.gif',
             ),
             'payment' => array
             (
@@ -104,6 +123,18 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             )
         )
     ),
+
+    // Palettes
+    'palettes' => array
+    (
+        '__selector__' => ['sendNotification'],
+        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification;{log_legend},order_log;{details_legend},details;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+    ),
+
+    // Subpalettes
+    'subpalettes' => [
+        'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
+    ],
 
     // Fields
     'fields' => array
@@ -191,24 +222,69 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'filter'                => true,
             'sorting'               => true,
+            'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('storeInLog' => true, 'tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+            'save_callback' => array
+            (
+                array('Isotope\Backend\ProductCollection\Callback', 'updateOrderStatus'),
+            ),
         ),
         'date_paid' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'storeInLog' => true, 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'],
             'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'storeInLog' => true, 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL',
         ),
+        'sendNotification' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
+            'exclude' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['submitOnChange' => true, 'storeInLog' => true, 'tl_class' => 'clr'],
+            'sql' => "char(1) NOT NULL default ''",
+        ],
+        'notification' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification'],
+            'exclude' => true,
+            'inputType' => 'select',
+            'foreignKey' => 'tl_nc_notification.title',
+            'options_callback' => ['Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'],
+            'eval' => ['mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'storeInLog' => true, 'tl_class' => 'clr'],
+            'save_callback' => [
+                function () { return null; }
+            ],
+        ],
+        'notification_shipping_tracking' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
+            'exclude' => true,
+            'inputType' => 'textarea',
+            'eval' => ['doNotSaveEmpty' => true, 'storeInLog' => true, 'tl_class' => 'clr'],
+            'save_callback' => [
+                function () { return null; }
+            ],
+        ],
+        'notification_customer_notes' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
+            'exclude' => true,
+            'inputType' => 'textarea',
+            'eval' => ['doNotSaveEmpty' => true, 'storeInLog' => true, 'tl_class' => 'clr'],
+            'save_callback' => [
+                function () { return null; }
+            ],
+        ],
         'config_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
@@ -248,6 +324,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
+        ),
+        'order_log' => array
+        (
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'onLogInputFieldCallback'),
         ),
         'details' => array
         (
@@ -289,6 +369,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'],
             'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('style'=>'height:80px;', 'storeInLog' => true, 'tl_class' => 'clr'),
             'sql'                   => "text NULL",
         ),
         'email_data' => array

@@ -31,4 +31,22 @@ class ProductCollectionLog extends \Model
      * @var string
      */
     protected static $strTable = 'tl_iso_product_collection_log';
+
+    /**
+     * Get the data.
+     */
+    public function getData()
+    {
+        return $this->data ? json_decode($this->data, true) : [];
+    }
+
+    /**
+     * Set the data.
+     */
+    public function setData(array $data)
+    {
+        $this->data = json_encode($data);
+
+        return $this;
+    }
 }
