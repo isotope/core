@@ -490,7 +490,7 @@ class Callback extends \Backend
         $logs = [];
 
         // Generate log entries
-        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp'])) !== null) {
             $previousLogModel = null;
 
             /** @var ProductCollectionLog $logModel */
@@ -532,7 +532,7 @@ class Callback extends \Backend
                     $fieldConfig = isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]) ? $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] : [];
 
                     // Skip the values that did not change since last log
-                    if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logShowAlways']) || !$fieldConfig['eval']['logShowAlways'])) {
+                    if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
                         $previousLogData = $previousLogModel->getData();
 
                         if ($previousLogData[$field] === $value) {
@@ -554,6 +554,9 @@ class Callback extends \Backend
                 $logs[$logModel->id] = $log;
                 $previousLogModel = $logModel;
             }
+
+            // Only now reverse the order of the logs or otherwise the comparison of data with each previous log won't work properly
+            $logs = array_reverse($logs);
 
             if (isset($GLOBALS['ISO_HOOKS']['generateOrderLog']) && \is_array($GLOBALS['ISO_HOOKS']['generateOrderLog'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateOrderLog'] as $callback) {

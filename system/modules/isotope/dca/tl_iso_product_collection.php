@@ -253,7 +253,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
             'exclude' => true,
             'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'logShowAlways' => true, 'tl_class' => 'clr'],
+            'eval' => ['submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
             'sql' => "char(1) NOT NULL default ''",
         ],
         'notification' => [
@@ -262,7 +262,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType' => 'select',
             'foreignKey' => 'tl_nc_notification.title',
             'options_callback' => ['Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'],
-            'eval' => ['mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'logShowAlways' => true, 'tl_class' => 'clr'],
+            'eval' => ['mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
             'save_callback' => [
                 function () { return null; }
             ],
@@ -271,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
             'exclude' => true,
             'inputType' => 'textarea',
-            'eval' => ['doNotSaveEmpty' => true, 'logShowAlways' => true, 'tl_class' => 'clr'],
+            'eval' => ['doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
             'save_callback' => [
                 function () { return null; }
             ],
@@ -280,7 +280,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
             'exclude' => true,
             'inputType' => 'textarea',
-            'eval' => ['doNotSaveEmpty' => true, 'logShowAlways' => true, 'tl_class' => 'clr'],
+            'eval' => ['doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
             'save_callback' => [
                 function () { return null; }
             ],
