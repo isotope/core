@@ -16,6 +16,7 @@ use Contao\BackendUser;
 use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
 use Isotope\Frontend;
@@ -490,70 +491,64 @@ class Callback extends \Backend
 
         // Generate log entries
         if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
-            $logFields = ['tstamp', 'author'];
-
-            foreach ($GLOBALS['TL_DCA'][$dc->table]['fields'] as $fieldName => $fieldConfig) {
-                if (isset($fieldConfig['eval']['storeInLog']) && $fieldConfig['eval']['storeInLog']) {
-                    $logFields[] = $fieldName;
-                }
-            }
-
-            //foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {
-            //    if (isset($config['eval']['showInOrderView']) && $config['eval']['showInOrderView']) {
-            //        $logFields[] = $name;
-            //    }
-            //}
-
             $previousLogModel = null;
 
             /** @var ProductCollectionLog $logModel */
             foreach ($logModels as $logModel) {
-                $log = [];
+                $log = [
+                    'tstamp' =>[
+                        'label' => Format::dcaLabel($logTable, 'tstamp'),
+                        'value' => $logModel->tstamp ? Format::dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
+                    ],
+                    'author' => [
+                        'label' => Format::dcaLabel($logTable, 'author'),
+                        'value' => $logModel->author ? Format::dcaValue($logTable, 'author', $logModel->author) : '–'
+                    ],
+                ];
+
                 $logData = $logModel->getData();
+                $dependentFields = [];
 
-                foreach ($logFields as $logField) {
+                // Get the dependent fields on others
+                if (isset($GLOBALS['TL_DCA'][$dc->table]['subpalettes']) && is_array($GLOBALS['TL_DCA'][$dc->table]['subpalettes'])) {
+                    foreach ($GLOBALS['TL_DCA'][$dc->table]['subpalettes'] as $k => $v) {
+                        foreach (StringUtil::trimsplit(',', $v) as $vv) {
+                            $dependentFields[$vv] = $k;
+                        }
+                    }
+                }
+
+                foreach ($logData as $field => $value) {
                     // Skip the empty values for the first log
-                    //if (count($logs) === 0 && !$logModel->$logField) {
-                    if (count($logs) === 0 && !$logData[$logField]) {
+                    if (count($logs) === 0 && !$value) {
                         continue;
                     }
 
-                    // Skip the notification fields if no notification was sent
-                    //if (in_array($logField, ['notification', 'notification_shipping_tracking', 'notification_customer_notes'], true) && !$logModel->sendNotification) {
-                    if (in_array($logField, ['notification', 'notification_shipping_tracking', 'notification_customer_notes'], true) && !$logData['sendNotification']) {
+                    // Skip the dependent fields if their parent is not set
+                    if (array_key_exists($field, $dependentFields) && (!isset($logData[$dependentFields[$field]]) || !$logData[$dependentFields[$field]])) {
                         continue;
                     }
+
+                    $fieldConfig = isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]) ? $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] : [];
 
                     // Skip the values that did not change since last log
-                    if ($previousLogModel !== null) {
+                    if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logShowAlways']) || !$fieldConfig['eval']['logShowAlways'])) {
                         $previousLogData = $previousLogModel->getData();
 
-                        if ($previousLogModel !== null && $previousLogData[$logField] === $logData[$logField] && !in_array($logField, ['tstamp', 'author'], true)) {
+                        if ($previousLogData[$field] === $value) {
                             continue;
                         }
                     }
 
-                    // Skip the values that did not change since last log
-                    //if ($previousLogModel !== null && $previousLogModel->$logField === $logModel->$logField && !in_array($logField, ['tstamp', 'author'], true)) {
-                    //    continue;
-                    //}
-
-                    // Special handling for tstamp and author fields
-                    if ($logField === 'tstamp' || $logField === 'author') {
-                        $log[$logField] = [
-                            'label' => Format::dcaLabel($logTable, $logField),
-                            'value' => $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–'
-                        ];
-
-                        continue;
-                    }
-
-                    $log[$logField] = [
-                        //'label' => Format::dcaLabel($logTable, $logField),
-                        //'value' => $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–'
-                        'label' => Format::dcaLabel($dc->table, $logField),
-                        'value' => $logData[$logField] ? Format::dcaValue($dc->table, $logField, $logData[$logField]) : '–'
+                    $log[$field] = [
+                        'label' => Format::dcaLabel($dc->table, $field),
+                        'value' => $value ? Format::dcaValue($dc->table, $field, $value) : '–'
                     ];
+
+                    // Support line breaks for textareas
+                    if (isset($fieldConfig['inputType']) && $fieldConfig['inputType'] === 'textarea' && $value) {
+                        $log[$field]['value'] = nl2br($log[$field]['value']);
+                    }
                 }
 
                 $logs[$logModel->id] = $log;
@@ -623,7 +618,7 @@ class Callback extends \Backend
 
             foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
                 $order->order_status = $from;
-                if (!$order->updateOrderStatus($updates)) {
+                if (!$order->updateOrderStatus($updates, Order::STATUS_UPDATE_SKIP_LOG)) {
                     // Will save the old status set in the line above
                     $order->save();
                 }
@@ -634,7 +629,7 @@ class Callback extends \Backend
 
         // Collect the log data
         foreach ($GLOBALS['TL_DCA'][$dc->table]['fields'] as $fieldName => $fieldConfig) {
-            if (isset($fieldConfig['eval']['storeInLog']) && $fieldConfig['eval']['storeInLog']) {
+            if (isset($fieldConfig['inputType'])) {
                 if (isset($fieldConfig['eval']['doNotSaveEmpty']) && $fieldConfig['eval']['doNotSaveEmpty'] && !$dc->activeRecord->$fieldName) {
                     $logData[$fieldName] = \Input::post($fieldName);
                 } else {
@@ -647,11 +642,8 @@ class Callback extends \Backend
         $log->pid = $order->id;
         $log->tstamp = time();
         $log->author = BackendUser::getInstance()->id;
-        $log->data = json_encode($logData);
-        $log->order_status = $dc->activeRecord->order_status;
-        $log->date_paid = $dc->activeRecord->date_paid;
-        $log->date_shipped = $dc->activeRecord->date_shipped;
-        $log->notes = $dc->activeRecord->notes;
+        $log->setData($logData);
+        $log->save();
 
         $blnNotificationError = null;
 
@@ -659,11 +651,6 @@ class Callback extends \Backend
         if ($dc->activeRecord->sendNotification && \Input::post('notification') && ($objNotification = Notification::findByPk(\Input::post('notification'))) !== null) {
             $objOldStatus = OrderStatus::findByPk($order->order_status);
             $objNewStatus = OrderStatus::findByPk($dc->activeRecord->order_status);
-
-            $log->sendNotification = 1;
-            $log->notification = \Input::post('notification');
-            $log->notification_shipping_tracking = \Input::post('notification_shipping_tracking');
-            $log->notification_customer_notes = \Input::post('notification_customer_notes');
 
             $tokens = $order->getNotificationTokens($objNotification->id);
 
@@ -691,9 +678,6 @@ class Callback extends \Backend
             // Reset the sendNotification field
             \Database::getInstance()->query("UPDATE {$dc->table} SET sendNotification=''");
         }
-
-        // Only now save the log
-        $log->save();
 
         if ('BE' === TL_MODE) {
             \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);

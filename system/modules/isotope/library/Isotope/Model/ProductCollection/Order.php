@@ -373,9 +373,11 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $log = new ProductCollectionLog();
             $log->pid = $this->id;
             $log->tstamp = time();
-            $log->order_status = $this->order_status;
-            $log->date_paid = $this->date_paid;
-            $log->date_shipped = $this->date_shipped;
+            $log->setData([
+                'order_status' => $this->order_status,
+                'date_paid' => $this->date_paid,
+                'date_shipped' => $this->date_shipped,
+            ]);
             $log->save();
         }
 
