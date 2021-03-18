@@ -128,13 +128,22 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     'palettes' => array
     (
         '__selector__' => ['sendNotification'],
-        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification;{log_legend},order_log;{details_legend},details;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ),
 
     // Subpalettes
-    'subpalettes' => [
+    'subpalettes' => array
+    (
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
-    ],
+    ),
+
+    'edit' => array
+    (
+        'buttons_callback' => array
+        (
+            function () { return []; }
+        )
+    ),
 
     // Fields
     'fields' => array
@@ -238,7 +247,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard'),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
@@ -249,42 +258,53 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL',
         ),
-        'sendNotification' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
-            'exclude' => true,
-            'inputType' => 'checkbox',
-            'eval' => ['submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
-            'sql' => "char(1) NOT NULL default ''",
-        ],
-        'notification' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification'],
-            'exclude' => true,
-            'inputType' => 'select',
-            'foreignKey' => 'tl_nc_notification.title',
-            'options_callback' => ['Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'],
-            'eval' => ['mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
-            'save_callback' => [
-                function () { return null; }
-            ],
-        ],
-        'notification_shipping_tracking' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
-            'exclude' => true,
-            'inputType' => 'textarea',
-            'eval' => ['doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
-            'save_callback' => [
-                function () { return null; }
-            ],
-        ],
-        'notification_customer_notes' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
-            'exclude' => true,
-            'inputType' => 'textarea',
-            'eval' => ['doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'],
-            'save_callback' => [
-                function () { return null; }
-            ],
-        ],
+        'sendNotification' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'notification' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'            => 'tl_nc_notification.title',
+            'options_callback'      => array('Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'),
+            'eval'                  => array('mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'save_callback'         => array(function () { return null; }),
+        ),
+        'notification_shipping_tracking' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
+            'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'save_callback'         => array(function () { return null; }),
+        ),
+        'notification_customer_notes' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
+            'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'save_callback'         => array(function () { return null; }),
+        ),
+        'submit_buttons' => array
+        (
+            'input_field_callback' => function () {
+                return '
+<div class="tl_formbody_submit" style="margin-top:20px">
+<div class="tl_submit_container">
+  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">Speichern</button> <button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">Speichern und schließen</button>
+</div>
+</div>
+                ';
+            },
+            'eval'                  => array('doNotShow'=>true),
+        ),
         'config_id' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
@@ -328,6 +348,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'order_log' => array
         (
             'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'onLogInputFieldCallback'),
+            'eval'                  => array('doNotShow'=>true),
         ),
         'details' => array
         (
