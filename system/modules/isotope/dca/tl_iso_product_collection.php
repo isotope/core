@@ -294,15 +294,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'submit_buttons' => array
         (
-            'input_field_callback' => function () {
-                return '
-<div class="tl_formbody_submit" style="margin-top:20px">
-<div class="tl_submit_container">
-  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">Speichern</button> <button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">Speichern und schließen</button>
-</div>
-</div>
-                ';
-            },
+            'input_field_callback' => array('Isotope\Backend\ProductCollection\Callback', 'onSubmitButtonsInputFieldCallback'),
             'eval'                  => array('doNotShow'=>true),
         ),
         'config_id' => array

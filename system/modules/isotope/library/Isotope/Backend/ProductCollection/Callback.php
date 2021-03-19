@@ -466,6 +466,21 @@ class Callback extends \Backend
     }
 
     /**
+     * On submit buttons input field callback.
+     */
+    public function onSubmitButtonsInputFieldCallback()
+    {
+        return '<div class="tl_formbody_submit" style="margin-top:20px">
+<div class="tl_submit_container">
+  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['save'] . '</button>
+  <button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>
+</div>
+</div>
+<style>.tl_edit_form > .tl_formbody_submit { display: none } #pal_status_legend { padding-bottom: 0 }</style>
+';
+    }
+
+    /**
      * Generate the "show" action
      *
      * @param DataContainer $dc
