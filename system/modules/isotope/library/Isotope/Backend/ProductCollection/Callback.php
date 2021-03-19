@@ -511,15 +511,19 @@ class Callback extends \Backend
             /** @var ProductCollectionLog $logModel */
             foreach ($logModels as $logModel) {
                 $log = [
-                    'tstamp' =>[
+                    'tstamp' => [
                         'label' => Format::dcaLabel($logTable, 'tstamp'),
                         'value' => $logModel->tstamp ? Format::dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
                     ],
-                    'author' => [
+                ];
+
+                // Add author only if it has a value (order can be updated automatically in frontend)
+                if ($logModel->author) {
+                    $log['author'] = [
                         'label' => Format::dcaLabel($logTable, 'author'),
                         'value' => $logModel->author ? Format::dcaValue($logTable, 'author', $logModel->author) : '–'
-                    ],
-                ];
+                    ];
+                }
 
                 $logData = $logModel->getData();
                 $dependentFields = [];
@@ -541,6 +545,11 @@ class Callback extends \Backend
 
                     // Skip the dependent fields if their parent is not set
                     if (array_key_exists($field, $dependentFields) && (!isset($logData[$dependentFields[$field]]) || !$logData[$dependentFields[$field]])) {
+                        continue;
+                    }
+
+                    // Skip if the field is a dependency but does not have a value
+                    if (in_array($field, $dependentFields, true) && !$value) {
                         continue;
                     }
 
@@ -578,6 +587,11 @@ class Callback extends \Backend
                     \System::importStatic($callback[0])->{$callback[1]}($order, $logs);
                 }
             }
+
+            // Filter out the log entries that contain only tstamp and author
+            $logs = array_filter($logs, function (array $entry) {
+                return array_keys($entry) !== ['tstamp', 'author'];
+            });
         }
 
         $template = new BackendTemplate('be_iso_order_log');
