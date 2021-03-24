@@ -595,7 +595,7 @@ class Callback extends \Backend
         }
 
         $template = new BackendTemplate('be_iso_order_log');
-        $template->logs = $logs;
+        $template->logs = array_values($logs);
 
         return $template->parse();
     }
