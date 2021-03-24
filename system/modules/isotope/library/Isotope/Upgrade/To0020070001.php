@@ -21,7 +21,7 @@ namespace Isotope\Upgrade;
 
 use Contao\Database;
 
-class To0020080000 extends Base
+class To0020070001 extends Base
 {
     public function run($blnInstalled)
     {
