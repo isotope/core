@@ -476,8 +476,44 @@ class Callback extends \Backend
   <button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>
 </div>
 </div>
-<style>.tl_edit_form > .tl_formbody_submit { display: none } #pal_status_legend { padding-bottom: 0 }</style>
-';
+<style>
+.tl_edit_form > .tl_formbody_submit { display: none }
+#pal_status_legend { margin-top:0; padding-bottom:0; border-bottom:0 }
+#pal_status_legend:not(.collapsed) {
+    border-bottom: 1px solid #d0d0d2
+}
+
+#pal_status_legend:not(.collapsed) .tl_formbody_submit {
+    padding: 0 1px;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-bottom: 50px solid #eaeaec;
+}
+
+#pal_status_legend:not(.collapsed) .tl_submit_container {
+    border-bottom: 1px solid #d0d0d2
+}
+</style>
+'."<script>
+(function () {
+    var legend = document.getElementById('pal_status_legend');
+    var buttons = document.getElementById('tl_buttons');
+
+    legend.classList.add('collapsed')
+    var buttonHtml = buttons.innerHTML;
+
+    window.editOrder = function () {
+        legend.classList.remove('collapsed');
+        buttons.innerHTML = buttonHtml;
+
+        return false;
+    }
+
+    buttons.innerHTML = buttons.innerHTML + '<a href=\"#\" onclick=\"return editOrder()\" class=\"header_new\" title=\"\">'+legend.children[0].innerHTML+'</a>';
+    legend.removeChild(legend.children[0])
+})()
+</script>
+";
     }
 
     /**
