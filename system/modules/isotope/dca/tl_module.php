@@ -685,7 +685,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = array
     'exclude'                   => true,
     'inputType'                 => 'select',
     'options_callback'          => array('NotificationCenter\tl_module', 'getNotificationChoices'),
-    'eval'                      => array('multiple'=>true, 'csv'=>',', 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+    'eval'                      => array('multiple'=>true, 'csv'=>',', 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
     'sql'                       => "varchar(255) NOT NULL default ''",
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_nc_notification'),
 );
