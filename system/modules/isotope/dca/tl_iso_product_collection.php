@@ -36,10 +36,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
-        ),
-        'onsubmit_callback' => array
-        (
-            array('Isotope\Backend\ProductCollection\Callback', 'onSubmitCallback'),
+            array('Isotope\Backend\ProductCollection\Callback', 'prepareOrderLog'),
         ),
         'sql' => array
         (
@@ -137,14 +134,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
     ),
 
-    'edit' => array
-    (
-        'buttons_callback' => array
-        (
-            function () { return []; }
-        )
-    ),
-
     // Fields
     'fields' => array
     (
@@ -237,10 +226,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
-            'save_callback' => array
-            (
-                array('Isotope\Backend\ProductCollection\Callback', 'updateOrderStatus'),
-            ),
         ),
         'date_paid' => array
         (
@@ -273,24 +258,21 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_nc_notification.title',
             'options_callback'      => array('Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'),
-            'eval'                  => array('mandatory' => true, 'doNotSaveEmpty' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
-            'save_callback'         => array(function () { return null; }),
+            'eval'                  => array('mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
         ),
         'notification_shipping_tracking' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
-            'save_callback'         => array(function () { return null; }),
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
         ),
         'notification_customer_notes' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('doNotSaveEmpty' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
-            'save_callback'         => array(function () { return null; }),
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
         ),
         'submit_buttons' => array
         (

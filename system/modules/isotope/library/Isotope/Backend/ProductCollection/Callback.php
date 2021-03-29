@@ -636,36 +636,41 @@ class Callback extends \Backend
         return $template->parse();
     }
 
-    /**
-     * Trigger order status update when changing the status in the backend
-     *
-     * @param   string
-     * @param   DataContainer
-     *
-     * @return  string
-     * @link    http://www.contao.org/callbacks.html#save_callback
-     */
-    public function updateOrderStatus($varValue, $dc)
+    public function prepareOrderLog(DataContainer $dc)
     {
-        $GLOBALS['ISO_ORDER_STATUS'] = false;
+        $GLOBALS['ISO_ORDER_LOG'] = [];
 
-        if ($dc->activeRecord && $dc->activeRecord->order_status != $varValue) {
-            $GLOBALS['ISO_ORDER_STATUS'] = array($dc->activeRecord->order_status => $varValue);
+        $GLOBALS['TL_DCA']['tl_iso_product_collection']['config']['onsubmit_callback'][] = function (DataContainer $dc) {
+            $this->writeOrderLog($dc);
+        };
+
+        if ('edit' === \Input::get('act')) {
+            $GLOBALS['TL_DCA']['tl_iso_product_collection']['edit']['buttons_callback'][] = static function () { return []; };
         }
 
-        return $varValue;
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $k => &$v) {
+            $v['eval']['doNotSaveEmpty'] = true;
+            $v['save_callback'][] = static function ($value, DataContainer $dc) use ($v) {
+                $GLOBALS['ISO_ORDER_LOG'][$dc->field] = $value;
+
+                return null;
+            };
+        }
     }
 
     /**
      * On data container submit callback.
      */
-    public function onSubmitCallback($dc)
+    public function writeOrderLog($dc)
     {
-        if (($order = Order::findByPk($dc->id)) === null) {
+        if (empty($GLOBALS['ISO_ORDER_LOG']) || ($order = Order::findByPk($dc->id)) === null) {
             return;
         }
 
         $order->refresh();
+        $oldOrderStatus = $order->order_status;
+        $logData = $GLOBALS['ISO_ORDER_LOG'];
+        $GLOBALS['ISO_ORDER_LOG'] = [];
 
         if ('BE' === TL_MODE) {
             if ($order->pageId == 0) {
@@ -675,35 +680,37 @@ class Callback extends \Backend
             Frontend::loadOrderEnvironment($order);
         }
 
-        // Status update has been cancelled, do not update
-        if (false !== $GLOBALS['ISO_ORDER_STATUS']) {
-            $updates = [
-                'order_status' => $dc->activeRecord->order_status,
-                'date_paid' => $dc->activeRecord->date_paid,
-                'date_shipped' => $dc->activeRecord->date_shipped,
-                'notes' => $dc->activeRecord->notes,
-            ];
-
-            foreach ($GLOBALS['ISO_ORDER_STATUS'] as $from => $to) {
-                $order->order_status = $from;
-                if (!$order->updateOrderStatus($updates, Order::STATUS_UPDATE_SKIP_LOG)) {
-                    // Will save the old status set in the line above
-                    $order->save();
+        $update = [];
+        foreach ($logData as $k => $v) {
+            if (isset($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['sql'])
+                && !$GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['eval']['logAlwaysVisible']
+            ) {
+                if ($order->{$k} != $v) {
+                    $update[$k] = $v;
+                } else {
+                    unset($logData[$k]);
                 }
+            }
+
+            if (!isset($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['sql']) && !$v) {
+                unset($logData[$k]);
             }
         }
+        $update['sendNotification'] = '';
 
-        $logData = [];
+        if (empty($logData)) {
+            return;
+        }
 
-        // Collect the log data
-        foreach ($GLOBALS['TL_DCA'][$dc->table]['fields'] as $fieldName => $fieldConfig) {
-            if (isset($fieldConfig['inputType'])) {
-                if (isset($fieldConfig['eval']['doNotSaveEmpty']) && $fieldConfig['eval']['doNotSaveEmpty'] && !$dc->activeRecord->$fieldName) {
-                    $logData[$fieldName] = \Input::post($fieldName);
-                } else {
-                    $logData[$fieldName] = $dc->activeRecord->$fieldName;
-                }
+        if (isset($GLOBALS['ISO_ORDER_STATUS']['order_status'])) {
+            if (!$order->updateOrderStatus($update, Order::STATUS_UPDATE_SKIP_LOG)) {
+                return;
             }
+        } else {
+            foreach ($update as $k => $v) {
+                $order->{$k} = $v;
+            }
+            $order->save();
         }
 
         $log = new ProductCollectionLog();
@@ -716,9 +723,9 @@ class Callback extends \Backend
         $blnNotificationError = null;
 
         // Send a notification
-        if ($dc->activeRecord->sendNotification && \Input::post('notification') && ($objNotification = Notification::findByPk(\Input::post('notification'))) !== null) {
-            $objOldStatus = OrderStatus::findByPk($order->order_status);
-            $objNewStatus = OrderStatus::findByPk($dc->activeRecord->order_status);
+        if ($logData['sendNotification'] && $logData['notification'] && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
+            $objOldStatus = OrderStatus::findByPk($oldOrderStatus);
+            $objNewStatus = OrderStatus::findByPk($order->order_status);
 
             $tokens = $order->getNotificationTokens($objNotification->id);
 
@@ -726,8 +733,8 @@ class Callback extends \Backend
             $tokens['order_status'] = $objNewStatus->getName();
             $tokens['order_status_id_old'] = $objOldStatus->id;
             $tokens['order_status_old'] = $objOldStatus->getName();
-            $tokens['order_status_tracking_numbers'] = str_replace("\n", '<br>', trim(\Input::post('notification_shipping_tracking')));
-            $tokens['order_status_notes'] = str_replace("\n", '<br>', trim(\Input::post('notification_customer_notes')));
+            $tokens['order_status_tracking_numbers'] = str_replace("\n", '<br>', trim($logData['notification_shipping_tracking']));
+            $tokens['order_status_notes'] = str_replace("\n", '<br>', trim($logData['notification_customer_notes']));
 
             /** @var Notification $objNotification */
             $arrResult = $objNotification->send($tokens, $order->language);
@@ -742,9 +749,6 @@ class Callback extends \Backend
             } elseif (\count($arrResult) > 0) {
                 $blnNotificationError = false;
             }
-
-            // Reset the sendNotification field
-            \Database::getInstance()->query("UPDATE {$dc->table} SET sendNotification=''");
         }
 
         if ('BE' === TL_MODE) {
@@ -756,25 +760,6 @@ class Callback extends \Backend
                 \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
             }
         }
-
-        // !HOOK: add additional functionality when saving collection
-        if (isset($GLOBALS['ISO_HOOKS']['saveCollection']) && \is_array($GLOBALS['ISO_HOOKS']['saveCollection'])) {
-            foreach ($GLOBALS['ISO_HOOKS']['saveCollection'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($order, $log);
-            }
-        }
-    }
-
-    /**
-     * Execute the saveCollection hook when a collection is saved
-     * @param   object
-     * @return  void
-     * @deprecated
-     */
-    public function executeSaveHook($dc)
-    {
-        trigger_deprecation('isotope/core', '2.7', 'Using this method will no longer work in Isotope 3.0. Use the onSubmitCallback method instead.', E_USER_DEPRECATED);
-        $this->onSubmitCallback($dc);
     }
 
     /**
