@@ -494,26 +494,7 @@ class Callback extends \Backend
     border-bottom: 1px solid #d0d0d2
 }
 </style>
-'."<script>
-(function () {
-    var legend = document.getElementById('pal_status_legend');
-    var buttons = document.getElementById('tl_buttons');
-
-    legend.classList.add('collapsed')
-    var buttonHtml = buttons.innerHTML;
-
-    window.editOrder = function () {
-        legend.classList.remove('collapsed');
-        buttons.innerHTML = buttonHtml;
-
-        return false;
-    }
-
-    buttons.innerHTML = buttons.innerHTML + '<a href=\"#\" onclick=\"return editOrder()\" class=\"header_new\" title=\"\">'+legend.children[0].innerHTML+'</a>';
-    legend.removeChild(legend.children[0])
-})()
-</script>
-";
+';
     }
 
     /**
@@ -681,19 +662,10 @@ class Callback extends \Backend
         }
 
         $update = [];
+        $tableFields = Database::getInstance()->getFieldNames('tl_iso_product_collection');
         foreach ($logData as $k => $v) {
-            if (isset($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['sql'])
-                && !$GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['eval']['logAlwaysVisible']
-            ) {
-                if ($order->{$k} != $v) {
-                    $update[$k] = $v;
-                } else {
-                    unset($logData[$k]);
-                }
-            }
-
-            if (!isset($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'][$k]['sql']) && !$v) {
-                unset($logData[$k]);
+            if (\in_array($k, $tableFields, true)) {
+                $update[$k] = $v;
             }
         }
         $update['sendNotification'] = '';
@@ -702,7 +674,7 @@ class Callback extends \Backend
             return;
         }
 
-        if (isset($GLOBALS['ISO_ORDER_STATUS']['order_status'])) {
+        if (isset($update['order_status']) && $update['order_status'] != $oldOrderStatus) {
             if (!$order->updateOrderStatus($update, Order::STATUS_UPDATE_SKIP_LOG)) {
                 return;
             }

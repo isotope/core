@@ -168,7 +168,7 @@
         <source>No order logs are available.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
-        <source>Update order status</source>
+        <source>Order status</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.log_legend">
         <source>Order log</source>
