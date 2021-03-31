@@ -38,6 +38,7 @@ class OrderConditionFields extends \Backend
                 'inputType' => 'select',
                 'options_callback' => ['Isotope\Backend\Module\OrderConditionFields', 'getSteps'],
                 'eval' => [
+                    'decodeEntities' => true,
                     'includeBlankOption' => true,
                     'style' => 'width:300px',
                     'columnPos' => 'checkout',
