@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
@@ -47,7 +48,16 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
+        if ('BE' === TL_MODE) {
+            return $this->generateWildcard();
+        }
+
         if ('FE' === TL_MODE && 0 === \count($this->iso_rangeFields)) {
+            return '';
+        }
+
+        // Hide product list in reader mode if the respective setting is enabled
+        if ($this->iso_hide_list && Input::getAutoItem('product', false, true) != '') {
             return '';
         }
 
