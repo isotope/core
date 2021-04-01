@@ -107,12 +107,6 @@
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.0">
-        <source>Order details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.1">
-        <source>Show details of order ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
       </trans-unit>
