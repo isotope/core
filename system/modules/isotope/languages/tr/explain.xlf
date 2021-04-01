@@ -53,6 +53,9 @@ Site yapısındaki her liste sayfası için bir okuyucu sayfası ayarlayın (ür
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+        <target>
+            Ürünler için hangi ürün kategorilerinin (sayfalarının) dikkate alınması gerektiğini seçin.&lt;br&gt;&lt;br&gt;&lt;u&gt;Bu bir ürün listesi modülü ise ve bir kategori filtre modülü yapılandırdıysanız, kategori filtre seçimi bu yapılandırmayı geçersiz kılacaktır!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
+        </target>
       </trans-unit>
     </body>
   </file>

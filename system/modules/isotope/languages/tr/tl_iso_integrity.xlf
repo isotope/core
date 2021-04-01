@@ -63,12 +63,15 @@
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.0">
         <source>Multilingual Attributes</source>
+        <target>Çok Dilli Nitelikler</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.1">
         <source>%s invalid multilingual attributes were found.&lt;br&gt;Attributes: %s.</source>
+        <target>%s geçersiz çok dilli öznitelik bulundu.&lt;br&gt;Öznitellikler: %s.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.multilingualattributes.2">
         <source>There are no invalid multilingual attributes in your database.</source>
+        <target>Veritabanınızda geçersiz çok dilli öznitelik yok.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.unusedrules.0">
         <source>Rules module</source>

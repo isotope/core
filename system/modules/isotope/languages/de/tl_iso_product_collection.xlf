@@ -49,6 +49,38 @@
         <source>Enter a date when this order has been shipped.</source>
         <target>Geben Sie an wann (Datum) diese Bestellung versandt wurde.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.0">
+        <source>Send a notification</source>
+        <target>Benachrichtigung senden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.1">
+        <source>Send an extra notification when saving this record.</source>
+        <target>Eine zusätzliche Benachrichtigung senden, wenn die Bestellung gespeichert wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.0">
+        <source>Notification</source>
+        <target>Benachrichtigung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.1">
+        <source>Choose a notification that will be sent when saving this record.</source>
+        <target>Wähle ein Bestellung welche gesendet werden soll, wenn die Bestellung gespeichert wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.0">
+        <source>Tracking numbers</source>
+        <target>Sendungsnummern</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
+        <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; simple token in the notification.</source>
+        <target>Gib hier zusätzliche Versandinformatinoen ein. Mit dem Simple Token  &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; kannst du diese dann in der Benachrichtigung ausgeben.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
+        <source>Customer notes</source>
+        <target>Nachricht an den Kunden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.1">
+        <source>Here you can enter a message to the customer for this status update. Use the &lt;em&gt;##order_status_notes##&lt;/em&gt; simple token in the notification.</source>
+        <target>Hiermit kann eine personalisierter Text gesendet werden. Mit dem Simple Token &lt;em&gt;##order_status_notes##&lt;/em&gt; kannst du dies in der Benachrichtigung ausgeben.</target>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.config_id.0">
         <source>Shop configuration</source>
         <target>Shop-Konfiguration</target>
@@ -108,14 +140,6 @@
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
         <target>Bestellung ID %s bearbeiten</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.0">
-        <source>Order details</source>
-        <target>Bestelldetails</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.1">
-        <source>Show details of order ID %s</source>
-        <target>Details der Bestellung ID %s anzeigen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
@@ -192,6 +216,10 @@
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>
         <target>Bestellstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.log_legend">
+        <source>Order log</source>
+        <target>Änderungs-Historie</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.details_legend">
         <source>Order details</source>
