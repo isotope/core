@@ -1,8 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.7.1 (2021-04-01)
+--------------------------
+
+- Rewrite the order log feature to allow "edit multiple" and custom views in orders (#2207)
+- Fixed compatibility with Contao 4.11/Symfony 5 (#2198)
+- Performance optimization in the backend product list (#2206)
+- Fixed configuring checkout step forms (#2194)
+- Fixed hiding the range filter in product detail view (#2192)
+- Fixed generating order checkout forms if none is configured (#2205)
+- Fixed labels for the new checkout tokens (#2208)
+
+
 Version 2.7.0 (2021-02-15)
----------------------------------
+--------------------------
 
 - Added product collection change log and status notifications
 - Added SwissBilling payment method
