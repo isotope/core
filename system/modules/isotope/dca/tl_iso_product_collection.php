@@ -30,13 +30,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'ctable'                    => array(\Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionLog::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\Address::getTable()),
         'closed'                    => true,
         'notCreatable'              => true,
-        'notEditable'               => true,
         'notCopyable'               => true,
         'notSortable'               => true,
         'notDeletable'              => ('select' === \Input::get('act')),
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
+            array('Isotope\Backend\ProductCollection\Callback', 'prepareOrderLog'),
         ),
         'sql' => array
         (
@@ -67,12 +67,22 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'showColumns'           => true,
             'label_callback'        => array('Isotope\Backend\ProductCollection\Callback', 'getOrderLabel')
         ),
+        'global_operations' => array
+        (
+            'all' => array
+            (
+                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href'              => 'act=select',
+                'class'             => 'header_edit_all',
+                'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
+            ),
+        ),
         'operations' => array
         (
             'edit' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['edit'],
-                'href'              => 'key=show',
+                'href'              => 'act=edit',
                 'icon'              => 'edit.gif',
             ),
             'delete' => array
@@ -103,6 +113,19 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
                 'icon'              => 'system/modules/isotope/assets/images/document-pdf-text.png'
             )
         )
+    ),
+
+    // Palettes
+    'palettes' => array
+    (
+        '__selector__' => ['sendNotification'],
+        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+    ),
+
+    // Subpalettes
+    'subpalettes' => array
+    (
+        'sendNotification' => 'notification,notification_shipping_tracking,notification_customer_notes',
     ),
 
     // Fields
@@ -191,6 +214,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'exclude'               => true,
             'filter'                => true,
             'sorting'               => true,
+            'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
             'eval'                  => array('tl_class'=>'w50'),
@@ -201,13 +225,53 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard'),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'],
             'exclude'               => true,
+            'inputType'             => 'text',
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL',
+        ),
+        'sendNotification' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'notification' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification'],
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'foreignKey'            => 'tl_nc_notification.title',
+            'options_callback'      => array('Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'),
+            'eval'                  => array('mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+        ),
+        'notification_shipping_tracking' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
+            'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
+        ),
+        'notification_customer_notes' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
+            'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
+        ),
+        'submit_buttons' => array
+        (
+            'input_field_callback' => array('Isotope\Backend\ProductCollection\Callback', 'onSubmitButtonsInputFieldCallback'),
+            'eval'                  => array('doNotShow'=>true),
         ),
         'config_id' => array
         (
@@ -249,6 +313,11 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
+        'order_log' => array
+        (
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'onLogInputFieldCallback'),
+            'eval'                  => array('doNotShow'=>true),
+        ),
         'details' => array
         (
             'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateOrderDetails'),
@@ -289,6 +358,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'],
             'exclude'               => true,
+            'inputType'             => 'textarea',
+            'eval'                  => array('style'=>'height:80px;', 'tl_class' => 'clr'),
             'sql'                   => "text NULL",
         ),
         'email_data' => array

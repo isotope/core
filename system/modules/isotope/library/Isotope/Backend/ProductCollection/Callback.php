@@ -11,23 +11,23 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\Environment;
-use Contao\Session;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
 use Isotope\Frontend;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
+use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
 use Isotope\Module\OrderDetails;
+use NotificationCenter\Model\Notification;
 
 
 class Callback extends \Backend
@@ -308,107 +308,6 @@ class Callback extends \Backend
     }
 
     /**
-     * Generate the "show" action
-     *
-     * @param DataContainer $dc
-     *
-     * @return string
-     */
-    public function showAction(DataContainer $dc)
-    {
-        if (($order = Order::findByPk($dc->id)) === null) {
-            Backend::redirect('contao/main.php?act=error');
-        }
-
-        $logTable = ProductCollectionLog::getTable();
-
-        // Load the logs data container
-        System::loadLanguageFile($logTable);
-        Controller::loadDataContainer($logTable);
-
-        // Purge obsolete records
-        Database::getInstance()->prepare("DELETE FROM $logTable WHERE tstamp=? AND pid=?")->execute(0, $dc->id);
-
-        // Fix the back button in log create view
-        $session = Session::getInstance()->get('referer');
-        $session[\Input::get('ref')]['current'] = Environment::get('requestUri');
-        $session[\Input::get('ref')][$logTable] = Environment::get('requestUri');
-        Session::getInstance()->set('referer', $session);
-
-        // Revise current record
-        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC', 'limit' => 2])) !== null && $logModels->count() === 2) {
-            $currentLogModel = $logModels->first();
-            $currentLogData = array_diff_key($currentLogModel->row(), array_flip(['id', 'tstamp', 'author']));
-            $previousLogData = array_diff_key($logModels->last()->row(), array_flip(['id', 'tstamp', 'author']));
-
-            if (count(array_diff($currentLogData, $previousLogData)) === 0) {
-                $currentLogModel->delete();
-            }
-        }
-
-        $template = new BackendTemplate('be_iso_order_show');
-        $template->table = $dc->table;
-        $template->fieldsets = Session::getInstance()->get('fieldset_states')[$dc->table];
-        $template->id = $order->getId();
-        $template->backUrl = 'contao/main.php?do=iso_orders&ref=' . \Input::get('ref');
-        $template->uniqid = $order->getUniqueId();
-        $template->orderDetails = $this->generateOrderDetails($dc);
-        $template->emailDetails = $this->generateEmailData($dc);
-        $template->billingAddressDetails = $this->generateBillingAddressData($dc);
-        $template->shippingAddressDetails = $this->generateShippingAddressData($dc);
-
-        if (BackendUser::getInstance()->canEditFieldsOf('tl_iso_product_collection_log')) {
-            $template->createLogUrl = 'contao/main.php?do=iso_orders&table=' . $logTable . '&act=create&mode=2&pid=' . $dc->id . '&rt=' . REQUEST_TOKEN . '&ref=' . \Input::get('ref');
-        }
-
-        $logs = [];
-
-        // Generate log entries
-        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp DESC'])) !== null) {
-            $logFields = [];
-
-            foreach ($GLOBALS['TL_DCA'][$logTable]['fields'] as $name => $config) {
-                if (isset($config['eval']['showInOrderView']) && $config['eval']['showInOrderView']) {
-                    $logFields[] = $name;
-                }
-            }
-
-            $previousLogModel = null;
-
-            /** @var ProductCollectionLog $logModel */
-            foreach ($logModels as $logModel) {
-                $log = [];
-
-                foreach ($logFields as $logField) {
-                    // Skip the empty values for the first log
-                    if (count($logs) === 0 && !$logModel->$logField) {
-                        continue;
-                    }
-
-                    // Skip the notification fields if no notification was sent
-                    if (in_array($logField, ['notification', 'notification_shipping_tracking', 'notification_customer_notes'], true) && !$logModel->sendNotification) {
-                        continue;
-                    }
-
-                    // Skip the values that did not change since last log
-                    if ($previousLogModel !== null && $previousLogModel->$logField === $logModel->$logField && !in_array($logField, ['date', 'author'], true)) {
-                        continue;
-                    }
-
-                    $log[Format::dcaLabel($logTable, $logField)] = $logModel->$logField ? Format::dcaValue($logTable, $logField, $logModel->$logField) : '–';
-                }
-
-                $logs[] = $log;
-                $previousLogModel = $logModel;
-            }
-        }
-
-        $template->logs = $logs;
-
-        return $template->parse();
-    }
-
-    /**
      * Return the payment button if a payment method is available
      *
      * @param array  $row
@@ -564,5 +463,290 @@ class Callback extends \Backend
 
 </div>
 </form>';
+    }
+
+    /**
+     * On submit buttons input field callback.
+     */
+    public function onSubmitButtonsInputFieldCallback()
+    {
+        return '<div class="tl_formbody_submit" style="margin-top:20px">
+<div class="tl_submit_container">
+  <button type="submit" name="save" id="save" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['save'] . '</button>
+  <button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>
+</div>
+</div>
+<style>
+.tl_edit_form > .tl_formbody_submit { display: none }
+#pal_status_legend { margin-top:0; padding-bottom:0; border-bottom:0 }
+#pal_status_legend:not(.collapsed) {
+    border-bottom: 1px solid #d0d0d2
+}
+
+#pal_status_legend:not(.collapsed) .tl_formbody_submit {
+    padding: 0 1px;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-bottom: 50px solid #eaeaec;
+}
+
+#pal_status_legend:not(.collapsed) .tl_submit_container {
+    border-bottom: 1px solid #d0d0d2
+}
+</style>
+';
+    }
+
+    /**
+     * Generate the "show" action
+     *
+     * @param DataContainer $dc
+     *
+     * @return string
+     */
+    public function onLogInputFieldCallback(DataContainer $dc)
+    {
+        if (($order = Order::findByPk($dc->id)) === null) {
+            return '';
+        }
+
+        $logTable = ProductCollectionLog::getTable();
+
+        // Load the logs data container
+        System::loadLanguageFile($logTable);
+        Controller::loadDataContainer($logTable);
+
+        // Purge obsolete records
+        Database::getInstance()->prepare("DELETE FROM $logTable WHERE tstamp=? AND pid=?")->execute(0, $dc->id);
+
+        $logs = [];
+
+        // Generate log entries
+        if (($logModels = ProductCollectionLog::findBy('pid', $dc->id, ['order' => 'tstamp'])) !== null) {
+            $previousLogModel = null;
+
+            /** @var ProductCollectionLog $logModel */
+            foreach ($logModels as $logModel) {
+                $log = [
+                    'tstamp' => [
+                        'label' => Format::dcaLabel($logTable, 'tstamp'),
+                        'value' => $logModel->tstamp ? Format::dcaValue($logTable, 'tstamp', $logModel->tstamp) : '–'
+                    ],
+                ];
+
+                // Add author only if it has a value (order can be updated automatically in frontend)
+                if ($logModel->author) {
+                    $log['author'] = [
+                        'label' => Format::dcaLabel($logTable, 'author'),
+                        'value' => $logModel->author ? Format::dcaValue($logTable, 'author', $logModel->author) : '–'
+                    ];
+                }
+
+                $logData = $logModel->getData();
+                $dependentFields = [];
+
+                // Get the dependent fields on others
+                if (isset($GLOBALS['TL_DCA'][$dc->table]['subpalettes']) && is_array($GLOBALS['TL_DCA'][$dc->table]['subpalettes'])) {
+                    foreach ($GLOBALS['TL_DCA'][$dc->table]['subpalettes'] as $k => $v) {
+                        foreach (StringUtil::trimsplit(',', $v) as $vv) {
+                            $dependentFields[$vv] = $k;
+                        }
+                    }
+                }
+
+                foreach ($logData as $field => $value) {
+                    // Skip the empty values for the first log
+                    if (count($logs) === 0 && !$value) {
+                        continue;
+                    }
+
+                    // Skip the dependent fields if their parent is not set
+                    if (array_key_exists($field, $dependentFields) && (!isset($logData[$dependentFields[$field]]) || !$logData[$dependentFields[$field]])) {
+                        continue;
+                    }
+
+                    // Skip if the field is a dependency but does not have a value
+                    if (in_array($field, $dependentFields, true) && !$value) {
+                        continue;
+                    }
+
+                    $fieldConfig = isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]) ? $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] : [];
+
+                    // Skip the values that did not change since last log
+                    if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
+                        $previousLogData = $previousLogModel->getData();
+
+                        if ($previousLogData[$field] === $value) {
+                            continue;
+                        }
+                    }
+
+                    $log[$field] = [
+                        'label' => Format::dcaLabel($dc->table, $field),
+                        'value' => $value ? Format::dcaValue($dc->table, $field, $value) : '–'
+                    ];
+
+                    // Support line breaks for textareas
+                    if (isset($fieldConfig['inputType']) && $fieldConfig['inputType'] === 'textarea' && $value) {
+                        $log[$field]['value'] = nl2br($log[$field]['value']);
+                    }
+                }
+
+                $logs[$logModel->id] = $log;
+                $previousLogModel = $logModel;
+            }
+
+            // Only now reverse the order of the logs or otherwise the comparison of data with each previous log won't work properly
+            $logs = array_reverse($logs);
+
+            if (isset($GLOBALS['ISO_HOOKS']['generateOrderLog']) && \is_array($GLOBALS['ISO_HOOKS']['generateOrderLog'])) {
+                foreach ($GLOBALS['ISO_HOOKS']['generateOrderLog'] as $callback) {
+                    \System::importStatic($callback[0])->{$callback[1]}($order, $logs);
+                }
+            }
+
+            // Filter out the log entries that contain only tstamp and author
+            $logs = array_filter($logs, function (array $entry) {
+                return array_keys($entry) !== ['tstamp', 'author'];
+            });
+        }
+
+        $template = new BackendTemplate('be_iso_order_log');
+        $template->logs = array_values($logs);
+
+        return $template->parse();
+    }
+
+    public function prepareOrderLog(DataContainer $dc)
+    {
+        $GLOBALS['ISO_ORDER_LOG'] = [];
+
+        $GLOBALS['TL_DCA']['tl_iso_product_collection']['config']['onsubmit_callback'][] = function (DataContainer $dc) {
+            $this->writeOrderLog($dc);
+        };
+
+        if ('edit' === \Input::get('act')) {
+            $GLOBALS['TL_DCA']['tl_iso_product_collection']['edit']['buttons_callback'][] = static function () { return []; };
+        }
+
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $k => &$v) {
+            $v['eval']['doNotSaveEmpty'] = true;
+            $v['save_callback'][] = static function ($value, DataContainer $dc) use ($v) {
+                $GLOBALS['ISO_ORDER_LOG'][$dc->field] = $value;
+
+                return null;
+            };
+        }
+    }
+
+    /**
+     * On data container submit callback.
+     */
+    public function writeOrderLog($dc)
+    {
+        if (empty($GLOBALS['ISO_ORDER_LOG']) || ($order = Order::findByPk($dc->id)) === null) {
+            return;
+        }
+
+        $order->refresh();
+        $oldOrderStatus = $order->order_status;
+        $logData = $GLOBALS['ISO_ORDER_LOG'];
+        $GLOBALS['ISO_ORDER_LOG'] = [];
+
+        if ('BE' === TL_MODE) {
+            if ($order->pageId == 0) {
+                unset($GLOBALS['objPage']);
+            }
+
+            Frontend::loadOrderEnvironment($order);
+        }
+
+        $update = [];
+        $tableFields = Database::getInstance()->getFieldNames('tl_iso_product_collection');
+        foreach ($logData as $k => $v) {
+            if (\in_array($k, $tableFields, true)) {
+                $update[$k] = $v;
+            }
+        }
+        $update['sendNotification'] = '';
+
+        if (empty($logData)) {
+            return;
+        }
+
+        if (isset($update['order_status']) && $update['order_status'] != $oldOrderStatus) {
+            if (!$order->updateOrderStatus($update, Order::STATUS_UPDATE_SKIP_LOG)) {
+                return;
+            }
+        } else {
+            foreach ($update as $k => $v) {
+                $order->{$k} = $v;
+            }
+            $order->save();
+        }
+
+        $log = new ProductCollectionLog();
+        $log->pid = $order->id;
+        $log->tstamp = time();
+        $log->author = BackendUser::getInstance()->id;
+        $log->setData($logData);
+        $log->save();
+
+        $blnNotificationError = null;
+
+        // Send a notification
+        if ($logData['sendNotification'] && $logData['notification'] && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
+            $objOldStatus = OrderStatus::findByPk($oldOrderStatus);
+            $objNewStatus = OrderStatus::findByPk($order->order_status);
+
+            $tokens = $order->getNotificationTokens($objNotification->id);
+
+            $tokens['order_status_id'] = $objNewStatus->id;
+            $tokens['order_status'] = $objNewStatus->getName();
+            $tokens['order_status_id_old'] = $objOldStatus->id;
+            $tokens['order_status_old'] = $objOldStatus->getName();
+            $tokens['order_status_tracking_numbers'] = str_replace("\n", '<br>', trim($logData['notification_shipping_tracking']));
+            $tokens['order_status_notes'] = str_replace("\n", '<br>', trim($logData['notification_customer_notes']));
+
+            /** @var Notification $objNotification */
+            $arrResult = $objNotification->send($tokens, $order->language);
+
+            if (\in_array(false, $arrResult, true)) {
+                $blnNotificationError = true;
+                \System::log(
+                    'Error sending status update notification for order ID ' . $order->id,
+                    __METHOD__,
+                    TL_ERROR
+                );
+            } elseif (\count($arrResult) > 0) {
+                $blnNotificationError = false;
+            }
+        }
+
+        if ('BE' === TL_MODE) {
+            \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+
+            if ($blnNotificationError === true) {
+                \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+            } elseif ($blnNotificationError === false) {
+                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+            }
+        }
+    }
+
+    /**
+     * On notification options callback
+     *
+     * @return array
+     */
+    public function onNotificationOptionsCallback()
+    {
+        $options = [];
+
+        if (($notifications = Notification::findBy('type', 'iso_order_status_change', ['order' => 'title'])) !== null) {
+            $options = $notifications->fetchEach('title');
+        }
+
+        return $options;
     }
 }
