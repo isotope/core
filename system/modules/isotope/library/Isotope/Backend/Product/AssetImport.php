@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\StringUtil;
 
 class AssetImport extends \Backend
 {
@@ -37,7 +38,7 @@ class AssetImport extends \Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=import', '', \Environment::get('request'))) . '" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=import', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $GLOBALS['TL_LANG']['tl_iso_product']['import'][1] . '</h2>
@@ -63,7 +64,7 @@ class AssetImport extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['import'][0]) . '">
+<input type="submit" name="save" id="save" class="tl_submit" alt="import product assets" accesskey="s" value="' . StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['import'][0]) . '">
 </div>
 
 </div>

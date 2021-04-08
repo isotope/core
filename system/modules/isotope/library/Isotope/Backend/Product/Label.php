@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
@@ -117,7 +118,7 @@ class Label
             return sprintf(
                 '<a href="%s" title="%s">%s</a>',
                 ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'],
-                specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
+                StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
                 $objProduct->name
             );
         }

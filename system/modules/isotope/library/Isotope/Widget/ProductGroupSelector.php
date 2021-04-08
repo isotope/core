@@ -11,6 +11,7 @@
 
 namespace Isotope\Widget;
 
+use Contao\StringUtil;
 use Haste\Util\Debug;
 
 
@@ -351,7 +352,7 @@ class ProductGroupSelector extends \Widget
             $folderAttribute = '';
             $img             = $blnIsOpen ? 'folMinus.gif' : 'folPlus.gif';
             $alt             = $blnIsOpen ? $GLOBALS['TL_LANG']['MSC']['collapseNode'] : $GLOBALS['TL_LANG']['MSC']['expandNode'];
-            $return .= '<a href="' . \Backend::addToUrl($flag . 'tg=' . $id) . '" title="' . specialchars($alt) . '" onclick="Backend.getScrollOffset(); AjaxRequest.displayBox(Contao.lang.loading + \' …\')">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
+            $return .= '<a href="' . \Backend::addToUrl($flag . 'tg=' . $id) . '" title="' . StringUtil::specialchars($alt) . '" onclick="Backend.getScrollOffset(); AjaxRequest.displayBox(Contao.lang.loading + \' …\')">' . \Image::getHtml($img, '', 'style="margin-right:2px;"') . '</a>';
         }
 
         $callback = $GLOBALS['TL_DCA']['tl_iso_group']['list']['label']['label_callback'];
@@ -366,12 +367,12 @@ class ProductGroupSelector extends \Widget
         // Add checkbox or radio button
         switch ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['fieldType']) {
             case 'checkbox':
-                $return .= '<input type="checkbox" name="' . $this->strName . '[]" id="' . $this->strName . '_' . $id . '" class="tl_tree_checkbox" value="' . specialchars($id) . '" onfocus="Backend.getScrollOffset()"' . static::optionChecked($id, $this->varValue) . '>';
+                $return .= '<input type="checkbox" name="' . $this->strName . '[]" id="' . $this->strName . '_' . $id . '" class="tl_tree_checkbox" value="' . StringUtil::specialchars($id) . '" onfocus="Backend.getScrollOffset()"' . static::optionChecked($id, $this->varValue) . '>';
                 break;
 
             default:
             case 'radio':
-                $return .= '<input type="radio" name="' . $this->strName . '" id="' . $this->strName . '_' . $id . '" class="tl_tree_radio" value="' . specialchars($id) . '" onfocus="Backend.getScrollOffset()"' . static::optionChecked($id, $this->varValue) . '>';
+                $return .= '<input type="radio" name="' . $this->strName . '" id="' . $this->strName . '_' . $id . '" class="tl_tree_radio" value="' . StringUtil::specialchars($id) . '" onfocus="Backend.getScrollOffset()"' . static::optionChecked($id, $this->varValue) . '>';
                 break;
         }
 

@@ -11,8 +11,8 @@
 
 namespace Isotope\Module;
 
+use Contao\StringUtil;
 use Haste\Util\Url;
-use Isotope\Frontend\ProductCollectionAction\AbstractLink;
 use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
 use Isotope\Frontend\ProductCollectionAction\ProductCollectionActionInterface;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -238,7 +238,7 @@ abstract class AbstractProductCollection extends Module
             }
 
             $data['remove_href']  = Url::addQueryString('remove=' . $item->id);
-            $data['remove_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $data['name']));
+            $data['remove_title'] = StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['removeProductLinkTitle'], $data['name']));
             $data['remove_link']  = $GLOBALS['TL_LANG']['MSC']['removeProductLinkText'];
         }
 

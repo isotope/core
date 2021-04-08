@@ -412,6 +412,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public function getBillingAddress()
     {
+        if (!$this->billing_address_id) {
+            return null;
+        }
+
         return $this->getRelated('billing_address_id');
     }
 
@@ -436,7 +440,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public function getShippingAddress()
     {
-        return $this->requiresShipping() ? $this->getRelated('shipping_address_id') : null;
+        if (!$this->shipping_address_id || !$this->requiresShipping()) {
+            return null;
+        }
+
+        return $this->getRelated('shipping_address_id');
     }
 
     /**

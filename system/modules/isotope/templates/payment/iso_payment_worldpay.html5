@@ -5,19 +5,19 @@
 <input type="hidden" name="cartId" value="<?= $this->cartId ?>">
 <input type="hidden" name="amount" value="<?= $this->amount ?>">
 <input type="hidden" name="currency" value="<?= $this->currency ?>">
-<input type="hidden" name="desc" value="<?= specialchars($this->description) ?>">
+<input type="hidden" name="desc" value="<?= \Contao\StringUtil::specialchars($this->description) ?>">
 <input type="hidden" name="fixContact" value="1">
 <input type="hidden" name="hideContact" value="1">
-<input type="hidden" name="name" value="<?= specialchars($this->name) ?>">
-<input type="hidden" name="address1" value="<?= specialchars($this->address1) ?>">
-<input type="hidden" name="address2" value="<?= specialchars($this->address2) ?>">
-<input type="hidden" name="address3" value="<?= specialchars($this->address3) ?>">
-<input type="hidden" name="town" value="<?= specialchars($this->town) ?>">
-<input type="hidden" name="region" value="<?= specialchars($this->region) ?>">
-<input type="hidden" name="postcode" value="<?= specialchars($this->postcode) ?>">
+<input type="hidden" name="name" value="<?= \Contao\StringUtil::specialchars($this->name) ?>">
+<input type="hidden" name="address1" value="<?= \Contao\StringUtil::specialchars($this->address1) ?>">
+<input type="hidden" name="address2" value="<?= \Contao\StringUtil::specialchars($this->address2) ?>">
+<input type="hidden" name="address3" value="<?= \Contao\StringUtil::specialchars($this->address3) ?>">
+<input type="hidden" name="town" value="<?= \Contao\StringUtil::specialchars($this->town) ?>">
+<input type="hidden" name="region" value="<?= \Contao\StringUtil::specialchars($this->region) ?>">
+<input type="hidden" name="postcode" value="<?= \Contao\StringUtil::specialchars($this->postcode) ?>">
 <input type="hidden" name="country" value="<?= $this->country ?>">
-<input type="hidden" name="tel" value="<?= specialchars($this->tel) ?>">
-<input type="hidden" name="email" value="<?= specialchars($this->email) ?>">
+<input type="hidden" name="tel" value="<?= \Contao\StringUtil::specialchars($this->tel) ?>">
+<input type="hidden" name="email" value="<?= \Contao\StringUtil::specialchars($this->email) ?>">
 <input type="hidden" name="lang" value="<?= $GLOBALS['TL_LANGUAGE'] ?>">
 <input type="hidden" name="testMode" value="<?= ($this->debug ? '100' : '0') ?>">
 <input type="hidden" name="signature" value="<?= $this->signature ?>">

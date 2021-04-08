@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\StringUtil;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
@@ -138,8 +139,8 @@ class Checkout extends Module
         $this->Template->formId        = $this->strFormId;
         $this->Template->formSubmit    = $this->strFormId;
         $this->Template->enctype       = 'application/x-www-form-urlencoded';
-        $this->Template->previousLabel = specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
-        $this->Template->nextLabel     = specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
+        $this->Template->previousLabel = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['previousStep']);
+        $this->Template->nextLabel     = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['nextStep']);
         $this->Template->nextClass     = 'next';
         $this->Template->showPrevious  = true;
         $this->Template->showNext      = true;
@@ -366,7 +367,7 @@ class Checkout extends Module
         // Show "confirm order" button if this is the last step
         if (array_search($this->strCurrentStep, $arrStepKeys) === (\count($arrStepKeys) - 1)) {
             $this->Template->nextClass = 'confirm';
-            $this->Template->nextLabel = specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
+            $this->Template->nextLabel = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['confirmOrder']);
         }
 
         // User pressed "back" button
@@ -678,7 +679,7 @@ class Checkout extends Module
                 'class'    => $class,
                 'link'     => $GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step,
                 'href'     => $href,
-                'title'    => specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step))),
+                'title'    => StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['checkboutStepBack'], ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ? : $step))),
             );
         }
 

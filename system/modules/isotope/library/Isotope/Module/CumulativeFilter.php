@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\StringUtil;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
@@ -295,7 +296,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         return array(
             'href'  => $href,
             'class' => trim(($isActive ? 'active' : '') . ($matchCount === 0 ? ' empty' : '')),
-            'title' => specialchars($label),
+            'title' => StringUtil::specialchars($label),
             'link'  => $link,
             'label' => $label,
             'count' => $matchCount,

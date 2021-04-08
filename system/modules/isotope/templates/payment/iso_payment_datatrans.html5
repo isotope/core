@@ -2,7 +2,7 @@
 <p class="message"><?= $this->message ?></p>
 <form id="datatrans<?= $this->id ?>" action="<?= $this->action ?>" method="post">
 <?php foreach( $this->params as $k => $v ): ?>
-<input type="hidden" name="<?= $k ?>" value="<?= specialchars($v) ?>">
+<input type="hidden" name="<?= $k ?>" value="<?= \Contao\StringUtil::specialchars($v) ?>">
 <?php endforeach; ?>
 <noscript>
 <p><?= $this->noscript ?></p>

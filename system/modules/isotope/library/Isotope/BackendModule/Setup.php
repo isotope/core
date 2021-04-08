@@ -11,6 +11,8 @@
 
 namespace Isotope\BackendModule;
 
+use Contao\StringUtil;
+
 /**
  * Class ModuleIsotopeSetup
  *
@@ -40,8 +42,8 @@ class Setup extends BackendOverview
 
                     $return[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
-                        'label'         => specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
-                        'description'   => specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
+                        'label'         => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
+                        'description'   => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => TL_SCRIPT . '?do=iso_setup&mod=' . $strModule,
                         'class'         => $arrConfig['class'],
                     ));

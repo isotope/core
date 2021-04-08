@@ -2,11 +2,11 @@
 <p class="message"><?= $this->message ?></p>
 <form id="psp<?= $this->id ?>" action="https://e-payment.postfinance.ch/ncol/<?= ($this->debug ? 'test' : 'prod') ?>/orderstandard_utf8.asp" method="post">
 <?php foreach( $this->params as $k => $v ): ?>
-<input type="hidden" name="<?= $k ?>" value="<?= specialchars($v) ?>">
+<input type="hidden" name="<?= $k ?>" value="<?= \Contao\StringUtil::specialchars($v) ?>">
 <?php endforeach; ?>
 <noscript>
 <p><?= $this->noscript ?></p>
-<input type="submit" value="<?= specialchars($this->slabel) ?>">
+<input type="submit" value="<?= \Contao\StringUtil::specialchars($this->slabel) ?>">
 </noscript>
 </form>
 <script>

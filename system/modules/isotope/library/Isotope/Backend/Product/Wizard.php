@@ -13,6 +13,7 @@ namespace Isotope\Backend\Product;
 
 use Contao\DataContainer;
 use Contao\Image;
+use Contao\StringUtil;
 
 class Wizard
 {
@@ -29,8 +30,8 @@ class Wizard
                 $dc->value,
                 REQUEST_TOKEN
             ),
-            sprintf(specialchars($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1]), $dc->value),
-            specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1], $dc->value))),
+            sprintf(StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1]), $dc->value),
+            StringUtil::specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1], $dc->value))),
             Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][0])
         );
     }

@@ -12,6 +12,7 @@
 namespace Isotope\Model\Gallery;
 
 use Contao\File;
+use Contao\StringUtil;
 use Haste\Image\Image;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
@@ -394,8 +395,8 @@ class Standard extends Gallery implements IsotopeGallery
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
-        $arrFile['alt']     = specialchars($arrFile['alt'], true);
-        $arrFile['desc']    = specialchars($arrFile['desc'], true);
+        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'], true);
+        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'], true);
         $arrFile['picture'] = $picture;
 
         $arrFile[$strType] = TL_ASSETS_URL . $strImage;

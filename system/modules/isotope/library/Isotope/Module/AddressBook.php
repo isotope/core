@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\StringUtil;
 use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
@@ -158,7 +159,7 @@ class AddressBook extends Module
         $this->Template->addNewAddressLabel   = $GLOBALS['TL_LANG']['MSC']['createNewAddressLabel'];
         $this->Template->editAddressLabel     = $GLOBALS['TL_LANG']['MSC']['editAddressLabel'];
         $this->Template->deleteAddressLabel   = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
-        $this->Template->deleteAddressConfirm = specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
+        $this->Template->deleteAddressConfirm = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
         $this->Template->addresses            = $arrAddresses;
         $this->Template->addNewAddress        = ampersand($strUrl . 'act=create');
     }
@@ -176,7 +177,7 @@ class AddressBook extends Module
 
         $this->Template            = new Template($this->memberTpl);
         $this->Template->hasError  = false;
-        $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
+        $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
         if ($intAddressId === 0) {
             $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, ['country']);

@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 abstract class AbstractLink implements ProductCollectionActionInterface
@@ -30,8 +31,8 @@ abstract class AbstractLink implements ProductCollectionActionInterface
     {
         return sprintf(
             '<a href="%s" class="submit %s">%s</a>',
-            specialchars($this->getHref()),
-            specialchars($this->getName()),
+            StringUtil::specialchars($this->getHref()),
+            StringUtil::specialchars($this->getName()),
             $this->getLabel($collection)
         );
     }

@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Contao\Controller;
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -236,7 +237,7 @@ class Frontend extends \Frontend
 
         if ($hasProducts) {
             $template->hasProducts = true;
-            $template->loadMessage = specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']);
+            $template->loadMessage = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['loadingProductData']);
             $template->products    = json_encode($GLOBALS['AJAX_PRODUCTS']);
         }
 
@@ -553,7 +554,7 @@ class Frontend extends \Frontend
                 'isRoot'   => (bool) $arrItems[$last]['isRoot'],
                 'isActive' => false,
                 'href'     => $listPage->getFrontendUrl(),
-                'title'    => specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
+                'title'    => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
                 'link'     => $originalRow['title'],
                 'data'     => $originalRow,
                 'class'    => ''
@@ -564,7 +565,7 @@ class Frontend extends \Frontend
                 'isRoot'   => false,
                 'isActive' => true,
                 'href'     => $objProduct->generateUrl($objPage),
-                'title'    => specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
+                'title'    => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
                 'link'     => $objProduct->name,
                 'data'     => $objPage->row(),
             );

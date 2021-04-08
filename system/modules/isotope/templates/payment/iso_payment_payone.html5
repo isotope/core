@@ -2,18 +2,18 @@
 <p class="message"><?= $this->message ?></p>
 <form id="payone<?= $this->id ?>" action="https://secure.pay1.de/frontend/" method="post">
 <?php foreach ($this->data as $k => $v): ?>
-<input type="hidden" name="<?= $k ?>" value="<?= specialchars($v) ?>">
+<input type="hidden" name="<?= $k ?>" value="<?= \Contao\StringUtil::specialchars($v) ?>">
 <?php endforeach; ?>
 <input type="hidden" name="hash" value="<?= $this->hash ?>">
-<input type="hidden" name="company" value="<?= specialchars($this->billing_address['company']) ?>">
-<input type="hidden" name="firstname" value="<?= specialchars($this->billing_address['firstname']) ?>">
-<input type="hidden" name="lastname" value="<?= specialchars($this->billing_address['lastname']) ?>">
-<input type="hidden" name="street" value="<?= specialchars($this->billing_address['street_1']) ?>">
-<input type="hidden" name="zip" value="<?= specialchars($this->billing_address['postal']) ?>">
-<input type="hidden" name="city" value="<?= specialchars($this->billing_address['city']) ?>">
+<input type="hidden" name="company" value="<?= \Contao\StringUtil::specialchars($this->billing_address['company']) ?>">
+<input type="hidden" name="firstname" value="<?= \Contao\StringUtil::specialchars($this->billing_address['firstname']) ?>">
+<input type="hidden" name="lastname" value="<?= \Contao\StringUtil::specialchars($this->billing_address['lastname']) ?>">
+<input type="hidden" name="street" value="<?= \Contao\StringUtil::specialchars($this->billing_address['street_1']) ?>">
+<input type="hidden" name="zip" value="<?= \Contao\StringUtil::specialchars($this->billing_address['postal']) ?>">
+<input type="hidden" name="city" value="<?= \Contao\StringUtil::specialchars($this->billing_address['city']) ?>">
 <input type="hidden" name="country" value="<?= strtoupper($this->billing_address['country']) ?>">
-<input type="hidden" name="email" value="<?= specialchars($this->billing_address['email']) ?>">
-<input type="hidden" name="telephonenumber" value="<?= specialchars($this->billing_address['phone']) ?>">
+<input type="hidden" name="email" value="<?= \Contao\StringUtil::specialchars($this->billing_address['email']) ?>">
+<input type="hidden" name="telephonenumber" value="<?= \Contao\StringUtil::specialchars($this->billing_address['phone']) ?>">
 <input type="hidden" name="language" value="<?= substr($GLOBALS['TL_LANGUAGE'], 0, 2) ?>">
 <noscript>
 <p><?= $this->noscript ?></p>

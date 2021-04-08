@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\StringUtil;
 use Isotope\Model\Group;
 
 class Panel extends \Backend
@@ -44,12 +45,12 @@ class Panel extends \Backend
                 ($session['iso_products_gid'] ? ' active' : ''),
                 sprintf(
                     "Backend.getScrollOffset();Isotope.openModalGroupSelector({'width':765,'title':'%s','url':'system/modules/isotope/group.php?do=%s&amp;table=%s&amp;field=gid&amp;value=%s','action':'filterGroups'});return false",
-                    specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]),
+                    StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]),
                     \Input::get('do'),
                     Group::getTable(),
                     $session['iso_products_gid']
                 ),
-                specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups'])
+                StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups'])
             );
         }
 
@@ -58,11 +59,11 @@ class Panel extends \Backend
             ($intPage > 0 ? ' active' : ''),
             sprintf(
                 "Backend.getScrollOffset();Isotope.openModalPageSelector({'width':765,'title':'%s','url':'contao/page.php?do=%s&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=%s','action':'filterPages'});return false",
-                specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]),
+                StringUtil::specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]),
                 \Input::get('do'),
                 $intPage
             ),
-            specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages'])
+            StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages'])
         );
 
         return '
@@ -140,7 +141,7 @@ class Panel extends \Backend
 
         return '
 <div class="tl_subpanel tl_iso_category_sorting">
-<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
+<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . StringUtil::specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . \Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . \Image::getHtml('page.gif', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
 </div>';
     }
 

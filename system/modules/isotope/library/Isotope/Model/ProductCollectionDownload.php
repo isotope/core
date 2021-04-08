@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\PageModel;
+use Contao\StringUtil;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -129,7 +130,7 @@ class ProductCollectionDownload extends \Model
 
             // Use the file name as title if none is given
             if ($arrMeta['title'] == '') {
-                $arrMeta['title'] = specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
+                $arrMeta['title'] = StringUtil::specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
             }
 
             $strHref = '';

@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\StringUtil;
 use Haste\Form\Form;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -69,7 +70,7 @@ class CartAddress extends Module
     protected function compile()
     {
         $this->Template->hasError  = false;
-        $this->Template->slabel    = specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
+        $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
 
         $table = Address::getTable();
 

@@ -15,6 +15,7 @@ use Contao\Database;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -93,7 +94,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $this->Template->request = ampersand(\Environment::get('indexFreeRequest'));
         $this->Template->skipId = 'skipNavigation' . $this->id;
-        $this->Template->skipNavigation = specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
+        $this->Template->skipNavigation = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
         $this->Template->items = $this->renderFilterTree($trail[$level], 1, $currentIds, $trail, $allIds);
 
         if ($input = \Input::get('categoryfilter', true)) {
@@ -205,8 +206,8 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
             $row['subitems'] = $subitems;
             $row['class'] = trim($strClass.($subitems ? ' submenu' : '').($subpage->protected ? ' protected' : '').($subpage->cssClass ? ' '.$subpage->cssClass : ''));
-            $row['title'] = specialchars($subpage->title, true);
-            $row['pageTitle'] = specialchars($subpage->pageTitle, true);
+            $row['title'] = StringUtil::specialchars($subpage->title, true);
+            $row['pageTitle'] = StringUtil::specialchars($subpage->pageTitle, true);
             $row['link'] = $subpage->title;
             $row['href'] = $href;
             $row['target'] = '';

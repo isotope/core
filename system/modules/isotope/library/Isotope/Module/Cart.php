@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\StringUtil;
 use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\ContinueShoppingAction;
 use Isotope\Frontend\ProductCollectionAction\GoToCartAction;
@@ -113,7 +114,7 @@ class Cart extends AbstractProductCollection
         if (isset($data['configuration']) && !$item->hasErrors()) {
             list($baseUrl,) = explode('?', $data['href'], 2);
             $data['edit_href']  = Url::addQueryString('collection_item=' . $item->id, $baseUrl);
-            $data['edit_title'] = specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['editProductLinkTitle'], $data['name']));
+            $data['edit_title'] = StringUtil::specialchars(sprintf($GLOBALS['TL_LANG']['MSC']['editProductLinkTitle'], $data['name']));
             $data['edit_link']  = $GLOBALS['TL_LANG']['MSC']['editProductLinkText'];
         }
 

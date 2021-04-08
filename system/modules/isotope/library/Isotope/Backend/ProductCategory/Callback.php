@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductCategory;
 
+use Contao\StringUtil;
 use Isotope\Backend\Product\Label;
 use Isotope\Model\Product;
 
@@ -57,6 +58,6 @@ class Callback extends \Backend
             return '';
         }
 
-        return '<a href="contao/main.php?do=feRedirect&page=' . $objPage->id . '" target="_blank" class="header_preview" title="' . specialchars($title) . '"' . $attributes . '>' . $label . '</a>';
+        return '<a href="contao/main.php?do=feRedirect&page=' . $objPage->id . '" target="_blank" class="header_preview" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . $label . '</a>';
     }
 }
