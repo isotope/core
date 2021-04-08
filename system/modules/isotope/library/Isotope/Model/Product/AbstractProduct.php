@@ -246,16 +246,17 @@ abstract class AbstractProduct extends Product
 
         if (null === $this->arrCategories || !isset($this->arrCategories[$key])) {
             if ($blnPublished) {
-                $options          = ProductCategory::getFindByPidForPublishedPagesOptions($this->getProductId());
-                $options['table'] = ProductCategory::getTable();
-                $query            = QueryBuilder::find($options);
-                $values           = (array) $options['value'];
+                $query = "SELECT page_id FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE c.pid=? AND p.type!='error_403' AND p.type!='error_404'";
+
+                if (!BE_USER_LOGGED_IN) {
+                    $time = \Date::floorToMinute();
+                    $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
+                }
             } else {
                 $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
-                $values = array($this->getProductId());
             }
 
-            $objCategories = \Database::getInstance()->prepare($query)->execute($values);
+            $objCategories = \Database::getInstance()->prepare($query)->execute($this->getProductId());
 
             $this->arrCategories[$key] = $objCategories->fetchEach('page_id');
 
@@ -275,6 +276,13 @@ abstract class AbstractProduct extends Product
         }
 
         return $this->arrCategories[$key];
+    }
+
+    public function setCategories(array $categories, $blnPublished = false)
+    {
+        $key = ($blnPublished ? 'published' : 'all');
+
+        $this->arrCategories[$key] = $categories;
     }
 
     /**

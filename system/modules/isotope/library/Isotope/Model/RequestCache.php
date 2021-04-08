@@ -483,6 +483,10 @@ class RequestCache extends \Model
      */
     public static function findByIdAndStore($intId, $intStore, array $arrOptions = array())
     {
+        if (null === $intId) {
+            return null;
+        }
+
         return static::findOneBy(array('id=?', 'store_id=?'), array($intId, $intStore), $arrOptions);
     }
 

@@ -16,11 +16,13 @@ use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Url;
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Frontend\ProductAction\ProductActionInterface;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
+use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductWithOptions;
@@ -168,6 +170,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         return $this->objPrice;
     }
 
+    public function setPrice(IsotopePrice $price)
+    {
+        $this->objPrice = $price;
+
+        if ($price instanceof ProductPrice || $price instanceof ProductPriceCollection) {
+            $price->setProduct($this);
+        }
+    }
+
     /**
      * Return minimum quantity for the product (from advanced price tiers)
      *
@@ -242,13 +253,13 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $blnHasProtected = false;
             $blnHasGuests    = false;
             $strQuery        = '
-                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups 
-                FROM tl_iso_product 
-                WHERE 
-                    pid=' . $this->getProductId() . " 
-                    AND language='' 
-                    AND published='1' 
-                    AND (start='' OR start<'$time') 
+                SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
+                FROM tl_iso_product
+                WHERE
+                    pid=' . $this->getProductId() . "
+                    AND language=''
+                    AND published='1'
+                    AND (start='' OR start<'$time')
                     AND (stop='' OR stop>'" . ($time + 60) . "')
             ";
 

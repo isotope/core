@@ -250,18 +250,12 @@ abstract class AbstractProductFilter extends Module
                     }
                 }
             }
-
-            foreach ($cache as $property => $attributes) {
-                foreach ($attributes as $attribute => $values) {
-                    $cache[$property][$attribute] = array_unique($values);
-                }
-            }
         }
 
         if ($forVariants) {
             return (array) $cache['variant_attributes'][$attributeName];
-        } else {
-            return (array) $cache['attributes'][$attributeName];
         }
+
+        return (array) $cache['attributes'][$attributeName];
     }
 }

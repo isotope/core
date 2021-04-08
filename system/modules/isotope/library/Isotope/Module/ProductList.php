@@ -11,14 +11,17 @@
 
 namespace Isotope\Module;
 
+use Contao\Database;
 use Haste\Generator\RowClass;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
+use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCache;
+use Isotope\Model\ProductPrice;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 use Isotope\Template;
@@ -213,8 +216,30 @@ class ProductList extends Module
         $arrBuffer         = array();
         $arrDefaultOptions = $this->getDefaultProductOptions();
 
+        // Prepare optimized product categories
+        $preloadData = $this->batchPreloadProducts();
+
         /** @var \Isotope\Model\Product\Standard $objProduct */
         foreach ($arrProducts as $objProduct) {
+            if ($objProduct instanceof Product\Standard) {
+                if (isset($preloadData['categories'][$objProduct->id])) {
+                    $objProduct->setCategories($preloadData['categories'][$objProduct->id], true);
+                }
+                if (!$objProduct->hasAdvancedPrices()) {
+                    if ($objProduct->hasVariantPrices() && !$objProduct->isVariant()) {
+                        $ids = $objProduct->getVariantIds();
+                    } else {
+                        $ids = [$objProduct->hasVariantPrices() ? $objProduct->getId() : $objProduct->getProductId()];
+                    }
+
+                    $prices = array_intersect_key($preloadData['prices'], array_flip($ids));
+
+                    if (!empty($prices)) {
+                        $objProduct->setPrice(new ProductPriceCollection($prices, ProductPrice::getTable()));
+                    }
+                }
+            }
+
             $arrConfig = $this->getProductConfig($objProduct);
 
             if (\Environment::get('isAjaxRequest')
@@ -544,5 +569,47 @@ class ProductList extends Module
             'disableOptions' => $this->iso_disable_options,
             'jumpTo'         => $this->findJumpToPage($product),
         );
+    }
+
+    private function batchPreloadProducts()
+    {
+        $query = "SELECT c.pid, GROUP_CONCAT(c.page_id) AS page_ids FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
+
+        if (!BE_USER_LOGGED_IN) {
+            $time = \Date::floorToMinute();
+            $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
+        }
+
+        $query .= " GROUP BY c.pid";
+
+        $data = ['categories' => [], 'prices' => []];
+        $result = Database::getInstance()->execute($query);
+
+        while ($row = $result->fetchAssoc()) {
+            $data['categories'][$row['pid']] = explode(',', $row['page_ids']);
+        }
+
+        $t = ProductPrice::getTable();
+        $arrOptions = [
+            'column' => [
+                "$t.config_id=0",
+                "$t.member_group=0",
+                "$t.start=''",
+                "$t.stop=''",
+            ],
+        ];
+
+        /** @var ProductPriceCollection $prices */
+        $prices = ProductPrice::findAll($arrOptions);
+
+        if (null !== $prices) {
+            foreach ($prices as $price) {
+                if (!isset($data['prices'][$price->pid])) {
+                    $data['prices'][$price->pid] = $price;
+                }
+            }
+        }
+
+        return $data;
     }
 }

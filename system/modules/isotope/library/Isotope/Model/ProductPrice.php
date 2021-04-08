@@ -231,6 +231,11 @@ class ProductPrice extends \Model implements IsotopePrice
         return $strPrice;
     }
 
+    public function setProduct(IsotopeProduct $product)
+    {
+        $this->arrRelated['pid'] = $product;
+    }
+
     /**
      * Find prices for a given product and collection
      *

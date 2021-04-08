@@ -12,6 +12,7 @@
 namespace Isotope\Collection;
 
 use Isotope\Interfaces\IsotopePrice;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Model\Collection;
 
@@ -165,6 +166,15 @@ class ProductPrice extends Collection implements IsotopePrice
 
         } else {
             return $this->current()->generate($blnShowTiers, $intQuantity, $arrOptions);
+        }
+    }
+
+    public function setProduct(IsotopeProduct $product)
+    {
+        foreach ($this->arrModels as $model) {
+            if ($model instanceof \Isotope\Model\ProductPrice) {
+                $model->setProduct($product);
+            }
         }
     }
 }
