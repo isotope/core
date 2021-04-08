@@ -49,6 +49,10 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
      */
     public function getBillingAddress()
     {
+        if (!empty($this->arrCache['billingAddress'])) {
+            return $this->arrCache['billingAddress'];
+        }
+
         $objAddress = parent::getBillingAddress();
 
         // Try to load the default member address
@@ -70,6 +74,8 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             );
         }
 
+        $this->arrCache['billingAddress'] = $objAddress;
+
         return $objAddress;
     }
 
@@ -80,6 +86,10 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
      */
     public function getShippingAddress()
     {
+        if (!empty($this->arrCache['shippingAddress'])) {
+            return $this->arrCache['shippingAddress'];
+        }
+
         $objAddress = parent::getShippingAddress();
 
         // Try to load the default member address
@@ -101,6 +111,8 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 true
             );
         }
+
+        $this->arrCache['shippingAddress'] = $objAddress;
 
         return $objAddress;
     }
