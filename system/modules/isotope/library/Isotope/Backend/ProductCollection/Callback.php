@@ -265,6 +265,8 @@ class Callback extends \Backend
         if (\is_array($arrGroups) && !empty($arrGroups)) {
             $blnGuests = \in_array(-1, $arrGroups, false);
             $arrLike = [];
+            $memberIds = [];
+
             foreach ($arrGroups as $id) {
                 if ($id == -1) {
                     continue;
@@ -274,9 +276,11 @@ class Callback extends \Backend
                 $arrLike[] = "tl_member.groups LIKE '%i:$id;%'";
             }
 
-            $memberIds = \Database::getInstance()->execute(
-                'SELECT id FROM tl_member WHERE '.implode(' OR ', $arrLike)
-            )->fetchEach('id');
+            if (!empty($arrLike)) {
+                $memberIds = \Database::getInstance()->execute(
+                    'SELECT id FROM tl_member WHERE '.implode(' OR ', $arrLike)
+                )->fetchEach('id');
+            }
 
             if ($blnGuests) {
                 array_unshift($memberIds, 0);
