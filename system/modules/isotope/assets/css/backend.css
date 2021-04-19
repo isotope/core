@@ -162,6 +162,10 @@ table.multicolumnwizard .operations {
     white-space: nowrap;
 }
 
+.mod_iso_orderdetails .order_status {
+    margin: 1em 0;
+}
+
 .mod_iso_orderdetails .info_container {
     float:left;
     width:200px;
@@ -172,7 +176,9 @@ table.multicolumnwizard .operations {
 
 .mod_iso_orderdetails .info_container h3 {
     margin-top: 0;
-    margin-bottom: 5px
+    margin-bottom: 5px;
+    padding-top: 0;
+    height: auto;
 }
 
 .mod_iso_orderdetails table {
