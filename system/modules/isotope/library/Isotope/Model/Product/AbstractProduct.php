@@ -258,21 +258,7 @@ abstract class AbstractProduct extends Product
 
             $objCategories = \Database::getInstance()->prepare($query)->execute($this->getProductId());
 
-            $this->arrCategories[$key] = $objCategories->fetchEach('page_id');
-
-            // Sort categories by the backend drag&drop
-            $arrOrder = deserialize($this->orderPages);
-            if (!empty($arrOrder) && \is_array($arrOrder)) {
-                $this->arrCategories[$key] = array_unique(
-                    array_merge(
-                        array_intersect(
-                            $arrOrder,
-                            $this->arrCategories[$key]
-                        ),
-                        $this->arrCategories[$key]
-                    )
-                );
-            }
+            $this->setCategories($objCategories->fetchEach('page_id'), $blnPublished);
         }
 
         return $this->arrCategories[$key];
@@ -281,6 +267,20 @@ abstract class AbstractProduct extends Product
     public function setCategories(array $categories, $blnPublished = false)
     {
         $key = ($blnPublished ? 'published' : 'all');
+
+        // Sort categories by the backend drag&drop
+        $arrOrder = deserialize($this->orderPages);
+        if (!empty($arrOrder) && \is_array($arrOrder)) {
+            $categories = array_unique(
+                array_merge(
+                    array_intersect(
+                        $arrOrder,
+                        $categories
+                    ),
+                    $categories
+                )
+            );
+        }
 
         $this->arrCategories[$key] = $categories;
     }
@@ -334,8 +334,11 @@ abstract class AbstractProduct extends Product
         $this->arrCategories = null;
 
         if (isset($arrData['product_categories'])) {
-            $this->arrCategories['all'] = explode(',', $arrData['product_categories']);
-            unset($arrData['product_categories']);
+            $categories = explode(',', $arrData['product_categories']);
+            $result = parent::setRow($arrData);
+            $this->setCategories($categories);
+
+            return $result;
         }
 
         return parent::setRow($arrData);
