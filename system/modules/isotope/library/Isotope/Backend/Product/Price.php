@@ -28,7 +28,7 @@ class Price extends \Backend
      */
     public function createVersion($strTable, $intId)
     {
-        if ($strTable != Product::getTable()) {
+        if ($strTable !== Product::getTable()) {
             return;
         }
 
@@ -91,7 +91,7 @@ class Price extends \Backend
 
         if (null !== $arrData) {
             \Database::getInstance()->query('
-                DELETE FROM tl_iso_product_pricetier 
+                DELETE FROM tl_iso_product_pricetier
                 WHERE pid IN (
                     SELECT id FROM tl_iso_product_price WHERE pid=' . $intId . '
                 )
@@ -149,9 +149,9 @@ class Price extends \Backend
     public function load($varValue, \DataContainer $dc)
     {
         $objPrice = \Database::getInstance()->query("
-            SELECT t.id, p.id AS pid, p.tax_class, t.price 
-            FROM tl_iso_product_price p 
-            LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 
+            SELECT t.id, p.id AS pid, p.tax_class, t.price
+            FROM tl_iso_product_price p
+            LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1
             WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''
         ");
 
@@ -183,9 +183,9 @@ class Price extends \Backend
         $intTax   = (int) $arrValue['unit'];
 
         $objPrice = \Database::getInstance()->query("
-            SELECT t.id, p.id AS pid, p.tax_class, t.price 
-            FROM tl_iso_product_price p 
-            LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1 
+            SELECT t.id, p.id AS pid, p.tax_class, t.price
+            FROM tl_iso_product_price p
+            LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1
             WHERE p.pid={$dc->id} AND p.config_id=0 AND p.member_group=0 AND p.start='' AND p.stop=''
         ");
 

@@ -292,8 +292,8 @@ class DcaManager extends \Backend
 
             // Register callback to version/restore a price
             else {
-                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback'][] = array('Isotope\Backend\Product\Price', 'createVersion');
-                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback'][] = array('Isotope\Backend\Product\Price', 'restoreVersion');
+                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onversion_callback']['iso_product_price'] = array('Isotope\Backend\Product\Price', 'createVersion');
+                $GLOBALS['TL_DCA']['tl_iso_product']['config']['onrestore_callback']['iso_product_price'] = array('Isotope\Backend\Product\Price', 'restoreVersion');
             }
 
             $arrInherit = array();
