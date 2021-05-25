@@ -217,8 +217,6 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                     \System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
                 }
             }
-        } else {
-            \System::log('No notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
         }
 
         // Set order status only if a payment module has not already set it
