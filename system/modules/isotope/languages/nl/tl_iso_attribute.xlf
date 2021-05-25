@@ -264,6 +264,12 @@
         <source>You can limit the file tree by defining a root directory here.</source>
         <target>U kunt de beschikbare mappen beperken door hier een startmap in te stellen.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.0">
+        <source>Root nodes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.1">
+        <source>You can limit the page tree by defining a root page here.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.storeFile.0">
         <source>Store uploaded files</source>
         <target>Geüploade bestanden opslaan</target>

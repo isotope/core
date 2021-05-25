@@ -285,6 +285,12 @@
         <source>You can limit the file tree by defining a root directory here.</source>
         <target>È possibile limitare l'albero dei file definendo qui una directory principale.</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.0">
+        <source>Root nodes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.1">
+        <source>You can limit the page tree by defining a root page here.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.storeFile.0">
         <source>Store uploaded files</source>
         <target>Memorizzare i file caricati</target>

@@ -159,11 +159,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.0">
         <source>Allowed member groups</source>
-        <target>Produktgruppen</target>
+        <target>Erlaubte Mitgliedergruppen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.groups.1">
         <source>These groups will be able to access the product.</source>
-        <target>Produktgruppen verwalten</target>
+        <target>Diese Gruppen können auf das Produkt zugreifen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_product.guests.0">
         <source>Show to guests only</source>

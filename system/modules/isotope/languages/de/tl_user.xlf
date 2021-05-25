@@ -123,7 +123,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_member_groups.0">
         <source>Allowed member groups</source>
-        <target>Produktgruppen</target>
+        <target>Erlaubte Mitgliedergruppen</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_member_groups.1">
         <source>Back end users can only see orders of these member groups.</source>
