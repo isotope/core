@@ -528,7 +528,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['rootNodes'],
             'exclude'               => true,
             'inputType'             => 'pageTree',
-            'eval'                  => array('multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr', 'rootNodes'=>[84]),
+            'eval'                  => array('multiple'=>true, 'fieldType'=>'checkbox', 'tl_class'=>'clr'),
             'sql'                   =>  "blob NULL",
         ),
         'checkoutRelocate' => array
