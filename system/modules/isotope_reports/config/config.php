@@ -48,20 +48,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
             ),
             'member' => array
             (
-                'members_total' => array
-                (
-                    'callback'          => 'Isotope\Report\MembersTotal',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
-                    'icon'              => 'system/modules/isotope_reports/assets/members_total.png',
-                    'class'             => 'disabled',
-                ),
-                'members_registration' => array
-                (
-                    'callback'          => 'Isotope\Report\MembersRegistration',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_registration'],
-                    'icon'              => 'system/modules/isotope_reports/assets/members_registration.png',
-                    'class'             => 'disabled',
-                ),
                 'members_guests' => array
                 (
                     'callback'          => 'Isotope\Report\MembersGuests',
@@ -74,23 +60,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                     )
                 ),
             ),
-            'rules' => array
-            (
-                'rules_usage' => array
-                (
-                    'callback'          => 'Isotope\Report\RulesUsage',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['rules_usage'],
-                    'icon'              => 'system/modules/isotope_reports/assets/rules_usage.png',
-                    'class'             => 'disabled',
-                ),
-                'rules_coupons' => array
-                (
-                    'callback'          => 'Isotope\Report\RulesCoupons',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['rules_coupons'],
-                    'icon'              => 'system/modules/isotope_reports/assets/rules_coupons.png',
-                    'class'             => 'disabled',
-                ),
-            ),
             'custom' => array(),
         ),
     ),
@@ -101,4 +70,3 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
  * Permissions are access settings for user and groups (fields in tl_user and tl_user_group)
  */
 $GLOBALS['TL_PERMISSIONS'][] = 'iso_reports';
-
