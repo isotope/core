@@ -257,21 +257,25 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_TABLE:
                     $arrOptions = [];
-                    foreach (AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
-                        $arrOptions[] = [
-                            'value' => $model->getLanguageId(),
-                            'label' => $model->label,
-                        ];
+                    if (null !== ($options = AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']))) {
+                        foreach ($options as $model) {
+                            $arrOptions[] = [
+                                'value' => $model->getLanguageId(),
+                                'label' => $model->label,
+                            ];
+                        }
                     }
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                     $arrOptions = [];
-                    foreach (AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']) as $model) {
-                        $arrOptions[] = [
-                            'value' => $model->getLanguageId(),
-                            'label' => $model->label,
-                        ];
+                    if (null !== ($options = AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']))) {
+                        foreach ($options as $model) {
+                            $arrOptions[] = [
+                                'value' => $model->getLanguageId(),
+                                'label' => $model->label,
+                            ];
+                        }
                     }
                     break;
 
