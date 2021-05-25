@@ -1,6 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.7.2 (2021-05-25)
+--------------------------
+
+- Performance improvements by preloading product list data
+- Fixed version conflict when editing multiple product prices (#2188)
+- Fixed cannonical link to following category order (#2218)
+- Fixed rootNodes config and label for pageTree attribute (#2225)
+- Improved layout of order details in back end (#2223)
+- Fixed order list view when using permissions (#2222)
+- Removed system log error entry for missing tl_module.iso_notifications (#2214)
+- Fixed warning if no options have been created yet (#2203)
+- Dropped not-implemented reports (#2218)
+
+
 Version 2.7.1 (2021-04-01)
 --------------------------
 
