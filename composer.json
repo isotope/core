@@ -58,7 +58,8 @@
         "petschko/dhl-php-sdk": "For DHL Business shipping",
         "mpay24/mpay24-php": "For mPAY24 payment provider",
         "terminal42/swissbilling-api": "For SwissBilling payment provider",
-        "contao/tcpdf-bundle": "Required for the standard document type in Contao 4.7+"
+        "contao/tcpdf-bundle": "Required for the standard document type in Contao 4.7+",
+        "rhymedigital/isotope_quickproducts": "To select products in a content element"
     },
     "conflict": {
         "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
