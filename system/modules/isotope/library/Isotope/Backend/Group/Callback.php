@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Group;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Backend\Permission;
 use Isotope\Model\Group;
@@ -55,8 +56,7 @@ class Callback extends Permission
         }
 
         if (!\is_array($user->iso_groupp) || empty($user->iso_groupp)) {
-            \System::log('Unallowed access to product groups!', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Unallowed access to product groups!');
         }
 
         // Set root IDs
@@ -113,8 +113,7 @@ class Callback extends Permission
                         && !$user->hasAccess('delete', 'iso_groupp')
                     )
                 ) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' group ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' group ID "' . \Input::get('id') . '"');
                 }
                 break;
 
@@ -132,8 +131,7 @@ class Callback extends Permission
 
             default:
                 if (\strlen(\Input::get('act'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' groups', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' groups');
                 }
                 break;
         }

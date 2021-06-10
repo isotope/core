@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Payment;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Backend\Permission;
 use Isotope\Model\Payment;
@@ -76,8 +77,7 @@ class Callback extends Permission
             case 'delete':
             case 'show':
                 if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' payment module ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' payment module ID "' . \Input::get('id') . '"');
                 }
                 break;
 
@@ -95,8 +95,7 @@ class Callback extends Permission
 
             default:
                 if (\strlen(\Input::get('act'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' payment modules', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' payment modules');
                 }
                 break;
         }
@@ -238,8 +237,7 @@ class Callback extends Permission
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
-            \System::log('Not enough permissions to enable/disable payment method ID "' . $intId . '"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to enable/disable payment method ID "' . $intId . '"');
         }
 
         $objVersions = new \Versions('tl_iso_payment', $intId);

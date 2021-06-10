@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\AttributeOption;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
@@ -178,8 +179,7 @@ class Callback extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->hasAccess('tl_iso_attribute_option::published', 'alexf')) {
-            \System::log('Not enough permissions to publish/unpublish attribute option ID "'.$intId.'"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to publish/unpublish attribute option ID "'.$intId.'"');
         }
 
         $objVersions = new \Versions('tl_iso_attribute_option', $intId);

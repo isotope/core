@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Download;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Model\Attribute;
 use Isotope\Model\Download;
@@ -177,8 +178,7 @@ class Callback extends \Backend
 
         // Check permissions to publish
         if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
-            \System::log('Not enough permissions to publish/unpublish download ID "' . $intId . '"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to publish/unpublish download ID "' . $intId . '"');
         }
 
         $objVersions = new \Versions('tl_iso_download', $intId);

@@ -12,6 +12,7 @@
 namespace Isotope\Backend\Shipping;
 
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Backend\Permission;
 use Isotope\Model\Shipping;
@@ -78,8 +79,7 @@ class Callback extends Permission
                         && !\BackendUser::getInstance()->hasAccess('delete', 'iso_shipping_modulep')
                     )
                 ) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' shipping module ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' shipping module ID "' . \Input::get('id') . '"');
                 }
                 break;
 
@@ -97,8 +97,7 @@ class Callback extends Permission
 
             default:
                 if (\strlen(\Input::get('act'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' shipping modules', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' shipping modules');
                 }
                 break;
         }
@@ -199,8 +198,7 @@ class Callback extends Permission
         if (!\BackendUser::getInstance()->isAdmin
             && !\BackendUser::getInstance()->hasAccess('tl_iso_shipping::enabled', 'alexf')
         ) {
-            \System::log('Not enough permissions to enable/disable shipping method ID "' . $intId . '"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to enable/disable shipping method ID "' . $intId . '"');
         }
 
         $objVersions = new \Versions('tl_iso_shipping', $intId);

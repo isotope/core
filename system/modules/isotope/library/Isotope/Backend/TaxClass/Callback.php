@@ -12,6 +12,7 @@
 namespace Isotope\Backend\TaxClass;
 
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Backend\Permission;
 
@@ -73,8 +74,7 @@ class Callback extends Permission
             case 'delete':
             case 'show':
                 if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_tax_classp'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' tax class ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' tax class ID "' . \Input::get('id') . '"');
                 }
                 break;
 
@@ -92,8 +92,7 @@ class Callback extends Permission
 
             default:
                 if (\strlen(\Input::get('act'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' tax classes', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' tax classes');
                 }
                 break;
         }

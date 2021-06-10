@@ -14,6 +14,8 @@ namespace Isotope\Backend\ProductCollection;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Controller;
+use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\StringUtil;
@@ -121,7 +123,7 @@ class Callback extends \Backend
         $objOrder = Order::findByPk($dc->id);
 
         if (null === $objOrder) {
-            \Controller::redirect('contao/main.php?act=error');
+            throw new InternalServerErrorException('Order ID '.$dc->id.' not found');
         }
 
         $arrEmail = deserialize($objOrder->email_data, true);
@@ -249,8 +251,7 @@ class Callback extends \Backend
         // Only admins can delete orders. Others should set the order_status to cancelled.
         unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
         if ('delete' === \Input::get('act') || 'deleteAll' === \Input::get('act')) {
-            \System::log('Only admin can delete orders!', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Only admin can delete orders!');
         }
 
         $arrIds = [0];
@@ -306,8 +307,7 @@ class Callback extends \Backend
         $GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['sorting']['root'] = $arrIds;
 
         if (\Input::get('id') != '' && !\in_array(\Input::get('id'), $arrIds)) {
-            \System::log('Trying to access disallowed order ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
-            \Controller::redirect(TL_SCRIPT . '?act=error');
+            throw new AccessDeniedException('Trying to access disallowed order ID ' . \Input::get('id'));
         }
     }
 

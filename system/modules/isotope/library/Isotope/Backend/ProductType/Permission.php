@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
 
@@ -26,9 +27,7 @@ class Permission extends \Backend
         $session = \Session::getInstance()->getData();
 
         if ('delete' === \Input::get('act') && \in_array(\Input::get('id'), static::getUndeletableIds())) {
-            \System::log('Product type ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
-
+            throw new InternalServerErrorException('Product type ID '.\Input::get('id').' is used in an order and can\'t be deleted');
         } elseif ('deleteAll' === \Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 

@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Rule;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Haste\Util\Format;
 
 
@@ -135,8 +136,7 @@ class Callback extends \Backend
 
         // Check permissions to publish
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf')) {
-            \System::log('Not enough permissions to enable/disable rule ID "' . $intId . '"', 'tl_iso_rule toggleVisibility', TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to enable/disable rule ID "' . $intId . '"');
         }
 
 //        $this->createInitialVersion('tl_iso_rule', $intId);

@@ -9,6 +9,8 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\CoreBundle\Exception\InternalServerErrorException;
+
 /**
  * Class DC_TablePageId
  *
@@ -110,8 +112,7 @@ class DC_TablePageId extends \DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
         {
-            $this->log('Table "'.$this->strTable.'" is not sortable', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            throw new InternalServerErrorException('Table "'.$this->strTable.'" is not sortable');
         }
 
         $cr = array();
@@ -140,8 +141,7 @@ class DC_TablePageId extends \DC_Table
         // Update the record
         if (\in_array($this->set['page_id'], $cr))
         {
-            \System::log('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)', 'DC_Table cut()', TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new InternalServerErrorException('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)');
         }
 
         $this->set['tstamp'] = time();
@@ -199,8 +199,7 @@ class DC_TablePageId extends \DC_Table
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
         {
-            $this->log('Table "'.$this->strTable.'" is not sortable', __METHOD__, TL_ERROR);
-            $this->redirect('contao/main.php?act=error');
+            throw new InternalServerErrorException('Table "'.$this->strTable.'" is not sortable');
         }
 
         // page_id is mandatory
@@ -1064,7 +1063,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
         {
             foreach ($orderBy as $k=>$v)
             {
-                list($key, $direction) = explode(' ', $v, 2);
+                [$key, $direction] = explode(' ', $v, 2);
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['findInSet'])
                 {
@@ -1185,7 +1184,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 {
                     if (strpos($f, ':') !== false)
                     {
-                        list($f,) = explode(':', $f, 2);
+                        [$f,] = explode(':', $f, 2);
                     }
 
                     if ($firstOrderBy == $f)
@@ -1211,7 +1210,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 {
                     if (strpos($f, ':') !== false)
                     {
-                        list($f,) = explode(':', $f, 2);
+                        [$f,] = explode(':', $f, 2);
                     }
 
                     $return .= '
@@ -1245,8 +1244,8 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                     if (strpos($v, ':') !== false)
                     {
-                        list($strKey, $strTable) = explode(':', $v);
-                        list($strTable, $strField) = explode('.', $strTable);
+                        [$strKey, $strTable] = explode(':', $v);
+                        [$strTable, $strField] = explode('.', $strTable);
 
                         $objRef = $this->Database->prepare("SELECT " . $strField . " FROM " . $strTable . " WHERE id=?")
                                                  ->limit(1)

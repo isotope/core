@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Isotope\Model\Group;
 use Isotope\Model\ProductType;
@@ -326,8 +327,7 @@ window.addEvent('domready', function() {
 
         // Check permissions to publish
         if (!$user->isAdmin && !$user->hasAccess('tl_iso_product::published', 'alexf')) {
-            \System::log('Not enough permissions to publish/unpublish product ID "' . $intId . '"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Not enough permissions to publish/unpublish product ID "' . $intId . '"');
         }
 
         $objVersions = new \Versions('tl_iso_product', $intId);

@@ -12,6 +12,8 @@
 namespace Isotope\BackendModule;
 
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
+
 abstract class BackendOverview extends \BackendModule
 {
 
@@ -52,7 +54,7 @@ abstract class BackendOverview extends \BackendModule
         // enable collapsing legends
         $session = \Session::getInstance()->get('fieldset_states');
         foreach ($this->getModules() as $k => $arrGroup) {
-            list($k, $hide) = explode(':', $k, 2);
+            [$k, $hide] = explode(':', $k, 2);
 
             if (isset($session['iso_be_overview_legend'][$k])) {
                 $arrGroup['collapse'] = !$session['iso_be_overview_legend'][$k];
@@ -122,8 +124,7 @@ abstract class BackendOverview extends \BackendModule
 
         // Check whether the current user has access to the current module
         if (!$this->checkUserAccess($module)) {
-            \System::log('Module "' . $module . '" was not allowed for user "' . $this->User->username . '"', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Module "' . $module . '" was not allowed for user "' . $this->User->username . '"');
         }
 
         // Redirect the user to the specified page
@@ -150,8 +151,7 @@ abstract class BackendOverview extends \BackendModule
         // Redirect if the current table does not belong to the current module
         if ($strTable != '') {
             if (!\in_array($strTable, (array) $arrModule['tables'], true)) {
-                \System::log('Table "' . $strTable . '" is not allowed in module "' . $module . '"', __METHOD__, TL_ERROR);
-                \Controller::redirect('contao/main.php?act=error');
+                throw new AccessDeniedException('Table "' . $strTable . '" is not allowed in module "' . $module . '"');
             }
 
             // Load the language and DCA file

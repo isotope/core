@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Backend\Permission;
@@ -78,8 +79,7 @@ class Callback extends Permission
             case 'delete':
             case 'show':
                 if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"');
                 }
                 break;
 
@@ -97,8 +97,7 @@ class Callback extends Permission
 
             default:
                 if (\strlen(\Input::get('act'))) {
-                    \System::log('Not enough permissions to ' . \Input::get('act') . ' product types', __METHOD__, TL_ERROR);
-                    \Controller::redirect('contao/main.php?act=error');
+                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' product types');
                 }
                 break;
         }

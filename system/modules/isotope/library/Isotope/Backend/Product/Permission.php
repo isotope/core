@@ -11,6 +11,8 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection;
@@ -27,9 +29,7 @@ class Permission extends \Backend
         $session = \Session::getInstance()->getData();
 
         if ('delete' === \Input::get('act') && \in_array(\Input::get('id'), static::getUndeletableIds())) {
-            \System::log('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
-
+            throw new InternalServerErrorException('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted');
         } elseif ('deleteAll' === \Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
@@ -98,8 +98,7 @@ class Permission extends \Backend
                     || !\in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])
                 )
             ) {
-                \System::log('Cannot access product ID ' . \Input::get('id'), __METHOD__, TL_ERROR);
-                \Controller::redirect('contao/main.php?act=error');
+                throw new AccessDeniedException('Cannot access product ID ' . \Input::get('id'));
             }
         }
     }

@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Backend\Group\Breadcrumb;
@@ -596,8 +597,7 @@ class DcaManager extends \Backend
             $session['filter']['tl_iso_product']['iso_page'] = 0;
             \Session::getInstance()->setData($session);
 
-            \System::log('Page ID ' . $intNode . ' was not mounted', __METHOD__, TL_ERROR);
-            \Controller::redirect('contao/main.php?act=error');
+            throw new AccessDeniedException('Page ID ' . $intNode . ' was not mounted');
         }
 
         // Add root link
