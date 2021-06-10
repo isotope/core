@@ -3,6 +3,16 @@ services:
         tags:
             - { name: kernel.event_listener, event: contao.preview_url_create, method: onPreviewUrlCreate }
 
+    Isotope\Picker\ProductPickerProvider:
+        arguments:
+            - '@contao.framework'
+            - '@knp_menu.factory'
+            - '@router'
+            - '@translator'
+            - '@database_connection'
+        tags:
+            - contao.picker_provider
+
     Isotope\EventListener\SymlinkCommandListener:
         arguments:
             - '%kernel.project_dir%'
