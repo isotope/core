@@ -50,10 +50,6 @@ $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::g
 
 if ('BE' === TL_MODE) {
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css|static';
-
-    if (file_exists(TL_ROOT . '/system/themes/flexible/icons')) {
-        $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend-svg.css|static';
-    }
 }
 
 
@@ -534,4 +530,3 @@ $GLOBALS['TL_AUTO_ITEM'][] = 'step';
  */
 $GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
 $GLOBALS['TL_CONFIG']['iso_orderTimeout'] = 604800;
-
