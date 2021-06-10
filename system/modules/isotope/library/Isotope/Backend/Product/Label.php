@@ -85,7 +85,7 @@ class Label
                     /** @noinspection BadExpressionStatementJS */
                     /** @noinspection HtmlUnknownTarget */
                     return sprintf(
-                        '<a href="%s" onclick="%s"><img src="%s" alt="%s" align="left"></a>',
+                        '<a href="%s" onclick="%s"><img src="%s" alt="%s"></a>',
                         TL_FILES_URL . $strImage,
                         $script,
                         TL_ASSETS_URL . \Image::get($strImage, 50, 50, 'proportional'),

@@ -255,10 +255,6 @@ table.multicolumnwizard .operations {
     text-align: center;
 }
 
-.iso_listing_container td.col_images img {
-    float: none;
-}
-
 .tl_listing_container .col_order_status {
     padding: 0;
 }
