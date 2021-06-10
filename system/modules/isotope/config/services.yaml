@@ -1,0 +1,10 @@
+services:
+    Isotope\EventListener\FrontendPreviewListener:
+        tags:
+            - { name: kernel.event_listener, event: contao.preview_url_create, method: onPreviewUrlCreate }
+
+    Isotope\EventListener\SymlinkCommandListener:
+        arguments:
+            - '%kernel.project_dir%'
+        tags:
+            - { name: kernel.event_listener, event: console.terminate }
