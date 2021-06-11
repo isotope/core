@@ -2716,6 +2716,13 @@ class DC_ProductData extends \DC_Table
             $arrValues = $this->values;
             $query = "SELECT COUNT(*) AS count FROM " . $this->strTable;
 
+            if (\Input::get('id')) {
+                $arrProcedure[] = "pid=?";
+                $arrValues[] = \Input::get('id');
+            } else {
+                $arrProcedure[] = "pid=0";
+            }
+
             if (!empty($this->root) && \is_array($this->root))
             {
                 $arrProcedure[] = 'id IN(' . implode(',', $this->root) . ')';
@@ -3316,19 +3323,5 @@ class DC_ProductData extends \DC_Table
         }
 
         \Controller::redirect(\Backend::addToUrl('act=edit'));
-    }
-
-    /**
-     * Gets session instance depending on Contao 3 or Contao 4.
-     *
-     * @return Session|\Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private function getSession()
-    {
-        if (method_exists('Contao\System', 'getContainer')) {
-            return \System::getContainer()->get('session');
-        }
-
-        return \Session::getInstance();
     }
 }
