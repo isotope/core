@@ -11,19 +11,17 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\Controller;
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\DataContainer;
+use Contao\Input;
 use Contao\System;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 
 class Callback extends \Backend
 {
-
-    /**
-     * Disable the internal field name field if it is not empty.
-     *
-     * @param object $dc
-     */
-    public function disableFieldName($dc)
+    public function onLoad($dc)
     {
         $act = \Input::get('act');
 
@@ -36,6 +34,19 @@ class Callback extends \Backend
             if ($objAttribute->field_name != '') {
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled']  = true;
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['mandatory'] = false;
+            }
+
+            if ($objAttribute->customer_defined || $objAttribute->variant_option) {
+                $pm = PaletteManipulator::create()
+                    ->addLegend('template_legend', '', PaletteManipulator::POSITION_APPEND)
+                    ->addField('customTpl', 'template_legend', PaletteManipulator::POSITION_APPEND)
+                ;
+
+                foreach ($GLOBALS['TL_DCA']['tl_iso_attribute']['palettes'] as $k => $v) {
+                    if (!\is_array($v)) {
+                        $pm->applyToPalette($k, 'tl_iso_attribute');
+                    }
+                }
             }
         }
     }
@@ -175,7 +186,7 @@ class Callback extends \Backend
                     $foreignKey = $matches[3];
                 }
 
-                list($strTable, $strField) = explode('.', $foreignKey, 2);
+                [$strTable, $strField] = explode('.', $foreignKey, 2);
                 \Database::getInstance()->execute("SELECT $strField FROM $strTable");
             }
         }
@@ -200,5 +211,28 @@ class Callback extends \Backend
         }
 
         return $varValue;
+    }
+
+    public function getAttributeTemplates(DataContainer $dc): array
+    {
+        if ('overrideAll' === Input::get('act')) {
+            return Controller::getTemplateGroup('form_');
+        }
+
+        $default = 'form_' . $dc->activeRecord->type;
+
+        // Backwards compatibility
+        if ('text' === $dc->activeRecord->type) {
+            $default = 'form_textfield';
+        }
+
+        $arrTemplates = Controller::getTemplateGroup('form_' . $dc->activeRecord->type . '_', array(), $default);
+
+        // Backwards compatibility
+        if ('text' === $dc->activeRecord->type) {
+            $arrTemplates += Controller::getTemplateGroup('form_textfield_');
+        }
+
+        return $arrTemplates;
     }
 }

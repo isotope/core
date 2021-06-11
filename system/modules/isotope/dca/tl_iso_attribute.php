@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         'onload_callback' => array
         (
             array('Isotope\Backend', 'initializeSetupModule'),
-            array('Isotope\Backend\Attribute\Callback', 'disableFieldName'),
+            array('Isotope\Backend\Attribute\Callback', 'onLoad'),
         ),
         'onsubmit_callback' => array
         (
@@ -607,6 +607,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'customTpl' => array
+        (
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options_callback'        => array('Isotope\Backend\Attribute\Callback', 'getAttributeTemplates'),
+            'eval'                    => array('chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''"
         ),
     ),
 );
