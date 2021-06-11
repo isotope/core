@@ -114,7 +114,6 @@ abstract class BackendOverview extends \BackendModule
     protected function getModule($module)
     {
         $arrModule = array();
-        $dc = null;
 
         foreach ($this->arrModules as $arrGroup) {
             if (!empty($arrGroup['modules']) && \array_key_exists($module, $arrGroup['modules'])) {
@@ -166,27 +165,18 @@ abstract class BackendOverview extends \BackendModule
                     }
                 }
             }
-
-            // Fabricate a new data container object
-            if (!\strlen($GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'])) {
-                \System::log('Missing data container for table "' . $strTable . '"', __METHOD__, TL_ERROR);
-                trigger_error('Could not create a data container object', E_USER_ERROR);
-            }
-
-            $dataContainer = 'DC_' . $GLOBALS['TL_DCA'][$strTable]['config']['dataContainer'];
-            $dc            = new $dataContainer($strTable);
         }
 
         // AJAX request
         if ($_POST && \Environment::get('isAjaxRequest')) {
-            $this->objAjax->executePostActions($dc);
+            $this->objAjax->executePostActions($this->objDc);
         }
 
         // Call module callback
         elseif (class_exists($arrModule['callback'])) {
 
             /** @var \BackendModule $objCallback */
-            $objCallback = new $arrModule['callback']($dc, $arrModule);
+            $objCallback = new $arrModule['callback']($this->objDc, $arrModule);
 
             return $objCallback->generate();
         }
@@ -195,43 +185,40 @@ abstract class BackendOverview extends \BackendModule
         elseif (\Input::get('key') && isset($arrModule[\Input::get('key')])) {
             $objCallback = new $arrModule[\Input::get('key')][0]();
 
-            return $objCallback->{$arrModule[\Input::get('key')][1]}($dc, $strTable, $arrModule);
-        } // Default action
-        elseif (\is_object($dc)) {
-            $act = (string) \Input::get('act');
-
-            if ('' === $act || 'paste' === $act || 'select' === $act) {
-                $act = ($dc instanceof \listable) ? 'showAll' : 'edit';
-            }
-
-            switch ($act) {
-                case 'delete':
-                case 'show':
-                case 'showAll':
-                case 'undo':
-                    if (!$dc instanceof \listable) {
-                        \System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
-                        trigger_error('The current data container is not listable', E_USER_ERROR);
-                    }
-                    break;
-
-                case 'create':
-                case 'cut':
-                case 'cutAll':
-                case 'copy':
-                case 'copyAll':
-                case 'move':
-                case 'edit':
-                    if (!$dc instanceof \editable) {
-                        \System::log('Data container ' . $strTable . ' is not editable', __METHOD__, TL_ERROR);
-                        trigger_error('The current data container is not editable', E_USER_ERROR);
-                    }
-                    break;
-            }
-
-            return $dc->$act();
+            return $objCallback->{$arrModule[\Input::get('key')][1]}($this->objDc, $strTable, $arrModule);
         }
 
-        return null;
+        $act = (string) \Input::get('act');
+
+        if ('' === $act || 'paste' === $act || 'select' === $act) {
+            $act = ($this->objDc instanceof \listable) ? 'showAll' : 'edit';
+        }
+
+        switch ($act) {
+            case 'delete':
+            case 'show':
+            case 'showAll':
+            case 'undo':
+                if (!$this->objDc instanceof \listable) {
+                    \System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
+                    trigger_error('The current data container is not listable', E_USER_ERROR);
+                }
+                break;
+
+            case 'create':
+            case 'cut':
+            case 'cutAll':
+            case 'copy':
+            case 'copyAll':
+            case 'move':
+            case 'edit':
+                if (!$this->objDc instanceof \editable) {
+                    \System::log('Data container ' . $strTable . ' is not editable', __METHOD__, TL_ERROR);
+                    trigger_error('The current data container is not editable', E_USER_ERROR);
+                }
+                break;
+        }
+
+        return $this->objDc->$act();
     }
 }

@@ -47,7 +47,7 @@ class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttribu
         if ('attribute' === $this->optionsSource) {
             $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
         } else {
-            $arrData['fields'][$this->field_name]['sql'] = "int(10) NOT NULL default '0'";
+            $arrData['fields'][$this->field_name]['sql'] = "int(10) NOT NULL default 0";
         }
 
         if ($this->fe_filter) {
