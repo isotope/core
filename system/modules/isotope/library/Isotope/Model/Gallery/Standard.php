@@ -351,6 +351,7 @@ class Standard extends Gallery implements IsotopeGallery
         $objFile = new \File($strFile);
 
         if (!$objFile->exists()) {
+            return [];
             throw new \InvalidArgumentException('The file "' . $strFile . '" does not exist!');
         }
 
