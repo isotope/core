@@ -13,6 +13,10 @@
     ],
     "funding": [
         {
+            "type": "other",
+            "url": "https://circle.isotopeecommerce.org"
+        },
+        {
             "type": "github",
             "url": "https://github.com/terminal42"
         },
