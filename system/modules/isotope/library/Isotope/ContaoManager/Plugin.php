@@ -12,7 +12,9 @@
 namespace Isotope\ContaoManager;
 
 use Contao\ManagerPlugin\Config\ConfigPluginInterface;
+use Isotope\DependencyInjection\Compiler\RegisterHookListenersPass;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class Plugin implements ConfigPluginInterface
 {
@@ -22,5 +24,9 @@ class Plugin implements ConfigPluginInterface
     public function registerContainerConfiguration(LoaderInterface $loader, array $managerConfig)
     {
         $loader->load(__DIR__.'/../../../config/services.yaml');
+
+        $loader->load(function (ContainerBuilder $container) {
+            $container->addCompilerPass(new RegisterHookListenersPass());
+        });
     }
 }
