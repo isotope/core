@@ -20,9 +20,13 @@
     background-repeat:no-repeat;
 }
 
+.tl_version_panel.tl_iso_products_panel #tl_version {
+    float: right;
+}
+
 .header_iso_copy
 {
-    background-image:url(../../../../themes/default/images/copy.gif);
+    background-image:url(../../../../themes/flexible/icons/copy.svg);
     background-position:left center;
     background-repeat:no-repeat;
     padding:2px 0 3px 20px;
@@ -234,7 +238,7 @@ table.multicolumnwizard .operations {
 
 .iso_filter .tl_submit.active {
     border: 1px solid #b8b8b8;
-    background: #eee;
+    background: #ffd;
     background-image: -moz-linear-gradient(bottom, #ccc 0%, #ffd 60%);
     background-image: -webkit-linear-gradient(bottom, #ccc 0%, #ffd 60%);
     background-image: -o-linear-gradient(bottom, #ccc 0%, #ffd 60%);
@@ -427,10 +431,6 @@ body.iso_be_overview .tip-wrap{
     margin-left:20px;
 }
 
-.header_iso_copy {
-    background-image:url(../../../../themes/flexible/icons/copy.svg);
-}
-
 .mod_iso_orderdetails {
     margin: 2%;
 }
@@ -481,8 +481,4 @@ body.iso_be_overview .tip-wrap{
 .iso_panels .tl_radio {
     margin-left: 8px;
     margin-right: 4px;
-}
-
-.iso_filter .tl_submit.active {
-    background: #ffd;
 }
