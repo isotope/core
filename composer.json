@@ -38,7 +38,7 @@
         "terminal42/contao-conditionalselectmenu":"^3.0.3",
         "terminal42/dcawizard": "~2.3",
         "codefog/contao-haste": "^4.24.3",
-        "menatwork/contao-multicolumnwizard": "~3.2",
+        "menatwork/contao-multicolumnwizard-bundle": "^3.4",
         "terminal42/contao-tablelookupwizard": "~3.2",
         "terminal42/notification_center": "~1.0",
         "terminal42/dc_multilingual": "~4.0",
