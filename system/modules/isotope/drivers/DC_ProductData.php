@@ -11,6 +11,7 @@
 
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
@@ -1370,7 +1371,7 @@ class DC_ProductData extends \DC_Table
         {
             foreach ($orderBy as $k=>$v)
             {
-                list($key, $direction) = explode(' ', $v, 2);
+                [$key, $direction] = explode(' ', $v, 2);
 
                 // If there is no direction, check the global flag in sorting mode 1 or the field flag in all other sorting modes
                 if (!$direction)
