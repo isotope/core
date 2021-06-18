@@ -27,7 +27,7 @@ class AttributeWizard extends \Backend
      *
      * @return array
      */
-    public function getColumns(\MultiColumnWizard $objWidget)
+    public function getColumns($objWidget)
     {
         \Controller::loadDataContainer(Product::getTable());
 

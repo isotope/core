@@ -25,7 +25,6 @@ class OptionsWizard extends \Backend
 
     /**
      * Return list of MultiColumnWizard columns
-     * @param   MultiColumnWizard
      * @return  array
      */
     public function getColumns($objWidget)
