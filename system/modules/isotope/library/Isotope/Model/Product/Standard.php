@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Product;
 
-use Contao\StringUtil;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -1070,7 +1069,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objJumpTo = $objIsotopeListPage ?: $objPage;
         }
 
-        if (null === $objJumpTo) {
+        if (!$objJumpTo instanceof \PageModel) {
             return '';
         }
 

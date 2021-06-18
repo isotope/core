@@ -426,7 +426,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         return Product::countPublishedBy(
             $arrColumns,
-            $queryBuilder->getSqlValues()
+            $queryBuilder->getSqlValues(),
+            ['group' => 'tl_iso_product.id']
         );
     }
 
