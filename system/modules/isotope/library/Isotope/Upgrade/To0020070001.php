@@ -15,9 +15,9 @@ class To0020070001 extends Base
 
     private function migrateProductCollectionLog(Database $db)
     {
-        if (!$db->tableExists('tl_iso_product_collection')
-            || !$db->tableExists('tl_iso_product_collection_log')
-            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log')
+        if (!$db->tableExists('tl_iso_product_collection', true)
+            || !$db->tableExists('tl_iso_product_collection_log', true)
+            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log', true)
         ) {
             return;
         }
