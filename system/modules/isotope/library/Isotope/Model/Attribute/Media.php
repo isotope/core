@@ -74,6 +74,7 @@ class Media extends Attribute
         }
 
         $objContentModel = new \ContentModel();
+        $objContentModel->tstamp = time();
         $objContentModel->type = 'media';
         $objContentModel->cssID = serialize(array('', $this->field_name));
         $objContentModel->playerSRC = serialize($arrFiles);

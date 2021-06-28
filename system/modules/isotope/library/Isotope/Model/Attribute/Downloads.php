@@ -36,6 +36,7 @@ class Downloads extends FileTree
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $objContentModel = new \ContentModel();
+        $objContentModel->tstamp = time();
         $objContentModel->type = 'downloads';
         $objContentModel->multiSRC = $this->getValue($objProduct);
         $objContentModel->sortBy = $this->sortBy;
