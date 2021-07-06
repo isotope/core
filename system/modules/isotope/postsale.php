@@ -235,6 +235,7 @@ class PostSale extends \Frontend
                     'getAttributesFromDca',
                     'loadDataContainer',
                     'replaceInsertTags',
+                    'sendNotificationMessage',
                 ]
             )
         );
