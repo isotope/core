@@ -82,7 +82,7 @@ class OpenPaymentPlatform extends Payment
         $paymentType = array_shift($supportedTypes);
 
         $base = $this->getBaseUrl();
-        $request = $this->createRequest($paymentType, $objOrder, $this->preparePaymentParams($objOrder));
+        $request = $this->createPostRequest($paymentType, $objOrder, $this->preparePaymentParams($objOrder));
         $request->send($base . '/v1/checkouts');
 
         $response = json_decode($request->response, true);
@@ -130,7 +130,14 @@ class OpenPaymentPlatform extends Payment
         $ndc = \Input::get('id');
 
         $request = new Request();
-        $request->send($this->getBaseUrl() . '/v1/checkouts/' . $ndc . '/payment');
+        $url = $this->getBaseUrl() . '/v1/checkouts/' . $ndc . '/payment';
+
+        if ('token' === $this->opp_auth) {
+            $url .= '?entityId='.$this->opp_entity_id;
+            $request->setHeader('Authorization', 'Bearer '.$this->opp_token);
+        }
+
+        $request->send($url);
 
         $response = json_decode($request->response, true);
         $this->storeApiResponse($response, $objOrder);
@@ -171,7 +178,7 @@ class OpenPaymentPlatform extends Payment
             && isset(static::$paymentBrands[$response['paymentBrand']])
             && \in_array('CP', static::$paymentBrands[$response['paymentBrand']], true)
         ) {
-            $request = $this->createRequest('CP', $objOrder);
+            $request = $this->createPostRequest('CP', $objOrder);
             $request->send($this->getBaseUrl() . '/v1/payments/' . $response['id']);
 
             $response = json_decode($request->response, true);
@@ -215,25 +222,23 @@ class OpenPaymentPlatform extends Payment
      *
      * @return Request
      */
-    private function createRequest($paymentType, IsotopePurchasableCollection $objOrder, array $params = [])
+    private function createPostRequest($paymentType, IsotopePurchasableCollection $objOrder, array $params = [])
     {
-        $params['authentication.entityId'] = $this->opp_entity_id;
-
-        if ('token' !== $this->opp_auth) {
-            $params['authentication.userId']   = $this->opp_user_id;
-            $params['authentication.password'] = $this->opp_password;
-        }
-
-        $params['amount']                  = number_format($objOrder->getTotal(), 2, '.', '');
-        $params['currency']                = $objOrder->getCurrency();
-        $params['paymentType']             = $paymentType;
-
         $request = new Request();
         $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         if ('token' === $this->opp_auth) {
+            $params['entityId'] = $this->opp_entity_id;
             $request->setHeader('Authorization', 'Bearer '.$this->opp_token);
+        } else {
+            $params['authentication.entityId'] = $this->opp_entity_id;
+            $params['authentication.userId']   = $this->opp_user_id;
+            $params['authentication.password'] = $this->opp_password;
         }
+
+        $params['amount'] = number_format($objOrder->getTotal(), 2, '.', '');
+        $params['currency'] = $objOrder->getCurrency();
+        $params['paymentType'] = $paymentType;
 
         $request->method = 'post';
         $request->data = http_build_query($params);

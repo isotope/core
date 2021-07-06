@@ -35,8 +35,8 @@ class To0020070000 extends Base
 
     private function migrateProductCollectionLog(Database $db)
     {
-        if (!$db->tableExists('tl_iso_product_collection')
-            || $db->tableExists('tl_iso_product_collection_log')
+        if (!$db->tableExists('tl_iso_product_collection', true)
+            || $db->tableExists('tl_iso_product_collection_log', true)
         ) {
             return;
         }
@@ -82,7 +82,7 @@ CREATE TABLE tl_iso_product_collection_log (
         }
 
         $data = $db->execute(
-            "SELECT * FROm tl_module WHERE type='iso_checkout' AND iso_order_conditions>0"
+            "SELECT * FROM tl_module WHERE type='iso_checkout' AND iso_order_conditions>0"
         )->fetchAllAssoc();
 
         $this->updateDatabaseField('iso_order_conditions', 'tl_module');

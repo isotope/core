@@ -1,6 +1,20 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.7.3 (2021-07-06)
+--------------------------
+
+- Show order information in the details view
+- Allow sendNotificationMessage hook in postsale script (#2231)
+- Fixed open payment platform authentication
+- Fixed missing tstamp for content element
+- Improved type safety when generating product URL
+- Fixed SQL definition for integer attributes
+- Fixed product count did include number of categories in cumulative filter
+- Fixed caching when migrating product collection log table
+- Fixed mandatory file uploads in order conditions not working (#2228)
+
+
 Version 2.7.2 (2021-05-25)
 --------------------------
 
