@@ -199,6 +199,9 @@
         <source>Order details</source>
         <target>Свойства заказа</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_legend">
+        <source>Order information</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>
       </trans-unit>

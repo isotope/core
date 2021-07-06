@@ -206,6 +206,9 @@
         <source>Order details</source>
         <target>Szczegóły zamówienia</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_legend">
+        <source>Order information</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>
         <target>Informacje e-mail</target>
