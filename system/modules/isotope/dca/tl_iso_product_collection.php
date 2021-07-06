@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     'palettes' => array
     (
         '__selector__' => ['sendNotification'],
-        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
+        'default'                   => '{status_legend},order_status,date_paid,date_shipped,notes,sendNotification,submit_buttons;{log_legend},order_log;{details_legend},details;{show_legend:hide},show;{email_legend:hide},email_data;{billing_address_legend:hide},billing_address_data;{shipping_address_legend:hide},shipping_address_data',
     ),
 
     // Subpalettes
@@ -160,7 +160,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'flag'                  => 8,
             'filter'                => true,
             'sorting'               => true,
-            'eval'                  => array('rgxp'=>'datim'),
+            'eval'                  => array('rgxp'=>'datim', 'doNotShow'=>true),
             'sql'                   => "int(10) NULL",
         ),
         'store_id' => array
@@ -217,7 +217,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
-            'eval'                  => array('tl_class'=>'w50'),
+            'eval'                  => array('tl_class'=>'w50', 'doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard', 'doNotShow'=>true),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
@@ -234,7 +234,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard'),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard', 'doNotShow'=>true),
             'sql'                   => 'int(10) NULL',
         ),
         'sendNotification' => array
@@ -242,7 +242,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'eval'                  => array('submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'notification' => array
@@ -252,21 +252,21 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'inputType'             => 'select',
             'foreignKey'            => 'tl_nc_notification.title',
             'options_callback'      => array('Isotope\Backend\ProductCollection\Callback', 'onNotificationOptionsCallback'),
-            'eval'                  => array('mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'eval'                  => array('mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
         ),
         'notification_shipping_tracking' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
         ),
         'notification_customer_notes' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr'),
+            'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
         ),
         'submit_buttons' => array
         (
@@ -310,17 +310,13 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'],
             'search'                => true,
             'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
+            'eval'                  => array('doNotShow'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'order_log' => array
         (
             'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'onLogInputFieldCallback'),
-            'eval'                  => array('doNotShow'=>true),
-        ),
-        'details' => array
-        (
-            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateOrderDetails'),
             'eval'                  => array('doNotShow'=>true),
         ),
         'subtotal' => array
@@ -352,6 +348,9 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'language' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['language'],
+            'options_callback' => static function () {
+                return \Contao\System::getLanguages();
+            },
             'sql'                   => "varchar(5) NOT NULL default ''"
         ),
         'notes' => array
@@ -359,8 +358,18 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('style'=>'height:80px;', 'tl_class' => 'clr'),
+            'eval'                  => array('style'=>'height:80px;', 'tl_class' => 'clr', 'doNotShow' => true),
             'sql'                   => "text NULL",
+        ),
+        'details' => array
+        (
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateOrderDetails'),
+            'eval'                  => array('doNotShow'=>true),
+        ),
+        'show' => array
+        (
+            'input_field_callback'  => array('Isotope\Backend\ProductCollection\Callback', 'generateOrderShow'),
+            'eval'                  => array('doNotShow'=>true),
         ),
         'email_data' => array
         (

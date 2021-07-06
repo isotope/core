@@ -108,6 +108,45 @@ class Callback extends \Backend
     }
 
     /**
+     * @param DataContainer $dc
+     */
+    public function generateOrderShow($dc)
+    {
+        $objOrder = Order::findByPk($dc->id);
+
+        if (null === $objOrder) {
+            \Controller::redirect('contao/main.php?act=error');
+        }
+
+        $strBuffer = '
+<div>
+<table cellpadding="0" cellspacing="0" class="tl_show">
+  <tbody>';
+
+        $i = 0;
+
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $field => $config) {
+            if (isset($config['eval']['doNotShow']) && $config['eval']['doNotShow']) {
+                continue;
+            }
+
+            $strClass = ++$i % 2 ? '' : ' class="tl_bg"';
+
+            $strBuffer .= '
+  <tr>
+    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel($dc->table, $field) . ': </span></td>
+    <td' . $strClass . '>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+  </tr>';
+        }
+
+        $strBuffer .= '
+</tbody></table>
+</div>';
+
+        return $strBuffer;
+    }
+
+    /**
      * Generate the order details view when editing an order
      *
      * @param object $dc
