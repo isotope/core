@@ -122,22 +122,18 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table cellpadding="0" cellspacing="0" class="tl_show">
+<table class="tl_show">
   <tbody>';
-
-        $i = 0;
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $field => $config) {
             if (isset($config['eval']['doNotShow']) && $config['eval']['doNotShow']) {
                 continue;
             }
 
-            $strClass = ++$i % 2 ? '' : ' class="tl_bg"';
-
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel($dc->table, $field) . ': </span></td>
-    <td' . $strClass . '>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+    <td class="tl_label">' . Format::dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
+    <td>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
   </tr>';
         }
 
@@ -173,14 +169,10 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table cellpadding="0" cellspacing="0" class="tl_show">
+<table class="tl_show">
   <tbody>';
 
-        $i = 0;
-
         foreach ($arrEmail as $k => $v) {
-            $strClass = ++$i % 2 ? '' : ' class="tl_bg"';
-
             if (\is_array($v)) {
                 $strValue = implode(', ', $v);
             } else {
@@ -189,8 +181,8 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': </span></td>
-    <td' . $strClass . '>' . $strValue . '</td>
+    <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': <small>'.$k.'</small></td>
+    <td>' . $strValue . '</td>
   </tr>';
         }
 
@@ -249,23 +241,18 @@ class Callback extends \Backend
 
         $strBuffer = '
 <div>
-<table class="tl_show"'. (VERSION < 4 ? 'style="margin-left:0; margin-right:0"' : '') .'>
+<table class="tl_show">
   <tbody>';
 
-        $i = 0;
-
-        foreach ($GLOBALS['TL_DCA'][Address::getTable()]['fields'] as $k => $v) {
-            if (!isset($objAddress->$k)) {
+        foreach ($GLOBALS['TL_DCA'][Address::getTable()]['fields'] as $field => $config) {
+            if (!isset($objAddress->{$field})) {
                 continue;
             }
 
-            $v        = $objAddress->$k;
-            $strClass = (++$i % 2) ? '' : ' class="tl_bg"';
-
             $strBuffer .= '
   <tr>
-    <td' . $strClass . ' style="vertical-align:top"><span class="tl_label">' . Format::dcaLabel(Address::getTable(), $k) . ': </span></td>
-    <td' . $strClass . '>' . Format::dcaValue(Address::getTable(), $k, $v) . '</td>
+    <td class="tl_label">' . Format::dcaLabel(Address::getTable(), $field) . ' <small>'.$field.'</small></td>
+    <td>' . Format::dcaValue(Address::getTable(), $field, $objAddress->{$field}) . '</td>
   </tr>';
         }
 
