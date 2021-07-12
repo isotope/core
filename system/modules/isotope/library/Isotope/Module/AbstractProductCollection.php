@@ -89,20 +89,8 @@ abstract class AbstractProductCollection extends Module
         );
 
         $blnReload   = false;
-        $arrQuantity = \Input::post('quantity');
         $arrItems    = $objTemplate->items;
-
-        if (!\is_array($arrQuantity)) {
-            $arrQuantity = [];
-        } else {
-            $arrQuantity = array_filter(
-                $arrQuantity,
-                function ($v) {
-                    return '' !== $v;
-                }
-            );
-        }
-
+        $arrQuantity = $this->getQuantity($arrItems);
 
         foreach ($arrItems as $k => $data) {
             /** @var ProductCollectionItem $item */
@@ -243,6 +231,23 @@ abstract class AbstractProductCollection extends Module
         }
 
         return $data;
+    }
+
+    protected function getQuantity(array $items): array
+    {
+        $arrQuantity = \Input::post('quantity');
+
+        if (!\is_array($arrQuantity)) {
+            return [];
+        }
+
+
+        return array_filter(
+            $arrQuantity,
+            function ($v) {
+                return '' !== $v;
+            }
+        );
     }
 
     /**
