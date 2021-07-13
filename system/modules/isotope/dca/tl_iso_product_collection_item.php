@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_item'] = array
         ),
         'sku' => array
         (
-            'sql'                   => "varchar(128) NOT NULL default ''",
+            'sql'                   => "varchar(128) NULL",
         ),
         'name' => array
         (
