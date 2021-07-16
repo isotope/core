@@ -69,6 +69,8 @@ class CartAction extends AbstractButton
                 )
             );
         }
+
+        return $success;
     }
 
     /**
@@ -130,6 +132,12 @@ class CartAction extends AbstractButton
      */
     private function handleUpdateCart(ProductCollectionItem $item, IsotopeProduct $product)
     {
-        return Isotope::getCart()->updateProduct($product, $item);
+        $success = Isotope::getCart()->updateProduct($product, $item);
+
+        if ($success) {
+            Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['updatedInCart']);
+        }
+
+        return $success;
     }
 }
