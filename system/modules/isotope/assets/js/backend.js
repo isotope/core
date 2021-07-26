@@ -88,11 +88,7 @@ var Isotope = {};
                 alert('Could not find the SimpleModal frame');
                 return;
             }
-            var container = frm.document.getElementById('tl_listing');
-            // Contao 3.5 compatibility (see #1488)
-            if (!container) {
-                container = frm.document.getElementById('tl_select');
-            }
+            var container = frm.document.getElementById('tl_select');
             var inp = container.getElementsByTagName('input');
             for (var i=0; i<inp.length; i++)
             {
@@ -167,11 +163,7 @@ var Isotope = {};
                 alert('Could not find the SimpleModal frame');
                 return;
             }
-            var container = frm.document.getElementById('tl_listing');
-            // Contao 3.5 compatibility (see #1488)
-            if (!container) {
-                container = frm.document.getElementById('tl_select');
-            }
+            var container = frm.document.getElementById('tl_select');
             var inp = container.getElementsByTagName('input');
             for (var i=0; i<inp.length; i++)
             {

@@ -60,12 +60,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         ),
         'global_operations' => array
         (
-            'view' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['fePreview'],
-                'class'             => 'header_preview',
-                'button_callback'   => array('Isotope\Backend\ProductCategory\Callback', 'getPageViewButton'),
-            ),
             'all' => array
             (
                 'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],

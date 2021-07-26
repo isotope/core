@@ -34,30 +34,4 @@ class Callback extends \Backend
             $objProduct->name
         );
     }
-
-    /**
-     * Return the page view button
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param array
-     * @return string
-     */
-    public function getPageViewButton($href, $label, $title, $class, $attributes, $table, $root)
-    {
-        if (version_compare(VERSION, '4.0', '>=')) {
-            return '';
-        }
-
-        $objPage = \PageModel::findWithDetails(\Input::get('page_id'));
-
-        if (null === $objPage) {
-            return '';
-        }
-
-        return '<a href="contao/main.php?do=feRedirect&page=' . $objPage->id . '" target="_blank" class="header_preview" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . $label . '</a>';
-    }
 }

@@ -57,11 +57,6 @@ class UnusedRules extends AbstractIntegrityCheck
             return;
         }
 
-        if (version_compare(VERSION, '4.0', '<')) {
-            \System::disableModule('isotope_rules');
-            return;
-        }
-
         $objFile = new \File('system/modules/isotope_rules/.skip', true);
 
         if (!$objFile->exists()) {

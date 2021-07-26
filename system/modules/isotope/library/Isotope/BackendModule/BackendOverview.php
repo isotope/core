@@ -92,16 +92,6 @@ abstract class BackendOverview extends \BackendModule
      */
     protected function compile()
     {
-        if (version_compare(VERSION, '4.0', '<')) {
-            $versionClass = 'iso_backend3';
-        } elseif (version_compare(VERSION, '4.2', '<')) {
-            $versionClass = 'iso_backend42';
-        } else {
-            $versionClass = 'iso_backend44';
-        }
-
-
-        $this->Template->versionClass = $versionClass;
         $this->Template->modules = $this->arrModules;
     }
 
