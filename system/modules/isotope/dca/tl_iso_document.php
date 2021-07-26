@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
-            'default'               => 'Standard',
+            'default'               => 'standard',
             'options_callback'      => function() {
                 return \Isotope\Model\Document::getModelTypeOptions();
             },
