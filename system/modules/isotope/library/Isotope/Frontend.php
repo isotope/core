@@ -13,6 +13,7 @@ namespace Isotope;
 
 use Contao\Controller;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -634,8 +635,9 @@ class Frontend extends \Frontend
         }
 
         // Define the static URL constants
-        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        \define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$GLOBALS['TL_CONFIG']['debugMode']) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        $isDebugMode = System::getContainer()->getParameter('kernel.debug');
+        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        \define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
         \define('TL_SCRIPT_URL', TL_ASSETS_URL);
         \define('TL_PLUGINS_URL', TL_ASSETS_URL);
 

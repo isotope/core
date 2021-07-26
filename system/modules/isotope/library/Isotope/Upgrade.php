@@ -18,18 +18,6 @@ use Isotope\Model\RequestCache;
 
 class Upgrade extends \Controller
 {
-
-    /**
-     * Initialize the object
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $GLOBALS['TL_CONFIG']['debugMode'] = false;
-    }
-
-
     /**
      * Run the controller
      */

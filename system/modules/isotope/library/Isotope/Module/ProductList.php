@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Database;
+use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
@@ -83,7 +84,7 @@ class ProductList extends Module
         }
 
         // Disable the cache in frontend preview or debug mode
-        if (BE_USER_LOGGED_IN === true || $GLOBALS['TL_CONFIG']['debugMode']) {
+        if (BE_USER_LOGGED_IN === true || System::getContainer()->getParameter('kernel.debug')) {
             $this->blnCacheProducts = false;
         }
 
