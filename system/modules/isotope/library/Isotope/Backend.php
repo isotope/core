@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Backend as Contao_Backend;
+use Haste\Http\Response\Response;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
@@ -283,7 +284,7 @@ class Backend extends Contao_Backend
             // Move multiple products
             case 'moveProducts':
                 \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
-                \Controller::reload();
+                (new Response())->send();
                 break;
 
             // Filter the groups
