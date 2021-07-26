@@ -9,6 +9,8 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Isotope\Model\Group;
+
 /**
  * Class DC_ProductData
  *
@@ -54,7 +56,7 @@ class DC_ProductData extends \DC_Table
 
         // Check if the group exists
         if ($this->intGroupId > 0) {
-            $objGroup = \Isotope\Model\Group::findByPk($this->intGroupId);
+            $objGroup = Group::findByPk($this->intGroupId);
 
             if (null === $objGroup) {
                 if (\BackendUser::getInstance()->isAdmin || !\is_array(\BackendUser::getInstance()->iso_groups)) {
@@ -157,8 +159,12 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = "language=''";
 
         // Display products filtered by group
-        if (!$this->intId && $this->intGroupId > 0) {
-            $this->procedure[] = "gid IN(" . implode(',', array_map('intval', \Database::getInstance()->getChildRecords(array($this->intGroupId), \Isotope\Model\Group::getTable(), false, array($this->intGroupId)))) . ")";
+        if (!$this->intId) {
+            if ($this->intGroupId > 0) {
+                $this->procedure[] = "gid IN(".implode(',', array_map('intval', \Database::getInstance()->getChildRecords([$this->intGroupId], Group::getTable(), false, [$this->intGroupId]))).")";
+            } elseif (!BackendUser::getInstance()->isAdmin) {
+                $this->procedure[] = 'gid IN('.implode(',', array_map('intval', \Database::getInstance()->getChildRecords(BackendUser::getInstance()->iso_groups, Group::getTable(), false, BackendUser::getInstance()->iso_groups))).')';
+            }
         }
 
         // Custom filter
