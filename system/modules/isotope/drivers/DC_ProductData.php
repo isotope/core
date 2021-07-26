@@ -75,6 +75,21 @@ class DC_ProductData extends \DC_Table
             }
         }
 
+        // Move multiple products to group
+        /** @var SymfonySession $objSession */
+        $objSession = System::getContainer()->get('session');
+        $arrClipboard = $objSession->get('CLIPBOARD');
+        if ($arrClipboard[$strTable]['mode'] === 'cutAll' && \Input::get('act') !== 'cutAll') {
+            $firstPid = (int) Database::getInstance()
+                ->prepare("SELECT pid FROM tl_iso_product WHERE id=?")
+                ->execute($arrClipboard[$strTable]['id'][0])
+                ->fetchRow()[0]
+            ;
+            if (0 === $firstPid) {
+                \Controller::redirect(\Backend::addToUrl('&act=cutAll&pid=0'));
+            }
+        }
+
         parent::__construct($strTable);
 
         // Allow to customize languages via the onload_callback
@@ -174,55 +189,10 @@ class DC_ProductData extends \DC_Table
     }
 
 
-    /**
-     * Assign a new position to an existing record
-     * @param boolean
-     */
     public function cut($blnDoNotRedirect = false)
     {
-        if ($this->intId > 0) {
-            $time = time();
-
-            /** @var Session $objSession */
-            $objSession = System::getContainer()->get('session');
-
-            // Empty clipboard
-            $arrClipboard = $objSession->get('CLIPBOARD');
-            $arrClipboard[$this->strTable] = array();
-            $objSession->set('CLIPBOARD', $arrClipboard);
-
-            $objRecord = $this->Database->prepare("SELECT pid FROM {$this->strTable} WHERE id=?")
-                ->limit(1)
-                ->execute($this->intId);
-
-            // Update only the variant
-            if ($objRecord->pid > 0) {
-                $this->Database->prepare("UPDATE {$this->strTable} SET tstamp=?, gid=?, pid=? WHERE id=?")
-                    ->execute($time, $this->intGroupId, \Input::get('pid'), $this->intId);
-            } // Update the main product and its variants
-            else {
-                $this->Database->prepare("UPDATE {$this->strTable} SET tstamp=?, gid=? WHERE id=? OR pid=?")
-                    ->execute($time, $this->intGroupId, $this->intId, $this->intId);
-            }
-
-            // Call the oncut_callback
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'])) {
-                foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['oncut_callback'] as $callback) {
-                    if (\is_array($callback)) {
-                        $this->import($callback[0]);
-                        $this->{$callback[0]}->{$callback[1]}($this);
-                    } elseif (\is_callable($callback)) {
-                        \call_user_func($callback, $this);
-                    }
-                }
-            }
-
-            if (!$blnDoNotRedirect) {
-                \Controller::redirect(\System::getReferer());
-            }
-
-            return;
-        }
+        // Save the group ID when moving products to new group
+        $this->set['gid'] = $this->intGroupId;
 
         parent::cut($blnDoNotRedirect);
     }

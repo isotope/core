@@ -296,8 +296,15 @@ window.addEvent('domready', function() {
             });
         },
         'closeModal': function() {
-            var form = $('tl_select'),
-            hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
+            var form = $('tl_listing');
+
+            // Contao 3.5 compatibility (see #1488)
+            if (!form) {
+                form = $('tl_select');
+            }
+
+            var hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
+
             form.submit();
         }
     });
