@@ -12,6 +12,7 @@
 namespace Isotope\Backend\Product;
 
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Model\Group;
 
 class Panel extends \Backend
@@ -40,31 +41,44 @@ class Panel extends \Backend
                 && 0 !== \count($user->iso_groupp)
             )
         ) {
-            $buttons[] = sprintf(
-                '<input type="button" id="groupFilter" class="tl_submit%s" onclick="%s" value="%s">',
-                ($session['iso_products_gid'] ? ' active' : ''),
-                sprintf(
-                    "Backend.getScrollOffset();Isotope.openModalGroupSelector({'width':765,'title':'%s','url':'system/modules/isotope/group.php?do=%s&amp;table=%s&amp;field=gid&amp;value=%s','action':'filterGroups'});return false",
-                    StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]),
-                    \Input::get('do'),
-                    Group::getTable(),
-                    $session['iso_products_gid']
-                ),
-                StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['filterByGroups'])
-            );
+            $buttons[] = '
+    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" class="tl_submit'.($session['iso_products_gid'] ? ' active' : '').'" id="groupFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByGroups'] . '</a>
+    <script>
+      document.getElementById("groupFilter").addEventListener("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          id: "tl_listing",
+          title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
+          url: this.href+'.json_encode($session['iso_products_gid']).',
+          callback: function(table, value) {
+            new Request.Contao({
+              evalScripts: false,
+              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
+            }).post({action:"filterGroups", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+          }
+        })
+      });
+    </script>';
         }
 
-        $buttons[] = sprintf(
-            '<input type="button" id="pageFilter" class="tl_submit%s" onclick="%s" value="%s">',
-            ($intPage > 0 ? ' active' : ''),
-            sprintf(
-                "Backend.getScrollOffset();Isotope.openModalPageSelector({'width':765,'title':'%s','url':'contao/page.php?do=%s&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=%s','action':'filterPages'});return false",
-                StringUtil::specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]),
-                \Input::get('do'),
-                $intPage
-            ),
-            StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['filterByPages'])
-        );
+        $buttons[] = '
+    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page', ['fieldType' => 'radio'])) . '" class="tl_submit'.($intPage > 0 ? ' active' : '').'" id="pageFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByPages'] . '</a>
+    <script>
+      document.getElementById("pageFilter").addEventListener("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          id: "tl_listing",
+          title: ' . json_encode($GLOBALS['TL_LANG']['MOD']['page'][0]) . ',
+          url: this.href+'.json_encode($intPage).',
+          callback: function(table, value) {
+            new Request.Contao({
+              evalScripts: false,
+              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\')
+            }).post({action:"filterPages", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+          }
+        })
+      });
+    </script>';
 
         return '
 <div class="iso_filter tl_subpanel">

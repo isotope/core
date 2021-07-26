@@ -278,7 +278,7 @@ class Backend extends Contao_Backend
             // Move the product
             case 'moveProduct':
                 \Session::getInstance()->set('iso_products_gid', (int) \Input::post('value'));
-                \Controller::redirect(html_entity_decode(\Input::post('redirect')));
+                (new Response())->send();
                 break;
 
             // Move multiple products
@@ -301,7 +301,7 @@ class Backend extends Contao_Backend
                 \Controller::reload();
                 break;
 
-            // Sorty products by page
+            // Sort products by page
             case 'sortByPage':
                 if (\Input::post('value') > 0) {
                     \Controller::redirect(\Backend::addToUrl('table=tl_iso_product_category&amp;id=' . (int) \Input::post('value') . '&amp;page_id=' . (int) \Input::post('value')));

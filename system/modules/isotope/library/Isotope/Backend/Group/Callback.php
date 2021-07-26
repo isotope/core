@@ -43,7 +43,7 @@ class Callback extends Permission
         }
 
         // Load permissions in tl_iso_product
-        if ('tl_iso_product' === $dc->table || stripos(\Environment::get('request'), 'group.php') !== false) {
+        if ('tl_iso_product' === $dc->table) {
             $arrGroups = $user->iso_groups;
 
             if (!\is_array($arrGroups) || empty($arrGroups)) {

@@ -13,6 +13,7 @@ namespace Isotope\Backend\Product;
 
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
@@ -33,7 +34,10 @@ class Button extends \Backend
      */
     public function forGroups($href, $label, $title, $class, $attributes)
     {
-        if (!\BackendUser::getInstance()->isAdmin && (!\is_array(\BackendUser::getInstance()->iso_groupp) || empty(\BackendUser::getInstance()->iso_groupp))) {
+        $user = \BackendUser::getInstance();
+        if (!$user->isAdmin
+            && (empty($user->iso_groupp) || (empty($user->iso_group) && (!\in_array('rootPaste', $user->iso_groupp) || !\in_array('create', $user->iso_groupp))))
+        ) {
             return '';
         }
 
@@ -255,14 +259,34 @@ class Button extends \Backend
 
         // Check permission
         if (!\BackendUser::getInstance()->isAdmin) {
-            $groups = deserialize(\BackendUser::getInstance()->iso_groups);
+            $groups = StringUtil::deserialize(\BackendUser::getInstance()->iso_groups);
 
             if (!\is_array($groups) || empty($groups)) {
-                return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+                return '';
             }
         }
 
-        return '<a href="system/modules/isotope/group.php?do=' . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . $row['gid'] . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();Isotope.openModalGroupSelector({\'width\':765,\'title\':\'' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . '\',\'url\':this.href,\'action\':\'moveProduct\',\'redirect\':\'' . \Backend::addToUrl($href . '&pid=' . \intval(\Input::get('pid')) . '&id=' . $row['id']) . '\'});return false">' . \Image::getHtml($icon, $label) . '</a> ';
+        return '
+    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a>
+    <script>
+      document.getElementById("groupOperation'.$row['id'].'").addEventListener("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          id: "tl_listing",
+          title: ' . json_encode($title) . ',
+          url: this.href+'.json_encode($row['gid']).',
+          callback: function(table, value) {
+            new Request.Contao({
+              evalScripts: false,
+              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\'),
+              onSuccess: function () {
+                window.location.href = '.json_encode(StringUtil::decodeEntities(\Backend::addToUrl($href . '&pid=' . (int) \Input::get('pid') . '&id=' . $row['id']))).'
+              }
+            }).post({action:"moveProduct", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+          }
+        })
+      });
+    </script>';
     }
 
     /**
@@ -279,37 +303,29 @@ class Button extends \Backend
             unset($arrButtons['copy']);
             unset($arrButtons['cut']);
 
-            array_insert($arrButtons, 0, array('group'=>'<input type="submit" name="group" id="group" class="tl_submit" value="'.StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['groupSelected']).'">'));
-
-            $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-    document.id('group').addEvents({
-        'click': function(e) {
-            e.preventDefault();
-            Isotope.openModalGroupSelector({
-                'width':    765,
-                'title':    '" . StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . "',
-                'url':      'system/modules/isotope/group.php?do=" . \Input::get('do') . '&amp;table=' . Group::getTable() . '&amp;field=gid&amp;value=' . \Session::getInstance()->get('iso_products_gid') . "',
-                'action':   'moveProducts',
-                'trigger':  $(this)
-            });
-        },
-        'closeModal': function() {
-            var form = $('tl_listing');
-
-            // Contao 3.5 compatibility (see #1488)
-            if (!form) {
-                form = $('tl_select');
-            }
-
-            var hidden = new Element('input', { type:'hidden', name:'cut' }).inject(form.getElement('.tl_formbody'), 'top');
-
-            form.submit();
-        }
-    });
-});
-</script>";
+            $arrButtons['group'] = '
+    <button type="submit" name="group" id="group" class="tl_submit">' . $GLOBALS['TL_LANG']['tl_iso_product']['groupSelected'] . '</a>
+    <script>
+      document.getElementById("group").addEventListener("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          id: "tl_listing",
+          title: ' . json_encode($GLOBALS['TL_LANG']['tl_iso_product']['product_groups'][0]) . ',
+          url: '.json_encode(ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])).\Session::getInstance()->get('iso_products_gid')).',
+          callback: function(table, value) {
+              new Request.Contao({
+              evalScripts: false,
+              onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\'),
+              onSuccess: function() {
+                var form = $("tl_select");
+                var hidden = new Element("input", { type:"hidden", name:"cut" }).inject(form, "top");
+                form.submit();
+              }
+            }).post({action:"moveProducts", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
+          }
+        })
+      });
+    </script>';
         }
 
         return $arrButtons;

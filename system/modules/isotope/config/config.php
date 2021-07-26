@@ -183,7 +183,6 @@ $GLOBALS['FE_MOD']['isotope'] = array
  */
 $GLOBALS['BE_FFL']['mediaManager']           = 'Isotope\Widget\MediaManager';
 $GLOBALS['BE_FFL']['inheritCheckbox']        = 'Isotope\Widget\InheritCheckBox';
-$GLOBALS['BE_FFL']['productGroupSelector']   = 'Isotope\Widget\ProductGroupSelector';
 
 /**
  * Payment methods
