@@ -610,7 +610,7 @@ class DC_TablePageId extends \DC_Table
 
 <div class="tl_listing_container parent_view">
 
-<div class="tl_header click2edit" onmouseover="Theme.hoverDiv(this,1)" onmouseout="Theme.hoverDiv(this,0)" onclick="Theme.toggleSelect(this)">';
+<div class="tl_header click2edit hover-div">';
 
         // List all records of the child table
         if (!\Input::get('act') || \Input::get('act') == 'paste' || \Input::get('act') == 'select')
@@ -872,7 +872,7 @@ class DC_TablePageId extends \DC_Table
 
                     $return .= '
 
-<div class="tl_content'.($blnWrapperStart ? ' wrapper_start' : '').($blnWrapperSeparator ? ' wrapper_separator' : '').($blnWrapperStop ? ' wrapper_stop' : '').($blnIndent ? ' indent' : '').(($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_class'] != '') ? ' ' . $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_class'] : '').(($i%2 == 0) ? ' even' : ' odd').' click2edit" onmouseover="Theme.hoverDiv(this,1)" onmouseout="Theme.hoverDiv(this,0)" onclick="Theme.toggleSelect(this)">
+<div class="tl_content'.($blnWrapperStart ? ' wrapper_start' : '').($blnWrapperSeparator ? ' wrapper_separator' : '').($blnWrapperStop ? ' wrapper_stop' : '').($blnIndent ? ' indent' : '').(($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_class'] != '') ? ' ' . $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['child_record_class'] : '').(($i%2 == 0) ? ' even' : ' odd').' click2edit hover-div">
 <div class="tl_content_right">';
 
                     // Opening wrappers
@@ -1338,7 +1338,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 }
 
                 $return .= '
-  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit" onmouseover="Theme.hoverRow(this,1)" onmouseout="Theme.hoverRow(this,0)" onclick="Theme.toggleSelect(this)">
+  <tr class="'.((++$eoCount % 2 == 0) ? 'even' : 'odd').' click2edit hover-row">
     ';
 
                 $colspan = 1;
