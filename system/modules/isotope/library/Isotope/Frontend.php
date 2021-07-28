@@ -843,7 +843,10 @@ class Frontend extends \Frontend
         if (class_exists(ContaoCoreBundle::class)) {
             /** @var ContainerInterface $container */
             $container = System::getContainer();
-            $container->get('request_stack')->getCurrentRequest()->setLocale($language);
+
+            if ($container->has('request_stack') && null !== ($request = $container->get('request_stack')->getCurrentRequest())) {
+                $request->setLocale($language);
+            }
 
             if ($container->has('translator')) {
                 $container->get('translator')->setLocale($language);
