@@ -853,6 +853,6 @@ class Frontend extends \Frontend
             }
         }
 
-        System::loadLanguageFile('default', $language, true);
+        System::loadLanguageFile('default', $language);
     }
 }
