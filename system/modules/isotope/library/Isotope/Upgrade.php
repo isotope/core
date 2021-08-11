@@ -18,6 +18,12 @@ use Isotope\Model\RequestCache;
 
 class Upgrade extends \Controller
 {
+    public function __construct()
+    {
+        // Method must exist because System::__construct() is protected.
+        parent::__construct();
+    }
+
     /**
      * Run the controller
      */
