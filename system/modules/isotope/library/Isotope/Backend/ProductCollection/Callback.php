@@ -419,6 +419,28 @@ class Callback extends \Backend
         return '<p class="tl_gerror">' . $GLOBALS['TL_LANG']['MSC']['backendShippingNotFound'] . '</p>';
     }
 
+    /**
+     * Return the print button if there is at least one document
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
+     */
+    public function printButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        static $hasDocuments = null;
+
+        if (null === $hasDocuments) {
+            $hasDocuments = Database::getInstance()->execute('SELECT COUNT(*) AS count FROM tl_iso_document')->count > 0;
+        }
+
+        return $hasDocuments ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+    }
 
     /**
      * Pass an order to the document
