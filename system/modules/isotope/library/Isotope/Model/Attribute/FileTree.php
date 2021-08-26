@@ -31,6 +31,7 @@ class FileTree extends Attribute
         if ('checkbox' === $this->fieldType) {
             $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
             $arrData['fields'][$this->field_name]['eval']['multiple'] = true;
+            $this->multiple = true;
 
             // Custom sorting
             if ('custom' === $this->sortBy) {
@@ -40,6 +41,7 @@ class FileTree extends Attribute
         } else {
             $arrData['fields'][$this->field_name]['sql'] = 'binary(16) NULL';
             $arrData['fields'][$this->field_name]['eval']['multiple'] = false;
+            $this->multiple = false;
         }
     }
 
@@ -88,6 +90,14 @@ class FileTree extends Attribute
             // Convert the file models to paths
             foreach ($files as $k => $v) {
                 $files[$k] = $v->path;
+            }
+
+            if ($arrOptions['noHtml']) {
+                if (!$this->multiple) {
+                    return reset($files);
+                }
+
+                return $files;
             }
 
             return $this->generateList($files);
