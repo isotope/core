@@ -74,6 +74,7 @@ class AttributeOption extends \MultilingualModel
             'label'     => $blnPriceInLabel ? $this->getLabel($objProduct) : $this->label,
             'group'     => 'group' === $this->type ? '1' : '',
             'default'   => $this->isDefault ? '1' : '',
+            'cssClass'  => $this->cssClass,
             'model'     => $this
         );
     }

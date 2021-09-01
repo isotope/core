@@ -261,7 +261,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
                 $option['label'],
                 $value,
                 $count,
-                $activeOption
+                $activeOption,
+                $option
             );
         }
 
@@ -277,10 +278,11 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      *
      * @return array
      */
-    protected function generateOptionItem($attribute, $label, $value, $matchCount, $isActive)
+    protected function generateOptionItem($attribute, $label, $value, $matchCount, $isActive, array $option = [])
     {
         $value = base64_encode($this->id . ';' . ($isActive ? 'del' : 'add') . ';' . $attribute . ';' . $value);
         $link  = $label;
+        $class = $option['cssClass'] ?? '';
 
         $href  = Url::addQueryString(
             'cumulativefilter=' . $value,
@@ -295,7 +297,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         return array(
             'href'  => $href,
-            'class' => trim(($isActive ? 'active' : '') . ($matchCount === 0 ? ' empty' : '')),
+            'class' => trim($class.($isActive ? ' active' : '') . ($matchCount === 0 ? ' empty' : '')),
             'title' => StringUtil::specialchars($label),
             'link'  => $link,
             'label' => $label,
