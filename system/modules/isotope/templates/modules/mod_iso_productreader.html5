@@ -2,12 +2,12 @@
 
 <?php $this->block('content'); ?>
 
-<div<?php echo $this->product_id; ?> class="<?php echo $this->product_class; ?>">
-<?php echo $this->product; ?>
+<div<?= $this->product_id ?> class="<?= $this->product_class ?>">
+<?= $this->product ?>
 </div>
 
 <!-- indexer::stop -->
-<p class="back"><a href="<?php echo $this->referer; ?>" title="<?php echo $this->back; ?>"><?php echo $this->back; ?></a></p>
+<p class="back"><a href="<?= $this->referer ?>" title="<?= $this->back ?>"><?= $this->back ?></a></p>
 <!-- indexer::continue -->
 
 <?php $this->endblock(); ?>

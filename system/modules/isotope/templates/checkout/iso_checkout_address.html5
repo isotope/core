@@ -1,14 +1,14 @@
-<h2><?php echo $this->headline; ?></h2>
-<?php if($this->message): ?><p><?php echo $this->message; ?></p><?php endif; ?>
-<?php echo $this->options; ?>
+<h2><?= $this->headline ?></h2>
+<?php if($this->message): ?><p><?= $this->message ?></p><?php endif; ?>
+<?= $this->options ?>
 
 <?php if ($this->fields): ?>
-<div id="<?php echo $this->class; ?>_new" class="address_new"<?php if($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+<div id="<?= $this->class ?>_new" class="address_new"<?php if($this->style): ?> style="<?= $this->style ?>"<?php endif; ?>>
 <?php if($this->tableless): ?>
-<?php echo $this->fields; ?>
+<?= $this->fields ?>
 <?php else: ?>
 <table>
-<?php echo $this->fields; ?>
+<?= $this->fields ?>
 </table>
 <?php endif; ?>
 </div>

@@ -2,17 +2,17 @@
 
 <?php $this->block('content'); ?>
 
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post">
 <div class="formbody">
-<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
 <?php if($this->hasSorting): ?>
 <div class="sorting">
-<label for="ctrl_sorting_<?php echo $this->id; ?>"><?php echo $this->sortingLabel; ?></label>
-<select name="sorting" id="ctrl_sorting_<?php echo $this->id; ?>" class="select" onchange="document.getElementById('<?php echo $this->formId; ?>').submit();">
+<label for="ctrl_sorting_<?= $this->id ?>"><?= $this->sortingLabel ?></label>
+<select name="sorting" id="ctrl_sorting_<?= $this->id ?>" class="select" onchange="document.getElementById('<?= $this->formId ?>').submit();">
 <?php foreach( $this->sortingOptions as $option ): ?>
-<option value="<?php echo $option['value']; ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?php echo $option['label']; ?></option>
+<option value="<?= $option['value'] ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?= $option['label'] ?></option>
 <?php endforeach; ?>
 </select>
 </div>
@@ -20,10 +20,10 @@
 
 <?php if ($this->hasLimit): ?>
 <div class="limit">
-<label for="ctrl_limit_<?php echo $this->id; ?>"><?php echo $this->limitLabel; ?></label>
-<select name="limit" id="ctrl_limit_<?php echo $this->id; ?>" class="select" onchange="document.getElementById('<?php echo $this->formId; ?>').submit();">
+<label for="ctrl_limit_<?= $this->id ?>"><?= $this->limitLabel ?></label>
+<select name="limit" id="ctrl_limit_<?= $this->id ?>" class="select" onchange="document.getElementById('<?= $this->formId ?>').submit();">
 <?php foreach( $this->limitOptions as $option ): ?>
-<option value="<?php echo $option['value']; ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?php echo $option['label']; ?></option>
+<option value="<?= $option['value'] ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?= $option['label'] ?></option>
 <?php endforeach; ?>
 </select>
 </div>
@@ -32,11 +32,11 @@
 <?php if ($this->hasFilters): ?>
 <div class="filters">
 <?php foreach( $this->filterOptions as $field => $data ): ?>
-<label for="ctrl_filter_<?php echo $field; ?>_<?php echo $this->id; ?>"><?php echo $data['label']; ?></label>
-<select name="filter[<?php echo $field; ?>]" id="ctrl_filter_<?php echo $field; ?>_<?php echo $this->id; ?>" class="select" onchange="document.getElementById('<?php echo $this->formId; ?>').submit();">
-<option value=""><?php echo $data['blankOptionLabel'] ? $data['blankOptionLabel'] : '-'; ?></option>
+<label for="ctrl_filter_<?= $field ?>_<?= $this->id ?>"><?= $data['label'] ?></label>
+<select name="filter[<?= $field ?>]" id="ctrl_filter_<?= $field ?>_<?= $this->id ?>" class="select" onchange="document.getElementById('<?= $this->formId ?>').submit();">
+<option value=""><?= $data['blankOptionLabel'] ? $data['blankOptionLabel'] : '-' ?></option>
 <?php foreach( $data['options'] as $option ): ?>
-<option value="<?php echo $option['value']; ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?php echo $option['label']; ?></option>
+<option value="<?= $option['value'] ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?= $option['label'] ?></option>
 <?php endforeach; ?>
 </select>
 <?php endforeach; ?>
@@ -44,7 +44,7 @@
 <?php endif; ?>
 
 <noscript>
-<div class="submit_container"><input type="submit" class="submit" value="<?php echo $this->slabel; ?>"></div>
+<div class="submit_container"><input type="submit" class="submit" value="<?= $this->slabel ?>"></div>
 </noscript>
 
 </div>
@@ -52,11 +52,11 @@
 
 <?php if ($this->hasSearch): ?>
 <div class="search">
-<form action="<?php echo $this->action; ?>" method="get">
-<input type="hidden" name="isorc" value="<?php echo \Input::get('isorc'); ?>">
-<label for="ctrl_keywords_<?php echo $this->id; ?>"><?php echo $this->keywordsLabel; ?></label>
-<input type="text" name="keywords" id="ctrl_keywords_<?php echo $this->id; ?>" class="text" value="<?php echo $this->keywords; ?>" placeholder="<?php echo $this->defaultSearchText; ?>">
-<input type="submit" class="submit" value="<?php echo $this->searchLabel; ?>">
+<form action="<?= $this->action ?>" method="get">
+<input type="hidden" name="isorc" value="<?= \Input::get('isorc') ?>">
+<label for="ctrl_keywords_<?= $this->id ?>"><?= $this->keywordsLabel ?></label>
+<input type="text" name="keywords" id="ctrl_keywords_<?= $this->id ?>" class="text" value="<?= $this->keywords ?>" placeholder="<?= $this->defaultSearchText ?>">
+<input type="submit" class="submit" value="<?= $this->searchLabel ?>">
 </form>
 </div>
 <?php endif; ?>
@@ -64,13 +64,13 @@
 <?php if ($this->hasAutocomplete):
 $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.css');
 ?>
-<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js'); ?>"></script>
+<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope/assets/plugins/awesomplete/awesomplete.min.js') ?>"></script>
 <script>
-    Isotope.initAwesomplete(<?= $this->id ?>, document.getElementById('ctrl_keywords_<?php echo $this->id; ?>'));
+    Isotope.initAwesomplete(<?= $this->id ?>, document.getElementById('ctrl_keywords_<?= $this->id ?>'));
 </script>
 <?php endif; ?>
 
-<a href="<?php echo $this->actionClear; ?>" class="clear_filters"><?php echo $this->clearLabel; ?></a>
+<a href="<?= $this->actionClear ?>" class="clear_filters"><?= $this->clearLabel ?></a>
 
 <div class="clear">&nbsp;</div>
 

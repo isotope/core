@@ -4,13 +4,13 @@
 
 <?php if (is_array($this->steps) && count($this->steps)): ?>
 <div class="steps block">
-<ol class="level_1 steps<?php echo count($this->steps); ?>">
+<ol class="level_1 steps<?= count($this->steps) ?>">
 <?php foreach( $this->steps as $step ): ?>
-<li class="<?php echo $step['class']; ?>">
+<li class="<?= $step['class'] ?>">
 <?php if (strlen($step['href'])): ?>
-<a class="<?php echo $step['class']; ?>" href="<?php echo $step['href']; ?>" title="<?php echo $step['title']; ?>"><?php echo $step['link']; ?></a>
+<a class="<?= $step['class'] ?>" href="<?= $step['href'] ?>" title="<?= $step['title'] ?>"><?= $step['link'] ?></a>
 <?php else: ?>
-<span class="<?php echo $step['class']; ?>"><?php if($step['isActive']): ?><span class="invisible"><?php echo $this->activeStep; ?></span><?php endif; ?><?php echo $step['link']; ?></span>
+<span class="<?= $step['class'] ?>"><?php if($step['isActive']): ?><span class="invisible"><?= $this->activeStep ?></span><?php endif; ?><?= $step['link'] ?></span>
 <?php endif; ?>
 </li>
 <?php endforeach; ?>
@@ -19,34 +19,34 @@
 <?php endif; ?>
 
 <?php if (strlen($this->message)): ?>
-<p class="<?php echo $this->mtype; ?> message"><?php echo $this->message; ?></p>
+<p class="<?= $this->mtype ?> message"><?= $this->message ?></p>
 <?php endif; ?>
 
 <?php if ($this->showForm): ?>
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post" enctype="<?php echo $this->enctype; ?>" novalidate="novalidate">
+<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post" enctype="<?= $this->enctype ?>" novalidate="novalidate">
 <div class="formbody">
-<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-<?php echo $this->hidden; ?>
+<?= $this->hidden ?>
 <?php endif; ?>
 <?php foreach ($this->fields as $field): ?>
-<div class="<?php echo $field['class']; ?>">
-<?php echo $field['html']; ?>
+<div class="<?= $field['class'] ?>">
+<?= $field['html'] ?>
 </div>
 <?php endforeach; ?>
 <?php if ($this->showForm): ?>
 </div>
 <?php if ($this->showPrevious || $this->showNext): ?>
     <div class="submit_container">
-        <?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?php echo $this->previousLabel; ?>"><?php endif; ?>
-        <?php if ($this->showNext): ?><input type="submit" class="submit <?php echo $this->nextClass; ?> button" name="nextStep" value="<?php echo $this->nextLabel; ?>"><?php endif; ?>
+        <?php if ($this->showPrevious): ?><input type="submit" class="submit previous button" name="previousStep" value="<?= $this->previousLabel ?>"><?php endif; ?>
+        <?php if ($this->showNext): ?><input type="submit" class="submit <?= $this->nextClass ?> button" name="nextStep" value="<?= $this->nextLabel ?>"><?php endif; ?>
     </div>
 <?php endif; ?>
 </form>
 <?php endif; ?>
 
 <script>
-    Isotope.checkoutButton(document.getElementById('<?php echo $this->formId; ?>'));
+    Isotope.checkoutButton(document.getElementById('<?= $this->formId ?>'));
 </script>
 
 <?php $this->endblock(); ?>

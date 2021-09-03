@@ -1,4 +1,4 @@
-<h2><?php echo $this->headline; ?></h2>
-<p><?php echo $this->message; ?></p>
+<h2><?= $this->headline ?></h2>
+<p><?= $this->message ?></p>
 
-<?php echo $this->options; ?>
+<?= $this->options ?>

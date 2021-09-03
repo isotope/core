@@ -4,21 +4,21 @@
 
 <?php if(strlen($this->message)): ?>
 
-<p class="<?php echo $this->mtype; ?>"><?php echo $this->message; ?></p>
+<p class="<?= $this->mtype ?>"><?= $this->message ?></p>
 <?php endif; ?>
 
-<p><a class="add" href="<?php echo $this->addNewAddress; ?>" title="<?php echo $this->addNewAddressLabel; ?>"><?php echo $this->addNewAddressLabel; ?></a></p>
+<p><a class="add" href="<?= $this->addNewAddress ?>" title="<?= $this->addNewAddressLabel ?>"><?= $this->addNewAddressLabel ?></a></p>
 
 <?php foreach( $this->addresses as $address ):?>
-<div class="<?php echo $address['class']; ?>">
+<div class="<?= $address['class'] ?>">
 <?php if($address['label']): ?>
-<h2><?php echo $address['label']; ?></h2>
+<h2><?= $address['label'] ?></h2>
 <?php endif; ?>
 <div class="buttons">
-    <a class="edit" href="<?php echo $address['edit_url']; ?>" title="<?php echo $this->editAddressLabel; ?>"><?php echo $this->editAddressLabel; ?><span class="invisible"> <?php echo $address['label']; ?></span></a>
-    <a class="delete" href="<?php echo $address['delete_url']; ?>" title="<?php echo $this->deleteAddressLabel; ?>" onclick="return confirm('<?php echo $this->deleteAddressConfirm; ?>')"><?php echo $this->deleteAddressLabel; ?><span class="invisible"> <?php echo $address['label']; ?></span></a>
+    <a class="edit" href="<?= $address['edit_url'] ?>" title="<?= $this->editAddressLabel ?>"><?= $this->editAddressLabel ?><span class="invisible"> <?= $address['label'] ?></span></a>
+    <a class="delete" href="<?= $address['delete_url'] ?>" title="<?= $this->deleteAddressLabel ?>" onclick="return confirm('<?= $this->deleteAddressConfirm ?>')"><?= $this->deleteAddressLabel ?><span class="invisible"> <?= $address['label'] ?></span></a>
 </div>
-<?php echo $address['text']; ?>
+<?= $address['text'] ?>
 </div>
 <?php endforeach; ?>
 

@@ -1,4 +1,4 @@
-<h2><?php echo $this->headline; ?></h2>
-<p class="message"><?php echo $this->message; ?></p>
-<p><a href="<?= $this->url ?>"><?php echo $this->link; ?></a>
+<h2><?= $this->headline ?></h2>
+<p class="message"><?= $this->message ?></p>
+<p><a href="<?= $this->url ?>"><?= $this->link ?></a>
 <script>window.location.href = '<?= $this->url ?>';</script>

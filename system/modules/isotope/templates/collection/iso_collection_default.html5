@@ -1,37 +1,37 @@
 <?php if ($this->textOnly): ?>
 <?php ### THIS IS FOR TEXT ONLY EMAILS ### ?>
 <?php foreach ($this->items as $item ): ?>
-<?php echo $item['name']; ?><?php if (!empty($item['attributes'])): ?> (<?php $i=0; foreach ($item['attributes'] as $name => $value): ?><?php echo ($i++==0 ? '' : ', ').$this->attributeLabel($name); ?>: <?= $this->attributeValue($name, $value) ?><?php endforeach; ?>)<?php endif; ?>: <?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <?php echo $item['total']; ?>
+<?= $item['name'] ?><?php if (!empty($item['attributes'])): ?> (<?php $i=0; foreach ($item['attributes'] as $name => $value): ?><?= ($i++==0 ? '' : ', ').$this->attributeLabel($name) ?>: <?= $this->attributeValue($name, $value) ?><?php endforeach; ?>)<?php endif; ?>: <?= $item['quantity'] ?> x <?= $item['price'] ?> = <?= $item['total'] ?>
 
 <?php endforeach; ?>
 --------------------
-<?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?>: <?php echo $this->subtotal; ?>
+<?= $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] ?>: <?= $this->subtotal ?>
 
 <?php foreach ($this->surcharges as $surcharge): ?>
-<?php echo $surcharge['label']; ?>: <?php echo $surcharge['price']; ?> = <?php echo $surcharge['total_price']; ?>
+<?= $surcharge['label'] ?>: <?= $surcharge['price'] ?> = <?= $surcharge['total_price'] ?>
 
 <?php endforeach; ?>
-<?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?>: <?php echo $this->total; ?>
+<?= $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] ?>: <?= $this->total ?>
 <?php else: ?>
 <?php ### THIS IS HTML EMAILS AND EVERYTHING ELSE ### ?>
 <?php if(!empty($this->actions)): ?>
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" method="post">
+<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post">
 <div class="formbody">
-<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 <?php endif; ?>
 
 <?php if ($this->collection->hasErrors()): ?>
-<p class="error"><?php echo implode('</p><p class="error">', $this->collection->getErrors()); ?></p>
+<p class="error"><?= implode('</p><p class="error">', $this->collection->getErrors()) ?></p>
 <?php endif; ?>
 
 <table>
 <tbody>
 <?php foreach($this->items as $item): $i=0; ?>
-    <tr class="<?php echo $item['rowClass']; ?>"><?php if(!$this->isNotification): ?>
-        <td class="col_<?php echo $i++; ?> col_first image"><?php echo $this->getGallery('images', $item['item'])->generateMainImage(); ?></td><?php endif; ?>
-        <td class="col_<?php echo $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name">
-            <?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?>
+    <tr class="<?= $item['rowClass'] ?>"><?php if(!$this->isNotification): ?>
+        <td class="col_<?= $i++ ?> col_first image"><?= $this->getGallery('images', $item['item'])->generateMainImage() ?></td><?php endif; ?>
+        <td class="col_<?= $i++ ?><?php if($this->isNotification) echo ' col_first'; ?> name">
+            <?php if($this->linkProducts && $item['href']): ?><a href="<?= $item['href'] ?>"><?= $item['name'] ?></a><?php else: ?><?= $item['name'] ?><?php endif; ?>
             <?php if(!empty($item['attributes'])): ?>
             <ul>
                 <?php foreach($item['attributes'] as $name => $value): ?>
@@ -40,23 +40,23 @@
             </ul>
             <?php endif; ?>
         </td>
-        <td class="col_<?php echo $i++; ?> quantity">
+        <td class="col_<?= $i++ ?> quantity">
         <?php if($this->isEditable): ?>
-            <input name="quantity[<?php echo $item['id']; ?>]" type="text" class="text" value="<?php echo $item['quantity']; ?>" maxlength="10">
+            <input name="quantity[<?= $item['id'] ?>]" type="text" class="text" value="<?= $item['quantity'] ?>" maxlength="10">
         <?php else: ?>
-            <?php echo $item['quantity']; ?> x
+            <?= $item['quantity'] ?> x
         <?php endif; ?>
         </td>
-        <td class="col_<?php echo $i++; ?> price"><?php echo $item['price']; ?></td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $item['total']; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $item['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last actions">
-            <?php if ($item['edit_href']): ?><a href="<?php echo $item['edit_href']; ?>" class="edit" title="<?php echo $item['edit_title']; ?>"><?php echo $item['edit_link']; ?></a><?php endif; ?>
-            <a href="<?php echo $item['remove_href']; ?>" class="remove" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a>
+        <td class="col_<?= $i++ ?> price"><?= $item['price'] ?></td>
+        <td class="col_<?= $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last' ?> price total"><?= $item['total'] ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?= $i++; if(!$this->isEditable) echo ' col_last' ?> tax"><?= $item['tax_id'] ?></td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?= $i++ ?> col_last actions">
+            <?php if ($item['edit_href']): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>
+            <a href="<?= $item['remove_href'] ?>" class="remove" title="<?= $item['remove_title'] ?>"><?= $item['remove_link'] ?></a>
         </td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>
-    <tr class="<?php echo $item['rowClass']; ?>">
-        <td colspan="<?php echo $i; ?>"><p class="error"><?php echo implode('</p><p class="error">', $item['item']->getErrors()); ?></p></td>
+    <tr class="<?= $item['rowClass'] ?>">
+        <td colspan="<?= $i ?>"><p class="error"><?= implode('</p><p class="error">', $item['item']->getErrors()) ?></p></td>
     </tr>
 <?php endif; ?>
 <?php endforeach; ?>
@@ -68,32 +68,32 @@
 <tfoot>
     <tr class="foot_0 foot_first subtotal">
         <?php $i=0; if(!$this->isNotification): ?>
-        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
-        <td class="col_<?php echo $i++; $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></td>
-        <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $this->subtotal; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++ ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++; $i++ ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?= $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] ?></td>
+        <td class="col_<?= $i++ ?> price">&nbsp;</td>
+        <td class="col_<?= $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last' ?> price total"><?= $this->subtotal ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?= $i++; if(!$this->isEditable) echo ' col_last' ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?= $i++ ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
     <?php foreach ($this->surcharges as $surcharge): $i=0; ?>
-    <tr class="<?php echo $surcharge['rowClass']; ?>">
+    <tr class="<?= $surcharge['rowClass'] ?>">
         <?php if(!$this->isNotification): ?>
-        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
-        <td class="col_<?php echo $i++; $i++; ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $surcharge['label']; ?></td>
-        <td class="col_<?php echo $i++; ?> price"><?php echo $surcharge['price']; ?></td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $surcharge['total_price']; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax"><?php echo $surcharge['tax_id']; ?></td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++ ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++; $i++ ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?= $surcharge['label'] ?></td>
+        <td class="col_<?= $i++ ?> price"><?= $surcharge['price'] ?></td>
+        <td class="col_<?= $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last' ?> price total"><?= $surcharge['total_price'] ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?= $i++; if(!$this->isEditable) echo ' col_last' ?> tax"><?= $surcharge['tax_id'] ?></td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?= $i++ ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
     <?php endforeach; ?>
-    <tr class="foot_<?php echo count($this->surcharges)+1; ?> foot_last total">
+    <tr class="foot_<?= count($this->surcharges)+1 ?> foot_last total">
         <?php $i=0; if(!$this->isNotification): ?>
-        <td class="col_<?php echo $i++; ?> col_first">&nbsp;</td><?php endif; ?>
-        <td class="col_<?php echo $i++; $i++ ?><?php if($this->isNotification) echo ' col_first'; ?> name" colspan="2"><?php echo $GLOBALS['TL_LANG']['MSC']['grandTotalLabel']; ?></td>
-        <td class="col_<?php echo $i++; ?> price">&nbsp;</td>
-        <td class="col_<?php echo $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last'; ?> price total"><?php echo $this->total; ?></td><?php if ($this->total_tax_ids > 1): ?>
-        <td class="col_<?php echo $i++; if(!$this->isEditable) echo ' col_last'; ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
-        <td class="col_<?php echo $i++; ?> col_last remove">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++ ?> col_first">&nbsp;</td><?php endif; ?>
+        <td class="col_<?= $i++; $i++ ?><?php if($this->isNotification) echo ' col_first' ?> name" colspan="2"><?= $GLOBALS['TL_LANG']['MSC']['grandTotalLabel'] ?></td>
+        <td class="col_<?= $i++ ?> price">&nbsp;</td>
+        <td class="col_<?= $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last' ?> price total"><?= $this->total ?></td><?php if ($this->total_tax_ids > 1): ?>
+        <td class="col_<?= $i++; if(!$this->isEditable) echo ' col_last' ?> tax">&nbsp;</td><?php endif; if($this->isEditable): ?>
+        <td class="col_<?= $i++ ?> col_last remove">&nbsp;</td><?php endif; ?>
     </tr>
 </tfoot>
 </table>
@@ -108,10 +108,10 @@
 
 <?php if (!$this->isEditable && count($this->downloads)): ?>
 <div class="downloads">
-<h2><?php echo $GLOBALS['TL_LANG']['MSC']['downloadsLabel']; ?></h2>
+<h2><?= $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] ?></h2>
 <ul>
 <?php foreach ($this->downloads as $download): ?>
-<li class="<?php echo $download['downloadable'] ? 'available' : 'unavailable'; ?>"><?php if ($download['downloadable'] && $download['href']): ?><a href="<?php echo $download['href']; ?>"><?php endif; echo $download['title']; if ($download['downloadable'] && $download['href']): ?></a><?php endif; echo $download['remaining']; ?></li>
+<li class="<?= $download['downloadable'] ? 'available' : 'unavailable' ?>"><?php if ($download['downloadable'] && $download['href']): ?><a href="<?= $download['href'] ?>"><?php endif; echo $download['title']; if ($download['downloadable'] && $download['href']): ?></a><?php endif; echo $download['remaining']; ?></li>
 <?php endforeach; ?>
 </ul>
 </div>

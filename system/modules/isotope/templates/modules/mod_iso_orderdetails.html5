@@ -2,17 +2,17 @@
 
 <?php $this->block('content'); ?>
 
-<h2><?php echo $this->orderDetailsHeadline; ?></h2>
-<div class="order_status <?php echo $this->orderStatusKey; ?>"><?php echo $this->orderStatus; ?></div>
+<h2><?= $this->orderDetailsHeadline ?></h2>
+<div class="order_status <?= $this->orderStatusKey ?>"><?= $this->orderStatus ?></div>
 
 <?php foreach ($this->info as $type => $data): ?>
-<div class="info_container <?php echo $type . ' ' . $data['class']; ?>">
-    <h3><?php echo $data['headline']; ?></h3>
-    <div class="info"><?php echo $data['info']; ?></div>
+<div class="info_container <?= $type . ' ' . $data['class'] ?>">
+    <h3><?= $data['headline'] ?></h3>
+    <div class="info"><?= $data['info'] ?></div>
 </div>
 <?php endforeach; ?>
 <div class="clear">&nbsp;</div>
 
-<?php echo $this->products; ?>
+<?= $this->products ?>
 
 <?php $this->endblock(); ?>

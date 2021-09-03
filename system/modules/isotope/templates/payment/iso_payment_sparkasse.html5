@@ -26,7 +26,7 @@ $strUrl .= 'system.sparkassen-internetkasse.de/web-api/SSLPayment.po?';
 $strUrl .= http_build_query($arrQuery, null, '&');
 
 ?>
-<h2><?php echo $this->headline; ?></h2>
-<p class="message"><?php echo $this->message; ?></p>
-<p><a href="<?php echo $strUrl; ?>"><?php echo $this->link; ?></a>
-<script>window.location.href = '<?php echo $strUrl; ?>';</script>
+<h2><?= $this->headline ?></h2>
+<p class="message"><?= $this->message ?></p>
+<p><a href="<?= $strUrl ?>"><?= $this->link ?></a>
+<script>window.location.href = '<?= $strUrl ?>';</script>

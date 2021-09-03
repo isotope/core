@@ -4,19 +4,19 @@
 
 <?php if($this->message): ?>
 
-<p class="<?php echo $this->type; ?> message"><?php echo $this->message; ?></p>
+<p class="<?= $this->type ?> message"><?= $this->message ?></p>
 <?php endif; ?>
 <?php if(!empty($this->products)): ?>
 
 <div class="product_list">
 
 <?php foreach ($this->products as $product): ?>
-<div<?php echo $product['cssID']; ?> class="<?php echo $product['class']; ?>">
-<?php echo $product['html']; ?>
+<div<?= $product['cssID'] ?> class="<?= $product['class'] ?>">
+<?= $product['html'] ?>
 </div>
 <?php endforeach; ?>
 </div>
-<?php echo $this->pagination; ?>
+<?= $this->pagination ?>
 <?php endif; ?>
 
 <?php $this->endblock(); ?>

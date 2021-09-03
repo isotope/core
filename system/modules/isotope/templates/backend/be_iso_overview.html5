@@ -1,18 +1,18 @@
 <?php if ($this->before): ?>
-<?php echo $this->before; ?>
+<?= $this->before ?>
 <?php endif; ?>
 <div class="tl_formbody_edit be_iso_overview">
     <?php $first = true; foreach ($this->modules as $strGroupKey => $arrGroup): ?>
-    <fieldset id="pal_<?php echo $strGroupKey; ?>" class="<?= $first ? 'tl_tbox' : 'tl_box'; ?><?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
-        <legend onclick="AjaxRequest.toggleFieldset(this,'<?php echo $strGroupKey; ?>','iso_be_overview_legend')"><?php echo $arrGroup['label']; ?></legend>
+    <fieldset id="pal_<?= $strGroupKey ?>" class="<?= $first ? 'tl_tbox' : 'tl_box'; ?><?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
+        <legend onclick="AjaxRequest.toggleFieldset(this,'<?= $strGroupKey ?>','iso_be_overview_legend')"><?= $arrGroup['label'] ?></legend>
         <?php if ($arrGroup['html']): ?>
-        <?php echo $arrGroup['html']; ?>
+        <?= $arrGroup['html'] ?>
         <?php else: ?>
         <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
         <div class="item">
-            <a href="<?php echo $arrModule['href']; ?>" title="<?php echo $arrModule['description']; ?>"<?php if ($arrModule['class']): ?> class="<?php echo $arrModule['class']; ?>"<?php endif; ?>>
-                <img src="<?php echo $arrModule['icon']; ?>" alt="">
-                <span><?php echo $arrModule['label']; ?></span>
+            <a href="<?= $arrModule['href'] ?>" title="<?= $arrModule['description'] ?>"<?php if ($arrModule['class']): ?> class="<?= $arrModule['class'] ?>"<?php endif; ?>>
+                <img src="<?= $arrModule['icon'] ?>" alt="">
+                <span><?= $arrModule['label'] ?></span>
             </a>
         </div>
         <?php endforeach; ?>
@@ -21,5 +21,5 @@
     <?php $first = false; endforeach; ?>
 </div>
 <?php if ($this->after): ?>
-<?php echo $this->after; ?>
+<?= $this->after ?>
 <?php endif; ?>

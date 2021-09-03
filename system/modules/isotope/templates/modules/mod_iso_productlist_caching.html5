@@ -2,15 +2,15 @@
 
 <?php $this->block('content'); ?>
 
-<p class="message loading"><?php echo $this->message; ?></p>
+<p class="message loading"><?= $this->message ?></p>
 
 <noscript>
-<p class="message error"><?php echo $this->noscript; ?></p>
+<p class="message error"><?= $this->noscript ?></p>
 </noscript>
 
 <script>
     (function() {
-        Isotope.displayBox('<?php echo $this->message; ?>');
+        Isotope.displayBox('<?= $this->message ?>');
 
         var url = window.location.href + (document.location.search ? '&' : '?') + '&buildCache=1',
             xhr = new XMLHttpRequest();

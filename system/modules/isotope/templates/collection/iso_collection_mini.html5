@@ -1,8 +1,8 @@
 
 <?php foreach($this->items as $item): ?>
 <div class="product"><?php if($this->isEditable): ?>
-    <div class="remove"><a href="<?php echo $item['remove_href']; ?>" title="<?php echo $item['remove_title']; ?>"><?php echo $item['remove_link']; ?></a></div><?php endif; ?>
-    <div class="name"><?php if($this->linkProducts && $item['href']): ?><a href="<?php echo $item['href']; ?>"><?php echo $item['name']; ?></a><?php else: ?><?php echo $item['name']; ?><?php endif; ?></div>
+    <div class="remove"><a href="<?= $item['remove_href'] ?>" title="<?= $item['remove_title'] ?>"><?= $item['remove_link'] ?></a></div><?php endif; ?>
+    <div class="name"><?php if($this->linkProducts && $item['href']): ?><a href="<?= $item['href'] ?>"><?= $item['name'] ?></a><?php else: ?><?= $item['name'] ?><?php endif; ?></div>
     <div class="info">
         <?php if(!empty($item['attributes'])): ?>
         <ul>
@@ -11,11 +11,11 @@
         <?php endforeach; ?>
         </ul>
         <?php endif; ?>
-        <div class="price"><?php echo $item['quantity']; ?> x <?php echo $item['price']; ?> = <span class="total"><?php echo $item['total']; ?></span></div>
+        <div class="price"><?= $item['quantity'] ?> x <?= $item['price'] ?> = <span class="total"><?= $item['total'] ?></span></div>
     </div>
     <div class="clear">&nbsp;</div>
 </div>
 <?php endforeach; ?>
-<div class="subtotal"><span class="label"><?php echo $GLOBALS['TL_LANG']['MSC']['subTotalLabel']; ?></span> <?php echo $this->subtotal; ?></div><?php if ($this->buttons['cart']): ?>
-<div class="cart"><a class="button" href="<?php echo $this->buttons['cart']['href']; ?>"><?php echo $this->buttons['cart']['label']; ?></a></div><?php endif; if ($this->buttons['checkout']): ?>
-<div class="checkout"><a class="button dark" href="<?php echo $this->buttons['checkout']['href']; ?>"><?php echo $this->buttons['checkout']['label']; ?></a></div><?php endif; ?>
+<div class="subtotal"><span class="label"><?= $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] ?></span> <?= $this->subtotal ?></div><?php if ($this->buttons['cart']): ?>
+<div class="cart"><a class="button" href="<?= $this->buttons['cart']['href'] ?>"><?= $this->buttons['cart']['label'] ?></a></div><?php endif; if ($this->buttons['checkout']): ?>
+<div class="checkout"><a class="button dark" href="<?= $this->buttons['checkout']['href'] ?>"><?= $this->buttons['checkout']['label'] ?></a></div><?php endif; ?>

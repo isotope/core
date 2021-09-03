@@ -1,15 +1,15 @@
 <div class="be_iso_introduction">
     <div class="right">
         <a href="http://isotopeecommerce.org/" target="_blank"><img src="system/modules/isotope/assets/images/isotope-logo.250x71.png" alt="" width="250" height="71"></a>
-        <p><?php echo sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5], '<a href="http://www.terminal42.ch/" target="_blank">terminal42&nbsp;gmbh</a>'); ?></p>
+        <p><?= sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][5], '<a href="http://www.terminal42.ch/" target="_blank">terminal42&nbsp;gmbh</a>') ?></p>
         <p><a href="https://isotopeecommerce.org" target="_blank" style="text-decoration: underline;">https://isotopeecommerce.org</a></p>
     </div>
     <div class="left">
-        <h2><?php echo sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0], \Isotope\Isotope::VERSION); ?></h2>
-        <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1]; ?></p>
-        <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2]; ?></p>
-        <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3]; ?></p>
-        <p><?php echo $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4]; ?></p>
+        <h2><?= sprintf($GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][0], \Isotope\Isotope::VERSION) ?></h2>
+        <p><?= $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][1] ?></p>
+        <p><?= $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][2] ?></p>
+        <p><?= $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][3] ?></p>
+        <p><?= $GLOBALS['TL_LANG']['MSC']['isotopeIntroduction'][4] ?></p>
     </div>
     <div class="clr"></div>
 </div>

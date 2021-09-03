@@ -1,30 +1,30 @@
-<form action="<?php echo $this->action; ?>" id="<?php echo $this->formId; ?>" name="iso<?php echo rand(); ?>" method="post" enctype="<?php echo $this->enctype; ?>">
+<form action="<?= $this->action ?>" id="<?= $this->formId ?>" name="iso<?= rand() ?>" method="post" enctype="<?= $this->enctype ?>">
 <div class="formbody" itemscope itemtype="http://schema.org/Product">
-<input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formSubmit; ?>">
+<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-<input type="hidden" name="AJAX_PRODUCT" value="<?php echo $this->product_id; ?>">
-<input type="hidden" name="AJAX_MODULE" value="<?php echo $this->module_id; ?>">
+<input type="hidden" name="AJAX_PRODUCT" value="<?= $this->product_id ?>">
+<input type="hidden" name="AJAX_MODULE" value="<?= $this->module_id ?>">
 
 <?php if($this->hasOptions): foreach($this->raw_options as $name => $option): ?>
-<input type="hidden" name="<?php echo $name; ?>" value="<?= $option['value'] ?>">
+<input type="hidden" name="<?= $name ?>" value="<?= $option['value'] ?>">
 <?php endforeach; endif; ?>
-<h3 itemprop="name"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->generateAttribute('name'); ?></a></h3>
+<h3 itemprop="name"><a href="<?= $this->href ?>" title="<?= $this->label_detail ?>"><?= $this->generateAttribute('name') ?></a></h3>
 
-<?php echo $this->getGallery('images')->generateMainImage(); ?>
+<?= $this->getGallery('images')->generateMainImage() ?>
 
 <?php if ($this->sku): ?>
-<div class="sku" itemprop="sku"><?php echo $this->generateAttribute('sku'); ?></div><?php endif; if ($this->teaser): ?>
-<div class="teaser"><?php echo $this->generateAttribute('teaser'); ?></div><?php endif; ?>
+<div class="sku" itemprop="sku"><?= $this->generateAttribute('sku') ?></div><?php endif; if ($this->teaser): ?>
+<div class="teaser"><?= $this->generateAttribute('teaser') ?></div><?php endif; ?>
 
 <?php /* @var \Isotope\Interfaces\IsotopePrice $price */ if ($price = $this->product->getPrice()): ?>
 <div class="offer" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 <meta itemprop="priceCurrency" content="<?= \Isotope\Isotope::getConfig()->currency ?>">
-<div class="price" itemprop="price" content="<?= \Isotope\Isotope::roundPrice($price->getAmount(1, $this->product->getOptions())) ?>"><?php echo $this->generatePrice(); ?></div><?php if($this->baseprice): ?>
-<div class="baseprice"><?php echo $this->generateAttribute('baseprice'); ?></div><?php endif; ?>
+<div class="price" itemprop="price" content="<?= \Isotope\Isotope::roundPrice($price->getAmount(1, $this->product->getOptions())) ?>"><?= $this->generatePrice() ?></div><?php if($this->baseprice): ?>
+<div class="baseprice"><?= $this->generateAttribute('baseprice') ?></div><?php endif; ?>
 </div>
 <?php endif; ?>
 
-<div class="details"><a href="<?php echo $this->href; ?>" title="<?php echo $this->label_detail; ?>"><?php echo $this->label_detail; ?></a></div>
+<div class="details"><a href="<?= $this->href ?>" title="<?= $this->label_detail ?>"><?= $this->label_detail ?></a></div>
 
 <?php if($this->actions): ?>
 <div class="submit_container">
@@ -35,7 +35,7 @@
 <?php endif; ?>
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?php echo $this->raw['id']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['quantity']; ?>:</label> <input type="text" class="text" id="quantity_requested_<?php echo $this->raw['id']; ?>" name="quantity_requested" placeholder="<?php echo $this->minimum_quantity; ?>" maxlength="10">
+<label for="quantity_requested_<?= $this->raw['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['quantity'] ?>:</label> <input type="text" class="text" id="quantity_requested_<?= $this->raw['id'] ?>" name="quantity_requested" placeholder="<?= $this->minimum_quantity ?>" maxlength="10">
 </div>
 <?php endif; ?>
 <?php foreach ($this->actions as $action) echo $action->generate($this->product); ?>

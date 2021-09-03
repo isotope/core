@@ -3,7 +3,7 @@
 <?php $this->block('content') ?>
 
 <?php if($this->message): ?>
-    <p class="<?php echo $this->type; ?> message"><?php echo $this->message; ?></p>
+    <p class="<?= $this->type ?> message"><?= $this->message ?></p>
 <?php endif; ?>
 
 <h2><?= $this->collection->getName() ?></h2>
