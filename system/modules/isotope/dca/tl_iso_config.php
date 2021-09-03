@@ -461,7 +461,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array_keys($GLOBALS['ISO_NUM']),
-            'eval'                  => array('includeBlankOption'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
+            'eval'                  => array('includeBlankOption'=>true, 'decodeEntities'=>true, 'mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(20) NOT NULL default ''",
         ),
         'priceRoundPrecision' => array
