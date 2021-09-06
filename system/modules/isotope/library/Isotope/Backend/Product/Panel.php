@@ -34,13 +34,7 @@ class Panel extends \Backend
         $buttons   = [];
 
         // Check if user can manage groups
-        if ($user->isAdmin
-            || (\is_array($user->iso_groups)
-                && 0 !== \count($user->iso_groups)
-                && \is_array($user->iso_groupp)
-                && 0 !== \count($user->iso_groupp)
-            )
-        ) {
+        if ($user->isAdmin || (\is_array($user->iso_groups) && 0 !== \count($user->iso_groups))) {
             $buttons[] = '
     <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" class="tl_submit'.($session['iso_products_gid'] ? ' active' : '').'" id="groupFilter">' . $GLOBALS['TL_LANG']['MSC']['filterByGroups'] . '</a>
     <script>

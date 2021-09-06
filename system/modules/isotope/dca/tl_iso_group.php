@@ -72,7 +72,8 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['edit'],
                 'href'              => 'table=tl_iso_group&amp;act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.gif',
+                'button_callback'   => array('Isotope\Backend\Group\Callback', 'editButton'),
             ),
             'copy' => array
             (

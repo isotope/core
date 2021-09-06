@@ -55,10 +55,6 @@ class Callback extends Permission
             return;
         }
 
-        if (!\is_array($user->iso_groupp) || empty($user->iso_groupp)) {
-            throw new AccessDeniedException('Unallowed access to product groups!');
-        }
-
         // Set root IDs
         if (!\is_array($user->iso_groups) || empty($user->iso_groups)) {
             $root = array();
@@ -76,9 +72,17 @@ class Callback extends Permission
             $GLOBALS['TL_DCA']['tl_iso_group']['list']['sorting']['rootPaste'] = true;
         }
 
-        // Check permissions to add product group
         if (!\in_array('create', $user->iso_groupp, true)) {
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['closed'] = true;
+            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notCopyable'] = true;
+        }
+
+        if (!\in_array('delete', $user->iso_groupp, true)) {
+            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notDeletable'] = true;
+        }
+
+        if (!$user->canEditFieldsOf('tl_iso_group')) {
+            $GLOBALS['TL_DCA']['tl_iso_group']['config']['notEditable'] = true;
         }
 
         $root = array_merge($root, \Database::getInstance()->getChildRecords($root, 'tl_iso_group'));
@@ -177,6 +181,29 @@ class Callback extends Permission
         \Database::getInstance()->query(
             'UPDATE tl_iso_product SET gid=0 WHERE gid IN (' . implode(',', $arrGroups) . ')'
         );
+    }
+
+    /**
+     * Disable edit button if user has no permission to edit any fields
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
+     */
+    public function editButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (!\BackendUser::getInstance()->isAdmin
+            && !\BackendUser::getInstance()->canEditFieldsOf('tl_iso_group')
+        ) {
+            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        }
+
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**

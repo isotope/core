@@ -36,7 +36,7 @@ class Button extends \Backend
     {
         $user = \BackendUser::getInstance();
         if (!$user->isAdmin
-            && (empty($user->iso_groupp) || (empty($user->iso_group) && (!\in_array('rootPaste', $user->iso_groupp) || !\in_array('create', $user->iso_groupp))))
+            && (empty($user->iso_groupp) || (empty($user->iso_groups) && (!\in_array('rootPaste', $user->iso_groupp) || !\in_array('create', $user->iso_groupp))))
         ) {
             return '';
         }
@@ -261,7 +261,7 @@ class Button extends \Backend
         if (!\BackendUser::getInstance()->isAdmin) {
             $groups = StringUtil::deserialize(\BackendUser::getInstance()->iso_groups);
 
-            if (!\is_array($groups) || empty($groups)) {
+            if (!\is_array($groups) || \count($groups) < 2) {
                 return '';
             }
         }
