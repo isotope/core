@@ -198,7 +198,19 @@ abstract class AbstractProduct extends Product
             return true;
         }
 
-        return null !== $this->getType() && $this->getType()->shipping_exempt;
+        return null !== $this->getType() && $this->getType()->shipping_exempt === '1';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isPickupOnly()
+    {
+        if ($this->shipping_pickup) {
+            return true;
+        }
+
+        return null !== $this->getType() && $this->getType()->shipping_exempt === '2';
     }
 
     /**

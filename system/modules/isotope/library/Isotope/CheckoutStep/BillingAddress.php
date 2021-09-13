@@ -72,7 +72,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $draftOrder = Isotope::getCart()->getDraftOrder();
         $blnRequiresPayment  = $draftOrder->requiresPayment();
-        $blnRequiresShipping = $draftOrder->requiresShipping();
+        $blnRequiresShipping = $draftOrder->requiresShippingAddress();
         $objBillingAddress   = $draftOrder->getBillingAddress();
         $objShippingAddress  = $draftOrder->getShippingAddress();
 

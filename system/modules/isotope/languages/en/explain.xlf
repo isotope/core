@@ -16,6 +16,23 @@
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href="http://isotopeecommerce.org/en/manual.html" target="_blank" style="text-decoration:underline"&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
       </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class="tl_help_table"&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to now
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+      </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href="http://www.elevateweb.co.uk/image-zoom/examples#window-position" target="_blank"&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src="system/modules/isotope/assets/images/elevatezoom-positions.png" alt=""&gt;</source>
       </trans-unit>

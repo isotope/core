@@ -519,6 +519,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
+        'shipping_pickup' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_pickup'],
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
+            'attributes'            => array('legend'=>'shipping_legend', 'systemColumn'=>true),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
         'shipping_price' => array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product']['shipping_price'],

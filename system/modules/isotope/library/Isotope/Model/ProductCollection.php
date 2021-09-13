@@ -394,11 +394,12 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     {
         if (!isset($this->arrCache['requiresShipping'])) {
             $this->arrCache['requiresShipping'] = false;
-            $arrItems                           = $this->getItems();
+            $arrItems = $this->getItems();
 
             foreach ($arrItems as $objItem) {
                 if ($objItem->hasProduct() && !$objItem->getProduct()->isExemptFromShipping()) {
                     $this->arrCache['requiresShipping'] = true;
+                    break;
                 }
             }
         }
@@ -435,13 +436,40 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
+     * Return boolean whether collection requires a shipping address
+     *
+     * @return bool
+     */
+    public function requiresShippingAddress()
+    {
+        if (!$this->requiresShipping()) {
+            return false;
+        }
+
+        if (!isset($this->arrCache['requiresShippingAddress'])) {
+            $this->arrCache['requiresShippingAddress'] = true;
+            $arrItems = $this->getItems();
+
+            foreach ($arrItems as $objItem) {
+                $product = $objItem->getProduct();
+                if ($product instanceof IsotopeProduct && \method_exists($product, 'isPickupOnly') && $product->isPickupOnly()) {
+                    $this->arrCache['requiresShippingAddress'] = false;
+                    break;
+                }
+            }
+        }
+
+        return $this->arrCache['requiresShippingAddress'];
+    }
+
+    /**
      * Get shipping address for collection
      *
      * @return  Address|null
      */
     public function getShippingAddress()
     {
-        if (!$this->shipping_address_id || !$this->requiresShipping()) {
+        if (!$this->shipping_address_id || !$this->requiresShippingAddress()) {
             return null;
         }
 

@@ -101,6 +101,12 @@
       <trans-unit id="tl_iso_product.shipping_exempt.1">
         <source>Check if item is not a shipped item (such as downloadable products).</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.0">
+        <source>Pickup only</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.1">
+        <source>Check if item can only be picked up (such as fresh or oversized products).</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.0">
         <source>Base price amount</source>
       </trans-unit>

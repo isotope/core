@@ -324,8 +324,18 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt'],
             'exclude'               => true,
             'filter'                => true,
-            'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50'),
+            'inputType'             => 'select',
+            'explanation'           => 'shippingExempt',
+            'options'               => [
+                1 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt']['exempt'],
+                2 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt']['pickup'],
+            ],
+            'eval' => [
+                'tl_class' => 'w50',
+                'includeBlankOption' => true,
+                'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt']['default'],
+                'helpwizard' => true,
+            ],
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'downloads' => array

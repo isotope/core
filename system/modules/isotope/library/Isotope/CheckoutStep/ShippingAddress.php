@@ -30,7 +30,7 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
      */
     public function isAvailable()
     {
-        return Isotope::getCart()->requiresShipping() && \count(Isotope::getConfig()->getShippingFields()) > 0;
+        return Isotope::getCart()->requiresShippingAddress() && \count(Isotope::getConfig()->getShippingFields()) > 0;
     }
 
     /**

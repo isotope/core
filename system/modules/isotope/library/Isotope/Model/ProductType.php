@@ -32,7 +32,7 @@ namespace Isotope\Model;
  * @property bool   $variants
  * @property array  $variant_attributes
  * @property bool   $force_variant_options
- * @property bool   $shipping_exempt
+ * @property string $shipping_exempt
  * @property bool   $downloads
  */
 class ProductType extends \Model
