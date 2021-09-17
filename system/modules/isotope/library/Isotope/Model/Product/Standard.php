@@ -550,12 +550,12 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $actions = array_filter(
             Registry::all(true, $this),
             function (ProductActionInterface $action) use ($arrConfig) {
-                return \in_array($action->getName(), $arrConfig['buttons']) && $action->isAvailable($this, $arrConfig);
+                return \in_array($action->getName(), $arrConfig['buttons'] ?? []) && $action->isAvailable($this, $arrConfig);
             }
         );
 
         // Sort actions by order in module configuration
-        $buttonOrder = array_values($arrConfig['buttons']);
+        $buttonOrder = array_values($arrConfig['buttons'] ?? []);
         usort($actions, function (ProductActionInterface $a, ProductActionInterface $b) use ($buttonOrder) {
             return array_search($a->getName(), $buttonOrder) - array_search($b->getName(), $buttonOrder);
         });
@@ -587,7 +587,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
             }
 
-            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons']));
+            $arrButtons = array_intersect_key($arrButtons, array_flip($arrConfig['buttons'] ?? []));
 
             if ($handleButtons) {
                 foreach ($arrButtons as $button => $data) {
