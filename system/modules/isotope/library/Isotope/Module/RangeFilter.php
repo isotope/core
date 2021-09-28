@@ -81,16 +81,21 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
                     continue;
                 }
 
-                $cache->setFilterForModule(
-                    $config['attribute'].'_min',
-                    Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
-                    $this->id
-                );
+                if (isset($values['min'])) {
+                    $cache->setFilterForModule(
+                        $config['attribute'].'_min',
+                        Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
+                        $this->id
+                    );
+                }
 
-                $cache->setFilterForModule(
-                    $config['attribute'].'_max',
-                    Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
-                    $this->id);
+                if (isset($values['max'])) {
+                    $cache->setFilterForModule(
+                        $config['attribute'].'_max',
+                        Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
+                        $this->id
+                    );
+                }
             }
 
             $new = $cache->saveNewConfiguration();
