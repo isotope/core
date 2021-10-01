@@ -8,7 +8,7 @@
 <?php if($this->hasOptions): foreach($this->raw_options as $name => $option): ?>
 <input type="hidden" name="<?= $name ?>" value="<?= $option['value'] ?>">
 <?php endforeach; endif; ?>
-<h3 itemprop="name"><a href="<?= $this->href ?>" title="<?= $this->label_detail ?>"><?= $this->generateAttribute('name') ?></a></h3>
+<h3 itemprop="name"><?php if ($this->href): ?><a href="<?= $this->href ?>" title="<?= $this->label_detail ?>"><?php endif; ?><?= $this->generateAttribute('name') ?><?php if ($this->href): ?></a><?php endif; ?></h3>
 
 <?= $this->getGallery('images')->generateMainImage() ?>
 
@@ -24,7 +24,9 @@
 </div>
 <?php endif; ?>
 
+<?php if ($this->href): ?>
 <div class="details"><a href="<?= $this->href ?>" title="<?= $this->label_detail ?>"><?= $this->label_detail ?></a></div>
+<?php endif; ?>
 
 <?php if($this->actions): ?>
 <div class="submit_container">

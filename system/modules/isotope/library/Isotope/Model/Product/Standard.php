@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Product;
 
+use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -611,7 +612,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->raw              = $this->arrData;
         $objTemplate->raw_options      = $this->getConfiguration();
         $objTemplate->configuration    = $this->getConfiguration();
-        $objTemplate->href             = $this->generateUrl($arrConfig['jumpTo']);
+        $objTemplate->href             = '';
         $objTemplate->label_detail     = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options          = $arrProductOptions;
         $objTemplate->hasOptions       = \count($arrProductOptions) > 0;
@@ -621,6 +622,10 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formSubmit       = $this->getFormId();
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
+
+        if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
+            $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
+        }
 
         if (!$arrConfig['disableOptions']) {
             $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
@@ -1068,15 +1073,19 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return '';
         }
 
-        $strUrl = '/' . ($this->arrData['alias'] ?: $this->getProductId());
+        $strParams = '';
 
-        if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !\in_array('product', $GLOBALS['TL_AUTO_ITEM'], true)) {
-            $strUrl = '/product' . $strUrl;
+        if ($objJumpTo->iso_readerMode !== 'none') {
+            $strParams = '/'.($this->arrData['alias'] ?: $this->getProductId());
+
+            if (!$GLOBALS['TL_CONFIG']['useAutoItem'] || !\in_array('product', $GLOBALS['TL_AUTO_ITEM'], true)) {
+                $strParams = '/product'.$strParams;
+            }
         }
 
         return Url::addQueryString(
             http_build_query($this->getOptions()),
-            \Controller::generateFrontendUrl($objJumpTo->row(), $strUrl, $objJumpTo->language)
+            $objJumpTo->getFrontendUrl($strParams)
         );
     }
 

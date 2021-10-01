@@ -6,35 +6,13 @@
 &lt;p class=&quot;tl_help_table&quot;&gt;
     Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
     &lt;br&gt;
-    The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Option 1:&lt;/strong&gt;&lt;br&gt;
-    Do not set a reader page in the site structure. Place the list and reader module on the same page. Tell the list module to hide if a product alias is found (there's a checkbox in the module settings). The reader will automatically be invisible if no reader is found.&lt;br&gt;
-    &lt;u&gt;Advantage:&lt;/u&gt; Pretty simple to set up&lt;br&gt;
-    &lt;u&gt;Disadvantage:&lt;/u&gt; The layout of reader and list will be identical, and you cannot have different article content for the two cases.&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Option 2:&lt;/strong&gt;&lt;br&gt;
-    Set a reader page for every list page (product category) in the site structure. &lt;i&gt;Be aware that the reader setting is not inherited!&lt;/i&gt; Add the reader module to this page as usual.&lt;br&gt;
-    Isotope will now use this page to generate the site if a product alias is found in the URL. The alias will still be the one from the list page though.&lt;br&gt;
-    &lt;u&gt;Advantage:&lt;/u&gt; You can have different page content and layout (e.g. different columns) for the reader page then the list page.&lt;br&gt;
-    &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
+    The reader page (alias) will always be the same page as you selected as a category for the product. The following options are available for the detail page:&lt;br&gt;
 &lt;/p&gt;</source>
         <target>
 &lt;p class=&quot;tl_help_table&quot;&gt;
     Anders als bei anderen Contao-Modulen wird der Benutzer nicht direkt auf die Detailseite weitergeleitet, wenn er sich die Produktdetails ansieht. Wir haben eine neue Lösung für das Problem, den Seitennamen leserlich auszugeben und die zugehörige Detailseite zuzuordnen.&lt;br&gt;
     &lt;br&gt;
-    Die Detailseite (Alias) ist immer die selbe Seite, welche für eine Produktkategorie ausgewählt wurde. Es gibt 2 Möglichkeiten die Produktdetails anzuzeigen:&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Möglichkeit 1:&lt;/strong&gt;&lt;br&gt;
-    Sie wählen keine Detailseite in der Seitenstruktur aus. Sie setzen die Module für die Produktliste und die Produktdetails auf die selbe Seite. Beim Modul für die Produktliste stellen Sie ein, dass die Liste ausgeblendet werden soll, wenn sich ein Produktname (Alias) in der Adresse befindet. Wird kein Produktname gefunden, werden die Produktdetails automatisch ausgeblendet.&lt;br&gt;
-    &lt;u&gt;Vorteile:&lt;/u&gt; Einfach einzustellen.&lt;br&gt;
-    &lt;u&gt;Nachteile:&lt;/u&gt; Das Layout der Produktliste und der Details ist das selbe und Sie können nicht verschiedene Artikelinhalte für beide Fälle anlegen.&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Möglichkeit 2:&lt;/strong&gt;&lt;br&gt;
-    Setzen Sie eine Detailseite für jede Produktliste (Produktkategorie). &lt;i&gt;Beachten Sie, dass die Einstellungen für die Detailseite nicht vereerbt bzw. geerbt werden!&lt;/i&gt; Fügen Sie das Modul für die Produktdetails wie gewohnt an.&lt;br&gt;
-    Isotope wird nun diese Seite verwenden, wenn ein ein Produktname (Alias) in der Adresse gefunden wird.&lt;br&gt;
-    &lt;u&gt;Vorteile:&lt;/u&gt; Sie können verschiedene Layouts sowie Seiten- und Artikelinhalte für die Produktliste und die Detailseite anlegen. &lt;br&gt;
-    &lt;u&gt;Nachteile:&lt;/u&gt; Sie MÜSSEN eine Detailseite für jede Produktliste definieren. Die Einstellung wird NICHT VEREERBT.
+    Die Detailseite (Alias) ist immer die selbe Seite, welche für eine Produktkategorie ausgewählt wurde. Die folgenden Optionen sind als Detailseite verfügbar:&lt;br&gt;
 &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.mediaManager">

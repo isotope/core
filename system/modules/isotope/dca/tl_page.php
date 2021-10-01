@@ -34,7 +34,7 @@ try {
 
 \Haste\Dca\PaletteManipulator::create()
     ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_setReaderJumpTo', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_readerMode', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('regular', 'tl_page')
 ;
 
@@ -42,13 +42,13 @@ try {
 /**
  * Add a selector to tl_page
  */
-$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'iso_setReaderJumpTo';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'iso_readerMode';
 
 
 /**
  * Add subpalettes to tl_page
  */
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_setReaderJumpTo'] = 'iso_readerJumpTo';
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_readerJumpTo';
 
 
 /**
@@ -74,13 +74,16 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = array
     'sql'                     => "int(2) unsigned NOT NULL default '0'",
 );
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['iso_setReaderJumpTo'] = array
+$GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_setReaderJumpTo'],
+    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerMode'],
     'exclude'                 => true,
-    'inputType'               => 'checkbox',
-    'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr'),
-    'sql'                     => "char(1) NOT NULL default ''",
+    'inputType'               => 'select',
+    'options'                 => ['current', 'page', 'none'],
+    'reference'               => &$GLOBALS['TL_LANG']['tl_page']['iso_readerModes'],
+    'eval'                    => array('submitOnChange'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
+    'explanation'             => 'isoReaderJumpTo',
+    'sql'                     => "varchar(8) NOT NULL default 'current'",
 );
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
@@ -89,8 +92,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
     'exclude'                 => true,
     'inputType'               => 'pageTree',
     'foreignKey'              => 'tl_page.title',
-    'explanation'             => 'isoReaderJumpTo',
-    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true, 'helpwizard'=>true),
+    'eval'                    => array('fieldType'=>'radio', 'mandatory'=>true, 'tl_class'=>'w50'),
     'sql'                     => "int(10) unsigned NOT NULL default '0'",
     'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
 );

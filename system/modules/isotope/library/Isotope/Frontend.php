@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Contao\Controller;
+use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Input\Input;
@@ -156,7 +157,7 @@ class Frontend extends \Frontend
                 }
             }
 
-            if ($objPage->iso_setReaderJumpTo && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
+            if ('page' === $objPage->iso_readerMode && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
                 /** @var \PageModel $objIsotopeListPage */
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
@@ -319,13 +320,13 @@ class Frontend extends \Frontend
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
                         $intRemaining  = \count($arrCategories);
+                        $objPages = PageModel::findMultipleByIds($arrCategories) ?: [];
 
-                        foreach ($arrCategories as $intPage) {
-                            $objPage = \PageModel::findByPk($intPage);
+                        foreach ($objPages as $objPage) {
                             --$intRemaining;
 
                             // The target page does not exist
-                            if ($objPage === null) {
+                            if ($objPage === null || 'none' === $objPage->iso_readerMode) {
                                 continue;
                             }
 
@@ -629,9 +630,9 @@ class Frontend extends \Frontend
 
         // Set the admin e-mail address
         if ($objPage->adminEmail != '') {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \StringUtil::splitFriendlyEmail($objPage->adminEmail);
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = \StringUtil::splitFriendlyEmail($objPage->adminEmail);
         } else {
-            list($GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']) = \StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = \StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
         // Define the static URL constants
@@ -655,7 +656,7 @@ class Frontend extends \Frontend
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
-            list($strFormat, $strVariant) = explode('_', $objLayout->doctype);
+            [$strFormat, $strVariant] = explode('_', $objLayout->doctype);
             $objPage->outputFormat  = $strFormat;
             $objPage->outputVariant = $strVariant;
         }

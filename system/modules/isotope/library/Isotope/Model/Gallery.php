@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\PageModel;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 
@@ -80,7 +81,10 @@ abstract class Gallery extends TypeAgent
             deserialize($objProduct->{$strAttribute . '_fallback'}, true)
         ));
         $objGallery->product_id = $objProduct->getProductId();
-        $objGallery->href       = $objProduct->generateUrl($arrConfig['jumpTo']);
+
+        if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
+            $objGallery->href = $objProduct->generateUrl($arrConfig['jumpTo']);
+        }
 
         return $objGallery;
     }

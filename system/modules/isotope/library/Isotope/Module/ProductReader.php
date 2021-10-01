@@ -70,8 +70,11 @@ class ProductReader extends Module
      */
     protected function compile()
     {
-        global $objPage;
-        global $objIsotopeListPage;
+        $jumpTo = $GLOBALS['objIsotopeListPage'] ?: $GLOBALS['objPage'];
+
+        if ($jumpTo->iso_readerMode === 'none') {
+            $this->generate404();
+        }
 
         /** @var AbstractProduct $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
@@ -87,7 +90,7 @@ class ProductReader extends Module
             'buttons'     => $this->iso_buttons,
             'useQuantity' => $this->iso_use_quantity,
             'disableOptions' => $this->iso_disable_options,
-            'jumpTo'      => $objIsotopeListPage ? : $objPage,
+            'jumpTo'      => $jumpTo,
         );
 
         if (\Environment::get('isAjaxRequest')
