@@ -45,6 +45,13 @@
         <source>Price</source>
         <target>Fiyat</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.0">
+        <source>CSS class</source>
+        <target>CSS sınıfı</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.1">
+        <source>The class(es) will be added to this option in the front end.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.0">
         <source>Published</source>
         <target>Yayınlandı</target>
@@ -100,6 +107,10 @@
       <trans-unit id="tl_iso_attribute_option.price_legend">
         <source>Price change</source>
         <target>Fiyat değişimi</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.expert_legend">
+        <source>Expert settings</source>
+        <target>Uzman ayarları</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.publish_legend">
         <source>Publishing</source>

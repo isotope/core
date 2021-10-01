@@ -329,6 +329,10 @@
         <source>The selected product has been added to your shopping cart.</source>
         <target>Das gewählte Produkt wurde in den Warenkorb gelegt.</target>
       </trans-unit>
+      <trans-unit id="MSC.updatedInCart">
+        <source>The product has been updated in your shopping cart.</source>
+        <target>Das Produkt wurde im Warenkorb aktualisiert.</target>
+      </trans-unit>
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
         <target>Die unbestellten Produkte Ihres letzten Besuchs wurden wieder übernommen. Bitte prüfen Sie den Warenkorb-Inhalt.</target>

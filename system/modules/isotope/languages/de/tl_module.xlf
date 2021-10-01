@@ -235,6 +235,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.product_types.1">
         <source>You can restrict this checkout form to certain product types. If the cart contains a product type you have not selected, the checkout form is not shown.</source>
+        <target>Sie können dieses Bestellformular auf bestimmte Produkttypen einschränken. Wenn der Warenkorb einen Produkttypen enthält, den Sie nicht gewählt haben, ist das Bestellformular nicht verfügbar.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.product_types_condition.0">
         <source>Product type condition</source>

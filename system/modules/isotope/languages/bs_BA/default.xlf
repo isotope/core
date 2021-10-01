@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>Ime &quot;1%s&quot; rezervisano je za upotrebu sistema. Molimo odaberite drugo ime.</target>
+        <target>Ime &quot;%s&quot; rezervisano je za upotrebu sistema. Molimo odaberite drugo ime.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -55,11 +55,11 @@
       </trans-unit>
       <trans-unit id="ERR.cartMinSubtotal">
         <source>The minimum order amount is %s. Please add more products before checkout.</source>
-        <target>Minimalni iznos narudžbe je 1%s . Molimo dodajte još proizvoda prije plaćanja.</target>
+        <target>Minimalni iznos narudžbe je %s . Molimo dodajte još proizvoda prije plaćanja.</target>
       </trans-unit>
       <trans-unit id="ERR.productMinimumQuantity">
         <source>The minimum quantity for &quot;%s&quot; is %s items. Please check your shopping cart.</source>
-        <target>Minimalna količina za &quot; 1%s &quot; je 1%s artikala. Molimo provjerite svoju košaricu.</target>
+        <target>Minimalna količina za &quot; %s &quot; je %s artikala. Molimo provjerite svoju košaricu.</target>
       </trans-unit>
       <trans-unit id="ERR.imageInFallback">
         <source>This image has already been assigned to the fallback language.</source>
@@ -87,7 +87,7 @@
       </trans-unit>
       <trans-unit id="ERR.cartErrorInItems">
         <source>Please resolve the errors in your cart before checking out.</source>
-        <target>Molimo prije odjave riješite greške u vašoj košarici.</target>
+        <target>Molimo prije odjave riješite greške u vašoj korpi.</target>
       </trans-unit>
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
@@ -187,7 +187,7 @@
       </trans-unit>
       <trans-unit id="MSC.priceRangeLabel">
         <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
-        <target>1 od 1 1%s</target>
+        <target>1 od 1 %s</target>
       </trans-unit>
       <trans-unit id="MSC.attributePriceLabel">
         <source>%s (%s)</source>
@@ -328,6 +328,9 @@
         <source>The selected product has been added to your shopping cart.</source>
         <target>Odabrani proizvod je dodan u vašu korpu.</target>
       </trans-unit>
+      <trans-unit id="MSC.updatedInCart">
+        <source>The product has been updated in your shopping cart.</source>
+      </trans-unit>
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
         <target>Proizvodi iz vaše posljednje posjete su ponovo dodani. Molimo pregledajte proizvode u vašoj korpi.</target>
@@ -386,7 +389,7 @@
       </trans-unit>
       <trans-unit id="MSC.downloadsRemaining">
         <source>&lt;br /&gt;%s downloads remaining</source>
-        <target>1 1%s preuzimanja preostalo</target>
+        <target>1 %s preuzimanja preostalo</target>
       </trans-unit>
       <trans-unit id="MSC.cartBT">
         <source>Shopping Cart</source>
@@ -406,7 +409,7 @@
       </trans-unit>
       <trans-unit id="MSC.orderStatusHeadline">
         <source>Order Status: %s</source>
-        <target>Stanje narudžbe: 1%s</target>
+        <target>Stanje narudžbe: %s</target>
       </trans-unit>
       <trans-unit id="MSC.checkboutStepBack">
         <source>Go back to step &quot;%s&quot;</source>
@@ -506,7 +509,7 @@
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.2">
         <source>Pay now</source>
-        <target>Plati sada</target>
+        <target>Plati odmah</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.3">
         <source>Please click on the &quot;Pay now&quot; button to continue.</source>
@@ -674,7 +677,7 @@
       </trans-unit>
       <trans-unit id="MSC.productcacheNoscript">
         <source>Your browser does not support JavaScript. Please &lt;a href=&quot;%s&quot;&gt;click here&lt;/a&gt; to load the product list.</source>
-        <target>Vaš preglednik ne podržava JavaScript. Kliknite ovdje da biste učitali listu proizvoda.</target>
+        <target>Vaš preglednik ne podržava JavaScript. &lt;a href=&quot;%s&quot;&gt;Kliknite ovdje&lt;/a&gt; da biste učitali listu proizvoda.</target>
       </trans-unit>
       <trans-unit id="MSC.noFilesInFolder">
         <source>No files in this folder</source>
@@ -1214,7 +1217,7 @@
       </trans-unit>
       <trans-unit id="CUR.AED">
         <source>AED - United Arab Emirates Dirham</source>
-        <target>AED - United Arab Emirates Dirham</target>
+        <target>AED - Dirhem Ujedinjenih Arapskih Emirata</target>
       </trans-unit>
       <trans-unit id="CUR.AFN">
         <source>AFN - Afghani</source>
@@ -1222,7 +1225,7 @@
       </trans-unit>
       <trans-unit id="CUR.ALL">
         <source>ALL - Lek</source>
-        <target>ALL - Lek</target>
+        <target>ALL - Albanski Lek</target>
       </trans-unit>
       <trans-unit id="CUR.AMD">
         <source>AMD - Dram</source>
@@ -1230,7 +1233,7 @@
       </trans-unit>
       <trans-unit id="CUR.ANG">
         <source>ANG - Netherlands Antilles Guilder</source>
-        <target>ANG - Netherlands Antilles Guilder</target>
+        <target>ANG - Holandski Antilles Guilder</target>
       </trans-unit>
       <trans-unit id="CUR.AOA">
         <source>AOA - Kwanza</source>
@@ -1238,19 +1241,19 @@
       </trans-unit>
       <trans-unit id="CUR.ARS">
         <source>ARS - Argentinian Nuevo Peso</source>
-        <target>ARS - Argentinian Nuevo Peso</target>
+        <target>ARS - Argentinski novi pezos</target>
       </trans-unit>
       <trans-unit id="CUR.AUD">
         <source>AUD - Australian Dollar</source>
-        <target>AUD - Australian Dollar</target>
+        <target>AUD - Australijski dolar</target>
       </trans-unit>
       <trans-unit id="CUR.AWG">
         <source>AWG - Aruban Guilder</source>
-        <target>AWG - Aruban Guilder</target>
+        <target>AWG - Arubanski Guilder</target>
       </trans-unit>
       <trans-unit id="CUR.AZN">
         <source>AZN - Azerbaijani Manat</source>
-        <target>AZN - Azerbaijani Manat</target>
+        <target>AZN - Azerbejdžanski Manat</target>
       </trans-unit>
       <trans-unit id="CUR.BAM">
         <source>BAM - Convertible Mark</source>
@@ -1294,7 +1297,7 @@
       </trans-unit>
       <trans-unit id="CUR.BSD">
         <source>BSD - Bahamian Dollar</source>
-        <target>BSD - Bahamijski dolar</target>
+        <target>BSD - Bahamski dolar</target>
       </trans-unit>
       <trans-unit id="CUR.BTN">
         <source>BTN - Ngultrum</source>

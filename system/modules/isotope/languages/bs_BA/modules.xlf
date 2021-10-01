@@ -39,7 +39,7 @@
       </trans-unit>
       <trans-unit id="FMD.iso_productfilter.1">
         <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
-        <target>Definirajte pojedinačne filtere za Isotope eCommerce kao što su stabla kategorija i filteri atributa proizvoda.</target>
+        <target>Definišite pojedinačne filtere za Isotope eCommerce kao što su stabla kategorija i filteri atributa proizvoda.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_cumulativefilter.0">
         <source>Cumulative Filter</source>
@@ -255,7 +255,7 @@
       </trans-unit>
       <trans-unit id="IMD.checkout">
         <source>Checkout Flow</source>
-        <target>Tok naplate</target>
+        <target>Proces naplate</target>
       </trans-unit>
       <trans-unit id="IMD.shipping.0">
         <source>Shipping methods</source>
@@ -311,7 +311,7 @@
       </trans-unit>
       <trans-unit id="IMD.notifications.0">
         <source>Notifications</source>
-        <target>Obavijesti</target>
+        <target>Obavještenja</target>
       </trans-unit>
       <trans-unit id="IMD.notifications.1">
         <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>

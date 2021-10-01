@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="ERR.systemColumn">
         <source>Name &quot;%s&quot; is reserved for system use. Please choose a different name.</source>
-        <target>Questo nome è riservato per l'uso del sistema. Si prega di scegliere un nome diverso.</target>
+        <target>Questo nome &quot;%s&quot; è riservato per l'uso del sistema. Si prega di scegliere un nome diverso.</target>
       </trans-unit>
       <trans-unit id="ERR.noStoreConfigurationSet">
         <source>No store configuration available</source>
@@ -328,6 +328,9 @@
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
         <target>Il prodotto selezionato è stato aggiunto al vostro carrello.</target>
+      </trans-unit>
+      <trans-unit id="MSC.updatedInCart">
+        <source>The product has been updated in your shopping cart.</source>
       </trans-unit>
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>

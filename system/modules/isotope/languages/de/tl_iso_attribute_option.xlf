@@ -45,6 +45,14 @@
         <source>Price</source>
         <target>Preis</target>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.0">
+        <source>CSS class</source>
+        <target>CSS-Klasse</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.1">
+        <source>The class(es) will be added to this option in the front end.</source>
+        <target>Die Klasse(n) werden der Option hinzugefügt.</target>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute_option.published.0">
         <source>Published</source>
         <target>Veröffentlicht</target>
@@ -100,6 +108,10 @@
       <trans-unit id="tl_iso_attribute_option.price_legend">
         <source>Price change</source>
         <target>Preisänderung</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.expert_legend">
+        <source>Expert settings</source>
+        <target>Experten-Einstellungen</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute_option.publish_legend">
         <source>Publishing</source>
