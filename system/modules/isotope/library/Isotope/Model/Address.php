@@ -237,7 +237,7 @@ class Address extends \Model
             'hcard_org'              => $arrTokens['company'] ? '<div class="org' . $fnCompany . '">' . $arrTokens['company'] . '</div>' : '',
             'hcard_email'            => $arrTokens['email'] ? '<a href="mailto:' . $arrTokens['email'] . '">' . $arrTokens['email'] . '</a>' : '',
             'hcard_tel'              => $arrTokens['phone'] ? '<div class="tel">' . $arrTokens['phone'] . '</div>' : '',
-            'hcard_adr'              => ($street | $arrTokens['city'] || $arrTokens['postal'] || $arrTokens['subdivision'] || $arrTokens['country']) ? '1' : '',
+            'hcard_adr'              => ($street || $arrTokens['city'] || $arrTokens['postal'] || $arrTokens['subdivision'] || $arrTokens['country']) ? '1' : '',
             'hcard_street_address'   => $street ? '<div class="street-address">' . $street . '</div>' : '',
             'hcard_locality'         => $arrTokens['city'] ? '<span class="locality">' . $arrTokens['city'] . '</span>' : '',
             'hcard_region'           => $arrTokens['subdivision'] ? '<span class="region">' . $arrTokens['subdivision'] . '</span>' : '',
