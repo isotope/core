@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\StringUtil;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
@@ -559,7 +560,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         parent::setRow($arrData);
 
         // Merge settings into arrData, save() will move the values back
-        $this->arrData = array_merge(deserialize($arrData['settings'], true), $this->arrData);
+        $this->arrData = array_merge(StringUtil::deserialize($arrData['settings'], true), $this->arrData);
 
         return $this;
     }
@@ -587,7 +588,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $arrModified = array_diff_key($this->arrModified, array_flip($arrDbFields));
 
         if (!empty($arrModified)) {
-            $arrSettings = deserialize($this->settings, true);
+            $arrSettings = StringUtil::deserialize($this->settings, true);
             $arrSettings = array_merge($arrSettings, array_intersect_key($this->arrData, $arrModified));
 
             $this->settings = serialize($arrSettings);
@@ -1990,7 +1991,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public static function getItemsSortingCallable($strOrderBy = 'asc_id')
     {
-        list($direction, $attribute) = explode('_', $strOrderBy, 2);
+        [$direction, $attribute] = explode('_', $strOrderBy, 2);
 
         if ('asc' === $direction) {
             return function ($arrItems) use ($attribute) {

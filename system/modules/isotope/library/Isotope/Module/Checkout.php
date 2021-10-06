@@ -478,7 +478,7 @@ class Checkout extends Module
     {
         $arrTokens = array();
 
-        // Run trough all steps to collect checkout information
+        // Run through all steps to collect checkout information
         foreach ($arrSteps as $arrModules) {
 
             /** @var IsotopeCheckoutStep $objModule */
