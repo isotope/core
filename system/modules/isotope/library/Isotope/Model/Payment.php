@@ -342,7 +342,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      *
      * @return string
      */
-    public function backendInterface($orderId)
+    protected function backendInterface($orderId)
     {
         return '
 <div id="tl_buttons">

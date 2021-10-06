@@ -95,16 +95,6 @@ interface IsotopePayment
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule);
 
     /**
-     * Return information or advanced features in the backend.
-     * Use this function to present advanced features or basic payment information for an order in the backend.
-     *
-     * @param int $orderId Order ID
-     *
-     * @return string
-     */
-    public function backendInterface($orderId);
-
-    /**
      * Return the checkout review information.
      * Use this to return custom checkout information about this payment module.
      * Example: parial information about the used credit card.

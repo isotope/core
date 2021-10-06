@@ -22,12 +22,17 @@ use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
 use Isotope\Frontend;
+use Isotope\Interfaces\IsotopeBackendInterface;
+use Isotope\Interfaces\IsotopePayment;
+use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
+use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionLog;
+use Isotope\Model\Shipping;
 use Isotope\Module\OrderDetails;
 use NotificationCenter\Model\Notification;
 
@@ -351,7 +356,20 @@ class Callback extends \Backend
      */
     public function paymentButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['payment_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        if (!$row['payment_id']) {
+            return '';
+        }
+
+        $paymentMethod = Payment::findByPk($row['payment_id']);
+
+        if (!$paymentMethod instanceof IsotopePayment
+            || ($paymentMethod instanceof IsotopeBackendInterface && !$paymentMethod->hasBackendInterface((int) $row['id']))
+            || (!$paymentMethod instanceof IsotopeBackendInterface && !\is_callable([$paymentMethod, 'backendInterface']))
+        ) {
+            return '';
+        }
+
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -371,7 +389,13 @@ class Callback extends \Backend
             $objPayment = $objOrder->getRelated('payment_id');
 
             if (null !== $objPayment) {
-                return $objPayment->backendInterface($dc->id);
+                if ($objPayment instanceof IsotopeBackendInterface && $objPayment->hasBackendInterface((int) $dc->id)) {
+                    return $objPayment->renderBackendInterface((int) $dc->id);
+                }
+
+                if (\is_callable([$objPayment, 'backendInterface'])) {
+                    return $objPayment->backendInterface($dc->id);
+                }
             }
         }
 
@@ -392,7 +416,20 @@ class Callback extends \Backend
      */
     public function shippingButton($row, $href, $label, $title, $icon, $attributes)
     {
-        return $row['shipping_id'] > 0 ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        if (!$row['shipping_id']) {
+            return '';
+        }
+
+        $shippingMethod = Shipping::findByPk($row['shipping_id']);
+
+        if (!$shippingMethod instanceof IsotopeShipping
+            || ($shippingMethod instanceof IsotopeBackendInterface && !$shippingMethod->hasBackendInterface((int) $row['id']))
+            || (!$shippingMethod instanceof IsotopeBackendInterface && !\is_callable([$shippingMethod, 'backendInterface']))
+        ) {
+            return '';
+        }
+
+        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -412,7 +449,13 @@ class Callback extends \Backend
             $objShipping = $objOrder->getRelated('shipping_id');
 
             if (null !== $objShipping) {
-                return $objShipping->backendInterface($dc->id);
+                if ($objShipping instanceof IsotopeBackendInterface && $objShipping->hasBackendInterface((int) $dc->id)) {
+                    return $objShipping->renderBackendInterface((int) $dc->id);
+                }
+
+                if (\is_callable([$objShipping, 'backendInterface'])) {
+                    return $objShipping->backendInterface($dc->id);
+                }
             }
         }
 

@@ -76,16 +76,6 @@ interface IsotopeShipping
     public function getPrice();
 
     /**
-     * Return information or advanced features in the backend.
-     * Use this function to present advanced features or basic shipping information for an order in the backend.
-     *
-     * @param integer
-     *
-     * @return string
-     */
-    public function backendInterface($orderId);
-
-    /**
      * Return the checkout review information.
      * Use this to return custom checkout information about this shipping module.
      * Example: Information about tracking codes.

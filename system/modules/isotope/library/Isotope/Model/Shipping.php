@@ -321,7 +321,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
     /**
      * @inheritdoc
      */
-    public function backendInterface($orderId)
+    protected function backendInterface($orderId)
     {
         return '
 <div id="tl_buttons">
