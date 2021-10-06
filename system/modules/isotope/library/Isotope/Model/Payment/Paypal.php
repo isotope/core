@@ -77,7 +77,7 @@ class Paypal extends Postsale
         }
 
         // Store request data in order for future references
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data = $arrPayment;
 
@@ -210,7 +210,7 @@ class Paypal extends Postsale
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
