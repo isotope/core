@@ -321,9 +321,11 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope']['iso_order_statu
     'payment_id', // Payment method ID
     'payment_label', // Payment method label
     'payment_note', // Payment method note
+    'payment_*',
     'shipping_id', // Shipping method ID
     'shipping_label', // Shipping method label
     'shipping_note', // Shipping method note
+    'shipping_*',
     'config_*', // Store configuration model fields
     'member_*', // Member model fields
 );
