@@ -162,7 +162,7 @@ class DC_ProductData extends \DC_Table
         if (!$this->intId) {
             if ($this->intGroupId > 0) {
                 $this->procedure[] = "gid IN(".implode(',', array_map('intval', \Database::getInstance()->getChildRecords([$this->intGroupId], Group::getTable(), false, [$this->intGroupId]))).")";
-            } elseif (!BackendUser::getInstance()->isAdmin) {
+            } elseif (!BackendUser::getInstance()->isAdmin && !empty(BackendUser::getInstance()->iso_groups)) {
                 $this->procedure[] = 'gid IN('.implode(',', array_map('intval', \Database::getInstance()->getChildRecords(BackendUser::getInstance()->iso_groups, Group::getTable(), false, BackendUser::getInstance()->iso_groups))).')';
             }
         }
