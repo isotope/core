@@ -17,7 +17,6 @@ namespace Isotope\Interfaces;
  */
 interface IsotopeCheckoutStep
 {
-
     /**
      * Return true if the checkout step is available
      * @return  bool
@@ -53,11 +52,4 @@ interface IsotopeCheckoutStep
      * @return  array
      */
     public function review();
-
-    /**
-     * Return array of tokens for notification
-     * @param   IsotopeProductCollection
-     * @return  array
-     */
-    public function getNotificationTokens(IsotopeProductCollection $objCollection);
 }

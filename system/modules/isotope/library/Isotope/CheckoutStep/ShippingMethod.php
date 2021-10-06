@@ -148,14 +148,6 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getNotificationTokens(IsotopeProductCollection $objCollection)
-    {
-        return array();
-    }
-
-    /**
      * Initialize modules and options
      */
     private function initializeModules()

@@ -78,14 +78,6 @@ class ShippingAddress extends Address implements IsotopeCheckoutStep
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getNotificationTokens(IsotopeProductCollection $objCollection)
-    {
-        return array();
-    }
-
-    /**
      * Get available address options
      *
      * @param array $arrFields

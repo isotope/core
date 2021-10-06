@@ -13,6 +13,7 @@ namespace Isotope\Model\ProductCollection;
 
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Isotope;
@@ -475,6 +476,10 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrTokens['payment_id']        = $objPayment->getId();
             $arrTokens['payment_label']     = $objPayment->getLabel();
             $arrTokens['payment_note']      = $objPayment->getNote();
+
+            if ($objPayment instanceof IsotopeNotificationTokens) {
+                $arrTokens = array_merge($arrTokens, $objPayment->getNotificationTokens($this));
+            }
         }
 
         // Add shipping method info
@@ -482,6 +487,10 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $arrTokens['shipping_id']        = $objShipping->getId();
             $arrTokens['shipping_label']     = $objShipping->getLabel();
             $arrTokens['shipping_note']      = $objShipping->getNote();
+
+            if ($objShipping instanceof IsotopeNotificationTokens) {
+                $arrTokens = array_merge($arrTokens, $objShipping->getNotificationTokens($this));
+            }
         }
 
         // Add config fields

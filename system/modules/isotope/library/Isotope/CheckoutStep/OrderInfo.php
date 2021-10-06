@@ -51,12 +51,4 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
     {
         return '';
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotificationTokens(IsotopeProductCollection $objCollection)
-    {
-        return [];
-    }
 }

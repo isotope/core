@@ -13,10 +13,11 @@ namespace Isotope\CheckoutStep;
 
 use Haste\Form\Form;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Module\Checkout;
 
-class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep
+class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, IsotopeNotificationTokens
 {
     /**
      * @var int

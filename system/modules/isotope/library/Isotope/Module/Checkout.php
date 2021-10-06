@@ -18,6 +18,7 @@ use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
 use Isotope\Interfaces\IsotopeCheckoutStep;
+use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
@@ -483,7 +484,10 @@ class Checkout extends Module
 
             /** @var IsotopeCheckoutStep $objModule */
             foreach ($arrModules as $objModule) {
-                $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
+                // Method check is BC for when IsotopeCheckoutStep contained "getNotificationTokens" method
+                if ($objModule instanceof IsotopeNotificationTokens || \method_exists($objModule, 'getNotificationTokens')) {
+                    $arrTokens = array_merge($arrTokens, $objModule->getNotificationTokens($objOrder));
+                }
             }
         }
 
