@@ -11,6 +11,8 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\FrontendUser;
 use Isotope\Translation;
 
 /**
@@ -87,6 +89,8 @@ class Config extends \Model
      * @var array
      */
     protected $arrCache = array();
+
+    private static $priceDisplayGroups = null;
 
     /**
      * Get translated label for the config
@@ -261,6 +265,22 @@ class Config extends \Model
     public function getPriceDisplay()
     {
         $format = $this->priceDisplay;
+
+        if (true === FE_USER_LOGGED_IN) {
+            if (null === self::$priceDisplayGroups) {
+                self::$priceDisplayGroups = Database::getInstance()
+                    ->execute("SELECT id, iso_priceDisplay FROM tl_member_group WHERE iso_priceDisplay!=''")
+                    ->fetchEach('iso_priceDisplay')
+                ;
+            }
+
+            foreach (FrontendUser::getInstance()->groups as $groupId) {
+                if (isset(self::$priceDisplayGroups[$groupId])) {
+                    $format = self::$priceDisplayGroups[$groupId];
+                    break;
+                }
+            }
+        }
 
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && \is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {

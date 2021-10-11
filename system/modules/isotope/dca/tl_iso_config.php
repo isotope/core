@@ -451,7 +451,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'default'               => 'gross',
             'inputType'             => 'select',
             'options'               => array(\Isotope\Model\Config::PRICE_DISPLAY_NET, \Isotope\Model\Config::PRICE_DISPLAY_GROSS, \Isotope\Model\Config::PRICE_DISPLAY_FIXED, \Isotope\Model\Config::PRICE_DISPLAY_LEGACY),
-            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config'],
+            'reference'             => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
             'sql'                   => "varchar(9) NOT NULL default ''",
         ),
