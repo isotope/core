@@ -167,7 +167,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.1">
         <source>Select the fields for a billing and shipping address when checking out.</source>
-        <target>Wählen Sie die Felder für die Rechnungs- und Versandadresse beim bezahlen aus.</target>
+        <target>Wählen Sie die Felder für die Rechnungs- und Versandadresse beim Bezahlen aus.</target>
       </trans-unit>
       <trans-unit id="tl_iso_config.address_fields.billing.0">
         <source>For billing address</source>
