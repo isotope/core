@@ -131,6 +131,14 @@
         <source>Edit order ID %s</source>
         <target>Éditer la commande ID %s</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Supprimer une commande</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Supprimer la commande ID %s</target>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
         <target>Payment details</target>

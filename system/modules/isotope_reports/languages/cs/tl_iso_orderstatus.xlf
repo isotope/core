@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="tl_iso_orderstatus.reports_legend">
         <source>Reports &amp; Statistics</source>
+        <target>Přehledy a statistiky</target>
       </trans-unit>
     </body>
   </file>

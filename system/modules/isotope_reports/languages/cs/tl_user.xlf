@@ -3,9 +3,11 @@
     <body>
       <trans-unit id="tl_user.iso_reports.0">
         <source>Isotope Reports</source>
+        <target>Isotope Přehledy</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_reports.1">
         <source>Select what reports should be visible to the user.</source>
+        <target>Vyberte, které přehledy by měly být viditelné pro uživatele.</target>
       </trans-unit>
     </body>
   </file>
