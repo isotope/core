@@ -29,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     // Fields
     'fields' => [
         'id' => [
+            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['id'],
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ],
         'tstamp' => [
@@ -48,4 +49,3 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
         ],
     ],
 ];
-
