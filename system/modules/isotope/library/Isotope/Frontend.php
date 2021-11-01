@@ -222,11 +222,17 @@ class Frontend extends \Frontend
      * simplicity here.
      *
      * @param string $buffer
+     * @param string $templateName
      *
      * @return string
      */
-    public function injectScripts($buffer)
+    public function injectScripts($buffer, $templateName)
     {
+        // Only add messages to the fe_page template (see isotope/core#2255)
+        if (!empty($templateName) && 0 !== strncmp($templateName, 'fe_', 3)) {
+            return $buffer;
+        }
+
         $messages = Message::generate();
         $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && \is_array($GLOBALS['AJAX_PRODUCTS']);
 
@@ -833,7 +839,7 @@ class Frontend extends \Frontend
 
     /**
      * Switches the environment to the given language.
-     * 
+     *
      * @param string $language
      */
     private static function setLanguage($language)
