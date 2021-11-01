@@ -12,6 +12,8 @@
 namespace Isotope;
 
 use Contao\Controller;
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\System;
 use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -29,6 +31,7 @@ use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\TaxClass;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class Isotope\Frontend
@@ -593,8 +596,7 @@ class Frontend extends \Frontend
 
         // Set the current system to the language when the user placed the order.
         // This will result in correct e-mails and payment description.
-        $GLOBALS['TL_LANGUAGE'] = $strLanguage;
-        \System::loadLanguageFile('default', $strLanguage, true);
+        self::setLanguage($strLanguage);
 
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
@@ -657,7 +659,7 @@ class Frontend extends \Frontend
             $objPage->outputVariant = $strVariant;
         }
 
-        $GLOBALS['TL_LANGUAGE'] = $objPage->language;
+        self::setLanguage($objPage->language);
 
         return $objPage;
     }
@@ -827,5 +829,30 @@ class Frontend extends \Frontend
     public static function getIsotopeMessages()
     {
         return Message::generate();
+    }
+
+    /**
+     * Switches the environment to the given language.
+     * 
+     * @param string $language
+     */
+    private static function setLanguage($language)
+    {
+        $GLOBALS['TL_LANGUAGE'] = $language;
+
+        if (class_exists(ContaoCoreBundle::class)) {
+            /** @var ContainerInterface $container */
+            $container = System::getContainer();
+
+            if ($container->has('request_stack') && null !== ($request = $container->get('request_stack')->getCurrentRequest())) {
+                $request->setLocale($language);
+            }
+
+            if ($container->has('translator')) {
+                $container->get('translator')->setLocale($language);
+            }
+        }
+
+        System::loadLanguageFile('default', $language, true);
     }
 }
