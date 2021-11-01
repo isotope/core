@@ -52,7 +52,7 @@ class Paypal extends Postsale
         if (!$this->validateInput()) {
             return;
         }
-        if (!$this->debug && strcasecmp(\Input::post('receiver_email', true),$this->paypal_account) != 0) {
+        if (!$this->debug && 0 !== strcasecmp(\Input::post('receiver_email', true), $this->paypal_account)) {
             \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return;
         }
