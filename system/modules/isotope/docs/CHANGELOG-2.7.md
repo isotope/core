@@ -1,6 +1,23 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.7.4 (2021-11-02)
+--------------------------
+
+- Product SKU should not be mandatory in the database
+- Added confirmation message when product is updated in the cart
+- Improved product group permission check when listing products
+- Make sure models are only created from the current class type
+- Override language in request and translator (#2245)
+- Do not match PayPal email case sensitive (#2260)
+- Do not add messages to fragment templates (#2255)
+- Fixed moving multiple products to groups (#2234)
+- Fixed default value for document type (#2241)
+- Fixed encoding issues in price format config (#2249)
+- Fixed binary instead of OR operator in address
+- Fixed editing multiple orders in the back end (#2235)
+
+
 Version 2.7.3 (2021-07-06)
 --------------------------
 
