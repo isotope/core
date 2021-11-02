@@ -107,6 +107,11 @@ source_file = system/modules/isotope/languages/en/tl_iso_product_collection.xlf
 source_lang = en
 file_filter = system/modules/isotope/languages/<lang>/tl_iso_product_collection.xlf
 
+[isotope.v2_8-isotope-tl_iso_product_collection_log]
+source_file = system/modules/isotope/languages/en/tl_iso_product_collection_log.xlf
+source_lang = en
+file_filter = system/modules/isotope/languages/<lang>/tl_iso_product_collection_log.xlf
+
 [isotope.v2_8-isotope-tl_iso_product_price]
 source_file = system/modules/isotope/languages/en/tl_iso_product_price.xlf
 source_lang = en

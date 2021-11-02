@@ -128,6 +128,14 @@
         <source>Edit order ID %s</source>
         <target>Изменить ID заказа %s</target>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Удалить заказ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Удалить ID заказа %s</target>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
         <target>Информация об оплате</target>

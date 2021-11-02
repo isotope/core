@@ -131,6 +131,28 @@ abstract class TypeAgent extends \Model
         return $arrOptions;
     }
 
+    public static function findByPk($varValue, array $arrOptions = [])
+    {
+        $result = parent::findByPk($varValue, $arrOptions);
+
+        if (null !== $result && !\is_a($result, static::class, true)) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    public static function findByIdOrAlias($varId, array $arrOptions = [])
+    {
+        $result = parent::findByIdOrAlias($varId, $arrOptions);
+
+        if (null !== $result && !\is_a($result, static::class, true)) {
+            return null;
+        }
+
+        return $result;
+    }
+
     /**
      * Find sibling records by a column value
      *
@@ -146,12 +168,12 @@ abstract class TypeAgent extends \Model
 
         $arrOptions = array_merge(
             array(
-                'column'    => array(
+                'column' => array(
                     "$t.type=?",
                     "$t.$strColumn=?",
                     "$t.id!=?"
                 ),
-                'value'     => array(
+                'value' => array(
                     $objModel->type,
                     $objModel->{$strColumn},
                     $objModel->id
@@ -234,13 +256,21 @@ abstract class TypeAgent extends \Model
         $objResult = static::postFind($objResult);
 
         if ('Model' === $arrOptions['return']) {
-
             // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
 
-        } else {
-            return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
+
+        return static::createCollectionFromDbResult($objResult, static::$strTable);
+    }
+
+    protected static function createCollection(array $arrModels, $strTable)
+    {
+        $arrModels = array_filter($arrModels, static function ($model) {
+            return \is_a($model, static::class, true);
+        });
+
+        return parent::createCollection($arrModels, $strTable);
     }
 
     /**
@@ -274,7 +304,7 @@ abstract class TypeAgent extends \Model
             $strClass = \get_called_class();
 
             $objReflection = new \ReflectionClass($strClass);
-            if ($objReflection ->isAbstract()) {
+            if ($objReflection->isAbstract()) {
                 return null;
             }
         }
