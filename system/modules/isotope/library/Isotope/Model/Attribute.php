@@ -257,7 +257,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_TABLE:
                     $arrOptions = [];
-                    if (null !== ($options = AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']))) {
+                    if ($this instanceof IsotopeAttributeWithOptions && null !== ($options = AttributeOption::findByAttribute($this, ['order' => AttributeOption::getTable().'.label']))) {
                         foreach ($options as $model) {
                             $arrOptions[] = [
                                 'value' => $model->getLanguageId(),
@@ -269,7 +269,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
                 case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
                     $arrOptions = [];
-                    if (null !== ($options = AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']))) {
+                    if ($this instanceof IsotopeAttributeWithOptions && null !== ($options = AttributeOption::findByProducts($this, ['order' => AttributeOption::getTable().'.label']))) {
                         foreach ($options as $model) {
                             $arrOptions[] = [
                                 'value' => $model->getLanguageId(),
@@ -396,7 +396,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * @param IsotopeProduct $objProduct
      * @param array          $arrOptions
      *
-     * @return string
+     * @return mixed
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
@@ -974,7 +974,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
             return $objAttribute;
 
-        } elseif (static::$arrFieldNameMap[$strField] === false) {
+        }
+
+        if (static::$arrFieldNameMap[$strField] === false) {
             return null;
         }
 
