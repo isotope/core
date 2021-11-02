@@ -227,7 +227,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.1">
         <source>Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)</source>
-        <target>Invece di aggiungere opzioni può inserire una combinazione campo.tablella per selezionare dal database.</target>
+        <target>Invece di aggiungere opzioni puoi inserire una combinazione tabella.campo da selezionare dal database. Per usare foreignKeys multilingue, inseritene una per riga e specificate la lingua (esempio: en=tl_table.field)</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.conditionField.0">
         <source>Parent field</source>
@@ -287,9 +287,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rootNodes.0">
         <source>Root nodes</source>
+        <target>Nodi principali</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rootNodes.1">
         <source>You can limit the page tree by defining a root page here.</source>
+        <target>Potete limitare l'albero delle pagine definendo qui una pagina root.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.storeFile.0">
         <source>Store uploaded files</source>
@@ -325,7 +327,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutRelocate.0">
         <source>Move file(s) after checkout</source>
-        <target>Spostare i file dopo il checkout</target>
+        <target>Spostare i file(s) dopo il checkout</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.checkoutRelocate.1">
         <source>Re-organize files after an order has been completed.</source>
