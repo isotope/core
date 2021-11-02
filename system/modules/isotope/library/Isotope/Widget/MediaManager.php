@@ -313,7 +313,7 @@ class MediaManager extends \Widget implements \uploadable
 
         if (!$blnIsAjax) {
             $return .= '<div id="ctrl_' . $this->strId . '" class="tl_mediamanager">';
-            $extensions = trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']);
+            $extensions = StringUtil::trimsplit(',', $this->extensions);
 
             $upload .= '<div id="fineuploader_'.$this->strId.'" class="upload_container"></div>
   <script>

@@ -404,7 +404,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute']['extensions'],
             'exclude'               => true,
-            'default'               => 'jpg,jpeg,gif,png',
+            'default'               => $GLOBALS['TL_CONFIG']['validImageTypes'],
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'rgxp'=>'extnd', 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
