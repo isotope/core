@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Database;
 use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Model\Product;
@@ -28,7 +29,7 @@ class Label
      * @param \DataContainer $dc
      * @param array          $args
      *
-     * @return string
+     * @return array
      */
     public function generate($row, $label, $dc, $args)
     {
@@ -51,6 +52,24 @@ class Label
                 case 'variantFields':
                     $args[$i] = $this->generateVariantFields($args[$i], $objProduct, $dc);
                     break;
+
+                default:
+                    $objProductType = ProductType::findByPk($row['type']);
+                    if ($objProductType
+                        && $objProductType->hasVariants()
+                        && !\in_array($field, $objProductType->getAttributes(), true)
+                        && \in_array($field, $objProductType->getVariantAttributes(), true)
+                    ) {
+                        $values = Database::getInstance()->prepare("SELECT $field FROM tl_iso_product WHERE pid=?")->execute($row['id'])->fetchEach($field);
+                        $values = array_unique(array_filter($values));
+                        $removed = array_splice($values, 3);
+
+                        $args[$i] = implode('<br>', $values);
+
+                        if ($removed) {
+                            $args[$i] .= '<br><span title="'.StringUtil::specialchars(implode(', ', $removed)).'">…</span><span class="invisible">'.StringUtil::specialchars(implode(', ', $removed)).'</span>';
+                        }
+                    }
             }
         }
 
@@ -135,13 +154,51 @@ class Label
      */
     private function generatePrice($row)
     {
-        $objPrice = ProductPrice::findPrimaryByProductId($row['id']);
+        $objPrice = null;
+        $fromPrice = false;
+
+        if ($row['pid'] == 0
+            && null !== ($objProductType = ProductType::findByPk($row['type']))
+            && $objProductType->hasVariants()
+            && \in_array('price', $objProductType->getVariantAttributes())
+        ) {
+            $variantIds = Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=? AND language=''")->execute($row['id'])->fetchEach('id');
+            $objPrices = ProductPrice::findPrimaryByProductIds($variantIds);
+
+            if (null !== $objPrices) {
+                $fltPrice = null;
+                $arrPrices = [];
+
+                /** @var ProductPrice $price */
+                foreach ($objPrices as $price) {
+                    $fltNew = $price->getValueForTier($price->getLowestTier());
+                    $arrPrices[] = $fltNew;
+
+                    if (null === $fltPrice || $fltNew < $fltPrice) {
+                        $fltPrice = $fltNew;
+                        $objPrice = $price;
+                    }
+                }
+
+                if (\count(array_unique($arrPrices)) > 1) {
+                    $fromPrice = true;
+                }
+            }
+        }
+
+        if (null === $objPrice) {
+            $objPrice = ProductPrice::findPrimaryByProductId($row['id']);
+        }
 
         if (null !== $objPrice) {
             try {
                 /** @var \Isotope\Model\TaxClass $objTax */
                 $objTax = $objPrice->getRelated('tax_class');
                 $strTax = (null === $objTax ? '' : ' (' . $objTax->getName() . ')');
+
+                if ($fromPrice) {
+                    return sprintf($GLOBALS['TL_LANG']['MSC']['priceRangeLabel'], $objPrice->getValueForTier(1)) . $strTax;
+                }
 
                 return $objPrice->getValueForTier(1) . $strTax;
             } catch (\Exception $e) {
