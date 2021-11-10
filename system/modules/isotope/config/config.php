@@ -395,6 +395,7 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = array
 $GLOBALS['ISO_INTEGRITY'] = array
 (
     '\Isotope\IntegrityCheck\PriceTable',
+    '\Isotope\IntegrityCheck\VariantPrices',
     '\Isotope\IntegrityCheck\VariantOrphans',
     '\Isotope\IntegrityCheck\AttributeOptionOrphans',
     '\Isotope\IntegrityCheck\MultilingualAttributes',

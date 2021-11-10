@@ -27,7 +27,16 @@
         <source>%s invalid andvanced prices were found.&lt;br&gt;PIDs: %s.</source>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.2">
-        <source>There are no invalid prices in your database.</source>
+        <source>There are no invalid advanced prices in your database.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.0">
+        <source>Invalid product prices</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.1">
+        <source>You have %s prices belonging to the wrong product/variant.&lt;br&gt;IDs: %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.2">
+        <source>There are no invalid product prices in your database.</source>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.variantorphans.0">
         <source>Invalid product variants</source>
