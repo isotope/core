@@ -84,8 +84,6 @@ abstract class PSP extends Payment implements IsotopePostsale
 
         // Validate payment status
         switch ($this->getRequestData('STATUS')) {
-
-            /** @noinspection PhpMissingBreakStatementInspection */
             case 9:  // Zahlung beantragt (Authorize & Capture)
                 $objOrder->setDatePaid(time());
                 // no break
@@ -239,14 +237,14 @@ abstract class PSP extends Payment implements IsotopePostsale
             'AMOUNT'        => round($objOrder->getTotal() * 100),
             'CURRENCY'      => $objOrder->getCurrency(),
             'LANGUAGE'      => $GLOBALS['TL_LANGUAGE'] . '_' . strtoupper($GLOBALS['TL_LANGUAGE']),
-            'CN'            => $objBillingAddress->firstname . ' ' . $objBillingAddress->lastname,
-            'EMAIL'         => $objBillingAddress->email,
-            'OWNERZIP'      => $objBillingAddress->postal,
-            'OWNERADDRESS'  => substr($objBillingAddress->street_1, 0, 35),
-            'OWNERADDRESS2' => substr($objBillingAddress->street_2, 0, 35),
+            'CN'            => html_entity_decode($objBillingAddress->firstname . ' ' . $objBillingAddress->lastname),
+            'EMAIL'         => html_entity_decode($objBillingAddress->email),
+            'OWNERZIP'      => html_entity_decode($objBillingAddress->postal),
+            'OWNERADDRESS'  => substr(html_entity_decode($objBillingAddress->street_1), 0, 35),
+            'OWNERADDRESS2' => substr(html_entity_decode($objBillingAddress->street_2), 0, 35),
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
-            'OWNERTOWN'     => substr($objBillingAddress->city, 0, 35),
-            'OWNERTELNO'    => preg_replace('/[^- +\/0-9]/','', $objBillingAddress->phone),
+            'OWNERTOWN'     => substr(html_entity_decode($objBillingAddress->city), 0, 35),
+            'OWNERTELNO'    => preg_replace('/[^- +\/0-9]/', '', $objBillingAddress->phone),
             'ACCEPTURL'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
             'DECLINEURL'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
             'BACKURL'       => \Environment::get('base') . Checkout::generateUrlForStep('review'),
