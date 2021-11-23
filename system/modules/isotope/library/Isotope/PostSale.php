@@ -11,26 +11,15 @@
 
 namespace Isotope;
 
+use Contao\CoreBundle\Exception\ResponseException;
+use Contao\System;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\Shipping;
-use Haste\Http\Response\Response;
-
-/**
- * Set the script name
- */
-\define('TL_SCRIPT', 'system/modules/isotope/postsale.php');
-
-/**
- * Initialize the system
- */
-\define('TL_MODE', 'FE');
-\define('BYPASS_TOKEN_CHECK', true);
-
-require_once('initialize.php');
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostSale extends \Frontend
 {
@@ -47,29 +36,32 @@ class PostSale extends \Frontend
     protected $intModuleId = 0;
 
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * Must be defined cause parent is protected.
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
         parent::__construct();
-        
-        if (!\defined('FE_USER_LOGGED_IN')) {
-            \define('FE_USER_LOGGED_IN', false);
-        }
+
+        $this->request = $request;
 
         $this->removeUnsupportedHooks();
 
         // Default parameters
-        $this->setModule((string) (\Input::post('mod') ?: \Input::get('mod')));
-        $this->setModuleId((int) (\Input::post('id') ?: \Input::get('id')));
+        $this->setModule((string) $request->get('mod'));
+        $this->setModuleId((int) $request->get('id'));
 
         // HOOK: allow to add custom hooks for postsale script
         if (isset($GLOBALS['ISO_HOOKS']['initializePostsale']) && \is_array($GLOBALS['ISO_HOOKS']['initializePostsale']))
         {
             foreach ($GLOBALS['ISO_HOOKS']['initializePostsale'] as $callback)
             {
-                $objCallback = \System::importStatic($callback[0]);
-                $objCallback->{$callback[1]}($this);
+                $objCallback = System::importStatic($callback[0]);
+                $objCallback->{$callback[1]}($this, $request);
             }
         }
     }
@@ -106,9 +98,6 @@ class PostSale extends \Frontend
         return $this->strModule;
     }
 
-    /**
-     * Run the controller
-     */
     public function run()
     {
         $this->logRequest();
@@ -120,14 +109,13 @@ class PostSale extends \Frontend
             $intId  = $this->getModuleId();
 
             if ($strMod == '' || $intId == 0) {
-                \System::log(
-                    'Invalid post-sale request (param error): ' . \Environment::get('request'),
+                System::log(
+                    'Invalid post-sale request (param error): ' . $this->request->getUri(),
                     __METHOD__,
                     TL_ERROR
                 );
 
-                $objResponse = new Response('Bad Request', 400);
-                $objResponse->send();
+                return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
             }
 
             switch (strtolower($strMod)) {
@@ -141,49 +129,45 @@ class PostSale extends \Frontend
             }
 
             if (null === $objMethod) {
-                \System::log(
-                    'Invalid post-sale request (model not found): ' . \Environment::get('request'),
+                System::log(
+                    'Invalid post-sale request (model not found): ' . $this->request->getUri(),
                     __METHOD__,
                     TL_ERROR
                 );
 
-                $objResponse = new Response('Not Found', 404);
-                $objResponse->send();
+                return new Response('Not Found', Response::HTTP_NOT_FOUND);
             }
 
-            \System::log('New post-sale request: ' . \Environment::get('request'), __METHOD__, TL_ACCESS);
+            System::log('New post-sale request: ' . $this->request->getUri(), __METHOD__, TL_ACCESS);
 
             if (!($objMethod instanceof IsotopePostsale)) {
-                \System::log(
-                    'Invalid post-sale request (interface not implemented): ' . \Environment::get('request'),
+                System::log(
+                    'Invalid post-sale request (interface not implemented): ' . $this->request->getUri(),
                     __METHOD__,
                     TL_ERROR
                 );
 
-                $objResponse = new Response('Not Implemented', 501);
-                $objResponse->send();
+                return new Response('Not Implemented', Response::HTTP_NOT_IMPLEMENTED);
             }
 
             /** @type Order $objOrder */
             $objOrder = $objMethod->getPostsaleOrder();
 
             if (null === $objOrder || !($objOrder instanceof IsotopeProductCollection)) {
-                \System::log(\get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
+                System::log(\get_class($objMethod) . ' did not return a valid order', __METHOD__, TL_ERROR);
 
-                $objResponse = new Response('Failed Dependency', 424);
-                $objResponse->send();
+                return new Response('Failed Dependency', Response::HTTP_FAILED_DEPENDENCY);
             }
 
             Frontend::loadOrderEnvironment($objOrder);
 
-            $objMethod->processPostsale($objOrder);
+            $response = $objMethod->processPostsale($objOrder);
 
-            $objResponse = new Response();
-            $objResponse->send();
+            return $response instanceof Response ? $response : new Response();
 
         } catch (\Exception $e) {
-            if (is_a($e, 'Contao\CoreBundle\Exception\ResponseException')) {
-                throw $e;
+            if ($e instanceof ResponseException) {
+                return $e->getResponse();
             }
 
             \System::log(
@@ -194,8 +178,7 @@ class PostSale extends \Frontend
 
             log_message((string) $e, 'isotope_postsale.log');
 
-            $objResponse = new Response('Internal Server Error', 500);
-            $objResponse->send();
+            return new Response('Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -204,22 +187,14 @@ class PostSale extends \Frontend
      */
     private function logRequest()
     {
-        $headers = array();
-
-        foreach ($_SERVER as $key => $value) {
-            if (0 === strpos($key, 'HTTP_')) {
-                $headers[substr($key, 5)] = $value;
-            }
-        }
-
         log_message(
             sprintf(
                 "New request to %s.\n\nHeaders: %s\n\n\$_GET: %s\n\n\$_POST: %s\n\nBody:\n%s\n",
-                \Environment::get('base') . \Environment::get('request'),
-                var_export($headers, true),
-                var_export($_GET, true),
-                var_export($_POST, true),
-                file_get_contents("php://input")
+                $this->request->getUri(),
+                var_export($this->request->headers->all(), true),
+                var_export($this->request->query->all(), true),
+                var_export($this->request->request->all(), true),
+                $this->request->getContent()
             ),
             'isotope_postsale.log'
         );
@@ -241,10 +216,3 @@ class PostSale extends \Frontend
         );
     }
 }
-
-
-/**
- * Instantiate controller
- */
-$objPostSale = new PostSale();
-$objPostSale->run();

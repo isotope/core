@@ -1,4 +1,11 @@
 services:
+    Isotope\Controller\PostsaleController:
+        arguments:
+            - '@contao.framework'
+            - '@uri_signer'
+        tags:
+            - { name: controller.service_arguments }
+
     isotope.listener.console:
         class: Isotope\EventListener\SymlinkCommandListener
         arguments:
