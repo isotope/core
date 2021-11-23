@@ -23,6 +23,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Datatrans payment method
@@ -168,6 +169,13 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
 
         $objAddress = $objOrder->getBillingAddress();
 
+        $successUrl = System::getContainer()->get('router')->generate('isotope_postsale', [
+            'mod' => 'pay',
+            'id' => $this->id,
+            'redirect' => Environment::get('base').Checkout::generateUrlForStep('complete', $objOrder),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $successUrl = System::getContainer()->get('uri_signer')->sign($successUrl);
+
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
@@ -187,9 +195,9 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder)),
-            'errorUrl'              => ampersand(Environment::get('base') . Checkout::generateUrlForStep('failed')),
-            'cancelUrl'             => ampersand(Environment::get('base') . Checkout::generateUrlForStep('failed')),
+            'successUrl'            => ampersand($successUrl),
+            'errorUrl'              => ampersand(Environment::get('base').Checkout::generateUrlForStep('failed')),
+            'cancelUrl'             => ampersand(Environment::get('base').Checkout::generateUrlForStep('failed')),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
