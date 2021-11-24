@@ -369,15 +369,26 @@ class ProductPrice extends \Model implements IsotopePrice
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection = null)
     {
         if (null === $objCollection) {
-            $configIds = '0';
+            $configIds = [0];
             $objMember = null;
         } else {
-            $configIds = (int) $objCollection->config_id . ',0';
+            $configIds = [(int) $objCollection->config_id, 0];
             $objMember = $objCollection->getRelated('member');
         }
 
-        $time = \Date::floorToMinute();
         $arrGroups = static::getMemberGroups($objMember);
+
+        return static::findAdvancedByProductIds($arrIds, $arrGroups, $configIds);
+    }
+
+    /**
+     * Find advanced price for multiple product/variant IDs
+     *
+     * @return \Model\Collection|null
+     */
+    public static function findAdvancedByProductIds(array $arrIds, array $arrGroups = [0], array $configIds = [0])
+    {
+        $time = \Date::floorToMinute();
 
         $queries = [];
 
@@ -390,7 +401,7 @@ class ProductPrice extends \Model implements IsotopePrice
                 FROM tl_iso_product_price
                 LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id
                 WHERE
-                    config_id IN (" . $configIds . ") AND
+                    config_id IN (" . implode(',', $configIds) . ") AND
                     member_group IN(" . implode(',', $arrGroups) . ") AND
                     (start='' OR start<'$time') AND
                     (stop='' OR stop>'" . ($time + 60) . "') AND
