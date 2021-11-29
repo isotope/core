@@ -48,9 +48,9 @@ class Callback extends \Backend
      * @param \DataContainer $dc
      * @param array          $args
      *
-     * @return string
+     * @return array
      */
-    public function getOrderLabel($row, $label, \DataContainer $dc, $args)
+    public function getOrderLabel($row, $label, \DataContainer $dc, array $args)
     {
         /** @var Order $objOrder */
         $objOrder = Order::findByPk($row['id']);
@@ -62,20 +62,26 @@ class Callback extends \Backend
         // Override system to correctly format currencies etc
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
-        $objAddress = $objOrder->getBillingAddress();
+        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
+            switch ($field) {
+                case 'billing_address_id':
+                    if (null !== ($objAddress = $objOrder->getBillingAddress())) {
+                        $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
+                        $args[$i] = $arrTokens['hcard_fn'];
+                    }
+                    break;
 
-        if (null !== $objAddress) {
-            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
-            $args[3]   = $arrTokens['hcard_fn'];
-        }
+                case 'total':
+                    $args[$i] = Isotope::formatPriceWithCurrency($row['total']);
+                    break;
 
-        $args[4] = Isotope::formatPriceWithCurrency($row['total']);
-
-        /** @var \Isotope\Model\OrderStatus $objStatus */
-        if (($objStatus = $objOrder->getRelated('order_status')) !== null) {
-            $args[5] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
-        } else {
-            $args[5] = '<span>' . $objOrder->getStatusLabel() . '</span>';
+                case 'order_status':
+                    /** @var OrderStatus $objStatus */
+                    if (null !== ($objStatus = $objOrder->getRelated('order_status'))) {
+                        $args[$i] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+                    }
+                    break;
+            }
         }
 
         return $args;
