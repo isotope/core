@@ -163,6 +163,11 @@ class Label
             && \in_array('price', $objProductType->getVariantAttributes())
         ) {
             $variantIds = Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=? AND language=''")->execute($row['id'])->fetchEach('id');
+
+            if (empty($variantIds)) {
+                return '';
+            }
+
             $objPrices = ProductPrice::findPrimaryByProductIds($variantIds);
 
             if (null !== $objPrices) {
