@@ -13,8 +13,8 @@ use Symfony\Component\HttpKernel\UriSigner;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route(name="isotope_postsale", path="/_isotope/postsale/{mod}/{id}", requirements={"mod" = "(pay|ship)", "id" = "\d+"}, defaults={"_scope" = "frontend", "_token_check" = false})
- * @Route(path="/system/modules/isotope/postsale.php", defaults={"_scope"="frontend", "_token_check"=false})
+ * @Route(name="isotope_postsale", path="/_isotope/postsale/{mod}/{id}", requirements={"mod" = "(pay|ship)", "id" = "\d+"}, defaults={"_scope" = "frontend", "_token_check" = false, "_bypass_maintenance" = true})
+ * @Route(path="/system/modules/isotope/postsale.php", defaults={"_scope" = "frontend", "_token_check" = false, "_bypass_maintenance" = true})
  */
 class PostsaleController
 {
