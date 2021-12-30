@@ -28,4 +28,5 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_reports'] = array
     'inputType'               => 'checkbox',
     'options_callback'        => array('tl_iso_reports', 'getReports'),
     'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'sql'                     => 'blob NULL',
 );

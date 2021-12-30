@@ -620,7 +620,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
 );
 
 
-if (\in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
     $GLOBALS['TL_DCA']['tl_iso_attribute']['palettes']['fineUploader'] = '{attribute_legend},name,field_name,type,legend;{description_legend:hide},description;{config_legend},mandatory,extensions,minlength,maxlength,chunking,multiple;{store_legend:hide},checkoutRelocate';
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array
