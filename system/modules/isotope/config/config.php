@@ -452,6 +452,7 @@ $GLOBALS['ISO_NUM']["10,000.00"]    = array(2, '.', ",");
 $GLOBALS['ISO_NUM']["10.000,00"]    = array(2, ',', ".");
 $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 
+
 /**
  * Hooks
  */
