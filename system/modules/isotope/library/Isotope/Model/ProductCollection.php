@@ -2060,9 +2060,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     {
         $item->tstamp         = time();
         $item->type           = array_search(\get_class($product), Product::getModelTypes(), true);
-        $item->product_id     = $product->getId();
-        $item->sku            = $product->getSku();
-        $item->name           = $product->getName();
+        $item->product_id     = (int) $product->getId();
+        $item->sku            = (string) $product->getSku();
+        $item->name           = (string) $product->getName();
         $item->configuration  = $product->getOptions();
         $item->quantity       = (int) $quantity;
         $item->price          = (float) ($product->getPrice($this) ? $product->getPrice($this)->getAmount((int) $quantity) : 0);
