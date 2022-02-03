@@ -17,12 +17,12 @@ use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
-use GuzzleHttp\Psr7\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class PaypalPlus extends PaypalApi
 {
@@ -33,22 +33,19 @@ class PaypalPlus extends PaypalApi
             Checkout::redirectToStep(Checkout::STEP_COMPLETE, $objOrder);
         }
 
-        $request = $this->createPayment($objOrder);
+        $response = $this->createPayment($objOrder);
 
-        if ($request instanceof Response) {
-            $responseCode  = (int) $request->getStatusCode();
-            $responseError = $request->getReasonPhrase();
-            $responseData  = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseError = $request->error;
-            $responseData = $request->response;
+        if (!$response instanceof ResponseInterface) {
+            System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
+
+            Checkout::redirectToStep(Checkout::STEP_FAILED);
+            exit;
         }
 
-        $this->debugLog($responseData);
+        $this->debugLog($response->getContent());
 
-        if (201 === $responseCode) {
-            $paypalData = json_decode($responseData, true);
+        if (201 === $response->getStatusCode()) {
+            $paypalData = $response->toArray();
             $this->storePayment($objOrder, $paypalData);
             $this->storeHistory($objOrder, $paypalData);
 
@@ -67,19 +64,7 @@ class PaypalPlus extends PaypalApi
             }
         }
 
-        System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
-
-        $this->debugLog(
-            sprintf(
-                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
-                $responseCode,
-                $responseError,
-                $responseData
-            )
-        );
-
-        Checkout::redirectToStep(Checkout::STEP_FAILED);
-        exit;
+        return false;
     }
 
     /**
@@ -210,23 +195,19 @@ class PaypalPlus extends PaypalApi
             return false;
         }*/
 
-        $request = $this->executePayment($paypalData['id'], Input::get('PayerID'));
+        $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
 
-        if ($request instanceof Response) {
-            $responseCode = (int) $request->getStatusCode();
-            $responseData = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseData = $request->response;
-        }
-
-        $this->debugLog($responseData);
-
-        if (200 !== $responseCode) {
+        if (!$response instanceof ResponseInterface) {
             return false;
         }
 
-        $this->storeHistory($objOrder, json_decode($responseData, true));
+        $this->debugLog($response->getContent());
+
+        if (200 !== $response->getStatusCode()) {
+            return false;
+        }
+
+        $this->storeHistory($objOrder, $response->toArray());
 
         $objOrder->checkout();
         $objOrder->setDatePaid(time());

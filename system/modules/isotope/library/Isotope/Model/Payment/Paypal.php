@@ -15,8 +15,6 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use Haste\Http\Response\Response;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -25,6 +23,8 @@ use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 /**
  * PayPal Standard payment method
@@ -264,32 +264,24 @@ class Paypal extends Postsale
      */
     private function validateInput()
     {
+        $client = HttpClient::create();
+
         try {
             $body = file_get_contents('php://input');
-            $url  = 'https://ipnpb.'.($this->debug ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
+            $url = 'https://ipnpb.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
 
-            $request = new Client(
-                [
-                    RequestOptions::TIMEOUT         => 5,
-                    RequestOptions::CONNECT_TIMEOUT => 5,
-                    RequestOptions::HTTP_ERRORS     => false,
-                ]
-            );
+            $response = $client->request('POST', $url, [
+                'body' => $body
+            ]);
 
-            $response = $request->post($url, [RequestOptions::BODY => $body]);
+            if ('VERIFIED' !== $response->getContent()) {
+                \System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
 
-            if ($response->getStatusCode() != 200) {
-                throw new \RuntimeException($response->getReasonPhrase());
+                return false;
             }
+        } catch (ExceptionInterface $exception) {
+            System::log('PayPal IPN: Request Error (' . $exception->getMessage() . ')', __METHOD__, TL_ERROR);
 
-            if ('VERIFIED' !== $response->getBody()->getContents()) {
-                throw new \UnexpectedValueException($response->getBody()->getContents());
-            }
-        } catch (\UnexpectedValueException $e) {
-            System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
-            return false;
-        } catch (\RuntimeException $e) {
-            System::log('PayPal IPN: Request Error (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
             $response = new Response('', 500);
             $response->send();
         }

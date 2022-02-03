@@ -43,10 +43,10 @@
         "terminal42/contao-tablelookupwizard": "^3.2 || ^4.0",
         "terminal42/notification_center": "^1.0",
         "terminal42/dc_multilingual": "^4.0",
-        "guzzlehttp/guzzle": "^6.0",
         "tecnickcom/tcpdf": "^6.2.22",
         "patchwork/utf8": "^1.2",
-        "symfony/filesystem": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+        "symfony/filesystem": "^3.4 || ^4.0 || ^5.0 || ^6.0",
+        "symfony/http-client": "^4.4 || ^5.4"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
@@ -93,6 +93,13 @@
             "runonce": [
                 "system/modules/isotope/config/upgrade.php"
             ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "contao-community-alliance/composer-plugin": true,
+            "contao/manager-plugin": true
         }
     }
 }

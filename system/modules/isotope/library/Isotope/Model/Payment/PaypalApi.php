@@ -13,12 +13,15 @@ namespace Isotope\Model\Payment;
 
 use Contao\Environment;
 use Contao\StringUtil;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @property string $paypal_client
@@ -29,7 +32,7 @@ abstract class PaypalApi extends Payment
     /**
      * @param IsotopePurchasableCollection $order
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface|null
      */
     public function createPayment(IsotopePurchasableCollection $order)
     {
@@ -137,7 +140,7 @@ abstract class PaypalApi extends Payment
      * @param IsotopePurchasableCollection $order
      * @param string                       $paymentId
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface|null
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
@@ -168,7 +171,7 @@ abstract class PaypalApi extends Payment
      * @param string $paymentId
      * @param string $payerId
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface|null
      */
     public function executePayment($paymentId, $payerId)
     {
@@ -227,25 +230,31 @@ abstract class PaypalApi extends Payment
      */
     private function getApiToken()
     {
-        $request = $this->prepareRequest();
+        $client = $this->prepareClient();
+        $content = [];
 
-        $response = $request->post(
-            $this->getApiUrl('/oauth2/token'),
-            [
-                RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
-                RequestOptions::HEADERS     => [
+        try {
+            $response = $client->request('POST', $this->getApiUrl('/oauth2/token'), [
+                'form_params' => ['grant_type' => 'client_credentials'],
+                'headers' => [
                     'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
                 ],
-            ]
-        );
+            ]);
 
-        if ($response->getStatusCode() != 200) {
-            return null;
+            if ($response->getStatusCode() !== 200) {
+                return null;
+            }
+
+            $content = $response->toArray();
+
+        } catch (TransportExceptionInterface $transportException) {
+            $this->debugLog(sprintf(
+                "PayPal API Error! (%s)",
+                $transportException->getMessage()
+            ));
         }
 
-        $response = json_decode($response->getBody()->getContents(), true);
-
-        return \array_key_exists('access_token', $response) ? $response : null;
+        return \array_key_exists('access_token', $content) ? $content : null;
     }
 
     /**
@@ -254,52 +263,64 @@ abstract class PaypalApi extends Payment
      * @param null $method
      * @param bool $renewToken
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface|null
      */
     private function sendRequest($path, array $data = null, $method = null, $renewToken = false)
     {
-        $request = $this->prepareRequest();
+        $client = $this->prepareClient();
 
         // TODO store and reuse token
         $token = $this->getApiToken();
 
-        $response = $request->request(
-            $method,
-            $this->getApiUrl($path),
-            [
-                RequestOptions::JSON    => $data,
-                RequestOptions::HEADERS => [
+        try {
+            $response = $client->request($method, $this->getApiUrl($path), [
+                'json' => $data,
+                'headers' => [
                     'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
                 ],
-            ]
-        );
+            ]);
 
-        $responseCode = $response->getStatusCode();
+            $responseCode = $response->getStatusCode();
 
-        // Token probably expired, try again with a new token
-        if (401 === $responseCode && !$renewToken) {
-            return $this->sendRequest($path, $data, $method, true);
+            // Token probably expired, try again with a new token
+            if (401 === $responseCode && !$renewToken) {
+                return $this->sendRequest($path, $data, $method, true);
+            }
+
+            $response->getContent();
+
+        } catch (HttpExceptionInterface $httpException) {
+            $this->debugLog(sprintf(
+                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
+                $httpException->getResponse()->getStatusCode(),
+                $httpException->getMessage(),
+                $httpException->getResponse()->getContent(false)
+            ));
+
+            return null;
+        } catch (TransportExceptionInterface $transportException) {
+            $this->debugLog(sprintf(
+                "PayPal API Error! (%s)",
+                $transportException->getMessage()
+            ));
+
+            return null;
         }
 
         return $response;
     }
 
     /**
-     * @return Client
+     * @return HttpClientInterface
      */
-    private function prepareRequest()
+    private function prepareClient()
     {
-        return new Client(
-            [
-                RequestOptions::TIMEOUT         => 5,
-                RequestOptions::CONNECT_TIMEOUT => 5,
-                RequestOptions::HTTP_ERRORS     => false,
-                RequestOptions::HEADERS         => [
-                    'Accept'          => 'application/json',
-                    'Accept-Language' => 'en_US',
-                ],
-            ]
-        );
+        return HttpClient::create([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Accept-Language' => 'en_US',
+            ],
+        ]);
     }
 
     private function getApiUrl($path)
