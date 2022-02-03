@@ -43,7 +43,7 @@
         "terminal42/contao-tablelookupwizard": "^3.2 || ^4.0",
         "terminal42/notification_center": "^1.0",
         "terminal42/dc_multilingual": "^4.0",
-        "guzzlehttp/guzzle": "^6.0",
+        "php-http/guzzle7-adapter": "^1.0",
         "tecnickcom/tcpdf": "^6.2.22",
         "patchwork/utf8": "^1.2",
         "symfony/filesystem": "^3.4 || ^4.0 || ^5.0 || ^6.0"
