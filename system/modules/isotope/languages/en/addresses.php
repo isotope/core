@@ -17,7 +17,7 @@
  */
 $GLOBALS['ISO_ADR']['generic'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
-{endif}{if hcard_n=="1"}<div class="n">##hcard_honorific_prefix## ##hcard_given_name## ##hcard_family_name##</div>
+{endif}{if hcard_n=="1"}<div class="n">{if hcard_honorific_prefix!=""}##hcard_honorific_prefix## {endif}##hcard_given_name## ##hcard_family_name##</div>
 {endif}{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 ##hcard_postal_code## ##hcard_locality##
 ##hcard_country_name##</div>{endif}
