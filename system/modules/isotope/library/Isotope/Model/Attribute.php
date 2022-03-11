@@ -165,17 +165,17 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         $this->arrData = \is_array($arrField['attributes']) ? $arrField['attributes'] : array();
 
-        if (\is_array($arrField['eval'])) {
+        if (isset($arrField['eval']) && \is_array($arrField['eval'])) {
             $this->arrData = array_merge($arrField['eval'], $this->arrData);
         }
 
         $this->field_name  = $strName;
         $this->type        = array_search(\get_called_class(), static::getModelTypes(), true);
-        $this->name        = \is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?: $strName);
-        $this->description = \is_array($arrField['label']) ? $arrField['label'][1] : '';
-        $this->be_filter   = $arrField['filter'] ? '1' : '';
-        $this->be_search   = $arrField['search'] ? '1' : '';
-        $this->foreignKey  = $arrField['foreignKey'];
+        $this->name        = isset($arrField['label']) && \is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?? $strName);
+        $this->description = isset($arrField['label']) && \is_array($arrField['label']) ? $arrField['label'][1] : '';
+        $this->be_filter   = ($arrField['filter'] ?? false) ? '1' : '';
+        $this->be_search   = ($arrField['search'] ?? false) ? '1' : '';
+        $this->foreignKey  = $arrField['foreignKey'] ?? null;
         $this->optionsSource = '';
     }
 
@@ -735,7 +735,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['fetch_fallback']) {
+                if ($config['attributes']['fetch_fallback'] ?? null) {
                     $arrFields[] = $field;
                 }
             }

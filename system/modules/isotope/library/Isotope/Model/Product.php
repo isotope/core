@@ -492,7 +492,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     protected static function find(array $arrOptions)
     {
-        $arrOptions['group'] = static::getTable() . '.id' . (null === $arrOptions['group'] ? '' : ', '.$arrOptions['group']);
+        $arrOptions['group'] = static::getTable() . '.id' . (null === ($arrOptions['group'] ?? null) ? '' : ', '.$arrOptions['group']);
 
         $objProducts = parent::find($arrOptions);
 
@@ -501,8 +501,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         /** @var Filter[] $arrFilters */
-        $arrFilters = $arrOptions['filters'];
-        $arrSorting = $arrOptions['sorting'];
+        $arrFilters = $arrOptions['filters'] ?? null;
+        $arrSorting = $arrOptions['sorting'] ?? null;
 
         $hasFilters = \is_array($arrFilters) && 0 !== \count($arrFilters);
         $hasSorting = \is_array($arrSorting) && 0 !== \count($arrSorting);

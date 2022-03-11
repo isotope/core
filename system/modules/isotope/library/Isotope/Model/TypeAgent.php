@@ -108,11 +108,11 @@ abstract class TypeAgent extends \Model
      *
      * @param string $strName
      *
-     * @return string
+     * @return string|null
      */
     public static function getClassForModelType($strName)
     {
-        return static::$arrModelTypes[$strName];
+        return static::$arrModelTypes[$strName] ?? null;
     }
 
     /**
@@ -247,7 +247,7 @@ abstract class TypeAgent extends \Model
         }
 
         $objStatement = static::preFind($objStatement);
-        $objResult    = $objStatement->execute($arrOptions['value']);
+        $objResult    = $objStatement->execute($arrOptions['value'] ?? null);
 
         if ($objResult->numRows < 1) {
             return null;

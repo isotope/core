@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 /**
  * Disable header edit button
  */
-if ($_GET['table'] == \Isotope\Model\ProductCategory::getTable())
+if (isset($_GET['table']) && $_GET['table'] === \Isotope\Model\ProductCategory::getTable())
 {
     $GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
 }

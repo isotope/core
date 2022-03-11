@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Download\Callback', 'deleteButton'),
             ),
             'toggle' => array
@@ -138,7 +138,7 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
-            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownloads']),
+            'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
             'sql'                   => "binary(16) NULL",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_files', 'field'=>'uuid'),
         ),

@@ -80,7 +80,7 @@ class DC_ProductData extends \DC_Table
         /** @var SymfonySession $objSession */
         $objSession = System::getContainer()->get('session');
         $arrClipboard = $objSession->get('CLIPBOARD');
-        if ($arrClipboard[$strTable]['mode'] === 'cutAll' && \Input::get('act') !== 'cutAll') {
+        if (isset($arrClipboard[$strTable]['mode']) && $arrClipboard[$strTable]['mode'] === 'cutAll' && \Input::get('act') !== 'cutAll') {
             $firstPid = (int) Database::getInstance()
                 ->prepare("SELECT pid FROM tl_iso_product WHERE id=?")
                 ->execute($arrClipboard[$strTable]['id'][0])

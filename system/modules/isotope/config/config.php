@@ -12,7 +12,7 @@
 /**
  * Backend modules
  */
-if (!\is_array($GLOBALS['BE_MOD']['isotope']))
+if (!isset($GLOBALS['BE_MOD']['isotope']) || !\is_array($GLOBALS['BE_MOD']['isotope']))
 {
     array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
