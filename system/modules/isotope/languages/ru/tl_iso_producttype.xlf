@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_producttype.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_iso_producttype.name.0">
@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.name.1">
         <source>Please enter a name for this product type.</source>
+        <target>Пожалуйста, введите название типа товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.class.0">
         <source>Product Class</source>
@@ -16,9 +17,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.fallback.0">
         <source>Default</source>
+        <target>По умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.fallback.1">
         <source>Check here if this is the default product type.</source>
+        <target>Отметьте здесь, если это тип продукта по умолчанию.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.description.0">
         <source>Description</source>
@@ -35,12 +38,14 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show_price_tiers.0">
         <source>Show price tiers</source>
+        <target>Показать уровни цены</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show_price_tiers.1">
         <source>Show highest tier as lowest product price.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_template.0">
         <source>List template</source>
+        <target>Шаблон списка</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_template.1">
         <source>Select a template for product listing.</source>
@@ -50,6 +55,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.reader_template.1">
         <source>Select a template for product details.</source>
+        <target>Выбрать шаблон свойств товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.list_gallery.0">
         <source>List gallery</source>
@@ -65,6 +71,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.0">
         <source>CSS class</source>
+        <target>Класс CSS</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.cssClass.1">
         <source>The class(es) will be added to the product list and reader templates.</source>
@@ -78,6 +85,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.legend.0">
         <source>Grouping</source>
+        <target>Группировка</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.legend.1">
         <source>Group fields by topic (legends)</source>
@@ -96,6 +104,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes.default">
         <source>Default</source>
+        <target>По умолчанию</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variants.0">
         <source>Enable variants</source>
@@ -116,49 +125,70 @@
         <source>Show a variant attribute (select, radio) even if there is only one choice.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.0">
-        <source>Exempt from shipping</source>
+        <source>Shipping handling</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.shipping_exempt.1">
         <source>Check if items of this product type are not a shipped item (such as downloadable products).</source>
       </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.default">
+        <source>Default</source>
+        <target>По умолчанию</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.exempt">
+        <source>Exempted (e.g. digital products/downloads)</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_producttype.shipping_exempt.pickup">
+        <source>Pick up (disables shipping address)</source>
+      </trans-unit>
       <trans-unit id="tl_iso_producttype.downloads.0">
         <source>Enable downloads</source>
+        <target>Разрешить загрузку</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.downloads.1">
         <source>Check here if this product type has downloads.</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.new.0">
         <source>New product type</source>
+        <target>Новый тип товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.new.1">
         <source>Create new product type.</source>
+        <target>Создать новый тип товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.edit.0">
         <source>Edit product type</source>
+        <target>Изменить тип товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.edit.1">
         <source>Edit product type ID %s</source>
+        <target>Изменить ID типа товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.copy.0">
         <source>Copy product type definiton</source>
+        <target>Копировать определение типа товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.copy.1">
         <source>Copy definition of product type ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.delete.0">
         <source>Delete product type</source>
+        <target>Удалить тип товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.delete.1">
         <source>Delete product type ID %s</source>
+        <target>Удалить ID типа товара %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show.0">
         <source>product type details</source>
+        <target>детали типа товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.show.1">
         <source>Show details of product type ID %s</source>
+        <target>Показать детали ID типа продукта %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.name_legend">
         <source>Product type settings</source>
+        <target>Настройки типа товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.description_legend">
         <source>Description</source>
@@ -166,18 +196,22 @@
       </trans-unit>
       <trans-unit id="tl_iso_producttype.prices_legend">
         <source>Prices</source>
+        <target>Цены</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.template_legend">
         <source>Templates</source>
+        <target>Шаблоны</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.attributes_legend">
         <source>Product attributes</source>
+        <target>Атрибуты товара</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.variants_legend">
         <source>Variant attributes</source>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.expert_legend">
         <source>Expert settings</source>
+        <target>Расширенные настройки</target>
       </trans-unit>
       <trans-unit id="tl_iso_producttype.noVariantAttributes">
         <source>You must select at least one variant option (one of those: %s).</source>

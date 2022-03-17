@@ -1,0 +1,46 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_related_category.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_iso_related_category.name.0">
+        <source>Category name</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name.1">
+        <source>Please enter a name for this category.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.new.0">
+        <source>New category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.new.1">
+        <source>Create a new category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.edit.0">
+        <source>Edit category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.edit.1">
+        <source>Edit category ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.copy.0">
+        <source>Duplicate category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.copy.1">
+        <source>Duplicate category ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.delete.0">
+        <source>Delete category</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.delete.1">
+        <source>Delete category ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.show.0">
+        <source>Category details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.show.1">
+        <source>Show details of category ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name_legend">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

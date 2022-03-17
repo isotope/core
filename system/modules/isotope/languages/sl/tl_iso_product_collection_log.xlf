@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection_log.xlf" source-language="en" target-language="sl">
+    <body>
+      <trans-unit id="tl_iso_product_collection_log.id.0">
+        <source>ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection_log.tstamp.0">
+        <source>Date created</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection_log.author.0">
+        <source>Author</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

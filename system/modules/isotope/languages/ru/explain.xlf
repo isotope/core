@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
@@ -6,26 +6,32 @@
 &lt;p class=&quot;tl_help_table&quot;&gt;
     Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
     &lt;br&gt;
-    The reader page (alias) will always be the same page as you selected as a category for the product. There are two options to display the details of a product:&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Option 1:&lt;/strong&gt;&lt;br&gt;
-    Do not set a reader page in the site structure. Place the list and reader module on the same page. Tell the list module to hide if a product alias is found (there's a checkbox in the module settings). The reader will automatically be invisible if no reader is found.&lt;br&gt;
-    &lt;u&gt;Advantage:&lt;/u&gt; Pretty simple to set up&lt;br&gt;
-    &lt;u&gt;Disadvantage:&lt;/u&gt; The layout of reader and list will be identical, and you cannot have different article content for the two cases.&lt;br&gt;
-    &lt;br&gt;
-    &lt;strong&gt;Option 2:&lt;/strong&gt;&lt;br&gt;
-    Set a reader page for every list page (product category) in the site structure. &lt;i&gt;Be aware that the reader setting is not inherited!&lt;/i&gt; Add the reader module to this page as usual.&lt;br&gt;
-    Isotope will now use this page to generate the site if a product alias is found in the URL. The alias will still be the one from the list page though.&lt;br&gt;
-    &lt;u&gt;Advantage:&lt;/u&gt; You can have different page content and layout (e.g. different columns) for the reader page then the list page.&lt;br&gt;
-    &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.
+    The reader page (alias) will always be the same page as you selected as a category for the product. The following options are available for the detail page:&lt;br&gt;
 &lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
-        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Чтобы загрузить новое изображение, выберите файл и сохраните товар. После успешной загрузки рядом с товаром отобразиться эскиз изображения, и вы сможете ввести для него альтернативный текст и описание. Для нескольких изображений, вы можете нажать на стрелки справа и изменить их порядок, верхнее изображение используется в качестве основного изображения каждого товара.&lt;/p&gt;</target>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Чтобы загрузить новое изображение, выберите файл и сохраните товар. После успешной загрузки рядом с товаром отобразится миниатюра изображения, и вы сможете ввести для него альтернативный текст и описание. Для нескольких изображений вы можете нажать на стрелки справа и изменить их порядок, верхнее изображение используется в качестве основного изображения каждого товара.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+      </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>

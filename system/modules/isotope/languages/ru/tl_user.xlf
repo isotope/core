@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_user.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_user.iso_modules.0">
@@ -7,7 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_modules.1">
         <source>Select which store configuration modules user of this group can access.</source>
-        <target>Выберите к каким модулям конфигурации магазина этот пользователь может получить доступ.</target>
+        <target>Выберите, к каким модулям конфигурации магазина этот пользователь может получить доступ.</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_product_types.0">
         <source>Allowed product types</source>
@@ -25,6 +25,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_payment_modules.0">
         <source>Allowed payment modules</source>
+        <target>Разрешенные платежные модули</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_payment_modules.1">
         <source>Here you can grant access to one or more payment modules.</source>
@@ -37,6 +38,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_shipping_modules.0">
         <source>Allowed shipping modules</source>
+        <target>Разрешенные модули доставки</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_shipping_modules.1">
         <source>Here you can grant access to one or more shipping modules.</source>
@@ -61,6 +63,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_tax_rates.0">
         <source>Allowed tax rates</source>
+        <target>Разрешенные налоговые ставки</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_tax_rates.1">
         <source>Here you can grant access to one or more tax rates.</source>
@@ -73,7 +76,7 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_configs.0">
         <source>Allowed store configurations</source>
-        <target>Конфиурации магазинов</target>
+        <target>Конфигурации магазинов</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_configs.1">
         <source>Here you can grant access to one or more store configurations.</source>
@@ -83,10 +86,11 @@
         <source>Store configuration permissions</source>
       </trans-unit>
       <trans-unit id="tl_user.iso_configp.1">
-        <source>Her you can define the store configuration permissions.</source>
+        <source>Here you can define the store configuration permissions.</source>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.0">
         <source>Allowed product groups</source>
+        <target>Разрешенные группы товаров</target>
       </trans-unit>
       <trans-unit id="tl_user.iso_groups.1">
         <source>Limit access to product groups for this user group. Gets inherited.</source>
@@ -96,6 +100,16 @@
       </trans-unit>
       <trans-unit id="tl_user.iso_groupp.1">
         <source>Here you can define the product group permissions.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.0">
+        <source>Allowed member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Гости</target>
       </trans-unit>
       <trans-unit id="tl_user.isotope_legend">
         <source>Isotope eCommerce</source>

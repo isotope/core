@@ -1,0 +1,98 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute_option.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_iso_attribute_option.type.0">
+        <source>Type</source>
+        <target>Tip</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.1">
+        <source>Select a type for this label.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.option">
+        <source>Option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.type.group">
+        <source>Group</source>
+        <target>Grupa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.isDefault.0">
+        <source>Default</source>
+        <target>Zadano</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.isDefault.1">
+        <source>Check here if this should be the default option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label.0">
+        <source>Label</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label.1">
+        <source>Enter the label for this option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price.0">
+        <source>Price surcharge or deduction</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price.1">
+        <source>You can enter a positive or negative amount to alter the product price if this option is selected.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price_short.0">
+        <source>Price</source>
+        <target>Cijena</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.0">
+        <source>CSS class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.cssClass.1">
+        <source>The class(es) will be added to this option in the front end.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.published.0">
+        <source>Published</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.published.1">
+        <source>Make this option available in the product.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.new.0">
+        <source>New option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.new.1">
+        <source>Create a new option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.edit.0">
+        <source>Edit option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.edit.1">
+        <source>Edit option ID %s.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.copy.0">
+        <source>Copy option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.copy.1">
+        <source>Copy option ID %s.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.delete.0">
+        <source>Delete option</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.delete.1">
+        <source>Delete option ID %s.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.show.0">
+        <source>Option details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.show.1">
+        <source>Show details for option ID %s.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.label_legend">
+        <source>Type &amp; Label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.price_legend">
+        <source>Price change</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.expert_legend">
+        <source>Expert settings</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute_option.publish_legend">
+        <source>Publishing</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

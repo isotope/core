@@ -1,8 +1,9 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/exception.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="XPT.isotopeOld">
         <source>Isotope eCommerce - data loss protection</source>
+        <target>Isotope eCommerce - защита потери данных</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldError">
         <source>An old version of Isotope eCommerce has been detected on your installation. If you would update the database now, your existing customer data and configuration might be lost. To prevent this, the database update tools have been locked automatically.</source>
@@ -12,6 +13,7 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix1">
         <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <target>Создайте резервную копию, затем полностью удалите Isotope и его базы данных и связанные расширения. Затем вы сможете установить Isotope eCommerce 2.0 снова.</target>
       </trans-unit>
       <trans-unit id="XPT.isotopeOldFix2">
         <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
@@ -21,6 +23,7 @@
       </trans-unit>
       <trans-unit id="XPT.isotopeOldExplain">
         <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Посетите наш сайт&lt;/a&gt; для получения большей информации об Isotope eCommerce.</target>
       </trans-unit>
     </body>
   </file>

@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_label.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_iso_label.language.0">
+        <source>Language</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.language.1">
+        <source>Please select a language.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.label.0">
+        <source>Label</source>
+        <target>Label</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.label.1">
+        <source>Enter the source label.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.replacement.0">
+        <source>Replacement</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.replacement.1">
+        <source>Enter the replacement in the specified language.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.new.0">
+        <source>New label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.new.1">
+        <source>Create a new label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.edit.0">
+        <source>Edit label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.edit.1">
+        <source>Edit label ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.copy.0">
+        <source>Duplicate label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.copy.1">
+        <source>Duplicate label ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.delete.0">
+        <source>Delete label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.delete.1">
+        <source>Delete label ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.show.0">
+        <source>Label details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.show.1">
+        <source>Show details of label ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_label.label_legend">
+        <source>Label translation</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

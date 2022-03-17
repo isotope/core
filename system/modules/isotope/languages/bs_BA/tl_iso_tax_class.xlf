@@ -1,0 +1,88 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_class.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_iso_tax_class.name.0">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name.1">
+        <source>Give this tax class a name that explains what it is used for.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.0">
+        <source>Default</source>
+        <target>Zadano</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.fallback.1">
+        <source>Check here if this is the default tax class.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.0">
+        <source>Tax rate included with product price</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.includes.1">
+        <source>Select if prices of products with this tax class contain a tax rate. This tax rate will be subtracted from product price if it does not match.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.0">
+        <source>Include label</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.label.1">
+        <source>A label for orders to present for subtracted taxes (if included tax does not match). Default tax rate label will be used if this is blank.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.0">
+        <source>Apply tax rates</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rates.1">
+        <source>Add these tax rates to products with this tax class.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.0">
+        <source>Apply rounding increment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.applyRoundingIncrement.1">
+        <source>Check here if you want to apply the rounding increment of your shop config.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.0">
+        <source>Not negative</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.notNegative.1">
+        <source>Prevents negative value for this tax (negative amount will be adjusted to 0.00).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.0">
+        <source>New tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.new.1">
+        <source>Create a new tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.0">
+        <source>Edit tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.edit.1">
+        <source>Edit tax class ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.0">
+        <source>Copy tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.copy.1">
+        <source>Copy tax class ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.0">
+        <source>Delete tax class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.delete.1">
+        <source>Delete tax class ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.0">
+        <source>Tax class details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.show.1">
+        <source>Show details of tax class ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.name_legend">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_class.rate_legend">
+        <source>Tax rates</source>
+        <target>Poreske stope</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

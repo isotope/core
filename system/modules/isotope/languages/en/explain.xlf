@@ -28,7 +28,7 @@
   &lt;br&gt;&lt;br&gt;
   &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
   If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
-  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to now
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
   offer real shipping for these product types.
 &lt;/p&gt;
         </source>

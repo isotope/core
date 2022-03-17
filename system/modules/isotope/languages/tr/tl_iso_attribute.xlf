@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="tr">
     <body>
       <trans-unit id="tl_iso_attribute.name.0">
@@ -287,9 +287,11 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rootNodes.0">
         <source>Root nodes</source>
+        <target>Kök düğümleri</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.rootNodes.1">
         <source>You can limit the page tree by defining a root page here.</source>
+        <target>Burada bir kök sayfa tanımlayarak sayfa ağacını sınırlayabilirsiniz.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.storeFile.0">
         <source>Store uploaded files</source>

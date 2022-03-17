@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_gallery.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_iso_gallery.name.0">
@@ -7,6 +7,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name.1">
         <source>Enter a name for this gallery.</source>
+        <target>Введите имя галереи.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.type.0">
         <source>Type</source>
@@ -14,6 +15,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.type.1">
         <source>Please select a gallery type.</source>
+        <target>Пожалуйста, выберите тип галереи</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.anchor.0">
         <source>Image anchor</source>
@@ -29,15 +31,18 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_size.0">
         <source>Main image size</source>
+        <target>Размер главного изображения</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.main_size.1">
         <source>Please enter a width and height for the main product image.</source>
+        <target>Пожалуйста, введите ширину и длину главного изображения товара.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.0">
         <source>Gallery image size</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.gallery_size.1">
         <source>Please enter a width and height for the additional images.</source>
+        <target>Пожалуйста, введите ширину и длину дополнительных изображений.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_template.0">
         <source>Lightbox template</source>
@@ -179,57 +184,73 @@
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.0">
         <source>Custom gallery template</source>
+        <target>Настраиваемый шаблон галереи</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.customTpl.1">
         <source>Here you can overwrite the default gallery template.</source>
+        <target>Здесь вы можете перезаписать шаблон галереи по умолчанию.</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.new.0">
         <source>New gallery</source>
+        <target>Новая галерея</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.new.1">
         <source>Create a new gallery</source>
+        <target>Создать новую галерею</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.edit.0">
         <source>Edit gallery</source>
+        <target>Изменить галерею</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.edit.1">
         <source>Edit gallery ID %s</source>
+        <target>Изменить ID галереи %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.0">
         <source>Duplicate gallery</source>
+        <target>Дублировать галерею</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.copy.1">
         <source>Duplicate gallery ID %s</source>
+        <target>Дублировать ID галереи %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.0">
         <source>Delete gallery</source>
+        <target>Удалить галерею</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.delete.1">
         <source>Delete gallery ID %s</source>
+        <target>Удалить ID галереи %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.0">
         <source>Gallery details</source>
+        <target>Свойства галереи</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.show.1">
         <source>Show details of gallery ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.name_legend">
         <source>Name &amp; Type</source>
+        <target>Имя и тип</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.size_legend">
         <source>Image sizes</source>
+        <target>Размеры изображений</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.config_legend">
         <source>Configuration</source>
+        <target>Конфигурация</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.watermark_legend">
         <source>Watermark</source>
+        <target>Водяной знак</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.lightbox_legend">
         <source>Lightbox/Mediabox</source>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.template_legend">
         <source>Template settings</source>
+        <target>Настройки шаблона</target>
       </trans-unit>
       <trans-unit id="tl_iso_gallery.none">
         <source>No link action</source>

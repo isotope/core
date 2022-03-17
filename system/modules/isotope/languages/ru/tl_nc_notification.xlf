@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_nc_notification.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_nc_notification.iso_collectionTpl.0">
@@ -9,18 +9,21 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_orderCollectionBy.0">
         <source>Sorting</source>
+        <target>Сортировка</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_gallery.0">
         <source>Gallery</source>
+        <target>Галерея</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_gallery.1">
         <source>Select a gallery to render images.</source>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_document.0">
         <source>Document</source>
+        <target>Документ</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.iso_document.1">
         <source>If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.</source>
@@ -31,6 +34,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order_status_change.0">
         <source>Order status change</source>
+        <target>Изменение статуса заказа</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.iso_order_status_change.1">
         <source>This notification type can be sent when the order status changes.</source>
