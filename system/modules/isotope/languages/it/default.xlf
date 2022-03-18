@@ -1785,6 +1785,9 @@
         <source>XCD - East Caribbean Dollar</source>
         <target>XCD - Dollaro dei Caraibi Orientali</target>
       </trans-unit>
+      <trans-unit id="CUR.XOF">
+        <source>XOF - CFA Franc BCEAO</source>
+      </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>
         <target>YER - Riyal yemenita</target>

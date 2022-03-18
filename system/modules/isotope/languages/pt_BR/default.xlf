@@ -1507,6 +1507,9 @@
       <trans-unit id="CUR.XCD">
         <source>XCD - East Caribbean Dollar</source>
       </trans-unit>
+      <trans-unit id="CUR.XOF">
+        <source>XOF - CFA Franc BCEAO</source>
+      </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>
       </trans-unit>
