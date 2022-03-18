@@ -125,13 +125,11 @@ class DcaManager extends \Backend
 
         // Create temporary models for non-database attributes
         foreach (array_diff_key($arrData['fields'], $arrData['attributes']) as $strName => $arrConfig) {
-            $strClass = null;
-
-            if (isset($arrConfig['attributes']) && \is_array($arrConfig['attributes'])) {
+            if (\is_array($arrConfig['attributes'] ?? null)) {
                 if (!empty($arrConfig['attributes']['type'])) {
                     $strClass = $arrConfig['attributes']['type'];
-                } elseif(isset($arrConfig['inputType'])) {
-                    $strClass = Attribute::getClassForModelType($arrConfig['inputType']);
+                } else {
+                    $strClass = Attribute::getClassForModelType($arrConfig['inputType'] ?? '');
                 }
 
                 if ($strClass != '') {
