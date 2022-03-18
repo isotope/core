@@ -325,6 +325,10 @@ class Frontend extends \Frontend
                 if (null !== $objProducts) {
                     foreach ($objProducts as $objProduct) {
 
+                        if (!$objProduct->isPublished()) {
+                            continue;
+                        }
+
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
                         $intRemaining  = \count($arrCategories);
