@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\System;
 use Haste\Data\Collection;
 use Haste\Data\Plain;
 use Isotope\Module\Messages;
@@ -143,7 +144,8 @@ class Message
             }
         }
 
-        if (!$_POST) {
+        $request = System::getContainer()->get('request_stack')->getMasterRequest();
+        if ($request && $request->isMethod('GET')) {
             static::reset();
         }
 
