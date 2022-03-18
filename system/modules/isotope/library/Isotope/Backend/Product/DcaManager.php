@@ -125,12 +125,11 @@ class DcaManager extends \Backend
 
         // Create temporary models for non-database attributes
         foreach (array_diff_key($arrData['fields'], $arrData['attributes']) as $strName => $arrConfig) {
-
-            if (\is_array($arrConfig['attributes'])) {
-                if ($arrConfig['attributes']['type'] != '') {
+            if (\is_array($arrConfig['attributes'] ?? null)) {
+                if (!empty($arrConfig['attributes']['type'])) {
                     $strClass = $arrConfig['attributes']['type'];
                 } else {
-                    $strClass = Attribute::getClassForModelType($arrConfig['inputType']);
+                    $strClass = Attribute::getClassForModelType($arrConfig['inputType'] ?? '');
                 }
 
                 if ($strClass != '') {
@@ -539,7 +538,7 @@ class DcaManager extends \Backend
             \Controller::redirect(preg_replace('/&page=[^&]*/', '', \Environment::get('request')));
         }
 
-        $intNode = $session['filter']['tl_iso_product']['iso_page'];
+        $intNode = $session['filter']['tl_iso_product']['iso_page'] ?? 0;
 
         if ($intNode < 1) {
             return '';

@@ -21,7 +21,7 @@ class InitializeListener
      */
     public function enableModuleTablesInSetup()
     {
-        if ('iso_setup' !== $_GET['do']) {
+        if ('iso_setup' !== ($_GET['do'] ?? null)) {
             return;
         }
 
