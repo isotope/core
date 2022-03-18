@@ -316,6 +316,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $updates['date_paid'] = time();
         }
 
+        // Store old status and set the new one
+        $oldStatusId = $this->order_status;
+        $oldStatusLabel = $this->getStatusLabel();
+        foreach ($updates as $k => $v) {
+            $this->{$k} = $v;
+        }
+        $this->save();
+
         if (!($flags & static::STATUS_UPDATE_SKIP_NOTIFICATION)) {
             // Trigger notification
             $blnNotificationError = null;
@@ -325,8 +333,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 // Override order status and save the old one to the tokens too
                 $arrTokens['order_status_id']       = $objNewStatus->id;
                 $arrTokens['order_status']          = $objNewStatus->getName();
-                $arrTokens['order_status_old']      = $this->getStatusLabel();
-                $arrTokens['order_status_id_old']   = $this->order_status;
+                $arrTokens['order_status_old']      = $oldStatusLabel;
+                $arrTokens['order_status_id_old']   = $oldStatusId;
 
                 $blnNotificationError = true;
 
@@ -360,13 +368,6 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             }
         }
 
-        // Store old status and set the new one
-        $intOldStatus = $this->order_status;
-        foreach ($updates as $k => $v) {
-            $this->{$k} = $v;
-        }
-        $this->save();
-
         // Add a log entry
         if (!($flags & static::STATUS_UPDATE_SKIP_LOG)) {
             $log = new ProductCollectionLog();
@@ -385,16 +386,16 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this, $intOldStatus, $objNewStatus);
+                \System::importStatic($callback[0])->{$callback[1]}($this, $oldStatusId, $objNewStatus);
             }
         }
 
         // Trigger payment and shipping methods that implement the interface
         if (($objPayment = $this->getPaymentMethod()) !== null && $objPayment instanceof IsotopeOrderStatusAware) {
-            $objPayment->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+            $objPayment->onOrderStatusUpdate($this, $oldStatusId, $objNewStatus);
         }
         if (($objShipping = $this->getShippingMethod()) !== null && $objShipping instanceof IsotopeOrderStatusAware) {
-            $objShipping->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+            $objShipping->onOrderStatusUpdate($this, $oldStatusId, $objNewStatus);
         }
 
         return true;
