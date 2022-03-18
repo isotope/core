@@ -165,14 +165,14 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         $this->arrData = \is_array($arrField['attributes']) ? $arrField['attributes'] : array();
 
-        if (isset($arrField['eval']) && \is_array($arrField['eval'])) {
+        if (\is_array($arrField['eval'] ?? null)) {
             $this->arrData = array_merge($arrField['eval'], $this->arrData);
         }
 
         $this->field_name  = $strName;
         $this->type        = array_search(\get_called_class(), static::getModelTypes(), true);
-        $this->name        = isset($arrField['label']) && \is_array($arrField['label']) ? $arrField['label'][0] : ($arrField['label'] ?? $strName);
-        $this->description = isset($arrField['label']) && \is_array($arrField['label']) ? $arrField['label'][1] : '';
+        $this->name        = \is_array($arrField['label'] ?? null) ? $arrField['label'][0] : ($arrField['label'] ?? $strName);
+        $this->description = \is_array($arrField['label'] ?? null) ? $arrField['label'][1] : '';
         $this->be_filter   = ($arrField['filter'] ?? false) ? '1' : '';
         $this->be_search   = ($arrField['search'] ?? false) ? '1' : '';
         $this->foreignKey  = $arrField['foreignKey'] ?? null;
