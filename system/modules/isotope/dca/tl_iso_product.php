@@ -163,7 +163,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
+                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forDelete')
             ),
             'toggle' => array

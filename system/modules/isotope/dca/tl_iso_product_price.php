@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_price']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
+                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (

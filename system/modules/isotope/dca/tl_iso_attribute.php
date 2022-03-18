@@ -109,7 +109,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['tl_iso_attribute']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
+                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['tl_iso_attribute']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
