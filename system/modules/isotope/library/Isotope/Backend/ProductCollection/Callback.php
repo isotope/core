@@ -468,7 +468,7 @@ class Callback extends \Backend
             'label'      => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_choice'],
             'inputType'  => 'select',
             'foreignKey' => 'tl_iso_document.name',
-            'eval'       => array('mandatory' => true),
+            'eval'       => array('includeBlankOption'=>true, 'mandatory' => true),
         );
 
         $objSelect = new \SelectMenu(\SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));
