@@ -13,7 +13,6 @@ namespace Isotope\IntegrityCheck;
 
 use Contao\System;
 use Isotope\Model\Rule;
-use Symfony\Component\Filesystem\Filesystem;
 
 class UnusedRules extends AbstractIntegrityCheck
 {
@@ -32,7 +31,7 @@ class UnusedRules extends AbstractIntegrityCheck
     public function hasError()
     {
         if (null === $this->blnError) {
-            $this->blnError = \in_array('isotope_rules', \Config::getInstance()->getActiveModules()) && Rule::countAll() == 0;
+            $this->blnError = \array_key_exists('isotope_rules', System::getContainer()->getParameter('kernel.bundles')) && Rule::countAll() == 0;
         }
 
         return $this->blnError;

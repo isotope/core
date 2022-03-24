@@ -12,6 +12,8 @@
 namespace Isotope\Upgrade;
 
 
+use Contao\System;
+
 class To0020000000 extends \System
 {
 
@@ -53,7 +55,7 @@ class To0020000000 extends \System
             }
         }
 
-        if (\in_array('isotope_multilingual', \Config::getInstance()->getActiveModules())) {
+        if (\array_key_exists('isotope_multilingual', System::getContainer()->getParameter('kernel.bundles'))) {
             $this->warnForOld();
         }
     }
