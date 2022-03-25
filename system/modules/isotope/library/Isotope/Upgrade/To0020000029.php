@@ -11,14 +11,16 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
+use Contao\System;
 
-class To0020000029 extends \System
+class To0020000029 extends System
 {
 
     public function run($blnInstalled)
     {
         if ($blnInstalled) {
-            \Database::getInstance()->query("
+            Database::getInstance()->query("
                 UPDATE tl_iso_product_collection_download
                 SET expires=(tstamp+expires)
                 WHERE expires!='' AND expires<tstamp

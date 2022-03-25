@@ -12,16 +12,18 @@
 namespace Isotope\Upgrade;
 
 
+use Contao\Database;
+
 class To0020030006 extends Base
 {
     /**
-     * @var \Contao\Database
+     * @var Database
      */
     private $db;
 
     public function run($blnInstalled)
     {
-        $this->db = \Database::getInstance();
+        $this->db = Database::getInstance();
 
         if ($blnInstalled) {
             $this->updateProductCollectionUuid();

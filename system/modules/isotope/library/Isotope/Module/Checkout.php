@@ -11,8 +11,13 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\Environment;
+use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
@@ -136,7 +141,7 @@ class Checkout extends Module
         $arrBuffer = array();
 
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
-        $this->Template->action        = ampersand(\Environment::get('request'));
+        $this->Template->action        = ampersand(Environment::get('request'));
         $this->Template->formId        = $this->strFormId;
         $this->Template->formSubmit    = $this->strFormId;
         $this->Template->enctype       = 'application/x-www-form-urlencoded';
@@ -155,20 +160,17 @@ class Checkout extends Module
             // At this stage, we do no longer use the client's cart but the order through UID in URL
             case self::STEP_COMPLETE:
                 /** @var Order $objOrder */
-                if (($objOrder = Order::findOneBy('uniqid', (string) \Input::get('uid'))) === null) {
+                if (($objOrder = Order::findOneBy('uniqid', (string) Input::get('uid'))) === null) {
                     if (Isotope::getCart()->isEmpty()) {
-                        /** @var \PageError404 $objHandler */
-                        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                        $objHandler->generate((int) $GLOBALS['objPage']->id);
-                        exit;
-                    } else {
-                        static::redirectToStep(self::STEP_FAILED);
+                        throw new PageNotFoundException();
                     }
+
+                    static::redirectToStep(self::STEP_FAILED);
                 }
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    \Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -177,7 +179,7 @@ class Checkout extends Module
                 if ($strBuffer === true) {
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
-                        \Controller::redirect(
+                        Controller::redirect(
                             Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
                         );
                     }
@@ -233,8 +235,8 @@ class Checkout extends Module
                 if (isset($GLOBALS['ISO_HOOKS']['preCheckout']) && \is_array($GLOBALS['ISO_HOOKS']['preCheckout'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['preCheckout'] as $callback) {
 
-                        if (\System::importStatic($callback[0])->{$callback[1]}($objOrder, $this) === false) {
-                            \System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
+                        if (System::importStatic($callback[0])->{$callback[1]}($objOrder, $this) === false) {
+                            System::log('Callback ' . $callback[0] . '::' . $callback[1] . '() cancelled checkout for Order ID ' . $this->id, __METHOD__, TL_ERROR);
 
                             static::redirectToStep(self::STEP_FAILED);
                         }
@@ -262,7 +264,7 @@ class Checkout extends Module
             /** @noinspection PhpMissingBreakStatementInspection */
             case self::STEP_FAILED:
                 $this->Template->mtype   = 'error';
-                $this->Template->message = \strlen(\Input::get('reason')) ? \Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
+                $this->Template->message = \strlen(Input::get('reason')) ? Input::get('reason') : $GLOBALS['TL_LANG']['ERR']['orderFailed'];
                 $this->strCurrentStep    = 'review';
                 // no break
 
@@ -372,10 +374,10 @@ class Checkout extends Module
         }
 
         // User pressed "back" button
-        if (\strlen(\Input::post('previousStep'))) {
+        if (\strlen(Input::post('previousStep'))) {
             $this->redirectToPreviousStep();
         } // Valid input data, redirect to next step
-        elseif (\Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
+        elseif (Input::post('FORM_SUBMIT') == $this->strFormId && !$this->doNotSubmit) {
             $this->redirectToNextStep();
         }
 
@@ -504,8 +506,8 @@ class Checkout extends Module
         // Redirect to login page if not logged in
         if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
 
-            /** @var \PageModel $objJump */
-            $objJump = \PageModel::findPublishedById($this->iso_login_jumpTo);
+            /** @var PageModel $objJump */
+            $objJump = PageModel::findPublishedById($this->iso_login_jumpTo);
 
             if (null === $objJump) {
                 $this->Template          = new Template('mod_message');
@@ -516,7 +518,7 @@ class Checkout extends Module
             }
 
             $objJump->loadDetails();
-            \Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+            Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
 
         } elseif ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
             $this->Template          = new Template('mod_message');
@@ -539,12 +541,12 @@ class Checkout extends Module
         if (Isotope::getCart()->hasErrors()) {
             if ($this->iso_cart_jumpTo > 0) {
 
-                /** @var \PageModel $objJump */
-                $objJump = \PageModel::findPublishedById($this->iso_cart_jumpTo);
+                /** @var PageModel $objJump */
+                $objJump = PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
                     $objJump->loadDetails();
-                    \Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+                    Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
                 }
             }
 
@@ -702,19 +704,17 @@ class Checkout extends Module
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
         Isotope::getCart()->save();
-        \Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
+        Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
     }
 
     /**
      * Generate frontend URL for current page including the given checkout step
      *
-     * @param string                   $strStep
-     * @param IsotopeProductCollection $objCollection
-     * @param \PageModel               $objTarget
+     * @param string $strStep
      *
      * @return string
      */
-    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, \PageModel $objTarget = null)
+    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, PageModel $objTarget = null)
     {
         if (null === $objTarget) {
             global $objPage;
@@ -725,7 +725,7 @@ class Checkout extends Module
             $strStep = 'step/' . $strStep;
         }
 
-        $strUrl = \Controller::generateFrontendUrl($objTarget->row(), '/' . $strStep, $objTarget->language);
+        $strUrl = $objTarget->getFrontendUrl('/' . $strStep);
 
         if (null !== $objCollection) {
             $strUrl = Url::addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);

@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
 use Isotope\Interfaces\IsotopeProduct;
 
 
@@ -57,7 +58,7 @@ class RelatedProduct extends \Model
             array(
                 'column'    => [$pid, "$t.category IN (" . implode(',', $arrCategories) . ')'],
                 'value'     => $value,
-                'order'     => \Database::getInstance()->findInSet("$t.category", $arrCategories),
+                'order'     => Database::getInstance()->findInSet("$t.category", $arrCategories),
                 'return'    => 'Collection'
             ),
             $arrOptions

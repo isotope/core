@@ -173,7 +173,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_price'] = array
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_price']['member_group'],
             'exclude'               => true,
             'inputType'             => 'select',
-            'foreignKey'            => \MemberGroupModel::getTable().'.name',
+            'foreignKey'            => \Contao\MemberGroupModel::getTable().'.name',
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),

@@ -11,6 +11,9 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\MemberModel;
+use Contao\Model\Collection;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -200,7 +203,7 @@ class Rule extends \Model
         // Member restrictions
         if (Isotope::getCart()->member > 0) {
 
-            $objMember = \MemberModel::findByPk(Isotope::getCart()->member);
+            $objMember = MemberModel::findByPk(Isotope::getCart()->member);
             $arrGroups = (null === $objMember) ? array() : array_map('intval', deserialize($objMember->groups, true));
 
             $arrProcedures[] = "(memberRestrictions='none'
@@ -227,7 +230,7 @@ class Rule extends \Model
             $arrTypes = [0];
 
             // Prepare product attribute condition
-            $objAttributeRules = \Database::getInstance()->execute("SELECT attributeName, attributeCondition FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
+            $objAttributeRules = Database::getInstance()->execute("SELECT attributeName, attributeCondition FROM " . static::$strTable . " WHERE enabled='1' AND productRestrictions='attribute' AND attributeName!='' GROUP BY attributeName, attributeCondition");
             while ($objAttributeRules->next()) {
                 $arrAttributes[] = array
                 (
@@ -286,8 +289,8 @@ class Rule extends \Model
             $arrRestrictions[] = "(productRestrictions='products' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))=0)";
             $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))>0)";
             $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))=0)";
-            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
-            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
+            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
+            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
 
             foreach ($arrAttributes as $restriction) {
                 if (empty($restriction['values'])) {
@@ -350,13 +353,13 @@ class Rule extends \Model
             $arrProcedures[] = '(' . implode(' OR ', $arrRestrictions) . ')';
         }
 
-        $objResult = \Database::getInstance()
+        $objResult = Database::getInstance()
             ->prepare('SELECT * FROM tl_iso_rule r WHERE ' . implode(' AND ', $arrProcedures))
             ->execute($arrValues)
         ;
 
         if ($objResult->numRows) {
-            return \Model\Collection::createFromDbResult($objResult, static::$strTable);
+            return Collection::createFromDbResult($objResult, static::$strTable);
         }
 
         return null;

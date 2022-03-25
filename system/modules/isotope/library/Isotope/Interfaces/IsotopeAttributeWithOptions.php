@@ -11,6 +11,7 @@
 
 namespace Isotope\Interfaces;
 
+use Contao\Widget;
 use Isotope\Collection\AttributeOption;
 
 interface IsotopeAttributeWithOptions extends IsotopeAttribute
@@ -31,7 +32,7 @@ interface IsotopeAttributeWithOptions extends IsotopeAttribute
     /**
      * Adjust the attribute option wizard for this widget
      *
-     * @param \Widget $objWidget
+     * @param Widget $objWidget
      * @param array   $arrColumns
      *
      * @return array

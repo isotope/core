@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\Controller;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -67,7 +68,7 @@ class FavoriteAction extends AbstractButton
             Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToFavorites']);
         }
 
-        \Controller::reload();
+        Controller::reload();
 
         return true;
     }

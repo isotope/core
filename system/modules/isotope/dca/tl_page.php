@@ -1,5 +1,9 @@
 <?php
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\Input;
+use Contao\PageModel;
+
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
@@ -13,8 +17,8 @@
  * Callbacks
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataContainer $dc) {
-    if (\Input::get('do') == 'page' && \Input::get('table') == 'tl_page' && \Input::get('field') == 'iso_readerJumpTo') {
-        if (($objPage = \PageModel::findWithDetails($dc->id)) !== null) {
+    if (Input::get('do') === 'page' && Input::get('table') === 'tl_page' && Input::get('field') === 'iso_readerJumpTo') {
+        if (($objPage = PageModel::findWithDetails($dc->id)) !== null) {
             $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo']['rootNodes'] = array($objPage->rootId);
         }
     }
@@ -24,17 +28,17 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataCon
  * Extend tl_page palettes
  */
 try {
-    \Haste\Dca\PaletteManipulator::create()
-        ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-        ->addField('iso_config', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-        ->addField('iso_store_id', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    PaletteManipulator::create()
+        ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
+        ->addField('iso_config', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+        ->addField('iso_store_id', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
         ->applyToPalette('root', 'tl_page')
         ->applyToPalette('rootfallback', 'tl_page');
 } catch (\InvalidArgumentException $e) {}
 
-\Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_readerMode', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_readerMode', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('regular', 'tl_page')
 ;
 

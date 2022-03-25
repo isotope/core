@@ -11,9 +11,9 @@
 
 namespace Isotope\Report;
 
+use Contao\Database;
+use Contao\Session;
 use Isotope\Isotope;
-use Isotope\Model\Product;
-use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductType;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
@@ -35,7 +35,7 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $arrSession    = \Session::getInstance()->get('iso_reports');
+        $arrSession    = Session::getInstance()->get('iso_reports');
 
         $strPeriod   = (string) $arrSession[$this->name]['period'];
         $intColumns  = (int) $arrSession[$this->name]['columns'];
@@ -63,7 +63,7 @@ class SalesProduct extends Sales
         $groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
         $dateGroup = $period->getSqlField('o.' . $this->strDateField);
 
-        $objProducts = \Database::getInstance()->query("
+        $objProducts = Database::getInstance()->query("
             SELECT
                 IFNULL($groupVariants, i.product_id) AS product_id,
                 IFNULL(p1.name, MAX(i.name)) AS variant_name,
@@ -202,7 +202,7 @@ class SalesProduct extends Sales
             );
         }
 
-        for ($i=1; $i<\count($arrFooter); $i++) {
+        for ($i=1, $iMax = \count($arrFooter); $i < $iMax; $i++) {
             $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).  '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
             unset($arrFooter[$i]['total']);
         }
@@ -214,7 +214,7 @@ class SalesProduct extends Sales
 
     protected function getSelectVariantsPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return array (
             'name'          => 'variants',
@@ -243,13 +243,13 @@ class SalesProduct extends Sales
         );
 
         // Set default session data
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         if ($arrSession[$this->name]['tl_sort'] == '') {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
-        \Session::getInstance()->set('iso_reports', $arrSession);
+        Session::getInstance()->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }
@@ -275,4 +275,3 @@ class SalesProduct extends Sales
         return $arrHeader;
     }
 }
-

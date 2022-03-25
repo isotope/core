@@ -11,6 +11,8 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\Database;
+
 class MultilingualAttributes extends AbstractIntegrityCheck
 {
 
@@ -44,10 +46,10 @@ class MultilingualAttributes extends AbstractIntegrityCheck
     public function hasError()
     {
         if (null === $this->arrErrors) {
-            $this->arrErrors = \Database::getInstance()->execute("
-                SELECT id, field_name 
-                FROM tl_iso_attribute 
-                WHERE type IN ('select', 'radio', 'checkbox') 
+            $this->arrErrors = Database::getInstance()->execute("
+                SELECT id, field_name
+                FROM tl_iso_attribute
+                WHERE type IN ('select', 'radio', 'checkbox')
                     AND multilingual='1'
             ")->fetchEach('field_name');
         }
@@ -67,16 +69,14 @@ class MultilingualAttributes extends AbstractIntegrityCheck
 
     /**
      * Try to fix the integrity issue
-     *
-     * @return bool
      */
     public function repair()
     {
         if ($this->hasError()) {
 
             // Delete the attribute options
-            \Database::getInstance()->query("
-                UPDATE tl_iso_attribute 
+            Database::getInstance()->query("
+                UPDATE tl_iso_attribute
                 SET multilingual=''
                 WHERE
                   id IN (" . implode(',', array_keys($this->arrErrors)) . ")

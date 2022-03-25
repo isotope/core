@@ -11,6 +11,8 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\Database;
+
 class PriceTable extends AbstractIntegrityCheck
 {
 
@@ -46,7 +48,7 @@ class PriceTable extends AbstractIntegrityCheck
         if (null === $this->arrErrors) {
             $this->arrErrors = array();
 
-            $arrProducts = \Database::getInstance()->query("
+            $arrProducts = Database::getInstance()->query("
                 SELECT id FROM tl_iso_product
                 WHERE (
                     pid=0
@@ -62,17 +64,17 @@ class PriceTable extends AbstractIntegrityCheck
             ")->fetchEach('id');
 
             if (!empty($arrProducts)) {
-                $objPrices = \Database::getInstance()->query("
+                $objPrices = Database::getInstance()->query("
                         SELECT tl_iso_product_price.pid, COUNT(*) AS total
                         FROM tl_iso_product_price
-                        WHERE " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                        WHERE " . Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
                         GROUP BY pid
                         HAVING total>1
                     UNION
                         SELECT tl_iso_product_price.pid, 1 AS total
                         FROM tl_iso_product_price
-                        WHERE 
-                            " . \Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
+                        WHERE
+                            " . Database::getInstance()->findInSet('pid', implode(',', $arrProducts)) . "
                             AND (tl_iso_product_price.config_id>0 OR tl_iso_product_price.member_group>0 OR tl_iso_product_price.start!='' OR tl_iso_product_price.stop!='')
                 ");
 
@@ -103,7 +105,7 @@ class PriceTable extends AbstractIntegrityCheck
         if ($this->hasError()) {
 
             foreach ($this->arrErrors as $productId) {
-                $objPrices = \Database::getInstance()
+                $objPrices = Database::getInstance()
                     ->prepare('SELECT * FROM tl_iso_product_price WHERE pid=?')
                     ->execute($productId)
                 ;
@@ -143,10 +145,10 @@ class PriceTable extends AbstractIntegrityCheck
                     }
 
                     // Make sure the price we keep does not have config etc. assigned
-                    \Database::getInstance()
+                    Database::getInstance()
                         ->prepare("
-                            UPDATE tl_iso_product_price 
-                            SET config_id=0, member_group=0, start='', stop='' 
+                            UPDATE tl_iso_product_price
+                            SET config_id=0, member_group=0, start='', stop=''
                             WHERE id=?
                         ")
                         ->execute($keep)
@@ -154,10 +156,10 @@ class PriceTable extends AbstractIntegrityCheck
 
                     // Now delete the additional prices and price tiers
                     if (!empty($delete)) {
-                        \Database::getInstance()->query(
+                        Database::getInstance()->query(
                             'DELETE FROM tl_iso_product_price WHERE id IN (' . implode(',', $delete) . ')');
 
-                        \Database::getInstance()->query(
+                        Database::getInstance()->query(
                             "DELETE FROM tl_iso_product_pricetier WHERE pid IN (" . implode(',', $delete) . ")"
                         );
                     }

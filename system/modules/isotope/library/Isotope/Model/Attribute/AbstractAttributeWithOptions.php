@@ -11,6 +11,10 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\Input;
+use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -255,8 +259,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
                 $foreignKey = $this->parseForeignKey($this->foreignKey, $GLOBALS['TL_LANGUAGE']);
-                list($table, $field) = explode('.', $foreignKey, 2);
-                $result = \Database::getInstance()->execute("
+                [$table, $field] = explode('.', $foreignKey, 2);
+                $result = Database::getInstance()->execute("
                     SELECT id AS value, $field AS label
                     FROM $table
                     WHERE id IN (" . implode(',', $arrValues) . ")
@@ -330,7 +334,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             return parent::generateValue($value, $options);
         }
 
-        /** @var \Widget $strClass */
+        /** @var Widget $strClass */
         $strClass = $this->getFrontendWidget();
         $arrField = $strClass::getAttributesFromDca(
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name],
@@ -402,15 +406,15 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         if ('BE' === TL_MODE) {
             if ($this->be_filter
-                && \Input::get('act') == ''
+                && Input::get('act') == ''
                 && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource
             ) {
                 $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_iso_attribute_option.label';
             }
 
             if ($this->isCustomerDefined() && IsotopeAttributeWithOptions::SOURCE_PRODUCT === $this->optionsSource) {
-                \Controller::loadDataContainer(static::$strTable);
-                \System::loadLanguageFile(static::$strTable);
+                Controller::loadDataContainer(static::$strTable);
+                System::loadLanguageFile(static::$strTable);
 
                 $fieldTemplate = $GLOBALS['TL_DCA'][static::$strTable]['fields']['optionsTable'];
                 unset($fieldTemplate['label']);
@@ -423,7 +427,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $arrField['attributes']['dynamic'] = true;
                 $arrField['foreignKey'] = 'tl_iso_attribute_option.label';
 
-                if ('iso_products' === \Input::get('do')) {
+                if ('iso_products' === Input::get('do')) {
                     $arrField['eval']['whereCondition'] = "field_name='{$this->field_name}'";
                 }
 

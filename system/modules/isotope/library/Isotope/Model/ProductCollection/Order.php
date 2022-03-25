@@ -11,6 +11,9 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Contao\Controller;
+use Contao\Message;
+use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeNotificationTokens;
@@ -176,7 +179,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $this->lock();
         }
 
-        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+        System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
@@ -215,7 +218,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
 
                 if ($blnNotificationError === true) {
-                    \System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                    System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
                 }
             }
         }
@@ -233,7 +236,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             }
 
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
+                System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -303,7 +306,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
-                $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus, $updates);
+                $blnCancel = System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus, $updates);
 
                 if ($blnCancel === true) {
                     return false;
@@ -344,7 +347,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
                     if (\in_array(false, $arrResult, true)) {
                         $blnNotificationError = true;
-                        \System::log(
+                        System::log(
                             'Error sending status update notification for order ID ' . $this->id,
                             __METHOD__,
                             TL_ERROR
@@ -353,17 +356,17 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                         $blnNotificationError = false;
                     }
                 } else {
-                    \System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
+                    System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
                 }
             }
 
             if ('BE' === TL_MODE) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+                Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {
-                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                    Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
                 } elseif ($blnNotificationError === false) {
-                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                    Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
                 }
             }
         }
@@ -386,7 +389,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this, $oldStatusId, $objNewStatus);
+                System::importStatic($callback[0])->{$callback[1]}($this, $oldStatusId, $objNewStatus);
             }
         }
 
@@ -522,9 +525,9 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 )
             );
 
-            $arrTokens['cart_html'] = \Controller::replaceInsertTags($objTemplate->parse(), false);
+            $arrTokens['cart_html'] = Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(\Controller::replaceInsertTags($objTemplate->parse(), true));
+            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), true));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
@@ -541,7 +544,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
-                $arrTokens = \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
+                $arrTokens = System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -551,12 +554,9 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     /**
      * Include downloads when adding items to template
      *
-     * @param \Template $objTemplate
-     * @param Callable  $varCallable
-     *
      * @return array
      */
-    protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
+    protected function addItemsToTemplate(Template $objTemplate, $varCallable = null)
     {
         $taxIds          = [];
         $arrItems        = [];
@@ -604,7 +604,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         return uniqid(
-            \Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
+            Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
             true
         );
     }

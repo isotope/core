@@ -11,10 +11,11 @@
 
 namespace Isotope\Upgrade;
 
-
+use Contao\BackendTemplate;
+use Contao\Database;
 use Contao\System;
 
-class To0020000000 extends \System
+class To0020000000 extends System
 {
 
     public function run($blnInstalled)
@@ -50,7 +51,7 @@ class To0020000000 extends \System
             'tl_iso_mail',
             'tl_iso_mail_content'
         ) as $strOldTable) {
-            if (\Database::getInstance()->tableExists($strOldTable)) {
+            if (Database::getInstance()->tableExists($strOldTable)) {
                 $this->warnForOld();
             }
         }
@@ -66,7 +67,7 @@ class To0020000000 extends \System
      */
     protected function warnForOld()
     {
-        $objTemplate = new \BackendTemplate('be_iso_old');
+        $objTemplate = new BackendTemplate('be_iso_old');
 
         $objTemplate->output();
         exit;

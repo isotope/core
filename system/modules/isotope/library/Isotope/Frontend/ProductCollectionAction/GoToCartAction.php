@@ -11,7 +11,9 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Contao\Module;
+use Contao\PageModel;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class GoToCartAction extends AbstractButton
@@ -36,7 +38,7 @@ class GoToCartAction extends AbstractButton
      */
     public function isAvailable(IsotopeProductCollection $collection)
     {
-        return $this->module->iso_cart_jumpTo > 0 && \PageModel::findByPk($this->module->iso_cart_jumpTo) !== null;
+        return $this->module->iso_cart_jumpTo > 0 && PageModel::findByPk($this->module->iso_cart_jumpTo) !== null;
     }
 
     /**
@@ -64,9 +66,7 @@ class GoToCartAction extends AbstractButton
             return false;
         }
 
-        \Controller::redirect($this->getHref());
-
-        return true;
+        Controller::redirect($this->getHref());
     }
 
     /**
@@ -74,6 +74,6 @@ class GoToCartAction extends AbstractButton
      */
     public function getHref()
     {
-        return \PageModel::findByPk($this->module->iso_cart_jumpTo)->getFrontendUrl();
+        return PageModel::findByPk($this->module->iso_cart_jumpTo)->getFrontendUrl();
     }
 }

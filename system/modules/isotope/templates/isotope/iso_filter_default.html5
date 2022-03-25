@@ -53,7 +53,7 @@
 <?php if ($this->hasSearch): ?>
 <div class="search">
 <form action="<?= $this->action ?>" method="get">
-<input type="hidden" name="isorc" value="<?= \Input::get('isorc') ?>">
+<input type="hidden" name="isorc" value="<?= \Contao\Input::get('isorc') ?>">
 <label for="ctrl_keywords_<?= $this->id ?>"><?= $this->keywordsLabel ?></label>
 <input type="text" name="keywords" id="ctrl_keywords_<?= $this->id ?>" class="text" value="<?= $this->keywords ?>" placeholder="<?= $this->defaultSearchText ?>">
 <input type="submit" class="submit" value="<?= $this->searchLabel ?>">

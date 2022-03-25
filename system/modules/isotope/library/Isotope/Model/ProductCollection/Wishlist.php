@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Contao\FrontendUser;
+use Contao\PageModel;
 use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection
@@ -37,7 +39,7 @@ class Wishlist extends ProductCollection
     {
         $wishlist = new static();
         $wishlist->setName($GLOBALS['TL_LANG']['MSC']['defaultWishlistName'] ?: 'Wishlist 1');
-        $wishlist->member = \FrontendUser::getInstance()->id;
+        $wishlist->member = FrontendUser::getInstance()->id;
         $wishlist->store_id = (int) static::getCurrentStoreId();
 
         $wishlist->save();
@@ -53,7 +55,7 @@ class Wishlist extends ProductCollection
 
         return static::findOneBy(
             array('id=?', 'tl_iso_product_collection.member=?', 'store_id=?'),
-            array((int) $id, \FrontendUser::getInstance()->id, $storeId)
+            array((int) $id, FrontendUser::getInstance()->id, $storeId)
         );
     }
 
@@ -68,7 +70,7 @@ class Wishlist extends ProductCollection
 
         return static::findBy(
             array('tl_iso_product_collection.member=?', 'store_id=?'),
-            array(\FrontendUser::getInstance()->id, $storeId)
+            array(FrontendUser::getInstance()->id, $storeId)
         );
     }
 
@@ -86,15 +88,15 @@ class Wishlist extends ProductCollection
             return null;
         }
 
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if (null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
-        /** @var \PageModel|\stdClass $rootPage */
-        $rootPage = \PageModel::findByPk($objPage->rootId);
+        /** @var PageModel|\stdClass $rootPage */
+        $rootPage = PageModel::findByPk($objPage->rootId);
 
         return (int) $rootPage->iso_store_id;
     }

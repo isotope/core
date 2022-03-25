@@ -11,6 +11,8 @@
 
 namespace Isotope\Module;
 
+use Contao\Date;
+use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\Isotope;
@@ -101,7 +103,7 @@ class WishlistViewer extends Module
                 'collection' => $wishlist,
                 'id'         => $wishlist->id,
                 'name'       => $wishlist->getName(),
-                'published'  => \Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $wishlist->date_shipped),
+                'published'  => Date::parse($GLOBALS['TL_CONFIG']['datimFormat'], $wishlist->date_shipped),
                 'member'     => $wishlist->getRelated('member'),
                 'href'       => Url::addQueryString('uid=' . $wishlist->uniqid, $url),
                 'model'      => $wishlist,
@@ -116,7 +118,7 @@ class WishlistViewer extends Module
 
     private function getJumpTo()
     {
-        if ($this->jumpTo > 0 && ($jumpTo = \PageModel::findByPk($this->jumpTo)) !== null) {
+        if ($this->jumpTo > 0 && ($jumpTo = PageModel::findByPk($this->jumpTo)) !== null) {
             return $jumpTo;
         }
 

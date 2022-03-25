@@ -11,6 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
+use Contao\System;
 use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -36,7 +40,7 @@ class Expercash extends Payment implements IsotopePostsale
     public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -57,21 +61,21 @@ class Expercash extends Payment implements IsotopePostsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$this->validateUrlParams($objOrder)) {
-            \System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
+            System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -90,13 +94,13 @@ class Expercash extends Payment implements IsotopePostsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::get('transactionId'));
+        return Order::findByPk(Input::get('transactionId'));
     }
 
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         $arrData = array
         (
@@ -107,9 +111,9 @@ class Expercash extends Payment implements IsotopePostsale
             'amount'        => round($objOrder->getTotal(), 2) * 100,
             'currency'      => $objOrder->getCurrency(),
             'paymentMethod' => $this->expercash_paymentMethod,
-            'returnUrl'     => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'errorUrl'      => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'notifyUrl'     => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'returnUrl'     => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'errorUrl'      => Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'notifyUrl'     => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'profile'       => $this->expercash_profile,
         );
 
@@ -122,7 +126,7 @@ class Expercash extends Payment implements IsotopePostsale
         }
 
         if (is_file(TL_ROOT . '/' . $this->expercash_css)) {
-            $strUrl .= 'cssUrl=' . urlencode(\Environment::get('base') . $this->expercash_css) . '&amp;';
+            $strUrl .= 'cssUrl=' . urlencode(Environment::get('base') . $this->expercash_css) . '&amp;';
         }
 
         $strUrl .= 'language=' . strtoupper($GLOBALS['TL_LANGUAGE']) . '&amp;popupKey=' . md5($strKey . $this->expercash_popupKey);
@@ -154,34 +158,34 @@ class Expercash extends Payment implements IsotopePostsale
         }
 
         $strKey = md5(
-            \Input::get('amount')
-            . \Input::get('currency')
-            . \Input::get('paymentMethod')
-            . \Input::get('transactionId')
-            . \Input::get('GuTID')
+            Input::get('amount')
+            . Input::get('currency')
+            . Input::get('paymentMethod')
+            . Input::get('transactionId')
+            . Input::get('GuTID')
             . $this->expercash_popupKey
         );
 
-        if (\Input::get('exportKey') != $strKey) {
-            \System::log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+        if (Input::get('exportKey') != $strKey) {
+            System::log('ExperCash: exportKey was incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('amount') != (round($objOrder->getTotal(), 2) * 100)) {
-            \System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+        if (Input::get('amount') != (round($objOrder->getTotal(), 2) * 100)) {
+            System::log('ExperCash: amount is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('currency') != $objOrder->getCurrency()) {
-            \System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+        if (Input::get('currency') != $objOrder->getCurrency()) {
+            System::log('ExperCash: currency is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (\Input::get('transactionId') != $objOrder->getId()) {
-            \System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
+        if (Input::get('transactionId') != $objOrder->getId()) {
+            System::log('ExperCash: transactionId is incorrect. Possible data manipulation!', __METHOD__, TL_ERROR);
 
             return false;
         }

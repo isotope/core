@@ -11,6 +11,9 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Module;
+use Contao\System;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -35,7 +38,7 @@ class QuickPay extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -44,12 +47,12 @@ class QuickPay extends Postsale
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -76,7 +79,7 @@ class QuickPay extends Postsale
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         $objTemplate = new Template('iso_payment_quickpay');
         $objTemplate->setData($this->arrData);
@@ -89,9 +92,9 @@ class QuickPay extends Postsale
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'currency'     => $objOrder->getCurrency(),
-            'continueurl'  => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'cancelurl'    => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'callbackurl'  => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'continueurl'  => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
+            'cancelurl'    => Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'callbackurl'  => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
             'autocapture'  => 'capture' === $this->trans_type ? '1' : '0',
         );
 
@@ -123,7 +126,7 @@ class QuickPay extends Postsale
         $checksum = hash_hmac("sha256", file_get_contents("php://input"), $this->quickpay_privateKey);
 
         if ($checksum != $_SERVER['HTTP_QUICKPAY_CHECKSUM_SHA256']) {
-            \System::log(
+            System::log(
                 'Invalid hash for QuickPay payment. See system/logs/isotope_quickpay.log for more details.',
                 __METHOD__,
                 TL_ERROR
@@ -154,7 +157,7 @@ class QuickPay extends Postsale
             || 0 != $data['balance']
             || $data['test_mode'] != $this->debug
         ) {
-            \System::log(
+            System::log(
                 'QuickPay data was not accepted. See system/logs/isotope_quickpay.log for more details.',
                 __METHOD__,
                 TL_ERROR
@@ -195,7 +198,7 @@ class QuickPay extends Postsale
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (null === $data) {
-            \System::log(
+            System::log(
                 'Unable to read JSON for QuickPay payment. See system/logs/isotope_quickpay.log for more details.',
                 __METHOD__,
                 TL_ERROR

@@ -259,7 +259,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'options'               => \System::getCountries(),
+            'options'               => \Contao\System::getCountries(),
             // Do not use options_callback, countries are modified by store config in the frontend
             'eval'                  => array('mandatory'=>true, 'feEditable'=>true, 'feGroup'=>'address', 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(32) NOT NULL default ''",
@@ -314,8 +314,8 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
 /**
  * Dynamically add parent table
  */
-if (\Input::get('do') == 'member') {
+if ('member' === \Contao\Input::get('do')) {
 	$GLOBALS['TL_DCA']['tl_iso_address']['config']['ptable'] = 'tl_member';
-} elseif (\Input::get('do') == 'iso_orders') {
+} elseif ('iso_orders' === \Contao\Input::get('do')) {
 	$GLOBALS['TL_DCA']['tl_iso_address']['config']['ptable'] = 'tl_iso_product_collection';
 }

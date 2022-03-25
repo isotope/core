@@ -11,6 +11,10 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\Database;
+use Contao\Input;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -77,7 +81,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($this->modules)) {
             $this->blnError = true;
 
-            \System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+            System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
 
             /** @var Template|\stdClass $objTemplate */
             $objTemplate           = new Template('mod_message');
@@ -90,7 +94,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             return $objTemplate->parse();
         }
 
-        /** @var \Widget $objWidget */
+        /** @var Widget $objWidget */
         $objWidget = new $GLOBALS['TL_FFL']['radio'](
             [
                 'id'          => $this->getStepClass(),
@@ -110,7 +114,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             Isotope::getCart()->setShippingMethod($objModule);
         }
 
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+        if (Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
@@ -170,7 +174,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
             /** @var Shipping[] $objModules */
             $objModules = Shipping::findBy(
-                $arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds))
+                $arrColumns, null, array('order' => Database::getInstance()->findInSet('id', $arrIds))
             );
 
             if (null !== $objModules) {

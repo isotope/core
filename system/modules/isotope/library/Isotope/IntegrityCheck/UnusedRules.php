@@ -11,6 +11,7 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\File;
 use Contao\System;
 use Isotope\Model\Rule;
 
@@ -56,7 +57,7 @@ class UnusedRules extends AbstractIntegrityCheck
             return;
         }
 
-        $objFile = new \File('system/modules/isotope_rules/.skip', true);
+        $objFile = new File('system/modules/isotope_rules/.skip', true);
 
         if (!$objFile->exists()) {
             $objFile->write('Remove this file to enable the module');

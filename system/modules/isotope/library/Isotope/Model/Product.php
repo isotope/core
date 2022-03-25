@@ -11,6 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\Date;
+use Contao\DcaExtractor;
+use Contao\Model;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\RequestCache\Filter;
@@ -145,7 +149,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
                 "$t.published='1' AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')"
@@ -358,7 +362,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array          $arrVariant
      * @param array          $arrOptions
      *
-     * @return \Model|null
+     * @return Model|null
      */
     public static function findVariantOfProduct(
         IsotopeProduct $objProduct,
@@ -399,7 +403,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         if (null === $cache) {
             $cache = [];
-            $data  = \Database::getInstance()->execute(
+            $data  = Database::getInstance()->execute(
                 "SELECT id, pid FROM tl_iso_product WHERE pid>0 AND language='' AND fallback='1'"
             );
 
@@ -450,7 +454,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
                 "
@@ -475,7 +479,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         static $result;
 
         if (null === $result) {
-            $result = \Database::getInstance()->query(
+            $result = Database::getInstance()->query(
                 "SELECT COUNT(*) AS total FROM tl_iso_product WHERE language!=''"
             )->total;
         }
@@ -582,7 +586,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     protected static function buildFindQuery(array $arrOptions)
     {
-        $objBase         = \DcaExtractor::getInstance($arrOptions['table']);
+        $objBase         = DcaExtractor::getInstance($arrOptions['table']);
         $hasTranslations = (static::countTranslatedProducts() > 0);
         $hasVariants     = (ProductType::countByVariants() > 0);
 
@@ -660,7 +664,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                         $strJoinAlias = 'j' . $intCount;
                     }
 
-                    $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
+                    $objRelated = DcaExtractor::getInstance($arrConfig['table']);
 
                     foreach ($objRelated->getFields() as $strField => $config) {
                         $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;

@@ -11,6 +11,8 @@
 
 namespace Isotope\Backend\Gallery;
 
+use Contao\Input;
+use Contao\Message;
 use Isotope\Model\Gallery;
 
 class Callback
@@ -18,11 +20,11 @@ class Callback
 
     public function showJsLibraryHint()
     {
-        if ('edit' === \Input::get('act')) {
-            $gallery = Gallery::findByPk(\Input::get('id'));
+        if ('edit' === Input::get('act')) {
+            $gallery = Gallery::findByPk(Input::get('id'));
 
             if (null !== $gallery && 'elevatezoom' === $gallery->type) {
-                \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_gallery']['includeJQuery']);
+                Message::addInfo($GLOBALS['TL_LANG']['tl_iso_gallery']['includeJQuery']);
             }
         }
     }

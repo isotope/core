@@ -11,12 +11,18 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\Controller;
+use Contao\DataContainer;
+use Contao\DcaExtractor;
+use Contao\File;
+use Contao\System;
 use Isotope\DatabaseUpdater;
+use Symfony\Component\Filesystem\Filesystem;
 
-class DatabaseUpdate extends \DcaExtractor
+class DatabaseUpdate extends DcaExtractor
 {
-    /**
-     * Constructor.
+    /** @noinspection MagicMethodsValidityInspection
+     * @noinspection PhpMissingParentConstructorInspection
      */
     public function __construct()
     {
@@ -34,7 +40,7 @@ class DatabaseUpdate extends \DcaExtractor
             return;
         }
 
-        \Controller::loadDataContainer($this->strTable, true);
+        Controller::loadDataContainer($this->strTable, true);
 
         $this->dumpCacheFile();
 
@@ -44,16 +50,14 @@ class DatabaseUpdate extends \DcaExtractor
 
     /**
      * Rebuild the DcaExtractor cache when deleting an attribute.
-     *
-     * @param \DataContainer $dc
      */
-    public function onDelete(\DataContainer $dc)
+    public function onDelete(DataContainer $dc)
     {
         if (!$dc->activeRecord->field_name) {
             return;
         }
 
-        \Controller::loadDataContainer($this->strTable, true);
+        Controller::loadDataContainer($this->strTable, true);
 
         unset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$dc->activeRecord->field_name]);
         unset($GLOBALS['TL_DCA'][$this->strTable]['config']['sql']['keys'][$dc->activeRecord->field_name]);
@@ -78,8 +82,8 @@ class DatabaseUpdate extends \DcaExtractor
     {
         $this->createExtract();
 
-        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
-        $cacheDir = \System::getContainer()->getParameter('kernel.cache_dir');
+        $filesystem = new Filesystem();
+        $cacheDir = System::getContainer()->getParameter('kernel.cache_dir');
         $file = sprintf(
             '%s/contao/sql/%s.php',
             $filesystem->makePathRelative($cacheDir, TL_ROOT),
@@ -87,7 +91,7 @@ class DatabaseUpdate extends \DcaExtractor
         );
 
         // Create the file
-        $objFile = new \File($file, true);
+        $objFile = new File($file, true);
         $objFile->write("<?php\n\n");
         $objFile->append(sprintf("\$this->arrMeta = %s;\n", var_export($this->getMeta(), true)));
         $objFile->append(sprintf("\$this->arrFields = %s;\n", var_export($this->getFields(), true)));

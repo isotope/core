@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\Database;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -104,7 +105,7 @@ class RelatedProducts extends ProductList
         }
 
         $columns = [Product::getTable() . '.id IN (' . implode(',', array_map('intval', $productIds)) . ')'];
-        $options = ['order' => \Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
+        $options = ['order' => Database::getInstance()->findInSet(Product::getTable() . '.id', $productIds)];
 
         // Apply new/old product filter
         if ('show_new' === $this->iso_newFilter) {

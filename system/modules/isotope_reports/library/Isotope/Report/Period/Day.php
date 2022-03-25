@@ -11,11 +11,13 @@
 
 namespace Isotope\Report\Period;
 
+use Contao\Date;
+
 class Day implements PeriodInterface
 {
     public function format($tstamp)
     {
-        return \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], $tstamp);
+        return Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], $tstamp);
     }
 
     public function getKey($tstamp)
@@ -25,14 +27,14 @@ class Day implements PeriodInterface
 
     public function getPeriodStart($tstamp)
     {
-        $date = new \Date($tstamp);
+        $date = new Date($tstamp);
 
         return $date->dayBegin;
     }
 
     public function getPeriodEnd($tstamp)
     {
-        $date = new \Date($tstamp);
+        $date = new Date($tstamp);
 
         return $date->dayEnd;
     }
@@ -54,7 +56,7 @@ class Day implements PeriodInterface
 
     public function getJavascriptClosure()
     {
-        $format = \Date::formatToJs($GLOBALS['TL_CONFIG']['dateFormat']);
+        $format = Date::formatToJs($GLOBALS['TL_CONFIG']['dateFormat']);
 
         return "
 function(x) {

@@ -11,6 +11,7 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
 use Contao\FilesModel;
 use Isotope\Model\Attribute;
 
@@ -28,7 +29,7 @@ class To0020040000 extends Base
 
     private function migrateUploadAttributes()
     {
-        $db = \Database::getInstance();
+        $db = Database::getInstance();
         $table = Attribute::getTable();
 
         if ($this->createDatabaseField('checkoutTargetFolder', $table)) {
@@ -71,11 +72,11 @@ class To0020040000 extends Base
 
     private function migrateCollectionDates()
     {
-        $db = \Database::getInstance();
+        $db = Database::getInstance();
 
         $db->query('
-            ALTER TABLE tl_iso_product_collection 
-            CHANGE COLUMN `date_paid` `date_paid` VARCHAR(10) NULL, 
+            ALTER TABLE tl_iso_product_collection
+            CHANGE COLUMN `date_paid` `date_paid` VARCHAR(10) NULL,
             CHANGE COLUMN `date_shipped` `date_shipped` VARCHAR(10) NULL,
             CHANGE COLUMN `locked` `locked` VARCHAR(10) NULL
         ');
@@ -85,8 +86,8 @@ class To0020040000 extends Base
         $db->query("UPDATE tl_iso_product_collection SET locked=NULL WHERE locked=''");
 
         $db->query('
-            ALTER TABLE tl_iso_product_collection 
-            CHANGE COLUMN `date_paid` `date_paid` INT(10) NULL, 
+            ALTER TABLE tl_iso_product_collection
+            CHANGE COLUMN `date_paid` `date_paid` INT(10) NULL,
             CHANGE COLUMN `date_shipped` `date_shipped` INT(10) NULL,
             CHANGE COLUMN `locked` `locked` INT(10) NULL
         ');

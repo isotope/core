@@ -11,6 +11,8 @@
 
 namespace Isotope\BackendModule;
 
+use Contao\BackendUser;
+use Contao\Database;
 use Isotope\Isotope;
 use Isotope\Report\Report;
 
@@ -61,7 +63,7 @@ class Reports extends BackendOverview
      */
     protected function checkUserAccess($module)
     {
-        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_reports');
+        return BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess($module, 'iso_reports');
     }
 
 
@@ -78,7 +80,7 @@ class Reports extends BackendOverview
 
         $arrAllowedProducts = \Isotope\Backend\Product\Permission::getAllowedIds();
 
-        $objOrders = \Database::getInstance()->prepare("
+        $objOrders = Database::getInstance()->prepare("
             SELECT
                 c.id AS config_id,
                 c.name AS config_name,
@@ -139,4 +141,3 @@ class Reports extends BackendOverview
         return $strBuffer;
     }
 }
-

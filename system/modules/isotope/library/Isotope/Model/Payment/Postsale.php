@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\System;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
@@ -46,7 +48,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
         if ($_SESSION['POSTSALE_TIMEOUT'] > 0) {
 
             // Reload page every 5 seconds
-            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . \Environment::get('base') . \Environment::get('request') . '">';
+            $GLOBALS['TL_HEAD'][] = '<meta http-equiv="refresh" content="5,' . Environment::get('base') . Environment::get('request') . '">';
 
             // Do not index or cache the page
             global $objPage;
@@ -62,7 +64,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
         }
 
         unset($_SESSION['POSTSALE_TIMEOUT']);
-        \System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
+        System::log('Payment could not be processed.', __METHOD__, TL_ERROR);
 
         return false;
     }

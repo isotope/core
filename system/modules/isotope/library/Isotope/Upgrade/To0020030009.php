@@ -11,19 +11,20 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
 class To0020030009 extends Base
 {
     /**
-     * @var \Contao\Database
+     * @var Database
      */
     private $db;
 
     public function run($blnInstalled)
     {
-        $this->db = \Database::getInstance();
+        $this->db = Database::getInstance();
 
         if ($blnInstalled) {
             $this->convertSerializedValues();

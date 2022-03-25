@@ -12,6 +12,8 @@
 namespace Isotope\Model;
 
 
+use Contao\Date;
+
 class ProductCategory extends \Model
 {
 
@@ -35,7 +37,7 @@ class ProductCategory extends \Model
         $having = "page_id__type!='error_403' AND page_id__type!='error_404'";
 
         if (!BE_USER_LOGGED_IN) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             $having .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
         }
 

@@ -11,7 +11,10 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Form\Form;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -74,13 +77,13 @@ class CartAddress extends Module
 
         $table = Address::getTable();
 
-        \System::loadLanguageFile($table);
-        \Controller::loadDataContainer($table);
+        System::loadLanguageFile($table);
+        Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
         if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}();
+                System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
@@ -92,7 +95,7 @@ class CartAddress extends Module
             'iso_cart_address_' . $this->id,
             'POST',
             function(Form $objHaste) {
-                return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
+                return Input::post('FORM_SUBMIT') === $objHaste->getFormId();
             },
             isset($this->tableless) ? (bool) $this->tableless : true
         );
@@ -142,7 +145,7 @@ class CartAddress extends Module
             // Call onsubmit_callback
             if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                 foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                    \System::importStatic($callback[0])->{$callback[1]}($objAddress);
+                    System::importStatic($callback[0])->{$callback[1]}($objAddress);
                 }
             }
 

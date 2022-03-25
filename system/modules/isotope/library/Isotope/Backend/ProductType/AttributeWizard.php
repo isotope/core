@@ -11,13 +11,18 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\DataContainer;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
 
-class AttributeWizard extends \Backend
+class AttributeWizard extends Backend
 {
 
     /**
@@ -29,7 +34,7 @@ class AttributeWizard extends \Backend
      */
     public function getColumns($objWidget)
     {
-        \Controller::loadDataContainer(Product::getTable());
+        Controller::loadDataContainer(Product::getTable());
 
         $arrValues   = $objWidget->value;
         $blnVariants = $this->isVariants($objWidget->name);
@@ -93,7 +98,7 @@ class AttributeWizard extends \Backend
     /**
      * For each call, return the name of the next attribute in the wizard (for input_field_callback)
      *
-     * @param \Widget|object $objWidget
+     * @param Widget|object $objWidget
      *
      * @return string
      */
@@ -142,8 +147,8 @@ class AttributeWizard extends \Backend
      */
     public function getLegends($objWidget)
     {
-        \Controller::loadDataContainer(Attribute::getTable());
-        \System::loadLanguageFile(Product::getTable());
+        Controller::loadDataContainer(Attribute::getTable());
+        System::loadLanguageFile(Product::getTable());
 
         $arrLegends = $GLOBALS['TL_DCA'][Attribute::getTable()]['fields']['legend']['options'];
         $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][Product::getTable()], array_flip($arrLegends));
@@ -165,13 +170,13 @@ class AttributeWizard extends \Backend
      * Generate list of fields and add missing ones from DCA
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return array
      */
     public function load($varValue, $dc)
     {
-        \Controller::loadDataContainer('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
 
         $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrFields   = array();
@@ -267,16 +272,20 @@ class AttributeWizard extends \Backend
         uksort($arrFields, function ($a, $b) use ($arrFields, $arrLegends) {
             if ($arrFields[$a]['enabled'] && !$arrFields[$b]['enabled']) {
                 return -1;
-            } elseif ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {
-                return 1;
-            } elseif ($arrFields[$a]['legend'] === $arrFields[$b]['legend']) {
-                return ($a > $b) ? +1 : -1;
-            } else {
-                $posA = array_search($arrFields[$a]['legend'], $arrLegends, true);
-                $posB = array_search($arrFields[$b]['legend'], $arrLegends, true);
-
-                return ($posA > $posB) ? +1 : -1;
             }
+
+            if ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {
+                return 1;
+            }
+
+            if ($arrFields[$a]['legend'] === $arrFields[$b]['legend']) {
+                return ($a > $b) ? +1 : -1;
+            }
+
+            $posA = array_search($arrFields[$a]['legend'], $arrLegends, true);
+            $posB = array_search($arrFields[$b]['legend'], $arrLegends, true);
+
+            return ($posA > $posB) ? +1 : -1;
         });
 
         $arrValues = array();

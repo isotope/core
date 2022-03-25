@@ -11,6 +11,9 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
@@ -50,7 +53,7 @@ class ConfigSwitcher extends Module
             return $this->generateWildcard();
         }
 
-        if (($configId = (int) \Input::get('config')) > 0) {
+        if (($configId = (int) Input::get('config')) > 0) {
             $this->overrideConfig($configId, true);
         }
 
@@ -86,7 +89,7 @@ class ConfigSwitcher extends Module
                     'config'    => $objConfig,
                     'label'     => $objConfig->getLabel(),
                     'active'    => Isotope::getConfig()->id == $objConfig->id ? true : false,
-                    'href'      => \Environment::get('request') . ((strpos(\Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id,
+                    'href'      => Environment::get('request') . ((strpos(Environment::get('request'), '?') === false) ? '?' : '&amp;') . 'config=' . $objConfig->id,
                 );
             }
         }
@@ -107,11 +110,11 @@ class ConfigSwitcher extends Module
             Isotope::getCart()->save();
         }
 
-        \Controller::redirect(
+        Controller::redirect(
             preg_replace(
-                '@[?|&]config=' . \Input::get('config') . '@',
+                '@[?|&]config=' . Input::get('config') . '@',
                 '',
-                \Environment::get('request')
+                Environment::get('request')
             )
         );
     }

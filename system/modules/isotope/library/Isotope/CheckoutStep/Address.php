@@ -11,6 +11,12 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\Controller;
+use Contao\Date;
+use Contao\FrontendUser;
+use Contao\Input;
+use Contao\System;
+use Contao\Widget;
 use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
@@ -41,8 +47,8 @@ abstract class Address extends CheckoutStep
     {
         parent::__construct($objModule);
 
-        \System::loadLanguageFile(AddressModel::getTable());
-        \Controller::loadDataContainer(AddressModel::getTable());
+        System::loadLanguageFile(AddressModel::getTable());
+        Controller::loadDataContainer(AddressModel::getTable());
 
         $this->Template = new Template('iso_checkout_address');
     }
@@ -54,7 +60,7 @@ abstract class Address extends CheckoutStep
      */
     public function generate()
     {
-        $blnValidate = \Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
+        $blnValidate = Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
         $this->Template->tableless = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
@@ -86,7 +92,7 @@ abstract class Address extends CheckoutStep
 
             $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-            /** @var \Widget $objWidget */
+            /** @var Widget $objWidget */
             $objWidget = new $strClass(
                 [
                     'id'          => $this->getStepClass(),
@@ -110,7 +116,7 @@ abstract class Address extends CheckoutStep
                     $varValue = (string) $objWidget->value;
                 }
             } elseif ($objWidget->value != '') {
-                \Input::setPost($objWidget->name, $objWidget->value);
+                Input::setPost($objWidget->name, $objWidget->value);
 
                 $objValidator = clone $objWidget;
                 $objValidator->validate();
@@ -182,7 +188,7 @@ abstract class Address extends CheckoutStep
                 // Convert date formats into timestamps
                 if ('' !== $varValue && \in_array($objWidget->dca_config['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
                     try {
-                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']);
+                        $objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
                     } catch (\OutOfBoundsException $e) {
                         $objWidget->addError(
@@ -204,7 +210,7 @@ abstract class Address extends CheckoutStep
 
             } else {
 
-                \Input::setPost($objWidget->name, $objWidget->value);
+                Input::setPost($objWidget->name, $objWidget->value);
 
                 $objValidator = clone $objWidget;
                 $objValidator->validate();
@@ -220,7 +226,7 @@ abstract class Address extends CheckoutStep
 
     /**
      * Get widget objects for address fields
-     * @return  \Widget[]
+     * @return  Widget[]
      */
     protected function getWidgets()
     {
@@ -234,7 +240,7 @@ abstract class Address extends CheckoutStep
                 && \is_array($GLOBALS['ISO_HOOKS']['modifyAddressFields'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['modifyAddressFields'] as $callback) {
-                    $arrFields = \System::importStatic($callback[0])->{$callback[1]}($arrFields, $objAddress, $this->getStepClass());
+                    $arrFields = System::importStatic($callback[0])->{$callback[1]}($arrFields, $objAddress, $this->getStepClass());
                 }
             }
 
@@ -255,7 +261,7 @@ abstract class Address extends CheckoutStep
                     continue;
                 }
 
-                /** @var \Widget $strClass */
+                /** @var Widget $strClass */
                 $strClass = $GLOBALS['TL_FFL'][$field['dca']['inputType']];
 
                 if ('country' === $field['value']) {
@@ -356,7 +362,7 @@ abstract class Address extends CheckoutStep
     protected function getAddresses()
     {
         $objAddresses = AddressModel::findForMember(
-            \FrontendUser::getInstance()->id,
+            FrontendUser::getInstance()->id,
             array(
                 'order' => 'isDefaultBilling DESC, isDefaultShipping DESC'
             )

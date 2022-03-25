@@ -11,13 +11,14 @@
 
 namespace Isotope\Model\Product;
 
+use Contao\Database;
+use Contao\Date;
+use Contao\System;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductType;
-use Model\QueryBuilder;
 
 /**
  * AbstractProduct implements basic methods of product interface based on Model data.
@@ -115,7 +116,7 @@ abstract class AbstractProduct extends Product
             && \is_array($GLOBALS['ISO_HOOKS']['productIsAvailable'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['productIsAvailable'] as $callback) {
-                $available = \System::importStatic($callback[0])->{$callback[1]}($this, $objCollection);
+                $available = System::importStatic($callback[0])->{$callback[1]}($this, $objCollection);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {
@@ -166,7 +167,7 @@ abstract class AbstractProduct extends Product
      */
     public function isPublished()
     {
-        $time = \Date::floorToMinute();
+        $time = Date::floorToMinute();
 
         if (!$this->published) {
             return false;
@@ -261,14 +262,14 @@ abstract class AbstractProduct extends Product
                 $query = "SELECT page_id FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE c.pid=? AND p.type!='error_403' AND p.type!='error_404'";
 
                 if (!BE_USER_LOGGED_IN) {
-                    $time = \Date::floorToMinute();
+                    $time = Date::floorToMinute();
                     $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
                 }
             } else {
                 $query  = 'SELECT page_id FROM tl_iso_product_category WHERE pid=?';
             }
 
-            $objCategories = \Database::getInstance()->prepare($query)->execute($this->getProductId());
+            $objCategories = Database::getInstance()->prepare($query)->execute($this->getProductId());
 
             $this->setCategories($objCategories->fetchEach('page_id'), $blnPublished);
         }

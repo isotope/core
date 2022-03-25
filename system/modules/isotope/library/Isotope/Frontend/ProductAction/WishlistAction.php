@@ -11,6 +11,9 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Message;
@@ -77,7 +80,7 @@ class WishlistAction extends AbstractButton
             return false;
         }
 
-        $wishlistId = (int) \Input::post('add_to_wishlist_option');
+        $wishlistId = (int) Input::post('add_to_wishlist_option');
 
         if (0 === $wishlistId || ($wishlist = Wishlist::findByIdForCurrentUser($wishlistId)) === null) {
             $wishlist = Wishlist::createForCurrentUser();
@@ -90,12 +93,12 @@ class WishlistAction extends AbstractButton
         Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['addedToWishlist']);
 
         if (!$config['module']->iso_wishlistJumpTo) {
-            \Controller::reload();
+            Controller::reload();
         }
 
-        \Controller::redirect(
+        Controller::redirect(
             Url::addQueryString(
-                'id=' . $wishlist->id . '&amp;continue=' . base64_encode(\Environment::get('request')),
+                'id=' . $wishlist->id . '&amp;continue=' . base64_encode(Environment::get('request')),
                 $config['module']->iso_wishlistJumpTo
             )
         );

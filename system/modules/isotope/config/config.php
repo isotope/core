@@ -454,7 +454,7 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-if (\Config::getInstance()->isComplete()) {
+if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
     $GLOBALS['TL_HOOKS']['getAttributesFromDca'][]          = array('Isotope\Backend\Product\DcaManager', 'addOptionsFromAttribute');
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');

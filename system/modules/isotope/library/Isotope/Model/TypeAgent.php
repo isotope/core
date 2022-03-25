@@ -11,7 +11,12 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
 use Contao\Database\Result;
+use Contao\DcaExtractor;
+use Contao\Model;
+use Contao\Model\Collection;
+use Contao\Model\Registry;
 
 /**
  * Class TypeAgent
@@ -209,7 +214,7 @@ abstract class TypeAgent extends \Model
                 $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
-            $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            $objRelations = DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
@@ -231,7 +236,7 @@ abstract class TypeAgent extends \Model
         // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
         $strQuery            = static::buildQueryString($arrOptions);
 
-        $objStatement = \Database::getInstance()->prepare($strQuery);
+        $objStatement = Database::getInstance()->prepare($strQuery);
 
         // Defaults for limit and offset
         if (!isset($arrOptions['limit'])) {
@@ -276,14 +281,14 @@ abstract class TypeAgent extends \Model
     /**
      * Build model based on database result
      *
-     * @return \Model
+     * @return Model
      */
     public static function createModelFromDbResult(Result $objResult)
     {
         $strClass = '';
 
         if (is_numeric($objResult->type)) {
-            $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            $objRelations = DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
@@ -323,7 +328,7 @@ abstract class TypeAgent extends \Model
      *
      * @param string $strTable
      *
-     * @return \Model\Collection
+     * @return Collection
      */
     protected static function createCollectionFromDbResult(Result $objResult, $strTable = null)
     {
@@ -344,13 +349,13 @@ abstract class TypeAgent extends \Model
             }
         }
 
-        return new \Model\Collection($arrModels, $strTable);
+        return new Collection($arrModels, $strTable);
     }
 
     /**
      * Build model based on database result
      *
-     * @return \Model
+     * @return Model
      *
      * @deprecated use createModelFromDbResult in Contao 3.3
      */
@@ -364,8 +369,8 @@ abstract class TypeAgent extends \Model
         $intPk = $objResult->$strPk;
 
         // Try to load from the registry
-        /** @var \Model $objModel */
-        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+        /** @var Model $objModel */
+        $objModel = Registry::getInstance()->fetch(static::$strTable, $intPk);
 
         if ($objModel !== null) {
             $objModel->mergeRow($objResult->row());

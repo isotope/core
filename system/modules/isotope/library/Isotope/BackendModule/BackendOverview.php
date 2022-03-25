@@ -12,9 +12,17 @@
 namespace Isotope\BackendModule;
 
 
+use Contao\Backend;
+use Contao\BackendModule;
+use Contao\BackendUser;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Session;
+use Contao\System;
 
-abstract class BackendOverview extends \BackendModule
+abstract class BackendOverview extends BackendModule
 {
 
     /**
@@ -52,7 +60,7 @@ abstract class BackendOverview extends \BackendModule
         $this->arrModules = array();
 
         // enable collapsing legends
-        $session = \Session::getInstance()->get('fieldset_states');
+        $session = Session::getInstance()->get('fieldset_states');
         foreach ($this->getModules() as $k => $arrGroup) {
             [$k, $hide] = explode(':', $k, 2);
 
@@ -66,17 +74,19 @@ abstract class BackendOverview extends \BackendModule
         }
 
         // Open module
-        if (\Input::get('mod') != '') {
-            return $this->getModule(\Input::get('mod'));
-        } // Table set but module missing, fix the saveNcreate link
-        elseif (\Input::get('table') != '') {
+        if (Input::get('mod') != '') {
+            return $this->getModule(Input::get('mod'));
+        }
+
+        // Table set but module missing, fix the saveNcreate link
+        if (Input::get('table') != '') {
             foreach ($this->arrModules as $arrGroup) {
                 if (isset($arrGroup['modules'])) {
                     foreach ($arrGroup['modules'] as $strModule => $arrConfig) {
                         if (\is_array($arrConfig['tables'])
-                            && \in_array(\Input::get('table'), $arrConfig['tables'], true)
+                            && \in_array(Input::get('table'), $arrConfig['tables'], true)
                         ) {
-                            \Controller::redirect(\Backend::addToUrl('mod=' . $strModule));
+                            Controller::redirect(Backend::addToUrl('mod=' . $strModule));
                         }
                     }
                 }
@@ -118,13 +128,13 @@ abstract class BackendOverview extends \BackendModule
 
         // Redirect the user to the specified page
         if ($arrModule['redirect'] != '') {
-            \Controller::redirect($arrModule['redirect']);
+            Controller::redirect($arrModule['redirect']);
         }
 
-        $strTable = \Input::get('table');
+        $strTable = Input::get('table');
 
         if ($strTable == '' && $arrModule['callback'] == '') {
-            \Controller::redirect(\Backend::addToUrl('table=' . $arrModule['tables'][0]));
+            Controller::redirect(Backend::addToUrl('table=' . $arrModule['tables'][0]));
         }
 
         // Add module style sheet
@@ -144,13 +154,13 @@ abstract class BackendOverview extends \BackendModule
             }
 
             // Load the language and DCA file
-            \System::loadLanguageFile($strTable);
-            \Controller::loadDataContainer($strTable);
+            System::loadLanguageFile($strTable);
+            Controller::loadDataContainer($strTable);
 
             // Include all excluded fields which are allowed for the current user
             if ($GLOBALS['TL_DCA'][$strTable]['fields']) {
                 foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k => $v) {
-                    if ($v['exclude'] && \BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
+                    if ($v['exclude'] && BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
                         $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
                     }
                 }
@@ -158,27 +168,27 @@ abstract class BackendOverview extends \BackendModule
         }
 
         // AJAX request
-        if ($_POST && \Environment::get('isAjaxRequest')) {
+        if ($_POST && Environment::get('isAjaxRequest')) {
             $this->objAjax->executePostActions($this->objDc);
         }
 
         // Call module callback
         elseif (class_exists($arrModule['callback'])) {
 
-            /** @var \BackendModule $objCallback */
+            /** @var BackendModule $objCallback */
             $objCallback = new $arrModule['callback']($this->objDc, $arrModule);
 
             return $objCallback->generate();
         }
 
         // Custom action (if key is not defined in config.php the default action will be called)
-        elseif (\Input::get('key') && isset($arrModule[\Input::get('key')])) {
-            $objCallback = new $arrModule[\Input::get('key')][0]();
+        elseif (Input::get('key') && isset($arrModule[Input::get('key')])) {
+            $objCallback = new $arrModule[Input::get('key')][0]();
 
-            return $objCallback->{$arrModule[\Input::get('key')][1]}($this->objDc, $strTable, $arrModule);
+            return $objCallback->{$arrModule[Input::get('key')][1]}($this->objDc, $strTable, $arrModule);
         }
 
-        $act = (string) \Input::get('act');
+        $act = (string) Input::get('act');
 
         if ('' === $act || 'paste' === $act || 'select' === $act) {
             $act = ($this->objDc instanceof \listable) ? 'showAll' : 'edit';
@@ -190,7 +200,7 @@ abstract class BackendOverview extends \BackendModule
             case 'showAll':
             case 'undo':
                 if (!$this->objDc instanceof \listable) {
-                    \System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
+                    System::log('Data container ' . $strTable . ' is not listable', __METHOD__, TL_ERROR);
                     trigger_error('The current data container is not listable', E_USER_ERROR);
                 }
                 break;
@@ -203,7 +213,7 @@ abstract class BackendOverview extends \BackendModule
             case 'move':
             case 'edit':
                 if (!$this->objDc instanceof \editable) {
-                    \System::log('Data container ' . $strTable . ' is not editable', __METHOD__, TL_ERROR);
+                    System::log('Data container ' . $strTable . ' is not editable', __METHOD__, TL_ERROR);
                     trigger_error('The current data container is not editable', E_USER_ERROR);
                 }
                 break;

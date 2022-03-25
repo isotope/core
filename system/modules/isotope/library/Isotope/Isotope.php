@@ -11,6 +11,11 @@
 
 namespace Isotope;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
+use Contao\System;
+use Contao\Widget;
 use Haste\Data\Plain;
 use Haste\Util\Format;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -38,7 +43,7 @@ use Isotope\Model\TaxClass;
  * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
  */
-class Isotope extends \Controller
+class Isotope extends Controller
 {
 
     /**
@@ -78,16 +83,16 @@ class Isotope extends \Controller
             static::$blnInitialized = true;
 
             // Make sure field data is available
-            \Controller::loadDataContainer('tl_iso_product');
-            \System::loadLanguageFile('tl_iso_product');
+            Controller::loadDataContainer('tl_iso_product');
+            System::loadLanguageFile('tl_iso_product');
 
             // Initialize request cache for product list filters
-            if (\Input::get('isorc') != '') {
+            if (Input::get('isorc') != '') {
                 if (static::getRequestCache()->isEmpty()) {
                     global $objPage;
                     $objPage->noSearch = 1;
 
-                } elseif (static::getRequestCache()->id != \Input::get('isorc')) {
+                } elseif (static::getRequestCache()->id != Input::get('isorc')) {
                     unset($_GET['isorc']);
 
                     // Unset the language parameter
@@ -96,11 +101,11 @@ class Isotope extends \Controller
                     }
 
                     $strQuery = http_build_query($_GET);
-                    \Controller::redirect(
+                    Controller::redirect(
                         preg_replace(
                             '/\?.*$/i',
                             '',
-                            \Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
+                            Environment::get('request') . ($strQuery ? '?' . $strQuery : '')
                         )
                     );
                 }
@@ -201,7 +206,7 @@ class Isotope extends \Controller
         }
 
         if (null === static::$objRequestCache) {
-            static::$objRequestCache = RequestCache::findByIdAndStore(\Input::get('isorc'), $cart->store_id);
+            static::$objRequestCache = RequestCache::findByIdAndStore(Input::get('isorc'), $cart->store_id);
 
             if (null === static::$objRequestCache) {
                 static::$objRequestCache = new RequestCache();
@@ -239,7 +244,7 @@ class Isotope extends \Controller
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['calculatePrice']) && \is_array($GLOBALS['ISO_HOOKS']['calculatePrice'])) {
             foreach ($GLOBALS['ISO_HOOKS']['calculatePrice'] as $callback) {
-                $fltPrice = \System::importStatic($callback[0])->{$callback[1]}(
+                $fltPrice = System::importStatic($callback[0])->{$callback[1]}(
                     $fltPrice,
                     $objSource,
                     $strField,
@@ -429,11 +434,10 @@ class Isotope extends \Controller
      *
      * @param string  $strRegexp
      * @param mixed   $varValue
-     * @param \Widget $objWidget
      *
      * @return bool
      */
-    public static function validateRegexp($strRegexp, $varValue, \Widget $objWidget)
+    public static function validateRegexp($strRegexp, $varValue, Widget $objWidget)
     {
         switch ($strRegexp) {
             case 'price':
@@ -487,7 +491,7 @@ class Isotope extends \Controller
             $arrOptions[$field] = array
             (
                 'label' => Format::dcaLabel($strTable, $field),
-                'value' => \Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
+                'value' => Controller::replaceInsertTags(Format::dcaValue($strTable, $field, $value)),
             );
         }
 
@@ -517,7 +521,7 @@ class Isotope extends \Controller
                 && $objAttribute instanceof IsotopeAttributeWithOptions
             ) {
 
-                /** @var \Widget $strClass */
+                /** @var Widget $strClass */
                 $strClass = $objAttribute->getFrontendWidget();
                 $arrField = $strClass::getAttributesFromDca(
                     $GLOBALS['TL_DCA'][$strTable]['fields'][$k],
@@ -566,7 +570,7 @@ class Isotope extends \Controller
                 $v,
                 Format::dcaLabel($strTable, $k),
                 array (
-                    'formatted' => \Controller::replaceInsertTags($formatted),
+                    'formatted' => Controller::replaceInsertTags($formatted),
                 )
             );
         }

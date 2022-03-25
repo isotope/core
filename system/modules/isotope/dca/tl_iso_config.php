@@ -281,7 +281,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'inputType'             => 'select',
             'default'               => (string) BackendUser::getInstance()->country,
             'options_callback'      => function() {
-                return \System::getCountries();
+                return \Contao\System::getCountries();
             },
             'eval'                  => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(2) NOT NULL default ''",
@@ -388,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return \System::getCountries();
+                return \Contao\System::getCountries();
             },
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",
@@ -399,7 +399,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return \System::getCountries();
+                return \Contao\System::getCountries();
             },
             'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'chosen'=>true),
             'sql'                   => "varchar(2) NOT NULL default ''",
@@ -410,7 +410,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return \System::getCountries();
+                return \Contao\System::getCountries();
             },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL"
@@ -421,7 +421,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
-                return \System::getCountries();
+                return \Contao\System::getCountries();
             },
             'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
             'sql'                   => "blob NULL",

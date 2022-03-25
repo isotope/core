@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\File;
+use Contao\FilesModel;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -70,8 +72,8 @@ class FileTree extends Attribute
     {
         $varValue = $this->getValue($objProduct);
 
-        /** @var \FilesModel[] $objFiles */
-        $objFiles = \FilesModel::findMultipleByUuids((array) $varValue);
+        /** @var FilesModel[] $objFiles */
+        $objFiles = FilesModel::findMultipleByUuids((array) $varValue);
 
         if (null !== $objFiles) {
             $files = [];
@@ -109,7 +111,7 @@ class FileTree extends Attribute
     /**
      * Sort the files
      *
-     * @param \FilesModel[]  $files
+     * @param FilesModel[]  $files
      * @param IsotopeProduct $product
      *
      * @return array
@@ -177,7 +179,7 @@ class FileTree extends Attribute
     /**
      * Get the sort date helper
      *
-     * @param \FilesModel[] $files
+     * @param FilesModel[] $files
      *
      * @return array
      */
@@ -186,7 +188,7 @@ class FileTree extends Attribute
         $helper = [];
 
         foreach ($files as $fileModel) {
-            $file = new \File($fileModel->path);
+            $file = new File($fileModel->path);
             $helper[] = $file->mtime;
         }
 

@@ -11,6 +11,8 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\Database;
+
 class VariantOrphans extends AbstractIntegrityCheck
 {
 
@@ -44,7 +46,7 @@ class VariantOrphans extends AbstractIntegrityCheck
     public function hasError()
     {
         if (null === $this->arrErrors) {
-            $this->arrErrors = \Database::getInstance()->query("
+            $this->arrErrors = Database::getInstance()->query("
                 SELECT id FROM tl_iso_product
                 WHERE
                   language=''
@@ -79,7 +81,7 @@ class VariantOrphans extends AbstractIntegrityCheck
         if ($this->hasError()) {
 
             // Delete the variants
-            \Database::getInstance()->query("
+            Database::getInstance()->query("
                 DELETE FROM tl_iso_product
                 WHERE
                   id IN (" . implode(',', $this->arrErrors) . ")

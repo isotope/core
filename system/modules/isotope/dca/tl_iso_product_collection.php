@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'notCreatable'              => true,
         'notCopyable'               => true,
         'notSortable'               => true,
-        'notDeletable'              => ('select' === \Input::get('act')),
+        'notDeletable'              => ('select' === \Contao\Input::get('act')),
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),

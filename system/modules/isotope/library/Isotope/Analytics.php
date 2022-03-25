@@ -11,6 +11,8 @@
 
 namespace Isotope;
 
+use Contao\Environment;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Config;
@@ -56,13 +58,13 @@ class Analytics extends Frontend
         }
 
         // Initilize GA Tracker
-        $tracker = new Tracker($objConfig->ga_account, \Environment::get('base'));
+        $tracker = new Tracker($objConfig->ga_account, Environment::get('base'));
 
         // Assemble Visitor information
         // (could also get unserialized from database)
         $visitor = new Visitor();
-        $visitor->setIpAddress(\Environment::get('ip'));
-        $visitor->setUserAgent(\Environment::get('httpUserAgent'));
+        $visitor->setIpAddress(Environment::get('ip'));
+        $visitor->setUserAgent(Environment::get('httpUserAgent'));
 
         $transaction = new Transaction();
 
@@ -116,7 +118,7 @@ class Analytics extends Frontend
             $customVar = new CustomVariable(
                 1,
                 'Member',
-                \StringUtil::parseSimpleTokens(
+                StringUtil::parseSimpleTokens(
                     $objConfig->ga_member,
                     $objOrder->getMember()->row()
                 ),

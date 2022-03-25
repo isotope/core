@@ -11,6 +11,10 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\FormModel;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
 use Haste\Form\Form;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeNotificationTokens;
@@ -54,10 +58,10 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
     public function generate()
     {
         $this->objForm = new Form($this->objModule->getFormId(), 'POST', function (Form $form) {
-            return \Input::post('FORM_SUBMIT') === $form->getFormId();
+            return Input::post('FORM_SUBMIT') === $form->getFormId();
         });
 
-        $objFormConfig = \FormModel::findByPk($this->formId);
+        $objFormConfig = FormModel::findByPk($this->formId);
 
         if (null === $objFormConfig) {
             throw new \InvalidArgumentException('Order condition form "' . $this->formId . '" not found.');
@@ -78,7 +82,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
         if (!empty($GLOBALS['ISO_HOOKS']['orderConditions']) && \is_array($GLOBALS['ISO_HOOKS']['orderConditions'])) {
             foreach ($GLOBALS['ISO_HOOKS']['orderConditions'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this->objForm, $this->objModule);
+                System::importStatic($callback[0])->{$callback[1]}($this->objForm, $this->objModule);
             }
         }
 
@@ -118,7 +122,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                 if ($objClone instanceof \uploadable) {
                     $_FILES[$strField] = $_SESSION['FILES'][$strField];
                 } else {
-                    \Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField]);
+                    Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField]);
                 }
                 $objClone->validate();
 
@@ -172,7 +176,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                 && \is_array($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['getOrderConditionsValue'] as $callback) {
-                    $varValue = \System::importStatic($callback[0])->{$callback[1]}(
+                    $varValue = System::importStatic($callback[0])->{$callback[1]}(
                         $strField,
                         $varValue,
                         $arrConfig,
@@ -198,6 +202,6 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
         $strClass = get_parent_class($this);
         $strClass = substr($strClass, strrpos($strClass, '\\') + 1);
 
-        return parent::getStepClass() . ' ' . standardize($strClass);
+        return parent::getStepClass() . ' ' . StringUtil::standardize($strClass);
     }
 }

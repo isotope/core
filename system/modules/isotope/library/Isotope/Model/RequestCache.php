@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
@@ -90,7 +91,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return \call_user_func_array('array_merge', $arrMatches);
+        return array_merge(...$arrMatches);
     }
 
     /**
@@ -217,7 +218,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return \call_user_func_array('array_merge', $arrMatches);
+        return array_merge(...$arrMatches);
     }
 
     /**
@@ -499,7 +500,7 @@ class RequestCache extends \Model
      */
     public static function deleteById($intId)
     {
-        $affected = \Database::getInstance()
+        $affected = Database::getInstance()
             ->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")
             ->execute($intId)
             ->affectedRows
@@ -513,7 +514,7 @@ class RequestCache extends \Model
      */
     public static function purge()
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
+        Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
     }
 
     /**

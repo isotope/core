@@ -11,10 +11,12 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Contao\Database;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Isotope;
+use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
@@ -69,10 +71,10 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
         // Product or producttype restrictions
         if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none') {
-            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
+            $arrLimit = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit)) {
-                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = Database::getInstance()->execute("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
             if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items') {

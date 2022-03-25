@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Config;
 use Contao\Files;
 use Contao\Folder;
 use Contao\Widget;
@@ -121,7 +122,7 @@ class FineUploader extends Attribute implements \uploadable
             $file = $folder->path . '/' . $file;
 
             Files::getInstance()->rename($temp, $file);
-            Files::getInstance()->chmod($file, \Config::get('defaultFileChmod'));
+            Files::getInstance()->chmod($file, Config::get('defaultFileChmod'));
 
             $files[] = $file;
         }

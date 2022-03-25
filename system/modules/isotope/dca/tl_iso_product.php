@@ -634,7 +634,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
 /**
  * Adjust the data configuration array in variants view
  */
-if (\Input::get('id')) {
+if (\Contao\Input::get('id')) {
     $GLOBALS['TL_LANG']['tl_iso_product']['new'] = $GLOBALS['TL_LANG']['tl_iso_product']['new_variant'];
     $GLOBALS['TL_DCA']['tl_iso_product']['config']['switchToEdit'] = false;
     unset(

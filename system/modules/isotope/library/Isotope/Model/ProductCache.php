@@ -11,6 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\FrontendUser;
+use Contao\Input;
+
 /**
  * Isotope\Model\ProductCache represents an Isotope product cache model
  *
@@ -80,7 +84,7 @@ class ProductCache extends \Model
             ),
             array(
                 $uniqid,
-                (string) \Input::get('keywords'),
+                (string) Input::get('keywords'),
                 time(),
                 static::getCacheableGroups()
             ),
@@ -103,7 +107,7 @@ class ProductCache extends \Model
             array(
                   'uniqid'          => $uniqid,
                   'groups'          => static::getCacheableGroups(),
-                  'keywords'        => (string) \Input::get('keywords'),
+                  'keywords'        => (string) Input::get('keywords'),
               )
         );
 
@@ -119,16 +123,16 @@ class ProductCache extends \Model
     {
         $time = time();
 
-        \Database::getInstance()->prepare("
+        Database::getInstance()->prepare("
             DELETE FROM tl_iso_productcache
             WHERE
                 (uniqid=? AND tl_iso_productcache.groups=? AND (keywords='' OR keywords=?))
                 OR (expires>0 AND expires<$time)
         ")->execute(
             $uniqid,
-            (int) \Input::get('isorc'),
+            (int) Input::get('isorc'),
             static::getCacheableGroups(),
-            (string) \Input::get('keywords')
+            (string) Input::get('keywords')
         );
     }
 
@@ -158,8 +162,8 @@ class ProductCache extends \Model
             array(
                 $intPage,
                 $intModule,
-                (int) \Input::get('isorc'),
-                (string) \Input::get('keywords'),
+                (int) Input::get('isorc'),
+                (string) Input::get('keywords'),
                 time(),
                 static::getCacheableGroups()
             ),
@@ -185,9 +189,9 @@ class ProductCache extends \Model
         $objCache->setRow(array(
             'page_id'           => $intPage,
             'module_id'         => $intModule,
-            'requestcache_id'   => (int) \Input::get('isorc'),
+            'requestcache_id'   => (int) Input::get('isorc'),
             'groups'            => static::getCacheableGroups(),
-            'keywords'          => (string) \Input::get('keywords'),
+            'keywords'          => (string) Input::get('keywords'),
         ));
 
         return $objCache;
@@ -206,7 +210,7 @@ class ProductCache extends \Model
     {
         $time = time();
 
-        \Database::getInstance()->prepare("
+        Database::getInstance()->prepare("
             DELETE FROM tl_iso_productcache
             WHERE
                 (page_id=? AND module_id=? AND requestcache_id=? AND keywords=? AND tl_iso_productcache.groups=?)
@@ -214,8 +218,8 @@ class ProductCache extends \Model
         ")->execute(
             $intPage,
             $intModule,
-            (int) \Input::get('isorc'),
-            (string) \Input::get('keywords'),
+            (int) Input::get('isorc'),
+            (string) Input::get('keywords'),
             static::getCacheableGroups()
         );
     }
@@ -225,7 +229,7 @@ class ProductCache extends \Model
      */
     public static function purge()
     {
-        \Database::getInstance()->query("TRUNCATE " . static::$strTable);
+        Database::getInstance()->query("TRUNCATE " . static::$strTable);
     }
 
     /**
@@ -241,8 +245,7 @@ class ProductCache extends \Model
             $groups = '';
 
             if (FE_USER_LOGGED_IN === true) {
-                /** @var \FrontendUser|object $user */
-                $user = \FrontendUser::getInstance();
+                $user = FrontendUser::getInstance();
                 $arrGroups = $user->groups;
 
                 if (!empty($arrGroups) && \is_array($arrGroups)) {
@@ -264,7 +267,7 @@ class ProductCache extends \Model
      */
     public static function isWritable()
     {
-        return \Database::getInstance()->query('
+        return Database::getInstance()->query('
             SHOW OPEN TABLES FROM `' . $GLOBALS['TL_CONFIG']['dbDatabase'] . "` LIKE '" . static::$strTable . "'
         ")->In_use == 0;
     }

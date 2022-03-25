@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -186,7 +186,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -200,8 +200,8 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'options_callback'      => function() {
                 // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
                 return array_merge(
-                    \Controller::getTemplateGroup('moo_'),
-                    \Controller::getTemplateGroup('j_')
+                    \Contao\Controller::getTemplateGroup('moo_'),
+                    \Contao\Controller::getTemplateGroup('j_')
                 );
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
@@ -213,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -225,7 +225,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),

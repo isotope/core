@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -66,8 +67,8 @@ abstract class PaypalApi extends Payment
         $data = [
             'intent'        => 'sale',
             'redirect_urls' => [
-                'return_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
-                'cancel_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_FAILED),
+                'return_url' => Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
+                'cancel_url' => Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_FAILED),
             ],
             'payer'         => [
                 'payment_method' => 'paypal',

@@ -11,12 +11,13 @@
 
 namespace Isotope\Backend\Member;
 
-use Contao\Database;
+use Contao\Backend;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Cart;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -37,7 +38,7 @@ class Callback extends \Backend
             if (isset($originalField['options_callback'])) {
                 if (\is_array($originalField['options_callback'])) {
                     $callable = [
-                        \System::importStatic($originalField['options_callback'][0]),
+                        System::importStatic($originalField['options_callback'][0]),
                         $originalField['options_callback'][1],
                     ];
                 } else {

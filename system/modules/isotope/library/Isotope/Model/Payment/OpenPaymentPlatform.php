@@ -11,7 +11,11 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
 use Contao\Request;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Address;
@@ -73,7 +77,7 @@ class OpenPaymentPlatform extends Payment
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -91,7 +95,7 @@ class OpenPaymentPlatform extends Payment
         $this->debugLog($response);
 
         if ('000.200.100' !== $response['result']['code']) {
-            \System::log(
+            System::log(
                 sprintf(
                     'Payment for order ID %s could not be initialized. See log files for more information.',
                     $objOrder->getId()
@@ -120,14 +124,14 @@ class OpenPaymentPlatform extends Payment
     /**
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
-        $ndc = \Input::get('id');
+        $ndc = Input::get('id');
 
         $request = new Request();
         $url = $this->getBaseUrl() . '/v1/checkouts/' . $ndc . '/payment';
@@ -142,7 +146,7 @@ class OpenPaymentPlatform extends Payment
         $response = json_decode($request->response, true);
         $this->storeApiResponse($response, $objOrder);
 
-        $this->debugLog(\Environment::get('request'));
+        $this->debugLog(Environment::get('request'));
         $this->debugLog($response);
 
         if (!preg_match('/^(000\.000\.|000\.100\.1|000\.[36])/', $response['result']['code'])
@@ -151,7 +155,7 @@ class OpenPaymentPlatform extends Payment
             || $objOrder->getTotal() != $response['amount']
             || $objOrder->getCurrency() != $response['currency']
         ) {
-            \System::log(
+            System::log(
                 sprintf(
                     'Payment data for order ID %s could not be verified. See log files for more information.',
                     $objOrder->getId()
@@ -191,7 +195,7 @@ class OpenPaymentPlatform extends Payment
                 || $objOrder->getTotal() != $response['amount']
                 || $objOrder->getCurrency() != $response['currency']
             ) {
-                \System::log(
+                System::log(
                     sprintf(
                         'Payment for order ID %s could not be captured. See log files for more information.',
                         $objOrder->getId()
@@ -278,7 +282,7 @@ class OpenPaymentPlatform extends Payment
         $types = array_values(array_intersect_key(static::$paymentBrands, array_flip($brands)));
         array_unshift($types, static::$paymentTypes);
 
-        return \call_user_func_array('array_intersect', $types);
+        return array_intersect(...$types);
     }
 
     /**

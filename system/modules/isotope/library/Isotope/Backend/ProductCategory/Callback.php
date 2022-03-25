@@ -11,12 +11,12 @@
 
 namespace Isotope\Backend\ProductCategory;
 
-use Contao\StringUtil;
+use Contao\Backend;
 use Isotope\Backend\Product\Label;
 use Isotope\Model\Product;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**

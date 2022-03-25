@@ -11,15 +11,18 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\System;
 
-class To0020010064 extends \System
+class To0020010064 extends System
 {
 
     public function run($blnInstalled)
     {
         if ($blnInstalled) {
 
-            \Controller::loadDataContainer('tl_iso_product');
+            Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
 
@@ -33,7 +36,7 @@ class To0020010064 extends \System
                 return;
             }
 
-            $objProducts = \Database::getInstance()->query("
+            $objProducts = Database::getInstance()->query("
                 SELECT * FROM tl_iso_product WHERE language=''
             ");
 
@@ -55,7 +58,7 @@ class To0020010064 extends \System
                 }
 
                 if (0 !== \count($arrUpdate)) {
-                    \Database::getInstance()->prepare(
+                    Database::getInstance()->prepare(
                         "UPDATE tl_iso_product %s WHERE id=?"
                     )->set($arrUpdate)->execute($objProducts->id);
                 }

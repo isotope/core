@@ -11,6 +11,8 @@
 
 namespace Isotope\BackendModule;
 
+use Contao\BackendTemplate;
+use Contao\BackendUser;
 use Contao\StringUtil;
 
 /**
@@ -62,7 +64,7 @@ class Setup extends BackendOverview
      */
     protected function checkUserAccess($module)
     {
-        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_modules');
+        return BackendUser::getInstance()->hasAccess($module, 'iso_modules');
     }
 
 
@@ -73,8 +75,8 @@ class Setup extends BackendOverview
      */
     protected function addIntroduction(array &$return)
     {
-        if (\BackendUser::getInstance()->isAdmin) {
-            $objTemplate = new \BackendTemplate('be_iso_introduction');
+        if (BackendUser::getInstance()->isAdmin) {
+            $objTemplate = new BackendTemplate('be_iso_introduction');
 
             $return['introduction']['label'] = &$GLOBALS['TL_LANG']['MSC']['isotopeIntroductionLegend'];
             $return['introduction']['html']  = $objTemplate->parse();

@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\FilesModel;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
@@ -39,7 +40,7 @@ class Download extends \Model
 
         if ('folder' === $objFile->type) {
             $arrFiles = array();
-            $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
+            $objFiles = FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
 
             if (null !== $objFiles) {
                 while ($objFiles->next()) {

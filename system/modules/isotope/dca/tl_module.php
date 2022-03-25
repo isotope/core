@@ -654,8 +654,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_addressFields'] = array
     'exclude'                   => true,
     'inputType'                 => 'checkboxWizard',
     'options_callback'          => function() {
-        \Controller::loadDataContainer(\Isotope\Model\Address::getTable());
-        \System::loadLanguageFile(\Isotope\Model\Address::getTable());
+        \Contao\Controller::loadDataContainer(\Isotope\Model\Address::getTable());
+        \Contao\System::loadLanguageFile(\Isotope\Model\Address::getTable());
 
         $arrOptions = array();
         $arrDCA = &$GLOBALS['TL_DCA'][\Isotope\Model\Address::getTable()]['fields'];

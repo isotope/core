@@ -126,9 +126,9 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
             'filter'                    => true,
             'inputType'                 => 'select',
             'options_callback'          => function() {
-                return \System::getLanguages();
+                return \Contao\System::getLanguages();
             },
-            'default'                   => \BackendUser::getInstance()->language,
+            'default'                   => \Contao\BackendUser::getInstance()->language,
             'eval'                      => array('mandatory'=>true, 'tl_class'=>'clr'),
             'sql'                       => "varchar(5) NOT NULL default ''"
         ),

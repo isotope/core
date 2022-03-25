@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\Backend;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
@@ -20,7 +21,7 @@ use Isotope\Model\Attribute;
  *
  * @deprecated only for optionsSource=attribute
  */
-class OptionsWizard extends \Backend
+class OptionsWizard extends Backend
 {
 
     /**

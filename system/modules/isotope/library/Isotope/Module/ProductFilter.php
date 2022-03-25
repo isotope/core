@@ -11,6 +11,11 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\PageModel;
+use Contao\System;
+use Contao\Widget;
 use Haste\Http\Response\JsonResponse;
 use Haste\Input\Input;
 use Haste\Util\Format;
@@ -78,9 +83,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         if ($this->blnUpdateCache) {
             $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-            // Include \Environment::base or the URL would not work on the index page
-            \Controller::redirect(
-                \Environment::get('base') .
+            // Include Environment::base or the URL would not work on the index page
+            Controller::redirect(
+                Environment::get('base') .
                 Url::addQueryString('isorc='.$objCache->id, ($this->jumpTo ?: null))
             );
         }
@@ -95,11 +100,11 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generateAjax()
     {
-        if (!\Environment::get('isAjaxRequest')) {
+        if (!Environment::get('isAjaxRequest')) {
             return;
         }
 
-        if ($this->iso_searchAutocomplete && \Input::get('iso_autocomplete') == $this->id) {
+        if ($this->iso_searchAutocomplete && Input::get('iso_autocomplete') == $this->id) {
             $objProducts = Product::findPublishedByCategories($this->findCategories(), ['order' => 'c.sorting']);
 
             if (null === $objProducts) {
@@ -152,7 +157,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     protected function compile()
     {
-        $this->blnUpdateCache = ('iso_filter_' . $this->id) === \Input::post('FORM_SUBMIT');
+        $this->blnUpdateCache = ('iso_filter_' . $this->id) === Input::post('FORM_SUBMIT');
 
         $this->generateFilters();
         $this->generateSorting();
@@ -173,7 +178,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->id          = $this->id;
         $this->Template->formId      = 'iso_filter_' . $this->id;
         $this->Template->action      = ampersand(Url::removeQueryString($arrParams));
-        $this->Template->actionClear = ampersand(strtok(\Environment::get('request'), '?'));
+        $this->Template->actionClear = ampersand(strtok(Environment::get('request'), '?'));
         $this->Template->clearLabel  = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
         $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
@@ -188,7 +193,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->hasSearch       = false;
         $this->Template->hasAutocomplete = $this->iso_searchAutocomplete ? true : false;
 
-        $keywords = (string) \Input::get('keywords');
+        $keywords = (string) Input::get('keywords');
 
         if (0 !== \count($this->iso_searchFields)) {
             if ('' !== $keywords
@@ -198,13 +203,13 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 if (!$this->blnUpdateCache
                     && null !== $this->objModel->getRelated('jumpTo')
                 ) {
-                    /** @var \PageModel $objJumpTo */
+                    /** @var PageModel $objJumpTo */
                     $objJumpTo = $this->objModel->getRelated('jumpTo');
-                    $strUrl    = $objJumpTo->getFrontendUrl() . '?' . \Environment::get('queryString');
+                    $strUrl    = $objJumpTo->getFrontendUrl() . '?' . Environment::get('queryString');
 
-                    if (\Environment::get('request') != $strUrl) {
-                        // Include \Environment::base or the URL would not work on the index page
-                        \Controller::redirect(\Environment::get('base') . $strUrl);
+                    if (Environment::get('request') != $strUrl) {
+                        // Include Environment::base or the URL would not work on the index page
+                        Controller::redirect(Environment::get('base') . $strUrl);
                     }
                 }
 
@@ -238,7 +243,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
         if (0 !== \count($this->iso_filterFields)) {
             $arrFilters    = [];
-            $arrInput      = \Input::post('filter');
+            $arrInput      = Input::post('filter');
             $arrCategories = $this->findCategories();
 
             foreach ($this->iso_filterFields as $strField) {
@@ -273,7 +278,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $this->blnUpdateCache = true;
                     Isotope::getRequestCache()->removeFilterForModule($strField, $this->id);
 
-                    RequestCache::deleteById(\Input::get('isorc'));
+                    RequestCache::deleteById(Input::get('isorc'));
 
                 } elseif (!$this->blnUpdateCache) {
                     // Only generate options if we do not reload anyway
@@ -285,7 +290,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
                     // Use the default routine to initialize options data
-                    $arrWidget = \Widget::getAttributesFromDca($arrData, $strField);
+                    $arrWidget = Widget::getAttributesFromDca($arrData, $strField);
                     $objFilter = Isotope::getRequestCache()->getFilterForModule($strField, $this->id);
 
                     if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField]) !== null
@@ -304,8 +309,9 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                             $arrWidget['blankOptionLabel'] = $option['label'];
                             unset($arrWidget['options'][$k]);
                             continue;
+                        }
 
-                        } elseif ('-' === $option['value'] || !\in_array($option['value'], $arrValues)) {
+                        if ('-' === $option['value'] || !\in_array($option['value'], $arrValues)) {
                             // @deprecated IsotopeAttributeWithOptions::getOptionsForProductFilter already checks this
 
                             unset($arrWidget['options'][$k]);
@@ -327,7 +333,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             // !HOOK: alter the filters
             if (isset($GLOBALS['ISO_HOOKS']['generateFilters']) && \is_array($GLOBALS['ISO_HOOKS']['generateFilters'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateFilters'] as $callback) {
-                    $arrFilters = \System::importStatic($callback[0])->{$callback[1]}($arrFilters);
+                    $arrFilters = System::importStatic($callback[0])->{$callback[1]}($arrFilters);
                 }
             }
 
@@ -350,7 +356,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
             // Cache new request value
             // @todo should support multiple sorting fields
-            list($sortingField, $sortingDirection) = explode(':', \Input::post('sorting'));
+            [$sortingField, $sortingDirection] = explode(':', Input::post('sorting'));
 
             if ($this->blnUpdateCache && \in_array($sortingField, $this->iso_sortingFields, true)) {
                 Isotope::getRequestCache()->setSortingForModule(
@@ -370,7 +376,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 $this->blnUpdateCache = true;
                 Isotope::getRequestCache()->unsetSortingsForModule($this->id);
 
-                RequestCache::deleteById(\Input::get('isorc'));
+                RequestCache::deleteById(Input::get('isorc'));
 
             } elseif (!$this->blnUpdateCache) {
                 // No need to generate options if we reload anyway
@@ -385,7 +391,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 }
 
                 foreach ($this->iso_sortingFields as $field) {
-                    list($asc, $desc) = $this->getSortingLabels($field);
+                    [$asc, $desc] = $this->getSortingLabels($field);
                     $isDefault = $first === $field && null !== $objSorting;
 
                     $arrOptions[] = [
@@ -422,10 +428,10 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);
 
-            if ($this->blnUpdateCache && \in_array(\Input::post('limit'), $arrLimit)) {
+            if ($this->blnUpdateCache && \in_array(Input::post('limit'), $arrLimit)) {
                 // Cache new request value
 
-                Isotope::getRequestCache()->setLimitForModule(Limit::to(\Input::post('limit')), $this->id);
+                Isotope::getRequestCache()->setLimitForModule(Limit::to(Input::post('limit')), $this->id);
 
             } elseif ($objLimit->notIn($arrLimit)) {
                 // Request cache contains wrong value, delete it!
@@ -433,7 +439,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 $this->blnUpdateCache = true;
                 Isotope::getRequestCache()->setLimitForModule(Limit::to($arrLimit[0]), $this->id);
 
-                RequestCache::deleteById(\Input::get('isorc'));
+                RequestCache::deleteById(Input::get('isorc'));
 
             } elseif (!$this->blnUpdateCache) {
                 // No need to generate options if we reload anyway
@@ -455,7 +461,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
     protected function searchExactKeywords()
     {
-        $keywords = (string) \Input::get('keywords');
+        $keywords = (string) Input::get('keywords');
 
         if (empty($this->iso_searchExact) || empty($keywords)) {
             return;
@@ -495,7 +501,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             /** @var Product $product */
             $product = $products->current();
 
-            \Controller::redirect($product->generateUrl($this->findJumpToPage($product)));
+            Controller::redirect($product->generateUrl($this->findJumpToPage($product)));
         }
     }
 }

@@ -11,7 +11,9 @@
 
 namespace Isotope\Backend\Module;
 
-class OrderConditionFields extends \Backend
+use Contao\Backend;
+
+class OrderConditionFields extends Backend
 {
     /**
      * Gets the multi column wizard configuration for the cumulative filter fields.

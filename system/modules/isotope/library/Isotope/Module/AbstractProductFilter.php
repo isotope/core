@@ -11,6 +11,11 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\Date;
+use Contao\ModuleModel;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\ProductType;
 
@@ -37,15 +42,15 @@ abstract class AbstractProductFilter extends Module
     /**
      * Constructor.
      *
-     * @param \ModuleModel|object $objModule
+     * @param ModuleModel|object $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
 
-        \Controller::loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
+        System::loadLanguageFile('tl_iso_product');
     }
 
     /**
@@ -88,7 +93,7 @@ abstract class AbstractProductFilter extends Module
         $join           = '';
         $categoryWhere  = '';
         $published      = '';
-        $time           = \Date::floorToMinute();
+        $time           = Date::floorToMinute();
 
         if ('' !== (string) $sqlWhere) {
             $sqlWhere = ' AND ' . (string) $sqlWhere;
@@ -133,7 +138,7 @@ abstract class AbstractProductFilter extends Module
             }
         }
 
-        $result = \Database::getInstance()->execute("
+        $result = Database::getInstance()->execute("
             SELECT DISTINCT tl_iso_product.$attribute AS options
             FROM tl_iso_product
             $join

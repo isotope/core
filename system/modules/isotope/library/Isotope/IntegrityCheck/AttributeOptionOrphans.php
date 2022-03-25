@@ -11,6 +11,8 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\Database;
+
 class AttributeOptionOrphans extends AbstractIntegrityCheck
 {
 
@@ -46,7 +48,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
         if (null === $this->arrErrors) {
 
             // Options of attributes with wrong optionsSource
-            $arrErrors1 = \Database::getInstance()->query("
+            $arrErrors1 = Database::getInstance()->query("
                 SELECT id
                 FROM tl_iso_attribute_option
                 WHERE
@@ -57,7 +59,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
             ")->fetchEach('id');
 
             // Options of attributes that do not exist anymore
-            $arrErrors2 = \Database::getInstance()->query("
+            $arrErrors2 = Database::getInstance()->query("
                 SELECT id
                 FROM tl_iso_attribute_option
                 WHERE
@@ -68,7 +70,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
             ")->fetchEach('id');
 
             // Options of products where the attribute has the wrong optionsSource
-            $arrErrors3 = \Database::getInstance()->query("
+            $arrErrors3 = Database::getInstance()->query("
                 SELECT o.id
                 FROM tl_iso_attribute_option o
                 LEFT JOIN tl_iso_attribute a ON o.field_name=a.field_name
@@ -81,7 +83,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
             ")->fetchEach('id');
 
             // Options of products that do not exist anymore
-            $arrErrors4 = \Database::getInstance()->query("
+            $arrErrors4 = Database::getInstance()->query("
                 SELECT id
                 FROM tl_iso_attribute_option
                 WHERE
@@ -122,7 +124,7 @@ class AttributeOptionOrphans extends AbstractIntegrityCheck
         if ($this->hasError()) {
 
             // Delete the attribute options
-            \Database::getInstance()->query("
+            Database::getInstance()->query("
                 DELETE FROM tl_iso_attribute_option
                 WHERE
                   id IN (" . implode(',', $this->arrErrors) . ")

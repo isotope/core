@@ -12,6 +12,8 @@
 namespace Isotope\Model;
 
 
+use Contao\Database;
+
 /**
  * ProductType defines a product configuration
  *
@@ -232,7 +234,7 @@ class ProductType extends \Model
         static $result;
 
         if (null === $result) {
-            $result = \Database::getInstance()->query(
+            $result = Database::getInstance()->query(
                 "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'"
             )->total;
         }

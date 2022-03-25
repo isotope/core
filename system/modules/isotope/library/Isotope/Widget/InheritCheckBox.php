@@ -12,6 +12,7 @@
 namespace Isotope\Widget;
 
 
+use Contao\Input;
 use Contao\StringUtil;
 
 /**
@@ -63,7 +64,7 @@ class InheritCheckBox extends \CheckBox
             $blnCheckAll = false;
         }
 
-        if (\Input::get('act') == 'edit') {
+        if ('edit' === Input::get('act')) {
             $strJS = "
 <script>
 window.addEvent('domready', function() {

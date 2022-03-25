@@ -11,7 +11,12 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Date;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
 use Contao\StringUtil;
+use Contao\System;
 use GuzzleHttp\Psr7\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -24,7 +29,7 @@ class PaypalPlus extends PaypalApi
     public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             Checkout::redirectToStep(Checkout::STEP_COMPLETE, $objOrder);
         }
 
@@ -62,7 +67,7 @@ class PaypalPlus extends PaypalApi
             }
         }
 
-        \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
+        System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
 
         $this->debugLog(
             sprintf(
@@ -94,7 +99,7 @@ class PaypalPlus extends PaypalApi
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>';
 
         foreach ($arrPayment['PAYPAL_HISTORY'] as $response) {
@@ -120,7 +125,7 @@ class PaypalPlus extends PaypalApi
 
         foreach (array_reverse($arrPayment['PAYPAL_HISTORY']) as $transaction) {
             if (isset($transaction['create_time'])) {
-                $dateCreated = \Date::parse(
+                $dateCreated = Date::parse(
                     $GLOBALS['TL_CONFIG']['datimFormat'],
                     strtotime($transaction['create_time'])
                 );
@@ -183,17 +188,17 @@ class PaypalPlus extends PaypalApi
     /**
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
         $paypalData = $this->retrievePayment($objOrder);
 
         if (0 === \count($paypalData)
-            || \Input::get('paymentId') !== $paypalData['id']
+            || Input::get('paymentId') !== $paypalData['id']
             || 'created' !== $paypalData['state']
         ) {
             return false;
@@ -205,7 +210,7 @@ class PaypalPlus extends PaypalApi
             return false;
         }*/
 
-        $request = $this->executePayment($paypalData['id'], \Input::get('PayerID'));
+        $request = $this->executePayment($paypalData['id'], Input::get('PayerID'));
 
         if ($request instanceof Response) {
             $responseCode = (int) $request->getStatusCode();

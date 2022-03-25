@@ -11,7 +11,20 @@
 
 namespace Isotope\Widget;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\Database;
+use Contao\Environment;
+use Contao\File;
+use Contao\Files;
+use Contao\FileUpload;
+use Contao\Folder;
+use Contao\Image;
+use Contao\Input;
+use Contao\Message;
 use Contao\StringUtil;
+use Contao\System;
+use Contao\Widget;
 use Haste\Util\Debug;
 use Isotope\Model\Gallery;
 
@@ -26,7 +39,7 @@ use Isotope\Model\Gallery;
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
-class MediaManager extends \Widget implements \uploadable
+class MediaManager extends Widget implements \uploadable
 {
 
     /**
@@ -106,9 +119,9 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function validateUpload()
     {
-        \Message::reset();
+        Message::reset();
 
-        $objUploader = new \FileUpload();
+        $objUploader = new FileUpload();
         $objUploader->setName($this->strName);
         $uploadFolder = $this->strTempFolder;
 
@@ -116,16 +129,16 @@ class MediaManager extends \Widget implements \uploadable
         if (!empty($_FILES[$this->strName])) {
             $pathinfo = pathinfo(strtolower($_FILES[$this->strName]['name']));
             $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
-            $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
+            $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
 
             if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
                 && md5_file($_FILES[$this->strName]['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
             ) {
                 $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($_FILES[$this->strName]['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
-                $uploadFolder = $this->strTempFolder . '/' . substr($strCacheName, 0, 1);
+                $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
             }
 
-            new \Folder($uploadFolder);
+            new Folder($uploadFolder);
             $arrFallback = $this->getFallbackData();
 
             // Check that image is not assigned in fallback language
@@ -151,7 +164,7 @@ class MediaManager extends \Widget implements \uploadable
         }
 
         if ($objUploader->hasError()) {
-            $messages = VERSION >= 4.0 ? \System::getContainer()->get('session')->getFlashBag()->peek('contao_be_error') : $_SESSION['TL_ERROR'];
+            $messages = System::getContainer()->get('session')->getFlashBag()->peek('contao_be_error');
 
             if (\is_array($messages)) {
                 foreach ($messages as $strError) {
@@ -160,7 +173,7 @@ class MediaManager extends \Widget implements \uploadable
             }
         }
 
-        \Message::reset();
+        Message::reset();
 
         if (!\is_array($varInput) || empty($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
@@ -215,9 +228,9 @@ class MediaManager extends \Widget implements \uploadable
                 }
 
                 // Make sure the parent folder exists
-                new \Folder(\dirname($strFile));
+                new Folder(\dirname($strFile));
 
-                if (\Files::getInstance()->copy($v['src'], $strFile)) {
+                if (Files::getInstance()->copy($v['src'], $strFile)) {
                     $this->varValue[$k]['src'] = basename($strFile);
                 } else {
                     unset($this->varValue[$k]);
@@ -250,7 +263,7 @@ class MediaManager extends \Widget implements \uploadable
      */
     public function generate()
     {
-        if ('uploadMediaManager' === \Input::post('action')) {
+        if ('uploadMediaManager' === Input::post('action')) {
             $this->ajaxUpload();
         }
 
@@ -286,28 +299,28 @@ class MediaManager extends \Widget implements \uploadable
         $strCommand = 'cmd_' . $this->strField;
 
         // Change the order
-        if (\Input::get($strCommand) && is_numeric(\Input::get('cid')) && \Input::get('id') == $this->currentRecord) {
-            switch (\Input::get($strCommand)) {
+        if (Input::get($strCommand) && is_numeric(Input::get('cid')) && Input::get('id') == $this->currentRecord) {
+            switch (Input::get($strCommand)) {
                 case 'up':
-                    $this->varValue = array_move_up($this->varValue, \Input::get('cid'));
+                    $this->varValue = array_move_up($this->varValue, Input::get('cid'));
                     break;
 
                 case 'down':
-                    $this->varValue = array_move_down($this->varValue, \Input::get('cid'));
+                    $this->varValue = array_move_down($this->varValue, Input::get('cid'));
                     break;
 
                 case 'delete':
-                    $this->varValue = array_delete($this->varValue, \Input::get('cid'));
+                    $this->varValue = array_delete($this->varValue, Input::get('cid'));
                     break;
             }
 
-            \Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
+            Database::getInstance()->prepare("UPDATE " . $this->strTable . " SET " . $this->strField . "=? WHERE id=?")
                      ->execute(serialize($this->varValue), $this->currentRecord);
 
-            \Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', \Environment::get('request'))));
+            Controller::redirect(preg_replace('/&(amp;)?cid=[^&]*/i', '', preg_replace('/&(amp;)?' . preg_quote($strCommand, '/') . '=[^&]*/i', '', Environment::get('request'))));
         }
 
-        $blnIsAjax = \Environment::get('isAjaxRequest');
+        $blnIsAjax = Environment::get('isAjaxRequest');
         $return = '';
         $upload = '';
 
@@ -377,10 +390,10 @@ class MediaManager extends \Widget implements \uploadable
                 continue;
             }
 
-            $objFile = new \File($strFile);
+            $objFile = new File($strFile);
 
             if ($objFile->isGdImage || $objFile->isSvgImage) {
-                $strPreview = \Image::get($strFile, 50, 50, 'box');
+                $strPreview = Image::get($strFile, 50, 50, 'box');
             } else {
                 $strPreview = 'assets/contao/images/' . $objFile->icon;
             }
@@ -397,13 +410,13 @@ class MediaManager extends \Widget implements \uploadable
         '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.\Widget::optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.Widget::optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.\Widget::optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.Widget::optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_text" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.\Widget::optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.Widget::optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][0].'</label></span>
         </fieldset>
     </td>
@@ -418,9 +431,9 @@ class MediaManager extends \Widget implements \uploadable
                 $class = ('up' === $button || 'down' === $button) ? ' class="button-move"' : '';
 
                 if ('drag' === $button) {
-                    $return .= \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
+                    $return .= Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
                 } else {
-                    $return .= '<a href="'.\Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                    $return .= '<a href="'.Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
                 }
             }
 
@@ -448,7 +461,7 @@ class MediaManager extends \Widget implements \uploadable
             return $blnFolder ? \dirname($blnFolder) : $strFile;
         }
 
-        return 'isotope/' . substr($strFile, 0, 1) . (!$blnFolder ? ('/' . $strFile) : '');
+        return 'isotope/' . $strFile[0] . (!$blnFolder ? ('/' . $strFile) : '');
     }
 
     /**
@@ -460,7 +473,7 @@ class MediaManager extends \Widget implements \uploadable
     {
         // Fetch fallback language record
         if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '') {
-            return deserialize(\Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
+            return StringUtil::deserialize(Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
         }
 
         return false;

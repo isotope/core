@@ -12,15 +12,16 @@
 namespace Isotope\EventListener;
 
 use Contao\CoreBundle\Event\PreviewUrlCreateEvent;
+use Contao\Input;
 
 class FrontendPreviewListener
 {
     public function onPreviewUrlCreate(PreviewUrlCreateEvent $event)
     {
-        if ($event->getKey() !== 'iso_products' || \Input::get('table') !== 'tl_iso_product_category' || !\Input::get('page_id')) {
+        if ($event->getKey() !== 'iso_products' || Input::get('table') !== 'tl_iso_product_category' || !Input::get('page_id')) {
             return;
         }
 
-        $event->setQuery('page=' . \Input::get('page_id'));
+        $event->setQuery('page=' . Input::get('page_id'));
     }
 }

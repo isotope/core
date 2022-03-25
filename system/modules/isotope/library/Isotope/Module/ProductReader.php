@@ -11,6 +11,10 @@
 
 namespace Isotope\Module;
 
+use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\Database;
+use Contao\Environment;
+use Contao\PageModel;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
@@ -54,10 +58,10 @@ class ProductReader extends Module
         // Return if no product has been specified
         if (Input::getAutoItem('product', false, true) == '') {
             if ($this->iso_display404Page) {
-                $this->generate404();
-            } else {
-                return '';
+                throw new PageNotFoundException();
             }
+
+            return '';
         }
 
         return parent::generate();
@@ -73,14 +77,14 @@ class ProductReader extends Module
         $jumpTo = $GLOBALS['objIsotopeListPage'] ?: $GLOBALS['objPage'];
 
         if ($jumpTo->iso_readerMode === 'none') {
-            $this->generate404();
+            throw new PageNotFoundException();
         }
 
         /** @var AbstractProduct $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
-            $this->generate404();
+            throw new PageNotFoundException();
         }
 
         $arrConfig = array(
@@ -93,9 +97,9 @@ class ProductReader extends Module
             'jumpTo'      => $jumpTo,
         );
 
-        if (\Environment::get('isAjaxRequest')
-            && \Input::post('AJAX_MODULE') == $this->id
-            && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+        if (Environment::get('isAjaxRequest')
+            && Input::post('AJAX_MODULE') == $this->id
+            && Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
             && !$this->iso_disable_options
         ) {
             try {
@@ -143,14 +147,14 @@ class ProductReader extends Module
     protected function addCanonicalProductUrls(Product $objProduct)
     {
         global $objPage;
-        $arrPageIds   = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
+        $arrPageIds   = Database::getInstance()->getChildRecords($objPage->rootId, PageModel::getTable());
         $arrPageIds[] = $objPage->rootId;
 
         // Find the categories in the current root
         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
         foreach ($arrCategories as $intPage) {
-            if (($objJumpTo = \PageModel::findPublishedById($intPage)) !== null) {
+            if (($objJumpTo = PageModel::findPublishedById($intPage)) !== null) {
 
                 // Do not use the index page as canonical link
                 if ('index' === $objJumpTo->alias && \count($arrCategories) > 1) {
@@ -158,7 +162,7 @@ class ProductReader extends Module
                 }
 
                 $objJumpTo->loadDetails();
-                $strDomain = \Environment::get('base');
+                $strDomain = Environment::get('base');
 
                 // Overwrite the domain
                 if ($objJumpTo->dns != '') {
@@ -216,17 +220,5 @@ class ProductReader extends Module
         }
 
         return implode(' ', $classes);
-    }
-
-    /**
-     * Generates a 404 page and stops page output.
-     */
-    private function generate404()
-    {
-        global $objPage;
-        /** @var \PageError404 $objHandler */
-        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-        $objHandler->generate($objPage->id);
-        exit;
     }
 }

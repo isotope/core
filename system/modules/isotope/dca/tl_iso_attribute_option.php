@@ -183,7 +183,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'price' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option'][(\Input::get('popup') ? 'price' : 'price_short')],
+            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option'][(\Contao\Input::get('popup') ? 'price' : 'price_short')],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'discount', 'tl_class'=>'w50'),
@@ -222,8 +222,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
 );
 
 // Using onload_callback is too late
-if (\Input::get('do') == 'iso_products') {
+if ('iso_products' === \Contao\Input::get('do')) {
     $GLOBALS['TL_DCA']['tl_iso_attribute_option']['config']['ptable'] = 'tl_iso_product';
-    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = array(array('field_name=?', \Input::get('field')));
+    $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['filter'] = array(array('field_name=?', \Contao\Input::get('field')));
     $GLOBALS['TL_DCA']['tl_iso_attribute_option']['list']['sorting']['headerFields'] = array('name', 'type', 'alias', 'published');
 }

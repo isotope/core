@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\System;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -257,7 +258,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
         // !HOOK: get collection surcharges
         if (isset($GLOBALS['ISO_HOOKS']['findSurchargesForCollection']) && \is_array($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'])) {
             foreach ($GLOBALS['ISO_HOOKS']['findSurchargesForCollection'] as $callback) {
-                $arrResult = \System::importStatic($callback[0])->{$callback[1]}($objCollection);
+                $arrResult = System::importStatic($callback[0])->{$callback[1]}($objCollection);
 
                 foreach ($arrResult as $objSurcharge) {
                     if (!($objSurcharge instanceof IsotopeProductCollectionSurcharge) || $objSurcharge instanceof Tax) {
@@ -329,7 +330,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     {
         $intTaxClass = $objSource->tax_class;
 
-        /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
+        /** @var ProductCollectionSurcharge $objSurcharge */
         $objSurcharge = new $strClass();
         $objSurcharge->source_id = $objSource->id;
         $objSurcharge->label = sprintf($strLabel, $objSource->getLabel());
@@ -344,10 +345,10 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $objSurcharge->applySplittedTax($objCollection, $objSource);
         } elseif ($intTaxClass > 0) {
 
-            /** @var \Isotope\Model\TaxClass $objTaxClass */
+            /** @var TaxClass $objTaxClass */
             if (($objTaxClass = TaxClass::findByPk($intTaxClass)) !== null) {
 
-                /** @var \Isotope\Model\TaxRate $objIncludes */
+                /** @var TaxRate $objIncludes */
                 if (($objIncludes = $objTaxClass->getRelated('includes')) !== null) {
 
                     $fltPrice = $objSurcharge->total_price;
@@ -386,7 +387,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
             $objProduct  = $objItem->getProduct();
 
-            /** @var \Isotope\Model\TaxClass $objTaxClass */
+            /** @var TaxClass $objTaxClass */
             $objTaxClass = $objProduct->getPrice() ? $objProduct->getPrice()->getRelated('tax_class') : null;
 
             // Skip products without tax class
@@ -397,7 +398,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
             $arrTaxIds = [];
             $fltPrice  = $objItem->getTotalPrice();
 
-            /** @var \Isotope\Model\ProductCollectionSurcharge $objSurcharge */
+            /** @var ProductCollectionSurcharge $objSurcharge */
             foreach ($arrSurcharges as $objSurcharge) {
                 $fltPrice += $objSurcharge->getAmountForCollectionItem($objItem);
             }
@@ -411,7 +412,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 );
             }
 
-            /** @var \Isotope\Model\TaxRate $objIncludes */
+            /** @var TaxRate $objIncludes */
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
                 && $objIncludes->isApplicable($fltPrice, $productAddresses)
             ) {
@@ -431,7 +432,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 );
             }
 
-            /** @var \Isotope\Model\TaxRate[] $objRates */
+            /** @var TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
                 foreach ($objRates as $objTaxRate) {
 
@@ -485,7 +486,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
     {
         foreach ($arrSurcharges as $objSurcharge) {
 
-            /** @var \Isotope\Model\TaxClass $objTaxClass */
+            /** @var TaxClass $objTaxClass */
             $objTaxClass = TaxClass::findByPk($objSurcharge->tax_class);
 
             // Skip products without tax class
@@ -495,7 +496,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
 
             $fltPrice = $objSurcharge->total_price;
 
-            /** @var \Isotope\Model\TaxRate $objIncludes */
+            /** @var TaxRate $objIncludes */
             if (($objIncludes = $objTaxClass->getRelated('includes')) !== null
                 && $objIncludes->isApplicable($fltPrice, $arrAddresses)
             ) {
@@ -517,7 +518,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
                 $objSurcharge->addTaxNumber($taxId);
             }
 
-            /** @var \Isotope\Model\TaxRate[] $objRates */
+            /** @var TaxRate[] $objRates */
             if (($objRates = $objTaxClass->getRelated('rates')) !== null) {
                 foreach ($objRates as $objTaxRate) {
 

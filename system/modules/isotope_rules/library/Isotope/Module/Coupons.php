@@ -11,6 +11,9 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Rule;
@@ -53,13 +56,13 @@ class Coupons extends Module
             $coupons = array();
         }
 
-        if ('add_coupon_'.$this->id === \Input::post('FORM_SUBMIT')) {
-            $this->addCoupon(\Input::post('coupon'), $coupons);
-        } elseif ('remove_coupon_'.$this->id === \Input::post('FORM_SUBMIT')) {
-            $this->removeCoupon(\Input::post('coupon'), $coupons);
+        if ('add_coupon_'.$this->id === Input::post('FORM_SUBMIT')) {
+            $this->addCoupon(Input::post('coupon'), $coupons);
+        } elseif ('remove_coupon_'.$this->id === Input::post('FORM_SUBMIT')) {
+            $this->removeCoupon(Input::post('coupon'), $coupons);
         }
 
-        $this->Template->action = \Environment::get('request');
+        $this->Template->action = Environment::get('request');
         $this->Template->coupons = $coupons;
         $this->Template->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $this->Template->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
@@ -84,7 +87,7 @@ class Coupons extends Module
             Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $rule->code));
         }
 
-        \Controller::reload();
+        Controller::reload();
     }
 
     private function removeCoupon($coupon, array $coupons)
@@ -97,6 +100,6 @@ class Coupons extends Module
             $this->cart->save();
         }
 
-        \Controller::reload();
+        Controller::reload();
     }
 }

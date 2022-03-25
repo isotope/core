@@ -11,11 +11,18 @@
 
 namespace Isotope\Backend\Rule;
 
+use Contao\Backend;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
+use Contao\System;
 use Haste\Util\Format;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     public function __construct()
@@ -31,7 +38,7 @@ class Callback extends \Backend
     public function getRules($dc)
     {
         $arrRules = array();
-        $objRules = \Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE enabled='1' AND id!={$dc->id}");
+        $objRules = Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE enabled='1' AND id!={$dc->id}");
 
         while ($objRules->next()) {
             $arrRules[$objRules->id] = $objRules->name;
@@ -46,7 +53,7 @@ class Callback extends \Backend
      */
     public function loadRestrictions($varValue, $dc)
     {
-        $varValue = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+        $varValue = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
         if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
             $varValue = implode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
@@ -68,21 +75,21 @@ class Callback extends \Backend
         }
 
         if (!\is_array($arrNew) || empty($arrNew)) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
+            Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'");
 
         } else {
-            $arrOld = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
+            $arrOld = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
             $arrInsert = array_diff($arrNew, $arrOld);
             $arrDelete = array_diff($arrOld, $arrNew);
 
             if (!empty($arrDelete)) {
-                \Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
+                Database::getInstance()->query("DELETE FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}' AND object_id IN (" . implode(',', $arrDelete) . ")");
             }
 
             if (!empty($arrInsert)) {
                 $time = time();
-                \Database::getInstance()->query("INSERT INTO tl_iso_rule_restriction (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
+                Database::getInstance()->query("INSERT INTO tl_iso_rule_restriction (pid,tstamp,type,object_id) VALUES ({$dc->id}, $time, '{$dc->field}', " . implode("), ({$dc->id}, $time, '{$dc->field}', ", $arrInsert) . ")");
             }
         }
 
@@ -102,14 +109,14 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (\strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
-            \Controller::redirect($this->getReferer());
+        if (\strlen(Input::get('tid'))) {
+            $this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1));
+            Controller::redirect($this->getReferer());
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$this->User->isAdmin && !$this->User->hasAccess('tl_iso_rule::enabled', 'alexf')) {
-            return \Image::getHtml($icon, $label) . ' ';
+            return Image::getHtml($icon, $label) . ' ';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['enabled'] ? '' : 1);
@@ -118,7 +125,7 @@ class Callback extends \Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -130,8 +137,8 @@ class Callback extends \Backend
     public function toggleVisibility($intId, $blnVisible)
     {
 //        // Check permissions to edit
-//        \Input::setGet('id', $intId);
-//        \Input::setGet('act', 'toggle');
+//        Input::setGet('id', $intId);
+//        Input::setGet('act', 'toggle');
 //        $this->checkPermission();
 
         // Check permissions to publish
@@ -144,13 +151,13 @@ class Callback extends \Backend
         // Trigger the save_callback
         if (\is_array($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_rule']['fields']['enabled']['save_callback'] as $callback) {
-                $objCallback = \System::importStatic($callback[0]);
+                $objCallback = System::importStatic($callback[0]);
                 $blnVisible = $objCallback->{$callback[1]}($blnVisible, $this);
             }
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_rule SET tstamp=" . time() . ", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        Database::getInstance()->prepare("UPDATE tl_iso_rule SET tstamp=" . time() . ", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
 //        $this->createNewVersion('tl_iso_rule', $intId);
     }
@@ -186,11 +193,11 @@ class Callback extends \Backend
      */
     public function loadAttributeValues($dc)
     {
-        if (\Input::get('act') == 'edit') {
+        if (Input::get('act') == 'edit') {
             $this->loadDataContainer('tl_iso_product');
-            \System::loadLanguageFile('tl_iso_product');
+            System::loadLanguageFile('tl_iso_product');
 
-            $objRule = \Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE id=" . (int) $dc->id);
+            $objRule = Database::getInstance()->execute("SELECT * FROM tl_iso_rule WHERE id=" . (int) $dc->id);
 
             if ($objRule->productRestrictions == 'attribute' && $objRule->attributeName != '') {
                 $GLOBALS['TL_DCA']['tl_iso_rule']['fields']['attributeValue'] = array_merge($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$objRule->attributeName], $GLOBALS['TL_DCA']['tl_iso_rule']['fields']['attributeValue']);

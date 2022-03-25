@@ -21,7 +21,7 @@ use Isotope\Model\Shipping;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostSale extends \Frontend
+class PostSale extends \Contao\Frontend
 {
     /**
      * Postsale module
@@ -170,7 +170,7 @@ class PostSale extends \Frontend
                 return $e->getResponse();
             }
 
-            \System::log(
+            System::log(
                 'Exception in post-sale request. See system/logs/isotope_postsale.log for details.',
                 __METHOD__,
                 TL_ERROR

@@ -11,7 +11,13 @@
 
 namespace Isotope\Backend;
 
-class Permission extends \Backend
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Database;
+use Contao\Session;
+use Contao\StringUtil;
+
+class Permission extends Backend
 {
     /**
      * Add access permission for a record to the backend user
@@ -25,11 +31,10 @@ class Permission extends \Backend
      */
     protected function addNewRecordPermissions($id, $table, $accessField, $permissionField)
     {
-        /** @var \BackendUser|object $user */
-        $user    = \BackendUser::getInstance();
-        $session = \Session::getInstance();
-        $db      = \Database::getInstance();
-        $groups  = deserialize($user->groups);
+        $user    = BackendUser::getInstance();
+        $session = Session::getInstance();
+        $db      = Database::getInstance();
+        $groups  = StringUtil::deserialize($user->groups);
 
         $newRecords = $session->get('new_records');
 
@@ -85,7 +90,7 @@ class Permission extends \Backend
             $arrAccess[] = $id;
             $arrAccess   = array_unique($arrAccess);
 
-            \Database::getInstance()->prepare(
+            Database::getInstance()->prepare(
                 "UPDATE $table SET $accessField=? WHERE id=?"
             )->execute(serialize($arrAccess), $record->id);
 

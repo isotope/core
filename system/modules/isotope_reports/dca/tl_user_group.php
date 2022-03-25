@@ -10,7 +10,7 @@
  */
 
 $this->loadLanguageFile(\Isotope\Model\Group::getTable());
-$this->loadDataContainer(\UserModel::getTable());
+$this->loadDataContainer(\Contao\UserModel::getTable());
 
 /**
  * Extend a tl_user_group palette

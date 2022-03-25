@@ -11,9 +11,12 @@
 
 namespace Isotope\Backend\Module;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\System;
 use Isotope\Interfaces\IsotopeAttributeWithRange;
 
-class RangeFields extends \Backend
+class RangeFields extends Backend
 {
     /**
      * Gets the multi column wizard configuration for the cumulative filter fields.
@@ -58,8 +61,8 @@ class RangeFields extends \Backend
      */
     public function getAttributes()
     {
-        \Controller::loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
+        System::loadLanguageFile('tl_iso_product');
 
         $arrAttributes = array();
 

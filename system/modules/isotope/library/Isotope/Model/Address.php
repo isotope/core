@@ -11,7 +11,11 @@
 
 namespace Isotope\Model;
 
+use Contao\Controller;
 use Contao\MemberModel;
+use Contao\Model;
+use Contao\StringUtil;
+use Contao\System;
 use Database\Result;
 use Haste\Util\Format;
 use Isotope\Backend;
@@ -47,7 +51,7 @@ use Isotope\Isotope;
  * @property bool   $isDefaultShipping
  * @property bool   $isDefaultBilling
  */
-class Address extends \Model
+class Address extends Model
 {
 
     /**
@@ -66,8 +70,8 @@ class Address extends \Model
         parent::__construct($objResult);
 
         if (!\is_array($GLOBALS['ISO_ADR'])) {
-            \Controller::loadDataContainer(static::$strTable);
-            \System::loadLanguageFile('addresses');
+            Controller::loadDataContainer(static::$strTable);
+            System::loadLanguageFile('addresses');
         }
     }
 
@@ -99,7 +103,7 @@ class Address extends \Model
             $config = Isotope::getConfig();
         }
 
-        $validators = deserialize($config->vatNoValidators);
+        $validators = StringUtil::deserialize($config->vatNoValidators);
 
         // if no validators are enabled, the VAT No is always valid
         if (!\is_array($validators) || 0 === \count($validators)) {
@@ -142,7 +146,7 @@ class Address extends \Model
 
         $arrTokens  = $this->getTokens($arrFields);
 
-        return \StringUtil::parseSimpleTokens($strFormat, $arrTokens);
+        return StringUtil::parseSimpleTokens($strFormat, $arrTokens);
     }
 
     /**
@@ -200,7 +204,7 @@ class Address extends \Model
             }
 
             if ('subdivision' === $strField && $this->subdivision != '') {
-                list($country, $subdivision) = explode('-', $this->subdivision);
+                [$country, $subdivision] = explode('-', $this->subdivision);
 
                 $arrTokens['subdivision_abbr'] = $subdivision;
                 $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $this->subdivision);
@@ -363,7 +367,7 @@ class Address extends \Model
             'store_id' => (int) Isotope::getCart()->store_id,
         );
 
-        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
+        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = MemberModel::findByPk($intMember)) !== null) {
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 

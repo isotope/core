@@ -11,6 +11,10 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\Database;
+use Contao\Input;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -75,7 +79,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($this->modules)) {
             $this->blnError = true;
 
-            \System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+            System::log('No payment methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
 
             /** @var Template|\stdClass $objTemplate */
             $objTemplate           = new Template('mod_message');
@@ -90,7 +94,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
         $strClass  = $GLOBALS['TL_FFL']['radio'];
 
-        /** @var \Widget $objWidget */
+        /** @var Widget $objWidget */
         $objWidget = new $strClass(array(
             'id'            => $this->getStepClass(),
             'name'          => $this->getStepClass(),
@@ -108,7 +112,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             Isotope::getCart()->setPaymentMethod($objModule);
         }
 
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+        if (Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
@@ -169,7 +173,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
             }
 
             /** @var Payment[] $objModules */
-            $objModules = Payment::findBy($arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds)));
+            $objModules = Payment::findBy($arrColumns, null, array('order' => Database::getInstance()->findInSet('id', $arrIds)));
 
             if (null !== $objModules) {
                 foreach ($objModules as $objModule) {

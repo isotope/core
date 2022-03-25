@@ -11,7 +11,10 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
 use Contao\StringUtil;
+use Contao\Widget;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
@@ -118,7 +121,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     protected function compile()
     {
-        $arrFilter = explode(';', base64_decode(\Input::get('cumulativefilter', true)), 4);
+        $arrFilter = explode(';', base64_decode(Input::get('cumulativefilter', true)), 4);
 
         if ($arrFilter[0] == $this->id && isset($this->iso_cumulativeFields[$arrFilter[2]])) {
             $this->saveFilter($arrFilter[1], $arrFilter[2], $arrFilter[3]);
@@ -127,7 +130,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $this->generateFilter();
 
-        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', \Environment::get('request')));
+        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
         $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
@@ -328,7 +331,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         }
 
         // Use the default routine to initialize options data
-        $arrWidget = \Widget::getAttributesFromDca(
+        $arrWidget = Widget::getAttributesFromDca(
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute],
             $attribute
         );
@@ -454,9 +457,9 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-        // Include \Environment::base or the URL would not work on the index page
-        \Controller::redirect(
-            \Environment::get('base') .
+        // Include Environment::base or the URL would not work on the index page
+        Controller::redirect(
+            Environment::get('base') .
             Url::addQueryString(
                 'isorc='.$objCache->id,
                 Url::removeQueryString(array('cumulativefilter'), ($this->jumpTo ?: null))

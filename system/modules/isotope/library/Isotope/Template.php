@@ -11,6 +11,9 @@
 
 namespace Isotope;
 
+use Contao\FrontendTemplate;
+use Contao\TemplateLoader;
+
 /**
  * Class Isotope\Template
  *
@@ -19,7 +22,7 @@ namespace Isotope;
  * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Template extends \FrontendTemplate
+class Template extends FrontendTemplate
 {
 
     /**
@@ -73,7 +76,7 @@ class Template extends \FrontendTemplate
     {
         if ($blnDefault)
         {
-            return \TemplateLoader::getDefaultPath($strTemplate, $strFormat);
+            return TemplateLoader::getDefaultPath($strTemplate, $strFormat);
         }
 
         return static::getTemplate($strTemplate, $strFormat);

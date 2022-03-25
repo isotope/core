@@ -11,6 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
+use Contao\System;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Haste\Http\Response\Response;
@@ -40,38 +44,38 @@ class Paypal extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
-        if ('Completed' !== \Input::post('payment_status')) {
-            \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
+        if ('Completed' !== Input::post('payment_status')) {
+            System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
             return;
         }
 
         if (!$this->validateInput()) {
             return;
         }
-        if (!$this->debug && 0 !== strcasecmp(\Input::post('receiver_email', true), $this->paypal_account)) {
-            \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
+        if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
+            System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return;
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->getCurrency() !== \Input::post('mc_currency')
-            || $objOrder->getTotal() != \Input::post('mc_gross')
+        if ($objOrder->getCurrency() !== Input::post('mc_currency')
+            || $objOrder->getTotal() != Input::post('mc_gross')
         ) {
-            \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+            System::log('PayPal IPN: manipulation in payment from "' . Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
             return;
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
+            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -85,7 +89,7 @@ class Paypal extends Postsale
 
         $objOrder->save();
 
-        \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+        System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
     }
 
     /**
@@ -94,21 +98,18 @@ class Paypal extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk((int) \Input::post('invoice'));
+        return Order::findByPk((int) Input::post('invoice'));
     }
 
     /**
      * Return the PayPal form.
      *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
-     *
      * @return string
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -185,9 +186,9 @@ class Paypal extends Postsale
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->getCurrency();
-        $objTemplate->return        = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return = \Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->return        = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
+        $objTemplate->cancel_return = Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $objTemplate->notify_url    = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
         $objTemplate->headline      = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
         $objTemplate->message       = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
         $objTemplate->slabel        = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
@@ -221,7 +222,7 @@ class Paypal extends Postsale
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] . ')' . '</h2>
@@ -299,10 +300,10 @@ class Paypal extends Postsale
                 }
             }
         } catch (\UnexpectedValueException $e) {
-            \System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+            System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
             return false;
         } catch (\RuntimeException $e) {
-            \System::log('PayPal IPN: Request Error (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+            System::log('PayPal IPN: Request Error (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
             $response = new Response('', 500);
             $response->send();
         }

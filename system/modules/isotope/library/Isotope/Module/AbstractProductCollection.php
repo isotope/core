@@ -11,6 +11,9 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
 use Contao\StringUtil;
 use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\LegacyButtonAction;
@@ -107,7 +110,7 @@ abstract class AbstractProductCollection extends Module
                 continue;
             }
 
-            if (\Input::post('FORM_SUBMIT') === $this->strFormId) {
+            if (Input::post('FORM_SUBMIT') === $this->strFormId) {
                 if ($action->handleSubmit($collection)) {
                     break;
                 }
@@ -145,7 +148,7 @@ abstract class AbstractProductCollection extends Module
                 }
             }
 
-            \Controller::reload();
+            Controller::reload();
         }
 
         $objTemplate->items         = $arrItems;
@@ -188,7 +191,7 @@ abstract class AbstractProductCollection extends Module
         $template->linkProducts  = true;
         $template->formId        = $this->strFormId;
         $template->formSubmit    = $this->strFormId;
-        $template->action        = \Environment::get('request');
+        $template->action        = Environment::get('request');
 
         return $template;
     }
@@ -210,7 +213,7 @@ abstract class AbstractProductCollection extends Module
     ) {
         // Update cart data if form has been submitted
         if ($this->canEditQuantity()
-            && \Input::post('FORM_SUBMIT') === $this->strFormId
+            && Input::post('FORM_SUBMIT') === $this->strFormId
             && \array_key_exists($item->id, $quantity)
         ) {
             $hasChanges = true;
@@ -220,9 +223,9 @@ abstract class AbstractProductCollection extends Module
         }
 
         if ($this->canRemoveProducts()) {
-            if ((int) \Input::get('remove') === (int) $item->id) {
+            if ((int) Input::get('remove') === (int) $item->id) {
                 $collection->deleteItemById($item->id);
-                \Controller::redirect(Url::removeQueryString(['remove']));
+                Controller::redirect(Url::removeQueryString(['remove']));
             }
 
             $data['remove_href']  = Url::addQueryString('remove=' . $item->id);
@@ -235,7 +238,7 @@ abstract class AbstractProductCollection extends Module
 
     protected function getQuantity(array $items): array
     {
-        $arrQuantity = \Input::post('quantity');
+        $arrQuantity = Input::post('quantity');
 
         if (!\is_array($arrQuantity)) {
             return [];
@@ -303,11 +306,11 @@ abstract class AbstractProductCollection extends Module
         }
 
         if (null !== $action
-            && \Input::post('FORM_SUBMIT') === $this->strFormId
-            && '' !== (string) \Input::post('button_' . $name)
+            && Input::post('FORM_SUBMIT') === $this->strFormId
+            && '' !== (string) Input::post('button_' . $name)
         ) {
             if (\is_string($action)) {
-                \Controller::redirect($action);
+                Controller::redirect($action);
             }
 
             \call_user_func($action, $button);

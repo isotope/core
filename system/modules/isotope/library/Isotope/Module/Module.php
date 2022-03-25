@@ -11,6 +11,12 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\Date;
+use Contao\Environment;
+use Contao\FrontendUser;
+use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Haste\Util\Debug;
@@ -69,7 +75,7 @@ abstract class Module extends AbstractFrontendModule
         parent::__construct($objModule, $strColumn);
 
         if ($this->iso_list_where != '') {
-            $this->iso_list_where = \Controller::replaceInsertTags($this->iso_list_where);
+            $this->iso_list_where = Controller::replaceInsertTags($this->iso_list_where);
         }
 
         Isotope::initialize();
@@ -161,24 +167,24 @@ abstract class Module extends AbstractFrontendModule
         $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
         if (!BE_USER_LOGGED_IN) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
         }
 
         switch ($this->iso_category_scope) {
             case 'global':
                 $arrCategories = [$objPage->rootId];
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
+                $arrCategories = Database::getInstance()->getChildRecords($objPage->rootId, 'tl_page', false, $arrCategories, $strWhere);
                 break;
 
             case 'current_and_first_child':
-                $arrCategories   = \Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id} AND $strWhere")->fetchEach('id');
+                $arrCategories   = Database::getInstance()->execute("SELECT id FROM tl_page WHERE pid={$objPage->id} AND $strWhere")->fetchEach('id');
                 $arrCategories[] = $objPage->id;
                 break;
 
             case 'current_and_all_children':
                 $arrCategories = [$objPage->id];
-                $arrCategories = \Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
+                $arrCategories = Database::getInstance()->getChildRecords($objPage->id, 'tl_page', false, $arrCategories, $strWhere);
                 break;
 
             case 'parent':
@@ -207,7 +213,7 @@ abstract class Module extends AbstractFrontendModule
             default:
                 if (isset($GLOBALS['ISO_HOOKS']['findCategories']) && \is_array($GLOBALS['ISO_HOOKS']['findCategories'])) {
                     foreach ($GLOBALS['ISO_HOOKS']['findCategories'] as $callback) {
-                        $arrCategories = \System::importStatic($callback[0])->{$callback[1]}($this);
+                        $arrCategories = System::importStatic($callback[0])->{$callback[1]}($this);
 
                         if ($arrCategories !== false) {
                             break;
@@ -227,7 +233,7 @@ abstract class Module extends AbstractFrontendModule
      *
      * @param IsotopeProduct $objProduct
      *
-     * @return \PageModel
+     * @return PageModel
      */
     protected function findJumpToPage(IsotopeProduct $objProduct)
     {
@@ -252,11 +258,11 @@ abstract class Module extends AbstractFrontendModule
 
         $arrCategories = Frontend::getPagesInCurrentRoot(
             $arrCategories,
-            \FrontendUser::getInstance()
+            FrontendUser::getInstance()
         );
 
         if (!empty($arrCategories)
-         && ($objCategories = \PageModel::findMultipleByIds($arrCategories)) !== null
+         && ($objCategories = PageModel::findMultipleByIds($arrCategories)) !== null
         ) {
             $blnMoreThanOne = $objCategories->count() > 1;
             foreach ($objCategories as $objCategory) {
@@ -276,18 +282,18 @@ abstract class Module extends AbstractFrontendModule
 
     /**
      * Generate the URL from existing $_GET parameters.
-     * Use \Input::setGet('var', null) to remove a parameter from the final URL.
+     * Use Input::setGet('var', null) to remove a parameter from the final URL.
      *
      * @return string
      * @deprecated use \Haste\Util\Url::addQueryString instead
      */
     protected function generateRequestUrl()
     {
-        if (\Environment::get('request') == '') {
+        if (Environment::get('request') == '') {
             return '';
         }
 
-        $strRequest   = preg_replace('/\?.*$/i', '', \Environment::get('request'));
+        $strRequest   = preg_replace('/\?.*$/i', '', Environment::get('request'));
         $strRequest   = preg_replace('/' . preg_quote($GLOBALS['TL_CONFIG']['urlSuffix'], '/') . '$/i', '', $strRequest);
         $arrFragments = explode('/', $strRequest);
 
@@ -299,7 +305,7 @@ abstract class Module extends AbstractFrontendModule
         // HOOK: add custom logic
         if (isset($GLOBALS['TL_HOOKS']['getPageIdFromUrl']) && \is_array($GLOBALS['TL_HOOKS']['getPageIdFromUrl'])) {
             foreach ($GLOBALS['TL_HOOKS']['getPageIdFromUrl'] as $callback) {
-                $arrFragments = \System::importStatic($callback[0])->{$callback[1]}($arrFragments);
+                $arrFragments = System::importStatic($callback[0])->{$callback[1]}($arrFragments);
             }
         }
 
@@ -310,7 +316,7 @@ abstract class Module extends AbstractFrontendModule
         for ($i = 1, $count = \count($arrFragments); $i < $count; $i += 2) {
             if (isset($_GET[$arrFragments[$i]])) {
                 $key = urldecode($arrFragments[$i]);
-                \Input::setGet($key, null);
+                Input::setGet($key, null);
                 $strParams .= '/' . $key . '/' . urldecode($arrFragments[$i + 1]);
             }
         }
@@ -330,6 +336,6 @@ abstract class Module extends AbstractFrontendModule
         /** @var PageModel $objPage */
         global $objPage;
 
-        return \Controller::generateFrontendUrl($objPage->row(), $strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');
+        return $objPage->getFrontendUrl($strParams) . (!empty($arrGet) ? ('?' . implode('&', $arrGet)) : '');
     }
 }

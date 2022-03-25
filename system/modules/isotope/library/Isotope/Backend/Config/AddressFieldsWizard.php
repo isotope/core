@@ -11,15 +11,20 @@
 
 namespace Isotope\Backend\Config;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Model\Address;
 
-class AddressFieldsWizard extends \Backend
+class AddressFieldsWizard extends Backend
 {
 
     /**
      * For each call, return the name of the next address field in the wizard (for input_field_callback)
      *
-     * @param \Widget $objWidget
+     * @param Widget $objWidget
      *
      * @return string
      */
@@ -29,7 +34,7 @@ class AddressFieldsWizard extends \Backend
         static $i = 0;
 
         if (empty($arrValues)) {
-            \System::loadLanguageFile(Address::getTable());
+            System::loadLanguageFile(Address::getTable());
             $arrValues = $objWidget->value;
             $i = 0;
         }
@@ -58,11 +63,11 @@ class AddressFieldsWizard extends \Backend
      */
     public function load($varValue)
     {
-        \Controller::loadDataContainer(Address::getTable());
+        Controller::loadDataContainer(Address::getTable());
 
         $arrDCA = &$GLOBALS['TL_DCA'][Address::getTable()]['fields'];
         $arrFields = array();
-        $arrValues = deserialize($varValue);
+        $arrValues = StringUtil::deserialize($varValue);
 
         if (!\is_array($arrValues)) {
             $arrValues = array();
@@ -104,9 +109,9 @@ class AddressFieldsWizard extends \Backend
      */
     public function save($varValue)
     {
-        \Controller::loadDataContainer(Address::getTable());
+        Controller::loadDataContainer(Address::getTable());
 
-        $arrFields = deserialize($varValue);
+        $arrFields = StringUtil::deserialize($varValue);
 
         if (empty($arrFields) || !\is_array($arrFields)) {
             return $varValue;

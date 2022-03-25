@@ -11,7 +11,16 @@
 
 namespace Isotope\Model\Product;
 
+use Contao\ContentElement;
+use Contao\Database;
+use Contao\Date;
+use Contao\Environment;
+use Contao\FrontendUser;
+use Contao\Input;
 use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Widget;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -249,7 +258,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 return $this->arrVariantIds;
             }
 
-            $time            = \Date::floorToMinute();
+            $time            = Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGuests    = false;
             $strQuery        = '
@@ -278,7 +287,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
 
             /** @var object $objVariants */
-            $objVariants = \Database::getInstance()->query($strQuery);
+            $objVariants = Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
                 if (FE_USER_LOGGED_IN !== true
@@ -300,7 +309,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 if ($blnHasProtected && $objVariants->protected) {
                     $groups = deserialize($objVariants->groups);
 
-                    if (empty($groups) || !\is_array($groups) || !\count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
+                    if (empty($groups) || !\is_array($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
                         continue;
                     }
                 }
@@ -440,7 +449,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objProduct = $this;
         $loadFallback = isset($arrConfig['loadFallback']) ? (bool) $arrConfig['loadFallback'] : true;
 
-        $this->strFormId = (($arrConfig['module'] instanceof \ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
+        $this->strFormId = (($arrConfig['module'] instanceof ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
         if (!$arrConfig['disableOptions']) {
             $objProduct = $this->validateVariant($loadFallback);
@@ -458,7 +467,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->config  = $arrConfig;
 
         $objTemplate->highlightKeywords = function($text) {
-            $keywords = \Input::get('keywords');
+            $keywords = Input::get('keywords');
 
             if (empty($keywords)) {
                 return $text;
@@ -468,7 +477,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $keywords = array_filter(array_unique($keywords));
 
             foreach ($keywords as $word) {
-                $text = \StringUtil::highlight($text, $word, '<em>', '</em>');
+                $text = StringUtil::highlight($text, $word, '<em>', '</em>');
             }
 
             return $text;
@@ -561,7 +570,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return array_search($a->getName(), $buttonOrder) - array_search($b->getName(), $buttonOrder);
         });
 
-        if (\Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
+        if (Input::post('FORM_SUBMIT') == $this->getFormId() && !$this->doNotSubmit) {
             $handleButtons = true;
 
             foreach ($actions as $action) {
@@ -584,7 +593,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 && \is_array($GLOBALS['ISO_HOOKS']['buttons'])
             ) {
                 foreach ($GLOBALS['ISO_HOOKS']['buttons'] as $callback) {
-                    $arrButtons = \System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
+                    $arrButtons = System::importStatic($callback[0])->{$callback[1]}($arrButtons, $this);
                 }
             }
 
@@ -594,7 +603,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 foreach ($arrButtons as $button => $data) {
                     if (isset($_POST[$button])) {
                         if (isset($data['callback'])) {
-                            \System::importStatic($data['callback'][0])->{$data['callback'][1]}($this, $arrConfig);
+                            System::importStatic($data['callback'][0])->{$data['callback'][1]}($this, $arrConfig);
                         }
                         break;
                     }
@@ -618,7 +627,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->hasOptions       = \count($arrProductOptions) > 0;
         $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
         $objTemplate->formId           = $this->getFormId();
-        $objTemplate->action           = ampersand(\Environment::get('request') ?: \Environment::get('base'), true);
+        $objTemplate->action           = ampersand(Environment::get('request') ?: Environment::get('base'), true);
         $objTemplate->formSubmit       = $this->getFormId();
         $objTemplate->product_id       = $this->getProductId();
         $objTemplate->module_id        = $arrConfig['module']->id;
@@ -634,7 +643,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // !HOOK: alter product data before output
         if (isset($GLOBALS['ISO_HOOKS']['generateProduct']) && \is_array($GLOBALS['ISO_HOOKS']['generateProduct'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProduct'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this);
+                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $this);
             }
         }
 
@@ -659,7 +668,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strField];
         $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strField];
 
-        /** @var \Widget $strClass */
+        /** @var Widget $strClass */
         $strClass = $objAttribute->getFrontendWidget();
 
         $arrData['eval']['required'] = $arrData['eval']['mandatory'];
@@ -760,11 +769,11 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrField['product'] = $this;
         $arrField['id'] .= '_' . $this->getFormId();
 
-        /** @var \Widget|\stdClass $objWidget */
+        /** @var Widget|\stdClass $objWidget */
         $objWidget = new $strClass($arrField);
 
         // Validate input
-        if (\Input::post('FORM_SUBMIT') == $this->getFormId()) {
+        if (Input::post('FORM_SUBMIT') == $this->getFormId()) {
             $objWidget->validate();
 
             if ($objWidget->hasErrors()) {
@@ -775,8 +784,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 // Convert date formats into timestamps
                 if ($varValue != '' && \in_array($arrData['eval']['rgxp'], ['date', 'time', 'datim'], true)) {
                     try {
-                        /** @var \Date|object $objDate */
-                        $objDate = new \Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
+                        /** @var Date|object $objDate */
+                        $objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$arrData['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
 
                     } catch (\OutOfBoundsException $e) {
@@ -789,7 +798,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     foreach ($arrData['save_callback'] as $callback) {
                         try {
                             if (\is_array($callback)) {
-                                $varValue = \System::importStatic($callback[0])->{$callback[1]}($varValue, $this, $objWidget);
+                                $varValue = System::importStatic($callback[0])->{$callback[1]}($varValue, $this, $objWidget);
                             } else {
                                 $varValue = $objAttribute->{$callback}($varValue, $this, $objWidget);
                             }
@@ -823,7 +832,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $icon = 'assets/datepicker/images/icon.svg';
 
             $rgxp   = $arrData['eval']['rgxp'];
-            $format = \Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
+            $format = Date::formatToJs($GLOBALS['TL_CONFIG'][$rgxp . 'Format']);
 
             switch ($rgxp) {
                 case 'datim':
@@ -859,7 +868,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // Add a custom wizard
         if (\is_array($arrData['wizard'])) {
             foreach ($arrData['wizard'] as $callback) {
-                $wizard .= \System::importStatic($callback[0])->{$callback[1]}($this);
+                $wizard .= System::importStatic($callback[0])->{$callback[1]}($this);
             }
         }
 
@@ -894,9 +903,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute];
             $arrValues    = $objAttribute->getOptionsForVariants($this->getVariantIds(), $arrOptions);
 
-            if (\Input::post('FORM_SUBMIT') == $this->getFormId() && \in_array(\Input::post($attribute), $arrValues)) {
-                $arrOptions[$attribute] = \Input::post($attribute);
-            } elseif (\Input::post('FORM_SUBMIT') == '' && \in_array($arrDefaults[$attribute], $arrValues)) {
+            if (Input::post('FORM_SUBMIT') == $this->getFormId() && \in_array(Input::post($attribute), $arrValues)) {
+                $arrOptions[$attribute] = Input::post($attribute);
+            } elseif (Input::post('FORM_SUBMIT') == '' && \in_array($arrDefaults[$attribute], $arrValues)) {
                 $arrOptions[$attribute] = $arrDefaults[$attribute];
             } elseif (\count($arrValues) == 1) {
                 $arrOptions[$attribute] = $arrValues[0];
@@ -907,8 +916,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 break;
             }
 
-            if (\Input::post('FORM_SUBMIT') === $this->getFormId() && \Input::post($attribute) === '') {
-                \Input::setPost($attribute, $arrOptions[$attribute]);
+            if (Input::post('FORM_SUBMIT') === $this->getFormId() && Input::post($attribute) === '') {
+                Input::setPost($attribute, $arrOptions[$attribute]);
             }
         }
 
@@ -938,7 +947,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             // Do not use the model, it would trigger setRow and generate too much
             // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
             /** @var object $objParent */
-            $objParent = \Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
+            $objParent = Database::getInstance()->prepare(static::buildQueryString(array('table' => static::$strTable, 'column' => 'id')))->execute($arrData['pid']);
 
             if (null === $objParent) {
                 throw new \UnderflowException('Parent record of product variant ID ' . $arrData['id'] . ' not found');
@@ -1054,13 +1063,11 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Generate url
      *
-     * @param \PageModel $objJumpTo A PageModel instance
-     *
      * @return string
      *
      * @throws \InvalidArgumentException
      */
-    public function generateUrl(\PageModel $objJumpTo = null)
+    public function generateUrl(PageModel $objJumpTo = null)
     {
         if (null === $objJumpTo) {
             global $objPage;
@@ -1069,7 +1076,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objJumpTo = $objIsotopeListPage ?: $objPage;
         }
 
-        if (!$objJumpTo instanceof \PageModel) {
+        if (!$objJumpTo instanceof PageModel) {
             return '';
         }
 
@@ -1106,8 +1113,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
     private function getCollectionItem()
     {
-        if (\Input::get('collection_item') > 0) {
-            $item = ProductCollectionItem::findByPk(\Input::get('collection_item'));
+        if (Input::get('collection_item') > 0) {
+            $item = ProductCollectionItem::findByPk(Input::get('collection_item'));
 
             if (null !== $item
                 && $item->hasProduct()
@@ -1135,7 +1142,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $this->arrDefaults = $item->getOptions();
         } else {
             foreach ($_GET as $k => $v) {
-                $this->arrDefaults[$k] = \Input::get($k);
+                $this->arrDefaults[$k] = Input::get($k);
             }
         }
 

@@ -11,6 +11,12 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\Input;
+use Contao\SelectMenu;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Model\Gallery;
 
 class To0020010000 extends Assistant
@@ -22,7 +28,7 @@ class To0020010000 extends Assistant
 
     public function run($blnInstalled)
     {
-        if ($blnInstalled && \Database::getInstance()->tableExists('tl_iso_gallery')) {
+        if ($blnInstalled && Database::getInstance()->tableExists('tl_iso_gallery')) {
             $this->createDatabaseField('lightbox_template', 'tl_iso_gallery');
 
             $t = Gallery::getTable();
@@ -39,7 +45,7 @@ class To0020010000 extends Assistant
 
     public function compile()
     {
-        \System::loadLanguageFile('tl_iso_gallery');
+        System::loadLanguageFile('tl_iso_gallery');
 
         $strBuffer = '
 <table style="width:100%">
@@ -53,15 +59,15 @@ class To0020010000 extends Assistant
 
         foreach ($this->objGaleries as $objGallery) {
 
-            $objSelect = new \SelectMenu(\Widget::getAttributesFromDca(array(
+            $objSelect = new SelectMenu(Widget::getAttributesFromDca(array(
                 'options' => array_merge(
-                    \Controller::getTemplateGroup('moo_'),
-                    \Controller::getTemplateGroup('j_')
+                    Controller::getTemplateGroup('moo_'),
+                    Controller::getTemplateGroup('j_')
                 ),
                 'eval' => array('includeBlankOption'=>true, 'mandatory'=>true)
             ), 'gallery['.$objGallery->id.']'));
 
-            if ('tl_iso_upgrade_20010000' === \Input::post('FORM_SUBMIT')) {
+            if ('tl_iso_upgrade_20010000' === Input::post('FORM_SUBMIT')) {
                 $objSelect->validate();
 
                 if (!$objSelect->hasErrors()) {
@@ -85,8 +91,8 @@ class To0020010000 extends Assistant
         $this->Template->fields = $strBuffer;
         $this->Template->matter = $GLOBALS['TL_LANG']['UPG']['20010000'];
 
-        if ('tl_iso_upgrade_20010000' === \Input::post('FORM_SUBMIT')) {
-            \Controller::reload();
+        if ('tl_iso_upgrade_20010000' === Input::post('FORM_SUBMIT')) {
+            Controller::reload();
         }
     }
 }

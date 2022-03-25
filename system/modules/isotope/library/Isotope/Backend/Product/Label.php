@@ -12,6 +12,9 @@
 namespace Isotope\Backend\Product;
 
 use Contao\Database;
+use Contao\DataContainer;
+use Contao\Environment;
+use Contao\Image;
 use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Model\Product;
@@ -107,7 +110,7 @@ class Label
                         '<a href="%s" onclick="%s"><img src="%s" alt="%s"></a>',
                         TL_FILES_URL . $strImage,
                         $script,
-                        TL_ASSETS_URL . \Image::get($strImage, 50, 50, 'proportional'),
+                        TL_ASSETS_URL . Image::get($strImage, 50, 50, 'proportional'),
                         $image['alt']
                     );
                 }
@@ -120,9 +123,9 @@ class Label
     /**
      * Generate name label for product with link to variants if enabled.
      *
-     * @param array          $row
-     * @param Product        $objProduct
-     * @param \DataContainer $dc
+     * @param array $row
+     * @param Product $objProduct
+     * @param DataContainer $dc
      *
      * @return string
      */
@@ -136,7 +139,7 @@ class Label
             /** @noinspection HtmlUnknownTarget */
             return sprintf(
                 '<a href="%s" title="%s">%s</a>',
-                ampersand(\Environment::get('request')) . '&amp;id=' . $row['id'],
+                ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
                 $objProduct->name
             );
@@ -217,9 +220,9 @@ class Label
     /**
      * Generate variant fields for product.
      *
-     * @param string         $label
-     * @param Product        $objProduct
-     * @param \DataContainer $dc
+     * @param string $label
+     * @param Product $objProduct
+     * @param DataContainer $dc
      *
      * @return string
      */

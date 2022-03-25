@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td style="width:15%"><br><br><?= $GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'][0] ?><br><?= $GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'][0] ?></td>
-                <td style="width:45%"><br><br><?= \Date::parse($this->dateFormat, $this->collection->locked) ?><br><?= $this->collection->currency ?></td>
+                <td style="width:45%"><br><br><?= \Contao\Date::parse($this->dateFormat, $this->collection->locked) ?><br><?= $this->collection->currency ?></td>
             </tr>
         </table>
     </div>

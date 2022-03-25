@@ -12,7 +12,9 @@
 namespace Isotope\Model;
 
 use Contao\Database;
+use Contao\Date;
 use Contao\FrontendUser;
+use Contao\System;
 use Isotope\Translation;
 
 /**
@@ -228,7 +230,7 @@ class Config extends \Model
             $arrCountries = deserialize($this->billing_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(\System::getCountries());
+                $arrCountries = array_keys(System::getCountries());
             }
 
             $this->arrCache['billingCountries'] = $arrCountries;
@@ -248,7 +250,7 @@ class Config extends \Model
             $arrCountries = deserialize($this->shipping_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(\System::getCountries());
+                $arrCountries = array_keys(System::getCountries());
             }
 
             $this->arrCache['shippingCountries'] = $arrCountries;
@@ -285,7 +287,7 @@ class Config extends \Model
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && \is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
             foreach ($GLOBALS['ISO_HOOKS']['priceDisplay'] as $callback) {
-                $format = \System::importStatic($callback[0])->{$callback[1]}($format, $this);
+                $format = System::importStatic($callback[0])->{$callback[1]}($format, $this);
             }
         }
 
@@ -307,7 +309,7 @@ class Config extends \Model
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );
             } else {
-                $this->arrCache['newProductLimit'] = \Date::floorToMinute();
+                $this->arrCache['newProductLimit'] = Date::floorToMinute();
             }
         }
 

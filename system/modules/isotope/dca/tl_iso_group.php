@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
     (
         'dataContainer'             => 'Table',
         'label'                     => &$GLOBALS['TL_LANG']['tl_iso_group']['label'],
-        'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
+        'backlink'                  => \Contao\Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,
         'onload_callback' => array
         (

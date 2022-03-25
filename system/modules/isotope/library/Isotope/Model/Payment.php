@@ -11,6 +11,9 @@
 
 namespace Isotope\Model;
 
+use Contao\Environment;
+use Contao\FrontendUser;
+use Contao\Module;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -128,7 +131,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
 
             if (!\is_array($arrGroups)
                 || 0 === \count($arrGroups)
-                || 0 === \count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+                || 0 === \count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -324,12 +327,12 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     /**
      * Return a html form for checkout or false
      *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
+     * @param IsotopeProductCollection $objOrder The order being places
+     * @param Module $objModule The checkout module instance
      *
      * @return bool
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         return false;
     }
@@ -346,7 +349,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     {
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>

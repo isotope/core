@@ -11,6 +11,7 @@
 
 namespace Isotope\RequestCache;
 
+use Contao\Date;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 
@@ -145,7 +146,7 @@ class FilterQueryBuilder
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {
-                $time      = \Date::floorToMinute();
+                $time      = Date::floorToMinute();
                 $t         = Product::getTable();
                 $protected = '';
 

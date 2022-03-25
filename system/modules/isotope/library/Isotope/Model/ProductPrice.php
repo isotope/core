@@ -11,18 +11,23 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\Database\Result;
+use Contao\Date;
+use Contao\Model;
+use Contao\Model\Collection;
+use Contao\Model\QueryBuilder;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
-use Isotope\Model\Product\Standard;
 
 
 /**
  * ProductPrice defines an advanced price of a product
  */
-class ProductPrice extends \Model implements IsotopePrice
+class ProductPrice extends Model implements IsotopePrice
 {
 
     /**
@@ -40,9 +45,9 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Construct the object
      *
-     * @param \Database\Result $objResult
+     * @param Result $objResult
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(Result $objResult = null)
     {
         parent::__construct($objResult);
 
@@ -102,7 +107,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $fltAmount = $this->getValueForTier($intQuantity);
 
-        /** @var \Isotope\Model\TaxClass $objTaxClass */
+        /** @var TaxClass $objTaxClass */
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
             $fltAmount = $objTaxClass->calculateNetPrice($fltAmount);
         }
@@ -122,7 +127,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $fltAmount = $this->getValueForTier($intQuantity);
 
-        /** @var \Isotope\Model\TaxClass $objTaxClass */
+        /** @var TaxClass $objTaxClass */
         if (($objTaxClass = $this->getRelated('tax_class')) !== null) {
             $fltAmount = $objTaxClass->calculateGrossPrice($fltAmount);
         }
@@ -254,7 +259,7 @@ class ProductPrice extends \Model implements IsotopePrice
 
         if ($objProduct->hasAdvancedPrices()) {
 
-            $time = \Date::floorToMinute($objCollection->getLastModification());
+            $time = Date::floorToMinute($objCollection->getLastModification());
             $arrGroups = static::getMemberGroups($objCollection->getRelated('member'));
 
             $arrOptions['column'][] = "$t.config_id IN (" . (int) $objCollection->config_id . ",0)";
@@ -262,7 +267,7 @@ class ProductPrice extends \Model implements IsotopePrice
             $arrOptions['column'][] = "($t.start='' OR $t.start<'$time')";
             $arrOptions['column'][] = "($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
 
-            $arrOptions['order'] = "$t.config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", $t.start DESC, $t.stop DESC";
+            $arrOptions['order'] = "$t.config_id DESC, " . Database::getInstance()->findInSet('member_group', $arrGroups) . ", $t.start DESC, $t.stop DESC";
 
         } else {
 
@@ -333,7 +338,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * @param array $arrIds
      * @param array $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findPrimaryByProductIds(array $arrIds, array $arrOptions = array())
     {
@@ -364,7 +369,7 @@ class ProductPrice extends \Model implements IsotopePrice
      * @param array                                      $arrIds
      * @param IsotopeProductCollection|ProductCollection $objCollection
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection = null)
     {
@@ -384,11 +389,11 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * Find advanced price for multiple product/variant IDs
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findAdvancedByProductIds(array $arrIds, array $arrGroups = [0], array $configIds = [0])
     {
-        $time = \Date::floorToMinute();
+        $time = Date::floorToMinute();
 
         $queries = [];
 
@@ -407,12 +412,12 @@ class ProductPrice extends \Model implements IsotopePrice
                     (stop='' OR stop>'" . ($time + 60) . "') AND
                     tl_iso_product_price.pid=" . $id . "
                 GROUP BY tl_iso_product_price.id
-                ORDER BY config_id DESC, " . \Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
+                ORDER BY config_id DESC, " . Database::getInstance()->findInSet('member_group', $arrGroups) . ", start DESC, stop DESC
                 LIMIT 1
             ";
         }
 
-        $objResult = \Database::getInstance()->query('('.implode(") UNION (", $queries).')');
+        $objResult = Database::getInstance()->query('('.implode(") UNION (", $queries).')');
 
         if ($objResult->numRows) {
             return ProductPriceCollection::createFromDbResult($objResult, static::$strTable);
@@ -450,7 +455,7 @@ class ProductPrice extends \Model implements IsotopePrice
     {
         $arrOptions['group'] = ($arrOptions['group'] ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
 
-        $query = \Model\QueryBuilder::find($arrOptions);
+        $query = QueryBuilder::find($arrOptions);
         $from  = substr($query, strpos($query, '*')+1);
         $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
 
@@ -474,7 +479,7 @@ class ProductPrice extends \Model implements IsotopePrice
     /**
      * {@inheritdoc}
      */
-    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    protected static function createCollectionFromDbResult(Result $objResult, $strTable)
     {
         return ProductPriceCollection::createFromDbResult($objResult, $strTable);
     }

@@ -2,6 +2,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Database\Result;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
@@ -367,12 +368,12 @@ class AttributeOption extends Multilingual
     /**
      * Create a new collection from a database result
      *
-     * @param \Database\Result $objResult The database result object
-     * @param string           $strTable  The table name
+     * @param Result $objResult The database result object
+     * @param string $strTable  The table name
      *
      * @return \Isotope\Collection\AttributeOption The model collection
      */
-    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    protected static function createCollectionFromDbResult(Result $objResult, $strTable)
     {
         return \Isotope\Collection\AttributeOption::createFromDbResult($objResult, $strTable);
     }

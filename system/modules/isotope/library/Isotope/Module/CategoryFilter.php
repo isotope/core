@@ -11,7 +11,9 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
 use Contao\Database;
+use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\FrontendUser;
 use Contao\PageModel;
@@ -92,12 +94,12 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $allIds = [];
 
-        $this->Template->request = ampersand(\Environment::get('indexFreeRequest'));
+        $this->Template->request = ampersand(Environment::get('indexFreeRequest'));
         $this->Template->skipId = 'skipNavigation' . $this->id;
         $this->Template->skipNavigation = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
         $this->Template->items = $this->renderFilterTree($trail[$level], 1, $currentIds, $trail, $allIds);
 
-        if ($input = \Input::get('categoryfilter', true)) {
+        if ($input = Input::get('categoryfilter', true)) {
             $arrFilter = explode(';', base64_decode($input), 3);
 
             if ($arrFilter[0] == $this->id) {
@@ -129,9 +131,9 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $objCache = Isotope::getRequestCache()->saveNewConfiguration();
 
-        // Include \Environment::base or the URL would not work on the index page
-        \Controller::redirect(
-            \Environment::get('base') .
+        // Include Environment::base or the URL would not work on the index page
+        Controller::redirect(
+            Environment::get('base') .
             Url::addQueryString(
                 'isorc='.$objCache->id,
                 Url::removeQueryString(array('categoryfilter'), ($this->jumpTo ?: null))
@@ -142,7 +144,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
     private function renderFilterTree($pid, $level = 1, array $currentIds = [], &$hasActive = false, array &$allIds = [])
     {
         // Get all active subpages
-        $pages = \PageModel::findPublishedSubpagesWithoutGuestsByPid($pid, $this->showHidden);
+        $pages = PageModel::findPublishedSubpagesWithoutGuestsByPid($pid, $this->showHidden);
 
         if ($pages === null) {
             return '';
@@ -156,7 +158,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             $groups = FrontendUser::getInstance()->groups;
         }
 
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         // Browse subpages
@@ -231,7 +233,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
             return '';
         }
 
-        /** @var \FrontendTemplate|object $objTemplate */
+        /** @var FrontendTemplate|object $objTemplate */
         $objTemplate = new FrontendTemplate($this->navigationTpl);
 
         $objTemplate->pid = $pid;

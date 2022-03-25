@@ -32,29 +32,29 @@ class DC_TablePageId extends \DC_Table
         $this->bid = 'tl_buttons';
 
         // Clean up old tl_undo and tl_log entries
-        if ($this->strTable == 'tl_undo' && \strlen(\Config::get('undoPeriod')))
+        if ($this->strTable == 'tl_undo' && \strlen(\Contao\Config::get('undoPeriod')))
         {
             $this->Database->prepare("DELETE FROM tl_undo WHERE tstamp<?")
-                           ->execute(\intval(time() - \Config::get('undoPeriod')));
+                           ->execute((int) (time() - \Contao\Config::get('undoPeriod')));
         }
-        elseif ($this->strTable == 'tl_log' && \strlen(\Config::get('logPeriod')))
+        elseif ($this->strTable == 'tl_log' && \strlen(\Contao\Config::get('logPeriod')))
         {
             $this->Database->prepare("DELETE FROM tl_log WHERE tstamp<?")
-                           ->execute(\intval(time() - \Config::get('logPeriod')));
+                           ->execute((int) (time() - \Contao\Config::get('logPeriod')));
         }
 
         $this->reviseTable();
 
         // Add to clipboard
-        if (\Input::get('act') == 'paste')
+        if ('paste' === Input::get('act'))
         {
             $arrClipboard = $this->getSession()->get('CLIPBOARD');
 
             $arrClipboard[$this->strTable] = array
             (
-                'id' => \Input::get('id'),
-                'childs' => \Input::get('childs'),
-                'mode' => \Input::get('mode')
+                'id' => Input::get('id'),
+                'childs' => Input::get('childs'),
+                'mode' => Input::get('mode')
             );
 
             $this->getSession()->set('CLIPBOARD', $arrClipboard);
@@ -78,7 +78,7 @@ class DC_TablePageId extends \DC_Table
         }
         else
         {
-            if (\Input::get('table') && $this->ptable && $this->Database->fieldExists('page_id', $this->strTable))
+            if (Input::get('table') && $this->ptable && $this->Database->fieldExists('page_id', $this->strTable))
             {
                 $this->procedure[] = 'page_id=?';
                 $this->values[] = CURRENT_ID;
@@ -118,13 +118,13 @@ class DC_TablePageId extends \DC_Table
         $cr = array();
 
         // ID and page_id are mandatory
-        if (!$this->intId || !\strlen(\Input::get('page_id')))
+        if (!$this->intId || !\strlen(Input::get('page_id')))
         {
             $this->redirect($this->getReferer());
         }
 
         // Get the new position
-        $this->getNewPosition('cut', \Input::get('page_id'), (\Input::get('mode') == '2' ? true : false));
+        $this->getNewPosition('cut', Input::get('page_id'), (Input::get('mode') == '2' ? true : false));
 
         // Avoid circular references when there is no parent table
         if ($this->Database->fieldExists('page_id', $this->strTable) && !\strlen($this->ptable))
@@ -141,7 +141,7 @@ class DC_TablePageId extends \DC_Table
         // Update the record
         if (\in_array($this->set['page_id'], $cr))
         {
-            throw new InternalServerErrorException('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.\Input::get('page_id').' (circular reference)');
+            throw new InternalServerErrorException('Attempt to relate record '.$this->intId.' of table "'.$this->strTable.'" to its child record '.Input::get('page_id').' (circular reference)');
         }
 
         $this->set['tstamp'] = time();
@@ -149,7 +149,7 @@ class DC_TablePageId extends \DC_Table
         // HOOK: style sheet category
         if ($this->strTable == 'tl_style')
         {
-            $filter = \Session::getInstance()->get('filter');
+            $filter = Session::getInstance()->get('filter');
             $category = $filter['tl_style_' . CURRENT_ID]['category'];
 
             if ($category != '')
@@ -203,7 +203,7 @@ class DC_TablePageId extends \DC_Table
         }
 
         // page_id is mandatory
-        if (!\strlen(\Input::get('page_id')))
+        if (!\strlen(Input::get('page_id')))
         {
             $this->redirect($this->getReferer());
         }
@@ -216,8 +216,8 @@ class DC_TablePageId extends \DC_Table
             {
                 $this->intId = $id;
                 $this->cut(true);
-                \Input::setGet('page_id', $id);
-                \Input::setGet('mode', 1);
+                Input::setGet('page_id', $id);
+                Input::setGet('mode', 1);
             }
         }
 
@@ -347,8 +347,8 @@ class DC_TablePageId extends \DC_Table
                 }
 
                 // Set new sorting and new parent ID
-                $this->set['page_id'] = \intval($newpage_id);
-                $this->set['sorting'] = \intval($newSorting);
+                $this->set['page_id'] = (int) $newpage_id;
+                $this->set['sorting'] = (int) $newSorting;
             }
         }
 
@@ -436,14 +436,14 @@ class DC_TablePageId extends \DC_Table
                     else $newSorting = ($curSorting + 128);
 
                     // Set new sorting
-                    $this->set['sorting'] = \intval($newSorting);
+                    $this->set['sorting'] = (int) $newSorting;
                     return;
                 }
             }
 
             // ID is not set or not found (insert at the end)
             $objNextSorting = $this->Database->execute("SELECT MAX(sorting) AS sorting FROM {$this->strTable}");
-            $this->set['sorting'] = (\intval($objNextSorting->sorting) + 128);
+            $this->set['sorting'] = ((int) $objNextSorting->sorting + 128);
         }
     }
 
@@ -457,7 +457,7 @@ class DC_TablePageId extends \DC_Table
         $ptable = $GLOBALS['TL_DCA'][$this->strTable]['config']['ptable'];
         $ctable = $GLOBALS['TL_DCA'][$this->strTable]['config']['ctable'];
 
-        $new_records = \Session::getInstance()->get('new_records');
+        $new_records = Session::getInstance()->get('new_records');
 
         // HOOK: add custom logic
         if (isset($GLOBALS['TL_HOOKS']['reviseTable']) && \is_array($GLOBALS['TL_HOOKS']['reviseTable']))
@@ -575,15 +575,15 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Load the fonts to display the paste hint
-        \Config::set('loadGoogleFonts', $blnClipboard);
+        Config::set('loadGoogleFonts', $blnClipboard);
 
         // Load the language file and data container array of the parent table
-        \System::loadLanguageFile($this->ptable);
+        System::loadLanguageFile($this->ptable);
         $this->loadDataContainer($this->ptable);
 
         $return = '
 <div id="tl_buttons">
-<a href="'.$this->getReferer(true, $this->ptable).'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . ((\Input::get('act') != 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
+<a href="'.$this->getReferer(true, $this->ptable).'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']).'" accesskey="b" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>' . ((Input::get('act') !== 'select') ? (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ? '
 <a href="'.$this->addToUrl(($blnHasSorting ? 'act=paste&amp;mode=create' : 'act=create&amp;mode=2&amp;page_id='.$this->intId)).'" class="header_new" title="'.StringUtil::specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset();">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a>' : '') . $this->generateGlobalButtons() . ($blnClipboard ? '<a href="'.$this->addToUrl('clipboard=1').'" class="header_clipboard" title="'.specialchars($GLOBALS['TL_LANG']['MSC']['clearClipboard']).'" accesskey="x">'.$GLOBALS['TL_LANG']['MSC']['clearClipboard'].'</a>' : '') : '') . '
 </div>' . $this->getMessages(true);
 
@@ -597,9 +597,9 @@ class DC_TablePageId extends \DC_Table
             return $return;
         }
 
-        $return .= ((\Input::get('act') == 'select') ? '
+        $return .= (('select' === Input::get('act')) ? '
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post" novalidate>
+<form action="'.ampersand(Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post" novalidate>
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').($blnClipboard ? '
@@ -613,16 +613,16 @@ class DC_TablePageId extends \DC_Table
 <div class="tl_header click2edit hover-div">';
 
         // List all records of the child table
-        if (!\Input::get('act') || \Input::get('act') == 'paste' || \Input::get('act') == 'select')
+        if (!Input::get('act') || 'paste' === Input::get('act') || 'select' === Input::get('act'))
         {
             // Header
-            $imagePasteNew = \Image::getHtml('new.gif', $GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]);
-            $imagePasteAfter = \Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
-            $imageEditHeader = \Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
+            $imagePasteNew = Image::getHtml('new.gif', $GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]);
+            $imagePasteAfter = Image::getHtml('pasteafter.gif', $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]);
+            $imageEditHeader = Image::getHtml('edit.gif', $GLOBALS['TL_LANG'][$this->strTable]['editheader'][0]);
             $strEditHeader = ($this->ptable != '') ? $GLOBALS['TL_LANG'][$this->ptable]['edit'][0] : $GLOBALS['TL_LANG'][$this->strTable]['editheader'][1];
 
             $return .= '
-<div class="tl_content_right">'.((\Input::get('act') == 'select') ? '
+<div class="tl_content_right">'.((Input::get('act') == 'select') ? '
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">' : (!$GLOBALS['TL_DCA'][$this->ptable]['config']['notEditable'] ? '
 <a href="'.preg_replace('/&(amp;)?table=[^& ]*/i', (($this->ptable != '') ? '&amp;table='.$this->ptable : ''), $this->addToUrl('act=edit')).'" class="edit" title="'.StringUtil::specialchars($strEditHeader).'">'.$imageEditHeader.'</a>' : '') . (($blnHasSorting && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? ' <a href="'.$this->addToUrl('act=create&amp;mode=2&amp;page_id='.$objParent->id.'&amp;id='.$this->intId).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][0]).'">'.$imagePasteNew.'</a>' : '') . ($blnClipboard ? ' <a href="'.$this->addToUrl('act='.$arrClipboard['mode'].'&amp;mode=2&amp;page_id='.$objParent->id . (!$blnMultiboard ? '&amp;id='.$arrClipboard['id'] : '')).'" title="'.specialchars($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][0]).'" onclick="Backend.getScrollOffset()">'.$imagePasteAfter.'</a>' : '')) . '
 </div>';
@@ -645,15 +645,15 @@ class DC_TablePageId extends \DC_Table
                 }
                 elseif ($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'date')
                 {
-                    $_v = $_v ? \Date::parse(\Config::get('dateFormat'), $_v) : '-';
+                    $_v = $_v ? Date::parse(Config::get('dateFormat'), $_v) : '-';
                 }
                 elseif ($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'time')
                 {
-                    $_v = $_v ? \Date::parse(\Config::get('timeFormat'), $_v) : '-';
+                    $_v = $_v ? Date::parse(Config::get('timeFormat'), $_v) : '-';
                 }
                 elseif ($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['eval']['rgxp'] == 'datim')
                 {
-                    $_v = $_v ? \Date::parse(\Config::get('datimFormat'), $_v) : '-';
+                    $_v = $_v ? Date::parse(Config::get('datimFormat'), $_v) : '-';
                 }
                 elseif ($v == 'tstamp')
                 {
@@ -665,7 +665,7 @@ class DC_TablePageId extends \DC_Table
                         $objMaxTstamp->tstamp = $objParent->tstamp;
                     }
 
-                    $_v = \Date::parse(\Config::get('datimFormat'), max($objParent->tstamp, $objMaxTstamp->tstamp));
+                    $_v = Date::parse(Config::get('datimFormat'), max($objParent->tstamp, $objMaxTstamp->tstamp));
                 }
                 elseif (isset($GLOBALS['TL_DCA'][$this->ptable]['fields'][$v]['foreignKey']))
                 {
@@ -824,15 +824,15 @@ class DC_TablePageId extends \DC_Table
                 for ($i=0, $c=\count($row); $i<$c; $i++)
                 {
                     $this->current[] = $row[$i]['id'];
-                    $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']));
-                    $imagePasteNew = \Image::getHtml('new.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][1], $row[$i]['id']));
+                    $imagePasteAfter = Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pasteafter'][1], $row[$i]['id']));
+                    $imagePasteNew = Image::getHtml('new.gif', sprintf($GLOBALS['TL_LANG'][$this->strTable]['pastenew'][1], $row[$i]['id']));
 
                     // Decrypt encrypted value
                     foreach ($row[$i] as $k=>$v)
                     {
                         if ($GLOBALS['TL_DCA'][$table]['fields'][$k]['eval']['encrypt'])
                         {
-                            $row[$i][$k] = \Encryption::decrypt(deserialize($v));
+                            $row[$i][$k] = Encryption::decrypt(deserialize($v));
                         }
                     }
 
@@ -885,7 +885,7 @@ class DC_TablePageId extends \DC_Table
                     }
 
                     // Edit multiple
-                    if (\Input::get('act') == 'select')
+                    if ('select' === Input::get('act'))
                     {
                         $return .= '<input type="checkbox" name="IDS[]" id="ids_'.$row[$i]['id'].'" class="tl_tree_checkbox" value="'.$row[$i]['id'].'">';
                     }
@@ -905,9 +905,9 @@ class DC_TablePageId extends \DC_Table
                             }
 
                             // Prevent circular references
-                            if ($blnClipboard && $arrClipboard['mode'] == 'cut' && $row[$i]['id'] == $arrClipboard['id'] || $blnMultiboard && $arrClipboard['mode'] == 'cutAll' && \in_array($row[$i]['id'], $arrClipboard['id']))
+                            if ($blnClipboard && $arrClipboard['mode'] == 'cut' && $row[$i]['id'] == $arrClipboard['id'] || $blnMultiboard && 'cutAll' === $arrClipboard['mode'] && \in_array($row[$i]['id'], $arrClipboard['id']))
                             {
-                                $return .= ' ' . \Image::getHtml('pasteafter_.gif');
+                                $return .= ' ' . Image::getHtml('pasteafter_.gif');
                             }
 
                             // Copy/move multiple
@@ -925,7 +925,7 @@ class DC_TablePageId extends \DC_Table
                             // Drag handle
                             if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
                             {
-                                $return .= ' ' . \Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG'][$this->strTable]['cut'][1], $row[$i]['id']) . '"');
+                                $return .= ' ' . Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG'][$this->strTable]['cut'][1], $row[$i]['id']) . '"');
                             }
                         }
                     }
@@ -970,7 +970,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 </div>';
 
         // Close form
-        if (\Input::get('act') == 'select')
+        if ('select' === Input::get('act'))
         {
             // Submit buttons
             $arrButtons = array();
@@ -1141,11 +1141,11 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
         {
             $return .= '
 
-<div id="'.$this->bid.'">'.((\Input::get('act') == 'select' || $this->ptable) ? '
+<div id="'.$this->bid.'">'.((Input::get('act') == 'select' || $this->ptable) ? '
 <a href="'.$this->getReferer(true, $this->ptable).'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']) ? '
-<a href="contao/main.php?'.$GLOBALS['TL_DCA'][$this->strTable]['config']['backlink'].'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : '')) . ((\Input::get('act') != 'select') ? '
+<a href="contao/main.php?'.$GLOBALS['TL_DCA'][$this->strTable]['config']['backlink'].'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a> ' : '')) . ((Input::get('act') != 'select') ? '
 '.((!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? '<a href="'.(($this->ptable != '') ? $this->addToUrl('act=create' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] < 4) ? '&amp;mode=2' : '') . '&amp;page_id=' . $this->intId) : $this->addToUrl('act=create')).'" class="header_new" title="'.StringUtil::specialchars($GLOBALS['TL_LANG'][$this->strTable]['new'][1]).'" accesskey="n" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG'][$this->strTable]['new'][0].'</a> ' : '') . $this->generateGlobalButtons() : '') . '
-</div>' . \Message::generate();
+</div>' . Message::generate();
         }
 
         // Return "no records found" message
@@ -1159,14 +1159,14 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
         else
         {
             $result = $objRow->fetchAllAssoc();
-            $return .= ((\Input::get('act') == 'select') ? '
+            $return .= ((Input::get('act') == 'select') ? '
 
-<form action="'.ampersand(\Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post" novalidate>
+<form action="'.ampersand(Environment::get('request'), true).'" id="tl_select" class="tl_form" method="post" novalidate>
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' : '').'
 
-<div class="tl_listing_container list_view">'.((\Input::get('act') == 'select') ? '
+<div class="tl_listing_container list_view">'.((Input::get('act') == 'select') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">'.$GLOBALS['TL_LANG']['MSC']['selectAll'].'</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
@@ -1239,7 +1239,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     // Decrypt the value
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'])
                     {
-                        $row[$v] = \Encryption::decrypt(deserialize($row[$v]));
+                        $row[$v] = Encryption::decrypt(deserialize($row[$v]));
                     }
 
                     if (strpos($v, ':') !== false)
@@ -1257,15 +1257,15 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     {
                         if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date')
                         {
-                            $args[$k] = $row[$v] ? \Date::parse(\Config::get('dateFormat'), $row[$v]) : '-';
+                            $args[$k] = $row[$v] ? Date::parse(Config::get('dateFormat'), $row[$v]) : '-';
                         }
                         elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time')
                         {
-                            $args[$k] = $row[$v] ? \Date::parse(\Config::get('timeFormat'), $row[$v]) : '-';
+                            $args[$k] = $row[$v] ? Date::parse(Config::get('timeFormat'), $row[$v]) : '-';
                         }
                         else
                         {
-                            $args[$k] = $row[$v] ? \Date::parse(\Config::get('datimFormat'), $row[$v]) : '-';
+                            $args[$k] = $row[$v] ? Date::parse(Config::get('datimFormat'), $row[$v]) : '-';
                         }
                     }
                     elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'])
@@ -1307,7 +1307,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 
                 if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
                 {
-                    $label = trim(\StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
+                    $label = trim(StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
 
                 // Remove empty brackets (), [], {}, <> and empty tags from the label
@@ -1385,7 +1385,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 }
 
                 // Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
-                $return .= ((\Input::get('act') == 'select') ? '
+                $return .= ((Input::get('act') == 'select') ? '
     <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" id="ids_'.$row['id'].'" class="tl_tree_checkbox" value="'.$row['id'].'"></td>' : '
     <td class="tl_file_list tl_right_nowrap">'.$this->generateButtons($row, $this->strTable, $this->root).'</td>') . '
   </tr>';
@@ -1398,7 +1398,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
 </div>';
 
             // Close the form
-            if (\Input::get('act') == 'select')
+            if (Input::get('act') == 'select')
             {
                 // Submit buttons
                 $arrButtons = array();
@@ -1506,11 +1506,11 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
             {
                 if ($k == 'show')
                 {
-                    $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id'].'&amp;popup=1').'" title="'.StringUtil::specialchars($title).'" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG'][$strTable]['show'][1], $arrRow['id']))).'\',\'url\':this.href});return false"'.$attributes.'>'.\Image::getHtml($v['icon'], $label).'</a> ';
+                    $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id'].'&amp;popup=1').'" title="'.StringUtil::specialchars($title).'" onclick="Backend.openModalIframe({\'width\':768,\'title\':\''.\Contao\StringUtil::specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG'][$strTable]['show'][1], $arrRow['id']))).'\',\'url\':this.href});return false"'.$attributes.'>'.Image::getHtml($v['icon'], $label).'</a> ';
                 }
                 else
                 {
-                    $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id']).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.\Image::getHtml($v['icon'], $label).'</a> ';
+                    $return .= '<a href="'.$this->addToUrl($v['href'].'&amp;id='.$arrRow['id']).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($v['icon'], $label).'</a> ';
                 }
 
                 continue;
@@ -1524,16 +1524,16 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                 $label = $GLOBALS['TL_LANG'][$strTable][$dir][0] ?: $dir;
                 $title = $GLOBALS['TL_LANG'][$strTable][$dir][1] ?: $dir;
 
-                $label = \Image::getHtml($dir.'.gif', $label);
+                $label = Image::getHtml($dir.'.gif', $label);
                 $href = $v['href'] ?: '&amp;act=move';
 
                 if ($dir == 'up')
                 {
-                    $return .= ((is_numeric($strPrevious) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.\intval($strPrevious).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('up_.gif')).' ';
+                    $return .= ((is_numeric($strPrevious) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.(int) $strPrevious.'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : Image::getHtml('up_.gif')).' ';
                     continue;
                 }
 
-                $return .= ((is_numeric($strNext) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.\intval($strNext).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : \Image::getHtml('down_.gif')).' ';
+                $return .= ((is_numeric($strNext) && (!\in_array($arrRow['id'], $arrRootIds) || empty($GLOBALS['TL_DCA'][$strTable]['list']['sorting']['root']))) ? '<a href="'.$this->addToUrl($href.'&amp;id='.$arrRow['id']).'&amp;sid='.(int) $strNext.'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.$label.'</a> ' : Image::getHtml('down_.gif')).' ';
             }
         }
 
@@ -1548,10 +1548,10 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
     private function getSession()
     {
         if (method_exists('Contao\System', 'getContainer')) {
-            return \System::getContainer()->get('session');
+            return System::getContainer()->get('session');
         }
 
-        return \Session::getInstance();
+        return Session::getInstance();
     }
 
     /**

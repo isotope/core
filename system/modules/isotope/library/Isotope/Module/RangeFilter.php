@@ -11,6 +11,8 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -71,11 +73,11 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
     {
         $fields = $this->getRangeConfig();
 
-        if ('iso_filter_' . $this->id === \Input::post('FORM_SUBMIT')) {
+        if ('iso_filter_' . $this->id === Input::post('FORM_SUBMIT')) {
             $cache = Isotope::getRequestCache();
 
             foreach ($fields as $config) {
-                $values = \Input::post($config['attribute']);
+                $values = Input::post($config['attribute']);
 
                 if (!\is_array($values)) {
                     continue;
@@ -101,8 +103,8 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             $new = $cache->saveNewConfiguration();
 
             if ($new->id !== $cache->id) {
-                \Controller::redirect(
-                    \Environment::get('base') .
+                Controller::redirect(
+                    Environment::get('base') .
                     Url::addQueryString('isorc='.$new->id, ($this->jumpTo ?: null))
                 );
             }
@@ -111,7 +113,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->fields = $fields;
         $this->Template->jsonFields = json_encode($fields);
         $this->Template->formId      = 'iso_filter_' . $this->id;
-        $this->Template->action      = ampersand(\Environment::get('request'));
+        $this->Template->action      = ampersand(Environment::get('request'));
         $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
 
