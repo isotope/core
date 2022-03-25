@@ -13,6 +13,7 @@ namespace Isotope\Model\ProductCollection;
 
 use Contao\Controller;
 use Contao\Message;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
@@ -416,7 +417,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $objConfig = $this->getRelated('config_id') ?: Isotope::getConfig();
         Isotope::setConfig($objConfig);
 
-        $arrTokens                    = deserialize($this->email_data, true);
+        $arrTokens                    = StringUtil::deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
         $arrTokens['order_status']    = $this->getStatusLabel();

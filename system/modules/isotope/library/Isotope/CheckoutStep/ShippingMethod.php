@@ -13,6 +13,7 @@ namespace Isotope\CheckoutStep;
 
 use Contao\Database;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
@@ -163,7 +164,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $this->modules = array();
         $this->options = array();
 
-        $arrIds = deserialize($this->objModule->iso_shipping_modules);
+        $arrIds = StringUtil::deserialize($this->objModule->iso_shipping_modules);
 
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');

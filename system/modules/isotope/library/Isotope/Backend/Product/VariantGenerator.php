@@ -102,7 +102,7 @@ class VariantGenerator extends Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]) . '">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]) . '">
 </div>
 
 </div>

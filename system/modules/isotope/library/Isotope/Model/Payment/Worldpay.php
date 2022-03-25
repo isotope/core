@@ -82,7 +82,7 @@ class Worldpay extends Postsale
         }
 
         // Store request data in order for future references
-        $arrPayment               = deserialize($objOrder->payment_data, true);
+        $arrPayment               = StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data   = $arrPayment;
 
@@ -138,7 +138,7 @@ class Worldpay extends Postsale
         $arrData['email']    = substr($objAddress->email, 0, 80);
 
         // Generate MD5 secret hash
-        $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
+        $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(StringUtil::trimsplit(':', $this->worldpay_signatureFields)))));
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_worldpay');

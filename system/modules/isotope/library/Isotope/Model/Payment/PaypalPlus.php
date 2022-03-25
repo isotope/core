@@ -91,7 +91,7 @@ class PaypalPlus extends PaypalApi
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
             return parent::backendInterface($orderId);

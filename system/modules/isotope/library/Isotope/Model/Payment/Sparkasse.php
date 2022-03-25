@@ -16,6 +16,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -84,7 +85,7 @@ class Sparkasse extends Postsale
         }
 
         // Store request data in order for future references
-        $arrPayment               = deserialize($objOrder->payment_data, true);
+        $arrPayment               = StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data   = $arrPayment;
 

@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\MemberModel;
 use Contao\Model\Collection;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Translation;
@@ -204,7 +205,7 @@ class Rule extends \Model
         if (Isotope::getCart()->member > 0) {
 
             $objMember = MemberModel::findByPk(Isotope::getCart()->member);
-            $arrGroups = (null === $objMember) ? array() : array_map('intval', deserialize($objMember->groups, true));
+            $arrGroups = (null === $objMember) ? array() : array_map('intval', StringUtil::deserialize($objMember->groups, true));
 
             $arrProcedures[] = "(memberRestrictions='none'
                                 OR (memberRestrictions='guests' AND memberCondition='0')

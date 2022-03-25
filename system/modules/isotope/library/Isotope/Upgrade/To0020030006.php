@@ -13,6 +13,7 @@ namespace Isotope\Upgrade;
 
 
 use Contao\Database;
+use Contao\StringUtil;
 
 class To0020030006 extends Base
 {
@@ -53,7 +54,7 @@ class To0020030006 extends Base
             );
 
             while ($modules->next()) {
-                $fields = deserialize($modules->iso_filterFields);
+                $fields = StringUtil::deserialize($modules->iso_filterFields);
 
                 if (!empty($fields) && \is_array($fields)) {
                     $config = array();

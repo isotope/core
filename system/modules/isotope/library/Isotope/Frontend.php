@@ -419,8 +419,8 @@ class Frontend extends \Contao\Frontend
     {
         $arrCodes = array();
 
-        foreach (trimsplit(',', $strPostalCodes) as $strCode) {
-            $arrCode = trimsplit('-', $strCode);
+        foreach (StringUtil::trimsplit(',', $strPostalCodes) as $strCode) {
+            $arrCode = StringUtil::trimsplit('-', $strCode);
 
             // Ignore codes with more than 1 range
             switch (\count($arrCode)) {
@@ -481,7 +481,7 @@ class Frontend extends \Contao\Frontend
 
         if (null !== $objMember) {
             $intMember = $objMember->id;
-            $arrGroups = deserialize($objMember->groups, true);
+            $arrGroups = StringUtil::deserialize($objMember->groups, true);
         }
 
         if (!isset($arrAvailable[$intMember])) {
@@ -513,7 +513,7 @@ class Frontend extends \Contao\Frontend
                     continue;
                 }
 
-                $arrPGroups = deserialize($objPageDetails->groups);
+                $arrPGroups = StringUtil::deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!\is_array($arrPGroups)) {
@@ -732,7 +732,7 @@ class Frontend extends \Contao\Frontend
                     && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
                 ) {
                     $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
-                    $value = deserialize($value, true);
+                    $value = StringUtil::deserialize($value, true);
 
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {

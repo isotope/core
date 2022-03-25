@@ -13,6 +13,7 @@ namespace Isotope\Model;
 
 
 use Contao\Database;
+use Contao\StringUtil;
 
 /**
  * ProductType defines a product configuration
@@ -69,8 +70,8 @@ class ProductType extends \Model
     {
         parent::setRow($arrData);
 
-        $this->attributes = deserialize($this->attributes);
-        $this->variant_attributes = deserialize($this->variant_attributes);
+        $this->attributes = StringUtil::deserialize($this->attributes);
+        $this->variant_attributes = StringUtil::deserialize($this->variant_attributes);
 
         if (!\is_array($this->attributes)) {
             $this->attributes = array();
@@ -165,7 +166,7 @@ class ProductType extends \Model
     protected function getEnabledAttributesByPosition($varValue)
     {
         $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
-        $arrAttributes = deserialize($varValue, true);
+        $arrAttributes = StringUtil::deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
             return ($a['enabled']

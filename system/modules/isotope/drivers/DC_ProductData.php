@@ -12,6 +12,7 @@
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\StringUtil;
 use Doctrine\DBAL\Exception\DriverException;
 use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
@@ -1042,7 +1043,7 @@ class DC_ProductData extends \DC_Table
                     $objVersions = new \Versions($this->strTable, $this->intId);
                     $objVersions->initialize();
 
-                    $this->strPalette = trimsplit('[;,]', $this->getPalette());
+                    $this->strPalette = StringUtil::trimsplit('[;,]', $this->getPalette());
 
                     // Store all fields
                     foreach ($fields as $v)
@@ -3271,7 +3272,7 @@ class DC_ProductData extends \DC_Table
         $strLanguage = $session['language'][$this->strTable][$this->intId];
         $arrDuplicate = array();
 
-        foreach (trimsplit('[;,]', $this->getPalette()) as $field) {
+        foreach (StringUtil::trimsplit('[;,]', $this->getPalette()) as $field) {
             if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual']) {
                 $arrDuplicate[] = $field;
             }

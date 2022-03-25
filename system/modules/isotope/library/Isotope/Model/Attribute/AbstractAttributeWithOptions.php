@@ -14,6 +14,7 @@ namespace Isotope\Model\Attribute;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
@@ -75,7 +76,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
             // @deprecated remove in Isotope 3.0
             case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
-                $options = deserialize($this->options);
+                $options = StringUtil::deserialize($this->options);
 
                 if (!empty($options) && \is_array($options)) {
                     if ($this->isCustomerDefined()) {
@@ -244,7 +245,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             // @deprecated remove in Isotope 3.0
             case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
                 $arrOptions = array();
-                $options = deserialize($this->options);
+                $options = StringUtil::deserialize($this->options);
 
                 if (!empty($options) && \is_array($options)) {
                     foreach ($options as $option) {
@@ -310,7 +311,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
             ) {
                 $value = explode(',', $value);
             } else {
-                $value = deserialize($value);
+                $value = StringUtil::deserialize($value);
             }
         }
 

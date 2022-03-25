@@ -15,6 +15,7 @@ use Contao\Controller;
 use Contao\Database;
 use Contao\Date;
 use Contao\ModuleModel;
+use Contao\StringUtil;
 use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\ProductType;
@@ -164,7 +165,7 @@ abstract class AbstractProductFilter extends Module
             if ($this->isCsv($attribute)) {
                 $values = array_merge($values, explode(',', $result->options));
             } else {
-                $values = array_merge($values, deserialize($result->options, true));
+                $values = array_merge($values, StringUtil::deserialize($result->options, true));
             }
         }
 

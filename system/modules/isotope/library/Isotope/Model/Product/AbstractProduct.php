@@ -13,6 +13,7 @@ namespace Isotope\Model\Product;
 
 use Contao\Database;
 use Contao\Date;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -146,8 +147,8 @@ abstract class AbstractProduct extends Product
                 return $blnHasGuests && $this->guests;
             }
 
-            $groups       = deserialize($this->groups);
-            $memberGroups = deserialize($member->groups);
+            $groups       = StringUtil::deserialize($this->groups);
+            $memberGroups = StringUtil::deserialize($member->groups);
 
             if (!\is_array($groups)
                 || empty($groups)
@@ -282,7 +283,7 @@ abstract class AbstractProduct extends Product
         $key = ($blnPublished ? 'published' : 'all');
 
         // Sort categories by the backend drag&drop
-        $arrOrder = deserialize($this->orderPages);
+        $arrOrder = StringUtil::deserialize($this->orderPages);
         if (!empty($arrOrder) && \is_array($arrOrder)) {
             $categories = array_unique(
                 array_merge(
@@ -305,7 +306,7 @@ abstract class AbstractProduct extends Product
      */
     public function getCssId()
     {
-        $css = deserialize($this->cssID, true);
+        $css = StringUtil::deserialize($this->cssID, true);
 
         return $css[0] ? ' id="' . $css[0] . '"' : null;
     }
@@ -323,7 +324,7 @@ abstract class AbstractProduct extends Product
             $classes[] = 'new';
         }
 
-        $arrCSS = deserialize($this->cssID, true);
+        $arrCSS = StringUtil::deserialize($this->cssID, true);
         if ('' !== (string) $arrCSS[1]) {
             $classes[] = (string) $arrCSS[1];
         }

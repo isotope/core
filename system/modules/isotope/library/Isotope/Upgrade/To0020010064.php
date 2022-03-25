@@ -13,6 +13,7 @@ namespace Isotope\Upgrade;
 
 use Contao\Controller;
 use Contao\Database;
+use Contao\StringUtil;
 use Contao\System;
 
 class To0020010064 extends System
@@ -44,7 +45,7 @@ class To0020010064 extends System
                 $arrUpdate = array();
 
                 foreach ($arrFields as $field) {
-                    $arrData = deserialize($objProducts->$field);
+                    $arrData = StringUtil::deserialize($objProducts->$field);
 
                     if (!empty($arrData) && \is_array($arrData)) {
                         foreach ($arrData as $k => $image) {

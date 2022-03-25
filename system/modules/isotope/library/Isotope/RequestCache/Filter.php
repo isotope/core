@@ -11,6 +11,7 @@
 
 namespace Isotope\RequestCache;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithRange;
 use Isotope\Interfaces\IsotopeProduct;
@@ -232,7 +233,7 @@ class Filter implements \ArrayAccess
         }
 
         if (!\is_array($varValues)) {
-            $varValues = deserialize($varValues, true);
+            $varValues = StringUtil::deserialize($varValues, true);
         }
 
         foreach ($varValues as $varValue) {

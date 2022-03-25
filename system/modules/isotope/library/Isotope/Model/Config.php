@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Date;
 use Contao\FrontendUser;
+use Contao\StringUtil;
 use Contao\System;
 use Isotope\Translation;
 
@@ -159,7 +160,7 @@ class Config extends \Model
     {
         if (!isset($this->arrCache['billingFieldsConfig'])) {
             $this->arrCache['billingFieldsConfig'] = array();
-            $arrFields                             = deserialize($this->address_fields);
+            $arrFields                             = StringUtil::deserialize($this->address_fields);
 
             if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -203,7 +204,7 @@ class Config extends \Model
     {
         if (!isset($this->arrCache['shippingFieldsConfig'])) {
             $this->arrCache['shippingFieldsConfig'] = array();
-            $arrFields                              = deserialize($this->address_fields);
+            $arrFields                              = StringUtil::deserialize($this->address_fields);
 
             if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -227,7 +228,7 @@ class Config extends \Model
     public function getBillingCountries()
     {
         if (!isset($this->arrCache['billingCountries'])) {
-            $arrCountries = deserialize($this->billing_countries);
+            $arrCountries = StringUtil::deserialize($this->billing_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
                 $arrCountries = array_keys(System::getCountries());
@@ -247,7 +248,7 @@ class Config extends \Model
     public function getShippingCountries()
     {
         if (!isset($this->arrCache['shippingCountries'])) {
-            $arrCountries = deserialize($this->shipping_countries);
+            $arrCountries = StringUtil::deserialize($this->shipping_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
                 $arrCountries = array_keys(System::getCountries());
@@ -302,7 +303,7 @@ class Config extends \Model
     public function getNewProductLimit()
     {
         if (!isset($this->arrCache['newProductLimit'])) {
-            $arrPeriod = deserialize($this->newProductPeriod);
+            $arrPeriod = StringUtil::deserialize($this->newProductPeriod);
 
             if (!empty($arrPeriod) && \is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
                 $this->arrCache['newProductLimit'] = strtotime(

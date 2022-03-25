@@ -194,7 +194,7 @@ class Standard extends Gallery implements IsotopeGallery
 
         if (Environment::get('isAjaxRequest')) {
             $strScripts = '';
-            $arrTemplates = deserialize($this->lightbox_template, true);
+            $arrTemplates = StringUtil::deserialize($this->lightbox_template, true);
 
             if (!empty($arrTemplates)) {
                 foreach ($arrTemplates as $strTemplate) {
@@ -358,7 +358,7 @@ class Standard extends Gallery implements IsotopeGallery
             return [];
         }
 
-        $size = deserialize($this->{$strType . '_size'}, true);
+        $size = StringUtil::deserialize($this->{$strType . '_size'}, true);
 
         try {
             $strImage = \Contao\Image::create($strFile, $size)->executeResize()->getResizedPath();

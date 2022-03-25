@@ -445,7 +445,8 @@ class RequestCache extends \Model
      */
     public function setRow(array $arrData)
     {
-        // Do not use deserialize() because we have objects (see https://github.com/contao/core/issues/6695)
+        // Do not use StringUtil::deserialize() because we have objects (see https://github.com/contao/core/issues/6695)
+        /** @noinspection UnserializeExploitsInspection */
         $arrConfig = unserialize($arrData['config']);
 
         $this->arrFilters  = $arrConfig['filters'];

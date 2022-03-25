@@ -13,6 +13,7 @@ namespace Isotope\BackendModule;
 
 use Contao\BackendUser;
 use Contao\Database;
+use Contao\StringUtil;
 use Isotope\Isotope;
 use Isotope\Report\Report;
 
@@ -43,8 +44,8 @@ class Reports extends BackendOverview
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
                         'name'          => $strModule,
-                        'label'         => specialchars(($arrConfig['label'][0] ?: $strModule)),
-                        'description'   => specialchars(strip_tags($arrConfig['label'][1])),
+                        'label'         => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
+                        'description'   => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
                         'href'          => $this->addToUrl('mod=' . $strModule),
                         'class'         => $arrConfig['class'],
                     ));

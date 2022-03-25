@@ -12,6 +12,7 @@
 namespace Isotope\Backend;
 
 use Contao\Database;
+use Contao\StringUtil;
 use Contao\Template;
 
 class SubtableVersion
@@ -126,7 +127,7 @@ class SubtableVersion
             return null;
         }
 
-        $arrData = deserialize($objVersion->data);
+        $arrData = StringUtil::deserialize($objVersion->data);
 
         if (!\is_array($arrData)) {
             return null;

@@ -49,7 +49,7 @@ class Button extends Backend
             return '';
         }
 
-        return '<a href="' . Backend::addToUrl('&amp;' . $href) . '" class="header_icon" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+        return '<a href="' . Backend::addToUrl('&amp;' . $href) . '" class="header_icon" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . StringUtil::specialchars($label) . '</a>';
     }
 
     /**

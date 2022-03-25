@@ -13,6 +13,7 @@ namespace Isotope\Backend\ProductPrice;
 
 use Contao\Backend;
 use Contao\Database;
+use Contao\StringUtil;
 use Haste\Util\Format;
 
 
@@ -157,7 +158,7 @@ class Callback extends Backend
      */
     public function saveTiers($varValue, $dc)
     {
-        $arrNew = deserialize($varValue);
+        $arrNew = StringUtil::deserialize($varValue);
 
         if (!\is_array($arrNew) || empty($arrNew)) {
             Database::getInstance()->query("DELETE FROM tl_iso_product_pricetier WHERE pid={$dc->id}");

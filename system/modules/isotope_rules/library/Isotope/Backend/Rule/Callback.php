@@ -18,6 +18,7 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\Image;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
 
@@ -71,7 +72,7 @@ class Callback extends Backend
         if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
             $arrNew = explode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
         } else {
-            $arrNew = deserialize($varValue);
+            $arrNew = StringUtil::deserialize($varValue);
         }
 
         if (!\is_array($arrNew) || empty($arrNew)) {
@@ -125,7 +126,7 @@ class Callback extends Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . $this->addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
 

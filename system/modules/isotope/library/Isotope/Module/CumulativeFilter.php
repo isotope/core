@@ -64,7 +64,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     {
         parent::__construct($objModule, $strColumn);
 
-        $this->iso_cumulativeFields = deserialize($this->iso_cumulativeFields);
+        $this->iso_cumulativeFields = StringUtil::deserialize($this->iso_cumulativeFields);
         $fields                     = array();
 
         if (\is_array($this->iso_cumulativeFields)) {

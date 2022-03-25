@@ -83,10 +83,10 @@ class Permission extends Backend
      */
     private function addCreatePermission($id, $permissionField, $accessField, $table, $record)
     {
-        $arrPermissions = deserialize($record->$permissionField);
+        $arrPermissions = StringUtil::deserialize($record->$permissionField);
 
         if (\is_array($arrPermissions) && \in_array('create', $arrPermissions, true)) {
-            $arrAccess   = deserialize($record->$accessField);
+            $arrAccess   = StringUtil::deserialize($record->$accessField);
             $arrAccess[] = $id;
             $arrAccess   = array_unique($arrAccess);
 

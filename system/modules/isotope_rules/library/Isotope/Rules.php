@@ -16,6 +16,7 @@ use Contao\Database;
 use Contao\Environment;
 use Contao\Input;
 use Contao\ModuleModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
@@ -175,7 +176,7 @@ class Rules extends Controller
             }
         }
 
-        $arrCoupons = deserialize($objCart->coupons);
+        $arrCoupons = StringUtil::deserialize($objCart->coupons);
 
         if (!empty($arrCoupons) && \is_array($arrCoupons)) {
             $blnHasCode = false;
@@ -213,7 +214,7 @@ class Rules extends Controller
      */
     public function getCouponForm($objModule)
     {
-        $arrCoupons = deserialize(Isotope::getCart()->coupons);
+        $arrCoupons = StringUtil::deserialize(Isotope::getCart()->coupons);
 
         if (!\is_array($arrCoupons)) {
             $arrCoupons = array();
@@ -289,7 +290,7 @@ class Rules extends Controller
 
         $objRules = Rule::findActiveWithoutCoupons();
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
-        $arrCoupons = deserialize($objCart->coupons);
+        $arrCoupons = StringUtil::deserialize($objCart->coupons);
 
         if (\is_array($arrCoupons) && !empty($arrCoupons)) {
             $blnError = false;
@@ -343,8 +344,8 @@ class Rules extends Controller
     public function transferCoupons(IsotopeProductCollection $oldCollection, IsotopeProductCollection $newCollection)
     {
         if ($oldCollection instanceof Cart && $newCollection instanceof Cart) {
-            $oldCoupons = deserialize($oldCollection->coupons, true);
-            $newCoupons = deserialize($newCollection->coupons, true);
+            $oldCoupons = StringUtil::deserialize($oldCollection->coupons, true);
+            $newCoupons = StringUtil::deserialize($newCollection->coupons, true);
 
             $newCollection->coupons = array_unique(array_merge($oldCoupons, $newCoupons));
             $newCollection->save();
@@ -377,7 +378,7 @@ class Rules extends Controller
 
             case 'cart_group':
                 $blnResult = false;
-                $ids = deserialize($objRule->groupRules);
+                $ids = StringUtil::deserialize($objRule->groupRules);
 
                 if (!empty($ids) && \is_array($ids)) {
                     foreach ($ids as $id) {

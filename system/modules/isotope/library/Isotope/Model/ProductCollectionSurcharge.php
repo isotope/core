@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\StringUtil;
 use Contao\System;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopePayment;
@@ -203,7 +204,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     public function setRow(array $arrData)
     {
-        $this->arrProducts = deserialize($arrData['products']);
+        $this->arrProducts = StringUtil::deserialize($arrData['products']);
         $this->arrTaxIds   = explode(',', $arrData['tax_id']);
 
         if (!\is_array($this->arrProducts)) {

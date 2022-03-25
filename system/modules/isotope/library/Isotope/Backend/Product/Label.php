@@ -88,7 +88,7 @@ class Label
      */
     public static function generateImage($objProduct)
     {
-        $arrImages = deserialize($objProduct->images);
+        $arrImages = StringUtil::deserialize($objProduct->images);
 
         if (!empty($arrImages) && \is_array($arrImages)) {
             foreach ($arrImages as $image) {

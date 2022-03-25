@@ -20,6 +20,7 @@
 namespace Isotope\Upgrade;
 
 use Contao\Database;
+use Contao\StringUtil;
 
 class To0020050150 extends Base
 {
@@ -49,7 +50,7 @@ class To0020050150 extends Base
                     continue;
                 }
 
-                $value = deserialize($product[$attribute]);
+                $value = StringUtil::deserialize($product[$attribute]);
 
                 if (\is_array($value)) {
                     $update[$attribute] = implode(',', $value);

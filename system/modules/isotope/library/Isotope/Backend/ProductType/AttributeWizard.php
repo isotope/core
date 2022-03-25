@@ -14,6 +14,7 @@ namespace Isotope\Backend\ProductType;
 use Contao\Backend;
 use Contao\Controller;
 use Contao\DataContainer;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttribute;
@@ -180,7 +181,7 @@ class AttributeWizard extends Backend
 
         $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrFields   = array();
-        $arrValues   = deserialize($varValue);
+        $arrValues   = StringUtil::deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
         if ($blnVariants) {
@@ -246,7 +247,7 @@ class AttributeWizard extends Backend
     public function save($varValue, $dc)
     {
         $arrLegends  = array();
-        $arrFields   = deserialize($varValue);
+        $arrFields   = StringUtil::deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
         if (empty($arrFields) || !\is_array($arrFields)) {

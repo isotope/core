@@ -14,6 +14,7 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
+use Contao\StringUtil;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Rule;
@@ -50,7 +51,7 @@ class Coupons extends Module
      */
     protected function compile()
     {
-        $coupons = deserialize($this->cart->coupons);
+        $coupons = StringUtil::deserialize($this->cart->coupons);
 
         if (!\is_array($coupons)) {
             $coupons = array();

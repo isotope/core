@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Database;
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -92,7 +93,7 @@ class RelatedProducts extends ProductList
 
         if (null !== $relatedProducts) {
             foreach ($relatedProducts as $category) {
-                $ids = trimsplit(',', $category->products);
+                $ids = StringUtil::trimsplit(',', $category->products);
 
                 if (\is_array($ids) && 0 !== \count($ids)) {
                     $productIds = array_unique(array_merge($productIds, $ids));

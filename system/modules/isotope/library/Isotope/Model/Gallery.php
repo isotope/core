@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\PageModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 
@@ -77,8 +78,8 @@ abstract class Gallery extends TypeAgent
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
         $objGallery->setFiles(static::mergeMediaData(
-            deserialize($objProduct->$strAttribute, true),
-            deserialize($objProduct->{$strAttribute . '_fallback'}, true)
+            StringUtil::deserialize($objProduct->$strAttribute, true),
+            StringUtil::deserialize($objProduct->{$strAttribute . '_fallback'}, true)
         ));
         $objGallery->product_id = $objProduct->getProductId();
 

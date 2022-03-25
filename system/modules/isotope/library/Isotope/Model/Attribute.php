@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Controller;
 use Contao\Database;
 use Contao\FilesModel;
+use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
@@ -243,7 +244,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
             switch ($this->optionsSource) {
                 case IsotopeAttributeWithOptions::SOURCE_ATTRIBUTE:
-                    $arrOptions = deserialize($this->options);
+                    $arrOptions = StringUtil::deserialize($this->options);
                     break;
 
                 case IsotopeAttributeWithOptions::SOURCE_FOREIGNKEY:
@@ -333,7 +334,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      */
     public function getOptions()
     {
-        $arrOptions = deserialize($this->options);
+        $arrOptions = StringUtil::deserialize($this->options);
 
         if (!\is_array($arrOptions)) {
             return array();
@@ -455,7 +456,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     protected function parseForeignKey($strSettings, $strLanguage = false)
     {
         $strFallback = null;
-        $arrLines    = trimsplit('@\r\n|\n|\r@', $strSettings);
+        $arrLines    = StringUtil::trimsplit('@\r\n|\n|\r@', $strSettings);
 
         // Return false if there are no lines
         if ($strSettings == '' || !\is_array($arrLines) || empty($arrLines)) {

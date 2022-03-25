@@ -16,6 +16,7 @@ use Contao\Input;
 use Contao\Message;
 use Contao\Module;
 use Contao\Request;
+use Contao\StringUtil;
 use Contao\System;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -53,7 +54,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             return;
         }
 
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!$this->saferpay_username) {
             // TODO: remove once HTTPS interface is no longer supported
@@ -171,7 +172,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     {
         if ('capture' === $objNewStatus->saferpay_status) {
 
-            $arrPayment = deserialize($objOrder->payment_data, true);
+            $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
             if ('BE' === TL_MODE) {
@@ -385,7 +386,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 $this->debugLog(sprintf("Could not get the redirect URI from Saferpay. JSON Response:\n%s", print_r($json, true)));
             }
 
-            $paymentData = deserialize($objOrder->payment_data, true);
+            $paymentData = StringUtil::deserialize($objOrder->payment_data, true);
             $paymentData['PAYCONFIRM']['TOKEN'] = $json['Token'];
 
             $objOrder->payment_data = $paymentData;

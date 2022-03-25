@@ -15,6 +15,7 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\Request;
+use Contao\StringUtil;
 use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -58,7 +59,7 @@ class OpenPaymentPlatform extends Payment
      */
     public function isAvailable()
     {
-        $brands = deserialize($this->opp_brands);
+        $brands = StringUtil::deserialize($this->opp_brands);
 
         if (!empty($brands)
             && \is_array($brands)
@@ -81,7 +82,7 @@ class OpenPaymentPlatform extends Payment
             return false;
         }
 
-        $paymentBrands = deserialize($this->opp_brands, true);
+        $paymentBrands = StringUtil::deserialize($this->opp_brands, true);
         $supportedTypes = static::getPaymentTypes($paymentBrands);
         $paymentType = array_shift($supportedTypes);
 
@@ -256,7 +257,7 @@ class OpenPaymentPlatform extends Payment
      */
     private function storeApiResponse(array $data, IsotopePurchasableCollection $objOrder)
     {
-        $payments = deserialize($objOrder->payment_data, true);
+        $payments = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($payments['OPP'])) {
             $payments['OPP'] = array();

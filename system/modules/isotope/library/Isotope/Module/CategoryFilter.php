@@ -165,7 +165,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         foreach ($pages as $subpage) {
             $subitems = '';
             $trail = false;
-            $_groups = deserialize($subpage->groups);
+            $_groups = StringUtil::deserialize($subpage->groups);
 
             // Do not show protected pages unless a back end or front end user is logged in
             if (!$this->showProtected

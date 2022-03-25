@@ -10,6 +10,7 @@
  */
 
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\StringUtil;
 
 /**
  * Class DC_TablePageId
@@ -633,7 +634,7 @@ class DC_TablePageId extends \DC_Table
 
             foreach ($headerFields as $v)
             {
-                $_v = deserialize($objParent->$v);
+                $_v = \Contao\StringUtil::deserialize($objParent->$v);
 
                 if (\is_array($_v))
                 {
@@ -832,7 +833,7 @@ class DC_TablePageId extends \DC_Table
                     {
                         if ($GLOBALS['TL_DCA'][$table]['fields'][$k]['eval']['encrypt'])
                         {
-                            $row[$i][$k] = Encryption::decrypt(deserialize($v));
+                            $row[$i][$k] = Encryption::decrypt(StringUtil::deserialize($v));
                         }
                     }
 
@@ -1239,7 +1240,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     // Decrypt the value
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'])
                     {
-                        $row[$v] = Encryption::decrypt(deserialize($row[$v]));
+                        $row[$v] = Encryption::decrypt(StringUtil::deserialize($row[$v]));
                     }
 
                     if (strpos($v, ':') !== false)
@@ -1274,7 +1275,7 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
                     }
                     else
                     {
-                        $row_v = deserialize($row[$v]);
+                        $row_v = \Contao\StringUtil::deserialize($row[$v]);
 
                         if (\is_array($row_v))
                         {

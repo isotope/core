@@ -272,11 +272,11 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'sql'                   => "varchar(64) NOT NULL default ''",
             'explanation'           => 'elevatezoom_position',
             'load_callback' => [function ($value) {
-                $value = deserialize($value);
+                $value = \Contao\StringUtil::deserialize($value);
                 return \is_array($value) && !\is_array($value[0]) ? [$value] : [];
             }],
             'save_callback' => [function ($value) {
-                $value = deserialize($value);
+                $value = \Contao\StringUtil::deserialize($value);
                 return \is_array($value) ? serialize($value[0]) : '';
             }],
         ),

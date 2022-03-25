@@ -17,6 +17,7 @@ use Contao\Date;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\Model\QueryBuilder;
+use Contao\StringUtil;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
@@ -436,7 +437,7 @@ class ProductPrice extends Model implements IsotopePrice
     protected static function getMemberGroups($objMember)
     {
         if (null !== $objMember) {
-            $arrGroups = deserialize($objMember->groups);
+            $arrGroups = StringUtil::deserialize($objMember->groups);
         }
 
         if (!isset($arrGroups) || !\is_array($arrGroups)) {

@@ -12,6 +12,7 @@
 namespace Isotope\Upgrade;
 
 use Contao\Database;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
@@ -62,7 +63,7 @@ class To0020030007 extends Base
                 $set = array();
 
                 foreach ($fields as $field) {
-                    $value = deserialize($products->$field);
+                    $value = StringUtil::deserialize($products->$field);
 
                     if (!empty($value) && \is_array($value)) {
                         $set[$field] = implode(',', $value);

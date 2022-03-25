@@ -87,7 +87,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     {
         parent::__construct($objResult);
 
-        $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
+        $this->arrData['allowed_cc_types'] = StringUtil::deserialize($this->arrData['allowed_cc_types']);
 
         if (\is_array($this->arrData['allowed_cc_types'])) {
             $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);
@@ -127,7 +127,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
         }
 
         if ($this->protected) {
-            $arrGroups = deserialize($this->groups);
+            $arrGroups = StringUtil::deserialize($this->groups);
 
             if (!\is_array($arrGroups)
                 || 0 === \count($arrGroups)
@@ -164,12 +164,12 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             }
         }
 
-        $arrConfigs = deserialize($this->config_ids);
+        $arrConfigs = StringUtil::deserialize($this->config_ids);
         if (\is_array($arrConfigs) && \count($arrConfigs) > 0 && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
-        $arrCountries = deserialize($this->countries);
+        $arrCountries = StringUtil::deserialize($this->countries);
 
         if (\is_array($arrCountries) && \count($arrCountries) > 0
             && !\in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries, true)
@@ -177,7 +177,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return false;
         }
 
-        $arrShippings = deserialize($this->shipping_modules);
+        $arrShippings = StringUtil::deserialize($this->shipping_modules);
 
         if (\is_array($arrShippings)
             && \count($arrShippings) > 0
@@ -190,7 +190,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return false;
         }
 
-        $arrConfigTypes = deserialize($this->product_types);
+        $arrConfigTypes = StringUtil::deserialize($this->product_types);
 
         if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
             $arrItems = Isotope::getCart()->getItems();

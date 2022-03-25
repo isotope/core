@@ -13,6 +13,7 @@ namespace Isotope\Model;
 
 use Contao\Database;
 use Contao\Model;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Data\Plain;
 use Isotope\Interfaces\IsotopeProduct;
@@ -236,7 +237,7 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        $arrConfig = deserialize($this->configuration);
+        $arrConfig = StringUtil::deserialize($this->configuration);
 
         return \is_array($arrConfig) ? $arrConfig : [];
     }
@@ -250,7 +251,7 @@ class ProductCollectionItem extends \Model
      */
     public function getConfiguration()
     {
-        $arrConfig = deserialize($this->configuration);
+        $arrConfig = StringUtil::deserialize($this->configuration);
 
         if (empty($arrConfig) || !\is_array($arrConfig)) {
             return array();

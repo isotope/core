@@ -591,12 +591,12 @@ class Checkout extends Module
         }
         $productTypeIds = array_unique($productTypeIds);
 
-        foreach (deserialize($this->iso_order_conditions, true) as $config) {
+        foreach (StringUtil::deserialize($this->iso_order_conditions, true) as $config) {
             if (empty($config['form'])) {
                 continue;
             }
 
-            $configProductTypes = deserialize($config['product_types']);
+            $configProductTypes = StringUtil::deserialize($config['product_types']);
 
             if (!empty($configProductTypes) && \is_array($configProductTypes)) {
                 switch ($config['product_types_condition']) {

@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\FilesModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
@@ -71,7 +72,7 @@ class Download extends \Model
             return null;
         }
 
-        $arrExpires = deserialize($this->expires, true);
+        $arrExpires = StringUtil::deserialize($this->expires, true);
 
         if ($arrExpires['value'] == 0 || $arrExpires['unit'] == '') {
             return null;

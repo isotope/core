@@ -307,7 +307,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
 
                 if ($blnHasProtected && $objVariants->protected) {
-                    $groups = deserialize($objVariants->groups);
+                    $groups = StringUtil::deserialize($objVariants->groups);
 
                     if (empty($groups) || !\is_array($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
                         continue;
@@ -473,7 +473,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 return $text;
             }
 
-            $keywords = trimsplit(' |-', $keywords);
+            $keywords = StringUtil::trimsplit(' |-', $keywords);
             $keywords = array_filter(array_unique($keywords));
 
             foreach ($keywords as $word) {
@@ -1108,7 +1108,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return array();
         }
 
-        return array_merge(deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
+        return array_merge(StringUtil::deserialize($this->arrData['inherit'], true), Attribute::getInheritFields());
     }
 
     private function getCollectionItem()

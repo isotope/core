@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Contao\StringUtil;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -53,7 +54,7 @@ class Flat extends Shipping
                 }
 
                 if ('calculation' === $this->product_types_condition) {
-                    $allowedTypes = deserialize($this->product_types);
+                    $allowedTypes = StringUtil::deserialize($this->product_types);
                     $productType  = $objItem->getProduct()->getType();
 
                     if (\is_array($allowedTypes) && !\in_array($productType->id, $allowedTypes, false)) {

@@ -204,7 +204,7 @@ class Callback extends Permission
         Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
-        $arrAttributes = deserialize($varValue);
+        $arrAttributes = StringUtil::deserialize($varValue);
         $arrVariantAttributeLabels = array();
 
         if (!empty($arrAttributes) && \is_array($arrAttributes)) {
@@ -246,8 +246,8 @@ class Callback extends Permission
      */
     public function validateSingularAttributes($value, DataContainer $dc)
     {
-        $productFields  = deserialize($dc->activeRecord->attributes);
-        $variantFields  = deserialize($value);
+        $productFields  = StringUtil::deserialize($dc->activeRecord->attributes);
+        $variantFields  = StringUtil::deserialize($value);
         $singularFields = Attribute::getSingularFields();
 
         if (!\is_array($productFields) || !\is_array($variantFields) || 0 === \count($singularFields)) {

@@ -1668,7 +1668,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         $blnHasProduct = $objItem->hasProduct();
         $objProduct    = $objItem->getProduct();
         $objConfig     = $this->getRelated('config_id') ?: Isotope::getConfig();
-        $arrCSS        = ($blnHasProduct ? deserialize($objProduct->cssID, true) : array());
+        $arrCSS        = ($blnHasProduct ? StringUtil::deserialize($objProduct->cssID, true) : array());
 
         // Set the active product for insert tags replacement
         if ($blnHasProduct) {
@@ -1836,7 +1836,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             throw new \UnderflowException('Product collection must be saved before creating unique addresses.');
         }
 
-        $canSkip = deserialize($this->iso_checkout_skippable, true);
+        $canSkip = StringUtil::deserialize($this->iso_checkout_skippable, true);
         $objBillingAddress  = $this->getBillingAddress();
         $objShippingAddress = $this->getShippingAddress();
 

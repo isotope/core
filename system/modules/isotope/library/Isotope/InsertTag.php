@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProduct;
@@ -31,7 +32,7 @@ class InsertTag
      */
     public function replace($insertTag)
     {
-        $tokens = trimsplit('::', $insertTag);
+        $tokens = StringUtil::trimsplit('::', $insertTag);
 
         switch ($tokens[0]) {
             case 'cart':

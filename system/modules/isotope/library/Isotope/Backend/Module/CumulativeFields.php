@@ -13,6 +13,7 @@ namespace Isotope\Backend\Module;
 
 use Contao\Backend;
 use Contao\Controller;
+use Contao\StringUtil;
 use Contao\System;
 
 class CumulativeFields extends Backend
@@ -91,7 +92,7 @@ class CumulativeFields extends Backend
      */
     public function validateConfiguration($value)
     {
-        $value = deserialize($value);
+        $value = StringUtil::deserialize($value);
 
         if (!\is_array($value)) {
             return '';

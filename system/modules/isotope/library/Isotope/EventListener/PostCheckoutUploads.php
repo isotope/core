@@ -36,7 +36,7 @@ class PostCheckoutUploads
             ++$position;
 
             $hasChanges = false;
-            $configuration = deserialize($item->configuration);
+            $configuration = \Contao\StringUtil::deserialize($item->configuration);
 
             if (!\is_array($configuration)) {
                 continue;

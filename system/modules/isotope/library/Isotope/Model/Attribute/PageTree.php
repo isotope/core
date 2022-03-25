@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -29,7 +30,7 @@ class PageTree extends Attribute
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['foreignKey'] = 'tl_page.title';
-        $arrData['fields'][$this->field_name]['eval']['rootNodes'] = deserialize($this->rootNodes);
+        $arrData['fields'][$this->field_name]['eval']['rootNodes'] = StringUtil::deserialize($this->rootNodes);
 
         if ('checkbox' === $this->fieldType) {
             $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
@@ -56,11 +57,11 @@ class PageTree extends Attribute
         $value = parent::getValue($product);
 
         if ('checkbox' === $this->fieldType) {
-            $value = deserialize($value, true);
+            $value = StringUtil::deserialize($value, true);
 
             // Drag&drop sorting order
             if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
-                $tmp = deserialize($orderSource);
+                $tmp = StringUtil::deserialize($orderSource);
 
                 if (!empty($tmp) && \is_array($tmp)) {
                     $value = array_merge(

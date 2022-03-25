@@ -13,6 +13,7 @@ namespace Isotope\Model\Attribute;
 
 use Contao\File;
 use Contao\FilesModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
@@ -59,7 +60,7 @@ class FileTree extends Attribute
         $value = parent::getValue($product);
 
         if ('checkbox' === $this->fieldType) {
-            $value = deserialize($value);
+            $value = StringUtil::deserialize($value);
         }
 
         return (array) $value;
@@ -142,7 +143,7 @@ class FileTree extends Attribute
 
             case 'custom':
                 if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
-                    $tmp = deserialize($orderSource);
+                    $tmp = StringUtil::deserialize($orderSource);
 
                     if (!empty($tmp) && \is_array($tmp)) {
                         // Remove all values

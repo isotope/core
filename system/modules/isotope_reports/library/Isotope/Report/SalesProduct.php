@@ -13,6 +13,7 @@ namespace Isotope\Report;
 
 use Contao\Database;
 use Contao\Session;
+use Contao\StringUtil;
 use Isotope\Isotope;
 use Isotope\Model\ProductType;
 use Isotope\Report\Period\PeriodFactory;
@@ -126,7 +127,7 @@ class SalesProduct extends Sales
                     $arrOptions['name'] = sprintf('%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>', $arrOptions['name'], $objProducts->product_sku);
                 }
 
-                foreach (deserialize($objProducts->product_configuration, true) as $strName => $strValue) {
+                foreach (StringUtil::deserialize($objProducts->product_configuration, true) as $strName => $strValue) {
                     if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName])) {
                         $strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] : $strValue;
                         $strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;

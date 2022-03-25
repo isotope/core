@@ -72,7 +72,7 @@ class Category extends Backend
         ;
 
         if (1 === $current->numRows) {
-            $data = deserialize($current->data);
+            $data = StringUtil::deserialize($current->data);
             $data['pages'] = array_map(function ($category) {
                 return $category['id'];
             }, $arrCategories);

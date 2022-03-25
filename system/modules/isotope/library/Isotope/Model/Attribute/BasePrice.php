@@ -12,6 +12,7 @@
 namespace Isotope\Model\Attribute;
 
 use Contao\Database\Result;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
@@ -51,7 +52,7 @@ class BasePrice extends Attribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        $arrData = deserialize($objProduct->{$this->field_name});
+        $arrData = StringUtil::deserialize($objProduct->{$this->field_name});
 
         if (\is_array($arrData) && $arrData['unit'] > 0 && $arrData['value'] != '') {
             $objBasePrice = \Isotope\Model\BasePrice::findByPk((int) $arrData['unit']);

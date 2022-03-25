@@ -14,6 +14,7 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Haste\Http\Response\JsonResponse;
@@ -213,7 +214,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     }
                 }
 
-                $arrKeywords = trimsplit(' |-', $keywords);
+                $arrKeywords = StringUtil::trimsplit(' |-', $keywords);
                 $arrKeywords = array_filter(array_unique($arrKeywords));
 
                 foreach ($arrKeywords as $keyword) {
@@ -423,7 +424,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
         if ($this->iso_enableLimit) {
             $arrOptions = [];
-            $arrLimit   = array_map('intval', trimsplit(',', $this->iso_perPage));
+            $arrLimit   = array_map('intval', StringUtil::trimsplit(',', $this->iso_perPage));
             $objLimit   = Isotope::getRequestCache()->getFirstLimitForModules([$this->id]);
             $arrLimit   = array_unique($arrLimit);
             sort($arrLimit);

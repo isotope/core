@@ -11,6 +11,7 @@
 
 namespace Isotope\EventListener;
 
+use Contao\StringUtil;
 use Haste\Units\Mass\Unit;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Address;
@@ -61,7 +62,7 @@ class DHLBusinessCheckoutListener
             return;
         }
 
-        $data = deserialize($order->shipping_data, true);
+        $data = StringUtil::deserialize($order->shipping_data, true);
         $data['dhl_shipment_number'] = $response->getShipmentNumber();
         $order->shipping_data = $data;
         $order->save();
@@ -149,7 +150,7 @@ class DHLBusinessCheckoutListener
         $details->setReturnReference($order->getDocumentNumber());
         $details->setWeight($scale->amountIn(Unit::KILOGRAM));
 
-        $shippingDate = deserialize($shippingMethod->dhl_shipping, true);
+        $shippingDate = StringUtil::deserialize($shippingMethod->dhl_shipping, true);
         if (isset($shippingDate['value']) && $shippingDate['value'] && $shippingDate['unit']) {
             $shippingDate = strtotime(sprintf('+%s %s', $shippingDate['value'], $shippingDate['unit']));
 

@@ -15,6 +15,7 @@ use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\Database;
 use Contao\Environment;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
@@ -188,7 +189,7 @@ class ProductReader extends Module
      */
     protected function getCssId(Product $objProduct)
     {
-        $css = deserialize($objProduct->cssID, true);
+        $css = StringUtil::deserialize($objProduct->cssID, true);
 
         return $css[0] ? ' id="' . $css[0] . '"' : null;
     }
@@ -214,7 +215,7 @@ class ProductReader extends Module
             $classes[] = 'new';
         }
 
-        $arrCSS = deserialize($objProduct->cssID, true);
+        $arrCSS = StringUtil::deserialize($objProduct->cssID, true);
         if ('' !== (string) $arrCSS[1]) {
             $classes[] = (string) $arrCSS[1];
         }

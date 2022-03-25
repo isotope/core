@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Contao\FrontendTemplate;
+use Contao\StringUtil;
 use Contao\TemplateLoader;
 
 /**
@@ -35,7 +36,7 @@ class Template extends FrontendTemplate
      */
     public static function getTemplate($strTemplate, $strFormat = 'html5')
     {
-        $arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
+        $arrAllowed = StringUtil::trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
 
         if (\is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !\in_array($strFormat, $arrAllowed)) {
             throw new \InvalidArgumentException("Invalid output format $strFormat");

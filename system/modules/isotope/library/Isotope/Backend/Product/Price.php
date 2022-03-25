@@ -15,6 +15,7 @@ use Contao\Backend;
 use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\StringUtil;
 use Contao\Widget;
 use Isotope\Backend\SubtableVersion;
 use Isotope\Model\Product;
@@ -58,7 +59,7 @@ class Price extends Backend
         ;
 
         if (1 === $current->numRows) {
-            $data = deserialize($current->data);
+            $data = StringUtil::deserialize($current->data);
 
             if (empty($arrData['prices'])) {
                 $data['price'] = '';
@@ -176,7 +177,7 @@ class Price extends Backend
         $time = time();
 
         // Parse the timePeriod widget
-        $arrValue = deserialize($varValue, true);
+        $arrValue = StringUtil::deserialize($varValue, true);
         $strPrice = (string) $arrValue['value'];
         $intTax   = (int) $arrValue['unit'];
 

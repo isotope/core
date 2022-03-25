@@ -900,7 +900,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'sql'                   => "blob NULL",
             'save_callback' => [
                 function($value) {
-                    $brands = deserialize($value);
+                    $brands = \Contao\StringUtil::deserialize($value);
 
                     if (!empty($brands) && \is_array($brands)) {
                         if (!\Isotope\Model\Payment\OpenPaymentPlatform::supportsPaymentBrands($brands)) {

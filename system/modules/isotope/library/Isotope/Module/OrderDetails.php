@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageError403;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
@@ -67,7 +68,7 @@ class OrderDetails extends AbstractProductCollection
 
         parent::compile();
 
-        $this->Template->info                 = deserialize($order->checkout_info, true);
+        $this->Template->info                 = StringUtil::deserialize($order->checkout_info, true);
         $this->Template->date                 = Format::date($order->locked);
         $this->Template->time                 = Format::time($order->locked);
         $this->Template->datim                = Format::datim($order->locked);

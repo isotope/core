@@ -14,6 +14,7 @@ namespace Isotope\Backend\RelatedProduct;
 use Contao\Backend;
 use Contao\Database;
 use Contao\Input;
+use Contao\StringUtil;
 use Isotope\Model\RelatedCategory;
 
 
@@ -32,7 +33,7 @@ class Callback extends Backend
 
         $strBuffer = '<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
-        $arrProducts = trimsplit(',', $row['products']);
+        $arrProducts = StringUtil::trimsplit(',', $row['products']);
 
         if (!empty($arrProducts) && \is_array($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';

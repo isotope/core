@@ -89,7 +89,7 @@ class ProductCollectionDownload extends \Model
         }
 
         $arrDownloads    = array();
-        $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+        $allowedDownload = StringUtil::trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         $baseUrl = null;
         if ($orderDetailsPageId > 0 && ($orderDetailsPage = PageModel::findByPk($orderDetailsPageId)) !== null) {

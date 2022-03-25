@@ -12,6 +12,7 @@
 namespace Isotope\Model\Payment;
 
 use Contao\Environment;
+use Contao\StringUtil;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -184,7 +185,7 @@ abstract class PaypalApi extends Payment
      */
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
         $paymentData['PAYPAL'] = $paypalData;
 
         $collection->payment_data = $paymentData;
@@ -198,7 +199,7 @@ abstract class PaypalApi extends Payment
      */
     protected function retrievePayment(IsotopeProductCollection $collection)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
         return \array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
@@ -209,7 +210,7 @@ abstract class PaypalApi extends Payment
      */
     protected function storeHistory(IsotopeProductCollection $collection, array $paypalData)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
         if (!\is_array($paymentData['PAYPAL_HISTORY'])) {
             $paymentData['PAYPAL_HISTORY'] = [];

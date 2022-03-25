@@ -129,7 +129,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         if ($this->protected) {
-            $arrGroups = deserialize($this->groups);
+            $arrGroups = StringUtil::deserialize($this->groups);
 
             if (!\is_array($arrGroups)
                 || empty($arrGroups)
@@ -180,20 +180,20 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             }
         }
 
-        $arrConfigs = deserialize($this->config_ids);
+        $arrConfigs = StringUtil::deserialize($this->config_ids);
         if (\is_array($arrConfigs) && !empty($arrConfigs) && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
-        $arrCountries = deserialize($this->countries);
+        $arrCountries = StringUtil::deserialize($this->countries);
         if (\is_array($arrCountries) && !empty($arrCountries)) {
             if (!\in_array($objAddress->country, $arrCountries, true)) {
                 return false;
             }
 
-            $arrSubdivisions = deserialize($this->subdivisions);
+            $arrSubdivisions = StringUtil::deserialize($this->subdivisions);
             if (\is_array($arrSubdivisions)
                 && !empty($arrSubdivisions)
                 && !\in_array($objAddress->subdivision, $arrSubdivisions, true)
@@ -212,7 +212,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         if ('calculation' !== $this->product_types_condition) {
-            $arrConfigTypes = deserialize($this->product_types);
+            $arrConfigTypes = StringUtil::deserialize($this->product_types);
 
             if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
                 $arrItems = Isotope::getCart()->getItems();
