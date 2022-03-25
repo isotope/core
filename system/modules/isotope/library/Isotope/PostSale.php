@@ -176,7 +176,7 @@ class PostSale extends \Contao\Frontend
                 TL_ERROR
             );
 
-            log_message((string) $e, 'isotope_postsale.log');
+            log_message((string) $e, 'isotope_postsale-' . date('Y-m-d') . '.log');
 
             return new Response('Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -196,7 +196,7 @@ class PostSale extends \Contao\Frontend
                 var_export($this->request->request->all(), true),
                 $this->request->getContent()
             ),
-            'isotope_postsale.log'
+            'isotope_postsale-' . date('Y-m-d') . '.log'
         );
     }
 
