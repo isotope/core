@@ -268,36 +268,22 @@ class Paypal extends Postsale
             $body = file_get_contents('php://input');
             $url  = 'https://ipnpb.'.($this->debug ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
 
-            if (class_exists('GuzzleHttp\Client')) {
-                $request = new Client(
-                    [
-                        RequestOptions::TIMEOUT         => 5,
-                        RequestOptions::CONNECT_TIMEOUT => 5,
-                        RequestOptions::HTTP_ERRORS     => false,
-                    ]
-                );
+            $request = new Client(
+                [
+                    RequestOptions::TIMEOUT         => 5,
+                    RequestOptions::CONNECT_TIMEOUT => 5,
+                    RequestOptions::HTTP_ERRORS     => false,
+                ]
+            );
 
-                $response = $request->post($url, [RequestOptions::BODY => $body]);
+            $response = $request->post($url, [RequestOptions::BODY => $body]);
 
-                if ($response->getStatusCode() != 200) {
-                    throw new \RuntimeException($response->getReasonPhrase());
-                }
+            if ($response->getStatusCode() != 200) {
+                throw new \RuntimeException($response->getReasonPhrase());
+            }
 
-                if ('VERIFIED' !== $response->getBody()->getContents()) {
-                    throw new \UnexpectedValueException($response->getBody()->getContents());
-                }
-
-            } else {
-                $request = new \RequestExtended();
-                $request->send($url, $body, 'post');
-
-                if ($request->hasError()) {
-                    throw new \RuntimeException($request->error);
-                }
-
-                if ('VERIFIED' !== $request->response) {
-                    throw new \UnexpectedValueException($request->response);
-                }
+            if ('VERIFIED' !== $response->getBody()->getContents()) {
+                throw new \UnexpectedValueException($response->getBody()->getContents());
             }
         } catch (\UnexpectedValueException $e) {
             System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);

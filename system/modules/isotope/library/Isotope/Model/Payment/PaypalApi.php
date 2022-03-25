@@ -29,7 +29,7 @@ abstract class PaypalApi extends Payment
     /**
      * @param IsotopePurchasableCollection $order
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function createPayment(IsotopePurchasableCollection $order)
     {
@@ -137,7 +137,7 @@ abstract class PaypalApi extends Payment
      * @param IsotopePurchasableCollection $order
      * @param string                       $paymentId
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
@@ -168,7 +168,7 @@ abstract class PaypalApi extends Payment
      * @param string $paymentId
      * @param string $payerId
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function executePayment($paymentId, $payerId)
     {
@@ -229,39 +229,21 @@ abstract class PaypalApi extends Payment
     {
         $request = $this->prepareRequest();
 
-        if ($request instanceof Client) {
-            $response = $request->post(
-                $this->getApiUrl('/oauth2/token'),
-                [
-                    RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
-                    RequestOptions::HEADERS     => [
-                        'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
-                    ],
-                ]
-            );
+        $response = $request->post(
+            $this->getApiUrl('/oauth2/token'),
+            [
+                RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
+                RequestOptions::HEADERS     => [
+                    'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
+                ],
+            ]
+        );
 
-            if ($response->getStatusCode() != 200) {
-                return null;
-            }
-
-            $response = json_decode($response->getBody()->getContents(), true);
-
-        } else {
-            $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-            $request->setHeader('Authorization', 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret));
-
-            $request->send(
-                $this->getApiUrl('/oauth2/token'),
-                'grant_type=client_credentials',
-                'POST'
-            );
-
-            if ($request->code != 200) {
-                return null;
-            }
-
-            $response = json_decode($request->response, true);
+        if ($response->getStatusCode() != 200) {
+            return null;
         }
+
+        $response = json_decode($response->getBody()->getContents(), true);
 
         return \array_key_exists('access_token', $response) ? $response : null;
     }
@@ -272,7 +254,7 @@ abstract class PaypalApi extends Payment
      * @param null $method
      * @param bool $renewToken
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return \Psr\Http\Message\ResponseInterface
      */
     private function sendRequest($path, array $data = null, $method = null, $renewToken = false)
     {
@@ -281,29 +263,18 @@ abstract class PaypalApi extends Payment
         // TODO store and reuse token
         $token = $this->getApiToken();
 
-        if ($request instanceof Client) {
-            $response = $request->request(
-                $method,
-                $this->getApiUrl($path),
-                [
-                    RequestOptions::JSON    => $data,
-                    RequestOptions::HEADERS => [
-                        'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
-                    ],
-                ]
-            );
+        $response = $request->request(
+            $method,
+            $this->getApiUrl($path),
+            [
+                RequestOptions::JSON    => $data,
+                RequestOptions::HEADERS => [
+                    'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+                ],
+            ]
+        );
 
-            $responseCode = $response->getStatusCode();
-
-        } else {
-            $request->setHeader('Authorization', $token['token_type'] . ' ' . $token['access_token']);
-            $request->setHeader('Content-Type', 'application/json');
-
-            $request->send($this->getApiUrl($path), json_encode($data), $method);
-
-            $responseCode = $request->code;
-            $response     = $request;
-        }
+        $responseCode = $response->getStatusCode();
 
         // Token probably expired, try again with a new token
         if (401 === $responseCode && !$renewToken) {
@@ -314,29 +285,21 @@ abstract class PaypalApi extends Payment
     }
 
     /**
-     * @return Client|\RequestExtended
+     * @return Client
      */
     private function prepareRequest()
     {
-        if (class_exists('GuzzleHttp\Client')) {
-            $request = new Client(
-                [
-                    RequestOptions::TIMEOUT         => 5,
-                    RequestOptions::CONNECT_TIMEOUT => 5,
-                    RequestOptions::HTTP_ERRORS     => false,
-                    RequestOptions::HEADERS         => [
-                        'Accept'          => 'application/json',
-                        'Accept-Language' => 'en_US',
-                    ],
-                ]
-            );
-        } else {
-            $request = new \RequestExtended();
-            $request->setHeader('Accept', 'application/json');
-            $request->setHeader('Accept-Language', 'en_US');
-        }
-
-        return $request;
+        return new Client(
+            [
+                RequestOptions::TIMEOUT         => 5,
+                RequestOptions::CONNECT_TIMEOUT => 5,
+                RequestOptions::HTTP_ERRORS     => false,
+                RequestOptions::HEADERS         => [
+                    'Accept'          => 'application/json',
+                    'Accept-Language' => 'en_US',
+                ],
+            ]
+        );
     }
 
     private function getApiUrl($path)

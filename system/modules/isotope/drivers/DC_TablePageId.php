@@ -49,7 +49,7 @@ class DC_TablePageId extends \DC_Table
         // Add to clipboard
         if ('paste' === Input::get('act'))
         {
-            $arrClipboard = $this->getSession()->get('CLIPBOARD');
+            $arrClipboard = System::getContainer()->get('session')->get('CLIPBOARD');
 
             $arrClipboard[$this->strTable] = array
             (
@@ -58,7 +58,7 @@ class DC_TablePageId extends \DC_Table
                 'mode' => Input::get('mode')
             );
 
-            $this->getSession()->set('CLIPBOARD', $arrClipboard);
+            System::getContainer()->get('session')->set('CLIPBOARD', $arrClipboard);
         }
 
         // Custom filter
@@ -96,9 +96,9 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Store the current IDs
-        $session = $this->getSessionData();
+        $session = System::getContainer()->get('session')->all();
         $session['CURRENT']['IDS'] = $this->current;
-        $this->setSessionData($session);
+        System::getContainer()->get('session')->replace($session);
 
         return $return;
     }
@@ -135,9 +135,9 @@ class DC_TablePageId extends \DC_Table
         }
 
         // Empty clipboard
-        $arrClipboard = $this->getSession()->get('CLIPBOARD');
+        $arrClipboard = System::getContainer()->get('session')->get('CLIPBOARD');
         $arrClipboard[$this->strTable] = array();
-        $this->getSession()->set('CLIPBOARD', $arrClipboard);
+        System::getContainer()->get('session')->set('CLIPBOARD', $arrClipboard);
 
         // Update the record
         if (\in_array($this->set['page_id'], $cr))
@@ -209,7 +209,7 @@ class DC_TablePageId extends \DC_Table
             $this->redirect($this->getReferer());
         }
 
-        $arrClipboard = $this->getSession()->get('CLIPBOARD');
+        $arrClipboard = System::getContainer()->get('session')->get('CLIPBOARD');
 
         if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id']))
         {
@@ -558,7 +558,7 @@ class DC_TablePageId extends \DC_Table
     protected function parentView()
     {
         $blnClipboard = false;
-        $arrClipboard = $this->getSession()->get('CLIPBOARD');
+        $arrClipboard = System::getContainer()->get('session')->get('CLIPBOARD');
         $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
         $blnHasSorting = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'][0] == 'sorting';
         $blnMultiboard = false;
@@ -1539,47 +1539,5 @@ Isotope.makeParentViewSortable("ul_' . CURRENT_ID . '");
         }
 
         return trim($return);
-    }
-
-    /**
-     * Gets session instance depending on Contao 3 or Contao 4.
-     *
-     * @return Session|\Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private function getSession()
-    {
-        if (method_exists('Contao\System', 'getContainer')) {
-            return System::getContainer()->get('session');
-        }
-
-        return Session::getInstance();
-    }
-
-    /**
-     * Gets session data depending on Contao 3 or Contao 4.
-     *
-     * @return array
-     */
-    private function getSessionData()
-    {
-        if (method_exists('Contao\System', 'getContainer')) {
-            return $this->getSession()->all();
-        }
-
-        return $this->getSession()->getData();
-    }
-
-    /**
-     * Sets session data depending on Contao 3 or Contao 4.
-     *
-     * @param array $data
-     */
-    private function setSessionData(array $data)
-    {
-        if (method_exists('Contao\System', 'getContainer')) {
-            return $this->getSession()->replace($data);
-        }
-
-        return $this->getSession()->setData($data);
     }
 }
