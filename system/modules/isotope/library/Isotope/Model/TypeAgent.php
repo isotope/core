@@ -21,10 +21,6 @@ use Contao\Model\Registry;
 /**
  * Class TypeAgent
  * Parent class for Isotope Type Agent models.
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 abstract class TypeAgent extends \Model
 {

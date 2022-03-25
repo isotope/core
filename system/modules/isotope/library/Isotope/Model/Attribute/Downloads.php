@@ -16,9 +16,6 @@ use Isotope\Model\Attribute;
 
 /**
  * Attribute to provide downloads in the product details
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author Christoph Wiechert <cw@4wardmedia.de>
  */
 class Downloads extends FileTree
 {

@@ -18,11 +18,8 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Payment;
 use Isotope\Template;
 
-
 /**
  * Basic class for postsale handling
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 abstract class Postsale extends Payment implements IsotopePostsale
 {

@@ -14,9 +14,6 @@ namespace Isotope\Model;
 
 /**
  * Group defines a backend product group
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Group extends \Model
 {

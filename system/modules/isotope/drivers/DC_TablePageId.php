@@ -12,13 +12,6 @@
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\StringUtil;
 
-/**
- * Class DC_TablePageId
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- */
 class DC_TablePageId extends \DC_Table
 {
 

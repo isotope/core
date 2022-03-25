@@ -13,8 +13,6 @@ namespace Isotope\Interfaces;
 
 /**
  * IsotopeAttribute is a product attribute for Isotope eCommerce
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 interface IsotopeAttribute
 {

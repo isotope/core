@@ -15,14 +15,6 @@ use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\StringUtil;
 
-/**
- * Class ModuleIsotopeSetup
- *
- * Back end module Isotope "setup".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Setup extends BackendOverview
 {
     /**

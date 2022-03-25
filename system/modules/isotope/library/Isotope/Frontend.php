@@ -44,14 +44,7 @@ use Isotope\Model\TaxClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class Isotope\Frontend
- *
  * Provide methods to handle Isotope front end components.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Frontend extends \Contao\Frontend
 {

@@ -19,8 +19,6 @@ use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement FileTree widget
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class FileTree extends Attribute
 {

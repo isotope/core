@@ -17,8 +17,6 @@ use Isotope\Model\Label;
 
 /**
  * Translates labels
- *
- * @author Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Translation
 {

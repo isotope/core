@@ -16,13 +16,7 @@ use Contao\Input;
 use Contao\StringUtil;
 
 /**
- * Class InheritCheckbox
- *
  * Provide methods to inherit checkbox fields.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
  */
 class InheritCheckBox extends \CheckBox
 {

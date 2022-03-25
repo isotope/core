@@ -29,12 +29,7 @@ use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 /**
- * Class ModuleIsotopeAddressBook
- *
  * Front end module Isotope "address book".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 class AddressBook extends Module
 {

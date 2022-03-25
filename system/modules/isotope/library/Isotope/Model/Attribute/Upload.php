@@ -22,9 +22,6 @@ use Isotope\Model\ProductCollectionItem;
 
 /**
  * Attribute to implement frontend uploads
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Upload extends Attribute implements \uploadable
 {

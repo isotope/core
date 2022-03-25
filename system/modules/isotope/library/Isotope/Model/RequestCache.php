@@ -20,9 +20,6 @@ use Model\Registry;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class RequestCache extends \Model
 {

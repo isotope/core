@@ -16,11 +16,7 @@ use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Shipping as ShippingModel;
 
 /**
- * Class Shipping
- *
  * Implements shipping surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Shipping extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {

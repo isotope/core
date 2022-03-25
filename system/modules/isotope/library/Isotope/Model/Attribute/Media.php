@@ -20,9 +20,6 @@ use Isotope\Model\Attribute;
 
 /**
  * Attribute to provide an audio/video player in the product details
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2014
- * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
 class Media extends Attribute
 {

@@ -20,8 +20,6 @@ use Isotope\Model\Product;
 
 /**
  * Build filter configuration for request cache
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Filter implements \ArrayAccess
 {

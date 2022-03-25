@@ -24,9 +24,6 @@ use Isotope\Model\ProductCollectionItem;
 
 /**
  * Attribute to implement terminal42/contao-fineuploader
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class FineUploader extends Attribute implements \uploadable
 {

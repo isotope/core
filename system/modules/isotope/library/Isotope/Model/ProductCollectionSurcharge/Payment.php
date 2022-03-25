@@ -16,11 +16,7 @@ use Isotope\Model\Payment as PaymentModel;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
- * Class Payment
- *
  * Implements payment surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Payment extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {

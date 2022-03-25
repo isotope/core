@@ -15,11 +15,7 @@ use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Model\ProductCollectionSurcharge;
 
 /**
- * Class Tax
- *
  * Implements tax surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Tax extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {

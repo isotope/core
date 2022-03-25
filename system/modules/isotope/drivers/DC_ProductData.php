@@ -19,14 +19,6 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 use Isotope\Model\Group;
 
-/**
- * Class DC_ProductData
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
- */
 class DC_ProductData extends \DC_Table
 {
 

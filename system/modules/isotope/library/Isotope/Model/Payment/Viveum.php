@@ -11,13 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-/**
- * Class Viveum
- *
- * Handle VIVEUM payments
- * @copyright  Isotope eCommerce Workgroup 2009-2013
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- */
 class Viveum extends PSP
 {
 

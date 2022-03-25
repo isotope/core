@@ -34,14 +34,7 @@ use Isotope\Model\TaxClass;
 
 
 /**
- * Class Isotope
- *
  * The base class for all Isotope components.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- * @author     Christoph Wiechert <christoph.wiechert@4wardmedia.de>
  */
 class Isotope extends Controller
 {

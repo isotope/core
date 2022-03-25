@@ -15,9 +15,6 @@ use Isotope\Interfaces\IsotopeAttributeWithOptions;
 
 /**
  * Attribute to implement CheckboxMenu widget
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class CheckboxMenu extends AbstractAttributeWithOptions
 {

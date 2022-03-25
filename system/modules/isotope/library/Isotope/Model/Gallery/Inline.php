@@ -13,15 +13,6 @@ namespace Isotope\Model\Gallery;
 
 use Isotope\Template;
 
-
-/**
- * Class InlineGallery
- *
- * Provide methods to handle inline gallery.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Inline extends Standard
 {
 

@@ -15,12 +15,7 @@ use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**
- * Class Document
- *
  * Parent class for all documents.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 abstract class Document extends TypeAgent
 {

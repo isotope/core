@@ -30,14 +30,7 @@ use Isotope\Model\Gallery;
 
 
 /**
- * Class MediaManager
- *
  * Provide methods to handle media files.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 class MediaManager extends Widget implements \uploadable
 {

@@ -21,11 +21,7 @@ use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
 /**
- * Class Payment
- *
  * Implements payment surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {

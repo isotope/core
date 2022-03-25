@@ -24,14 +24,6 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
 use Isotope\Model\Rule;
 
-
-/**
- * Class Rules
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Rules extends Controller
 {
 

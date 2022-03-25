@@ -15,9 +15,6 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
 
 /**
  * Attribute to impelement RadioButton widget
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class RadioButton extends AbstractAttributeWithOptions implements IsotopeAttributeForVariants
 {
