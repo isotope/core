@@ -568,9 +568,6 @@ class DC_TablePageId extends \DC_Table
             }
         }
 
-        // Load the fonts to display the paste hint
-        Config::set('loadGoogleFonts', $blnClipboard);
-
         // Load the language file and data container array of the parent table
         System::loadLanguageFile($this->ptable);
         $this->loadDataContainer($this->ptable);
