@@ -103,7 +103,7 @@ class Callback extends Backend
     {
         $objOrder = Order::findByPk($dc->id);
 
-        if ($objOrder === null) {
+        if (null === $objOrder) {
             return '';
         }
 
@@ -532,7 +532,13 @@ class Callback extends Backend
             'eval'       => array('mandatory' => true),
         );
 
-        $objSelect = new SelectMenu(SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));
+        $arrSelect = SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']);
+
+        if (\count($arrSelect['options'] ?? []) > 1) {
+            array_unshift($arrSelect['options'], ['value' => '', 'label' => '-']);
+        }
+
+        $objSelect = new SelectMenu($arrSelect);
 
         $strMessages = Message::generate();
         Message::reset();

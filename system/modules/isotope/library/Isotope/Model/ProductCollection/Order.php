@@ -15,6 +15,7 @@ use Contao\Controller;
 use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Template;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeNotificationTokens;
@@ -26,7 +27,6 @@ use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionLog;
-use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 
@@ -45,6 +45,8 @@ use NotificationCenter\Model\Notification;
  * @property int    $date_paid
  * @property int    $date_shipped
  * @property string $notes
+ *
+ * @method Order|null findByPk($id)
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {
@@ -514,8 +516,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         /** @var Notification|object $objNotification */
         if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
-            /** @var Template|object $objTemplate */
-            $objTemplate                 = new Template($objNotification->iso_collectionTpl);
+            /** @var \Isotope\Template|object $objTemplate */
+            $objTemplate                 = new \Isotope\Template($objNotification->iso_collectionTpl);
             $objTemplate->isNotification = true;
 
             $this->addToTemplate(
