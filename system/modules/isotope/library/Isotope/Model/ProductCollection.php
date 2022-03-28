@@ -561,7 +561,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function countItems()
     {
         if (!isset($this->arrCache['countItems'])) {
-            $this->arrCache['countItems'] = ProductCollectionItem::countBy('pid', $this->id);
+            $this->arrCache['countItems'] = ProductCollectionItem::countBy('pid', (int) $this->id);
         }
 
         return $this->arrCache['countItems'];
@@ -575,7 +575,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function sumItemsQuantity()
     {
         if (!isset($this->arrCache['sumItemsQuantity'])) {
-            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::sumBy('quantity', 'pid', $this->id);
+            $this->arrCache['sumItemsQuantity'] = ProductCollectionItem::sumBy('quantity', 'pid', (int) $this->id);
         }
 
         return $this->arrCache['sumItemsQuantity'];
