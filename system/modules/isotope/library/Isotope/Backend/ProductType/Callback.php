@@ -15,6 +15,7 @@ use Contao\Backend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
 use Contao\DataContainer;
 use Contao\Image;
 use Contao\Input;
