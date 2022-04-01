@@ -479,9 +479,8 @@ if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
     $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
 
-    // changelanguage v2 + v3
-    $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\EventListener\ChangeLanguageListener', 'onTranslateUrlParameters');
-    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', 'onChangelanguageNavigation');
+    // changelanguage
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
 
     // Set module and module id for payment and/or shipping modules
     if ('FE' === TL_MODE) {
