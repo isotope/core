@@ -272,6 +272,7 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
+\Isotope\Model\Attribute::registerModelType('quantitySurcharge', 'Isotope\Model\Attribute\QuantitySurcharge');
 
 if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
     \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
@@ -475,6 +476,7 @@ if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\EventListener\PostCheckoutUploads', 'onPostCheckout');
     $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
+    $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener', '__invoke');
     $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
     $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
