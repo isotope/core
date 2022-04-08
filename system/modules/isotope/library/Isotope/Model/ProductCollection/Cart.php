@@ -46,6 +46,20 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
      */
     protected $objDraftOrder;
 
+    /**
+     * A cart does not have a payment method,
+     * but the order might require payment for surcharges (e.g. shipping)
+     */
+    public function requiresPayment()
+    {
+        $draftOrder = $this->getDraftOrder();
+
+        if (null !== $draftOrder) {
+            return $draftOrder->requiresPayment();
+        }
+
+        return parent::requiresPayment();
+    }
 
     /**
      * Get billing address or create if none exists
