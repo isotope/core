@@ -414,7 +414,11 @@ class RequestCache extends \Model
             return $this;
         }
 
-        $objCache = static::findOneBy(array('store_id=?', 'config=?'), $this->preSave(array((int) $this->store_id)));
+        $objCache = null;
+
+        if ($this->store_id != 0) {
+            $objCache = static::findOneBy(array('store_id=?', 'config=?'), $this->preSave(array((int) $this->store_id)));
+        }
 
         if (null === $objCache) {
             $objCache = clone $this;
