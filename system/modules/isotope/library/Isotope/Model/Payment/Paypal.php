@@ -15,7 +15,6 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Http\Response\Response;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -24,6 +23,7 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 /**
@@ -45,20 +45,20 @@ class Paypal extends Postsale
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
             System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ('Completed' !== Input::post('payment_status')) {
             System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
-            return;
+            return new Response('', Response::HTTP_NOT_IMPLEMENTED);
         }
 
         if (!$this->validateInput()) {
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
         if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
             System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         // Validate payment data (see #2221)
@@ -66,17 +66,17 @@ class Paypal extends Postsale
             || $objOrder->getTotal() != Input::post('mc_gross')
         ) {
             System::log('PayPal IPN: manipulation in payment from "' . Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ($objOrder->isCheckoutComplete()) {
             System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
-            return;
+            return new Response();
         }
 
         if (!$objOrder->checkout()) {
             System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Store request data in order for future references
@@ -90,6 +90,8 @@ class Paypal extends Postsale
         $objOrder->save();
 
         System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+
+        return new Response();
     }
 
     /**
@@ -282,8 +284,7 @@ class Paypal extends Postsale
         } catch (ExceptionInterface $exception) {
             System::log('PayPal IPN: Request Error (' . $exception->getMessage() . ')', __METHOD__, TL_ERROR);
 
-            $response = new Response('', 500);
-            $response->send();
+            return false;
         }
 
         return true;

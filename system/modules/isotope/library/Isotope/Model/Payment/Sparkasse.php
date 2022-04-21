@@ -18,12 +18,12 @@ use Contao\Module;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Sparkasse payment method.
@@ -42,7 +42,7 @@ class Sparkasse extends Postsale
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
             System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         $arrData = array();
@@ -53,13 +53,13 @@ class Sparkasse extends Postsale
 
         // Sparkasse system sent error message
         if ($arrData['directPosErrorCode'] > 0) {
-            $this->redirectError($arrData);
+            return $this->redirectError($arrData);
         }
 
         // Check the data hash to prevent manipulations
         if (Input::post('mac') != $this->calculateHash($arrData)) {
             System::log('Security hash mismatch in Sparkasse payment!', __METHOD__, TL_ERROR);
-            $this->redirectError($arrData);
+            return $this->redirectError($arrData);
         }
 
         // Convert amount, Sparkasse is using comma instead of dot as decimal separator
@@ -68,20 +68,22 @@ class Sparkasse extends Postsale
         // Validate payment data
         if ($objOrder->getCurrency() !== $arrData['currency']) {
             System::log(sprintf('Data manipulation: currency mismatch ("%s" != "%s")', $objOrder->getCurrency(), $arrData['currency']), __METHOD__, TL_ERROR);
-            $this->redirectError($arrData);
-        } elseif ($objOrder->getTotal() != $arrData['amount']) {
+            return $this->redirectError($arrData);
+        }
+
+        if ($objOrder->getTotal() != $arrData['amount']) {
             System::log(sprintf('Data manipulation: amount mismatch ("%s" != "%s")', $objOrder->getTotal(), $arrData['amount']), __METHOD__, TL_ERROR);
-            $this->redirectError($arrData);
+            return $this->redirectError($arrData);
         }
 
         if ($objOrder->isCheckoutComplete()) {
             System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
-            return;
+            return new Response();
         }
 
         if (!$objOrder->checkout()) {
             System::log('Postsale checkout for order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
-            $this->redirectError($arrData);
+            return $this->redirectError($arrData);
         }
 
         // Store request data in order for future references
@@ -96,9 +98,7 @@ class Sparkasse extends Postsale
 
         $strUrl = Checkout::generateUrlForStep('complete', $objOrder, PageModel::findWithDetails((int) $arrData['sessionid']));
 
-        // 200 OK
-        $objResponse = new Response('redirecturls=' . Environment::get('base') . $strUrl);
-        $objResponse->send();
+        return new Response('redirecturls=' . Environment::get('base') . $strUrl);
     }
 
     /**
@@ -170,8 +170,6 @@ class Sparkasse extends Postsale
     {
         $strUrl = Checkout::generateUrlForStep('failed', null, PageModel::findWithDetails((int) $arrData['sessionid']));
 
-        // 200 OK
-        $objResponse = new Response('redirecturlf=' . Environment::get('base') . $strUrl . '?reason=' . $arrData['directPosErrorMessage']);
-        $objResponse->send();
+        return new Response('redirecturlf=' . Environment::get('base') . $strUrl . '?reason=' . $arrData['directPosErrorMessage']);
     }
 }
