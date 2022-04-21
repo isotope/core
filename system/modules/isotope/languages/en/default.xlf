@@ -359,6 +359,12 @@
       <trans-unit id="MSC.iso_order_total">
         <source>Total</source>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+      </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
       </trans-unit>
