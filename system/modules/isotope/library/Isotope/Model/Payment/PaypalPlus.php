@@ -17,7 +17,6 @@ use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
-use GuzzleHttp\Psr7\Response;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -35,15 +34,9 @@ class PaypalPlus extends PaypalApi
 
         $request = $this->createPayment($objOrder);
 
-        if ($request instanceof Response) {
-            $responseCode  = (int) $request->getStatusCode();
-            $responseError = $request->getReasonPhrase();
-            $responseData  = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseError = $request->error;
-            $responseData = $request->response;
-        }
+        $responseCode  = (int) $request->getStatusCode();
+        $responseError = $request->getReasonPhrase();
+        $responseData  = $request->getBody()->getContents();
 
         $this->debugLog($responseData);
 
@@ -212,13 +205,8 @@ class PaypalPlus extends PaypalApi
 
         $request = $this->executePayment($paypalData['id'], Input::get('PayerID'));
 
-        if ($request instanceof Response) {
-            $responseCode = (int) $request->getStatusCode();
-            $responseData = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseData = $request->response;
-        }
+        $responseCode = (int) $request->getStatusCode();
+        $responseData = $request->getBody()->getContents();
 
         $this->debugLog($responseData);
 
