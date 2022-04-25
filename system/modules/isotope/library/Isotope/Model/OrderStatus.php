@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\StringUtil;
 use Isotope\Translation;
 
 
@@ -66,7 +67,7 @@ class OrderStatus extends \Model
      */
     public function getAlias()
     {
-        return standardize($this->name);
+        return StringUtil::standardize($this->name);
     }
 
     /**

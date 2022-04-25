@@ -11,6 +11,7 @@
 
 namespace Isotope\IntegrityCheck;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeIntegrityCheck;
 
 abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
@@ -26,7 +27,7 @@ abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
             $className = substr($className, $pos+1);
         }
 
-        return standardize($className);
+        return StringUtil::standardize($className);
     }
 
     /**

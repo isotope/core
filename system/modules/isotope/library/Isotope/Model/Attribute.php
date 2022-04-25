@@ -517,7 +517,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $label = $arrFormat[$name]['label'] ?: $name;
 
             $strBuffer .= '
-      <th class="head_' . $i . ($i == 0 ? ' head_first' : '') . ($i == $last ? ' head_last' : '') . (!is_numeric($name) ? ' ' . standardize($name) : '') . '">' . $label . '</th>';
+      <th class="head_' . $i . ($i == 0 ? ' head_first' : '') . ($i == $last ? ' head_last' : '') . (!is_numeric($name) ? ' ' . StringUtil::standardize($name) : '') . '">' . $label . '</th>';
         }
 
         $strBuffer .= '
@@ -545,7 +545,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                 }
 
                 $strBuffer .= '
-      <td class="col_' . ++$c . ($c == 0 ? ' col_first' : '') . ($c == $last ? ' col_last' : '') . ' ' . standardize($name) . '">' . $value . '</td>';
+      <td class="col_' . ++$c . ($c == 0 ? ' col_first' : '') . ($c == $last ? ' col_last' : '') . ' ' . StringUtil::standardize($name) . '">' . $value . '</td>';
             }
 
             $strBuffer .= '

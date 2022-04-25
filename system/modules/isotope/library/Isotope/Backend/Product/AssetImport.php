@@ -50,7 +50,7 @@ class AssetImport extends Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=import', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . StringUtil::ampersand(str_replace('&key=import', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $GLOBALS['TL_LANG']['tl_iso_product']['import'][1] . '</h2>
@@ -58,7 +58,7 @@ class AssetImport extends Backend
 <div class="tl_message"><div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product']['importAssetsDescr'] . '</div></div>
 ' . Message::generate() . '
 
-<form action="' . ampersand(Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
+<form action="' . StringUtil::ampersand(Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit iso_importassets">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_import">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">

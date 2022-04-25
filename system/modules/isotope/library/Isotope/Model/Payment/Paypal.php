@@ -14,8 +14,9 @@ namespace Isotope\Model\Payment;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
+use Contao\StringUtil;
 use Contao\System;
-use Haste\Util\StringUtil;
+use Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
@@ -80,7 +81,7 @@ class Paypal extends Postsale
         }
 
         // Store request data in order for future references
-        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data = $arrPayment;
 
@@ -141,9 +142,9 @@ class Paypal extends Postsale
                 $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
-            $strName = StringUtil::convertToText(
+            $strName = HasteStringUtil::convertToText(
                 $objItem->getName() . $strConfig,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
             );
 
             // Make sure name is not empty, otherwise PayPal ignores all subsequent products
@@ -170,9 +171,9 @@ class Paypal extends Postsale
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = StringUtil::convertToText(
+            $arrData['item_name_' . ++$i] = HasteStringUtil::convertToText(
                 $objSurcharge->label,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
             );
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
@@ -184,17 +185,17 @@ class Paypal extends Postsale
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
         $objTemplate->invoice       = $objOrder->getId();
-        $objTemplate->data          = array_map([\Contao\StringUtil::class, 'specialchars'], $arrData);
+        $objTemplate->data          = array_map([StringUtil::class, 'specialchars'], $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->getCurrency();
         $objTemplate->return        = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
         $objTemplate->cancel_return = Environment::get('base') . Checkout::generateUrlForStep('failed');
         $objTemplate->notify_url    = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->headline      = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message       = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel        = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noscript = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->headline      = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message       = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel        = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }
@@ -212,7 +213,7 @@ class Paypal extends Postsale
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
@@ -224,7 +225,7 @@ class Paypal extends Postsale
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] . ')' . '</h2>

@@ -141,7 +141,7 @@ class Checkout extends Module
         $arrBuffer = array();
 
         // Default template settings. Must be set at beginning so they can be overwritten later (eg. trough callback)
-        $this->Template->action        = ampersand(Environment::get('request'));
+        $this->Template->action        = StringUtil::ampersand(Environment::get('request'));
         $this->Template->formId        = $this->strFormId;
         $this->Template->formSubmit    = $this->strFormId;
         $this->Template->enctype       = 'application/x-www-form-urlencoded';
@@ -321,7 +321,7 @@ class Checkout extends Module
 
             foreach ($arrModules as $objModule) {
                 $arrBuffer[] = array(
-                    'class' => standardize($step) . ' ' . $objModule->getStepClass(),
+                    'class' => StringUtil::standardize($step) . ' ' . $objModule->getStepClass(),
                     'html'  => $objModule->generate()
                 );
 
@@ -668,7 +668,7 @@ class Checkout extends Module
 
             $blnActive = false;
             $href      = '';
-            $class     = standardize($step);
+            $class     = StringUtil::standardize($step);
 
             if ($this->strCurrentStep == $step) {
                 $blnPassed = false;

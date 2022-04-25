@@ -104,13 +104,13 @@ class Breadcrumb extends Backend
             if ((!$intProductId && $intId == $arrGroup['id']) || ($intProductId && $intProductId == $arrGroup['id'])) {
                 $buffer .= '<img src="system/modules/isotope/assets/images/folder-network.png" width="16" height="16" alt="" style="margin-right:6px;">' . $arrGroup['name'];
             } else {
-                $buffer .= '<img src="system/modules/isotope/assets/images/folder-network.png" width="16" height="16" alt="" style="margin-right:6px;"><a href="' . ampersand($strUrl) . '&amp;gid=' . $arrGroup['id'] . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']) . '">' . $arrGroup['name'] . '</a>';
+                $buffer .= '<img src="system/modules/isotope/assets/images/folder-network.png" width="16" height="16" alt="" style="margin-right:6px;"><a href="' . StringUtil::ampersand($strUrl) . '&amp;gid=' . $arrGroup['id'] . '" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['selectGroup']) . '">' . $arrGroup['name'] . '</a>';
             }
 
             $arrLinks[] = $buffer;
         }
 
-        $arrLinks[] = sprintf('<a href="%s" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']) . '"><img src="system/modules/isotope/assets/images/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
+        $arrLinks[] = sprintf('<a href="%s" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['allGroups']) . '"><img src="system/modules/isotope/assets/images/folders.png" width="16" height="16" alt="" style="margin-right:6px;"> %s</a>', StringUtil::ampersand($strUrl) . '&amp;gid=0', $GLOBALS['TL_LANG']['MSC']['filterAll']);
 
         return '
 <ul id="tl_breadcrumb">

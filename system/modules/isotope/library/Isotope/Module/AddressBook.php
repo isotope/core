@@ -144,8 +144,8 @@ class AddressBook extends Module
                     'id'                => $objAddress->id,
                     'class'             => ($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : ''),
                     'text'              => $objAddress->generate(),
-                    'edit_url'          => ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
-                    'delete_url'        => ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
+                    'edit_url'          => StringUtil::ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
+                    'delete_url'        => StringUtil::ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
                     'default_billing'   => $objAddress->isDefaultBilling ? true : false,
                     'default_shipping'  => $objAddress->isDefaultShipping ? true : false,
                 ));
@@ -164,7 +164,7 @@ class AddressBook extends Module
         $this->Template->deleteAddressLabel   = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
         $this->Template->deleteAddressConfirm = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
         $this->Template->addresses            = $arrAddresses;
-        $this->Template->addNewAddress        = ampersand($strUrl . '?act=create');
+        $this->Template->addNewAddress        = StringUtil::ampersand($strUrl . '?act=create');
     }
 
 

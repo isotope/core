@@ -121,13 +121,13 @@ class MediaManager extends Widget implements \uploadable
         // Convert the $_FILES array to Contao format
         if (!empty($_FILES[$this->strName])) {
             $pathinfo = pathinfo(strtolower($_FILES[$this->strName]['name']));
-            $strCacheName = standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
+            $strCacheName = StringUtil::standardize($pathinfo['filename']) . '.' . $pathinfo['extension'];
             $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
 
             if (is_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
                 && md5_file($_FILES[$this->strName]['tmp_name']) != md5_file(TL_ROOT . '/' . $uploadFolder . '/' . $strCacheName)
             ) {
-                $strCacheName = standardize($pathinfo['filename']) . '-' . substr(md5_file($_FILES[$this->strName]['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
+                $strCacheName = StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file($_FILES[$this->strName]['tmp_name']), 0, 8) . '.' . $pathinfo['extension'];
                 $uploadFolder = $this->strTempFolder . '/' .$strCacheName[0];
             }
 
@@ -216,7 +216,7 @@ class MediaManager extends Widget implements \uploadable
                 ) {
                     $pathinfo = pathinfo($v['src']);
                     $strFile = $this->getFilePath(
-                        standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
+                        StringUtil::standardize($pathinfo['filename']) . '-' . substr(md5_file(TL_ROOT . '/' .  $strFile), 0, 8) . '.' . $pathinfo['extension']
                     );
                 }
 
