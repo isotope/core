@@ -15,13 +15,13 @@ use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
-use Haste\Http\Response\Response;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Expercash payment method.
@@ -62,21 +62,22 @@ class Expercash extends Payment implements IsotopePostsale
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
             System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if (!$this->validateUrlParams($objOrder)) {
             System::log('ExperCash: data rejected' . print_r($_POST, true), __METHOD__, TL_GENERAL);
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ($objOrder->isCheckoutComplete()) {
             System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
-            return;
+            return new Response();
         }
 
         if (!$objOrder->checkout()) {
             System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
-            return;
+            return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $objOrder->setDatePaid(time());
@@ -84,9 +85,7 @@ class Expercash extends Payment implements IsotopePostsale
 
         $objOrder->save();
 
-        // 200 OK
-        $objResponse = new Response();
-        $objResponse->send();
+        return new Response();
     }
 
     /**

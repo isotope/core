@@ -79,7 +79,7 @@ class AttributeOption extends Multilingual
      */
     public function isPercentage()
     {
-        return '%' === substr($this->arrData['price'], -1) ? true : false;
+        return '%' === substr($this->arrData['price'], -1);
     }
 
     /**
@@ -164,9 +164,9 @@ class AttributeOption extends Multilingual
             /** @var ProductPrice|ProductPrice[] $objPrice */
             if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
                 return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
-            } else {
-                return Isotope::calculatePrice($this->price, $this, 'price');
             }
+
+            return Isotope::calculatePrice($this->price, $this, 'price');
         }
 
         return $this->price;

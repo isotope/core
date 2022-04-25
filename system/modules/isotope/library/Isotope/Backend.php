@@ -14,6 +14,7 @@ namespace Isotope;
 use Backend as Contao_Backend;
 use Contao\BackendUser;
 use Contao\Controller;
+use Contao\CoreBundle\Exception\NoContentResponseException;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
@@ -21,7 +22,6 @@ use Contao\Model;
 use Contao\Session;
 use Contao\System;
 use Contao\Widget;
-use Haste\Http\Response\Response;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
 use Isotope\Model\Group;
@@ -106,7 +106,9 @@ class Backend extends Contao_Backend
 
         if (isset($arrSubdivisions[$country][$subdivision])) {
             return $arrSubdivisions[$country][$subdivision];
-        } elseif (\is_array($arrSubdivisions[$country])) {
+        }
+
+        if (\is_array($arrSubdivisions[$country])) {
             foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
                 if (\is_array($regionGroup)) {
                     foreach ($regionGroup as $groupLabel => $regions) {
@@ -271,8 +273,6 @@ class Backend extends Contao_Backend
      * Check the Ajax pre actions
      *
      * @param string $action
-     *
-     * @return string
      */
     public function executePreActions($action)
     {
@@ -280,14 +280,12 @@ class Backend extends Contao_Backend
             // Move the product
             case 'moveProduct':
                 Session::getInstance()->set('iso_products_gid', (int) Input::post('value'));
-                (new Response())->send();
-                break;
+                throw new NoContentResponseException();
 
             // Move multiple products
             case 'moveProducts':
                 Session::getInstance()->set('iso_products_gid', (int) Input::post('value'));
-                (new Response())->send();
-                break;
+                throw new NoContentResponseException();
 
             // Filter the groups
             case 'filterGroups':
@@ -319,8 +317,6 @@ class Backend extends Contao_Backend
      *
      * @param string         $action
      * @param DataContainer $dc
-     *
-     * @return string
      */
     public function executePostActions($action, $dc)
     {

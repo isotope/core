@@ -12,6 +12,7 @@ Version 2.8.0 (2022-02-??)
 - Added product picker to related products
 - Added support for custom templates in frontend form fields
 - Added cssClass to attribute options
+- Added new attribute "Surcharge per quantity"
 - Added support for notification tokens from payment and shipping method
 - Allow payment and shipping method to decide whether they have a backend interface
 - Hide the print button in order view if there are no documents

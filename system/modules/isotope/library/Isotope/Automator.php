@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Contao\Controller;
+use Contao\Request;
 use Contao\System;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
@@ -93,7 +94,7 @@ class Automator extends Controller
                     $fltCourse       = ('EUR' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
-                    $objRequest = new \Request();
+                    $objRequest = new Request();
                     $objRequest->send('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
 
                     if ($objRequest->hasError()) {
@@ -131,7 +132,7 @@ class Automator extends Controller
                     $fltCourse       = ('CHF' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('CHF' === $config->currencyOrigin) ? 1 : 0;
 
-                    $objRequest = new \Request();
+                    $objRequest = new Request();
                     $objRequest->send('http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php');
 
                     if ($objRequest->hasError()) {

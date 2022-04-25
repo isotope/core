@@ -22,7 +22,7 @@ class ChangeLanguageListener
      *
      * @param ChangelanguageNavigationEvent $event
      */
-    public function onChangelanguageNavigation(ChangelanguageNavigationEvent $event)
+    public function __invoke(ChangelanguageNavigationEvent $event)
     {
         if (($uid = $this->getUid()) !== null) {
             $event->getUrlParameterBag()->setQueryParameter('uid', $uid);
@@ -31,26 +31,6 @@ class ChangeLanguageListener
         } else if (($product = $this->getProductAlias()) !== null) {
             $event->getUrlParameterBag()->setUrlAttribute('product', $product);
         }
-    }
-
-    /**
-     * Hook callback for ChangeLanguage extension version 2 to support language switching on product reader page
-     *
-     * @param array $arrGet
-     *
-     * @return array
-     */
-    public function onTranslateUrlParameters($arrGet)
-    {
-        if (($uid = $this->getUid()) !== null) {
-            $arrGet['get']['uid'] = $uid;
-        } else if (($step = $this->getCheckoutStep()) !== null) {
-            $arrGet['url']['step'] = $step;
-        } else if (($product = $this->getProductAlias()) !== null) {
-            $arrGet['url']['product'] = $product;
-        }
-
-        return $arrGet;
     }
 
     /**
