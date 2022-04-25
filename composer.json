@@ -96,12 +96,5 @@
                 "system/modules/isotope/config/upgrade.php"
             ]
         }
-    },
-    "config": {
-        "allow-plugins": {
-            "contao-components/installer": true,
-            "contao-community-alliance/composer-plugin": true,
-            "contao/manager-plugin": true
-        }
     }
 }
