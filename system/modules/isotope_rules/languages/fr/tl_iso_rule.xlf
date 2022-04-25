@@ -456,6 +456,9 @@
         <source>Basic rule setup</source>
         <target>Basic rule setup</target>
       </trans-unit>
+      <trans-unit id="tl_iso_group.group_legend">
+        <source>Group configuration</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>
         <target>Coupon Code</target>
