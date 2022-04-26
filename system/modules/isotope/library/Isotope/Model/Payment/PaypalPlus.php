@@ -22,6 +22,8 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class PaypalPlus extends PaypalApi
 {
@@ -32,16 +34,17 @@ class PaypalPlus extends PaypalApi
             Checkout::redirectToStep(Checkout::STEP_COMPLETE, $objOrder);
         }
 
-        $request = $this->createPayment($objOrder);
+        try {
+            $response = $this->createPayment($objOrder);
+        } catch (TransportExceptionInterface $e) {
+            System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
+            Checkout::redirectToStep(Checkout::STEP_FAILED);
+        }
 
-        $responseCode  = (int) $request->getStatusCode();
-        $responseError = $request->getReasonPhrase();
-        $responseData  = $request->getBody()->getContents();
+        $this->debugLog($response->getContent(false));
 
-        $this->debugLog($responseData);
-
-        if (201 === $responseCode) {
-            $paypalData = json_decode($responseData, true);
+        if (201 === $response->getStatusCode()) {
+            $paypalData = $response->toArray();
             $this->storePayment($objOrder, $paypalData);
             $this->storeHistory($objOrder, $paypalData);
 
@@ -60,19 +63,7 @@ class PaypalPlus extends PaypalApi
             }
         }
 
-        System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
-
-        $this->debugLog(
-            sprintf(
-                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
-                $responseCode,
-                $responseError,
-                $responseData
-            )
-        );
-
-        Checkout::redirectToStep(Checkout::STEP_FAILED);
-        exit;
+        return false;
     }
 
     /**
@@ -197,24 +188,19 @@ class PaypalPlus extends PaypalApi
             return false;
         }
 
-        /*$request = $this->patchPayment($objOrder, $paypalData['id']);
-
-        if (200 !== $request->code) {
-            return false;
-        }*/
-
-        $request = $this->executePayment($paypalData['id'], Input::get('PayerID'));
-
-        $responseCode = (int) $request->getStatusCode();
-        $responseData = $request->getBody()->getContents();
-
-        $this->debugLog($responseData);
-
-        if (200 !== $responseCode) {
+        try {
+            $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
+        } catch (TransportExceptionInterface $e) {
             return false;
         }
 
-        $this->storeHistory($objOrder, json_decode($responseData, true));
+        $this->debugLog($response->getContent(false));
+
+        if (200 !== $response->getStatusCode()) {
+            return false;
+        }
+
+        $this->storeHistory($objOrder, $response->toArray());
 
         $objOrder->checkout();
         $objOrder->setDatePaid(time());
