@@ -142,6 +142,7 @@ $GLOBALS['TL_DCA']['tl_iso_related_product'] = array
         'productsOrder' => array
         (
             'sql'                   => "blob NULL",
+            'eval'                  => array('doNotShow' => true),
         ),
     )
 );
