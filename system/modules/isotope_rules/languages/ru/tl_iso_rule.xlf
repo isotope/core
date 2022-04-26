@@ -409,6 +409,9 @@
       <trans-unit id="tl_iso_rule.basic_legend">
         <source>Basic rule setup</source>
       </trans-unit>
+      <trans-unit id="tl_iso_group.group_legend">
+        <source>Group configuration</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>
         <target>Код купона</target>

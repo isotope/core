@@ -534,7 +534,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         if (trim($strName) != '') {
             // Romanize friendly name to prevent email issues
             $strName = html_entity_decode($strName, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-            $strName = strip_insert_tags($strName);
+            $strName = StringUtil::stripInsertTags($strName);
             $strName = utf8_romanize($strName);
             $strName = preg_replace('/[^A-Za-z0-9.!#$%&\'*+-\/=?^_ `{|}~]+/i', '_', $strName);
 
@@ -593,7 +593,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         parent::setRow($arrData);
 
         // Merge settings into arrData, save() will move the values back
-        $this->arrData = array_merge(StringUtil::deserialize($arrData['settings'], true), $this->arrData);
+        $this->arrData = array_merge(StringUtil::deserialize($arrData['settings'] ?? [], true), $this->arrData);
 
         return $this;
     }
@@ -1803,7 +1803,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     protected function generateUniqueId()
     {
-        if ($this->arrData['uniqid'] != '') {
+        if (!empty($this->arrData['uniqid'])) {
             return $this->arrData['uniqid'];
         }
 

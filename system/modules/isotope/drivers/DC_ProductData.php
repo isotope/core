@@ -656,7 +656,7 @@ class DC_ProductData extends \DC_Table
             $version = str_replace(
                 '<div class="tl_version_panel">',
                 '<div class="tl_version_panel tl_iso_products_panel">
-<form action="' . ampersand(\Contao\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
+<form action="' . StringUtil::ampersand(\Contao\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
@@ -1271,7 +1271,7 @@ class DC_ProductData extends \DC_Table
 
             // Return the select menu
             $return .= '
-<form action="' . ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
+<form action="' . StringUtil::ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($blnIsError ? '
@@ -2804,7 +2804,7 @@ class DC_ProductData extends \DC_Table
         // Get the sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if ((int) $v['filter'] == $intFilterPanel)
+            if ((int) ($v['filter'] ?? 0) == $intFilterPanel)
             {
                 $sortingFields[] = $k;
             }
@@ -2952,7 +2952,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Support empty ptable fields
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? false)
             {
                 $arrProcedure[] = ($this->ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
                 $arrValues[] = $this->ptable;
@@ -3019,7 +3019,7 @@ class DC_ProductData extends \DC_Table
                 $options = $objFields->fetchEach($field);
 
                 // Sort by day
-                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? 0, array(5, 6)))
                 {
                     ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 6) ? rsort($options) : sort($options);
 

@@ -367,7 +367,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.attribute.0">
         <source>Attribute</source>
-        <target>Attribute</target>
+        <target>Attribut</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
         <source>Query Type</source>
@@ -405,9 +405,37 @@
         <source>Please configure the range filter fields.</source>
         <target>Bitte konfigurieren Sie die Felder vom Bereichsfilter.</target>
       </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.mode">
+        <source>Filter mode</source>
+        <target>Filter-Modus</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.range">
+        <source>Range</source>
+        <target>Bereich</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.min">
+        <source>Higher than</source>
+        <target>Mehr als</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.max">
+        <source>Lower than</source>
+        <target>Weniger als</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.fields">
+        <source>Value within</source>
+        <target>Wert zwischen</target>
+      </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute">
         <source>Attribute</source>
-        <target>Attribute</target>
+        <target>Attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max">
+        <source>Attribute to</source>
+        <target>Attribut bis</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max_blank">
+        <source>(only select for mode &quot;Value within&quot;)</source>
+        <target>(nur auswählen für Modus &quot;Wert zwischen&quot;)</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>

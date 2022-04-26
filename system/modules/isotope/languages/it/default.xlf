@@ -477,6 +477,14 @@
         <source>Total</source>
         <target>Totale</target>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+        <target>Piazzato </target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
         <target>dal basso all'alto</target>
@@ -1161,6 +1169,12 @@
         <source>Generates a video or audio player.</source>
         <target>Genera un lettore video o audio.</target>
       </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.0">
+        <source>Surcharge per quantity</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.1">
+        <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
+      </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
         <target>Fine Uploader</target>
@@ -1787,6 +1801,7 @@
       </trans-unit>
       <trans-unit id="CUR.XOF">
         <source>XOF - CFA Franc BCEAO</source>
+        <target>XOF - CFA Franco BCEAO</target>
       </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>

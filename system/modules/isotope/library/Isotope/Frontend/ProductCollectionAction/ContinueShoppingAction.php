@@ -13,6 +13,7 @@ namespace Isotope\Frontend\ProductCollectionAction;
 
 use Contao\Input;
 use Contao\Module;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class  ContinueShoppingAction extends AbstractLink
@@ -63,6 +64,6 @@ class  ContinueShoppingAction extends AbstractLink
      */
     public function getHref()
     {
-        return ampersand(base64_decode(Input::get('continue', true)));
+        return StringUtil::ampersand(base64_decode(Input::get('continue', true)));
     }
 }

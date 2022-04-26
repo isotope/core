@@ -546,12 +546,12 @@ class Callback extends Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . StringUtil::ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id) . '</h2>' . $strMessages . '
 
-<form action="' . ampersand(Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
+<form action="' . StringUtil::ampersand(Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">

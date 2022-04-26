@@ -14,6 +14,7 @@ Version 2.8.0 (2022-02-??)
 - Added cssClass to attribute options
 - Added new attribute "Surcharge per quantity"
 - Added support for notification tokens from payment and shipping method
+- Added range filter modes to filter for min or max value and range in two fields
 - Allow payment and shipping method to decide whether they have a backend interface
 - Hide the print button in order view if there are no documents
 - Added payment method and card number to Datatrans payment
@@ -27,3 +28,9 @@ Version 2.8.0 (2022-02-??)
 - Pass the product model to attribute widgets
 - Improve performance by using non-deprecated methods
 - Fixed encoding of PSP/VIVEUM data
+- Correctly require payment when order has shipping price
+- Correctly reset checkout messages on GET request (#2269)
+- Include updated order data when sending status notification (#2262)
+- Added XOF currency (#2263)
+- Do not add unpublished product variants to sitemap XML (#2244)
+- Show correct shipping calculator message if no products are to be shipped (#2243)

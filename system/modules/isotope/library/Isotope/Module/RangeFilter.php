@@ -13,6 +13,7 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeFilterModule;
@@ -77,26 +78,55 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             $cache = Isotope::getRequestCache();
 
             foreach ($fields as $config) {
-                $values = Input::post($config['attribute']);
+                $values = Input::post($config['id']);
 
-                if (!\is_array($values)) {
+                if (null === $values) {
                     continue;
                 }
 
-                if (isset($values['min'])) {
-                    $cache->setFilterForModule(
-                        $config['attribute'].'_min',
-                        Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
-                        $this->id
-                    );
-                }
+                switch ($config['mode']) {
+                    case 'min':
+                        $cache->setFilterForModule(
+                            $config['id'],
+                            Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values),
+                            $this->id
+                        );
+                        break;
 
-                if (isset($values['max'])) {
-                    $cache->setFilterForModule(
-                        $config['attribute'].'_max',
-                        Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
-                        $this->id
-                    );
+                    case 'max':
+                        $cache->setFilterForModule(
+                            $config['id'],
+                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
+                            $this->id
+                        );
+                        break;
+
+                    case 'fields':
+                        $cache->setFilterForModule(
+                            $config['id'].'_min',
+                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
+                            $this->id
+                        );
+                        $cache->setFilterForModule(
+                            $config['id'].'_max',
+                            Filter::attribute($config['attribute_max'])->isGreaterOrEqualTo((int) $values),
+                            $this->id
+                        );
+                        break;
+
+                    case 'range':
+                    default:
+                        $cache->setFilterForModule(
+                            $config['attribute'].'_min',
+                            Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
+                            $this->id
+                        );
+                        $cache->setFilterForModule(
+                            $config['attribute'].'_max',
+                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
+                            $this->id
+                        );
+                        break;
                 }
             }
 
@@ -113,30 +143,67 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->fields = $fields;
         $this->Template->jsonFields = json_encode($fields);
         $this->Template->formId      = 'iso_filter_' . $this->id;
-        $this->Template->action      = ampersand(Environment::get('request'));
+        $this->Template->action      = StringUtil::ampersand(Environment::get('request'));
         $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
 
-    private function getRangeConfig()
+    private function getRangeConfig(): array
     {
         $cache = Isotope::getRequestCache();
         $configs = [];
 
-        foreach ($this->iso_rangeFields as $config) {
+        foreach ($this->iso_rangeFields as $i => $config) {
             $new = [
-                'attribute' => $config['attribute'],
-                'value'     => [(int) $config['min'], (int) $config['max']],
-                'min'       => (int) $config['min'],
-                'max'       => (int) $config['max'],
-                'step'      => (int) $config['step'],
+                'id' => "row$i",
+                'mode' => $config['mode'] ?? '',
+                'attribute' => $config['attribute'] ?? '',
+                'attribute_max' => $config['attribute_max'] ?? '',
+                'min' => (int) $config['min'],
+                'max' => (int) $config['max'],
+                'step' => (int) $config['step'],
             ];
 
-            if (null !== ($filter = $cache->getFilterForModule($config['attribute'].'_min', $this->id))) {
-                $new['value'][0] = (int) $filter['value'];
-            }
+            switch ($config['mode']) {
+                case 'min':
+                case 'max':
+                case 'fields':
+                    $new['value'] = 'max' === $config['mode'] ? (int) $config['max'] : (int) $config['min'];
+                    $new['inputs'] = [[
+                        'id' => "ctrl_row{$i}_".$this->id,
+                        'name' => "row$i",
+                        'value' => $new['value'],
+                    ]];
 
-            if (null !== ($filter = $cache->getFilterForModule($config['attribute'].'_max', $this->id))) {
-                $new['value'][1] = (int) $filter['value'];
+                    if (null !== ($filter = $cache->getFilterForModule("row{$i}_min", $this->id))) {
+                        $new['value'] = (int) $filter['value'];
+                    }
+                    break;
+
+                case 'range':
+                default:
+                    $new['id'] = $config['attribute'];
+                    $new['value'] = [(int) $config['min'], (int) $config['max']];
+                    $new['inputs'] = [
+                        [
+                            'id' => "ctrl_{$config['attribute']}_min_".$this->id,
+                            'name' => $config['attribute'].'[min]',
+                            'value' => $config['min'],
+                        ],
+                        [
+                            'id' => "ctrl_{$config['attribute']}_max_".$this->id,
+                            'name' => $config['attribute'].'[max]',
+                            'value' => $config['max'],
+                        ],
+                    ];
+
+                    if (null !== ($filter = $cache->getFilterForModule($config['attribute'].'_min', $this->id))) {
+                        $new['value'][0] = (int) $filter['value'];
+                    }
+
+                    if (null !== ($filter = $cache->getFilterForModule($config['attribute'].'_max', $this->id))) {
+                        $new['value'][1] = (int) $filter['value'];
+                    }
+                    break;
             }
 
             $configs[] = $new;

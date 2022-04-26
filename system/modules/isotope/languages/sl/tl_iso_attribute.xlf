@@ -172,6 +172,24 @@
       <trans-unit id="tl_iso_attribute.maxlength.1">
         <source>Limit the field length to a certain number of characters (text) or bytes (file uploads).</source>
       </trans-unit>
+      <trans-unit id="tl_iso_attribute.minval.0">
+        <source>Minimum value</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minval.1">
+        <source>Here you can set the minimum value for numeric fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxval.0">
+        <source>Maximum value</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxval.1">
+        <source>Here you can set the maximum value for numeric fields.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.step.0">
+        <source>Step</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.step.1">
+        <source>Here you can set the discrete step size of the field.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.0">
         <source>Foreign table &amp; field</source>
       </trans-unit>

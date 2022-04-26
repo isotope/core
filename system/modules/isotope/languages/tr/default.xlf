@@ -463,6 +463,14 @@
         <source>Total</source>
         <target>Toplam</target>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+        <target>Yerleştirilen</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+        <target>Para birimi</target>
+      </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
         <target>düşükten yükseğe</target>
@@ -1128,6 +1136,12 @@
       <trans-unit id="ATTR.media.1">
         <source>Generates a video or audio player.</source>
         <target>Bir video oynatıcı veya müzik çalar oluşturur.</target>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.0">
+        <source>Surcharge per quantity</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.1">
+        <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>

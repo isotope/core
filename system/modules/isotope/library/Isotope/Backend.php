@@ -20,6 +20,7 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\Model;
 use Contao\Session;
+use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
 use Isotope\Backend\Product\Permission;
@@ -461,7 +462,7 @@ class Backend extends Contao_Backend
             && Group::getTable() === Input::get('table')
             && 'be_main' === $objTemplate->getName()
         ) {
-            $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
+            $objTemplate->managerHref = StringUtil::ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }

@@ -48,7 +48,7 @@ class Permission extends Backend
         Controller::loadDataContainer('tl_iso_product');
         $blnVariants = false;
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $strName => $arrConfig) {
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName] ?? null;
 
             if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                 $blnVariants = true;

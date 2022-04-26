@@ -3,9 +3,9 @@
 <?php endif; ?>
 <div class="tl_formbody_edit be_iso_overview">
     <?php $first = true; foreach ($this->modules as $strGroupKey => $arrGroup): ?>
-    <fieldset id="pal_<?= $strGroupKey ?>" class="<?= $first ? 'tl_tbox' : 'tl_box'; ?><?php if($arrGroup['collapse']): ?> collapsed<?php endif; ?>">
+    <fieldset id="pal_<?= $strGroupKey ?>" class="<?= $first ? 'tl_tbox' : 'tl_box'; ?><?php if($arrGroup['collapse'] ?? false): ?> collapsed<?php endif; ?>">
         <legend onclick="AjaxRequest.toggleFieldset(this,'<?= $strGroupKey ?>','iso_be_overview_legend')"><?= $arrGroup['label'] ?></legend>
-        <?php if ($arrGroup['html']): ?>
+        <?php if (isset($arrGroup['html'])): ?>
         <?= $arrGroup['html'] ?>
         <?php else: ?>
         <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>

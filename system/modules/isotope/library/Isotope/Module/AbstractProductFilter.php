@@ -183,7 +183,7 @@ abstract class AbstractProductFilter extends Module
     {
         $arrData = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
 
-        switch ($arrData['eval']['rgxp']) {
+        switch ($arrData['eval']['rgxp'] ?? null) {
             case 'price':
             case 'digit':
                 return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);

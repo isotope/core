@@ -94,7 +94,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
 
         $allIds = [];
 
-        $this->Template->request = ampersand(Environment::get('indexFreeRequest'));
+        $this->Template->request = StringUtil::ampersand(Environment::get('indexFreeRequest'));
         $this->Template->skipId = 'skipNavigation' . $this->id;
         $this->Template->skipNavigation = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['skipNavigation']);
         $this->Template->items = $this->renderFilterTree($trail[$level], 1, $currentIds, $trail, $allIds);
