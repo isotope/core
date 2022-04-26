@@ -357,7 +357,11 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
 
             // Cache new request value
             // @todo should support multiple sorting fields
-            [$sortingField, $sortingDirection] = explode(':', Input::post('sorting'));
+            $sortingField = Input::post('sorting');
+            $sortingDirection = 'ASC';
+            if (false !== strpos($sortingField, ':')) {
+                [$sortingField, $sortingDirection] = explode(':', $sortingField);
+            }
 
             if ($this->blnUpdateCache && \in_array($sortingField, $this->iso_sortingFields, true)) {
                 Isotope::getRequestCache()->setSortingForModule(

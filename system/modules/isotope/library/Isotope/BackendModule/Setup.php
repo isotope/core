@@ -30,7 +30,7 @@ class Setup extends BackendOverview
             foreach ($arrModules as $strModule => $arrConfig) {
 
                 if ($this->checkUserAccess($strModule)) {
-                    if (\is_array($arrConfig['tables'])) {
+                    if (\is_array($arrConfig['tables'] ?? null)) {
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
 
@@ -39,7 +39,7 @@ class Setup extends BackendOverview
                         'label'         => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
                         'description'   => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => TL_SCRIPT . '?do=iso_setup&mod=' . $strModule,
-                        'class'         => $arrConfig['class'],
+                        'class'         => $arrConfig['class'] ?? '',
                     ));
 
                     $strLabel = str_replace(':hide', '', $strGroup);

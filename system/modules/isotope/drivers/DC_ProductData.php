@@ -2804,7 +2804,7 @@ class DC_ProductData extends \DC_Table
         // Get the sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if ((int) $v['filter'] == $intFilterPanel)
+            if ((int) ($v['filter'] ?? 0) == $intFilterPanel)
             {
                 $sortingFields[] = $k;
             }
@@ -2952,7 +2952,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Support empty ptable fields
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? false)
             {
                 $arrProcedure[] = ($this->ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
                 $arrValues[] = $this->ptable;
@@ -3019,7 +3019,7 @@ class DC_ProductData extends \DC_Table
                 $options = $objFields->fetchEach($field);
 
                 // Sort by day
-                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? 0, array(5, 6)))
                 {
                     ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 6) ? rsort($options) : sort($options);
 

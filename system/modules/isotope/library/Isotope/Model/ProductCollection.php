@@ -593,7 +593,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         parent::setRow($arrData);
 
         // Merge settings into arrData, save() will move the values back
-        $this->arrData = array_merge(StringUtil::deserialize($arrData['settings'], true), $this->arrData);
+        $this->arrData = array_merge(StringUtil::deserialize($arrData['settings'] ?? [], true), $this->arrData);
 
         return $this;
     }
@@ -1803,7 +1803,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     protected function generateUniqueId()
     {
-        if ($this->arrData['uniqid'] != '') {
+        if (!empty($this->arrData['uniqid'])) {
             return $this->arrData['uniqid'];
         }
 

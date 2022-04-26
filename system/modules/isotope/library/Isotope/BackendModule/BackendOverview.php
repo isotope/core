@@ -62,7 +62,10 @@ abstract class BackendOverview extends BackendModule
         // enable collapsing legends
         $session = Session::getInstance()->get('fieldset_states');
         foreach ($this->getModules() as $k => $arrGroup) {
-            [$k, $hide] = explode(':', $k, 2);
+            $hide = null;
+            if (strpos($k, ':') !== false) {
+                [$k, $hide] = explode(':', $k, 2);
+            }
 
             if (isset($session['iso_be_overview_legend'][$k])) {
                 $arrGroup['collapse'] = !$session['iso_be_overview_legend'][$k];
@@ -127,13 +130,13 @@ abstract class BackendOverview extends BackendModule
         }
 
         // Redirect the user to the specified page
-        if ($arrModule['redirect'] != '') {
+        if (!empty($arrModule['redirect'])) {
             Controller::redirect($arrModule['redirect']);
         }
 
         $strTable = Input::get('table');
 
-        if ($strTable == '' && $arrModule['callback'] == '') {
+        if (empty($strTable) && empty($arrModule['callback'])) {
             Controller::redirect(Backend::addToUrl('table=' . $arrModule['tables'][0]));
         }
 
@@ -160,7 +163,7 @@ abstract class BackendOverview extends BackendModule
             // Include all excluded fields which are allowed for the current user
             if ($GLOBALS['TL_DCA'][$strTable]['fields']) {
                 foreach ($GLOBALS['TL_DCA'][$strTable]['fields'] as $k => $v) {
-                    if ($v['exclude'] && BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
+                    if (($v['exclude'] ?? false) && BackendUser::getInstance()->hasAccess($strTable . '::' . $k, 'alexf')) {
                         $GLOBALS['TL_DCA'][$strTable]['fields'][$k]['exclude'] = false;
                     }
                 }
@@ -173,7 +176,7 @@ abstract class BackendOverview extends BackendModule
         }
 
         // Call module callback
-        elseif (class_exists($arrModule['callback'])) {
+        elseif (isset($arrModule['callback']) && class_exists($arrModule['callback'])) {
 
             /** @var BackendModule $objCallback */
             $objCallback = new $arrModule['callback']($this->objDc, $arrModule);

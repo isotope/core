@@ -189,7 +189,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     public function saveToDCA(array &$arrData)
     {
         // Keep field settings made through DCA code
-        $arrField = \is_array($arrData['fields'][$this->field_name]) ? $arrData['fields'][$this->field_name] : [];
+        $arrField = \is_array($arrData['fields'][$this->field_name] ?? null) ? $arrData['fields'][$this->field_name] : [];
 
         $arrField['label']                          = Translation::get(array($this->name, $this->description));
         $arrField['exclude']                        = true;
@@ -197,7 +197,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrField['attributes']                     = $this->row();
         $arrField['attributes']['variant_option']   = $this->isVariantOption(); /* @todo in 3.0: $this instanceof IsotopeAttributeForVariants */
         $arrField['attributes']['customer_defined'] = $this->isCustomerDefined();
-        $arrField['eval']                           = \is_array($arrField['eval']) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
+        $arrField['eval']                           = \is_array($arrField['eval'] ?? null) ? array_merge($arrField['eval'], $arrField['attributes']) : $arrField['attributes'];
 
         if ('' !== (string) $this->placeholder) {
             $arrField['eval']['placeholder'] = Translation::get($this->placeholder);
@@ -297,7 +297,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                 $strGroup = '';
 
                 foreach ($arrOptions as $option) {
-                    if ($option['group']) {
+                    if ($option['group'] ?? false) {
                         $strGroup = Translation::get($option['label']);
                         continue;
                     }
@@ -308,7 +308,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
                         $arrField['options'][$option['value']] = Translation::get($option['label']);
                     }
 
-                    if ($option['default']) {
+                    if ($option['default'] ?? false) {
                         $arrField['default'][] = $option['value'];
                     }
                 }

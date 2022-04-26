@@ -133,7 +133,7 @@ class Panel extends Backend
 
             // Generate options
             foreach ($arrFilter['options'] as $k => $v) {
-                $strOptions .= '  <option value="' . $k . '"' . (($session['filter']['tl_iso_product'][$arrFilter['name']] === (string) $k) ? ' selected' : '') . '>' . $v . '</option>' . "\n";
+                $strOptions .= '  <option value="' . $k . '"' . ((($session['filter']['tl_iso_product'][$arrFilter['name']] ?? null) === (string) $k) ? ' selected' : '') . '>' . $v . '</option>' . "\n";
             }
 
             $strBuffer .= '<select name="' . $arrFilter['name'] . '" id="' . $arrFilter['name'] . '" class="tl_select' . (isset($session['filter']['tl_iso_product'][$arrFilter['name']]) ? ' active' : '') . '">
