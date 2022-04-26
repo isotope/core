@@ -233,7 +233,6 @@ abstract class PaypalApi extends Payment
     private function getApiToken()
     {
         $client = $this->prepareClient();
-        $content = [];
 
         try {
             $response = $client->request('POST', $this->getApiUrl('/oauth2/token'), [
@@ -243,20 +242,21 @@ abstract class PaypalApi extends Payment
                 ],
             ]);
 
-            if ($response->getStatusCode() !== 200) {
+            if (200 !== $response->getStatusCode()) {
                 return null;
             }
 
             $content = $response->toArray();
 
+            return \array_key_exists('access_token', $content) ? $content : null;
         } catch (TransportExceptionInterface $transportException) {
             $this->debugLog(sprintf(
                 "PayPal API Error! (%s)",
                 $transportException->getMessage()
             ));
-        }
 
-        return \array_key_exists('access_token', $content) ? $content : null;
+            return null;
+        }
     }
 
     /**
