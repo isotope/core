@@ -18,7 +18,6 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -32,7 +31,8 @@ abstract class PaypalApi extends Payment
     /**
      * @param IsotopePurchasableCollection $order
      *
-     * @return ResponseInterface|null
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function createPayment(IsotopePurchasableCollection $order)
     {
@@ -138,9 +138,10 @@ abstract class PaypalApi extends Payment
 
     /**
      * @param IsotopePurchasableCollection $order
-     * @param string                       $paymentId
+     * @param string $paymentId
      *
-     * @return ResponseInterface|null
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
@@ -171,7 +172,8 @@ abstract class PaypalApi extends Payment
      * @param string $paymentId
      * @param string $payerId
      *
-     * @return ResponseInterface|null
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function executePayment($paymentId, $payerId)
     {
@@ -263,59 +265,36 @@ abstract class PaypalApi extends Payment
      * @param null $method
      * @param bool $renewToken
      *
-     * @return ResponseInterface|null
+     * @throws TransportExceptionInterface
      */
-    private function sendRequest($path, array $data = null, $method = null, $renewToken = false)
+    private function sendRequest($path, array $data = null, $method = null, $renewToken = false): ResponseInterface
     {
         $client = $this->prepareClient();
 
         // TODO store and reuse token
         $token = $this->getApiToken();
 
-        try {
-            $response = $client->request($method, $this->getApiUrl($path), [
-                'json' => $data,
-                'headers' => [
-                    'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
-                ],
-            ]);
+        $response = $client->request($method, $this->getApiUrl($path), [
+            'json' => $data,
+            'headers' => [
+                'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+            ],
+        ]);
 
-            $responseCode = $response->getStatusCode();
+        $responseCode = $response->getStatusCode();
 
-            // Token probably expired, try again with a new token
-            if (401 === $responseCode && !$renewToken) {
-                return $this->sendRequest($path, $data, $method, true);
-            }
-
-            $response->getContent();
-
-        } catch (HttpExceptionInterface $httpException) {
-            $this->debugLog(sprintf(
-                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
-                $httpException->getResponse()->getStatusCode(),
-                $httpException->getMessage(),
-                $httpException->getResponse()->getContent(false)
-            ));
-
-            return null;
-        } catch (TransportExceptionInterface $transportException) {
-            $this->debugLog(sprintf(
-                "PayPal API Error! (%s)",
-                $transportException->getMessage()
-            ));
-
-            return null;
+        // Token probably expired, try again with a new token
+        if (401 === $responseCode && !$renewToken) {
+            return $this->sendRequest($path, $data, $method, true);
         }
 
         return $response;
     }
 
-    /**
-     * @return HttpClientInterface
-     */
-    private function prepareClient()
+    private function prepareClient(): HttpClientInterface
     {
         return HttpClient::create([
+            'max_duration' => 5,
             'headers' => [
                 'Accept' => 'application/json',
                 'Accept-Language' => 'en_US',
@@ -323,7 +302,7 @@ abstract class PaypalApi extends Payment
         ]);
     }
 
-    private function getApiUrl($path)
+    private function getApiUrl($path): string
     {
         return 'https://api.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/v1' . $path;
     }

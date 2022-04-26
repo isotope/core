@@ -22,6 +22,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class PaypalPlus extends PaypalApi
@@ -33,16 +34,14 @@ class PaypalPlus extends PaypalApi
             Checkout::redirectToStep(Checkout::STEP_COMPLETE, $objOrder);
         }
 
-        $response = $this->createPayment($objOrder);
-
-        if (!$response instanceof ResponseInterface) {
+        try {
+            $response = $this->createPayment($objOrder);
+        } catch (TransportExceptionInterface $e) {
             System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
-
             Checkout::redirectToStep(Checkout::STEP_FAILED);
-            exit;
         }
 
-        $this->debugLog($response->getContent());
+        $this->debugLog($response->getContent(false));
 
         if (201 === $response->getStatusCode()) {
             $paypalData = $response->toArray();
@@ -189,19 +188,13 @@ class PaypalPlus extends PaypalApi
             return false;
         }
 
-        /*$request = $this->patchPayment($objOrder, $paypalData['id']);
-
-        if (200 !== $request->code) {
-            return false;
-        }*/
-
-        $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
-
-        if (!$response instanceof ResponseInterface) {
+        try {
+            $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
+        } catch (TransportExceptionInterface $e) {
             return false;
         }
 
-        $this->debugLog($response->getContent());
+        $this->debugLog($response->getContent(false));
 
         if (200 !== $response->getStatusCode()) {
             return false;
