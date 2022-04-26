@@ -341,9 +341,30 @@
       <trans-unit id="tl_module.iso_rangeFields.1">
         <source>Please configure the range filter fields.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.mode">
+        <source>Filter mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.range">
+        <source>Range</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.min">
+        <source>Higher than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.max">
+        <source>Lower than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.fields">
+        <source>Value within</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute">
         <source>Attribute</source>
         <target>Атрибут</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max">
+        <source>Attribute to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max_blank">
+        <source>(only select for mode &quot;Value within&quot;)</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>
