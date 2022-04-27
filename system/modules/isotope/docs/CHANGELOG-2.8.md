@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.8.0 (2022-02-??)
+Version 2.8.0 (2022-04-27)
 --------------------------
 
 - Now requires Contao 4.9 and PHP 7.2
