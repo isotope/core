@@ -223,21 +223,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minval.0">
         <source>Minimum value</source>
+        <target>Minimalwert</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.minval.1">
         <source>Here you can set the minimum value for numeric fields.</source>
+        <target>Hier können Sie einen Minimalwert für numerische Eingaben festlegen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxval.0">
         <source>Maximum value</source>
+        <target>Maximalwert</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.maxval.1">
         <source>Here you can set the maximum value for numeric fields.</source>
+        <target>Hier können Sie einen Maximalwert für numerische Eingaben festlegen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.step.0">
         <source>Step</source>
+        <target>Schritt</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.step.1">
         <source>Here you can set the discrete step size of the field.</source>
+        <target>Hier können Sie die Schrittgröße des Feldes festlegen.</target>
       </trans-unit>
       <trans-unit id="tl_iso_attribute.foreignKey.0">
         <source>Foreign table &amp; field</source>

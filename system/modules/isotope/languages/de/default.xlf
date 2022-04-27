@@ -93,6 +93,10 @@
         <source>You cannot configure the same attribute multiple times.</source>
         <target>Das gleiche Attribut kann nicht mehrmals konfiguriert werden.</target>
       </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+        <target>Bitte wählen Sie ein &quot;Attribut bis&quot; auf Zeile %s.</target>
+      </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
         <target>Die hochgeladene Datei ist nicht mehr verfügbar.</target>
@@ -1171,9 +1175,11 @@
       </trans-unit>
       <trans-unit id="ATTR.quantitySurcharge.0">
         <source>Surcharge per quantity</source>
+        <target>Preiszuschlag nach Stückzahl</target>
       </trans-unit>
       <trans-unit id="ATTR.quantitySurcharge.1">
         <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
+        <target>Fügt einen Betrag multipliziert mit der Stückzahl des Kunden zum Produktpreis hinzu.</target>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
@@ -1801,6 +1807,7 @@
       </trans-unit>
       <trans-unit id="CUR.XOF">
         <source>XOF - CFA Franc BCEAO</source>
+        <target>XOF - CFA Franc BCEAO</target>
       </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>

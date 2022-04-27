@@ -93,6 +93,9 @@
         <source>You cannot configure the same attribute multiple times.</source>
         <target>Ne možete konfigurirati isti atribut više puta.</target>
       </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
+      </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
         <target>Prenesena datoteka više nije dostupna.</target>
