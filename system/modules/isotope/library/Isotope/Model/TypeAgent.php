@@ -57,7 +57,10 @@ abstract class TypeAgent extends \Model
         }
 
         if ($this->arrData['type'] == '') {
-            throw new \RuntimeException(\get_called_class() . ' has no model type');
+            throw new \RuntimeException(sprintf(
+                '%s (%s.%s) has no model type',
+                \get_called_class(), static::$strTable, $this->arrData['id']
+            ));
         }
     }
 
