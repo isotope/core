@@ -35,14 +35,18 @@ class QuantitySurcharge extends Attribute
 
     public function saveToDCA(array &$arrData): void
     {
+        $this->rgxp = 'BE' === TL_MODE ? 'price' : 'natural';
+
         parent::saveToDCA($arrData);
 
-        $arrData['eval']['rgxp'] = 'natural';
         $arrData['fields'][$this->field_name]['sql'] = "decimal(12,2) NOT NULL default '0.00'";
 
         if ('BE' === TL_MODE) {
-            $arrData['eval']['rgxp'] = 'price';
-            unset($arrData['eval']['minval'], $arrData['eval']['maxval'], $arrData['eval']['step']);
+            unset(
+                $arrData['fields'][$this->field_name]['eval']['minval'],
+                $arrData['fields'][$this->field_name]['eval']['maxval'],
+                $arrData['fields'][$this->field_name]['eval']['step']
+            );
         }
     }
 }
