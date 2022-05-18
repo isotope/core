@@ -98,6 +98,6 @@ abstract class Document extends TypeAgent
      */
     protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {
-        return StringUtil::standardize(StringUtil::ampersand($strName, false), $blnPreserveUppercase);
+        return StringUtil::standardize(ampersand($strName, false), $blnPreserveUppercase);
     }
 }

@@ -130,7 +130,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
 
         $this->generateFilter();
 
-        $this->Template->linkClearAll  = StringUtil::ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
+        $this->Template->linkClearAll  = ampersand(preg_replace('/\?.*/', '', Environment::get('request')));
         $this->Template->labelClearAll = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
     }
 
