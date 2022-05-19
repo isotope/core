@@ -53,7 +53,7 @@ class AttributeWizard extends Backend
                 }
 
                 /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']] ?? null;
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
                 }
@@ -64,11 +64,13 @@ class AttributeWizard extends Backend
         (
             'enabled'   => array
             (
+                'label' => '',
                 'inputType' => 'checkbox',
                 'eval'      => array('hideHead' => true),
             ),
             'name'      => array
             (
+                'label' => '',
                 'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
                 'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
             ),
@@ -120,7 +122,7 @@ class AttributeWizard extends Backend
         $style = '';
 
         /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName] ?? null;
 
         if (null !== $objAttribute && $objAttribute->isVariantOption()) {
             $style = ';font-style:italic';
@@ -202,14 +204,14 @@ class AttributeWizard extends Backend
                 || !isset($arrDCA[$strName])
                 || $arrDCA[$strName]['attributes']['legend'] == ''
                 || $this->isExcluded($strName, $blnVariants)
-                || ($blnVariants && $arrDCA[$strName]['attributes']['inherit'])
-                || (!$blnVariants && $arrDCA[$strName]['attributes']['variant_option'])
+                || ($blnVariants && ($arrDCA[$strName]['attributes']['inherit'] ?? false))
+                || (!$blnVariants && ($arrDCA[$strName]['attributes']['variant_option'] ?? false))
             ) {
                 continue;
             }
 
             if ($arrField['legend'] == '') {
-                $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'];
+                $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'] ?? '';
             }
 
             $arrFields[$arrField['name']] = $arrField;
@@ -217,7 +219,7 @@ class AttributeWizard extends Backend
 
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
-            if (!\is_array($arrField['attributes'])
+            if (!\is_array($arrField['attributes'] ?? null)
                 || $arrField['attributes']['legend'] == ''
                 || $this->isExcluded($strName, $blnVariants)
                 || ($blnVariants && $arrField['attributes']['inherit'])

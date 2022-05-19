@@ -69,7 +69,7 @@ class DcaManager extends Backend
      */
     public function updateNewRecord($strTable, $insertID, $arrSet)
     {
-        if ($arrSet['pid'] > 0) {
+        if (($arrSet['pid'] ?? 0) > 0) {
             return;
         }
 
@@ -487,7 +487,7 @@ class DcaManager extends Backend
     public function addOptionsFromAttribute($arrData, $objDca)
     {
         if ($arrData['strTable'] == Product::getTable()
-            && $arrData['optionsSource'] != ''
+            && ($arrData['optionsSource'] ?? '') != ''
             && 'foreignKey' !== $arrData['optionsSource']
         ) {
 

@@ -321,7 +321,7 @@ class Callback extends Permission
      */
     public function convertCurrencies(DataContainer $dc)
     {
-        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES']) {
+        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES'] ?? false) {
             $objAutomator = new Automator();
             $objAutomator->convertCurrencies($dc->id);
         }
