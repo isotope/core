@@ -792,7 +792,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
         foreach ($arrDCA as $field => $config) {
-            $fixed = $config['attributes']['fixed'];
+            $fixed = ($config['attributes']['fixed'] ?? null);
             $isArray = \is_array($fixed);
 
             if ((!$isArray && $fixed) || (null !== $class && $isArray && \in_array($class, $fixed, true))) {
@@ -847,7 +847,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['excluded']) {
+                if (($config['attributes']['excluded'] ?? false)) {
                     $arrFields[] = $field;
                 }
             }
