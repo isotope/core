@@ -640,7 +640,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
         );
 
-        if ('c.sorting' === $arrOptions['order']) {
+        if ('c.sorting' === ($arrOptions['order'] ?? '')) {
             $arrFields[] = 'c.sorting';
 
             $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'c.id';
@@ -651,10 +651,10 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if (('eager' === $arrConfig['load'] || $arrOptions['eager'])
+                if (('eager' === $arrConfig['load'] || ($arrOptions['eager'] ?? false))
                     && ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type'])
                 ) {
-                    if (\is_array($arrOptions['joinAliases'])
+                    if (\is_array($arrOptions['joinAliases'] ?? null)
                         && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'], true)) !== false
                     ) {
                         $strJoinAlias = $key;
@@ -699,7 +699,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // Order by
-        if ($arrOptions['order'] !== null) {
+        if (($arrOptions['order'] ?? null) !== null) {
             $strQuery .= ' ORDER BY ' . $arrOptions['order'];
         }
 

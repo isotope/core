@@ -1582,7 +1582,7 @@ class DC_ProductData extends \DC_Table
                     }
                     else
                     {
-                        $row_v = StringUtil::deserialize($row[$v]);
+                        $row_v = StringUtil::deserialize($row[$v] ?? []);
 
                         if (\is_array($row_v))
                         {
@@ -2548,7 +2548,7 @@ class DC_ProductData extends \DC_Table
         // Get search fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if ($v['search'])
+            if ($v['search'] ?? false)
             {
                 $searchFields[] = $k;
             }
@@ -2579,7 +2579,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Set the search value from the session
-        elseif ((string) $session['search'][$sessionKey]['value'] !== '')
+        elseif ((string) ($session['search'][$sessionKey]['value'] ?? '') !== '')
         {
             $searchValue = $session['search'][$sessionKey]['value'];
             $fld = $session['search'][$sessionKey]['field'];
