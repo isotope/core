@@ -80,52 +80,66 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             foreach ($fields as $config) {
                 $values = Input::post($config['id']);
 
-                if (null === $values) {
-                    continue;
-                }
-
                 switch ($config['mode']) {
                     case 'min':
-                        $cache->setFilterForModule(
-                            $config['id'],
-                            Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values),
-                            $this->id
-                        );
+                        if (null === $values) {
+                            $cache->removeFilterForModule($config['id'], $this->id);
+                        } else {
+                            $cache->setFilterForModule(
+                                $config['id'],
+                                Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values),
+                                $this->id
+                            );
+                        }
                         break;
 
                     case 'max':
-                        $cache->setFilterForModule(
-                            $config['id'],
-                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
-                            $this->id
-                        );
+                        if (null === $values) {
+                            $cache->removeFilterForModule($config['id'], $this->id);
+                        } else {
+                            $cache->setFilterForModule(
+                                $config['id'],
+                                Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
+                                $this->id
+                            );
+                        }
                         break;
 
                     case 'fields':
-                        $cache->setFilterForModule(
-                            $config['id'].'_min',
-                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
-                            $this->id
-                        );
-                        $cache->setFilterForModule(
-                            $config['id'].'_max',
-                            Filter::attribute($config['attribute_max'])->isGreaterOrEqualTo((int) $values),
-                            $this->id
-                        );
+                        if (null === $values) {
+                            $cache->removeFilterForModule($config['id'].'_min', $this->id);
+                            $cache->removeFilterForModule($config['id'].'_max', $this->id);
+                        } else {
+                            $cache->setFilterForModule(
+                                $config['id'].'_min',
+                                Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values),
+                                $this->id
+                            );
+                            $cache->setFilterForModule(
+                                $config['id'].'_max',
+                                Filter::attribute($config['attribute_max'])->isGreaterOrEqualTo((int) $values),
+                                $this->id
+                            );
+                        }
                         break;
 
                     case 'range':
                     default:
-                        $cache->setFilterForModule(
-                            $config['attribute'].'_min',
-                            Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
-                            $this->id
-                        );
-                        $cache->setFilterForModule(
-                            $config['attribute'].'_max',
-                            Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
-                            $this->id
-                        );
+                        if (null === $values) {
+                            $cache->removeFilterForModule($config['attribute'].'_min', $this->id);
+                            $cache->removeFilterForModule($config['attribute'].'_max', $this->id);
+                        } else {
+                            $cache->setFilterForModule(
+                                $config['attribute'].'_min',
+                                Filter::attribute($config['attribute'])->isGreaterOrEqualTo((int) $values['min']),
+                                $this->id
+                            );
+                            $cache->setFilterForModule(
+                                $config['attribute'].'_max',
+                                Filter::attribute($config['attribute'])->isSmallerOrEqualTo((int) $values['max']),
+                                $this->id
+                            );
+                        }
                         break;
                 }
             }

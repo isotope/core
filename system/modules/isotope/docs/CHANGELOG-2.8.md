@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.1 (2022-??-??)
+--------------------------
+
+- Fixed unsetting range filter on empty input
+- Fixed setting range filter field value
+
+
 Version 2.8.0 (2022-04-27)
 --------------------------
 
