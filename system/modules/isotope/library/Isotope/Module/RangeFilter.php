@@ -168,15 +168,16 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
                 case 'max':
                 case 'fields':
                     $new['value'] = 'max' === $config['mode'] ? (int) $config['max'] : (int) $config['min'];
+
+                    if (null !== ($filter = $cache->getFilterForModule("row{$i}_min", $this->id))) {
+                        $new['value'] = (int) $filter['value'];
+                    }
+
                     $new['inputs'] = [[
                         'id' => "ctrl_row{$i}_".$this->id,
                         'name' => "row$i",
                         'value' => $new['value'],
                     ]];
-
-                    if (null !== ($filter = $cache->getFilterForModule("row{$i}_min", $this->id))) {
-                        $new['value'] = (int) $filter['value'];
-                    }
                     break;
 
                 case 'range':
