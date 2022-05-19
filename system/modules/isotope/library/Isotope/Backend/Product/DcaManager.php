@@ -368,7 +368,7 @@ class DcaManager extends Backend
                 } else {
 
                     // Hide field from "show" option
-                    if ((!isset($arrField['attributes']) || $arrField['inputType'] != '') && 'inherit' !== $name) {
+                    if ((!isset($arrField['attributes']) || ($arrField['inputType'] ?? '') != '') && 'inherit' !== $name) {
                         $arrFields[$name]['eval']['doNotShow'] = true;
                     }
                 }

@@ -465,7 +465,7 @@ class MediaManager extends Widget implements \uploadable
     protected function getFallbackData()
     {
         // Fetch fallback language record
-        if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] != '') {
+        if (($_SESSION['BE_DATA']['language'][$this->strTable][$this->currentRecord] ?? '') != '') {
             return StringUtil::deserialize(Database::getInstance()->execute("SELECT {$this->strField} FROM {$this->strTable} WHERE id={$this->currentRecord}")->{$this->strField});
         }
 

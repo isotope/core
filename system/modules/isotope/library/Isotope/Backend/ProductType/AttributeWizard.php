@@ -118,6 +118,10 @@ class AttributeWizard extends Backend
         }
 
         $arrField = array_shift($arrValues);
+        if (null === $arrField) {
+            return '';
+        }
+
         $strName  = $arrField['name'];
         $style = '';
 
