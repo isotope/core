@@ -2119,7 +2119,7 @@ class DC_ProductData extends \DC_Table
                 $blnFound = false;
 
                 // Extract the real key and compare it to $firstOrderBy
-                foreach (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array() as $f)
+                foreach (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array()) as $f)
                 {
                     if (strpos($f, ':') !== false)
                     {
