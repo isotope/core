@@ -686,7 +686,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $strQuery = 'SELECT ' . implode(', ', $arrFields) . ' FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
-        if (!\is_array($arrOptions['column'])) {
+        if (!\is_array($arrOptions['column'] ?? null)) {
             $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
         }
 
@@ -694,7 +694,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(' AND ', $arrOptions['column']);
 
         // Group by
-        if ($arrOptions['group'] !== null) {
+        if (($arrOptions['group'] ?? null) !== null) {
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 

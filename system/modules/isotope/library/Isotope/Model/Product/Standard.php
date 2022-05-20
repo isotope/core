@@ -966,7 +966,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             foreach ($arrData as $attribute => $value) {
                 if (
                     \in_array($attribute, $arrVariantFields, true)
-                    || ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] == ''
+                    || (($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['legend'] ?? '') == ''
                         && !\in_array(str_replace('_fallback', '', $attribute), $arrFallbackFields, true))
                 ) {
                     $this->arrData[$attribute] = $arrData[$attribute];
