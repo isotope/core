@@ -224,10 +224,10 @@ class AttributeWizard extends Backend
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
             if (!\is_array($arrField['attributes'] ?? null)
-                || $arrField['attributes']['legend'] == ''
+                || ($arrField['attributes']['legend'] ?? '') == ''
                 || $this->isExcluded($strName, $blnVariants)
-                || ($blnVariants && $arrField['attributes']['inherit'])
-                || (!$blnVariants && $arrField['attributes']['variant_option'])
+                || ($blnVariants && $arrField['attributes']['inherit'] ?? false)
+                || (!$blnVariants && $arrField['attributes']['variant_option'] ?? false)
             ) {
                 continue;
             }
@@ -267,11 +267,11 @@ class AttributeWizard extends Backend
         }
 
         foreach ($arrFields as $k => $arrField) {
-            if (\in_array($arrField['name'], $arrFixed, true)) {
+            if (\in_array($arrField['name'] ?? null, $arrFixed, true)) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
-            if (!\in_array($arrField['legend'], $arrLegends, true)) {
+            if (!\in_array($arrField['legend'] ?? null, $arrLegends, true)) {
                 $arrLegends[] = $arrField['legend'];
             }
         }

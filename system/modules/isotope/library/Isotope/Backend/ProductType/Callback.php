@@ -212,7 +212,7 @@ class Callback extends Permission
             foreach ($arrAttributes as $arrAttribute) {
 
                 /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']] ?? null;
 
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $arrVariantAttributeLabels[] = $objAttribute->name;
