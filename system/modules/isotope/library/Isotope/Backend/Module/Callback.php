@@ -45,7 +45,7 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_filter']) {
+            if ($arrData['attributes']['fe_filter'] ?? false) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -63,7 +63,7 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_sorting']) {
+            if ($arrData['attributes']['fe_sorting'] ?? false) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -81,14 +81,14 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['dynamic']
-                || ($arrData['eval']['multiple'] && !$arrData['eval']['csv'])
+            if (($arrData['attributes']['dynamic'] ?? false)
+                || (($arrData['eval']['multiple'] ?? false) && !($arrData['eval']['csv'] ?? false))
             ) {
                 // Cannot search for dynamic attributes
                 continue;
             }
 
-            if ($arrData['attributes']['fe_search']) {
+            if ($arrData['attributes']['fe_search'] ?? false) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -106,7 +106,7 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic']) {
+            if (($arrData['attributes']['fe_search'] ?? false) && !($arrData['attributes']['dynamic'] ?? false)) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }

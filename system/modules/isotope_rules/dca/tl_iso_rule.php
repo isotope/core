@@ -388,7 +388,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule'] = array
             'exclude'                       => true,
             'default'                       => '1',
             'inputType'                     => 'radio',
-            'options'                       => array('1'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '0'=>$GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
+            'options'                       => array('1'=>&$GLOBALS['TL_LANG']['tl_iso_rule']['condition_true'], '0'=>&$GLOBALS['TL_LANG']['tl_iso_rule']['condition_false']),
             'eval'                          => array('isAssociative'=>true, 'tl_class'=>'w50'),
             'sql'                           => "tinyint(1) NOT NULL default '0'",
         ),

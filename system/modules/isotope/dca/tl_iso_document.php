@@ -187,7 +187,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
             'exclude'               => true,
             'default'               => 'asc_id',
             'inputType'             => 'select',
-            'options'               => $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
+            'options'               => &$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),
