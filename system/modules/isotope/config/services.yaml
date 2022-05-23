@@ -6,12 +6,14 @@ services:
         tags:
             - { name: controller.service_arguments }
 
-    isotope.listener.console:
-        class: Isotope\EventListener\SymlinkCommandListener
+    isotope.listener.symlink:
+        class: Isotope\EventListener\SymlinkListener
         arguments:
             - '%kernel.project_dir%'
+            - '%contao.web_dir%'
+            - '@?filesystem'
         tags:
-            - { name: kernel.event_listener, event: console.terminate }
+            - { name: kernel.event_listener, event: contao.generate_symlinks }
 
     isotope.listener.frontend_preview:
         class: Isotope\EventListener\FrontendPreviewListener
