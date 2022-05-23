@@ -236,7 +236,7 @@ abstract class PaypalApi extends Payment
 
         try {
             $response = $client->request('POST', $this->getApiUrl('/oauth2/token'), [
-                'form_params' => ['grant_type' => 'client_credentials'],
+                'body' => ['grant_type' => 'client_credentials'],
                 'headers' => [
                     'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
                 ],
