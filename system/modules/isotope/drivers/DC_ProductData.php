@@ -13,10 +13,11 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\StringUtil;
+use Contao\Versions;
 use Doctrine\DBAL\Exception\DriverException;
 use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
-use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Isotope\Model\Group;
 
 class DC_ProductData extends \DC_Table
@@ -45,7 +46,6 @@ class DC_ProductData extends \DC_Table
      */
     protected $intGroupId;
 
-
     /**
      * Initialize the object
      * @param string
@@ -71,7 +71,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Move multiple products to group
-        /** @var SymfonySession $objSession */
+        /** @var Session $objSession */
         $objSession = System::getContainer()->get('session');
         $arrClipboard = $objSession->get('CLIPBOARD');
         if (($arrClipboard[$strTable]['mode'] ?? null) === 'cutAll' && Input::get('act') !== 'cutAll') {
@@ -107,18 +107,17 @@ class DC_ProductData extends \DC_Table
         }
     }
 
-
     /**
      * List all records of a particular table
+     *
      * @return string
      */
     public function showAll()
     {
         $return = '';
         $this->limit = '';
-        $this->bid = 'tl_buttons';
 
-        /** @var SymfonySession $objSession */
+        /** @var Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $this->reviseTable();
@@ -138,7 +137,7 @@ class DC_ProductData extends \DC_Table
             $objSession->set('CLIPBOARD', $arrClipboard);
 
             // Perform a redirect (this is the CURRENT_ID fix)
-            \Contao\Controller::redirect('contao/main.php?do=' . \Contao\Input::get('do') . (\Contao\Input::get('pid') ? '&id=' . \Contao\Input::get('pid') : '') . '&rt=' . \Contao\Input::get('rt') . '&ref=' . \Contao\Input::get('ref'));
+            \Contao\Controller::redirect('contao/main.php?do=' . Input::get('do') . (Input::get('pid') ? '&id=' . Input::get('pid') : '') . '&rt=' . Input::get('rt') . '&ref=' . Input::get('ref'));
         }
 
         // Do not show the language records
@@ -171,13 +170,7 @@ class DC_ProductData extends \DC_Table
         }
 
         $return .= $this->panel();
-        $return .= (CURRENT_ID && (\Contao\Input::get('pid') === null || (\Contao\Input::get('pid') != '' && (int) \Contao\Input::get('pid') != 0))) ? $this->parentView() : $this->listView();
-
-        // Add another panel at the end of the page
-        if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false)
-        {
-            $return .= $this->paginationMenu();
-        }
+        $return .= (CURRENT_ID && (Input::get('pid') === null || (Input::get('pid') != '' && (int) Input::get('pid') != 0))) ? $this->parentView() : $this->listView();
 
         // Store the current IDs
         $session = $objSession->all();
@@ -187,7 +180,6 @@ class DC_ProductData extends \DC_Table
         return $return;
     }
 
-
     public function cut($blnDoNotRedirect = false)
     {
         // Save the group ID when moving products to new group
@@ -196,13 +188,13 @@ class DC_ProductData extends \DC_Table
         parent::cut($blnDoNotRedirect);
     }
 
-
     /**
      * Duplicate all child records of a duplicated record
-     * @param string
-     * @param int
-     * @param int
-     * @param int
+     *
+     * @param string  $table
+     * @param integer $insertID
+     * @param integer $id
+     * @param integer $parentId
      */
     protected function copyChilds($table, $insertID, $id, $parentId)
     {
@@ -212,7 +204,7 @@ class DC_ProductData extends \DC_Table
         $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
 
         /** PATCH: removed check for sorting field */
-        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && \strlen(\Contao\Input::get('childs')) && $this->Database->fieldExists('pid', $table))
+        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && Input::get('childs') && $this->Database->fieldExists('pid', $table))
         {
             $ctable[] = $table;
         }
@@ -233,11 +225,10 @@ class DC_ProductData extends \DC_Table
                 // Consider the dynamic parent table (see #4867)
                 if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'])
                 {
-                    $ptable = $GLOBALS['TL_DCA'][$v]['config']['ptable'];
-                    $cond = ($ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
+                    $cond = ($table === 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
 
                     $objCTable = $this->Database->prepare("SELECT * FROM $v WHERE pid=? AND $cond" . ($this->Database->fieldExists('sorting', $v) ? " ORDER BY sorting" : ""))
-                                                ->execute($id, $ptable);
+                                                ->execute($id, $table);
                 }
                 else
                 {
@@ -269,13 +260,13 @@ class DC_ProductData extends \DC_Table
                         // Empty unique fields or add a unique identifier in copyAll mode
                         elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'])
                         {
-                            $vv = (\Contao\Input::get('act') == 'copyAll') ? $vv .'-'. substr(md5(uniqid(mt_rand(), true)), 0, 8) : \Contao\Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                            $vv = (Input::get('act') == 'copyAll') ? $vv . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 8) : Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
                         }
 
                         // Reset doNotCopy and fallback fields to their default value
                         elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
                         {
-                            $vv = \Contao\Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                            $vv = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
 
                             // Use array_key_exists to allow NULL (see #5252)
                             if (\array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))
@@ -286,7 +277,7 @@ class DC_ProductData extends \DC_Table
                             // Encrypt the default value (see #3740)
                             if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt'])
                             {
-                                $vv = \Contao\Encryption::encrypt($vv);
+                                $vv = Encryption::encrypt($vv);
                             }
                         }
 
@@ -324,55 +315,67 @@ class DC_ProductData extends \DC_Table
         }
     }
 
-
     /**
      * Move all selected records
+     *
+     * @throws InternalServerErrorException
      */
     public function copyAll()
     {
         if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
         {
-            throw new InternalServerErrorException('Table "'.$this->strTable.'" is not copyable.');
+            throw new InternalServerErrorException('Table "' . $this->strTable . '" is not copyable.');
         }
 
-        /** @var SymfonySession $objSession */
+        /** @var Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $arrClipboard = $objSession->get('CLIPBOARD');
 
-        if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id'])) {
+        if (isset($arrClipboard[$this->strTable]) && \is_array($arrClipboard[$this->strTable]['id']))
+        {
             $arrIds = array();
 
-            foreach ($arrClipboard[$this->strTable]['id'] as $id) {
+            foreach ($arrClipboard[$this->strTable]['id'] as $id)
+            {
                 $this->intId = $id;
-                $arrIds[] = $this->copy(true);
+                $id = $this->copy(true);
+                Input::setGet('pid', $id);
+                Input::setGet('mode', 1);
+                $arrIds[] = $id;
             }
 
             $this->Database->query("UPDATE {$this->strTable} SET gid=" . $this->intGroupId . " WHERE id IN (" . implode(',', $arrIds) . ")");
         }
 
-        \Contao\Controller::redirect(\Contao\System::getReferer());
+        $this->redirect($this->getReferer());
     }
-
 
     /**
      * Auto-generate a form to edit the current database record
-     * @param integer
-     * @param integer
+     *
+     * @param integer $intId
+     * @param integer $ajaxId
+     *
      * @return string
+     *
+     * @throws AccessDeniedException
+     * @throws InternalServerErrorException
      */
-    public function edit($intID = false, $ajaxId = false)
+    public function edit($intId=null, $ajaxId=null)
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable']) {
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+        {
             throw new InternalServerErrorException('Table "' . $this->strTable . '" is not editable.');
         }
 
-        if ($intID) {
-            $this->intId = $intID;
+        if ($intId)
+        {
+            $this->intId = $intId;
         }
 
         // Get the current record
-        $objRow = \Contao\Database::getInstance()->prepare("SELECT * FROM {$this->strTable} WHERE id=?")
+        $objRow = $this->Database->prepare("SELECT * FROM " . $this->strTable . " WHERE id=?")
             ->limit(1)
             ->execute($this->intId);
 
@@ -395,20 +398,20 @@ class DC_ProductData extends \DC_Table
         $this->procedure[] = 'id=?';
 
         $this->blnCreateNewVersion = false;
-        $objVersions = new \Versions($this->strTable, $this->intId);
+        $objVersions = new Versions($this->strTable, $this->intId);
 
         if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'])
         {
             // Compare versions
-            if (\Contao\Input::get('versions'))
+            if (Input::get('versions'))
             {
                 $objVersions->compare();
             }
 
             // Restore a version
-            if (\Contao\Input::post('FORM_SUBMIT') == 'tl_version' && \Contao\Input::post('version'))
+            if (Input::post('FORM_SUBMIT') == 'tl_version' && Input::post('version'))
             {
-                $objVersions->restore(\Contao\Input::post('version'));
+                $objVersions->restore(Input::post('version'));
 
                 $this->invalidateCacheTags();
 
@@ -425,11 +428,11 @@ class DC_ProductData extends \DC_Table
             $blnLanguageUpdated = false;
             $session = \Contao\Session::getInstance()->getData();
 
-            if (\Contao\Input::post('FORM_SUBMIT') === 'tl_language')
+            if (Input::post('FORM_SUBMIT') === 'tl_language')
             {
-                if (\in_array(\Contao\Input::post('language'), $this->arrTranslations))
+                if (\in_array(Input::post('language'), $this->arrTranslations))
                 {
-                    $session['language'][$this->strTable][$this->intId] = \Contao\Input::post('language');
+                    $session['language'][$this->strTable][$this->intId] = Input::post('language');
                 }
                 else
                 {
@@ -438,7 +441,7 @@ class DC_ProductData extends \DC_Table
 
                 $blnLanguageUpdated = true;
             }
-            elseif (\Contao\Input::post('FORM_SUBMIT') == $this->strTable && isset($_POST['deleteLanguage']))
+            elseif (Input::post('FORM_SUBMIT') == $this->strTable && isset($_POST['deleteLanguage']))
             {
                 $this->Database->prepare("DELETE FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $session['language'][$this->strTable][$this->intId]);
                 unset($session['language'][$this->strTable][$this->intId]);
@@ -457,9 +460,9 @@ class DC_ProductData extends \DC_Table
                 $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
                 if (!$objRow->numRows) {
-                    $intId = $this->Database->prepare("INSERT INTO {$this->strTable} (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
+                    $intLanguage = $this->Database->prepare("INSERT INTO {$this->strTable} (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
 
-                    $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")->execute($intId);
+                    $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")->execute($intLanguage);
                 }
 
                 $this->objActiveRecord = $objRow;
@@ -471,7 +474,7 @@ class DC_ProductData extends \DC_Table
 
         // Build an array from boxes and rows
         $this->strPalette = $this->getPalette();
-        $boxes = \Contao\StringUtil::trimsplit(';', $this->strPalette);
+        $boxes = StringUtil::trimsplit(';', $this->strPalette);
         $legends = array();
 
         if (!empty($boxes))
@@ -479,7 +482,7 @@ class DC_ProductData extends \DC_Table
             foreach ($boxes as $k=>$v)
             {
                 $eCount = 1;
-                $boxes[$k] = \Contao\StringUtil::trimsplit(',', $v);
+                $boxes[$k] = StringUtil::trimsplit(',', $v);
 
                 foreach ($boxes[$k] as $kk=>$vv)
                 {
@@ -511,7 +514,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            /** @var SymfonySession $objSessionBag */
+            /** @var Session $objSessionBag */
             $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
 
             $class = 'tl_tbox';
@@ -528,7 +531,7 @@ class DC_ProductData extends \DC_Table
 
                 if (isset($legends[$k]))
                 {
-                    [$key, $cls] = explode(':', $legends[$k]);
+                    list($key, $cls) = explode(':', $legends[$k]);
                     $legend = "\n" . '<legend onclick="AjaxRequest.toggleFieldset(this,\'' . $key . '\',\'' . $this->strTable . '\')">' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '</legend>';
                 }
 
@@ -549,10 +552,15 @@ class DC_ProductData extends \DC_Table
                 {
                     if ($vv == '[EOF]')
                     {
-                        if ($blnAjax && \Contao\Environment::get('isAjaxRequest'))
+                        if ($blnAjax && Environment::get('isAjaxRequest'))
                         {
                             if ($ajaxId == $thisId)
                             {
+                                if (($intLatestVersion = $objVersions->getLatestVersion()) !== null)
+                                {
+                                    $arrAjax[$thisId] .= '<input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
+                                }
+
                                 return $arrAjax[$thisId] . '<input type="hidden" name="FORM_FIELDS[]" value="' . StringUtil::specialchars($this->strPalette) . '">';
                             }
 
@@ -575,7 +583,7 @@ class DC_ProductData extends \DC_Table
                     {
                         $thisId = 'sub_' . substr($vv, 1, -1);
                         $arrAjax[$thisId] = '';
-                        $blnAjax = ($ajaxId == $thisId && \Contao\Environment::get('isAjaxRequest')) ? true : $blnAjax;
+                        $blnAjax = ($ajaxId == $thisId && Environment::get('isAjaxRequest')) ? true : $blnAjax;
                         $return .= "\n" . '<div id="' . $thisId . '" class="subpal cf">';
 
                         continue;
@@ -588,7 +596,7 @@ class DC_ProductData extends \DC_Table
                     // Convert CSV fields (see #2890)
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
                     {
-                        $this->varValue = \Contao\StringUtil::trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
+                        $this->varValue = StringUtil::trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
                     }
 
                     // Call load_callback
@@ -630,25 +638,34 @@ class DC_ProductData extends \DC_Table
             $version = '';
         }
 
-        if ('' === $version) {
+        if ('' === $version)
+        {
             $version = '<div class="tl_version_panel"></div>';
         }
 
         // Check languages
-        if (!empty($this->arrTranslations)) {
+        if (!empty($this->arrTranslations))
+        {
             $arrAvailableLanguages = $this->Database->prepare("SELECT language FROM {$this->strTable} WHERE pid=?")->execute($this->intId)->fetchEach('language');
             $available = '';
             $undefined = '';
 
-            foreach ($this->arrTranslations as $language) {
-                if (\in_array($language, $arrAvailableLanguages)) {
-                    if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language) {
+            foreach ($this->arrTranslations as $language)
+            {
+                if (\in_array($language, $arrAvailableLanguages))
+                {
+                    if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
+                    {
                         $available .= '<option value="' . $language . '" selected="selected">' . $this->arrTranslationLabels[$language] . '</option>';
                         $_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
-                    } else {
+                    }
+                    else
+                    {
                         $available .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . '</option>';
                     }
-                } else {
+                }
+                else
+                {
                     $undefined .= '<option value="' . $language . '">' . $this->arrTranslationLabels[$language] . ' (' . $GLOBALS['TL_LANG']['MSC']['undefinedLanguage'] . ')' . '</option>';
                 }
             }
@@ -677,7 +694,7 @@ class DC_ProductData extends \DC_Table
         $arrButtons['save'] = '<button type="submit" name="save" id="save" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['save'] . '</button>';
         $deleteLanguageButton = '';
 
-        if (!\Input::get('nb'))
+        if (!Input::get('nb'))
         {
             $arrButtons['saveNclose'] = '<button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>';
 
@@ -770,19 +787,19 @@ class DC_ProductData extends \DC_Table
 <input type="hidden" name="VERSION_NUMBER" value="' . $intLatestVersion . '">';
         }
 
-        $copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="' . \Contao\Backend::addToUrl('act=copyFallback') . '" class="header_iso_copy" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback']) . '" accesskey="d" onclick="Backend.getScrollOffset();">' . ($GLOBALS['TL_LANG']['MSC']['copyFallback'] ? $GLOBALS['TL_LANG']['MSC']['copyFallback'] : 'copyFallback') . '</a>' : '';
+        $copyFallback = $this->blnEditLanguage ? '&nbsp;&nbsp;::&nbsp;&nbsp;<a href="' . Backend::addToUrl('act=copyFallback') . '" class="header_iso_copy" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? '') . '" accesskey="d" onclick="Backend.getScrollOffset();">' . ($GLOBALS['TL_LANG']['MSC']['copyFallback'] ?? 'copyFallback') . '</a>' : '';
 
         // Begin the form (-> DO NOT CHANGE THIS ORDER -> this way the onsubmit attribute of the form can be changed by a field)
         $return = $version . Message::generate() . ($this->noReload ? '
-<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') .'
-<div id="tl_buttons">' . (\Contao\Input::get('nb') ? '&nbsp;' : '
-<a href="'.\System::getReferer(true).'" class="header_back" title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']).'" accesskey="b" onclick="Backend.getScrollOffset()">'.$GLOBALS['TL_LANG']['MSC']['backBT'].'</a>') . $copyFallback . '
+<p class="tl_error">' . $GLOBALS['TL_LANG']['ERR']['general'] . '</p>' : '') . '
+<div id="tl_buttons">' . (Input::get('nb') ? '&nbsp;' : '
+<a href="' . $this->getReferer(true) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>') . $copyFallback . '
 </div>
-<form id="'.$this->strTable.'" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"'.(!empty($this->onsubmit) ? ' onsubmit="'.implode(' ', $this->onsubmit).'"' : '').'>
+<form id="' . $this->strTable . '" class="tl_form tl_edit_form" method="post" enctype="' . ($this->blnUploadable ? 'multipart/form-data' : 'application/x-www-form-urlencoded') . '"' . (!empty($this->onsubmit) ? ' onsubmit="' . implode(' ', $this->onsubmit) . '"' : '') . '>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '">
-<input type="hidden" name="REQUEST_TOKEN" value="'.REQUEST_TOKEN.'">' . $strVersionField . '
-<input type="hidden" name="FORM_FIELDS[]" value="'.StringUtil::specialchars($this->strPalette).'">'.$return;
+<input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . $strVersionField . '
+<input type="hidden" name="FORM_FIELDS[]" value="' . StringUtil::specialchars($this->strPalette) . '">' . $return;
 
         // Reload the page to prevent _POST variables from being sent twice
         if (!$this->noReload && Input::post('FORM_SUBMIT') == $this->strTable)
@@ -868,43 +885,43 @@ class DC_ProductData extends \DC_Table
             // Redirect
             if (isset($_POST['saveNclose']))
             {
-                \Contao\Message::reset();
+                Message::reset();
 
-                \Contao\Controller::redirect(\Contao\System::getReferer());
+                $this->redirect($this->getReferer());
             }
             elseif (isset($_POST['saveNedit']))
             {
-                \Contao\Message::reset();
+                Message::reset();
 
-                \Contao\Controller::redirect(\Contao\Backend::addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href'], false, array('s2e', 'act', 'mode', 'pid')));
+                $this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href'], false, array('s2e', 'act', 'mode', 'pid')));
             }
             elseif (isset($_POST['saveNback']))
             {
-                \Contao\Message::reset();
+                Message::reset();
 
                 if (!$this->ptable)
                 {
-                    \Contao\Controller::redirect(TL_SCRIPT . '?do=' . \Contao\Input::get('do'));
+                    $this->redirect(TL_SCRIPT . '?do=' . Input::get('do'));
                 }
                 // TODO: try to abstract this
                 elseif (($this->ptable == 'tl_theme' && $this->strTable == 'tl_style_sheet') || ($this->ptable == 'tl_page' && $this->strTable == 'tl_article'))
                 {
-                    \Contao\Controller::redirect(\Contao\System::getReferer(false, $this->strTable));
+                    $this->redirect($this->getReferer(false, $this->strTable));
                 }
                 else
                 {
-                    \Contao\Controller::redirect(\Contao\System::getReferer(false, $this->ptable));
+                    $this->redirect($this->getReferer(false, $this->ptable));
                 }
             }
             elseif (isset($_POST['saveNcreate']))
             {
-                \Contao\Message::reset();
+                Message::reset();
 
-                $strUrl = TL_SCRIPT . '?do=' . \Contao\Input::get('do');
+                $strUrl = TL_SCRIPT . '?do=' . Input::get('do');
 
                 if (isset($_GET['table']))
                 {
-                    $strUrl .= '&amp;table=' . \Contao\Input::get('table');
+                    $strUrl .= '&amp;table=' . Input::get('table');
                 }
 
                 // Tree view
@@ -914,7 +931,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Parent view
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4 || $this->activeRecord->pid > 0)
+                elseif ($this->activeRecord->pid > 0)
                 {
                     $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=create&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->activeRecord->pid : '&amp;act=create&amp;mode=2&amp;pid=' . $this->activeRecord->pid;
                 }
@@ -925,17 +942,17 @@ class DC_ProductData extends \DC_Table
                     $strUrl .= $this->ptable ? '&amp;act=create&amp;mode=2&amp;pid=' . CURRENT_ID : '&amp;act=create';
                 }
 
-                \Contao\Controller::redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
+                $this->redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
             }
             elseif (isset($_POST['saveNduplicate']))
             {
-                \Contao\Message::reset();
+                Message::reset();
 
-                $strUrl = TL_SCRIPT . '?do=' . \Contao\Input::get('do');
+                $strUrl = TL_SCRIPT . '?do=' . Input::get('do');
 
                 if (isset($_GET['table']))
                 {
-                    $strUrl .= '&amp;table=' . \Contao\Input::get('table');
+                    $strUrl .= '&amp;table=' . Input::get('table');
                 }
 
                 // Tree view
@@ -959,7 +976,7 @@ class DC_ProductData extends \DC_Table
                 $this->redirect($strUrl . '&amp;rt=' . REQUEST_TOKEN);
             }
 
-            \Contao\Controller::reload();
+            $this->reload();
         }
 
         // Set the focus if there is an error
@@ -976,11 +993,12 @@ class DC_ProductData extends \DC_Table
         return $return;
     }
 
-
     /**
      * Auto-generate a form to override all records that are currently shown
      *
      * @return string
+     *
+     * @throws InternalServerErrorException
      */
     public function overrideAll()
     {
@@ -992,7 +1010,7 @@ class DC_ProductData extends \DC_Table
         $return = '';
         $this->import(BackendUser::class, 'User');
 
-        /** @var SymfonySession $objSession */
+        /** @var Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         // Get current IDs from session
@@ -1000,22 +1018,22 @@ class DC_ProductData extends \DC_Table
         $ids = $session['CURRENT']['IDS'];
 
         // Save field selection in session
-        if (\Contao\Input::post('FORM_SUBMIT') == $this->strTable . '_all' && \Contao\Input::get('fields'))
+        if (Input::post('FORM_SUBMIT') == $this->strTable . '_all' && Input::get('fields'))
         {
-            $session['CURRENT'][$this->strTable] = \Contao\Input::post('all_fields');
+            $session['CURRENT'][$this->strTable] = Input::post('all_fields');
             $objSession->replace($session);
         }
 
         // Add fields
         $fields = $session['CURRENT'][$this->strTable];
 
-        if (!empty($fields) && \is_array($fields) && \Contao\Input::get('fields'))
+        if (!empty($fields) && \is_array($fields) && Input::get('fields'))
         {
             $class = 'tl_tbox';
             $formFields = array();
 
             // Save record
-            if (\Contao\Input::post('FORM_SUBMIT') == $this->strTable)
+            if (Input::post('FORM_SUBMIT') == $this->strTable)
             {
                 foreach ($ids as $id)
                 {
@@ -1302,14 +1320,13 @@ class DC_ProductData extends \DC_Table
 </div>' . $return;
     }
 
-
     /**
      * List all records of the current table and return them as HTML string
      * @return string
      */
     protected function listView()
     {
-        $table = $this->strTable;
+        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
         $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
@@ -1448,13 +1465,13 @@ class DC_ProductData extends \DC_Table
         {
             $result = $objRow->fetchAllAssoc();
 
-            $return .= ((\Contao\Input::get('act') == 'select') ? '
-<form id="tl_select" class="tl_form' . ((\Contao\Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
+            $return .= ((Input::get('act') == 'select') ? '
+<form id="tl_select" class="tl_form' . ((Input::get('act') == 'select') ? ' unselectable' : '') . '" method="post" novalidate>
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_select">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' : '') . '
 
-<div class="tl_listing_container iso_listing_container list_view" id="tl_listing"' . $this->getPickerValueAttribute() . '>' . (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '') . ((\Contao\Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
+<div class="tl_listing_container iso_listing_container list_view" id="tl_listing"' . $this->getPickerValueAttribute() . '>' . (isset($GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb']) ? $GLOBALS['TL_DCA'][$table]['list']['sorting']['breadcrumb'] : '') . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
 
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
@@ -1531,8 +1548,8 @@ class DC_ProductData extends \DC_Table
 
                     if (strpos($v, ':') !== false)
                     {
-                        [$strKey, $strTable] = explode(':', $v);
-                        [$strTable, $strField] = explode('.', $strTable);
+                        [$strKey, $strTable] = explode(':', $v, 2);
+                        [$strTable, $strField] = explode('.', $strTable, 2);
 
                         $objRef = $this->Database->prepare("SELECT " . Database::quoteIdentifier($strField) . " FROM " . $strTable . " WHERE id=?")
                             ->limit(1)
@@ -1674,7 +1691,7 @@ class DC_ProductData extends \DC_Table
                             $value = (string) $arg !== '' ? $arg : '-';
                         }
 
-                        $return .= '<td colspan="' . $colspan . '" class="tl_file_list col_' . $field . ($field == $firstOrderBy ? ' ordered_by' : '') . '">' . $value . '</td>';
+                        $return .= '<td colspan="' . $colspan . '" class="tl_file_list col_' . explode(':', $field, 2)[0] . ($field == $firstOrderBy ? ' ordered_by' : '') . '">' . $value . '</td>';
                     }
                 }
                 else
@@ -1683,7 +1700,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Buttons ($row, $table, $root, $blnCircularReference, $childs, $previous, $next)
-                $return .= ((\Contao\Input::get('act') == 'select') ? '
+                $return .= ((Input::get('act') == 'select') ? '
     <td class="tl_file_list tl_right_nowrap iso_operations"><input type="checkbox" name="IDS[]" id="ids_' . $row['id'] . '" class="tl_tree_checkbox" value="' . $row['id'] . '"></td>' : '
     <td class="tl_file_list tl_right_nowrap iso_operations">' . $this->generateButtons($row, $this->strTable, $this->root) . ($this->strPickerFieldType ? $this->getPickerInputField($row['id']) : '') . '</td>') . '
   </tr>';
@@ -1697,8 +1714,14 @@ class DC_ProductData extends \DC_Table
 </div>' : '') . '
 </div>';
 
+            // Add another panel at the end of the page
+            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false)
+            {
+                $return .= $this->paginationMenu();
+            }
+
             // Close the form
-            if (\Contao\Input::get('act') == 'select')
+            if (Input::get('act') == 'select')
             {
                 // Submit buttons
                 $arrButtons = array();
@@ -1777,19 +1800,19 @@ class DC_ProductData extends \DC_Table
         return $return;
     }
 
-
     /**
      * Show header of the parent table and list all records of the current table
+     *
      * @return string
      */
     protected function parentView()
     {
-        /** @var SymfonySession $objSession */
+        /** @var Session $objSession */
         $objSession = System::getContainer()->get('session');
 
         $blnClipboard = false;
         $arrClipboard = $objSession->get('CLIPBOARD');
-        $table = $this->strTable;
+        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
         $blnHasSorting = false;
         $blnMultiboard = false;
 
@@ -1811,8 +1834,9 @@ class DC_ProductData extends \DC_Table
         $labelPasteNew = $GLOBALS['TL_LANG'][$this->strTable]['pastenew'] ?? $GLOBALS['TL_LANG']['DCA']['pastenew'];
         $labelPasteAfter = $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'] ?? $GLOBALS['TL_LANG']['DCA']['pasteafter'];
         $labelEditHeader = $GLOBALS['TL_LANG'][$this->strTable]['editmeta'] ?? $GLOBALS['TL_LANG'][$this->strTable]['editheader'] ?? $GLOBALS['TL_LANG']['DCA']['editheader'];
-        $strBackUrl = \Contao\Input::get('id') ? 'contao/main.php?do=iso_products' : \Contao\System::getReferer(true, $this->ptable);
+        $strBackUrl = Input::get('id') ? 'contao/main.php?do=iso_products' : \Contao\System::getReferer(true, $this->ptable);
 
+        // TODO: fix back button in variants
         $return = Message::generate() . '
 <div id="tl_buttons">' . (Input::get('nb') ? '&nbsp;' : '
 <a href="' . $strBackUrl . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>') . ' ' . ((Input::get('act') != 'select' && !$blnClipboard && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? '
@@ -1850,7 +1874,7 @@ class DC_ProductData extends \DC_Table
             // Header
             $imagePasteNew = Image::getHtml('new.svg', $labelPasteNew[0]);
             $imagePasteAfter = Image::getHtml('pasteafter.svg', $labelPasteAfter[0]);
-            $imageEditHeader = Image::getHtml('edit.svg', sprintf(\is_array($labelEditHeader) ? $labelEditHeader[0] : $labelEditHeader, $objParent->id));
+            $imageEditHeader = Image::getHtml('header.svg', sprintf(\is_array($labelEditHeader) ? $labelEditHeader[0] : $labelEditHeader, $objParent->id));
 
             $return .= '
 <div class="tl_content_right">' . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
@@ -1941,13 +1965,13 @@ class DC_ProductData extends \DC_Table
                     $this->import($strClass);
                     $options_callback = $this->$strClass->$strMethod($this);
 
-                    $_v = $options_callback[$_v];
+                    $_v = $options_callback[$_v] ?? '-';
                 }
                 elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback']))
                 {
                     $options_callback = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback']($this);
 
-                    $_v = $options_callback[$_v];
+                    $_v = $options_callback[$_v] ?? '-';
                 }
 
                 // Add the sorting field
@@ -2315,9 +2339,15 @@ class DC_ProductData extends \DC_Table
 <label for="tl_radio_reset" class="tl_radio_label">' . $GLOBALS['TL_LANG']['MSC']['resetSelected'] . '</label> <input type="radio" name="picker" id="tl_radio_reset" value="" class="tl_tree_radio">
 </div>' : '') . '
 </div>';
+
+            // Add another panel at the end of the page
+            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false)
+            {
+                $return .= $this->paginationMenu();
+            }
         }
 
-        // Close form
+        // Close the form
         if (Input::get('act') == 'select')
         {
             // Submit buttons
@@ -2396,9 +2426,9 @@ class DC_ProductData extends \DC_Table
         return $return;
     }
 
-
     /**
      * Return a select menu that allows to sort results by a particular field
+     *
      * @return string
      */
     protected function sortMenu()
@@ -2428,9 +2458,8 @@ class DC_ProductData extends \DC_Table
         /** @var AttributeBagInterface $objSessionBag */
         $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
 
-        $this->bid = 'tl_buttons_a';
         $session = $objSessionBag->all();
-        $sessionKey = \Contao\Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
+        $sessionKey = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
         $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
@@ -2441,9 +2470,9 @@ class DC_ProductData extends \DC_Table
         }
 
         // Set sorting from user input
-        if (\Contao\Input::post('FORM_SUBMIT') == 'tl_filters')
+        if (Input::post('FORM_SUBMIT') == 'tl_filters')
         {
-            $strSort = \Contao\Input::post('tl_sort');
+            $strSort = Input::post('tl_sort');
 
             // Validate the user input (thanks to aulmn) (see #4971)
             if (\in_array($strSort, $sortingFields))
@@ -2477,22 +2506,20 @@ class DC_ProductData extends \DC_Table
                 $options_label = $options_label[0];
             }
 
-            $options_sorter[$options_label] = '  <option value="'.StringUtil::specialchars($field).'"'.(((!isset($session['sorting'][$sessionKey]) && $field == $firstOrderBy) || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey])) ? ' selected="selected"' : '').'>'.$options_label.'</option>';
+            $options_sorter[$options_label] = '  <option value="' . StringUtil::specialchars($field) . '"' . (((!isset($session['sorting'][$sessionKey]) && $field == $firstOrderBy) || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey])) ? ' selected="selected"' : '') . '>' . $options_label . '</option>';
         }
 
         // Sort by option values
-        uksort($options_sorter, 'strcasecmp');
+        uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
 
         return '
-
 <div class="tl_sorting tl_subpanel">
 <strong>' . $GLOBALS['TL_LANG']['MSC']['sortBy'] . ':</strong>
 <select name="tl_sort" id="tl_sort" class="tl_select">
-'.implode("\n", $options_sorter).'
+' . implode("\n", $options_sorter) . '
 </select>
 </div>';
     }
-
 
     /**
      * Override search menu to use a different key in the session for variant options.
@@ -2507,7 +2534,7 @@ class DC_ProductData extends \DC_Table
         $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
 
         $session = $objSessionBag->all();
-        $sessionKey = \Contao\Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
+        $sessionKey = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
         // Get search fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
@@ -2525,10 +2552,10 @@ class DC_ProductData extends \DC_Table
         }
 
         // Store search value in the current session
-        if (\Contao\Input::post('FORM_SUBMIT') == 'tl_filters')
+        if (Input::post('FORM_SUBMIT') == 'tl_filters')
         {
-            $strField = \Contao\Input::post('tl_field', true);
-            $strKeyword = ltrim(\Contao\Input::postRaw('tl_value'), '*');
+            $strField = Input::post('tl_field', true);
+            $strKeyword = ltrim(Input::postRaw('tl_value'), '*');
 
             if ($strField && !\in_array($strField, $searchFields, true))
             {
@@ -2543,7 +2570,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Set the search value from the session
-        elseif ((string) $session['search'][$sessionKey]['value'] != '')
+        elseif ((string) $session['search'][$sessionKey]['value'] !== '')
         {
             $searchValue = $session['search'][$sessionKey]['value'];
             $fld = $session['search'][$sessionKey]['field'];
@@ -2587,7 +2614,7 @@ class DC_ProductData extends \DC_Table
 
             $strPattern = "$strReplacePrefix CAST(%s AS CHAR) $strReplaceSuffix REGEXP ?";
 
-            if (substr(\Contao\Config::get('dbCollation'), -3) == '_ci')
+            if (substr(Config::get('dbCollation'), -3) == '_ci')
             {
                 $strPattern = "$strReplacePrefix LOWER(CAST(%s AS CHAR)) $strReplaceSuffix REGEXP LOWER(?)";
             }
@@ -2621,29 +2648,30 @@ class DC_ProductData extends \DC_Table
                 $option_label = \is_array($GLOBALS['TL_LANG']['MSC'][$field]) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : $GLOBALS['TL_LANG']['MSC'][$field];
             }
 
-            $options_sorter[Utf8::toAscii($option_label) . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . (($field == $session['search'][$sessionKey]['field']) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
+            $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . (($field == $session['search'][$sessionKey]['field']) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
         }
 
         // Sort by option values
-        $options_sorter = natcaseksort($options_sorter);
+        uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
+
         $active = isset($session['search'][$sessionKey]['value']) && (string) $session['search'][$sessionKey]['value'] !== '';
 
         return '
-
 <div class="tl_search tl_subpanel">
 <strong>' . $GLOBALS['TL_LANG']['MSC']['search'] . ':</strong>
 <select name="tl_field" class="tl_select' . ($active ? ' active' : '') . '">
-'.implode("\n", $options_sorter).'
+' . implode("\n", $options_sorter) . '
 </select>
-<span> = </span>
-<input type="search" name="tl_value" class="tl_text' . ($active ? ' active' : '') . '" value="'.StringUtil::specialchars($session['search'][$sessionKey]['value']).'">
+<span>=</span>
+<input type="search" name="tl_value" class="tl_text' . ($active ? ' active' : '') . '" value="' . StringUtil::specialchars($session['search'][$sessionKey]['value']) . '">
 </div>';
     }
 
-
     /**
      * Return a select menu to limit results
-     * @param boolean
+     *
+     * @param boolean $blnOptional
+     *
      * @return string
      */
     protected function limitMenu($blnOptional=false)
@@ -2652,13 +2680,13 @@ class DC_ProductData extends \DC_Table
         $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
 
         $session = $objSessionBag->all();
-        $filter = \Contao\Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
+        $filter = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
         $fields = '';
 
         // Set limit from user input
-        if (\in_array(\Contao\Input::post('FORM_SUBMIT'), array('tl_filters', 'tl_filters_limit')))
+        if (\in_array(Input::post('FORM_SUBMIT'), array('tl_filters', 'tl_filters_limit')))
         {
-            $strLimit = \Contao\Input::post('tl_limit');
+            $strLimit = Input::post('tl_limit');
 
             if ($strLimit == 'tl_limit')
             {
@@ -2687,9 +2715,9 @@ class DC_ProductData extends \DC_Table
             $arrValues = $this->values;
             $query = "SELECT COUNT(*) AS count FROM " . $this->strTable;
 
-            if (\Contao\Input::get('id')) {
+            if (Input::get('id')) {
                 $arrProcedure[] = "pid=?";
-                $arrValues[] = \Contao\Input::get('id');
+                $arrValues[] = Input::get('id');
             } else {
                 $arrProcedure[] = "pid=0";
             }
@@ -2784,11 +2812,11 @@ class DC_ProductData extends \DC_Table
 </div>';
     }
 
-
     /**
      * Override the parent method to override the session key.
      *
-     * @param integer
+     * @param integer $intFilterPanel
+     *
      * @return string
      */
     protected function filterMenu($intFilterPanel)
@@ -2799,7 +2827,7 @@ class DC_ProductData extends \DC_Table
         $fields = '';
         $sortingFields = array();
         $session = $objSessionBag->all();
-        $filter = \Contao\Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
+        $filter = Input::get('id') ? $this->strTable . '_' . CURRENT_ID : $this->strTable;
 
         // Get the sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
@@ -2931,7 +2959,7 @@ class DC_ProductData extends \DC_Table
 
             if (!empty($this->root) && \is_array($this->root))
             {
-                $arrProcedure[] = "id IN(" . implode(',', array_map('intval', $this->root)) . ")";
+                $arrProcedure[] = "id IN(" . implode(',', array_map('\intval', $this->root)) . ")";
             }
 
             // Check for a static filter (see #4719)
@@ -3217,13 +3245,13 @@ class DC_ProductData extends \DC_Table
                         }
                     }
 
-                    $options_sorter['  <option value="' . StringUtil::specialchars($value) . '"' . ((isset($session['filter'][$filter][$field]) && $value == $session['filter'][$filter][$field]) ? ' selected="selected"' : '') . '>' . $option_label . '</option>'] = Utf8::toAscii($option_label);
+                    $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($value) . '"' . ((isset($session['filter'][$filter][$field]) && $value == $session['filter'][$filter][$field]) ? ' selected="selected"' : '') . '>' . StringUtil::specialchars($option_label) . '</option>';
                 }
 
                 // Sort by option values
                 if (!$blnDate)
                 {
-                    natcasesort($options_sorter);
+                    uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
 
                     if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(2, 4, 12)))
                     {
@@ -3231,7 +3259,7 @@ class DC_ProductData extends \DC_Table
                     }
                 }
 
-                $fields .= "\n" . implode("\n", array_keys($options_sorter));
+                $fields .= "\n" . implode("\n", array_values($options_sorter));
             }
 
             // End select menu
@@ -3250,7 +3278,6 @@ class DC_ProductData extends \DC_Table
 <strong>' . $GLOBALS['TL_LANG']['MSC']['filter'] . ':</strong> ' . $fields . '
 </div>';
     }
-
 
     /**
      * Copy multilingual fields from fallback to current language
@@ -3274,22 +3301,15 @@ class DC_ProductData extends \DC_Table
             $language = $this->Database->prepare("SELECT id FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $strLanguage);
 
             if ($language->numRows) {
-                $this->createInitialVersion($this->strTable, $language->id);
+                $objVersions = new Versions($this->strTable, $language->id);
+                $objVersions->initialize();
 
-                $arrRow = $this->Database->prepare("SELECT " . implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id=?")->execute($this->intId)->fetchAssoc();
-                \Contao\Database::getInstance()->prepare("UPDATE {$this->strTable} %s WHERE id=?")->set($arrRow)->execute($language->id);
+                $arrRow = $this->Database->prepare('SELECT '. implode(',', $arrDuplicate) . " FROM {$this->strTable} WHERE id=?")->execute($this->intId)->fetchAssoc();
+                $this->Database->prepare("UPDATE {$this->strTable} %s WHERE id=?")->set($arrRow)->execute($language->id);
 
-                $this->createNewVersion($this->strTable, $language->id);
+                $objVersions->create();
 
-                \Contao\System::log(
-                    sprintf(
-                        'A new version of record ID %s (table %s) has been created',
-                        $language->id,
-                        $this->strTable
-                    ),
-                    __METHOD__,
-                    TL_GENERAL
-                );
+                $this->log(sprintf('A new version of record ID %s (table %s) has been created', $language->id, $this->strTable), __METHOD__, TL_GENERAL);
             }
         }
 
