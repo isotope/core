@@ -139,7 +139,7 @@ class Label
             /** @noinspection HtmlUnknownTarget */
             return sprintf(
                 '<a href="%s" title="%s">%s</a>',
-                StringUtil::ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
+                ampersand(Environment::get('request')) . '&amp;id=' . $row['id'],
                 StringUtil::specialchars($GLOBALS['TL_LANG'][$dc->table]['showVariants']),
                 $objProduct->name
             );

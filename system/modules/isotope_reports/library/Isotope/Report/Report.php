@@ -111,7 +111,7 @@ abstract class Report extends Backend
         $this->Template->setData($this->arrData);
 
         // Filter stuff
-        $this->Template->action = StringUtil::ampersand($this->Environment->request);
+        $this->Template->action = ampersand($this->Environment->request);
         $this->Template->panels = $this->getPanels();
 
         $this->Template->buttons = $this->getButtons();

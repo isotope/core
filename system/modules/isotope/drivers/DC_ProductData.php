@@ -656,7 +656,7 @@ class DC_ProductData extends \DC_Table
             $version = str_replace(
                 '<div class="tl_version_panel">',
                 '<div class="tl_version_panel tl_iso_products_panel">
-<form action="' . StringUtil::ampersand(\Contao\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
+<form action="' . ampersand(\Contao\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
@@ -1271,7 +1271,7 @@ class DC_ProductData extends \DC_Table
 
             // Return the select menu
             $return .= '
-<form action="' . StringUtil::ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
+<form action="' . ampersand(Environment::get('request')) . '&amp;fields=1" id="' . $this->strTable . '_all" class="tl_form tl_edit_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="' . $this->strTable . '_all">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">' . ($blnIsError ? '
