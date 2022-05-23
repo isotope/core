@@ -10,6 +10,7 @@ Version 2.8.1 (2022-??-??)
 - Fixed unsetting range filter on empty input
 - Fixed setting range filter field value
 - Fixed PHP8 multiple issues (#2291)
+- Do not copy the product GTIN and SKU (#2288)
 
 
 Version 2.8.0 (2022-04-27)
