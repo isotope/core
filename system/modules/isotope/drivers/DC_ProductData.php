@@ -201,15 +201,15 @@ class DC_ProductData extends \DC_Table
         $time = time();
         $copy = array();
         $cctable = array();
-        $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'];
+        $ctable = $GLOBALS['TL_DCA'][$table]['config']['ctable'] ?? array();
 
         /** PATCH: removed check for sorting field */
-        if (!$GLOBALS['TL_DCA'][$table]['config']['ptable'] && Input::get('childs') && $this->Database->fieldExists('pid', $table))
+        if (!($GLOBALS['TL_DCA'][$table]['config']['ptable'] ?? null) && Input::get('childs') && $this->Database->fieldExists('pid', $table))
         {
             $ctable[] = $table;
         }
 
-        if (!\is_array($ctable))
+        if (empty($ctable) || !\is_array($ctable))
         {
             return;
         }
@@ -218,12 +218,12 @@ class DC_ProductData extends \DC_Table
         foreach ($ctable as $v)
         {
             $this->loadDataContainer($v);
-            $cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'];
+            $cctable[$v] = $GLOBALS['TL_DCA'][$v]['config']['ctable'] ?? null;
 
-            if (!$GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] && \strlen($v))
+            if (!($GLOBALS['TL_DCA'][$v]['config']['doNotCopyRecords'] ?? null) && \strlen($v))
             {
                 // Consider the dynamic parent table (see #4867)
-                if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'])
+                if ($GLOBALS['TL_DCA'][$v]['config']['dynamicPtable'] ?? null)
                 {
                     $cond = ($table === 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
 
@@ -252,30 +252,30 @@ class DC_ProductData extends \DC_Table
                         }
 
                         // Never copy passwords
-                        if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['inputType'] == 'password')
+                        if (($GLOBALS['TL_DCA'][$v]['fields'][$kk]['inputType'] ?? null) == 'password')
                         {
-                            $vv = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                            $vv = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql'] ?? array());
                         }
 
                         // Empty unique fields or add a unique identifier in copyAll mode
-                        elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'])
+                        elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['unique'] ?? null)
                         {
-                            $vv = (Input::get('act') == 'copyAll') ? $vv . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 8) : Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                            $vv = (Input::get('act') == 'copyAll') ? $vv . '-' . substr(md5(uniqid(mt_rand(), true)), 0, 8) : Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql'] ?? array());
                         }
 
                         // Reset doNotCopy and fallback fields to their default value
-                        elseif ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] || $GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'])
+                        elseif (($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['doNotCopy'] ?? null) || ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['fallback'] ?? null))
                         {
-                            $vv = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql']);
+                            $vv = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA'][$v]['fields'][$kk]['sql'] ?? array());
 
                             // Use array_key_exists to allow NULL (see #5252)
-                            if (\array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk]))
+                            if (\array_key_exists('default', $GLOBALS['TL_DCA'][$v]['fields'][$kk] ?? array()))
                             {
                                 $vv = \is_array($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) ? serialize($GLOBALS['TL_DCA'][$v]['fields'][$kk]['default']) : $GLOBALS['TL_DCA'][$v]['fields'][$kk]['default'];
                             }
 
                             // Encrypt the default value (see #3740)
-                            if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt'])
+                            if ($GLOBALS['TL_DCA'][$v]['fields'][$kk]['eval']['encrypt'] ?? null)
                             {
                                 $vv = Encryption::encrypt($vv);
                             }
@@ -305,7 +305,7 @@ class DC_ProductData extends \DC_Table
                     {
                         $insertID = $objInsertStmt->insertId;
 
-                        if ($kk != $parentId && (!empty($cctable[$k]) || $GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] == 5))
+                        if ($kk != $parentId && (!empty($cctable[$k]) || ($GLOBALS['TL_DCA'][$k]['list']['sorting']['mode'] ?? null) == 5))
                         {
                             $this->copyChilds($k, $insertID, $kk, $parentId);
                         }
@@ -322,7 +322,7 @@ class DC_ProductData extends \DC_Table
      */
     public function copyAll()
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null)
         {
             throw new InternalServerErrorException('Table "' . $this->strTable . '" is not copyable.');
         }
@@ -364,7 +364,7 @@ class DC_ProductData extends \DC_Table
      */
     public function edit($intId=null, $ajaxId=null)
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null)
         {
             throw new InternalServerErrorException('Table "' . $this->strTable . '" is not editable.');
         }
@@ -400,7 +400,7 @@ class DC_ProductData extends \DC_Table
         $this->blnCreateNewVersion = false;
         $objVersions = new Versions($this->strTable, $this->intId);
 
-        if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'])
+        if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'] ?? null))
         {
             // Compare versions
             if (Input::get('versions'))
@@ -424,7 +424,8 @@ class DC_ProductData extends \DC_Table
         // Load and/or change language
         $this->blnEditLanguage = false;
 
-        if (!empty($this->arrTranslations)) {
+        if (!empty($this->arrTranslations))
+        {
             $blnLanguageUpdated = false;
             $session = \Contao\Session::getInstance()->getData();
 
@@ -455,11 +456,12 @@ class DC_ProductData extends \DC_Table
                 \Contao\Controller::reload();
             }
 
-            if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] != '' && \in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations))
+            if (($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] ?? null) != '' && \in_array($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId], $this->arrTranslations))
             {
                 $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId]);
 
-                if (!$objRow->numRows) {
+                if (!$objRow->numRows)
+                {
                     $intLanguage = $this->Database->prepare("INSERT INTO {$this->strTable} (pid,tstamp,language) VALUES (?,?,?)")->execute($this->intId, time(), $_SESSION['BE_DATA']['language'][$this->strTable][$this->intId])->insertId;
 
                     $objRow = $this->Database->prepare("SELECT * FROM {$this->strTable} WHERE id=?")->execute($intLanguage);
@@ -497,11 +499,11 @@ class DC_ProductData extends \DC_Table
                         $legends[$k] = substr($vv, 1, -1);
                         unset($boxes[$k][$kk]);
                     }
-                    elseif (!\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]) || $GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['exclude'])
+                    elseif (!\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv] ?? null) || ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['exclude'] ?? null))
                     {
                         unset($boxes[$k][$kk]);
                     }
-                    elseif ($this->blnEditLanguage && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['attributes']['multilingual'])
+                    elseif ($this->blnEditLanguage && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$vv]['attributes']['multilingual'] ?? null))
                     {
                         unset($boxes[$k][$kk]);
                     }
@@ -531,7 +533,8 @@ class DC_ProductData extends \DC_Table
 
                 if (isset($legends[$k]))
                 {
-                    list($key, $cls) = explode(':', $legends[$k]);
+                    list($key, $cls) = explode(':', $legends[$k]) + array(null, null);
+
                     $legend = "\n" . '<legend onclick="AjaxRequest.toggleFieldset(this,\'' . $key . '\',\'' . $this->strTable . '\')">' . ($GLOBALS['TL_LANG'][$this->strTable][$key] ?? $key) . '</legend>';
                 }
 
@@ -594,13 +597,13 @@ class DC_ProductData extends \DC_Table
                     $this->varValue = $objRow->$vv;
 
                     // Convert CSV fields (see #2890)
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
+                    if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['multiple'] ?? null) && isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv']))
                     {
                         $this->varValue = StringUtil::trimsplit($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['eval']['csv'], $this->varValue);
                     }
 
                     // Call load_callback
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] ?? null))
                     {
                         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$this->strField]['load_callback'] as $callback)
                         {
@@ -629,7 +632,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Versions overview
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'])
+        if (($GLOBALS['TL_DCA'][$this->strTable]['config']['enableVersioning'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['hideVersionMenu'] ?? null))
         {
             $version = $objVersions->renderDropdown();
         }
@@ -654,7 +657,7 @@ class DC_ProductData extends \DC_Table
             {
                 if (\in_array($language, $arrAvailableLanguages))
                 {
-                    if ($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] == $language)
+                    if (($_SESSION['BE_DATA']['language'][$this->strTable][$this->intId] ?? null) == $language)
                     {
                         $available .= '<option value="' . $language . '" selected="selected">' . $this->arrTranslationLabels[$language] . '</option>';
                         $_SESSION['TL_INFO'] = array($GLOBALS['TL_LANG']['MSC']['editingLanguage']);
@@ -700,22 +703,22 @@ class DC_ProductData extends \DC_Table
 
             if (!Input::get('nc'))
             {
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'])
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null))
                 {
                     $arrButtons['saveNcreate'] = '<button type="submit" name="saveNcreate" id="saveNcreate" class="tl_submit" accesskey="n">' . $GLOBALS['TL_LANG']['MSC']['saveNcreate'] . '</button>';
 
-                    if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+                    if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null))
                     {
                         $arrButtons['saveNduplicate'] = '<button type="submit" name="saveNduplicate" id="saveNduplicate" class="tl_submit" accesskey="d">' . $GLOBALS['TL_LANG']['MSC']['saveNduplicate'] . '</button>';
                     }
                 }
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'])
+                if ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] ?? null)
                 {
                     $arrButtons['saveNedit'] = '<button type="submit" name="saveNedit" id="saveNedit" class="tl_submit" accesskey="e">' . $GLOBALS['TL_LANG']['MSC']['saveNedit'] . '</button>';
                 }
 
-                if ($this->ptable || $GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] || $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4)
+                if ($this->ptable || ($GLOBALS['TL_DCA'][$this->strTable]['config']['switchToEdit'] ?? null) || ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
                 {
                     $arrButtons['saveNback'] = '<button type="submit" name="saveNback" id="saveNback" class="tl_submit" accesskey="g">' . $GLOBALS['TL_LANG']['MSC']['saveNback'] . '</button>';
                 }
@@ -728,7 +731,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Call the buttons_callback (see #4691)
-        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback']))
+        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] ?? null))
         {
             foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback)
             {
@@ -808,7 +811,7 @@ class DC_ProductData extends \DC_Table
             array_unshift($arrValues, time());
 
             // Trigger the onsubmit_callback
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] ?? null))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
                 {
@@ -825,7 +828,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Set the current timestamp before adding a new version
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
             {
                 $this->Database->prepare("UPDATE " . $this->strTable . " SET ptable=?, tstamp=? WHERE id=?")
                                ->execute($this->ptable, time(), $this->intId);
@@ -842,7 +845,7 @@ class DC_ProductData extends \DC_Table
                 $objVersions->create();
 
                 // Call the onversion_callback
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] ?? null))
                 {
                     @trigger_error('Using the "onversion_callback" has been deprecated and will no longer work in Contao 5.0. Use the "oncreate_version_callback" instead.', E_USER_DEPRECATED);
 
@@ -893,7 +896,7 @@ class DC_ProductData extends \DC_Table
             {
                 Message::reset();
 
-                $this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href'], false, array('s2e', 'act', 'mode', 'pid')));
+                $this->redirect($this->addToUrl($GLOBALS['TL_DCA'][$this->strTable]['list']['operations']['edit']['href'] ?? '', false, array('s2e', 'act', 'mode', 'pid')));
             }
             elseif (isset($_POST['saveNback']))
             {
@@ -962,7 +965,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Parent view
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4)
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
                 {
                     $strUrl .= $this->Database->fieldExists('sorting', $this->strTable) ? '&amp;act=copy&amp;mode=1&amp;pid=' . $this->intId . '&amp;id=' . $this->intId : '&amp;act=copy&amp;mode=2&amp;pid=' . CURRENT_ID . '&amp;id=' . $this->intId;
                 }
@@ -1002,7 +1005,7 @@ class DC_ProductData extends \DC_Table
      */
     public function overrideAll()
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null)
         {
             throw new InternalServerErrorException('Table "' . $this->strTable . '" is not editable.');
         }
@@ -1015,7 +1018,7 @@ class DC_ProductData extends \DC_Table
 
         // Get current IDs from session
         $session = $objSession->all();
-        $ids = $session['CURRENT']['IDS'];
+        $ids = $session['CURRENT']['IDS'] ?? array();
 
         // Save field selection in session
         if (Input::post('FORM_SUBMIT') == $this->strTable . '_all' && Input::get('fields'))
@@ -1025,7 +1028,7 @@ class DC_ProductData extends \DC_Table
         }
 
         // Add fields
-        $fields = $session['CURRENT'][$this->strTable];
+        $fields = $session['CURRENT'][$this->strTable] ?? array();
 
         if (!empty($fields) && \is_array($fields) && Input::get('fields'))
         {
@@ -1050,7 +1053,7 @@ class DC_ProductData extends \DC_Table
                     // Store the active record
                     $this->objActiveRecord = $objRow;
 
-                    $objVersions = new \Versions($this->strTable, $this->intId);
+                    $objVersions = new Versions($this->strTable, $this->intId);
                     $objVersions->initialize();
 
                     $this->strPalette = StringUtil::trimsplit('[;,]', $this->getPalette());
@@ -1059,7 +1062,7 @@ class DC_ProductData extends \DC_Table
                     foreach ($fields as $v)
                     {
                         // Check whether field is excluded or not in palette
-                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] || !\in_array($v, $this->strPalette))
+                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] ?? null) || !\in_array($v, $this->strPalette))
                         {
                             continue;
                         }
@@ -1085,7 +1088,7 @@ class DC_ProductData extends \DC_Table
                     if (!$this->noReload)
                     {
                         // Call the onsubmit_callback
-                        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback']))
+                        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] ?? null))
                         {
                             foreach ($GLOBALS['TL_DCA'][$this->strTable]['config']['onsubmit_callback'] as $callback)
                             {
@@ -1104,7 +1107,7 @@ class DC_ProductData extends \DC_Table
                         $this->invalidateCacheTags();
 
                         // Set the current timestamp before adding a new version
-                        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+                        if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
                         {
                             $this->Database->prepare("UPDATE " . $this->strTable . " SET ptable=?, tstamp=? WHERE id=?")
                                            ->execute($this->ptable, time(), $this->intId);
@@ -1121,7 +1124,7 @@ class DC_ProductData extends \DC_Table
                             $objVersions->create();
 
                             // Call the onversion_callback
-                            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback']))
+                            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['config']['onversion_callback'] ?? null))
                             {
                                 @trigger_error('Using the "onversion_callback" has been deprecated and will no longer work in Contao 5.0. Use the "oncreate_version_callback" instead.', E_USER_DEPRECATED);
 
@@ -1150,7 +1153,7 @@ class DC_ProductData extends \DC_Table
             foreach ($fields as $v)
             {
                 // Check whether field is excluded
-                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'])
+                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['exclude'] ?? null)
                 {
                     continue;
                 }
@@ -1180,7 +1183,7 @@ class DC_ProductData extends \DC_Table
             $arrButtons['saveNclose'] = '<button type="submit" name="saveNclose" id="saveNclose" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['saveNclose'] . '</button>';
 
             // Call the buttons_callback (see #4691)
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] ?? null))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['edit']['buttons_callback'] as $callback)
                 {
@@ -1259,7 +1262,7 @@ class DC_ProductData extends \DC_Table
             $fields = array();
 
             // Add fields of the current table
-            $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields']));
+            $fields = array_merge($fields, array_keys($GLOBALS['TL_DCA'][$this->strTable]['fields'] ?? array()));
 
             // Add meta fields if the current user is an administrator
             if ($this->User->isAdmin)
@@ -1278,10 +1281,10 @@ class DC_ProductData extends \DC_Table
             // Show all non-excluded fields
             foreach ($fields as $field)
             {
-                if ($field == 'pid' || $field == 'sorting' || (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] && (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback']))))
+                if ($field == 'pid' || $field == 'sorting' || (!($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['exclude'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['doNotShow'] ?? null) && (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType']) || \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['input_field_callback'] ?? null))))
                 {
                     $options .= '
-  <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . StringUtil::specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?: ($GLOBALS['TL_LANG']['MSC'][$field][0] ?: $field)) . ' <span style="color:#999;padding-left:3px">[' . $field . ']</span>') . '</label><br>';
+  <input type="checkbox" name="all_fields[]" id="all_' . $field . '" class="tl_checkbox" value="' . StringUtil::specialchars($field) . '"> <label for="all_' . $field . '" class="tl_checkbox_label">' . (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] ?? (\is_array($GLOBALS['TL_LANG']['MSC'][$field] ?? null) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : ($GLOBALS['TL_LANG']['MSC'][$field] ?? null)) ?? $field) . ' <span style="color:#999;padding-left:3px">[' . $field . ']</span>') . '</label><br>';
                 }
             }
 
@@ -1322,15 +1325,16 @@ class DC_ProductData extends \DC_Table
 
     /**
      * List all records of the current table and return them as HTML string
+     *
      * @return string
      */
     protected function listView()
     {
-        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
-        $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
+        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 6 ? $this->ptable : $this->strTable;
+        $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? array();
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
-        if (\is_array($this->orderBy) && $this->orderBy[0])
+        if (\is_array($this->orderBy) && !empty($this->orderBy[0]))
         {
             $orderBy = $this->orderBy;
             $firstOrderBy = $this->firstOrderBy;
@@ -1358,12 +1362,12 @@ class DC_ProductData extends \DC_Table
         {
             foreach ($orderBy as $k=>$v)
             {
-                [$key, $direction] = explode(' ', $v, 2);
+                list($key, $direction) = explode(' ', $v, 2) + array(null, null);
 
                 // If there is no direction, check the global flag in sorting mode 1 or the field flag in all other sorting modes
                 if (!$direction)
                 {
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 1 && isset($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag']) && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] % 2) == 0)
+                    if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 1 && isset($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag']) && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] % 2) == 0)
                     {
                         $direction = 'DESC';
                     }
@@ -1373,11 +1377,11 @@ class DC_ProductData extends \DC_Table
                     }
                 }
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['findInSet'])
+                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['findInSet'] ?? null)
                 {
                     $direction = null;
 
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'] ?? null))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'][1];
@@ -1385,23 +1389,23 @@ class DC_ProductData extends \DC_Table
                         $this->import($strClass);
                         $keys = $this->$strClass->$strMethod($this);
                     }
-                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback'] ?? null))
                     {
                         $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options_callback']($this);
                     }
                     else
                     {
-                        $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options'];
+                        $keys = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['options'] ?? array();
                     }
 
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['isAssociative'] || array_is_assoc($keys))
+                    if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['eval']['isAssociative'] ?? null) || array_is_assoc($keys))
                     {
                         $keys = array_keys($keys);
                     }
 
                     $orderBy[$k] = $this->Database->findInSet($v, $keys);
                 }
-                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'], array(5, 6, 7, 8, 9, 10)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$key]['flag'] ?? null, array(5, 6, 7, 8, 9, 10)))
                 {
                     $orderBy[$k] = "CAST($key AS SIGNED)"; // see #5503
                 }
@@ -1412,7 +1416,7 @@ class DC_ProductData extends \DC_Table
                 }
             }
 
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 3)
+            if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 3)
             {
                 $firstOrderBy = 'pid';
                 $showFields = $GLOBALS['TL_DCA'][$table]['list']['label']['fields'];
@@ -1420,7 +1424,7 @@ class DC_ProductData extends \DC_Table
                 $query .= " ORDER BY (SELECT " . Database::quoteIdentifier($showFields[0]) . " FROM " . $this->ptable . " WHERE " . $this->ptable . ".id=" . $this->strTable . ".pid), " . implode(', ', $orderBy);
 
                 // Set the foreignKey so that the label is translated
-                if (!$GLOBALS['TL_DCA'][$table]['fields']['pid']['foreignKey'])
+                if (!($GLOBALS['TL_DCA'][$table]['fields']['pid']['foreignKey'] ?? null))
                 {
                     $GLOBALS['TL_DCA'][$table]['fields']['pid']['foreignKey'] = $this->ptable . '.' . $showFields[0];
                 }
@@ -1439,7 +1443,7 @@ class DC_ProductData extends \DC_Table
 
         if ($this->limit)
         {
-            $arrLimit = explode(',', $this->limit);
+            $arrLimit = explode(',', $this->limit) + array(null, null);
             $objRowStmt->limit($arrLimit[1], $arrLimit[0]);
         }
 
@@ -1449,8 +1453,8 @@ class DC_ProductData extends \DC_Table
         $return = Message::generate() . '
 <div id="tl_buttons">' . ((Input::get('act') == 'select' || $this->ptable) ? '
 <a href="' . $this->getReferer(true, $this->ptable) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a> ' : (isset($GLOBALS['TL_DCA'][$this->strTable]['config']['backlink']) ? '
-<a href="contao/main.php?' . $GLOBALS['TL_DCA'][$this->strTable]['config']['backlink'] . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a> ' : '')) . ((Input::get('act') != 'select' && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? '
-<a href="' . ($this->ptable ? $this->addToUrl('act=create' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] < 4) ? '&amp;mode=2' : '') . '&amp;pid=' . $this->intId) : $this->addToUrl('act=create')) . '" class="header_new" title="' . StringUtil::specialchars($labelNew[1]) . '" accesskey="n" onclick="Backend.getScrollOffset()">' . $labelNew[0] . '</a> ' : '') . $this->generateGlobalButtons() . '
+<a href="' . System::getContainer()->get('router')->generate('contao_backend') . '?' . $GLOBALS['TL_DCA'][$this->strTable]['config']['backlink'] . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBTTitle']) . '" accesskey="b" onclick="Backend.getScrollOffset()">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a> ' : '')) . ((Input::get('act') != 'select' && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null)) ? '
+<a href="' . ($this->ptable ? $this->addToUrl('act=create' . ((($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) < 4) ? '&amp;mode=2' : '') . '&amp;pid=' . $this->intId) : $this->addToUrl('act=create')) . '" class="header_new" title="' . StringUtil::specialchars($labelNew[1] ?? '') . '" accesskey="n" onclick="Backend.getScrollOffset()">' . $labelNew[0] . '</a> ' : '') . $this->generateGlobalButtons() . '
 </div>';
 
         // Return "no records found" message
@@ -1476,10 +1480,10 @@ class DC_ProductData extends \DC_Table
 <div class="tl_select_trigger">
 <label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">
 </div>' : '') . '
-<table class="tl_listing' . ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ? ' showColumns' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '">';
+<table class="tl_listing' . (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) ? ' showColumns' : '') . ($this->strPickerFieldType ? ' picker unselectable' : '') . '">';
 
             // Automatically add the "order by" field as last column if we do not have group headers
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
             {
                 $blnFound = false;
 
@@ -1488,7 +1492,7 @@ class DC_ProductData extends \DC_Table
                 {
                     if (strpos($f, ':') !== false)
                     {
-                        [$f] = explode(':', $f, 2);
+                        list($f) = explode(':', $f, 2);
                     }
 
                     if ($firstOrderBy == $f)
@@ -1505,7 +1509,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Generate the table header if the "show columns" option is active
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
             {
                 $return .= '
   <tr>';
@@ -1514,11 +1518,11 @@ class DC_ProductData extends \DC_Table
                 {
                     if (strpos($f, ':') !== false)
                     {
-                        [$f] = explode(':', $f, 2);
+                        list($f) = explode(':', $f, 2);
                     }
 
                     $return .= '
-    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label']) . '</th>';
+    <th class="tl_folder_tlist col_' . $f . (($f == $firstOrderBy) ? ' ordered_by' : '') . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$f]['label'] ?? null)) . '</th>';
                 }
 
                 $return .= '
@@ -1541,7 +1545,7 @@ class DC_ProductData extends \DC_Table
                 foreach ($showFields as $k=>$v)
                 {
                     // Decrypt the value
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'])
+                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'] ?? null)
                     {
                         $row[$v] = Encryption::decrypt(StringUtil::deserialize($row[$v]));
                     }
@@ -1557,13 +1561,13 @@ class DC_ProductData extends \DC_Table
 
                         $args[$k] = $objRef->numRows ? $objRef->$strField : '';
                     }
-                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'], array(5, 6, 7, 8, 9, 10)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(5, 6, 7, 8, 9, 10)))
                     {
-                        if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date')
+                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'date')
                         {
                             $args[$k] = $row[$v] ? Date::parse(Config::get('dateFormat'), $row[$v]) : '-';
                         }
-                        elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time')
+                        elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'time')
                         {
                             $args[$k] = $row[$v] ? Date::parse(Config::get('timeFormat'), $row[$v]) : '-';
                         }
@@ -1572,7 +1576,7 @@ class DC_ProductData extends \DC_Table
                             $args[$k] = $row[$v] ? Date::parse(Config::get('datimFormat'), $row[$v]) : '-';
                         }
                     }
-                    elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] || ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple']))
+                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'] ?? null)))
                     {
                         $args[$k] = $row[$v] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
                     }
@@ -1586,7 +1590,7 @@ class DC_ProductData extends \DC_Table
 
                             foreach ($row_v as $option)
                             {
-                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?: $option;
+                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? $option;
                             }
 
                             $args[$k] = implode(', ', $args_k);
@@ -1595,7 +1599,7 @@ class DC_ProductData extends \DC_Table
                         {
                             $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
                         }
-                        elseif (($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'])) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
+                        elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? false) || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? array())) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
                         {
                             $args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]];
                         }
@@ -1607,9 +1611,9 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Shorten the label it if it is too long
-                $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?: '%s', $args);
+                $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?? '%s', $args);
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
+                if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] ?? null) > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
                 {
                     $label = trim(StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
                 }
@@ -1619,15 +1623,15 @@ class DC_ProductData extends \DC_Table
                 $label = preg_replace('/<[^>]+>\s*<\/[^>]+>/', '', $label);
 
                 // Build the sorting groups
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] > 0)
+                if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0)
                 {
                     $current = $row[$firstOrderBy];
-                    $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
-                    $sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag']) ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'];
+                    $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? array();
+                    $sortingMode = (\count($orderBy) == 1 && $firstOrderBy == $orderBy[0] && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null)) ? $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['flag'] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$firstOrderBy]['flag'] ?? null);
                     $remoteNew = $this->formatCurrentValue($firstOrderBy, $current, $sortingMode);
 
                     // Add the group header
-                    if (($remoteNew != $remoteCur || $remoteCur === false) && !$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] && !$GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'])
+                    if (($remoteNew != $remoteCur || $remoteCur === false) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['disableGrouping'] ?? null))
                     {
                         $eoCount = -1;
                         $group = $this->formatGroupHeader($firstOrderBy, $remoteNew, $sortingMode, $row);
@@ -1648,9 +1652,9 @@ class DC_ProductData extends \DC_Table
                 $colspan = 1;
 
                 // Call the label_callback ($row, $label, $this)
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
                 {
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
@@ -1658,13 +1662,13 @@ class DC_ProductData extends \DC_Table
                         $this->import($strClass);
                         $args = $this->$strClass->$strMethod($row, $label, $this, $args);
                     }
-                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
                     {
                         $args = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']($row, $label, $this, $args);
                     }
 
                     // Handle strings and arrays
-                    if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
+                    if (!($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null))
                     {
                         $label = \is_array($args) ? implode(' ', $args) : $args;
                     }
@@ -1676,11 +1680,11 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Show columns
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
+                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
                 {
                     foreach ($args as $j=>$arg)
                     {
-                        $field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j];
+                        $field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j] ?? null;
 
                         if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['foreignKey']))
                         {
@@ -1715,7 +1719,7 @@ class DC_ProductData extends \DC_Table
 </div>';
 
             // Add another panel at the end of the page
-            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false)
+            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'] ?? '', 'limit') !== false)
             {
                 $return .= $this->paginationMenu();
             }
@@ -1726,12 +1730,12 @@ class DC_ProductData extends \DC_Table
                 // Submit buttons
                 $arrButtons = array();
 
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null))
                 {
                     $arrButtons['edit'] = '<button type="submit" name="edit" id="edit" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['editSelected'] . '</button>';
                 }
 
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'])
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'] ?? null))
                 {
                     $arrButtons['delete'] = '<button type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['delAllConfirm'] . '\')">' . $GLOBALS['TL_LANG']['MSC']['deleteSelected'] . '</button>';
                 }
@@ -1741,18 +1745,18 @@ class DC_ProductData extends \DC_Table
                     $arrButtons['cut'] = '<button type="submit" name="cut" id="cut" class="tl_submit" accesskey="x">' . $GLOBALS['TL_LANG']['MSC']['moveSelected'] . '</button>';
                 }
 
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null))
                 {
                     $arrButtons['copy'] = '<button type="submit" name="copy" id="copy" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['copySelected'] . '</button>';
                 }
 
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null))
                 {
                     $arrButtons['override'] = '<button type="submit" name="override" id="override" class="tl_submit" accesskey="v">' . $GLOBALS['TL_LANG']['MSC']['overrideSelected'] . '</button>';
                 }
 
                 // Call the buttons_callback (see #4691)
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] ?? null))
                 {
                     foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                     {
@@ -1812,7 +1816,7 @@ class DC_ProductData extends \DC_Table
 
         $blnClipboard = false;
         $arrClipboard = $objSession->get('CLIPBOARD');
-        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6) ? $this->ptable : $this->strTable;
+        $table = ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 6 ? $this->ptable : $this->strTable;
         $blnHasSorting = false;
         $blnMultiboard = false;
 
@@ -1822,10 +1826,14 @@ class DC_ProductData extends \DC_Table
             $blnClipboard = true;
             $arrClipboard = $arrClipboard[$table];
 
-            if (\is_array($arrClipboard['id']))
+            if (\is_array($arrClipboard['id'] ?? null))
             {
                 $blnMultiboard = true;
             }
+        }
+        else
+        {
+            $arrClipboard = null;
         }
 
         // Check the default labels (see #509)
@@ -1879,8 +1887,8 @@ class DC_ProductData extends \DC_Table
             $return .= '
 <div class="tl_content_right">' . ((Input::get('act') == 'select' || $this->strPickerFieldType == 'checkbox') ? '
 <label for="tl_select_trigger" class="tl_select_label">' . $GLOBALS['TL_LANG']['MSC']['selectAll'] . '</label> <input type="checkbox" id="tl_select_trigger" onclick="Backend.toggleCheckboxes(this)" class="tl_tree_checkbox">' : ($blnClipboard ? '
-<a href="' . $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $objParent->id . (!$blnMultiboard ? '&amp;id=' . $arrClipboard['id'] : '')) . '" title="' . StringUtil::specialchars($labelPasteAfter[0]) . '" onclick="Backend.getScrollOffset()">' . $imagePasteAfter . '</a>' : ((!$GLOBALS['TL_DCA'][$this->ptable]['config']['notEditable'] && $this->User->canEditFieldsOf($this->ptable)) ? '
-<a href="' . preg_replace('/&(amp;)?table=[^& ]*/i', ($this->ptable ? '&amp;table=' . $this->ptable : ''), $this->addToUrl('act=edit' . (Input::get('nb') ? '&amp;nc=1' : ''))) . '" class="edit" title="' . StringUtil::specialchars(sprintf(\is_array($labelEditHeader) ? $labelEditHeader[1] : $labelEditHeader, $objParent->id)) . '">' . $imageEditHeader . '</a> ' . $this->generateHeaderButtons($objParent->row(), $this->ptable) : '') . (($blnHasSorting && !$GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] && !$GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable']) ? '
+<a href="' . $this->addToUrl('act=' . $arrClipboard['mode'] . '&amp;mode=2&amp;pid=' . $objParent->id . (!$blnMultiboard ? '&amp;id=' . $arrClipboard['id'] : '')) . '" title="' . StringUtil::specialchars($labelPasteAfter[0]) . '" onclick="Backend.getScrollOffset()">' . $imagePasteAfter . '</a>' : ((!($GLOBALS['TL_DCA'][$this->ptable]['config']['notEditable'] ?? null) && $this->User->canEditFieldsOf($this->ptable)) ? '
+<a href="' . preg_replace('/&(amp;)?table=[^& ]*/i', ($this->ptable ? '&amp;table=' . $this->ptable : ''), $this->addToUrl('act=edit' . (Input::get('nb') ? '&amp;nc=1' : ''))) . '" class="edit" title="' . StringUtil::specialchars(sprintf(\is_array($labelEditHeader) ? $labelEditHeader[1] : $labelEditHeader, $objParent->id)) . '">' . $imageEditHeader . '</a> ' . $this->generateHeaderButtons($objParent->row(), $this->ptable) : '') . (($blnHasSorting && !($GLOBALS['TL_DCA'][$this->strTable]['config']['closed'] ?? null) && !($GLOBALS['TL_DCA'][$this->strTable]['config']['notCreatable'] ?? null)) ? '
 <a href="' . $this->addToUrl('act=create&amp;mode=2&amp;pid=' . $objParent->id . '&amp;id=' . $this->intId) . '" title="' . StringUtil::specialchars($labelPasteNew[0]) . '">' . $imagePasteNew . '</a>' : ''))) . '
 </div>';
 
@@ -1907,19 +1915,19 @@ class DC_ProductData extends \DC_Table
                 {
                     $_v = implode(', ', $_v);
                 }
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] || ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple']))
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'] ?? null)))
                 {
                     $_v = $_v ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
                 }
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'date')
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'date')
                 {
                     $_v = $_v ? Date::parse(Config::get('dateFormat'), $_v) : '-';
                 }
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'time')
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'time')
                 {
                     $_v = $_v ? Date::parse(Config::get('timeFormat'), $_v) : '-';
                 }
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] == 'datim')
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'datim')
                 {
                     $_v = $_v ? Date::parse(Config::get('datimFormat'), $_v) : '-';
                 }
@@ -1933,7 +1941,7 @@ class DC_ProductData extends \DC_Table
                         $objMaxTstamp->tstamp = $objParent->tstamp;
                     }
 
-                    $_v = \Contao\Date::parse(Config::get('datimFormat'), max($objParent->tstamp, $objMaxTstamp->tstamp));
+                    $_v = Date::parse(Config::get('datimFormat'), max($objParent->tstamp, $objMaxTstamp->tstamp));
                 }
                 elseif (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['foreignKey']))
                 {
@@ -1945,7 +1953,7 @@ class DC_ProductData extends \DC_Table
 
                     $_v = $objLabel->numRows ? $objLabel->value : '-';
                 }
-                elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v]))
+                elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v] ?? null))
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v][0];
                 }
@@ -1953,11 +1961,11 @@ class DC_ProductData extends \DC_Table
                 {
                     $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['reference'][$_v];
                 }
-                elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options']))
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'] ?? null))
                 {
-                    $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$_v];
+                    $_v = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options'][$_v] ?? null;
                 }
-                elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback']))
+                elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback'] ?? null))
                 {
                     $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback'][0];
                     $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback'][1];
@@ -1967,7 +1975,7 @@ class DC_ProductData extends \DC_Table
 
                     $_v = $options_callback[$_v] ?? '-';
                 }
-                elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback']))
+                elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback'] ?? null))
                 {
                     $options_callback = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['options_callback']($this);
 
@@ -1991,7 +1999,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Trigger the header_callback (see #3417)
-            if (\is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
             {
                 $strClass = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][0];
                 $strMethod = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'][1];
@@ -1999,7 +2007,7 @@ class DC_ProductData extends \DC_Table
                 $this->import($strClass);
                 $add = $this->$strClass->$strMethod($add, $this);
             }
-            elseif (\is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']))
+            elseif (\is_callable($GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback'] ?? null))
             {
                 $add = $GLOBALS['TL_DCA'][$table]['list']['sorting']['header_callback']($add, $this);
             }
@@ -2046,7 +2054,7 @@ class DC_ProductData extends \DC_Table
                     $orderBy[0] = 'foreignKey';
                 }
             }
-            elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields']))
+            elseif (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'] ?? null))
             {
                 $orderBy = $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['fields'];
                 $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
@@ -2088,7 +2096,7 @@ class DC_ProductData extends \DC_Table
             // LIMIT
             if ($this->limit)
             {
-                $arrLimit = explode(',', $this->limit);
+                $arrLimit = explode(',', $this->limit) + array(null, null);
                 $objOrderByStmt->limit($arrLimit[1], $arrLimit[0]);
             }
 
@@ -2107,11 +2115,12 @@ class DC_ProductData extends \DC_Table
 <table class="tl_listing' . ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ? ' showColumns' : '') . '">';
 
             // Automatically add the "order by" field as last column if we do not have group headers
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns']) {
+            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null) {
                 $blnFound = false;
 
                 // Extract the real key and compare it to $firstOrderBy
-                foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f) {
+                foreach (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array() as $f)
+                {
                     if (strpos($f, ':') !== false)
                     {
                         [$f] = explode(':', $f, 2);
@@ -2131,12 +2140,12 @@ class DC_ProductData extends \DC_Table
             }
 
             // Generate the table header if the "show columns" option is active
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
             {
                 $return .= '
   <tr>';
 
-                foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] as $f)
+                foreach (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'] ?? array()) as $f)
                 {
                     if (strpos($f, ':') !== false)
                     {
@@ -2341,7 +2350,7 @@ class DC_ProductData extends \DC_Table
 </div>';
 
             // Add another panel at the end of the page
-            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'], 'limit') !== false)
+            if (strpos($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['panelLayout'] ?? '', 'limit') !== false)
             {
                 $return .= $this->paginationMenu();
             }
@@ -2353,33 +2362,33 @@ class DC_ProductData extends \DC_Table
             // Submit buttons
             $arrButtons = array();
 
-            if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+            if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null))
             {
                 $arrButtons['edit'] = '<button type="submit" name="edit" id="edit" class="tl_submit" accesskey="s">' . $GLOBALS['TL_LANG']['MSC']['editSelected'] . '</button>';
             }
 
-            if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'])
+            if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notDeletable'] ?? null))
             {
                 $arrButtons['delete'] = '<button type="submit" name="delete" id="delete" class="tl_submit" accesskey="d" onclick="return confirm(\'' . $GLOBALS['TL_LANG']['MSC']['delAllConfirm'] . '\')">' . $GLOBALS['TL_LANG']['MSC']['deleteSelected'] . '</button>';
             }
 
-            if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'])
+            if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notCopyable'] ?? null))
             {
                 $arrButtons['copy'] = '<button type="submit" name="copy" id="copy" class="tl_submit" accesskey="c">' . $GLOBALS['TL_LANG']['MSC']['copySelected'] . '</button>';
             }
 
-            if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'])
+            if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notSortable'] ?? null))
             {
                 $arrButtons['cut'] = '<button type="submit" name="cut" id="cut" class="tl_submit" accesskey="x">' . $GLOBALS['TL_LANG']['MSC']['moveSelected'] . '</button>';
             }
 
-            if (!$GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'])
+            if (!($GLOBALS['TL_DCA'][$this->strTable]['config']['notEditable'] ?? null))
             {
                 $arrButtons['override'] = '<button type="submit" name="override" id="override" class="tl_submit" accesskey="v">' . $GLOBALS['TL_LANG']['MSC']['overrideSelected'] . '</button>';
             }
 
             // Call the buttons_callback (see #4691)
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] ?? null))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['select']['buttons_callback'] as $callback)
                 {
@@ -2433,7 +2442,7 @@ class DC_ProductData extends \DC_Table
      */
     protected function sortMenu()
     {
-        if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] != 2 && $GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] != 4)
+        if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) != 2 && ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) != 4)
         {
             return '';
         }
@@ -2443,7 +2452,7 @@ class DC_ProductData extends \DC_Table
         // Get sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if ($v['sorting'])
+            if ($v['sorting'] ?? null)
             {
                 $sortingFields[] = $k;
             }
@@ -2464,7 +2473,7 @@ class DC_ProductData extends \DC_Table
         $firstOrderBy = preg_replace('/\s+.*$/', '', $orderBy[0]);
 
         // Add PID to order fields
-        if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 3 && $this->Database->fieldExists('pid', $this->strTable))
+        if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 3 && $this->Database->fieldExists('pid', $this->strTable))
         {
             array_unshift($orderBy, 'pid');
         }
@@ -2475,9 +2484,9 @@ class DC_ProductData extends \DC_Table
             $strSort = Input::post('tl_sort');
 
             // Validate the user input (thanks to aulmn) (see #4971)
-            if (\in_array($strSort, $sortingFields))
+            if (\in_array($strSort, $sortingFields, true))
             {
-                $session['sorting'][$sessionKey] = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strSort]['flag'], array(2, 4, 6, 8, 10, 12)) ? "$strSort DESC" : $strSort;
+                $session['sorting'][$sessionKey] = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$strSort]['flag'] ?? null, array(2, 4, 6, 8, 10, 12)) ? "$strSort DESC" : $strSort;
                 $objSessionBag->replace($session);
             }
         }
@@ -2486,7 +2495,7 @@ class DC_ProductData extends \DC_Table
         elseif (isset($session['sorting'][$sessionKey]))
         {
             $overwrite = preg_quote(preg_replace('/\s+.*$/', '', $session['sorting'][$sessionKey]), '/');
-            $orderBy = array_diff($orderBy, preg_grep('/^'.$overwrite.'/i', $orderBy));
+            $orderBy = array_diff($orderBy, preg_grep('/^' . $overwrite . '/i', $orderBy));
 
             array_unshift($orderBy, $session['sorting'][$sessionKey]);
 
@@ -2499,14 +2508,14 @@ class DC_ProductData extends \DC_Table
         // Sorting fields
         foreach ($sortingFields as $field)
         {
-            $options_label = ($lbl = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $lbl : $GLOBALS['TL_LANG']['MSC'][$field];
+            $options_label = ($lbl = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null)) ? $lbl : $GLOBALS['TL_LANG']['MSC'][$field];
 
             if (\is_array($options_label))
             {
                 $options_label = $options_label[0];
             }
 
-            $options_sorter[$options_label] = '  <option value="' . StringUtil::specialchars($field) . '"' . (((!isset($session['sorting'][$sessionKey]) && $field == $firstOrderBy) || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey])) ? ' selected="selected"' : '') . '>' . $options_label . '</option>';
+            $options_sorter[$options_label] = '  <option value="' . StringUtil::specialchars($field) . '"' . (((!isset($session['sorting'][$sessionKey]) && $field == $firstOrderBy) || $field == str_replace(' DESC', '', $session['sorting'][$sessionKey] ?? '')) ? ' selected="selected"' : '') . '>' . $options_label . '</option>';
         }
 
         // Sort by option values
@@ -2621,7 +2630,7 @@ class DC_ProductData extends \DC_Table
 
             if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey']))
             {
-                [$t, $f] = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey'], 2);
+                list($t, $f) = explode('.', $GLOBALS['TL_DCA'][$this->strTable]['fields'][$fld]['foreignKey'], 2);
                 $this->procedure[] = "(" . sprintf($strPattern, Database::quoteIdentifier($fld)) . " OR " . sprintf($strPattern, "(SELECT " . Database::quoteIdentifier($f) . " FROM $t WHERE $t.id=" . $this->strTable . "." . Database::quoteIdentifier($fld) . ")") . ")";
                 $this->values[] = $searchValue;
             }
@@ -2648,7 +2657,7 @@ class DC_ProductData extends \DC_Table
                 $option_label = \is_array($GLOBALS['TL_LANG']['MSC'][$field]) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : $GLOBALS['TL_LANG']['MSC'][$field];
             }
 
-            $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . (($field == $session['search'][$sessionKey]['field']) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
+            $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . ((isset($session['search'][$this->strTable]['field']) && $session['search'][$sessionKey]['field'] == $field) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
         }
 
         // Sort by option values
@@ -2659,11 +2668,11 @@ class DC_ProductData extends \DC_Table
         return '
 <div class="tl_search tl_subpanel">
 <strong>' . $GLOBALS['TL_LANG']['MSC']['search'] . ':</strong>
-<select name="tl_field" class="tl_select' . ($active ? ' active' : '') . '">
+<select name="tl_field" class="tl_select tl_chosen' . ($active ? ' active' : '') . '">
 ' . implode("\n", $options_sorter) . '
 </select>
 <span>=</span>
-<input type="search" name="tl_value" class="tl_text' . ($active ? ' active' : '') . '" value="' . StringUtil::specialchars($session['search'][$sessionKey]['value']) . '">
+<input type="search" name="tl_value" class="tl_text' . ($active ? ' active' : '') . '" value="' . StringUtil::specialchars($session['search'][$sessionKey]['value'] ?? '') . '">
 </div>';
     }
 
@@ -2709,7 +2718,7 @@ class DC_ProductData extends \DC_Table
         // Set limit from table configuration
         else
         {
-            $this->limit = $session['filter'][$filter]['limit'] ? (($session['filter'][$filter]['limit'] == 'all') ? null : $session['filter'][$filter]['limit']) : '0,' . Config::get('resultsPerPage');
+            $this->limit = isset($session['filter'][$filter]['limit']) ? (($session['filter'][$filter]['limit'] == 'all') ? null : $session['filter'][$filter]['limit']) : '0,' . Config::get('resultsPerPage');
 
             $arrProcedure = $this->procedure;
             $arrValues = $this->values;
@@ -2728,7 +2737,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Support empty ptable fields
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'])
+            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
             {
                 $arrProcedure[] = ($this->ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
                 $arrValues[] = $this->ptable;
@@ -2801,7 +2810,7 @@ class DC_ProductData extends \DC_Table
             }
 
             $fields = '
-<select name="tl_limit" class="tl_select' . (($session['filter'][$filter]['limit'] != 'all' && $this->total > Config::get('resultsPerPage')) ? ' active' : '') . '" onchange="this.form.submit()">
+<select name="tl_limit" class="tl_select tl_chosen' . (($session['filter'][$filter]['limit'] ?? null) != 'all' && $this->total > Config::get('resultsPerPage') ? ' active' : '') . '" onchange="this.form.submit()">
   <option value="tl_limit">' . $GLOBALS['TL_LANG']['MSC']['filterRecords'] . '</option>' . $options . '
 </select> ';
         }
@@ -2832,7 +2841,7 @@ class DC_ProductData extends \DC_Table
         // Get the sorting fields
         foreach ($GLOBALS['TL_DCA'][$this->strTable]['fields'] as $k=>$v)
         {
-            if ((int) ($v['filter'] ?? 0) == $intFilterPanel)
+            if (($v['filter'] ?? null) == $intFilterPanel)
             {
                 $sortingFields[] = $k;
             }
@@ -2872,7 +2881,7 @@ class DC_ProductData extends \DC_Table
                 if (isset($session['filter'][$filter][$field]))
                 {
                     // Sort by day
-                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6)))
+                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6)))
                     {
                         if (!$session['filter'][$filter][$field])
                         {
@@ -2888,7 +2897,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Sort by month
-                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(7, 8)))
                     {
                         if (!$session['filter'][$filter][$field])
                         {
@@ -2904,7 +2913,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Sort by year
-                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
+                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(9, 10)))
                     {
                         if (!$session['filter'][$filter][$field])
                         {
@@ -2920,13 +2929,13 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Manual filter
-                    elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple'])
+                    elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple'] ?? null)
                     {
                         // CSV lists (see #2890)
                         if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['csv']))
                         {
                             $this->procedure[] = $this->Database->findInSet('?', $field, true);
-                            $this->values[] = $session['filter'][$filter][$field];
+                            $this->values[] = $session['filter'][$filter][$field] ?? null;
                         }
                         else
                         {
@@ -2939,7 +2948,7 @@ class DC_ProductData extends \DC_Table
                     else
                     {
                         $this->procedure[] = $what . '=?';
-                        $this->values[] = $session['filter'][$filter][$field];
+                        $this->values[] = $session['filter'][$filter][$field] ?? null;
                     }
                 }
             }
@@ -2951,7 +2960,7 @@ class DC_ProductData extends \DC_Table
             $arrValues = array();
             $arrProcedure = array();
 
-            if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 4)
+            if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 4)
             {
                 $arrProcedure[] = 'pid=?';
                 $arrValues[] = CURRENT_ID;
@@ -2963,7 +2972,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Check for a static filter (see #4719)
-            if (!empty($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']) && \is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter']))
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] ?? null))
             {
                 foreach ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['filter'] as $fltr)
                 {
@@ -2980,7 +2989,7 @@ class DC_ProductData extends \DC_Table
             }
 
             // Support empty ptable fields
-            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? false)
+            if ($GLOBALS['TL_DCA'][$this->strTable]['config']['dynamicPtable'] ?? null)
             {
                 $arrProcedure[] = ($this->ptable == 'tl_article') ? "(ptable=? OR ptable='')" : "ptable=?";
                 $arrValues[] = $this->ptable;
@@ -3018,12 +3027,12 @@ class DC_ProductData extends \DC_Table
                 $rootIds = array_map('\intval', $GLOBALS['TL_DCA'][$table]['list']['sorting']['root']);
 
                 // Also add the child records of the table (see #1811)
-                if ($GLOBALS['TL_DCA'][$table]['list']['sorting']['mode'] == 5)
+                if (($GLOBALS['TL_DCA'][$table]['list']['sorting']['mode'] ?? null) == 5)
                 {
                     $rootIds = array_merge($rootIds, $this->Database->getChildRecords($rootIds, $table));
                 }
 
-                if ($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] == 6)
+                if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) == 6)
                 {
                     $arrProcedure[] = "pid IN(" . implode(',', $rootIds) . ")";
                 }
@@ -3038,8 +3047,8 @@ class DC_ProductData extends \DC_Table
 
             // Begin select menu
             $fields .= '
-<select name="' . $field . '" id="' . $field . '" class="tl_select' . (isset($session['filter'][$filter][$field]) ? ' active' : '') . '">
-  <option value="tl_' . $field . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label']) . '</option>
+<select name="' . $field . '" id="' . $field . '" class="tl_select tl_chosen' . (isset($session['filter'][$filter][$field]) ? ' active' : '') . '">
+  <option value="tl_' . $field . '">' . (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['label'] ?? null)) . '</option>
   <option value="tl_' . $field . '">---</option>';
 
             if ($objFields->numRows)
@@ -3047,9 +3056,9 @@ class DC_ProductData extends \DC_Table
                 $options = $objFields->fetchEach($field);
 
                 // Sort by day
-                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? 0, array(5, 6)))
+                if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6)))
                 {
-                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 6) ? rsort($options) : sort($options);
+                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 6 ? rsort($options) : sort($options);
 
                     foreach ($options as $k=>$v)
                     {
@@ -3067,9 +3076,9 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Sort by month
-                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(7, 8)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(7, 8)))
                 {
-                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 8) ? rsort($options) : sort($options);
+                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 8 ? rsort($options) : sort($options);
 
                     foreach ($options as $k=>$v)
                     {
@@ -3093,9 +3102,9 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Sort by year
-                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(9, 10)))
+                elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(9, 10)))
                 {
-                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] == 10) ? rsort($options) : sort($options);
+                    ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null) == 10 ? rsort($options) : sort($options);
 
                     foreach ($options as $k=>$v)
                     {
@@ -3113,7 +3122,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 // Manual filter
-                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple'])
+                if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple'] ?? null)
                 {
                     $moptions = array();
 
@@ -3143,9 +3152,9 @@ class DC_ProductData extends \DC_Table
                 $options_callback = array();
 
                 // Call the options_callback
-                if (!$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'] && (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'])))
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'] ?? null) && (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'] ?? null)))
                 {
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
+                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'] ?? null))
                     {
                         $strClass = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][0];
                         $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'][1];
@@ -3153,7 +3162,7 @@ class DC_ProductData extends \DC_Table
                         $this->import($strClass);
                         $options_callback = $this->$strClass->$strMethod($this);
                     }
-                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']))
+                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback'] ?? null))
                     {
                         $options_callback = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options_callback']($this);
                     }
@@ -3163,7 +3172,7 @@ class DC_ProductData extends \DC_Table
                 }
 
                 $options_sorter = array();
-                $blnDate = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(5, 6, 7, 8, 9, 10));
+                $blnDate = \in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(5, 6, 7, 8, 9, 10));
 
                 // Options
                 foreach ($options as $kk=>$vv)
@@ -3192,7 +3201,7 @@ class DC_ProductData extends \DC_Table
                     }
 
                     // Replace boolean checkbox value with "yes" and "no"
-                    elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isBoolean'] || ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] == 'checkbox' && !$GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple']))
+                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['multiple'] ?? null)))
                     {
                         $vv = $vv ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
                     }
@@ -3201,9 +3210,9 @@ class DC_ProductData extends \DC_Table
                     elseif ($field == 'pid')
                     {
                         $this->loadDataContainer($this->ptable);
-                        $showFields = $GLOBALS['TL_DCA'][$this->ptable]['list']['label']['fields'];
+                        $showFields = $GLOBALS['TL_DCA'][$this->ptable]['list']['label']['fields'] ?? array();
 
-                        if (!$showFields[0])
+                        if (!($showFields[0] ?? null))
                         {
                             $showFields[0] = 'id';
                         }
@@ -3223,13 +3232,13 @@ class DC_ProductData extends \DC_Table
                     // Use reference array
                     if (isset($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference']))
                     {
-                        $option_label = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv]) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv][0] : $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv];
+                        $option_label = \is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv] ?? null) ? $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv][0] : ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['reference'][$vv] ?? null);
                     }
 
                     // Associative array
-                    elseif ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isAssociative'] || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options']))
+                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['eval']['isAssociative'] ?? null) || array_is_assoc($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'] ?? null))
                     {
-                        $option_label = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'][$vv];
+                        $option_label = $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['options'][$vv] ?? null;
                     }
 
                     // No empty options allowed
@@ -3253,7 +3262,7 @@ class DC_ProductData extends \DC_Table
                 {
                     uksort($options_sorter, array(Utf8::class, 'strnatcasecmp'));
 
-                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'], array(2, 4, 12)))
+                    if (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['flag'] ?? null, array(2, 4, 12)))
                     {
                         $options_sorter = array_reverse($options_sorter, true);
                     }
@@ -3288,19 +3297,22 @@ class DC_ProductData extends \DC_Table
         $objSessionBag = System::getContainer()->get('session')->getBag('contao_backend');
 
         $session = $objSessionBag->all();
-        $strLanguage = $session['language'][$this->strTable][$this->intId];
+        $strLanguage = $session['language'][$this->strTable][$this->intId] ?? null;
         $arrDuplicate = array();
 
-        foreach (StringUtil::trimsplit('[;,]', $this->getPalette()) as $field) {
-            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]) && $GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual']) {
+        foreach (StringUtil::trimsplit('[;,]', $this->getPalette()) as $field)
+        {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field] ?? null) && ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$field]['attributes']['multilingual'] ?? null)) {
                 $arrDuplicate[] = $field;
             }
         }
 
-        if (!empty($arrDuplicate)) {
+        if (!empty($arrDuplicate))
+        {
             $language = $this->Database->prepare("SELECT id FROM {$this->strTable} WHERE pid=? AND language=?")->execute($this->intId, $strLanguage);
 
-            if ($language->numRows) {
+            if ($language->numRows)
+            {
                 $objVersions = new Versions($this->strTable, $language->id);
                 $objVersions->initialize();
 
