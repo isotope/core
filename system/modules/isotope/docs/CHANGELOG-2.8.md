@@ -4,8 +4,12 @@ Isotope eCommerce Changelog
 Version 2.8.1 (2022-??-??)
 --------------------------
 
+- Fixed PayPal PLUS not correctly retrieving API credentials (#2295)
+- Don't use StringUtil::ampersand() to support for Contao 4.9 before 4.9.22 (#2297)
+- Correctly support the public web directory (#2293)
 - Fixed unsetting range filter on empty input
 - Fixed setting range filter field value
+- Fixed PHP8 multiple issues (#2291)
 
 
 Version 2.8.0 (2022-04-27)
