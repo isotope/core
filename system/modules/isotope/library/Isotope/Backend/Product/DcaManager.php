@@ -69,7 +69,7 @@ class DcaManager extends Backend
      */
     public function updateNewRecord($strTable, $insertID, $arrSet)
     {
-        if ($arrSet['pid'] > 0) {
+        if (($arrSet['pid'] ?? 0) > 0) {
             return;
         }
 
@@ -368,7 +368,7 @@ class DcaManager extends Backend
                 } else {
 
                     // Hide field from "show" option
-                    if ((!isset($arrField['attributes']) || $arrField['inputType'] != '') && 'inherit' !== $name) {
+                    if ((!isset($arrField['attributes']) || ($arrField['inputType'] ?? '') != '') && 'inherit' !== $name) {
                         $arrFields[$name]['eval']['doNotShow'] = true;
                     }
                 }
@@ -396,7 +396,7 @@ class DcaManager extends Backend
             $arrInclude = empty($arrPalette) ? array() : array_merge(...array_values($arrPalette));
 
             foreach ($arrFields as $name => $config) {
-                if ($arrFields[$name]['attributes']['legend'] != '' && !\in_array($name, $arrInclude)) {
+                if (($arrFields[$name]['attributes']['legend'] ?? '') != '' && !\in_array($name, $arrInclude)) {
                     $arrFields[$name]['exclude'] = true;
                 }
             }
@@ -469,9 +469,9 @@ class DcaManager extends Backend
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $name => $arrField) {
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['sorting'] = ('price' !== $name && 'variantFields' !== $name && \in_array($name, $arrFields));
 
-            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute->be_filter ? \in_array($name, $arrVariantFields) : false;
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute->be_search ? \in_array($name, $arrVariantFields) : false;
+            $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['filter'] = $objAttribute && ($objAttribute->be_filter ? \in_array($name, $arrVariantFields) : false);
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$name]['search'] = $objAttribute && ($objAttribute->be_search ? \in_array($name, $arrVariantFields) : false);
         }
     }
 
@@ -487,7 +487,7 @@ class DcaManager extends Backend
     public function addOptionsFromAttribute($arrData, $objDca)
     {
         if ($arrData['strTable'] == Product::getTable()
-            && $arrData['optionsSource'] != ''
+            && ($arrData['optionsSource'] ?? '') != ''
             && 'foreignKey' !== $arrData['optionsSource']
         ) {
 
@@ -502,7 +502,7 @@ class DcaManager extends Backend
                         array_unshift($arrData['options'], array('value'=>'', 'label'=>($arrData['blankOptionLabel'] ?: '-')));
                     }
 
-                    if (null !== $arrData['default']) {
+                    if (null !== ($arrData['default'] ?? null)) {
                         $arrDefault = array_filter(
                             $arrData['options'],
                             function (&$option) {

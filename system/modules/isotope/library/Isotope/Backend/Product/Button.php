@@ -148,7 +148,7 @@ class Button extends Backend
             $arrAttributes = $row['pid'] ? $objProductType->getVariantAttributes() : $objProductType->getAttributes();
         }
 
-        if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time)) {
+        if ((($arrAttributes['start']['enabled'] ?? false) && $row['start'] != '' && $row['start'] > $time) || (($arrAttributes['stop']['enabled'] ?? false) && $row['stop'] != '' && $row['stop'] < $time)) {
             return Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label) . ' ';
         }
 

@@ -86,7 +86,7 @@ class AddressFieldsWizard extends Backend
 
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
-            if (!$arrDCA[$strName]['eval']['feEditable']) {
+            if (!($arrDCA[$strName]['eval']['feEditable'] ?? false)) {
                 continue;
             }
 

@@ -648,7 +648,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['newProductPeriod'],
             'exclude'               => true,
-            'default'               => array('unit'=>'days'),
+            'default'               => array('unit'=>'days', 'value'=>''),
             'inputType'             => 'timePeriod',
             'options'               => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
             'reference'             => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],

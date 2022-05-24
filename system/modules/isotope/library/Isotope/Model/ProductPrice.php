@@ -454,7 +454,7 @@ class ProductPrice extends Model implements IsotopePrice
      */
     protected static function buildFindQuery(array $arrOptions)
     {
-        $arrOptions['group'] = ($arrOptions['group'] ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
+        $arrOptions['group'] = (($arrOptions['group'] ?? null) ? $arrOptions['group'].', ' : '') . 'tl_iso_product_price.id';
 
         $query = QueryBuilder::find($arrOptions);
         $from  = substr($query, strpos($query, '*')+1);
