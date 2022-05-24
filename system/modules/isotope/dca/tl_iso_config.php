@@ -351,7 +351,6 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
                     'name' => array
                     (
                         'label'                 => ['&nbsp;'],
-                        'inputType'             => 'text',
                         'input_field_callback'  => array('Isotope\Backend\Config\AddressFieldsWizard', 'getNextName'),
                         'eval'                  => array('tl_class'=>'mcwUpdateFields'),
                     ),

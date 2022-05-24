@@ -64,13 +64,11 @@ class AttributeWizard extends Backend
         (
             'enabled'   => array
             (
-                'label' => '',
                 'inputType' => 'checkbox',
                 'eval'      => array('hideHead' => true),
             ),
             'name'      => array
             (
-                'label' => '',
                 'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getNextName'),
                 'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
             ),
