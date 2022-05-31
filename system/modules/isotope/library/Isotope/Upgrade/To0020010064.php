@@ -37,15 +37,15 @@ class To0020010064 extends System
                 return;
             }
 
-            $objProducts = Database::getInstance()->query("
+            $arrProducts = Database::getInstance()->query("
                 SELECT * FROM tl_iso_product WHERE language=''
-            ");
+            ")->fetchAllAssoc();
 
-            while ($objProducts->next()) {
+            foreach ($arrProducts as $arrProduct) {
                 $arrUpdate = array();
 
                 foreach ($arrFields as $field) {
-                    $arrData = StringUtil::deserialize($objProducts->$field);
+                    $arrData = StringUtil::deserialize($arrProduct[$field]);
 
                     if (!empty($arrData) && \is_array($arrData)) {
                         foreach ($arrData as $k => $image) {
@@ -60,8 +60,8 @@ class To0020010064 extends System
 
                 if (0 !== \count($arrUpdate)) {
                     Database::getInstance()->prepare(
-                        "UPDATE tl_iso_product %s WHERE id=?"
-                    )->set($arrUpdate)->execute($objProducts->id);
+                        'UPDATE tl_iso_product %s WHERE id=?'
+                    )->set($arrUpdate)->execute($arrProduct['id']);
                 }
             }
         }
