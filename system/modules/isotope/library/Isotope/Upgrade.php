@@ -111,7 +111,7 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 </body>
 </html>
 ';
-        exit;
+        exit(1);
     }
 
 
