@@ -346,7 +346,7 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
-            'reference'             => $GLOBALS['TL_LANG']['MSC'],
+            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),

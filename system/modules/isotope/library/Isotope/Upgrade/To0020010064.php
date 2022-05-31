@@ -28,7 +28,7 @@ class To0020010064 extends System
             $arrFields = array();
 
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $config) {
-                if ('mediaManager' === $config['inputType']) {
+                if ('mediaManager' === ($config['inputType'] ?? '')) {
                     $arrFields[] = $field;
                 }
             }
