@@ -1,7 +1,7 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.8.1 (2022-??-??)
+Version 2.8.1 (2022-05-31)
 --------------------------
 
 - Fixed PayPal PLUS not correctly retrieving API credentials (#2295)

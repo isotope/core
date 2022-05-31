@@ -50,6 +50,7 @@
         "symfony/polyfill-php80": "^4.4 || ^5.0 || ^6.0"
     },
     "require-dev": {
+        "contao/core-bundle": "4.9.*",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-fineuploader": "^2.0",
         "terminal42/contao-changelanguage": "^3.0",
