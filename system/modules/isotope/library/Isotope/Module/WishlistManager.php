@@ -143,7 +143,6 @@ class WishlistManager extends Module
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($items);
 
         $this->Template->id = $this->id;
-        $this->Template->action = Environment::get('request');
         $this->Template->items = $items;
     }
 

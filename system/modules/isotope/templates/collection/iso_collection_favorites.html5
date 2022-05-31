@@ -1,5 +1,5 @@
 <?php if(!empty($this->actions)): ?>
-<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post">
+<form id="<?= $this->formId ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">

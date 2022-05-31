@@ -103,7 +103,6 @@ class Integrity extends BackendModule
         }
 
         $this->Template->checks = $arrChecks;
-        $this->Template->action = Environment::get('request');
         $this->Template->back = str_replace('&mod=integrity', '', Environment::get('request'));
     }
 }

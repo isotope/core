@@ -2,7 +2,7 @@
 
 <?php $this->block('content'); ?>
 
-<form action="<?= $this->action ?>" method="post" id="wishlists<?= $this->id ?>">
+<form method="post" id="wishlists<?= $this->id ?>">
     <input type="hidden" name="FORM_SUBMIT" value="wishlists<?= $this->id ?>">
     <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
 

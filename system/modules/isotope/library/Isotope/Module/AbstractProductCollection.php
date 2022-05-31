@@ -187,11 +187,10 @@ abstract class AbstractProductCollection extends Module
     {
         $template = new Template($this->iso_collectionTpl);
 
-        $template->isEditable    = $this->canEditQuantity();
-        $template->linkProducts  = true;
-        $template->formId        = $this->strFormId;
-        $template->formSubmit    = $this->strFormId;
-        $template->action        = Environment::get('request');
+        $template->isEditable = $this->canEditQuantity();
+        $template->linkProducts = true;
+        $template->formId = $this->strFormId;
+        $template->formSubmit = $this->strFormId;
 
         return $template;
     }

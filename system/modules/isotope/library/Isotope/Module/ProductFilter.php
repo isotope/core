@@ -180,16 +180,11 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         // Search does not affect request cache
         $this->generateSearch();
 
-        $arrParams = array_filter(array_keys($_GET), function($key) {
-            return (strpos($key, 'page_iso') === 0);
-        });
-
-        $this->Template->id          = $this->id;
-        $this->Template->formId      = 'iso_filter_' . $this->id;
-        $this->Template->action      = ampersand(Url::removeQueryString($arrParams));
+        $this->Template->id = $this->id;
+        $this->Template->formId = 'iso_filter_'.$this->id;
         $this->Template->actionClear = ampersand(strtok(Environment::get('request'), '?'));
-        $this->Template->clearLabel  = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
-        $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
+        $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
 
     /**

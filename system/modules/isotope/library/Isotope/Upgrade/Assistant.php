@@ -38,7 +38,6 @@ abstract class Assistant extends Base
 
         $this->Template = new BackendTemplate($this->strTemplate);
         $this->Template->base = Environment::get('base');
-        $this->Template->action = Environment::get('request');
         $this->Template->slabel = $GLOBALS['TL_LANG']['UPG']['submit'];
 
         $this->compile();

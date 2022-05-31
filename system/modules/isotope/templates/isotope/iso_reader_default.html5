@@ -1,4 +1,4 @@
-<form action="<?= $this->action ?>" id="<?= $this->formId ?>" name="iso<?= rand() ?>" method="post" enctype="<?= $this->enctype ?>">
+<form id="<?= $this->formId ?>" name="iso<?= rand() ?>" method="post" enctype="<?= $this->enctype ?>">
 <div class="formbody" itemscope itemtype="http://schema.org/Product">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">

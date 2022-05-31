@@ -34,7 +34,7 @@ $lang = (object) $GLOBALS['TL_LANG']['XPT'];
       <h3><?= $lang->matter ?></h3>
       <p><?= $this->matter ?></p>
 
-      <form action="<?= $this->action ?>" method="post">
+      <form method="post">
       <div class="formbody">
       <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>" />
       <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">

@@ -551,7 +551,7 @@ class Callback extends Backend
 
 <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id) . '</h2>' . $strMessages . '
 
-<form action="' . ampersand(Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
+<form id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">

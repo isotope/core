@@ -615,22 +615,21 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
-        $objTemplate->actions          = $actions;
-        $objTemplate->useQuantity      = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
+        $objTemplate->actions = $actions;
+        $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
-        $objTemplate->raw              = $this->arrData;
-        $objTemplate->raw_options      = $this->getConfiguration();
-        $objTemplate->configuration    = $this->getConfiguration();
-        $objTemplate->href             = '';
-        $objTemplate->label_detail     = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
-        $objTemplate->options          = $arrProductOptions;
-        $objTemplate->hasOptions       = \count($arrProductOptions) > 0;
-        $objTemplate->enctype          = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
-        $objTemplate->formId           = $this->getFormId();
-        $objTemplate->action           = ampersand(Environment::get('request') ?: Environment::get('base'), true);
-        $objTemplate->formSubmit       = $this->getFormId();
-        $objTemplate->product_id       = $this->getProductId();
-        $objTemplate->module_id        = $arrConfig['module']->id;
+        $objTemplate->raw = $this->arrData;
+        $objTemplate->raw_options = $this->getConfiguration();
+        $objTemplate->configuration = $this->getConfiguration();
+        $objTemplate->href = '';
+        $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
+        $objTemplate->options = $arrProductOptions;
+        $objTemplate->hasOptions = \count($arrProductOptions) > 0;
+        $objTemplate->enctype = $this->hasUpload ? 'multipart/form-data' : 'application/x-www-form-urlencoded';
+        $objTemplate->formId = $this->getFormId();
+        $objTemplate->formSubmit = $this->getFormId();
+        $objTemplate->product_id = $this->getProductId();
+        $objTemplate->module_id = $arrConfig['module']->id;
 
         if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);

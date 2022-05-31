@@ -163,9 +163,8 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
 
         $this->Template->fields = $fields;
         $this->Template->jsonFields = json_encode($fields);
-        $this->Template->formId      = 'iso_filter_' . $this->id;
-        $this->Template->action      = ampersand(Environment::get('request'));
-        $this->Template->slabel      = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->formId = 'iso_filter_'.$this->id;
+        $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
     }
 
     private function getRangeConfig(): array

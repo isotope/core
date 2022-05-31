@@ -2,7 +2,7 @@
 
 <?php $this->block('content'); ?>
 
-<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post">
+<form id="<?= $this->formId ?>" method="post">
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
@@ -52,7 +52,7 @@
 
 <?php if ($this->hasSearch): ?>
 <div class="search">
-<form action="<?= $this->action ?>" method="get">
+<form method="get">
 <input type="hidden" name="isorc" value="<?= \Contao\Input::get('isorc') ?>">
 <label for="ctrl_keywords_<?= $this->id ?>"><?= $this->keywordsLabel ?></label>
 <input type="text" name="keywords" id="ctrl_keywords_<?= $this->id ?>" class="text" value="<?= $this->keywords ?>" placeholder="<?= $this->defaultSearchText ?>">

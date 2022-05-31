@@ -3,7 +3,7 @@
 </div>
 <div id="tl_maintenance_cache" class="maintenance_inactive">
   <h2 class="sub_headline"><?= $GLOBALS['TL_LANG']['tl_iso_integrity']['headline'] ?></h2>
-  <form action="<?= $this->action ?>" class="tl_form" method="post">
+  <form class="tl_form" method="post">
     <div class="tl_formbody_edit">
       <input type="hidden" name="FORM_SUBMIT" value="tl_iso_integrity">
       <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
