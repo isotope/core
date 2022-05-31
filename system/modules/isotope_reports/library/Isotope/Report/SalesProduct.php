@@ -259,7 +259,7 @@ class SalesProduct extends Sales
     protected function getHeader(PeriodInterface $period, $intStart, $intColumns)
     {
         $arrHeader = array();
-        $arrHeader[] = array('value'=>'Produkt');
+        $arrHeader[] = array('value'=>&$GLOBALS['TL_LANG']['ISO_REPORT']['product_name']);
 
         for ($i=0; $i<$intColumns; $i++) {
             $arrHeader[] = array(
@@ -270,7 +270,7 @@ class SalesProduct extends Sales
         }
 
         $arrHeader[] = array(
-            'value' => 'Total',
+            'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales_total'][0],
         );
 
         return $arrHeader;
