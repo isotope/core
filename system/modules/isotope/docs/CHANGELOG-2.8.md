@@ -12,6 +12,7 @@ Version 2.8.1 (2022-??-??)
 - Fixed PHP8 multiple issues (#2291)
 - Do not copy the product GTIN and SKU (#2288)
 - Fixed mediaManager migration on Contao 4.13
+- Remove current list page query parameter when filtering products (#2119)
 
 
 Version 2.8.0 (2022-04-27)

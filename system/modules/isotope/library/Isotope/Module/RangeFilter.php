@@ -148,7 +148,15 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             if ($new->id !== $cache->id) {
                 Controller::redirect(
                     Environment::get('base') .
-                    Url::addQueryString('isorc='.$new->id, ($this->jumpTo ?: null))
+                    Url::addQueryString(
+                        'isorc='.$new->id,
+                        Url::removeQueryStringCallback(
+                            static function ($value, $key) {
+                                return !str_starts_with($key, 'page_iso');
+                            },
+                            ($this->jumpTo ?: null)
+                        )
+                    )
                 );
             }
         }

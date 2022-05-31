@@ -46,7 +46,8 @@
         "tecnickcom/tcpdf": "^6.2.22",
         "patchwork/utf8": "^1.2",
         "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
-        "symfony/http-client": "^4.4 || ^5.0 || ^6.0"
+        "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
+        "symfony/polyfill-php80": "^4.4 || ^5.0 || ^6.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
