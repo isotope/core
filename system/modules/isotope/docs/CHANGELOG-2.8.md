@@ -1,6 +1,13 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.8.1 (2022-06-01)
+--------------------------
+
+- Fixed version constraint for symfony/polyfill-php80 (#2302)
+
+
 Version 2.8.1 (2022-05-31)
 --------------------------
 
