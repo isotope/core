@@ -6,6 +6,7 @@ Version 2.8.2 (2022-06-??)
 --------------------------
 
 - Fixed ajax request without form action (#2303)
+- Fixed invalid shipping address ID in orders without shipping (#2014)
 - Optimize database columns to fix row size issues
 
 

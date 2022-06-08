@@ -1923,6 +1923,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             $objNew->save();
 
             $this->setShippingAddress($objNew);
+        } elseif (null === $objShippingAddress) {
+            // Make sure to set the shipping address to null if collection has no shipping
+            // see isotope/core#2014
+            $this->setShippingAddress(null);
         }
     }
 
