@@ -2,7 +2,7 @@ Isotope eCommerce Changelog
 ===========================
 
 
-Version 2.8.2 (2022-06-??)
+Version 2.8.2 (2022-06-08)
 --------------------------
 
 - Fixed ajax request without form action (#2303)
