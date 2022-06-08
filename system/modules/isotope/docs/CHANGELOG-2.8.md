@@ -5,6 +5,7 @@ Isotope eCommerce Changelog
 Version 2.8.2 (2022-06-??)
 --------------------------
 
+- Fixed ajax request without form action (#2303)
 - Optimize database columns to fix row size issues
 
 

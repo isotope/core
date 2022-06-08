@@ -192,7 +192,7 @@
 
             if (!form) return;
 
-            xhr.open(form.getAttribute('method').toUpperCase(), form.getAttribute('action'));
+            xhr.open(form.getAttribute('method').toUpperCase(), form.getAttribute('action') || location.href);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
