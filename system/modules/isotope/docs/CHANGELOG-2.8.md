@@ -2,6 +2,12 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.8.2 (2022-06-??)
+--------------------------
+
+- Optimize database columns to fix row size issues
+
+
 Version 2.8.1 (2022-06-01)
 --------------------------
 

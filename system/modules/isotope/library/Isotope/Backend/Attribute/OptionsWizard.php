@@ -36,7 +36,7 @@ class OptionsWizard extends Backend
             (
                 'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
                 'inputType' => 'text',
-                'eval'      => array('class'=>'tl_text_2'),
+                'eval'      => array('maxlength' => 64, 'class'=>'tl_text_2'),
             ),
             'label' => array
             (

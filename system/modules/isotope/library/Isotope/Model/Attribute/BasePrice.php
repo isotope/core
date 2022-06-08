@@ -41,7 +41,7 @@ class BasePrice extends Attribute
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        $arrData['fields'][$this->field_name]['sql'] = "text NULL";
     }
 
     /**
