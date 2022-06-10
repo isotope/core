@@ -24,6 +24,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Saferpay payment method
@@ -38,6 +39,16 @@ use Isotope\Module\Checkout;
 class Saferpay extends Postsale implements IsotopeOrderStatusAware
 {
     protected $objXML;
+
+    /**
+     * @inheritdoc
+     */
+    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    {
+        $this->processPostsale($objOrder);
+
+        return new Response();
+    }
 
     /**
      * @inheritdoc
