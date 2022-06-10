@@ -16,6 +16,7 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
 use Contao\FrontendUser;
+use Contao\StringUtil;
 use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
@@ -203,6 +204,10 @@ abstract class Module extends AbstractFrontendModule
 
             case 'article':
                 $arrCategories = array($GLOBALS['ISO_CONFIG']['current_article']['pid'] ? : $objPage->id);
+                break;
+
+            case 'specific':
+                $arrCategories = StringUtil::deserialize($this->iso_categories, true);
                 break;
 
             case '':

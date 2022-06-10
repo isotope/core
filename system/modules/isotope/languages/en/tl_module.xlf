@@ -575,6 +575,18 @@
       <trans-unit id="tl_module.iso_category_scope_ref.article.1">
         <source>If you place the module in an article, it will show products assigned to the artilce's partent page, even though if you place the article in another page (e.g. using insert tag).</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.specific.0">
+        <source>Specified categories</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_category_scope_ref.specific.1">
+        <source>This will show all products from the chosen categories in the module's settings.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_categories.0">
+        <source>Product categories</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_categories.1">
+        <source>Choose the product categories to be displayed in the list.</source>
+      </trans-unit>
       <trans-unit id="tl_module.sortingDirection.ASC">
         <source>ASC</source>
       </trans-unit>

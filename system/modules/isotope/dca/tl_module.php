@@ -18,6 +18,7 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'i
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_emptyFilter';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_tsdisplay';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_tscheckout';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]               = 'iso_category_scope';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productlist']              = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,iso_category_scope,iso_list_where,iso_newFilter,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_link_primary,iso_jump_first,iso_addProductJumpTo,iso_wishlistJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_hide_list,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productvariantlist']       = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,iso_category_scope,iso_list_where,iso_newFilter,iso_filterModules,iso_listingSortField,iso_listingSortDirection;{redirect_legend},iso_link_primary,iso_jump_first,iso_addProductJumpTo,iso_wishlistJumpTo;{reference_legend:hide},defineRoot;{template_legend:hide},customTpl,iso_list_layout,iso_gallery,iso_cols,iso_use_quantity,iso_hide_list,iso_disable_options,iso_includeMessages,iso_emptyMessage,iso_emptyFilter,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_productreader']            = '{title_legend},name,headline,type;{config_legend},iso_use_quantity,iso_display404Page;{redirect_legend},iso_addProductJumpTo,iso_wishlistJumpTo;{template_legend:hide},customTpl,iso_reader_layout,iso_gallery,iso_disable_options,iso_includeMessages,iso_buttons;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -48,12 +49,13 @@ $GLOBALS['TL_DCA']['tl_module']['palettes']['iso_trustedshops']             = '{
 /**
  * Add subpalettes to tl_module
  */
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']       = 'iso_perPage';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']      = 'iso_noProducts';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']       = 'iso_noFilter';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_enableLimit']        = 'iso_perPage';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyMessage']       = 'iso_noProducts';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_emptyFilter']        = 'iso_noFilter';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_standard'] = 'iso_tsyoffset';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_custom']  = 'iso_tsdirection';
-$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tscheckout']        = 'iso_tsproducts';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tsdisplay_custom']   = 'iso_tsdirection';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_tscheckout']         = 'iso_tsproducts';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['iso_category_scope_specific'] = 'iso_categories';
 
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['navigationTpl']['eval']['includeBlankOption'] = true;
@@ -394,11 +396,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_category_scope'] = array
     'exclude'                   => true,
     'inputType'                 => 'radio',
     'default'                   => 'current_category',
-    'options'                   => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global'),
+    'options'                   => array('current_category', 'current_and_first_child', 'current_and_all_children', 'parent', 'product', 'article', 'global', 'specific'),
     'reference'                 => &$GLOBALS['TL_LANG']['tl_module']['iso_category_scope_ref'],
     'explanation'               => 'iso_category_scope',
-    'eval'                      => array('tl_class'=>'clr w50 w50h', 'helpwizard'=>true),
+    'eval'                      => array('tl_class'=>'clr w50 w50h', 'helpwizard'=>true, 'submitOnChange'=>true),
     'sql'                       => "varchar(64) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['iso_categories'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['iso_categories'],
+    'exclude'                   => true,
+    'inputType'                 => 'pageTree',
+    'eval'                      => array('tl_class'=>'clr', 'mandatory'=>true, 'multiple'=>true, 'fieldType'=>'checkbox'),
+    'sql'                       => "blob NULL",
 );
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_list_where'] = array
