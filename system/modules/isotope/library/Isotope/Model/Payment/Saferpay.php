@@ -47,7 +47,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     {
         $this->processPostsale($objOrder);
 
-        return new Response();
+        return true;
     }
 
     /**
