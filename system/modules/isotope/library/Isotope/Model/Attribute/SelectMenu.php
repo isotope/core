@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 
 /**
@@ -51,7 +52,13 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
             $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         } else {
             if ('attribute' === $this->optionsSource) {
-                $arrData['fields'][$this->field_name]['sql'] = "varchar(64) NOT NULL default ''";
+                $length = 64;
+
+                array_walk(StringUtil::deserialize($this->options, true), function($option) use (&$length) {
+                    $length = max(ceil(mb_strlen($option['value'] ?? '') / 64) * 64, $length);
+                });
+
+                $arrData['fields'][$this->field_name]['sql'] = "varchar($length) NOT NULL default ''";
             } else {
                 $arrData['fields'][$this->field_name]['sql'] = 'int(10) NOT NULL default 0';
             }
