@@ -109,7 +109,7 @@ class AttributeWizard extends Backend
         static $strWidget;
         static $i = 0;
 
-        if ($objWidget->name !== $strWidget) {
+        if ($objWidget->name !== $strWidget || empty($arrValues)) {
             $strWidget = $objWidget->name;
             $arrValues = $objWidget->value;
             $i         = 0;

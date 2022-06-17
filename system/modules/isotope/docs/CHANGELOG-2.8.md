@@ -1,13 +1,24 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.4 (2022-??-??)
+--------------------------
 
-Version 2.8.2 (2022-06-08)
+- Fixed broken attribute manager on field error
+
+
+Version 2.8.3 (2022-06-08)
 --------------------------
 
 - Fixed ajax request without form action (#2303)
 - Fixed invalid shipping address ID in orders without shipping (#2014)
 - Optimize database columns to fix row size issues
+
+
+Version 2.8.2 (2022-06-01)
+--------------------------
+
+- Fixed Composer compatibility for symfony/polyfill-php80
 
 
 Version 2.8.1 (2022-06-01)
