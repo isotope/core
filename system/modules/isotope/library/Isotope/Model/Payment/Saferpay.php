@@ -43,16 +43,6 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
-    {
-        $this->processPostsale($objOrder);
-
-        return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
@@ -257,7 +247,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 'Abort' => Environment::get('base') . $failedUrl,
             ],
             'Notification' => [
-                'NotifyUrl' => Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
+                'SuccessNotifyUrl' => Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
             ],
         ];
 
