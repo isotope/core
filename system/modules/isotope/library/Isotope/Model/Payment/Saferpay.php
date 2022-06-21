@@ -246,9 +246,8 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 'Fail' => Environment::get('base') . $failedUrl,
                 'Abort' => Environment::get('base') . $failedUrl,
             ],
-            'Notification' => [
-                'SuccessNotifyUrl' => Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
-                'FailNotifyUrl' => Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
+             'Notification' => [
+                'NotifyUrl' => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
             ],
         ];
 
