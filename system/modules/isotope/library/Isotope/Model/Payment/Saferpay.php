@@ -24,7 +24,6 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Saferpay payment method
@@ -246,7 +245,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 'Fail' => Environment::get('base') . $failedUrl,
                 'Abort' => Environment::get('base') . $failedUrl,
             ],
-             'Notification' => [
+            'Notification' => [
                 'NotifyUrl' => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
             ],
         ];
