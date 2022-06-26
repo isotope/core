@@ -47,7 +47,7 @@ class Reports extends BackendOverview
                         'label'         => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
                         'description'   => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
                         'href'          => $this->addToUrl('mod=' . $strModule),
-                        'class'         => $arrConfig['class'],
+                        'class'         => $arrConfig['class'] ?? '',
                     ));
 
                     // @deprecated remove ISO_LANG in Isotope 3.0
@@ -107,31 +107,32 @@ class Reports extends BackendOverview
 
             $i = -1;
             $strBuffer .= '
-<br>
-<table class="tl_listing">
-<tr>
-    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['orders#'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['products#'] . '</th>
-    <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '</th>
-</tr>';
+<div class="tl_listing_container list_view">
+    <table class="tl_listing">
+    <tr>
+        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'] . '</th>
+        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['currency'] . '</th>
+        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['orders#'] . '</th>
+        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['products#'] . '</th>
+        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '</th>
+    </tr>';
 
 
             while ($objOrders->next())
             {
                 $strBuffer .= '
-<tr class="row_' . ++$i . ($i%2 ? 'odd' : 'even') . '">
-    <td class="tl_file_list">' . $objOrders->config_name . '</td>
-    <td class="tl_file_list">' . $objOrders->currency . '</td>
-    <td class="tl_file_list">' . $objOrders->total_orders . '</td>
-    <td class="tl_file_list">' . $objOrders->total_items . '</td>
-    <td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
-</tr>';
+    <tr class="row_' . ++$i . ($i%2 ? 'odd' : 'even') . '">
+        <td class="tl_file_list">' . $objOrders->config_name . '</td>
+        <td class="tl_file_list">' . $objOrders->currency . '</td>
+        <td class="tl_file_list">' . $objOrders->total_orders . '</td>
+        <td class="tl_file_list">' . $objOrders->total_items . '</td>
+        <td class="tl_file_list">' . Isotope::formatPrice($objOrders->total_sales) . '</td>
+    </tr>';
             }
 
             $strBuffer .= '
-</table>';
+    </table>
+</div>';
         }
 
 

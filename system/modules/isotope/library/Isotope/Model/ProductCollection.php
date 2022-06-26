@@ -1098,7 +1098,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $objItem           = new ProductCollectionItem();
             $objItem->pid      = $this->id;
-            $objItem->jumpTo   = (int) $arrConfig['jumpTo']->id;
+            $objItem->jumpTo   = isset($arrConfig['jumpTo']) ? (int) $arrConfig['jumpTo']->id : 0;
 
             $this->setProductForItem($objProduct, $objItem, $intQuantity);
             $objItem->save();
@@ -1556,7 +1556,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         $objTemplate->attributeLabel = function ($name, array $options = []) {
             /** @var Attribute $attribute */
-            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
             if (!$attribute instanceof IsotopeAttribute) {
                 return Format::dcaLabel('tl_iso_product', $name);
@@ -1567,7 +1567,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         $objTemplate->attributeValue = function ($name, $value, array $options = []) {
             /** @var Attribute $attribute */
-            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
             if (!$attribute instanceof IsotopeAttribute) {
                 return Format::dcaValue('tl_iso_product', $name, $value);
@@ -1695,7 +1695,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             'product'           => $objProduct,
             'item'              => $objItem,
             'raw'               => $objItem->row(),
-            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . $arrCSS[1]),
+            'rowClass'          => trim('product ' . (($blnHasProduct && $objProduct->isNew()) ? 'new ' : '') . ($arrCSS[1] ?? ''))
         );
 
         if ($blnHasProduct && null !== $objItem->getRelated('jumpTo') && $objProduct->isAvailableInFrontend()) {
@@ -2027,7 +2027,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      */
     public static function getItemsSortingCallable($strOrderBy = 'asc_id')
     {
-        [$direction, $attribute] = explode('_', $strOrderBy, 2);
+        [$direction, $attribute] = explode('_', $strOrderBy, 2) + [null, null];
 
         if ('asc' === $direction) {
             return function ($arrItems) use ($attribute) {

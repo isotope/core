@@ -69,7 +69,7 @@ class Address extends Model
     {
         parent::__construct($objResult);
 
-        if (!\is_array($GLOBALS['ISO_ADR'])) {
+        if (!\is_array($GLOBALS['ISO_ADR'] ?? null)) {
             Controller::loadDataContainer(static::$strTable);
             System::loadLanguageFile('addresses');
         }
@@ -142,7 +142,7 @@ class Address extends Model
         $strCountry = $this->country ?: Isotope::getConfig()->country;
 
         // Use generic format if no country specific format is available
-        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?: $GLOBALS['ISO_ADR']['generic'];
+        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?? $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens  = $this->getTokens($arrFields);
 
@@ -245,7 +245,7 @@ class Address extends Model
             'hcard_street_address'   => $street ? '<div class="street-address">' . $street . '</div>' : '',
             'hcard_locality'         => $arrTokens['city'] ? '<span class="locality">' . $arrTokens['city'] . '</span>' : '',
             'hcard_region'           => $arrTokens['subdivision'] ? '<span class="region">' . $arrTokens['subdivision'] . '</span>' : '',
-            'hcard_region_abbr'      => $arrTokens['subdivision_abbr'] ? '<abbr class="region" title="' . $arrTokens['subdivision'] . '">' . $arrTokens['subdivision_abbr'] . '</abbr>' : '',
+            'hcard_region_abbr'      => !empty($arrTokens['subdivision_abbr']) ? '<abbr class="region" title="' . $arrTokens['subdivision'] . '">' . $arrTokens['subdivision_abbr'] . '</abbr>' : '',
             'hcard_postal_code'      => $arrTokens['postal'] ? '<span class="postal-code">' . $arrTokens['postal'] . '</span>' : '',
             'hcard_country_name'     => $arrTokens['country'] ? '<div class="country-name">' . $arrTokens['country'] . '</div>' : '',
         ];
@@ -407,7 +407,7 @@ class Address extends Model
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
-        if ($arrData['country'] == '' && null !== ($objConfig = $objCollection->getConfig())) {
+        if (empty($arrData['country']) && null !== ($objConfig = $objCollection->getConfig())) {
             if ($blnDefaultBilling) {
                 $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
             } elseif ($blnDefaultShipping) {

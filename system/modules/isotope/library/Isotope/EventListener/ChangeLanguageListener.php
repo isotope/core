@@ -48,7 +48,7 @@ class ChangeLanguageListener
      */
     private function getCheckoutStep()
     {
-        if (!\is_array($GLOBALS['ISO_CHECKOUT_STEPS'])) {
+        if (!\is_array($GLOBALS['ISO_CHECKOUT_STEPS'] ?? null)) {
             return null;
         }
 

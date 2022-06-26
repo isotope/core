@@ -87,7 +87,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     {
         parent::__construct($objResult);
 
-        $this->arrData['allowed_cc_types'] = StringUtil::deserialize($this->arrData['allowed_cc_types']);
+        $this->arrData['allowed_cc_types'] = StringUtil::deserialize($this->arrData['allowed_cc_types'] ?? null);
 
         if (\is_array($this->arrData['allowed_cc_types'])) {
             $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);

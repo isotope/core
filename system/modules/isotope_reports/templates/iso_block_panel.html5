@@ -1,5 +1,5 @@
 <?php if(count($this->panels)): ?>
-    <form action="<?php echo $this->action; ?>" class="tl_form" method="post">
+    <form class="tl_form" method="post">
         <div class="tl_formbody iso_panels">
             <input type="hidden" name="FORM_SUBMIT" value="tl_filters">
             <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
@@ -24,7 +24,7 @@
                         <div class="<?php echo $subpanel['class']; ?> tl_subpanel">
                             <strong><?php echo $subpanel['label']; ?>: </strong>
                             <?php if($subpanel['type'] == 'filter'): ?>
-                                <select name="<?php echo $subpanel['name']; ?>" class="tl_select<?php echo $subpanel['active'] ? ' active' : ''; ?>"<?php echo $subpanel['attributes']; ?>>
+                                <select name="<?php echo $subpanel['name']; ?>" class="tl_select<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?>>
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
                                         <option value="<?php echo $value; ?>"<?php if($value==$subpanel['value']): ?> selected<?php endif; ?>><?php echo $label; ?></option>
                                     <?php endforeach; ?>
@@ -32,21 +32,21 @@
                             <?php elseif($subpanel['type'] == 'radio'): ?>
                                 <div class="radio_container" style="display:inline-block">
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
-                                        <span><input type="radio" name="<?php echo $subpanel['name']; ?>" class="tl_radio<?php echo $subpanel['active'] ? ' active' : ''; ?>"<?php echo $subpanel['attributes']; ?> value="<?php echo $value; ?>"<?php if($value==$subpanel['value']): ?> checked<?php endif; ?>><?php echo $label; ?></span>
+                                        <span><input type="radio" name="<?php echo $subpanel['name']; ?>" class="tl_radio<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?> value="<?php echo $value; ?>"<?php if($value==$subpanel['value']): ?> checked<?php endif; ?>><?php echo $label; ?></span>
                                     <?php endforeach; ?>
                                 </div>
                             <?php elseif($subpanel['type'] == 'search'): ?>
-                                <select name="tl_field" class="tl_select<?php echo $subpanel['active'] ? ' active' : ''; ?>"<?php echo $subpanel['attributes']; ?>>
+                                <select name="tl_field" class="tl_select<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?>>
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
                                         <option value="<?php echo $value; ?>"<?php if($value==$subpanel['value']['tl_field']): ?> selected<?php endif; ?>><?php echo $label; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span> = </span>
-                            <input type="text" name="tl_value" class="tl_text<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']['tl_value']; ?>">
+                            <input type="text" name="tl_value" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']['tl_value']; ?>">
                             <?php elseif($subpanel['type'] == 'text'): ?>
-                            <input type="text" name="<?php echo $subpanel['name']; ?>" class="tl_text<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
+                            <input type="text" name="<?php echo $subpanel['name']; ?>" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']; ?>">
                             <?php elseif($subpanel['type'] == 'date'): ?>
-                            <input type="text" id="ctrl_<?php echo $subpanel['name']; ?>" name="<?php echo $subpanel['name']; ?>" class="tl_text datepicker<?php echo $subpanel['active'] ? ' active' : ''; ?>" value="<?php echo $subpanel['value']; ?>">
+                            <input type="text" id="ctrl_<?php echo $subpanel['name']; ?>" name="<?php echo $subpanel['name']; ?>" class="tl_text datepicker<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']; ?>">
                             <img src="assets/<?= defined('DATEPICKER') ? ('mootools/datepicker/'.DATEPICKER.'/icon.gif') : 'datepicker/images/icon.svg' ?>" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
                                 <script>
                                     window.addEvent("domready", function() {

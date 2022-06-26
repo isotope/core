@@ -44,7 +44,7 @@ class PostCheckoutUploads
 
             foreach ($configuration as $attributeName => $value) {
                 /** @var Attribute $attribute */
-                $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attributeName];
+                $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attributeName] ?? null;
 
                 if (!$attribute instanceof \uploadable || !$attribute->checkoutRelocate) {
                     continue;

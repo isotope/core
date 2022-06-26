@@ -186,7 +186,7 @@ abstract class Address extends CheckoutStep
                 $varValue = (string) $objWidget->value;
 
                 // Convert date formats into timestamps
-                if ('' !== $varValue && \in_array($objWidget->dca_config['eval']['rgxp'], array('date', 'time', 'datim'), true)) {
+                if ('' !== $varValue && \in_array(($objWidget->dca_config['eval']['rgxp'] ?? null), array('date', 'time', 'datim'), true)) {
                     try {
                         $objDate = new Date($varValue, $GLOBALS['TL_CONFIG'][$objWidget->dca_config['eval']['rgxp'] . 'Format']);
                         $varValue = $objDate->tstamp;
@@ -247,9 +247,9 @@ abstract class Address extends CheckoutStep
             foreach ($arrFields as $field) {
 
                 if (!\is_array($field['dca'])
-                    || !$field['enabled']
-                    || !$field['dca']['eval']['feEditable']
-                    || ($field['dca']['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
+                    || !($field['enabled'] ?? null)
+                    || !($field['dca']['eval']['feEditable'] ?? null)
+                    || (($field['dca']['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
                 ) {
                     continue;
                 }
@@ -269,7 +269,7 @@ abstract class Address extends CheckoutStep
                     $arrCountries = $this->getAddressCountries();
                     $field['dca']['reference'] = $field['dca']['options'];
                     $field['dca']['options'] = array_values(array_intersect(array_keys($field['dca']['options']), $arrCountries));
-                } elseif (\strlen($field['dca']['eval']['conditionField'])) {
+                } elseif (!empty($field['dca']['eval']['conditionField'])) {
                     // Special field type "conditionalselect"
                     $field['dca']['eval']['conditionField'] = $this->getStepClass() . '_' . $field['dca']['eval']['conditionField'];
                 }

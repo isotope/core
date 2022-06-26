@@ -94,13 +94,13 @@ class SalesTotal extends Sales
                 $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
             }
 
-            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] + $objData->total_sales;
+            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales;
 
             // Summary in the footer
             $arrData['footer'][1]['value'] += $objData->total_orders;
             $arrData['footer'][2]['value'] += $objData->total_products;
             $arrData['footer'][3]['value'] += $objData->total_items;
-            $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
+            $arrData['footer'][4]['value'][$objData->currency] = ((float) ($arrData['footer'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
             // Generate chart data
             $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency]['data'][$objData->dateGroup]['y'] + $objData->total_sales);

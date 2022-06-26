@@ -339,14 +339,14 @@ class Checkout extends Module
                 }
             }
 
-            if ($this->skippableSteps[$step]) {
+            if ($this->skippableSteps[$step] ?? false) {
                 unset($arrStepKeys[array_search($step, $arrStepKeys)]);
                 $intCurrentStep -= 1;
                 $intTotalSteps -= 1;
             }
 
             if ($step == $this->strCurrentStep) {
-                if ($this->skippableSteps[$step]) {
+                if ($this->skippableSteps[$step] ?? false) {
                     $this->redirectToNextStep();
                 }
 
@@ -404,7 +404,7 @@ class Checkout extends Module
 
         $step = $arrSteps[$intKey + 1];
 
-        if ($this->skippableSteps[$step]) {
+        if ($this->skippableSteps[$step] ?? false) {
             $this->strCurrentStep = $step;
             $this->redirectToNextStep();
         }
@@ -426,7 +426,7 @@ class Checkout extends Module
 
         $step = $arrSteps[$intKey - 1];
 
-        if ($this->skippableSteps[$step]) {
+        if ($this->skippableSteps[$step] ?? false) {
             $this->strCurrentStep = $step;
             $this->redirectToPreviousStep();
         }

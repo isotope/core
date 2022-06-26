@@ -197,7 +197,7 @@ class Callback extends Backend
 
             $strBuffer .= '
   <tr>
-    <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': <small>'.$k.'</small></td>
+    <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?? $k) . ': <small>'.$k.'</small></td>
     <td>' . $strValue . '</td>
   </tr>';
         }

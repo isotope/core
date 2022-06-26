@@ -596,7 +596,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      */
     protected function generateUniqueId()
     {
-        if ($this->arrData['uniqid'] != '') {
+        if (!empty($this->arrData['uniqid'])) {
             return $this->arrData['uniqid'];
         }
 

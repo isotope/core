@@ -74,7 +74,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
         $this->objForm->addFieldsFromFormGenerator(
             $this->formId,
             function ($strName, &$arrDca) {
-                $arrDca['value'] = $_SESSION['CHECKOUT_DATA'][$strName] ?: $arrDca['value'];
+                $arrDca['value'] = $_SESSION['CHECKOUT_DATA'][$strName] ?? $arrDca['value'];
 
                 return true;
             }
@@ -99,7 +99,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
         if ($this->objForm->isSubmitted()) {
             $this->blnError = !$this->objForm->validate();
 
-            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
+            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA'] ?? null) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
                 if ($this->objForm->getWidget($strField) instanceof \uploadable) {
                     $arrFile  = $_SESSION['FILES'][$strField];
@@ -114,7 +114,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
         } else {
             $blnError = false;
 
-            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA']) ? $_SESSION['CHECKOUT_DATA'] : array();
+            $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA'] ?? null) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
 
                 // Clone widget because otherwise we add errors to the original widget instance
@@ -122,7 +122,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                 if ($objClone instanceof \uploadable) {
                     $_FILES[$strField] = $_SESSION['FILES'][$strField];
                 } else {
-                    Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField]);
+                    Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField] ?? null);
                 }
                 $objClone->validate();
 

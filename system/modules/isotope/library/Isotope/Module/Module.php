@@ -20,7 +20,6 @@ use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Haste\Util\Debug;
-use Haste\Util\RepositoryVersion;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -82,14 +81,12 @@ abstract class Module extends AbstractFrontendModule
 
         // Load Isotope JavaScript and style sheet
         if ('FE' === TL_MODE) {
-            $version = RepositoryVersion::encode(Isotope::VERSION);
-
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/js/isotope.min.js|static|'.$version
+                'system/modules/isotope/assets/js/isotope.min.js|static|'.Isotope::VERSION
             );
 
             $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.$version
+                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.Isotope::VERSION
             );
 
             // Disable caching for pages with certain modules (eg. Cart)
