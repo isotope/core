@@ -163,7 +163,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             }
 
             // Delete cookie
-            System::setCookie(static::$strCookie, '', time() - 3600, $GLOBALS['TL_CONFIG']['websitePath']);
+            System::setCookie(static::$strCookie, '', time() - 3600);
             Controller::reload();
         }
     }
@@ -274,8 +274,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             System::setCookie(
                 static::$strCookie,
                 $this->uniqid,
-                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                $GLOBALS['TL_CONFIG']['websitePath']
+                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
             );
         }
 
@@ -373,8 +372,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                 System::setCookie(
                     static::$strCookie,
                     $objCart->uniqid,
-                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                    $GLOBALS['TL_CONFIG']['websitePath']
+                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
                 );
             }
         }
