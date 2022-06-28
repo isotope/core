@@ -171,5 +171,5 @@ interface IsotopeProduct
      *
      * @return string
      */
-    public function generateUrl(PageModel $objJumpTo = null);
+    public function generateUrl(PageModel $objJumpTo = null/*, bool $absolute = false*/);
 }

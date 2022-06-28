@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -509,7 +510,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             /** @var Product $product */
             $product = $products->current();
 
-            Controller::redirect($product->generateUrl($this->findJumpToPage($product)));
+            throw new RedirectResponseException($product->generateUrl($this->findJumpToPage($product), true));
         }
     }
 }

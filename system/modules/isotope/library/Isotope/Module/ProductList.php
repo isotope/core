@@ -13,6 +13,7 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
@@ -261,7 +262,7 @@ class ProductList extends Module
 
             // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && Input::getAutoItem('product', false, true) == '') {
-                Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
+                throw new RedirectResponseException($objProduct->generateUrl($arrConfig['jumpTo'], true));
             }
 
             $arrBuffer[] = array(

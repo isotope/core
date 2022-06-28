@@ -361,14 +361,10 @@ class Frontend extends \Contao\Frontend
                                 continue;
                             }
 
-                            // Generate the domain
-                            $strDomain  = ($objRoot->useSSL ? 'https://' : 'http://');
-                            $strDomain .= ($objRoot->dns ?: Environment::get('host')) . TL_PATH . '/';
-
                             // Pass root language to page object
                             $objPage->language = $objRoot->language;
 
-                            $arrPages[] = $strDomain . $objProduct->generateUrl($objPage);
+                            $arrPages[] = $objProduct->generateUrl($objPage, true);
 
                             // Only take the first category because this is our primary one
                             // Having multiple reader pages in the sitemap XML would mean duplicate content

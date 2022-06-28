@@ -1066,8 +1066,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      *
      * @throws \InvalidArgumentException
      */
-    public function generateUrl(PageModel $objJumpTo = null)
+    public function generateUrl(PageModel $objJumpTo = null/*, bool $absolute = false*/)
     {
+        $absolute = false;
+
+        if (func_num_args() >= 2) {
+            $absolute = (bool) func_get_arg(1);
+        }
+
         if (null === $objJumpTo) {
             global $objPage;
             global $objIsotopeListPage;
@@ -1089,10 +1095,9 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        return Url::addQueryString(
-            http_build_query($this->getOptions()),
-            $objJumpTo->getFrontendUrl($strParams)
-        );
+        $url = $absolute ? $objJumpTo->getAbsoluteUrl($strParams) : $objJumpTo->getFrontendUrl($strParams);
+
+        return Url::addQueryString(http_build_query($this->getOptions()), $url);
     }
 
     /**

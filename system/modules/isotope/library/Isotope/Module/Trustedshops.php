@@ -127,7 +127,7 @@ HTML;
                 }
 
                 $data['items'][] = [
-                    'tsCheckoutProductUrl' => Environment::get('base').$product->generateUrl($item->getRelated('jumpTo')),
+                    'tsCheckoutProductUrl' => $product->generateUrl($item->getRelated('jumpTo'), true),
 //                    'tsCheckoutProductImageUrl' => '',
                     'tsCheckoutProductName' => $item->getName(),
                     'tsCheckoutProductSKU' => $item->getSku(),
