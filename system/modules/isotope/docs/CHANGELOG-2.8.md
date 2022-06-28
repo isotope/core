@@ -1,10 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
-Version 2.8.4 (2022-??-??)
+Version 2.8.4 (2022-06-28)
 --------------------------
 
 - Fixed broken attribute manager on field error
+- Fixed Saferpay notification URL (#2305)
+- Fixed invalid cookie path
+- Fixed lots of PHP8 issues
+- Use response context in Contao 4.13+ (#2310)
+- Update checkout and postsale URLs for payment methods
+- Add missing redirect config for category filter module (#2185)
 
 
 Version 2.8.3 (2022-06-08)
