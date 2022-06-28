@@ -14,7 +14,7 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\ResponseException;
-use Contao\Environment;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
@@ -351,7 +351,23 @@ class Checkout extends Module
                 }
 
                 global $objPage;
-                $objPage->pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
+                $pageTitle = sprintf($GLOBALS['TL_LANG']['MSC']['checkoutStep'], $intCurrentStep, $intTotalSteps, ($GLOBALS['TL_LANG']['MSC']['checkout_' . $step] ?: $step)) . ($objPage->pageTitle ?: $objPage->title);
+
+                // Support response context in Contao 4.13
+                if (System::getContainer()->has('contao.routing.response_context_accessor')) {
+                    $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+                    $htmlDecoder = System::getContainer()->get('contao.string.html_decoder');
+
+                    if ($responseContext && $htmlDecoder && $responseContext->has(HtmlHeadBag::class)) {
+                        $responseContext
+                            ->get(HtmlHeadBag::class)
+                            ->setTitle($htmlDecoder->inputEncodedToPlainText($pageTitle))
+                        ;
+                        break;
+                    }
+                }
+
+                $objPage->pageTitle = $pageTitle;
                 break;
             }
         }

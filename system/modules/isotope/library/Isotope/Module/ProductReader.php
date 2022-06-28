@@ -12,10 +12,12 @@
 namespace Isotope\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\Database;
 use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
@@ -128,16 +130,37 @@ class ProductReader extends Module
      */
     protected function addMetaTags(Product $objProduct)
     {
-        global $objPage;
-
-        $descriptionFallback = ($objProduct->teaser ?: $objProduct->description);
-
-        $objPage->pageTitle   = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->getName());
-        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: $descriptionFallback);
+        $pageTitle = $objProduct->meta_title ?: $objProduct->getName();
+        /** @noinspection NestedTernaryOperatorInspection */
+        $description = $objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description);
 
         if ($objProduct->meta_keywords) {
             $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
         }
+
+        // Support response context in Contao 4.13
+        if (System::getContainer()->has('contao.routing.response_context_accessor')) {
+            $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+            $htmlDecoder = System::getContainer()->get('contao.string.html_decoder');
+
+            if ($responseContext && $htmlDecoder && $responseContext->has(HtmlHeadBag::class)) {
+                /** @var HtmlHeadBag $htmlHeadBag */
+                $htmlHeadBag = $responseContext->get(HtmlHeadBag::class);
+
+                $htmlHeadBag->setTitle($htmlDecoder->inputEncodedToPlainText($pageTitle));
+
+                if ($description) {
+                    $htmlHeadBag->setMetaDescription($htmlDecoder->inputEncodedToPlainText($description));
+                }
+
+                return;
+            }
+        }
+
+        global $objPage;
+
+        $objPage->pageTitle = $this->prepareMetaDescription($pageTitle);
+        $objPage->description = $this->prepareMetaDescription($description);
     }
 
     /**
@@ -163,14 +186,23 @@ class ProductReader extends Module
                 }
 
                 $objJumpTo->loadDetails();
-                $strDomain = Environment::get('base');
 
-                // Overwrite the domain
-                if ($objJumpTo->dns != '') {
-                    $strDomain = ($objJumpTo->useSSL ? 'https://' : 'http://') . $objJumpTo->dns . TL_PATH . '/';
+                $href = $objProduct->generateUrl($objJumpTo, true);
+
+                // Canonical links in Contao 4.13
+                if ($objJumpTo->enableCanonical && System::getContainer()->has('contao.routing.response_context_accessor')) {
+                    $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+
+                    if ($responseContext && $responseContext->has(HtmlHeadBag::class)) {
+                        $responseContext
+                            ->get(HtmlHeadBag::class)
+                            ->setCanonicalUri($href)
+                        ;
+
+                        break;
+                    }
                 }
 
-                $href = $strDomain . $objProduct->generateUrl($objJumpTo);
                 $GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="' . $href . '">';
 
                 break;
