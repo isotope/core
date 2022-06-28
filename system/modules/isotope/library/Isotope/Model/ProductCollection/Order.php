@@ -46,7 +46,7 @@ use NotificationCenter\Model\Notification;
  * @property int    $date_shipped
  * @property string $notes
  *
- * @method Order|null findByPk($id)
+ * @method static Order|null findByPk($id)
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {

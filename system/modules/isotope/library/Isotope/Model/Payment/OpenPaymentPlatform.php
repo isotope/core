@@ -111,7 +111,7 @@ class OpenPaymentPlatform extends Payment
         /** @var Template|object $template */
         $template = new Template('iso_payment_opp');
         $template->base = $base;
-        $template->action = Checkout::generateUrlForStep('complete', $objOrder);
+        $template->action = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
         $template->checkoutId = $response['id'];
         $template->brands = '';
 

@@ -248,9 +248,9 @@ abstract class PSP extends Payment implements IsotopePostsale
             'OWNERCTY'      => strtoupper($objBillingAddress->country),
             'OWNERTOWN'     => substr(html_entity_decode($objBillingAddress->city), 0, 35),
             'OWNERTELNO'    => preg_replace('/[^- +\/0-9]/', '', $objBillingAddress->phone),
-            'ACCEPTURL'     => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'DECLINEURL'    => Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'BACKURL'       => Environment::get('base') . Checkout::generateUrlForStep('review'),
+            'ACCEPTURL'     => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+            'DECLINEURL'    => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
+            'BACKURL'       => Checkout::generateUrlForStep(Checkout::STEP_REVIEW, null, null, true),
             'PARAMPLUS'     => 'mod=pay&amp;id=' . $this->id,
             'TP'            => $this->psp_dynamic_template ? : ''
         );

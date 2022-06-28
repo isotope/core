@@ -4,4 +4,4 @@
     }
 </script>
 <script async src="<?= $this->base ?>/v1/paymentWidgets.js?checkoutId=<?= $this->checkoutId ?>"></script>
-<form action="<?= \Contao\Environment::get('base') . $this->action ?>" class="paymentWidgets"<?php if ($this->brands): ?> data-brands="<?= $this->brands ?>"<?php endif; ?>></form>
+<form action="<?= $this->action ?>" class="paymentWidgets"<?php if ($this->brands): ?> data-brands="<?= $this->brands ?>"<?php endif; ?>></form>

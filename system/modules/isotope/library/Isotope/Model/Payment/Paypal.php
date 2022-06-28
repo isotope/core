@@ -25,6 +25,7 @@ use Isotope\Module\Checkout;
 use Isotope\Template;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 /**
@@ -189,9 +190,9 @@ class Paypal extends Postsale
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->getCurrency();
-        $objTemplate->return        = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return = Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $objTemplate->notify_url    = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $objTemplate->return        = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $objTemplate->cancel_return = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
+        $objTemplate->notify_url    = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
         $objTemplate->headline      = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
         $objTemplate->message       = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
         $objTemplate->slabel        = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);

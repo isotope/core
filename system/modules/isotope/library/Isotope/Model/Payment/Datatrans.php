@@ -172,9 +172,11 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
         $successUrl = System::getContainer()->get('router')->generate('isotope_postsale', [
             'mod' => 'pay',
             'id' => $this->id,
-            'redirect' => Environment::get('base').Checkout::generateUrlForStep('complete', $objOrder),
+            'redirect' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
         $successUrl = System::getContainer()->get('uri_signer')->sign($successUrl);
+
+        $failedUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
         $arrParams = array
         (
@@ -196,8 +198,8 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
             'successUrl'            => ampersand($successUrl),
-            'errorUrl'              => ampersand(Environment::get('base').Checkout::generateUrlForStep('failed')),
-            'cancelUrl'             => ampersand(Environment::get('base').Checkout::generateUrlForStep('failed')),
+            'errorUrl'              => ampersand($failedUrl),
+            'cancelUrl'             => ampersand($failedUrl),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );

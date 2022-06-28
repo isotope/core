@@ -24,6 +24,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Paybyway extends Payment implements IsotopePostsale
 {
@@ -62,8 +63,10 @@ class Paybyway extends Payment implements IsotopePostsale
         $objTemplate->currency = 'EUR';
         $objTemplate->order_number = $objOrder->getId();
         $objTemplate->lang = ('fi' === $GLOBALS['TL_LANGUAGE'] ? 'FI' : 'EN');
-        $objTemplate->return_address = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->cancel_address = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+
+        $postsaleUrl = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
+        $objTemplate->return_address = $postsaleUrl;
+        $objTemplate->cancel_address = $postsaleUrl;
 
         if ($this->debug) {
             $objTemplate->action = 'https://www.paybyway.com/e-payments/test_pay';

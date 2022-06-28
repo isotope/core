@@ -23,6 +23,7 @@ use Isotope\Module\Checkout;
 use Mpay24\Mpay24Config;
 use Mpay24\Mpay24Order;
 use Isotope\Model\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * mPAY24 payment method
@@ -110,9 +111,9 @@ class Mpay24 extends Postsale
             $this->setAddress($mdxi, $shippingAddress, 'ShippingAddr');
         }
 
-        $mdxi->Order->URL->Success = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $mdxi->Order->URL->Error = Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $mdxi->Order->URL->Confirmation = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $mdxi->Order->URL->Success = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $mdxi->Order->URL->Error = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
+        $mdxi->Order->URL->Confirmation = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
 
         $template = new FrontendTemplate('iso_payment_mpay24');
         $template->setData($this->row());

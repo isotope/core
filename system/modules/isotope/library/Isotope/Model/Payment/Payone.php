@@ -119,8 +119,8 @@ class Payone extends Postsale
             'reference'         => str_pad($objOrder->getId(), 4, '0', STR_PAD_LEFT),
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'backurl'           => Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'successurl'        => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+            'backurl'           => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
             'amount'            => $this->formatAmount($objOrder->getTotal()),
             'currency'          => $objOrder->getCurrency(),
 

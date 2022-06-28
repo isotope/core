@@ -24,6 +24,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * EPay payment method
@@ -148,9 +149,9 @@ class EPay extends Payment implements IsotopePostsale
         $objTemplate->amount         = Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency());
         $objTemplate->orderid        = $objOrder->getId();
         $objTemplate->instantcapture = 'capture' === $this->trans_type ? '1' : '0';
-        $objTemplate->callbackurl    = Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->accepturl      = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancelurl      = Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $objTemplate->callbackurl    = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
+        $objTemplate->accepturl      = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $objTemplate->cancelurl      = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
         $objTemplate->language       = (int) static::$arrLanguages[substr($GLOBALS['TL_LANGUAGE'], 0, 2)];
 
         return $objTemplate->parse();

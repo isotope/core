@@ -22,6 +22,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Expercash payment method.
@@ -110,9 +111,9 @@ class Expercash extends Payment implements IsotopePostsale
             'amount'        => round($objOrder->getTotal(), 2) * 100,
             'currency'      => $objOrder->getCurrency(),
             'paymentMethod' => $this->expercash_paymentMethod,
-            'returnUrl'     => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'errorUrl'      => Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'notifyUrl'     => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'returnUrl'     => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+            'errorUrl'      => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
+            'notifyUrl'     => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL),
             'profile'       => $this->expercash_profile,
         );
 

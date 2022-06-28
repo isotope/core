@@ -96,9 +96,9 @@ class Sparkasse extends Postsale
 
         $objOrder->save();
 
-        $strUrl = Checkout::generateUrlForStep('complete', $objOrder, PageModel::findWithDetails((int) $arrData['sessionid']));
+        $strUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, PageModel::findWithDetails((int) $arrData['sessionid']), true);
 
-        return new Response('redirecturls=' . Environment::get('base') . $strUrl);
+        return new Response('redirecturls=' . $strUrl);
     }
 
     /**
@@ -168,8 +168,8 @@ class Sparkasse extends Postsale
      */
     private function redirectError($arrData)
     {
-        $strUrl = Checkout::generateUrlForStep('failed', null, PageModel::findWithDetails((int) $arrData['sessionid']));
+        $strUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, PageModel::findWithDetails((int) $arrData['sessionid']), true);
 
-        return new Response('redirecturlf=' . Environment::get('base') . $strUrl . '?reason=' . $arrData['directPosErrorMessage']);
+        return new Response('redirecturlf=' . $strUrl . '?reason=' . $arrData['directPosErrorMessage']);
     }
 }

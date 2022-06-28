@@ -71,8 +71,8 @@ abstract class PaypalApi extends Payment
         $data = [
             'intent'        => 'sale',
             'redirect_urls' => [
-                'return_url' => Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
-                'cancel_url' => Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_FAILED),
+                'return_url' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order, null, true),
+                'cancel_url' => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
             ],
             'payer'         => [
                 'payment_method' => 'paypal',

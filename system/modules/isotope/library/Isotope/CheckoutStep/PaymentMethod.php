@@ -138,7 +138,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
 
     /**
      * Return review information for last page of checkout
-     * @return  string
+     * @return  array
      */
     public function review()
     {
@@ -147,7 +147,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'headline' => $GLOBALS['TL_LANG']['MSC']['payment_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->checkoutReview(),
                 'note'     => Isotope::getCart()->getDraftOrder()->getPaymentMethod()->getNote(),
-                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('payment'),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep(Checkout::STEP_PAYMENT),
             ),
         );
     }

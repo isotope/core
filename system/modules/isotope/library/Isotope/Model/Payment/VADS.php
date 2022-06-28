@@ -24,6 +24,7 @@ use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class VADS
@@ -136,8 +137,8 @@ abstract class VADS extends Postsale
     protected function getOutboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $objAddress = $objOrder->getBillingAddress();
-        $successUrl = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $failureUrl = Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $successUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $failureUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
         $transDate  = new DateTime();
         $transDate->setTimezone(new \DateTimeZone('UTC'));
@@ -166,7 +167,7 @@ abstract class VADS extends Postsale
             'vads_trans_date'     => $transDate->format('YmdHis'),
             'vads_trans_id'       => str_pad($objOrder->getId(), 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
-            'vads_url_check'      => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'vads_url_check'      => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL),
             'vads_url_error'      => $failureUrl,
             'vads_url_referral'   => $failureUrl,
             'vads_url_refused'    => $failureUrl,

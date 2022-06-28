@@ -20,6 +20,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class QuickPay
@@ -92,9 +93,9 @@ class QuickPay extends Postsale
             'language'     => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             'amount'       => Currency::getAmountInMinorUnits($objOrder->getTotal(), $objOrder->getCurrency()),
             'currency'     => $objOrder->getCurrency(),
-            'continueurl'  => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'cancelurl'    => Environment::get('base') . Checkout::generateUrlForStep('failed'),
-            'callbackurl'  => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'continueurl'  => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+            'cancelurl'    => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
+            'callbackurl'  => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL),
             'autocapture'  => 'capture' === $this->trans_type ? '1' : '0',
         );
 

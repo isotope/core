@@ -13,6 +13,7 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\PageModel;
@@ -719,7 +720,8 @@ class Checkout extends Module
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {
         Isotope::getCart()->save();
-        Controller::redirect(static::generateUrlForStep($strStep, $objCollection));
+
+        throw new RedirectResponseException(static::generateUrlForStep($strStep, $objCollection, null, true));
     }
 
     /**
@@ -729,7 +731,7 @@ class Checkout extends Module
      *
      * @return string
      */
-    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, PageModel $objTarget = null)
+    public static function generateUrlForStep($strStep, IsotopeProductCollection $objCollection = null, PageModel $objTarget = null, bool $absolute = false)
     {
         if (null === $objTarget) {
             global $objPage;
@@ -740,7 +742,7 @@ class Checkout extends Module
             $strStep = 'step/' . $strStep;
         }
 
-        $strUrl = $objTarget->getFrontendUrl('/' . $strStep);
+        $strUrl = $absolute ? $objTarget->getAbsoluteUrl('/' . $strStep) : $objTarget->getFrontendUrl('/' . $strStep);
 
         if (null !== $objCollection) {
             $strUrl = Url::addQueryString('uid=' . $objCollection->getUniqueId(), $strUrl);

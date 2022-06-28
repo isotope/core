@@ -283,7 +283,7 @@ class Swissbilling extends Payment
 
     private function getClient(IsotopeOrderableCollection $collection, DateTime $timestamp = null): Client
     {
-        $returnUrl = Environment::get('base').Checkout::generateUrlForStep('complete', $collection);
+        $returnUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $collection, null, true);
 
         if ($timestamp) {
             $returnUrl = Url::addQueryString('timestamp='.$timestamp, $returnUrl);

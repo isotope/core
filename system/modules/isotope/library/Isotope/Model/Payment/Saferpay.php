@@ -24,6 +24,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Saferpay payment method
@@ -203,10 +204,10 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $arrData['ACCOUNTID']   = $this->saferpay_accountid;
         $arrData['AMOUNT']      = round($objOrder->getTotal() * 100);
         $arrData['CURRENCY']    = $objOrder->getCurrency();
-        $arrData['SUCCESSLINK'] = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $arrData['FAILLINK']    = Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $arrData['SUCCESSLINK'] = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $arrData['FAILLINK']    = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
         $arrData['BACKLINK']    = $arrData['FAILLINK'];
-        $arrData['NOTIFYURL']   = Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id='.$this->id;
+        $arrData['NOTIFYURL']   = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);;
         $arrData['DESCRIPTION'] = $this->saferpay_description;
         $arrData['ORDERID']     = $objOrder->getId();
 
@@ -225,7 +226,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     protected function generatePaymentJsonData(IsotopeProductCollection $objOrder)
     {
         [, $terminalId] = explode('-', $this->saferpay_accountid, 2);
-        $failedUrl = Checkout::generateUrlForStep('failed');
+        $failedUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
         $data = [
             'TerminalId' => $terminalId,
@@ -241,12 +242,12 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 'LanguageCode' => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             ],
             'ReturnUrls' => [
-                'Success' => Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-                'Fail' => Environment::get('base') . $failedUrl,
-                'Abort' => Environment::get('base') . $failedUrl,
+                'Success' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+                'Fail' => $failedUrl,
+                'Abort' => $failedUrl,
             ],
             'Notification' => [
-                'NotifyUrl' => Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
+                'NotifyUrl' => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id, 'orderid' => $objOrder->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
         ];
 

@@ -162,7 +162,7 @@ class Worldpay extends Postsale
     protected function postsaleError()
     {
         $objPage = PageModel::findWithDetails((int) Input::post('M_pageId'));
-        $strUrl  = Environment::get('base') . Checkout::generateUrlForStep('failed', null, $objPage);
+        $strUrl  = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, $objPage, true);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
@@ -189,7 +189,7 @@ Redirecting back to shop...
     protected function postsaleSuccess(IsotopeProductCollection $objOrder)
     {
         $objPage = PageModel::findWithDetails((int) Input::post('M_pageId'));
-        $strUrl  = Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder, $objPage);
+        $strUrl  = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, $objPage, true);
 
         // Output a HTML page to redirect the client from WorldPay back to the shop
         echo '
