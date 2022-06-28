@@ -378,15 +378,15 @@ class Isotope extends Controller
     {
         if ($intItems == 1) {
             return $GLOBALS['TL_LANG']['MSC']['productSingle'];
-        } else {
-            $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
-
-            if (\is_array($arrFormat)) {
-                $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
-            }
-
-            return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
         }
+
+        $arrFormat = $GLOBALS['ISO_NUM'][static::getConfig()->currencyFormat];
+
+        if (\is_array($arrFormat)) {
+            $intItems = number_format($intItems, 0, $arrFormat[1], $arrFormat[2]);
+        }
+
+        return sprintf($GLOBALS['TL_LANG']['MSC']['productMultiple'], $intItems);
     }
 
     /**
@@ -434,12 +434,11 @@ class Isotope extends Controller
     {
         switch ($strRegexp) {
             case 'price':
-                if (!preg_match('/^[\d \.-]*$/', $varValue)) {
+                if (!preg_match('/^[\d .-]*$/', $varValue)) {
                     $objWidget->addError(sprintf($GLOBALS['TL_LANG']['ERR']['digit'], $objWidget->label));
                 }
 
                 return true;
-                break;
 
             case 'discount':
                 if (!preg_match('/^[-+]\d+(\.\d+)?%?$/', $varValue)) {
@@ -447,7 +446,6 @@ class Isotope extends Controller
                 }
 
                 return true;
-                break;
 
             case 'surcharge':
                 if (!preg_match('/^-?\d+(\.\d+)?%?$/', $varValue)) {
@@ -455,7 +453,6 @@ class Isotope extends Controller
                 }
 
                 return true;
-                break;
         }
 
         return false;
