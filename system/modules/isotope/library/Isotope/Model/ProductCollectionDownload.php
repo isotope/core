@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\Controller;
+use Contao\Database;
 use Contao\File;
 use Contao\Frontend;
 use Contao\Input;
