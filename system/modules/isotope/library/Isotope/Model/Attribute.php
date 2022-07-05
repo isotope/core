@@ -653,7 +653,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['customer_defined']) {
+                if ($config['attributes']['customer_defined'] ?? false) {
                     $arrFields[] = $field;
                 }
             }
