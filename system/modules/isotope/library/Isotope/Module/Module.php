@@ -82,11 +82,11 @@ abstract class Module extends AbstractFrontendModule
         // Load Isotope JavaScript and style sheet
         if ('FE' === TL_MODE) {
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/js/isotope.min.js|static|'.Isotope::VERSION
+                'system/modules/isotope/assets/js/isotope.min.js|static'
             );
 
             $GLOBALS['TL_CSS'][] = Debug::uncompressedFile(
-                'system/modules/isotope/assets/css/isotope.min.css|screen|static|'.Isotope::VERSION
+                'system/modules/isotope/assets/css/isotope.min.css|screen|static'
             );
 
             // Disable caching for pages with certain modules (eg. Cart)
@@ -264,9 +264,7 @@ abstract class Module extends AbstractFrontendModule
             $blnMoreThanOne = $objCategories->count() > 1;
             foreach ($objCategories as $objCategory) {
 
-                if ($objCategory->alias == 'index'
-                    && $blnMoreThanOne
-                ) {
+                if ('index' === $objCategory->alias && $blnMoreThanOne) {
                     continue;
                 }
 
@@ -295,7 +293,7 @@ abstract class Module extends AbstractFrontendModule
         $arrFragments = explode('/', $strRequest);
 
         // Skip index.php
-        if (strtolower($arrFragments[0]) == 'index.php') {
+        if ('index.php' === strtolower($arrFragments[0])) {
             array_shift($arrFragments);
         }
 
@@ -322,7 +320,7 @@ abstract class Module extends AbstractFrontendModule
         if (\is_array($_GET) && !empty($_GET)) {
             foreach ($_GET as $key => $value) {
                 // Ignore the language parameter
-                if ($key == 'language' && $GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
+                if ('language' === $key && $GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
                     continue;
                 }
 
