@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.5 (2022-07-11)
+--------------------------
+
+- Add missing use Contao\Database; (#2313)
+- Fixed PHP8 issues (#2315)
+- Fixed invalid media on Isotope CSS file
+
+
 Version 2.8.4 (2022-06-28)
 --------------------------
 
