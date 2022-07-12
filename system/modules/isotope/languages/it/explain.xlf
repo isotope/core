@@ -65,6 +65,14 @@ offrire una vera spedizione per questi tipi di prodotto.
         <target>
 Selezionate quali categorie di prodotti (pagine) devono essere prese in considerazione per i prodotti. &lt;br&gt;&lt;br&gt;&lt;u&gt;Se si tratta di un modulo di elenco prodotti e avete configurato un modulo di filtro di categoria, la selezione del filtro di categoria sovrascriverà questa configurazione!&lt;/u&gt;&lt;br&gt;&lt;br&gt;</target>
       </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Utilizzare questi semplici token per generare un nome file dinamico.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Utilizzare questi semplici token per generare un nome di cartella dinamico.&lt;/p&gt;</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

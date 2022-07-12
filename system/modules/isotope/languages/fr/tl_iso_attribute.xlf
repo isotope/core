@@ -543,9 +543,6 @@
         <source>Random order</source>
         <target>Ordre aléatoire</target>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute.checkout_tokens.0">
-        <source>Use these simple tokens to generate a dynamic folder name.</source>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
         <source>##document_number##</source>
         <target>##order_id##</target>

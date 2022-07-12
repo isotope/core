@@ -66,6 +66,14 @@
  Wählen Sie aus, welche Produktkategorien (Seiten) für die Produkte berücksichtigt werden sollen. &lt;br&gt;&lt;br&gt;&lt;u&gt;Wenn dies ein Produkt-Listen-Modul ist und Sie ein Kategorie-Filter-Modul konfiguriert haben, überschreibt die Kategorie-Filter-Auswahl diese Konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
 </target>
       </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Dateinamen zu erzeugen.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Ordnernamen zu erzeugen.&lt;/p&gt;</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

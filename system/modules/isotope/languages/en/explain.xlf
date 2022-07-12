@@ -41,6 +41,12 @@
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
       </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

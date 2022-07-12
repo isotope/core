@@ -579,10 +579,6 @@
         <source>Random order</source>
         <target>Ordine casuale</target>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute.checkout_tokens.0">
-        <source>Use these simple tokens to generate a dynamic folder name.</source>
-        <target>Utilizzare questi semplici token per generare un nome di cartella dinamico.</target>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
         <source>##document_number##</source>
         <target>##numero_documento##</target>

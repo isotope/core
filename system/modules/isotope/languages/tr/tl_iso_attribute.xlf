@@ -577,10 +577,6 @@
         <source>Random order</source>
         <target>Rasgele sipariş</target>
       </trans-unit>
-      <trans-unit id="tl_iso_attribute.checkout_tokens.0">
-        <source>Use these simple tokens to generate a dynamic folder name.</source>
-        <target>Dinamik bir klasör adı oluşturmak için bu basit işaretleri kullanın.</target>
-      </trans-unit>
       <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
         <source>##document_number##</source>
         <target>##document_number##</target>
