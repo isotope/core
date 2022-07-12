@@ -52,7 +52,7 @@
     "require-dev": {
         "contao/core-bundle": "4.9.*",
         "contao/manager-plugin": "^2.0",
-        "terminal42/contao-fineuploader": "^2.0",
+        "terminal42/contao-fineuploader": "^2.0 || ^3.0",
         "terminal42/contao-changelanguage": "^3.0",
         "petschko/dhl-php-sdk": "dev-master@dev",
         "mpay24/mpay24-php": "^4.0",
@@ -66,7 +66,7 @@
         "contao/tcpdf-bundle": "Required for the standard document type in Contao 4.7+"
     },
     "conflict": {
-        "terminal42/contao-fineuploader": "< 2.0 || >= 3.0",
+        "terminal42/contao-fineuploader": "< 2.0",
         "terminal42/contao-changelanguage": "< 3.0 || >= 4.0",
         "contao/manager-plugin": "<2.0 || >= 3.0",
         "mpay24/mpay24-php": "< 4.0 || >= 5.0"
