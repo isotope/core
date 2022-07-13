@@ -57,7 +57,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -67,39 +66,33 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['copy'],
                 'href'              => 'act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif'
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['cut'],
                 'href'              => 'act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['tl_iso_attribute_option']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'toggle' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_article']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback'   => array('\Isotope\Backend\AttributeOption\Callback', 'toggleIcon')
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             )
@@ -152,7 +145,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['type'],
             'exclude'               => true,
             'default'               => 'option',
             'inputType'             => 'radio',
@@ -167,7 +159,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'isDefault' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['isDefault'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50 m12', 'doNotCopy'=>true),
@@ -175,7 +166,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'label' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'translatableFor'=>'*', 'tl_class'=>'clr long'),
@@ -212,7 +202,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
         ),
         'published' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_attribute_option']['published'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50', 'doNotCopy'=>true),

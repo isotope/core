@@ -76,7 +76,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -86,20 +85,17 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
                 'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'copyShippingModule'),
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
@@ -107,14 +103,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
             ),
             'toggle' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback'   => array('Isotope\Backend\Shipping\Callback', 'toggleIcon')
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_shipping']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -152,7 +146,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -161,7 +154,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'label' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['label'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'tl_class'=>'w50'),
@@ -169,7 +161,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['type'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -183,7 +174,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'inherit' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['inherit'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => ['submitOnChange' => true, 'tl_class' => 'w50 m12'],
@@ -191,7 +181,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'note' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['note'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('rte'=>'tinyMCE', 'decodeEntities'=>true),
@@ -199,7 +188,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'countries' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['countries'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {
@@ -210,7 +198,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'subdivisions' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['subdivisions'],
             'exclude'               => true,
             'sorting'               => true,
             'inputType'             => 'conditionalselect',
@@ -220,7 +207,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'postalCodes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['postalCodes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:40px', 'tl_class'=>'clr'),
@@ -228,7 +214,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'minimum_total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>13, 'rgxp'=>'digit', 'tl_class'=>'w50'),
@@ -236,7 +221,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'maximum_total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_total'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>13, 'rgxp'=>'digit', 'tl_class'=>'w50'),
@@ -244,7 +228,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'minimum_weight' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_weight'],
             'exclude'               => true,
             'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
@@ -255,7 +238,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'maximum_weight' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_weight'],
             'exclude'               => true,
             'default'               => array('unit'=>'kg'),
             'inputType'             => 'timePeriod',
@@ -266,7 +248,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'quantity_mode' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['quantity_mode'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => [
@@ -279,7 +260,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'minimum_quantity' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['minimum_quantity'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'clr w50'),
@@ -287,7 +267,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'maximum_quantity' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['maximum_quantity'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>10, 'rgxp'=>'digit', 'tl_class'=>'w50'),
@@ -295,7 +274,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'product_types' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['product_types'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
@@ -305,7 +283,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'product_types_condition' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['product_types_condition'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('onlyAvailable', 'allAvailable', 'oneAvailable', 'calculation'),
@@ -315,7 +292,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'config_ids' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['config_ids'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
@@ -325,7 +301,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'address_type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['address_type'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => ['custom', 'billing'],
@@ -335,7 +310,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'price' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['price'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>16, 'rgxp'=>'surcharge', 'nullIfEmpty'=>true, 'tl_class'=>'w50'),
@@ -343,7 +317,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'tax_class' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['tax_class'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -355,7 +328,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'flatCalculation' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('perProduct', 'perItem', 'perWeight'),
@@ -365,7 +337,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'flatWeight' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['flatWeight'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'default'               => array('unit'=>'kg'),
@@ -376,7 +347,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'shipping_weight' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['shipping_weight'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'default'               => array('unit'=>'kg'),
@@ -387,7 +357,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'productCalculation' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['productCalculation'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array(
@@ -404,7 +373,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'group_methods' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_methods'],
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function($dc) {
@@ -416,7 +384,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'group_calculation' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['group_calculation'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => [
@@ -431,7 +398,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_user' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_user'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>16, 'decodeEntities'=>true, 'tl_class'=>'w50'),
@@ -439,7 +405,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_signature' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_signature'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
@@ -447,7 +412,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_epk' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_epk'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'tl_class'=>'w50'),
@@ -455,7 +419,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_product' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_product'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('V01PAK', 'V53WPAK', 'V54EPAK', 'V06PAK', 'V06TG', 'V86PARCEL', 'V82PARCEL', 'V87PARCEL'),
@@ -465,7 +428,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_app' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_app'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'tl_class'=>'w50'),
@@ -473,7 +435,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_token' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_token'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>32, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
@@ -481,7 +442,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'dhl_shipping' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['dhl_shipping'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'options'               => array('days', 'weeks', 'months', 'years'),
@@ -491,14 +451,12 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'guests' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['guests'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'protected' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['protected'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true),
@@ -506,7 +464,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'groups' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['groups'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'foreignKey'            => 'tl_member_group.name',
@@ -516,7 +473,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'debug' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['debug'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => ['tl_class' => 'clr w50'],
@@ -524,7 +480,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'logging' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['logging'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => ['tl_class' => 'w50'],
@@ -532,7 +487,6 @@ $GLOBALS['TL_DCA']['tl_iso_shipping'] = array
         ),
         'enabled' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_shipping']['enabled'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => ['tl_class' => 'w50'],

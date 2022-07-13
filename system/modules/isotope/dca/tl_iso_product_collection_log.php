@@ -29,18 +29,15 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection_log'] = [
     // Fields
     'fields' => [
         'id' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['id'],
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ],
         'tstamp' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['tstamp'],
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'pid' => [
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],
         'author' => [
-            'label' => &$GLOBALS['TL_LANG']['tl_iso_product_collection_log']['author'],
             'foreignKey' => 'tl_user.username',
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ],

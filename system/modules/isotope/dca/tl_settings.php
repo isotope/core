@@ -25,14 +25,12 @@
  */
 $GLOBALS['TL_DCA']['tl_settings']['fields']['iso_cartTimeout'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_settings']['iso_cartTimeout'],
     'inputType'             => 'text',
     'eval'                  => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 );
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['iso_orderTimeout'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_settings']['iso_orderTimeout'],
     'inputType'             => 'text',
     'eval'                  => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
 );

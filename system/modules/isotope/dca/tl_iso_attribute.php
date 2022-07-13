@@ -84,7 +84,6 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -94,26 +93,22 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['tl_iso_attribute']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_attribute']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             )
@@ -605,7 +600,6 @@ if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) 
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunking'] = array
     (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunking'],
         'exclude'                 => true,
         'inputType'               => 'checkbox',
         'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'clr w50 m12'),
@@ -614,7 +608,6 @@ if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) 
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] = array
     (
-        'label'                   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['chunkSize'],
         'default'                 => 2000000,
         'exclude'                 => true,
         'inputType'               => 'text',

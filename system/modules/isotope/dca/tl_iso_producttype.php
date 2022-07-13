@@ -80,20 +80,17 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_producttype']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif',
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_producttype']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif',
                 'button_callback'   => array('Isotope\Backend\ProductType\Callback', 'copyProductType')
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_producttype']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
@@ -101,7 +98,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_producttype']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             )
@@ -136,7 +132,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -145,7 +140,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'class' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['class'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -159,7 +153,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'fallback' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['fallback'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -168,7 +161,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'description' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['description'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('style'=>'height:80px', 'tl_class'=>'clr'),
@@ -176,7 +168,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'prices' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['prices'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange'=>true, 'tl_class'=>'clr'),
@@ -184,7 +175,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'show_price_tiers' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['show_price_tiers'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -192,7 +182,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'list_template' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['list_template'],
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_list_default',
@@ -204,7 +193,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'reader_template' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['reader_template'],
             'exclude'               => true,
             'inputType'             => 'select',
             'default'               => 'iso_reader_default',
@@ -216,7 +204,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'list_gallery' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['list_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
@@ -225,7 +212,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'reader_gallery' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['reader_gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',
@@ -234,7 +220,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'cssClass' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['cssClass'],
             'exclude'               => true,
             'inputType'             => 'text',
             'search'                => true,
@@ -243,7 +228,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'attributes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes'],
             'exclude'               => true,
             'default' => array
             (
@@ -280,7 +264,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'variants' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['variants'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -289,7 +272,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'variant_attributes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['variant_attributes'],
             'exclude'               => true,
             'inputType'             => 'multiColumnWizard',
             'eval'                  => array
@@ -313,7 +295,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'force_variant_options' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['force_variant_options'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'clr'),
@@ -321,7 +302,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'shipping_exempt' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['shipping_exempt'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -340,7 +320,6 @@ $GLOBALS['TL_DCA']['tl_iso_producttype'] = array
         ),
         'downloads' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_producttype']['downloads'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',

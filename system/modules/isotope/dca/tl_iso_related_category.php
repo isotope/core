@@ -76,26 +76,22 @@ $GLOBALS['TL_DCA']['tl_iso_related_category'] = array
         (
             'edit' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['edit'],
                 'href'          => 'act=edit',
                 'icon'          => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['copy'],
                 'href'          => 'act=copy',
                 'icon'          => 'copy.gif'
             ),
             'delete' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['delete'],
                 'href'          => 'act=delete',
                 'icon'          => 'delete.gif',
                 'attributes'    => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_related_category']['show'],
                 'href'          => 'act=show',
                 'icon'          => 'show.gif'
             ),
@@ -121,7 +117,6 @@ $GLOBALS['TL_DCA']['tl_iso_related_category'] = array
         ),
         'name' => array
         (
-            'label'             => &$GLOBALS['TL_LANG']['tl_iso_related_category']['name'],
             'exclude'           => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'long'),

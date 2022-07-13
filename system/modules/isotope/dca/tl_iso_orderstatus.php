@@ -73,7 +73,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
@@ -83,33 +82,28 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['copy'],
                 'href'              => 'act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif'
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['cut'],
                 'href'              => 'act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -143,7 +137,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -151,7 +144,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'color' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['color'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('minlength'=>6, 'maxlength'=>6, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
@@ -159,7 +151,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'paid' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['paid'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -167,7 +158,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'welcomescreen' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['welcomescreen'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -175,7 +165,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'notification' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['notification'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => array('Isotope\Backend\OrderStatus\Callback', 'getNotificationChoices'),
@@ -184,7 +173,6 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
         ),
         'saferpay_status' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_orderstatus']['saferpay_status'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('capture', 'cancel'),

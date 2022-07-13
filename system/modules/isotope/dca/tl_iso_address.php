@@ -49,7 +49,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -59,26 +58,22 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_address']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_address']['copy'],
                 'href'              => 'act=copy',
                 'icon'              => 'copy.gif'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_address']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_address']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             )
@@ -112,7 +107,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'label' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['label'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -121,7 +115,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'store_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['store_id'],
             'exclude'               => true,
             'filter'                => true,
             'sorting'               => true,
@@ -131,7 +124,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'gender' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['gender'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('male', 'female'),
@@ -141,7 +133,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'salutation' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['salutation'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>255, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
@@ -149,7 +140,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'firstname' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['firstname'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -158,7 +148,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'lastname' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['lastname'],
             'exclude'               => true,
             'search'                => true,
             'sorting'               => true,
@@ -169,7 +158,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'dateOfBirth' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_iso_address']['dateOfBirth'],
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'date', 'datepicker'=>true, 'feEditable'=>true, 'feViewable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50 wizard'),
@@ -177,7 +165,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'company' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['company'],
             'exclude'               => true,
             'search'                => true,
             'sorting'               => true,
@@ -188,7 +175,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'vat_no' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['vat_no'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -197,7 +183,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'street_1' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['street_1'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -206,7 +191,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'street_2' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['street_2'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -215,7 +199,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'street_3' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['street_3'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -224,7 +207,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'postal' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['postal'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -233,7 +215,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'city' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['city'],
             'exclude'               => true,
             'filter'                => true,
             'search'                => true,
@@ -244,7 +225,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'subdivision' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['subdivision'],
             'exclude'               => true,
             'sorting'               => true,
             'inputType'             => 'conditionalselect',
@@ -254,7 +234,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'country' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['country'],
             'exclude'               => true,
             'filter'                => true,
             'sorting'               => true,
@@ -266,7 +245,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'phone' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['phone'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -275,7 +253,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'email' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['email'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -284,7 +261,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'isDefaultBilling' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['isDefaultBilling'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',
@@ -297,7 +273,6 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         ),
         'isDefaultShipping' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'checkbox',

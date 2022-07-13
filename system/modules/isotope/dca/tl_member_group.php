@@ -10,7 +10,6 @@ PaletteManipulator::create()
 
 $GLOBALS['TL_DCA']['tl_member_group']['fields']['iso_priceDisplay'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['priceDisplay'],
     'exclude'               => true,
     'inputType'             => 'select',
     'options'               => array(\Isotope\Model\Config::PRICE_DISPLAY_NET, \Isotope\Model\Config::PRICE_DISPLAY_GROSS, \Isotope\Model\Config::PRICE_DISPLAY_FIXED),

@@ -60,7 +60,6 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_reade
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => \Isotope\Model\Config::getTable().'.name',
@@ -71,7 +70,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_store_id'],
     'exclude'                 => true,
     'inputType'               => 'text',
     'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
@@ -80,7 +78,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerMode'],
     'exclude'                 => true,
     'inputType'               => 'select',
     'options'                 => ['current', 'page', 'none'],
@@ -92,7 +89,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
     'foreignKey'              => 'tl_page.title',

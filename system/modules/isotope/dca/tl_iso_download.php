@@ -54,7 +54,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -64,27 +63,23 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['edit'],
                 'href'              => 'act=edit',
                 'icon'              => 'edit.gif'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['copy'],
                 'href'              => 'act=paste&amp;mode=copy',
                 'icon'              => 'copy.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['cut'],
                 'href'              => 'act=paste&amp;mode=cut',
                 'icon'              => 'cut.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['delete'],
                 'href'              => 'act=delete',
                 'icon'              => 'delete.gif',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
@@ -92,14 +87,12 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
             ),
             'toggle' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['toggle'],
                 'icon'              => 'visible.gif',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
                 'button_callback'   => array('Isotope\Backend\Download\Callback', 'toggleIcon')
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_download']['show'],
                 'href'              => 'act=show',
                 'icon'              => 'show.gif'
             ),
@@ -135,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         ),
         'singleSRC' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['singleSRC'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('mandatory'=>true, 'fieldType'=>'radio', 'files'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['allowedDownload']),
@@ -144,7 +136,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         ),
         'downloads_allowed' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['downloads_allowed'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>5, 'rgxp'=>'digit', 'tl_class'=>'w50'),
@@ -152,7 +143,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         ),
         'expires' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['expires'],
             'exclude'               => true,
             'inputType'             => 'timePeriod',
             'options'               => array('minutes', 'hours', 'days', 'weeks', 'months', 'years'),
@@ -162,7 +152,6 @@ $GLOBALS['TL_DCA']['tl_iso_download'] = array
         ),
         'published' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_download']['published'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('doNotCopy'=>true),
