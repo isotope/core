@@ -46,6 +46,14 @@
             Ürünler için hangi ürün kategorilerinin (sayfalarının) dikkate alınması gerektiğini seçin.&lt;br&gt;&lt;br&gt;&lt;u&gt;Bu bir ürün listesi modülü ise ve bir kategori filtre modülü yapılandırdıysanız, kategori filtre seçimi bu yapılandırmayı geçersiz kılacaktır!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
         </target>
       </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Dinamik bir dosya adı oluşturmak için bu basit işaretleri kullanın.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class="tl_help_table"&gt;Dinamik bir klasör adı oluşturmak için bu basit işaretleri kullanın.&lt;/p&gt;</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
