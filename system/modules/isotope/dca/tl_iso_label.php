@@ -19,11 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'closed'                      => true,
-        'onload_callback' => array
-        (
-            array('Isotope\Backend', 'initializeSetupModule'),
-        ),
+        'backlink'                    => 'do=iso_setup',
         'sql' => array
         (
             'keys' => array
@@ -51,20 +47,6 @@ $GLOBALS['TL_DCA']['tl_iso_label'] = array
         ),
         'global_operations' => array
         (
-            'back' => array
-            (
-                'label'                 => &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'                  => 'mod=&table=',
-                'class'                 => 'header_back',
-                'attributes'            => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new' => array
-            (
-                'label'                 => &$GLOBALS['TL_LANG']['tl_iso_label']['new'],
-                'href'                  => 'act=create',
-                'class'                 => 'header_new',
-                'attributes'            => 'onclick="Backend.getScrollOffset();"',
-            ),
             'all' => array
             (
                 'href'                  => 'act=select',
