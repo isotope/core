@@ -13,6 +13,7 @@ namespace Isotope\Upgrade;
 
 
 use Contao\BackendTemplate;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Environment;
 use Contao\System;
 
@@ -42,8 +43,7 @@ abstract class Assistant extends Base
 
         $this->compile();
 
-        $this->Template->output();
-        exit;
+        throw new ResponseException($this->Template->getResponse());
     }
 
     abstract public function run($blnInstalled);

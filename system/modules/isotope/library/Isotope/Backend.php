@@ -15,6 +15,7 @@ use Backend as Contao_Backend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\NoContentResponseException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
@@ -29,6 +30,7 @@ use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 use Isotope\Model\TypeAgent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Provide methods to handle Isotope back end components.
@@ -331,7 +333,7 @@ class Backend extends Contao_Backend
                 /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
                 $objWidget->ajaxUpload();
-                exit;
+                break;
 
             case 'reloadMediaManager':
                 $intId    = Input::get('id');
@@ -383,8 +385,7 @@ class Backend extends Contao_Backend
 
                 /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrAttribs);
-                echo $objWidget->generate();
-                exit;
+                throw new ResponseException(new Response($objWidget->generate()));
         }
     }
 

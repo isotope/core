@@ -13,12 +13,12 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
-use Haste\Http\Response\JsonResponse;
 use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
@@ -32,6 +32,7 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * ProductFilter allows to filter a product list by attributes.
@@ -118,13 +119,10 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
             $objProducts = Product::findPublishedByCategories($this->findCategories(), ['order' => 'c.sorting']);
 
             if (null === $objProducts) {
-                $objResponse = new JsonResponse([]);
-                $objResponse->send();
-                exit;
+                throw new ResponseException(new JsonResponse([]));
             }
 
-            $objResponse = new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete)));
-            $objResponse->send();
+            throw new ResponseException(new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete))));
         }
     }
 

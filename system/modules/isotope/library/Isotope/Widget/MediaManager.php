@@ -13,6 +13,7 @@ namespace Isotope\Widget;
 
 use Contao\Backend;
 use Contao\Controller;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\Environment;
 use Contao\File;
@@ -27,6 +28,7 @@ use Contao\System;
 use Contao\Widget;
 use Haste\Util\Debug;
 use Isotope\Model\Gallery;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 /**
@@ -99,10 +101,7 @@ class MediaManager extends Widget implements \uploadable
             $arrResponse = array('success' => false, 'error' => $this->getErrorAsString(), 'preventRetry' => true);
         }
 
-        // Can't use Haste\Response\JsonResponse, it triggers a json download in IE iframes
-        while(ob_end_clean());
-        echo json_encode($arrResponse);
-        exit;
+        throw new ResponseException(new JsonResponse($arrResponse));
     }
 
     /**

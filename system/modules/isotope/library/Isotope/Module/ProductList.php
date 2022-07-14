@@ -14,13 +14,13 @@ namespace Isotope\Module;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\Date;
 use Contao\Environment;
 use Contao\Pagination;
 use Contao\System;
 use Haste\Generator\RowClass;
-use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeProduct;
@@ -32,6 +32,7 @@ use Isotope\Model\ProductPrice;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 use Isotope\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @property string $iso_list_layout
@@ -254,8 +255,7 @@ class ProductList extends Module
                 && Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
                 && !$this->iso_disable_options
             ) {
-                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
-                $objResponse->send();
+                throw new ResponseException(new Response($objProduct->generate($arrConfig)));
             }
 
             $objProduct->mergeRow($arrDefaultOptions);

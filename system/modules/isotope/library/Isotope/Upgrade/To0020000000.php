@@ -12,6 +12,7 @@
 namespace Isotope\Upgrade;
 
 use Contao\BackendTemplate;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
 use Contao\System;
 
@@ -69,7 +70,6 @@ class To0020000000 extends System
     {
         $objTemplate = new BackendTemplate('be_iso_old');
 
-        $objTemplate->output();
-        exit;
+        throw new ResponseException($objTemplate->getResponse());
     }
 }

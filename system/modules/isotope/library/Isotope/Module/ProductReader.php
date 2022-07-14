@@ -12,17 +12,18 @@
 namespace Isotope\Module;
 
 use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\Database;
 use Contao\Environment;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProductReader
@@ -106,11 +107,12 @@ class ProductReader extends Module
             && !$this->iso_disable_options
         ) {
             try {
-                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
-                $objResponse->send();
+                $output = $objProduct->generate($arrConfig);
             } catch (\InvalidArgumentException $e) {
                 return;
             }
+
+            throw new ResponseException(new Response($output));
         }
 
         $this->addMetaTags($objProduct);
