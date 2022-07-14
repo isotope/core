@@ -22,7 +22,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_products' => array
     (
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier', \Isotope\Model\AttributeOption::getTable()),
-        'icon'              => 'system/modules/isotope/assets/images/store-open.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
@@ -31,7 +30,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_orders' => array
     (
         'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
-        'icon'              => 'system/modules/isotope/assets/images/shopping-basket.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
         'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
@@ -41,7 +39,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
         'tables'            => array(),
-        'icon'              => 'system/modules/isotope/assets/images/application-monitor.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
     ),
 ));
