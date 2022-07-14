@@ -68,29 +68,29 @@ $GLOBALS['TL_DCA']['tl_iso_orderstatus'] = array
             'edit' => array
             (
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.svg'
             ),
             'copy' => array
             (
                 'href'              => 'act=paste&amp;mode=copy',
-                'icon'              => 'copy.gif'
+                'icon'              => 'copy.svg'
             ),
             'cut' => array
             (
                 'href'              => 'act=paste&amp;mode=cut',
-                'icon'              => 'cut.gif',
+                'icon'              => 'cut.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
+                'icon'              => 'delete.svg',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             ),
         )
     ),

@@ -109,7 +109,7 @@ class Button extends Backend
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
     {
         if (\in_array($row['id'], Permission::getUndeletableIds())) {
-            return Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
@@ -153,7 +153,7 @@ class Button extends Backend
         }
 
         if ($row['published'] != '1') {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
@@ -179,7 +179,7 @@ class Button extends Backend
             return '';
         }
 
-        $icon = $row['fallback'] ? 'featured.gif' : 'featured_.gif';
+        $icon = $row['fallback'] ? 'featured.svg' : 'featured_.svg';
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }

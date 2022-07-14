@@ -64,25 +64,25 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
             'edit' => array
             (
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.svg'
             ),
             'copy' => array
             (
                 'href'              => 'act=copy',
-                'icon'              => 'copy.gif',
+                'icon'              => 'copy.svg',
                 'button_callback'   => array('Isotope\Backend\TaxClass\Callback', 'copyTaxClass'),
             ),
             'delete' => array
             (
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
+                'icon'              => 'delete.svg',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\TaxClass\Callback', 'deleteTaxClass'),
             ),
             'show' => array
             (
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             )
         )
     ),

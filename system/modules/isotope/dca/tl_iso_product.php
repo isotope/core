@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'label'             => &$GLOBALS['TL_LANG']['tl_iso_product']['generate'],
                 'href'              => 'key=generate',
-                'icon'              => 'new.gif',
+                'icon'              => 'new.svg',
             ),
             'groups' => array
             (
@@ -140,37 +140,37 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'edit' => array
             (
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif',
+                'icon'              => 'edit.svg',
             ),
             'copy' => array
             (
                 'href'              => 'act=copy&amp;childs=1',
-                'icon'              => 'copy.gif',
+                'icon'              => 'copy.svg',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forCopy')
             ),
             'cut' => array
             (
                 'href'              => 'act=cut',
-                'icon'              => 'cut.gif',
+                'icon'              => 'cut.svg',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forCut')
             ),
             'delete' => array
             (
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
+                'icon'              => 'delete.svg',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forDelete')
             ),
             'toggle' => array
             (
-                'icon'              => 'visible.gif',
+                'icon'              => 'visible.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset(); return AjaxRequest.toggleVisibility(this, %s);"',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forVisibilityToggle')
             ),
             'show' => array
             (
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             ),
             'break' => array
             (
@@ -181,7 +181,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             'fallback' => array
             (
                 'href'              => 'key=fallback',
-                'icon'              => 'featured.gif',
+                'icon'              => 'featured.svg',
                 'button_callback'   => array('Isotope\Backend\Product\Button', 'forFallbackToggle')
             ),
             'variants' => array

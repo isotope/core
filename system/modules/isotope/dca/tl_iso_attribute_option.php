@@ -67,34 +67,34 @@ $GLOBALS['TL_DCA']['tl_iso_attribute_option'] = array
             'edit' => array
             (
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.svg'
             ),
             'copy' => array
             (
                 'href'              => 'act=paste&amp;mode=copy',
-                'icon'              => 'copy.gif'
+                'icon'              => 'copy.svg'
             ),
             'cut' => array
             (
                 'href'              => 'act=paste&amp;mode=cut',
-                'icon'              => 'cut.gif'
+                'icon'              => 'cut.svg'
             ),
             'delete' => array
             (
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
+                'icon'              => 'delete.svg',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['tl_iso_attribute_option']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'toggle' => array
             (
-                'icon'              => 'visible.gif',
+                'icon'              => 'visible.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
                 'button_callback'   => array('\Isotope\Backend\AttributeOption\Callback', 'toggleIcon')
             ),
             'show' => array
             (
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             )
         )
     ),

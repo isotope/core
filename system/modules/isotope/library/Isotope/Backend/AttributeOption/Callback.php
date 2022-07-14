@@ -166,7 +166,7 @@ class Callback extends Backend
         $href .= '&amp;tid='.$row['id'].'&amp;state='.($row['published'] ? '' : 1);
 
         if (!$row['published']) {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
         return '<a href="'.Backend::addToUrl($href).'" title="'.StringUtil::specialchars($title).'"'.$attributes.'>'.Image::getHtml($icon, $label).'</a> ';

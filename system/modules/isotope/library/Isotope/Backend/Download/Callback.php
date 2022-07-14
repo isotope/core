@@ -134,7 +134,7 @@ class Callback extends Backend
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
-            return Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
@@ -164,7 +164,7 @@ class Callback extends Backend
         }
 
         if ($row['published'] != '1') {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);

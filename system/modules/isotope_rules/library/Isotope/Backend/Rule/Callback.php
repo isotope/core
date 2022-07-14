@@ -123,7 +123,7 @@ class Callback extends Backend
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['enabled'] ? '' : 1);
 
         if (!$row['enabled']) {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
         return '<a href="' . $this->addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';

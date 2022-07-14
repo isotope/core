@@ -207,7 +207,7 @@ class Callback extends Permission
         if (!BackendUser::getInstance()->isAdmin
             && !BackendUser::getInstance()->canEditFieldsOf('tl_iso_group')
         ) {
-            return Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
@@ -233,7 +233,7 @@ class Callback extends Permission
                 || !\in_array('create', BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
-            return Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
@@ -259,7 +259,7 @@ class Callback extends Permission
                 || !\in_array('delete', BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
-            return Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
         return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';

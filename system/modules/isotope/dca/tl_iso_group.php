@@ -70,40 +70,40 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
             'edit' => array
             (
                 'href'              => 'table=tl_iso_group&amp;act=edit',
-                'icon'              => 'edit.gif',
+                'icon'              => 'edit.svg',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'editButton'),
             ),
             'copy' => array
             (
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy',
-                'icon'              => 'copy.gif',
+                'icon'              => 'copy.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'copyChilds' => array
             (
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy&amp;childs=1',
-                'icon'              => 'copychilds.gif',
+                'icon'              => 'copychilds.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'cut' => array
             (
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=cut',
-                'icon'              => 'cut.gif',
+                'icon'              => 'cut.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
                 'href'              => 'table=tl_iso_group&amp;act=delete',
-                'icon'              => 'delete.gif',
+                'icon'              => 'delete.svg',
                 'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'deleteButton'),
             ),
             'show' => array
             (
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             ),
         )
     ),

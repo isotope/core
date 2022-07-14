@@ -32,7 +32,7 @@ class Wizard
             ),
             sprintf(StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1]), $dc->value),
             StringUtil::specialchars(str_replace("'", "\\'", sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][1], $dc->value))),
-            Image::getHtml('alias.gif', $GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][0])
+            Image::getHtml('alias.svg', $GLOBALS['TL_LANG']['tl_iso_producttype']['edit'][0])
         );
     }
 }
