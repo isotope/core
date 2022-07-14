@@ -146,7 +146,7 @@ abstract class Sales extends Report
         }
 
         $arrSession = Session::getInstance()->get('iso_reports');
-        $varValue = (int) $arrSession[$this->name]['iso_status'];
+        $varValue = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         return [
             'name'      => 'iso_status',

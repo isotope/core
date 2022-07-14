@@ -36,33 +36,34 @@ class SalesProduct extends Sales
 
     protected function compile()
     {
-        $arrSession    = Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports')
+        ;
 
-        $strPeriod   = (string) $arrSession[$this->name]['period'];
-        $intColumns  = (int) $arrSession[$this->name]['columns'];
+        $strPeriod = (string) $arrSession[$this->name]['period'];
+        $intColumns = (int) $arrSession[$this->name]['columns'];
         $blnVariants = (bool) $arrSession[$this->name]['variants'];
-        $intStatus   = (int) $arrSession[$this->name]['iso_status'];
+        $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
         if ($arrSession[$this->name]['from'] == '') {
-            $intStart = strtotime('-' . ($intColumns-1) . ' ' . $strPeriod);
+            $intStart = strtotime('-'.($intColumns - 1).' '.$strPeriod);
         } else {
             $intStart = (int) $arrSession[$this->name]['from'];
         }
 
-        $period   = PeriodFactory::create($strPeriod);
+        $period = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
         $dateFrom = $period->getKey($intStart);
-        $dateTo   = $period->getKey(strtotime('+ ' . ($intColumns-1) . ' ' . $strPeriod, $intStart));
+        $dateTo = $period->getKey(strtotime('+ '.($intColumns - 1).' '.$strPeriod, $intStart));
 
         if ('locked' === $this->strDateField) {
             $this->strDateField = $arrSession[$this->name]['date_field'];
         }
 
-        $arrData = array('rows'=>array());
+        $arrData = array('rows' => array());
         $arrData['header'] = $this->getHeader($period, $intStart, $intColumns);
 
         $groupVariants = $blnVariants ? 'p1.id' : 'IF(p1.pid=0, p1.id, p1.pid)';
-        $dateGroup = $period->getSqlField('o.' . $this->strDateField);
+        $dateGroup = $period->getSqlField('o.'.$this->strDateField);
 
         $objProducts = Database::getInstance()->query("
             SELECT
@@ -82,17 +83,19 @@ class SalesProduct extends Sales
             LEFT OUTER JOIN tl_iso_product p1 ON i.product_id=p1.id
             LEFT OUTER JOIN tl_iso_product p2 ON p1.pid=p2.id
             WHERE o.type='order' AND o.order_status>0 AND o.{$this->strDateField} IS NOT NULL
-                " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-                " . static::getProductProcedure('p1') . "
-                " . static::getConfigProcedure('o', 'config_id') . "
+                ".($intStatus > 0 ? " AND o.order_status=".$intStatus : '')."
+                ".static::getProductProcedure('p1')."
+                ".static::getConfigProcedure('o', 'config_id')."
             GROUP BY dateGroup, product_id
             HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
-        ");
+        ")
+        ;
 
         // Cache product types so call to findByPk() will trigger the registry
         ProductType::findMultipleByIds($objProducts->fetchEach('type'));
 
         $arrRaw = array();
+        $product_type_name = null;
         $objProducts->reset();
 
         // Prepare product data
@@ -110,7 +113,7 @@ class SalesProduct extends Sales
                 $product_type_name = $objType->name;
             }
 
-            $arrOptions = array('name'=>$objProducts->variant_name);
+            $arrOptions = array('name' => $objProducts->variant_name);
 
             // Use product title if name is not a variant attribute
             if ($blnHasVariants && !\in_array('name', $arrVariantAttributes, true)) {
@@ -133,23 +136,23 @@ class SalesProduct extends Sales
                         $strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;
                     }
 
-                    $arrOptions[] = '<span class="variant">' . $strName . ': ' . $strValue . '</span>';
+                    $arrOptions[] = '<span class="variant">'.$strName.': '.$strValue.'</span>';
                 }
             }
 
-            $arrOptions['name'] = '<span class="product">' . $arrOptions['name'] . '</span>';
+            $arrOptions['name'] = '<span class="product">'.$arrOptions['name'].'</span>';
 
             $arrRaw[$objProducts->product_id]['name'] = implode('<br>', $arrOptions);
             $arrRaw[$objProducts->product_id]['product_type_name'] = $product_type_name;
-            $arrRaw[$objProducts->product_id][$objProducts->dateGroup] = (float) $arrRaw[$objProducts->product_id][$objProducts->dateGroup] + (float) $objProducts->total;
-            $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] = (int) $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] + (int) $objProducts->quantity;
-            $arrRaw[$objProducts->product_id]['total'] = (float) $arrRaw[$objProducts->product_id]['total'] + (float) $objProducts->total;
-            $arrRaw[$objProducts->product_id]['quantity'] = (int) $arrRaw[$objProducts->product_id]['quantity'] + (int) $objProducts->quantity;
+            $arrRaw[$objProducts->product_id][$objProducts->dateGroup] = (float) ($arrRaw[$objProducts->product_id][$objProducts->dateGroup] ?? 0) + (float) $objProducts->total;
+            $arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] = (int) ($arrRaw[$objProducts->product_id][$objProducts->dateGroup.'_quantity'] ?? 0) + (int) $objProducts->quantity;
+            $arrRaw[$objProducts->product_id]['total'] = (float) ($arrRaw[$objProducts->product_id]['total'] ?? 0) + (float) $objProducts->total;
+            $arrRaw[$objProducts->product_id]['quantity'] = (int) ($arrRaw[$objProducts->product_id]['quantity'] ?? 0) + (int) $objProducts->quantity;
         }
 
         // Prepare columns
         $arrColumns = array();
-        for ($i=0; $i<$intColumns; $i++) {
+        for ($i = 0; $i < $intColumns; $i++) {
             $arrColumns[] = $period->getKey($intStart);
             $intStart = $period->getNext($intStart);
         }
@@ -170,32 +173,37 @@ class SalesProduct extends Sales
 
         // Generate data
         foreach ($arrRaw as $arrProduct) {
-            $arrRow = array(array(
-                'value'      => array($arrProduct['name'], sprintf('<span style="color:#b3b3b3;">[%s]</span>',$arrProduct['product_type_name'])),
-            ));
+            $arrRow = array(
+                array(
+                    'value' => array(
+                        $arrProduct['name'],
+                        sprintf('<span style="color:#b3b3b3;">[%s]</span>', $arrProduct['product_type_name']),
+                    ),
+                ),
+            );
 
             $arrFooter[0] = array(
-                'value'      => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
+                'value' => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             );
 
             foreach ($arrColumns as $i => $column) {
-                $arrRow[$i+1] = array(
-                    'value'         => Isotope::formatPriceWithCurrency($arrProduct[$column]) . (($arrProduct[$column.'_quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct[$column.'_quantity']) . '</span>' : ''),
+                $arrRow[$i + 1] = array(
+                    'value' => Isotope::formatPriceWithCurrency($arrProduct[$column] ?? 0).(isset($arrProduct[$column.'_quantity']) ? '<br><span class="variant">'.Isotope::formatItemsString($arrProduct[$column.'_quantity']).'</span>' : ''),
                 );
 
-                $arrFooter[$i+1] = array(
-                    'total'         => $arrFooter[$i+1]['total'] + $arrProduct[$column],
-                    'quantity'		=> $arrFooter[$i+1]['quantity'] + $arrProduct[$column.'_quantity'],
+                $arrFooter[$i + 1] = array(
+                    'total' => ($arrFooter[$i + 1]['total'] ?? 0) + ($arrProduct[$column] ?? 0),
+                    'quantity' => ($arrFooter[$i + 1]['quantity'] ?? 0) + ($arrProduct[$column.'_quantity'] ?? 0),
                 );
             }
 
-            $arrRow[$i+2] = array(
-                'value'         => Isotope::formatPriceWithCurrency($arrProduct['total']) . (($arrProduct['quantity'] !== null) ? '<br><span class="variant">' . Isotope::formatItemsString($arrProduct['quantity']) . '</span>' : ''),
+            $arrRow[$i + 2] = array(
+                'value' => Isotope::formatPriceWithCurrency($arrProduct['total']).(($arrProduct['quantity'] !== null) ? '<br><span class="variant">'.Isotope::formatItemsString($arrProduct['quantity']).'</span>' : ''),
             );
 
-            $arrFooter[$i+2] = array(
-                'total'         => $arrFooter[$i+2]['total'] + $arrProduct['total'],
-                'quantity'		=> $arrFooter[$i+2]['quantity'] + $arrProduct['quantity'],
+            $arrFooter[$i + 2] = array(
+                'total' => ($arrFooter[$i + 2]['total'] ?? 0) + ($arrProduct['total'] ?? 0),
+                'quantity' => ($arrFooter[$i + 2]['quantity'] ?? 0) + ($arrProduct['quantity'] ?? 0),
             );
 
             $arrData['rows'][] = array(
@@ -203,8 +211,8 @@ class SalesProduct extends Sales
             );
         }
 
-        for ($i=1, $iMax = \count($arrFooter); $i < $iMax; $i++) {
-            $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).  '<br><span class="variant">' . Isotope::formatItemsString($arrFooter[$i]['quantity']) . '</span>';
+        for ($i = 1, $iMax = \count($arrFooter); $i < $iMax; $i++) {
+            $arrFooter[$i]['value'] = Isotope::formatPriceWithCurrency($arrFooter[$i]['total']).'<br><span class="variant">'.Isotope::formatItemsString($arrFooter[$i]['quantity']).'</span>';
             unset($arrFooter[$i]['total']);
         }
 
@@ -217,17 +225,17 @@ class SalesProduct extends Sales
     {
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        return array (
-            'name'          => 'variants',
-            'label'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['variants'],
-            'type'          => 'radio',
-            'value'         => (string) $arrSession[$this->name]['variants'],
-            'class'         => 'tl_variants',
-            'options'       => array (
-                '1'         => &$GLOBALS['TL_LANG']['MSC']['yes'],
-                ''          => &$GLOBALS['TL_LANG']['MSC']['no'],
+        return array(
+            'name' => 'variants',
+            'label' => &$GLOBALS['TL_LANG']['ISO_REPORT']['variants'],
+            'type' => 'radio',
+            'value' => (string) $arrSession[$this->name]['variants'],
+            'class' => 'tl_variants',
+            'options' => array(
+                '1' => &$GLOBALS['TL_LANG']['MSC']['yes'],
+                '' => &$GLOBALS['TL_LANG']['MSC']['no'],
             ),
-            'attributes'    => ' onchange="this.form.submit()"'
+            'attributes' => ' onchange="this.form.submit()"',
         );
     }
 
@@ -244,13 +252,15 @@ class SalesProduct extends Sales
         );
 
         // Set default session data
-        $arrSession = Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports')
+        ;
 
         if ($arrSession[$this->name]['tl_sort'] == '') {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
-        Session::getInstance()->set('iso_reports', $arrSession);
+        Session::getInstance()->set('iso_reports', $arrSession)
+        ;
 
         parent::initializeDefaultValues();
     }
@@ -259,9 +269,9 @@ class SalesProduct extends Sales
     protected function getHeader(PeriodInterface $period, $intStart, $intColumns)
     {
         $arrHeader = array();
-        $arrHeader[] = array('value'=>&$GLOBALS['TL_LANG']['ISO_REPORT']['product_name']);
+        $arrHeader[] = array('value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['product_name']);
 
-        for ($i=0; $i<$intColumns; $i++) {
+        for ($i = 0; $i < $intColumns; $i++) {
             $arrHeader[] = array(
                 'value' => $period->format($intStart),
             );

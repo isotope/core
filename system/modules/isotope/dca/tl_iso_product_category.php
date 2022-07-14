@@ -28,7 +28,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         (
             function() {
                 if (\Contao\Input::get('act') == '' && \Contao\BackendUser::getInstance()->hasAccess('modules', 'themes')) {
-                    \Contao\Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint']);
+                    \Contao\Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint'] ?? '');
                 }
             }
         ),

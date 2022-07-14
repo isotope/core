@@ -8,7 +8,7 @@
 
 <?php echo \Contao\Message::generate(true); ?>
 
-<div class="tl_listing_container list_view mod_iso_reports <?php echo $this->class; ?>">
+<div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
 
 
 <?php $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.css'); ?>
@@ -48,7 +48,7 @@ window.addEvent('domready', function() {
 <tfoot>
 	<tr>
 <?php foreach($this->data['footer'] as $col): ?>
-		<td<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
+		<td<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?php echo $col['class']; ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
 <?php endforeach; ?>
 	</tr>
 </tfoot>
@@ -57,7 +57,7 @@ window.addEvent('domready', function() {
 <?php foreach($this->data['rows'] as $row): ?>
 	<tr<?php if($row['class']): ?> class="<?php echo $row['class']; ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
 <?php foreach($row['columns'] as $col): ?>
-		<<?php echo $col['header'] ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo $col['header'] ? 'th' : 'td'; ?>>
+		<<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?php echo $col['class']; ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
 <?php endforeach; ?>
 	</tr>
 <?php endforeach; ?>

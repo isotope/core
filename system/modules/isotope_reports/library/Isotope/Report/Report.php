@@ -231,7 +231,7 @@ abstract class Report extends Backend
         }
 
         $arrSession = Session::getInstance()->get('iso_reports');
-        $varValue = (string) $arrSession[$this->name]['iso_config'];
+        $varValue = (string) ($arrSession[$this->name]['iso_config'] ?? '');
 
         return [
             'name'      => 'iso_config',

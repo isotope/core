@@ -4,23 +4,23 @@
 <?php echo implode(' &nbsp; :: &nbsp ', $this->buttons); ?>
 </div>
 
-<h2 class="sub_headline"><?php echo $this->headline; ?></h2>
+<h2 class="sub_headline"><?= $this->headline ?></h2>
 
-<?php echo \Contao\Message::generate(true); ?>
+<?= \Contao\Message::generate(true) ?>
 
-<div class="tl_listing_container list_view mod_iso_reports <?php echo $this->class; ?>">
+<div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
 
 
 <?php $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.css'); ?>
 <figure style="width:100%; height:300px" id="report-data"></figure>
-<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/d3.v3/d3.v3.min.js'); ?>"></script>
-<script src="<?php echo \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.js'); ?>"></script>
+<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/d3.v3/d3.v3.min.js') ?>"></script>
+<script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/xcharts/xcharts.min.js') ?>"></script>
 <script>
 window.addEvent('domready', function() {
     window.xchart_report = new xChart('line-dotted', {
         'xScale':'ordinal',
         'yScale':'linear',
-        'main': <?php echo json_encode(array_values($this->chart)); ?>,
+        'main': <?= json_encode(array_values($this->chart)) ?>,
     }, '#report-data', {
         tickFormatX: <?= $this->periodFormat ?>
     });
@@ -28,7 +28,7 @@ window.addEvent('domready', function() {
 </script>
 <ul class="currencies">
 <?php $i=0; foreach ($this->chart as $currency => $data): ?>
-    <li class="color<?php echo $i++; ?>"><input type="checkbox" class="checkbox" id="toggle_<?php echo strtolower($currency); ?>" checked="checked" onchange="document.getElement('#report-data <?php echo $data['className']; ?>').setStyle('display', (this.checked ? 'block' : 'none'));"> <label for="toggle_<?php echo strtolower($currency); ?>"><?php echo $data['label'] ?></label></li>
+    <li class="color<?= $i++ ?>"><input type="checkbox" class="checkbox" id="toggle_<?= strtolower($currency) ?>" checked="checked" onchange="document.getElement('#report-data <?= $data['className'] ?>').setStyle('display', (this.checked ? 'block' : 'none'));"> <label for="toggle_<?= strtolower($currency) ?>"><?= $data['label'] ?></label></li>
 <?php endforeach; ?>
 </ul>
 
@@ -40,7 +40,7 @@ window.addEvent('domready', function() {
 <thead>
     <tr>
 <?php foreach($this->dataMember['header'] as $col): ?>
-        <th<?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
+        <th<?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
 <?php endforeach; ?>
     </tr>
 </thead>
@@ -49,16 +49,16 @@ window.addEvent('domready', function() {
 <tfoot>
     <tr>
 <?php foreach($this->dataMember['footer'] as $col): ?>
-        <td<?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
+        <td<?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
 <?php endforeach; ?>
     </tr>
 </tfoot>
 <?php endif; ?>
 <tbody>
 <?php foreach($this->dataMember['rows'] as $row): ?>
-    <tr class="<?php echo $row['class']; ?> hover-row"<?php echo $row['attributes']; ?>>
+    <tr class="<?php echo $row['class'] ?? ''; ?> hover-row"<?php echo $row['attributes'] ?? ''; ?>>
 <?php foreach($row['columns'] as $col): ?>
-        <<?php echo $col['header'] ? 'th' : 'td'; ?><?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_file_list<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo $col['header'] ? 'th' : 'td'; ?>>
+        <<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
 <?php endforeach; ?>
     </tr>
 <?php endforeach; ?>
@@ -66,13 +66,13 @@ window.addEvent('domready', function() {
 </table>
 </div>
 <div class="iso_report_container_guests">
-<h3 class="sub_headline"><?php echo $GLOBALS['TL_LANG']['ISO_REPORT']['guests_title']; ?></h3>
+<h3 class="sub_headline"><?= $GLOBALS['TL_LANG']['ISO_REPORT']['guests_title'] ?></h3>
 <table class="iso_report tl_listing showColumns">
 <?php if($this->dataGuests['header']): ?>
 <thead>
     <tr>
 <?php foreach($this->dataGuests['header'] as $col): ?>
-        <th<?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
+        <th<?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
 <?php endforeach; ?>
     </tr>
 </thead>
@@ -81,16 +81,16 @@ window.addEvent('domready', function() {
 <tfoot>
     <tr>
 <?php foreach($this->dataGuests['footer'] as $col): ?>
-        <td<?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
+        <td<?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
 <?php endforeach; ?>
     </tr>
 </tfoot>
 <?php endif; ?>
 <tbody>
 <?php foreach($this->dataGuests['rows'] as $row): ?>
-    <tr class="<?php echo $row['class']; ?> hover-row"<?php echo $row['attributes']; ?>>
+    <tr class="<?php echo $row['class'] ?? ''; ?> hover-row"<?php echo $row['attributes'] ?? ''; ?>>
 <?php foreach($row['columns'] as $col): ?>
-        <<?php echo $col['header'] ? 'th' : 'td'; ?><?php if($col['colspan']): ?> colspan="<?php echo $col['colspan']; ?>"<?php endif; ?> class="tl_file_list<?php if($col['class']): ?> <?php echo $col['class']; ?><?php endif; ?>"<?php echo $col['attributes']; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo $col['header'] ? 'th' : 'td'; ?>>
+        <<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if($col['colspan'] ?? null): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?php echo $col['attributes'] ?? ''; ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
 <?php endforeach; ?>
     </tr>
 <?php endforeach; ?>

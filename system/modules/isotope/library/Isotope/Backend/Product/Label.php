@@ -111,7 +111,7 @@ class Label
                         TL_FILES_URL . $strImage,
                         $script,
                         TL_ASSETS_URL . Image::get($strImage, 50, 50, 'proportional'),
-                        $image['alt']
+                        $image['alt'] ?? ''
                     );
                 }
             }

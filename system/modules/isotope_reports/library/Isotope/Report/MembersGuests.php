@@ -35,11 +35,11 @@ class MembersGuests extends Sales
     {
         $arrSession    = Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
-        $strPeriod = (string) $arrSession[$this->name]['period'];
-        $intStart  = (int) $arrSession[$this->name]['start'];
-        $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
+        $strPeriod = (string) ($arrSession[$this->name]['period'] ?? '');
+        $intStart  = (int) ($arrSession[$this->name]['start'] ?? 0);
+        $intStop   = (int) ($arrSession[$this->name]['stop'] ?? 0);
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         $period   = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
@@ -125,13 +125,13 @@ class MembersGuests extends Sales
             $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
         }
 
-        $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] + $objData->total_sales;
+        $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales;
 
         // Summary in the footer
         $arrData['footer'][1]['value'] += $objData->total_orders;
         $arrData['footer'][2]['value'] += $objData->total_products;
         $arrData['footer'][3]['value'] += $objData->total_items;
-        $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
+        $arrData['footer'][4]['value'][$objData->currency] = ((float) ($arrData['footer'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
         return $arrData;
     }
@@ -221,7 +221,7 @@ class MembersGuests extends Sales
     protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
     {
         $arrSession = Session::getInstance()->get('iso_reports');
-        $intConfig  = (int) $arrSession[$this->name]['iso_config'];
+        $intConfig  = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $intStart   = strtotime('first day of this month', $intStart);
 
         $arrData       = array();

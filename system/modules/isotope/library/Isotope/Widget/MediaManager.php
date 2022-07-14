@@ -264,7 +264,7 @@ class MediaManager extends Widget implements \uploadable
         $arrFallback = $this->getFallbackData();
 
         // Adapt the temporary files
-        if (\is_array($this->varValue) && \is_array($this->varValue['files']) && !empty($this->varValue['files'])) {
+        if (\is_array($this->varValue) && !empty($this->varValue['files']) && \is_array($this->varValue['files'])) {
             foreach ($this->varValue['files'] as $v) {
                 if (!is_file(TL_ROOT . '/' . $this->getFilePath($v))) {
                     continue;
@@ -426,7 +426,7 @@ class MediaManager extends Widget implements \uploadable
                 if ('drag' === $button) {
                     $return .= Image::getHtml('drag.gif', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
                 } else {
-                    $return .= '<a href="'.Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button]).'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG'][$this->strTable]['wz_'.$button], 'class="tl_listwizard_img"').'</a> ';
+                    $return .= '<a href="'.Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '').'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.gif', $GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '', 'class="tl_listwizard_img"').'</a> ';
                 }
             }
 
