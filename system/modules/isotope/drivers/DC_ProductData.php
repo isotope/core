@@ -1593,7 +1593,10 @@ class DC_ProductData extends \DC_Table
                                 $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? $option;
                             }
 
-                            $args[$k] = implode(', ', $args_k);
+                            $implode = static function ($v) use (&$implode) {
+                                return implode(', ', array_map(static fn($vv) => \is_array($vv) ? $implode($vv) : $vv, $v));
+                            };
+                            $args[$k] = $implode($args_k);
                         }
                         elseif (isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]))
                         {
