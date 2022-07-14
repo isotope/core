@@ -1,13 +1,13 @@
 <div class="coupon<?php echo $this->mclass ? ' ' . $this->mclass : ''; ?>">
-<h2><?php echo $this->headline; ?></h2>
+<h2><?= $this->headline ?></h2>
 <?php if ($this->message != ''): ?>
-<p class="<?php echo $this->mclass; ?>"><?php echo $this->message; ?></p>
+<p class="<?= $this->mclass ?>"><?= $this->message ?></p>
 <?php endif; ?>
 
-<form action="<?php echo $this->action; ?>" method="get">
+<form action="<?= $this->action ?>" method="get">
 <div class="formbody">
-<label for="ctrl_coupon_<?php echo $this->id; ?>"><?php echo $this->label; ?></label>
-<input type="text" name="coupon_<?php echo $this->id; ?>" id="ctrl_coupon_<?php echo $this->id; ?>" class="text"> <input class="submit" type="submit" value="<?php echo $this->sLabel; ?>">
+<label for="ctrl_coupon_<?= $this->id ?>"><?= $this->label ?></label>
+<input type="text" name="coupon_<?= $this->id ?>" id="ctrl_coupon_<?= $this->id ?>" class="text"> <input class="submit" type="submit" value="<?= $this->sLabel ?>">
 </div>
 </form>
 </div>

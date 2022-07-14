@@ -2,7 +2,7 @@
     <form class="tl_form" method="post">
         <div class="tl_formbody iso_panels">
             <input type="hidden" name="FORM_SUBMIT" value="tl_filters">
-            <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>">
+            <input type="hidden" name="REQUEST_TOKEN" value="<?= REQUEST_TOKEN ?>">
 
             <?php $lastPanel = count($this->panels)-1; ?>
             <?php foreach($this->panels as $p => $panel): ?>
@@ -11,54 +11,54 @@
                     <?php if($p==$lastPanel): ?>
                         <div class="tl_submit_panel tl_subpanel">
                             <?php if(file_exists(TL_ROOT . '/system/themes/default/images/reload.gif')): ?>
-                                <input type="image" name="filter" id="filter" src="system/themes/default/images/reload.gif" class="tl_img_submit" title="<?php echo $GLOBALS['TL_LANG']['MSC']['applyTitle']; ?>" alt="<?php echo $GLOBALS['TL_LANG']['MSC']['apply']; ?>">
+                                <input type="image" name="filter" id="filter" src="system/themes/default/images/reload.gif" class="tl_img_submit" title="<?= $GLOBALS['TL_LANG']['MSC']['applyTitle'] ?>" alt="<?= $GLOBALS['TL_LANG']['MSC']['apply'] ?>">
                             <?php else: ?>
-                                <button name="filter" id="filter" class="tl_img_submit filter_apply" title="<?php echo $GLOBALS['TL_LANG']['MSC']['applyTitle']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['apply']; ?></button>
-                                <button name="filter_reset" id="filter_reset" value="1" class="tl_img_submit filter_reset" title="<?php echo $GLOBALS['TL_LANG']['MSC']['resetTitle']; ?>"><?php echo $GLOBALS['TL_LANG']['MSC']['reset']; ?></button>
+                                <button name="filter" id="filter" class="tl_img_submit filter_apply" title="<?= $GLOBALS['TL_LANG']['MSC']['applyTitle'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['apply'] ?></button>
+                                <button name="filter_reset" id="filter_reset" value="1" class="tl_img_submit filter_reset" title="<?= $GLOBALS['TL_LANG']['MSC']['resetTitle'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['reset'] ?></button>
                             <?php endif; ?>
                         </div>
                     <?php endif; ?>
 
                     <?php foreach($panel as $subpanel): ?>
                         <?php if(!$subpanel) continue; ?>
-                        <div class="<?php echo $subpanel['class']; ?> tl_subpanel">
-                            <strong><?php echo $subpanel['label']; ?>: </strong>
+                        <div class="<?= $subpanel['class'] ?> tl_subpanel">
+                            <strong><?= $subpanel['label'] ?>: </strong>
                             <?php if($subpanel['type'] == 'filter'): ?>
-                                <select name="<?php echo $subpanel['name']; ?>" class="tl_select<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?>>
+                                <select name="<?= $subpanel['name'] ?>" class="tl_select<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?>>
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
-                                        <option value="<?php echo $value; ?>"<?php if($value==$subpanel['value']): ?> selected<?php endif; ?>><?php echo $label; ?></option>
+                                        <option value="<?= $value ?>"<?php if($value==$subpanel['value']): ?> selected<?php endif; ?>><?= $label ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             <?php elseif($subpanel['type'] == 'radio'): ?>
                                 <div class="radio_container" style="display:inline-block">
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
-                                        <span><input type="radio" name="<?php echo $subpanel['name']; ?>" class="tl_radio<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?> value="<?php echo $value; ?>"<?php if($value==$subpanel['value']): ?> checked<?php endif; ?>><?php echo $label; ?></span>
+                                        <span><input type="radio" name="<?= $subpanel['name'] ?>" class="tl_radio<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?> value="<?= $value ?>"<?php if($value==$subpanel['value']): ?> checked<?php endif; ?>><?= $label ?></span>
                                     <?php endforeach; ?>
                                 </div>
                             <?php elseif($subpanel['type'] == 'search'): ?>
                                 <select name="tl_field" class="tl_select<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>"<?= $subpanel['attributes'] ?? '' ?>>
                                     <?php foreach($subpanel['options'] as $value => $label): ?>
-                                        <option value="<?php echo $value; ?>"<?php if($value==$subpanel['value']['tl_field']): ?> selected<?php endif; ?>><?php echo $label; ?></option>
+                                        <option value="<?= $value ?>"<?php if($value==$subpanel['value']['tl_field']): ?> selected<?php endif; ?>><?= $label ?></option>
                                     <?php endforeach; ?>
                                 </select>
                                 <span> = </span>
-                            <input type="text" name="tl_value" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']['tl_value']; ?>">
+                            <input type="text" name="tl_value" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?= $subpanel['value']['tl_value'] ?>">
                             <?php elseif($subpanel['type'] == 'text'): ?>
-                            <input type="text" name="<?php echo $subpanel['name']; ?>" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']; ?>">
+                            <input type="text" name="<?= $subpanel['name'] ?>" class="tl_text<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?= $subpanel['value'] ?>">
                             <?php elseif($subpanel['type'] == 'date'): ?>
-                            <input type="text" id="ctrl_<?php echo $subpanel['name']; ?>" name="<?php echo $subpanel['name']; ?>" class="tl_text datepicker<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?php echo $subpanel['value']; ?>">
-                            <img src="assets/<?= defined('DATEPICKER') ? ('mootools/datepicker/'.DATEPICKER.'/icon.gif') : 'datepicker/images/icon.svg' ?>" width="20" height="20" alt="" id="toggle_<?php echo $subpanel['name']; ?>" style="vertical-align:-6px">
+                            <input type="text" id="ctrl_<?= $subpanel['name'] ?>" name="<?= $subpanel['name'] ?>" class="tl_text datepicker<?= ($subpanel['active'] ?? false) ? ' active' : '' ?>" value="<?= $subpanel['value'] ?>">
+                            <img src="assets/<?= defined('DATEPICKER') ? ('mootools/datepicker/'.DATEPICKER.'/icon.gif') : 'datepicker/images/icon.svg' ?>" width="20" height="20" alt="" id="toggle_<?= $subpanel['name'] ?>" style="vertical-align:-6px">
                                 <script>
                                     window.addEvent("domready", function() {
-                                        new Picker.Date($$("#ctrl_<?php echo $subpanel['name']; ?>"), {
+                                        new Picker.Date($$("#ctrl_<?= $subpanel['name'] ?>"), {
                                             draggable:false,
-                                            toggle:$$("#toggle_<?php echo $subpanel['name']; ?>"),
-                                            format:"<?php echo Date::formatToJs($subpanel['format']); ?>",
+                                            toggle:$$("#toggle_<?= $subpanel['name'] ?>"),
+                                            format:"<?= Date::formatToJs($subpanel['format']) ?>",
                                             positionOffset:{x:-197,y:-182},
                                             pickerClass:"datepicker_bootstrap",
                                             useFadeInOut:!Browser.ie,
-                                            startDay:<?php echo $GLOBALS['TL_LANG']['MSC']['weekOffset']; ?>,
-                                            titleFormat:"<?php echo $GLOBALS['TL_LANG']['MSC']['titleFormat']; ?>"
+                                            startDay:<?= $GLOBALS['TL_LANG']['MSC']['weekOffset'] ?>,
+                                            titleFormat:"<?= $GLOBALS['TL_LANG']['MSC']['titleFormat'] ?>"
                                         });
                                     });
                                 </script>
