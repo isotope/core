@@ -765,8 +765,8 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['dynamic']
-                    || ($config['eval']['multiple'] && !$config['eval']['csv'])
+                if (($config['attributes']['dynamic'] ?? null)
+                    || (($config['eval']['multiple'] ?? null) && !($config['eval']['csv'] ?? null))
                 ) {
                     $arrFields[] = $field;
                 }
