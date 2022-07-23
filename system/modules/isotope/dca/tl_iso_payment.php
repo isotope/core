@@ -219,7 +219,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'select',
             'options'               => array('capture', 'auth'),
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
-            'reference'             => $GLOBALS['TL_LANG']['tl_iso_payment'],
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment'],
             'sql'                   => "varchar(8) NOT NULL default ''",
         ),
         'minimum_total' => array

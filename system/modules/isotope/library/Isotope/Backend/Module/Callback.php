@@ -64,7 +64,7 @@ class Callback extends Backend
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
             if ($arrData['attributes']['fe_sorting'] ?? false) {
-                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+                $arrAttributes[$field] = \strlen($arrData['label'][0] ?? '') ? $arrData['label'][0] : $field;
             }
         }
 

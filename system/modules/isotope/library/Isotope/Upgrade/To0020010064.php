@@ -49,7 +49,7 @@ class To0020010064 extends System
 
                     if (!empty($arrData) && \is_array($arrData)) {
                         foreach ($arrData as $k => $image) {
-                            if ($image['translate'] == '') {
+                            if (($image['translate'] ?? '') == '') {
                                 $arrData[$k]['translate'] = 'none';
                             }
                         }

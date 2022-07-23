@@ -34,7 +34,7 @@
 <?php foreach( $this->filterOptions as $field => $data ): ?>
 <label for="ctrl_filter_<?= $field ?>_<?= $this->id ?>"><?= $data['label'] ?></label>
 <select name="filter[<?= $field ?>]" id="ctrl_filter_<?= $field ?>_<?= $this->id ?>" class="select" onchange="document.getElementById('<?= $this->formId ?>').submit();">
-<option value=""><?= $data['blankOptionLabel'] ? $data['blankOptionLabel'] : '-' ?></option>
+<option value=""><?= $data['blankOptionLabel'] ?? '-' ?></option>
 <?php foreach( $data['options'] as $option ): ?>
 <option value="<?= $option['value'] ?>"<?php if($option['default']) echo ' selected="selected"'; ?>><?= $option['label'] ?></option>
 <?php endforeach; ?>

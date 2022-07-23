@@ -227,7 +227,7 @@ class Rule extends \Model
         if (!empty($arrProducts)) {
             $arrProductIds = [0];
             $arrVariantIds = [0];
-            $arrAttributes = [0];
+            $arrAttributes = [];
             $arrTypes = [0];
 
             // Prepare product attribute condition

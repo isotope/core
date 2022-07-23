@@ -537,7 +537,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
                 $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
-                if ($arrData['attributes']['customer_defined'] || $arrData['attributes']['variant_option']) {
+                if (($arrData['attributes']['customer_defined'] ?? null) || ($arrData['attributes']['variant_option'] ?? null)) {
 
                     $strWidget = $this->generateProductOptionWidget($attribute, $arrVariantOptions, $arrAjaxOptions, $objWidget);
 
@@ -619,8 +619,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
-        $objTemplate->raw_options = $this->getConfiguration();
-        $objTemplate->configuration = $this->getConfiguration();
+        $objTemplate->raw_options = $this->getOptions();
+        $objTemplate->configuration = $this->getOptions();
         $objTemplate->href = '';
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = $arrProductOptions;
@@ -677,7 +677,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $arrData['default'] = $arrDefaults[$strField];
         }
 
-        $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'], $strField, static::$strTable, $this);
+        $arrField = $strClass::getAttributesFromDca($arrData, $strField, $arrData['default'] ?? null, $strField, static::$strTable, $this);
 
         // Prepare variant selection field
         // @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants
@@ -793,7 +793,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                 }
 
                 // Trigger the save_callback
-                if (\is_array($arrData['save_callback'])) {
+                if (\is_array($arrData['save_callback'] ?? null)) {
                     foreach ($arrData['save_callback'] as $callback) {
                         try {
                             if (\is_array($callback)) {
@@ -865,7 +865,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         // Add a custom wizard
-        if (\is_array($arrData['wizard'])) {
+        if (\is_array($arrData['wizard'] ?? null)) {
             foreach ($arrData['wizard'] as $callback) {
                 $wizard .= System::importStatic($callback[0])->{$callback[1]}($this);
             }
@@ -1026,7 +1026,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     public function mergeRow(array $arrData)
     {
         // do not allow to reset the whole record
-        if ($arrData['id']) {
+        if (isset($arrData['id'])) {
             return $this;
         }
 
@@ -1051,7 +1051,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         }
 
         if (!\in_array($strKey, $arrAttributes, true)
-            && '' !== (string) $GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend']
+            && '' !== (string) ($GLOBALS['TL_DCA'][static::$strTable]['fields'][$strKey]['attributes']['legend'] ?? '')
         ) {
             return;
         }

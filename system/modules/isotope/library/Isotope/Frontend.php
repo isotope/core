@@ -720,7 +720,7 @@ class Frontend extends \Contao\Frontend
                     && $objAttribute->canHavePrices()
                     && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
                 ) {
-                    $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
+                    $value = $objAttribute->isCustomerDefined() ? ($arrOptions[$field] ?? null) : $objProduct->$field;
                     $value = StringUtil::deserialize($value, true);
 
                     /** @var AttributeOption $objOption */

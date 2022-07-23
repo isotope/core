@@ -308,7 +308,7 @@ abstract class AbstractProduct extends Product
     {
         $css = StringUtil::deserialize($this->cssID, true);
 
-        return $css[0] ? ' id="' . $css[0] . '"' : null;
+        return ($css[0] ?? null) ? ' id="' . $css[0] . '"' : null;
     }
 
     /**
@@ -325,7 +325,7 @@ abstract class AbstractProduct extends Product
         }
 
         $arrCSS = StringUtil::deserialize($this->cssID, true);
-        if ('' !== (string) $arrCSS[1]) {
+        if ('' !== ($arrCSS[1] ?? '')) {
             $classes[] = (string) $arrCSS[1];
         }
 
