@@ -11,7 +11,7 @@
             <td class="action">
                 <form action="<?= $this->action ?>" method="post">
                     <input type="hidden" name="FORM_SUBMIT" value="remove_coupon_<?= $this->id ?>">
-                    <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+                    <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
                     <button class="submit" name="coupon" value="<?= $coupon ?>">Remove</button>
                 </form>
             </td>
@@ -24,7 +24,7 @@
 <form action="<?= $this->action; ?>" method="post">
     <div class="formbody">
         <input type="hidden" name="FORM_SUBMIT" value="add_coupon_<?= $this->id; ?>">
-        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+        <input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
 
         <div class="widget widget-text">
             <label for="ctrl_coupon_<?= $this->id ?>">
