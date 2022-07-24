@@ -1538,95 +1538,8 @@ class DC_ProductData extends \DC_Table
 
             foreach ($result as $row)
             {
-                $args = array();
                 $this->current[] = $row['id'];
-                $showFields = $GLOBALS['TL_DCA'][$table]['list']['label']['fields'];
-
-                // Label
-                foreach ($showFields as $k=>$v)
-                {
-                    // Decrypt the value
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'] ?? null)
-                    {
-                        $row[$v] = Encryption::decrypt(StringUtil::deserialize($row[$v]));
-                    }
-
-                    if (strpos($v, ':') !== false)
-                    {
-                        [$strKey, $strTable] = explode(':', $v, 2);
-                        [$strTable, $strField] = explode('.', $strTable, 2);
-
-                        $objRef = $this->Database->prepare("SELECT " . Database::quoteIdentifier($strField) . " FROM " . $strTable . " WHERE id=?")
-                            ->limit(1)
-                            ->execute($row[$strKey]);
-
-                        $args[$k] = $objRef->numRows ? $objRef->$strField : '';
-                    }
-                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(5, 6, 7, 8, 9, 10)))
-                    {
-                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'date')
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('dateFormat'), $row[$v]) : '-';
-                        }
-                        elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'time')
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('timeFormat'), $row[$v]) : '-';
-                        }
-                        else
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('datimFormat'), $row[$v]) : '-';
-                        }
-                    }
-                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'] ?? null)))
-                    {
-                        $args[$k] = $row[$v] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
-                    }
-                    else
-                    {
-                        $row_v = StringUtil::deserialize($row[$v] ?? []);
-
-                        if (\is_array($row_v))
-                        {
-                            $args_k = array();
-
-                            foreach ($row_v as $option)
-                            {
-                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? $option;
-                            }
-
-                            $implode = static function ($v) use (&$implode) {
-                                return implode(', ', array_map(static function($vv) use (&$implode) {
-                                    return \is_array($vv) ? $implode($vv) : $vv;
-                                }, $v));
-                            };
-                            $args[$k] = $implode($args_k);
-                        }
-                        elseif (isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]))
-                        {
-                            $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
-                        }
-                        elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? false) || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? array())) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
-                        {
-                            $args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]];
-                        }
-                        else
-                        {
-                            $args[$k] = $row[$v];
-                        }
-                    }
-                }
-
-                // Shorten the label it if it is too long
-                $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?? '%s', $args);
-
-                if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] ?? null) > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
-                {
-                    $label = trim(StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
-                }
-
-                // Remove empty brackets (), [], {}, <> and empty tags from the label
-                $label = preg_replace('/\( *\) ?|\[ *] ?|{ *} ?|< *> ?/', '', $label);
-                $label = preg_replace('/<[^>]+>\s*<\/[^>]+>/', '', $label);
+                $label = $this->generateRecordLabel($row, $this->strTable);
 
                 // Build the sorting groups
                 if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0)
@@ -1657,38 +1570,21 @@ class DC_ProductData extends \DC_Table
 
                 $colspan = 1;
 
-                // Call the label_callback ($row, $label, $this)
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
+                // Handle strings and arrays
+                if (!($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null))
                 {
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
-                    {
-                        $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
-                        $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
-
-                        $this->import($strClass);
-                        $args = $this->$strClass->$strMethod($row, $label, $this, $args);
-                    }
-                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
-                    {
-                        $args = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']($row, $label, $this, $args);
-                    }
-
-                    // Handle strings and arrays
-                    if (!($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null))
-                    {
-                        $label = \is_array($args) ? implode(' ', $args) : $args;
-                    }
-                    elseif (!\is_array($args))
-                    {
-                        $args = array($args);
-                        $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
-                    }
+                    $label = \is_array($label) ? implode(' ', $label) : $label;
+                }
+                elseif (!\is_array($label))
+                {
+                    $label = array($label);
+                    $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
                 }
 
                 // Show columns
                 if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'] ?? null)
                 {
-                    foreach ($args as $j=>$arg)
+                    foreach ($label as $j=>$arg)
                     {
                         $field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j] ?? null;
 
@@ -2174,96 +2070,8 @@ class DC_ProductData extends \DC_Table
 
             foreach ($result as $row)
             {
-                $args = array();
                 $this->current[] = $row['id'];
-                $showFields = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'];
-
-                // Label
-                foreach ($showFields as $k=>$v)
-                {
-                    if (strpos($v, ':') === false && !isset($row[$v]))
-                    {
-                        $args[$k] = '';
-                        continue;
-                    }
-
-                    // Decrypt the value
-                    if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'] ?? null)
-                    {
-                        $row[$v] = Encryption::decrypt(StringUtil::deserialize($row[$v]));
-                    }
-
-                    if (strpos($v, ':') !== false)
-                    {
-                        [$strKey, $strTable] = explode(':', $v);
-                        [$strTable, $strField] = explode('.', $strTable);
-
-                        $objRef = $this->Database->prepare("SELECT " . Database::quoteIdentifier($strField) . " FROM " . $strTable . " WHERE id=?")
-                            ->limit(1)
-                            ->execute($row[$strKey]);
-
-                        $args[$k] = $objRef->numRows ? $objRef->$strField : '';
-                    }
-                    elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(5, 6, 7, 8, 9, 10)))
-                    {
-                        if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'date')
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('dateFormat'), $row[$v]) : '-';
-                        }
-                        elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'time')
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('timeFormat'), $row[$v]) : '-';
-                        }
-                        else
-                        {
-                            $args[$k] = $row[$v] ? Date::parse(Config::get('datimFormat'), $row[$v]) : '-';
-                        }
-                    }
-                    elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'] ?? null)))
-                    {
-                        $args[$k] = $row[$v] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
-                    }
-                    else
-                    {
-                        $row_v = StringUtil::deserialize($row[$v]);
-
-                        if (\is_array($row_v))
-                        {
-                            $args_k = array();
-
-                            foreach ($row_v as $option)
-                            {
-                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? serialize($option);
-                            }
-
-                            $args[$k] = implode(', ', $args_k);
-                        }
-                        elseif (isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]))
-                        {
-                            $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
-                        }
-                        elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? false) || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? null)) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
-                        {
-                            $args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]];
-                        }
-                        else
-                        {
-                            $args[$k] = $row[$v];
-                        }
-                    }
-                }
-
-                // Shorten the label it if it is too long
-                $label = vsprintf(($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?? null) ?: '%s', $args);
-
-                if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] ?? null) > 0 && ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] ?? null) < \strlen(strip_tags($label)))
-                {
-                    $label = trim(StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
-                }
-
-                // Remove empty brackets (), [], {}, <> and empty tags from the label
-                $label = preg_replace('/\( *\) ?|\[ *] ?|{ *} ?|< *> ?/', '', $label);
-                $label = preg_replace('/<[^>]+>\s*<\/[^>]+>/', '', $label);
+                $label = $this->generateRecordLabel($row, $this->strTable);
 
                 // Build the sorting groups
                 if (($GLOBALS['TL_DCA'][$this->strTable]['list']['sorting']['mode'] ?? null) > 0)
@@ -2294,38 +2102,21 @@ class DC_ProductData extends \DC_Table
 
                 $colspan = 1;
 
-                // Call the label_callback ($row, $label, $this)
-                if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
+                // Handle strings and arrays
+                if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
                 {
-                    if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
-                    {
-                        $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
-                        $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
-
-                        $this->import($strClass);
-                        $args = $this->$strClass->$strMethod($row, $label, $this, $args);
-                    }
-                    elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']))
-                    {
-                        $args = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']($row, $label, $this, $args);
-                    }
-
-                    // Handle strings and arrays
-                    if (!$GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
-                    {
-                        $label = \is_array($args) ? implode(' ', $args) : $args;
-                    }
-                    elseif (!\is_array($args))
-                    {
-                        $args = array($args);
-                        $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
-                    }
+                    $label = \is_array($label) ? implode(' ', $label) : $label;
+                }
+                elseif (!\is_array($label))
+                {
+                    $label = array($label);
+                    $colspan = \count($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields']);
                 }
 
                 // Show columns
                 if ($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['showColumns'])
                 {
-                    foreach ($args as $j=>$arg)
+                    foreach ($label as $j=>$arg)
                     {
                         $field = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['fields'][$j];
 
@@ -3350,5 +3141,118 @@ class DC_ProductData extends \DC_Table
         }
 
         \Contao\Controller::redirect(\Contao\Backend::addToUrl('act=edit'));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function generateRecordLabel(array $row, string $table = null, bool $protected = false, bool $isVisibleRootTrailPage = false)
+    {
+        $table = $table ?? $this->strTable;
+        $showFields = $GLOBALS['TL_DCA'][$table]['list']['label']['fields'];
+        $args = array();
+
+        // Label
+        foreach ($showFields as $k=>$v)
+        {
+            // Decrypt the value
+            if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'] ?? null)
+            {
+                $row[$v] = Encryption::decrypt(StringUtil::deserialize($row[$v]));
+            }
+
+            if (strpos($v, ':') !== false)
+            {
+                [$strKey, $strTable] = explode(':', $v, 2);
+                [$strTable, $strField] = explode('.', $strTable, 2);
+
+                $objRef = $this->Database->prepare("SELECT " . Database::quoteIdentifier($strField) . " FROM " . $strTable . " WHERE id=?")
+                    ->limit(1)
+                    ->execute($row[$strKey]);
+
+                $args[$k] = $objRef->numRows ? $objRef->$strField : '';
+            }
+            elseif (\in_array($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['flag'] ?? null, array(5, 6, 7, 8, 9, 10)))
+            {
+                if (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'date')
+                {
+                    $args[$k] = $row[$v] ? Date::parse(Config::get('dateFormat'), $row[$v]) : '-';
+                }
+                elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['rgxp'] ?? null) == 'time')
+                {
+                    $args[$k] = $row[$v] ? Date::parse(Config::get('timeFormat'), $row[$v]) : '-';
+                }
+                else
+                {
+                    $args[$k] = $row[$v] ? Date::parse(Config::get('datimFormat'), $row[$v]) : '-';
+                }
+            }
+            elseif (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['isBoolean'] ?? null) || (($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['inputType'] ?? null) == 'checkbox' && !($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['multiple'] ?? null)))
+            {
+                $args[$k] = $row[$v] ? $GLOBALS['TL_LANG']['MSC']['yes'] : $GLOBALS['TL_LANG']['MSC']['no'];
+            }
+            else
+            {
+                $row_v = StringUtil::deserialize($row[$v] ?? []);
+
+                if (\is_array($row_v))
+                {
+                    $args_k = array();
+
+                    foreach ($row_v as $option)
+                    {
+                        $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? $option;
+                    }
+
+                    $implode = static function ($v) use (&$implode) {
+                        return implode(', ', array_map(static fn($vv) => \is_array($vv) ? $implode($vv) : $vv, $v));
+                    };
+                    $args[$k] = $implode($args_k);
+                }
+                elseif (isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]))
+                {
+                    $args[$k] = \is_array($GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]]) ? $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]][0] : $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$row[$v]];
+                }
+                elseif ((($GLOBALS['TL_DCA'][$table]['fields'][$v]['eval']['isAssociative'] ?? false) || array_is_assoc($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'] ?? array())) && isset($GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]]))
+                {
+                    $args[$k] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['options'][$row[$v]];
+                }
+                else
+                {
+                    $args[$k] = $row[$v];
+                }
+            }
+        }
+
+        // Shorten the label it if it is too long
+        $label = vsprintf($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['format'] ?? '%s', $args);
+
+        if (($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] ?? null) > 0 && $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'] < \strlen(strip_tags($label)))
+        {
+            $label = trim(StringUtil::substrHtml($label, $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['maxCharacters'])) . ' …';
+        }
+
+        // Remove empty brackets (), [], {}, <> and empty tags from the label
+        $label = preg_replace('/\( *\) ?|\[ *] ?|{ *} ?|< *> ?/', '', $label);
+        $label = preg_replace('/<[^>]+>\s*<\/[^>]+>/', '', $label);
+
+        // Call the label_callback ($row, $label, $this)
+        if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null) || \is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
+        {
+            if (\is_array($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
+            {
+                $strClass = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][0];
+                $strMethod = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'][1];
+
+                $this->import($strClass);
+                $label = $this->$strClass->$strMethod($row, $label, $this, $args);
+            }
+            elseif (\is_callable($GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback'] ?? null))
+            {
+                $label = $GLOBALS['TL_DCA'][$this->strTable]['list']['label']['label_callback']($row, $label, $this, $args);
+            }
+        }
+
+        return $label;
     }
 }
