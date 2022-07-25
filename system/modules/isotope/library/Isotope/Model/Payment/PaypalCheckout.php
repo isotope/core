@@ -14,15 +14,25 @@ namespace Isotope\Model\Payment;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
+use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class PaypalPlus extends PaypalApi
+class PaypalCheckout extends PaypalApi
 {
-    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
+    public function isAvailable(): bool
+    {
+        if (!in_array($this->currency, ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'])) {
+            return false;
+        }
+
+        return parent::isAvailable();
+    }
+
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
             System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
@@ -47,11 +57,21 @@ class PaypalPlus extends PaypalApi
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
-                    $template = new Template('iso_payment_paypal_plus');
+                    $template = new Template('iso_payment_paypal_paypal');
                     $template->setData($this->arrData);
-                    $template->approval_url = $link['href'];
-                    $template->mode = $this->debug ? 'sandbox' : 'live';
-                    $template->country = strtoupper($objOrder->getBillingAddress()->country);
+
+                    $template->client_id = $this->paypal_client;
+                    $template->currency = $objOrder->getCurrency();
+
+                    parse_str(parse_url($link['href'], PHP_URL_QUERY), $params);
+                    $template->token = $params['token'];
+
+                    $successUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+                    $successUrl = Url::addQueryString('paymentID=__paymentID__', $successUrl);
+                    $successUrl = Url::addQueryString('payerID=__payerID__', $successUrl);
+                    $template->success_url = $successUrl;
+
+                    $template->cancel_url = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
                     return $template->parse();
                 }
@@ -74,14 +94,14 @@ class PaypalPlus extends PaypalApi
         $paypalData = $this->retrievePayment($objOrder);
 
         if (0 === \count($paypalData)
-            || Input::get('paymentId') !== $paypalData['id']
+            || Input::get('paymentID') !== $paypalData['id']
             || 'created' !== $paypalData['state']
         ) {
             return false;
         }
 
         try {
-            $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
+            $response = $this->executePayment($paypalData['id'], Input::get('payerID'));
         } catch (TransportExceptionInterface $e) {
             return false;
         }
