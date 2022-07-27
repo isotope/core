@@ -255,7 +255,7 @@ class SalesProduct extends Sales
         $arrSession = Session::getInstance()->get('iso_reports')
         ;
 
-        if (($arrSession[$this->name]['tl_sort'] ?? '') == '') {
+        if (empty($arrSession[$this->name]['tl_sort'])) {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
