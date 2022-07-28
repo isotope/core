@@ -148,7 +148,7 @@ class Permission extends Backend
         if ($objUser->isAdmin) {
             $arrProducts = true;
         } else {
-            $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
+            $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'] ?? null;
             $arrProductTypes = $objUser->iso_product_types;
             $arrGroups       = array();
 
