@@ -567,9 +567,9 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      */
     private static function addTax(array &$arrTaxes, $id, $label, $price, $isPercentage, $total, $applyRoundingIncrement, $addToTotal, $notNegative)
     {
-        $objTax = $arrTaxes[$id];
+        $objTax = $arrTaxes[$id] ?? null;
 
-        if (null === $objTax || !($objTax instanceof Tax)) {
+        if (!$objTax instanceof Tax) {
             $objTax                         = new Tax();
             $objTax->label                  = $label;
             $objTax->price                  = $price . ($isPercentage ? '%' : '');
