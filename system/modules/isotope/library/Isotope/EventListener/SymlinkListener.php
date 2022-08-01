@@ -46,6 +46,10 @@ class SymlinkListener
     {
         $webDir = $this->filesystem->makePathRelative($this->webDir, $this->projectDir);
 
+        if (!file_exists($isotopeDir = Path::join($this->projectDir, 'isotope'))) {
+            $this->filesystem->mkdir($isotopeDir);
+        }
+
         $event->addSymlink('isotope', Path::join($webDir, 'isotope'));
     }
 }
