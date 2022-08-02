@@ -19,13 +19,14 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Isotope\Isotope;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PaypalCheckout extends PaypalApi
 {
     public function isAvailable(): bool
     {
-        if (!in_array($this->currency, ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'])) {
+        if (!in_array(Isotope::getConfig()->currency, ['AUD', 'BRL', 'CAD', 'CZK', 'DKK', 'EUR', 'HKD', 'HUF', 'ILS', 'JPY', 'MYR', 'MXN', 'TWD', 'NZD', 'NOK', 'PHP', 'PLN', 'GBP', 'RUB', 'SGD', 'SEK', 'CHF', 'THB', 'USD'])) {
             return false;
         }
 
@@ -57,7 +58,7 @@ class PaypalCheckout extends PaypalApi
 
             foreach ($paypalData['links'] as $link) {
                 if ('approval_url' === $link['rel']) {
-                    $template = new Template('iso_payment_paypal_paypal');
+                    $template = new Template('iso_payment_paypal_checkout');
                     $template->setData($this->arrData);
 
                     $template->client_id = $this->paypal_client;
