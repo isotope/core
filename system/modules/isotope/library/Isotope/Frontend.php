@@ -142,8 +142,10 @@ class Frontend extends \Contao\Frontend
                 // Look for a root page whose domain name matches the host name
                 if (isset($arrPages[$strHost])) {
                     $arrLangs = $arrPages[$strHost];
-                } else {
+                } elseif (isset($arrPages['*'])) {
                     $arrLangs = $arrPages['*']; // Empty domain
+                } else {
+                    return $arrFragments;
                 }
 
                 // Use the first result (see #4872)
