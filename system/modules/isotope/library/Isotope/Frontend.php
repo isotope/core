@@ -145,6 +145,7 @@ class Frontend extends \Contao\Frontend
                 } elseif (isset($arrPages['*'])) {
                     $arrLangs = $arrPages['*']; // Empty domain
                 } else {
+                    // No domain match (see #2347)
                     return $arrFragments;
                 }
 
