@@ -151,7 +151,7 @@ class ProductList extends Module
         if (!\is_array($arrProducts)) {
             // Display "loading products" message and add cache flag
             if ($this->blnCacheProducts) {
-                $blnCacheMessage = (bool) $this->iso_productcache[$cacheKey] ?? false;
+                $blnCacheMessage = $this->iso_productcache[$cacheKey] ?? false;
 
                 if ($blnCacheMessage && !Input::get('buildCache')) {
                     // Do not index or cache the page
