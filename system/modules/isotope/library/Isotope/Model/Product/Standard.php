@@ -619,8 +619,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->useQuantity = $arrConfig['useQuantity'] && null === $this->getCollectionItem();
         $objTemplate->minimum_quantity = $this->getMinimumQuantity();
         $objTemplate->raw = $this->arrData;
-        $objTemplate->raw_options = $this->getOptions();
-        $objTemplate->configuration = $this->getOptions();
+        $objTemplate->raw_options = $this->getConfiguration();
+        $objTemplate->configuration = $this->getConfiguration();
         $objTemplate->href = '';
         $objTemplate->label_detail = $GLOBALS['TL_LANG']['MSC']['detailLabel'];
         $objTemplate->options = $arrProductOptions;
