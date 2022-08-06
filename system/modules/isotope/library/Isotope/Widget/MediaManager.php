@@ -274,7 +274,7 @@ class MediaManager extends Widget implements \uploadable
                     'alt'       => '',
                     'desc'      => '',
                     'link'      => '',
-                    'translate' => ''
+                    'translate' => 'none'
                 );
             }
 
