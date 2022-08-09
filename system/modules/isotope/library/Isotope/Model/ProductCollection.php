@@ -1680,7 +1680,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
             'sku'               => $objItem->getSku(),
             'name'              => $objItem->getName(),
             'options'           => Isotope::formatOptions($objItem->getOptions()),
-            'configuration'     => $objItem->getOptions(),
+            'configuration'     => $objItem->getConfiguration(),
             'attributes'        => $objItem->getAttributes(),
             'quantity'          => $objItem->quantity,
             'price'             => Isotope::formatPriceWithCurrency($objItem->getPrice(), true, $objConfig->currency),
