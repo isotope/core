@@ -106,7 +106,7 @@
 </form>
 <?php endif; ?>
 
-<?php if (!$this->isEditable && count($this->downloads)): ?>
+<?php if (!$this->isEditable && !empty($this->downloads) && \is_array($this->downloads)): ?>
 <div class="downloads">
 <h2><?= $GLOBALS['TL_LANG']['MSC']['downloadsLabel'] ?></h2>
 <ul>
