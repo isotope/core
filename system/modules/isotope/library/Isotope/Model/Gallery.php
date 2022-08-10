@@ -106,7 +106,7 @@ abstract class Gallery extends TypeAgent
 
             // Create an array of images where key = image name
             foreach ($arrParent as $image) {
-                if ('all' !== $image['translate']) {
+                if ('all' !== ($image['translate'] ?? null)) {
                     $arrTranslate[$image['src']] = $image;
                 }
             }

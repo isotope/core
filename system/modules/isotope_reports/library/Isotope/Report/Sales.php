@@ -35,19 +35,19 @@ abstract class Sales extends Report
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['columns'] == '') {
+        if (empty($arrSession[$this->name]['columns'])) {
             $arrSession[$this->name]['columns'] = '6';
         }
 
-        if (!\in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
+        if (!\in_array($arrSession[$this->name]['date_field'] ?? null, ['locked', 'date_paid', 'date_shipped'], true)) {
             $arrSession[$this->name]['date_field'] = 'locked';
         }
 
-        if ($arrSession[$this->name]['from'] == '') {
+        if (empty($arrSession[$this->name]['from'])) {
             $arrSession[$this->name]['from'] = '';
         } elseif (!is_numeric($arrSession[$this->name]['from'])) {
             // Convert date formats into timestamps

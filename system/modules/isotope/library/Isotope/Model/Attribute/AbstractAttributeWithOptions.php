@@ -325,7 +325,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     {
         $product = null;
 
-        if ($options['product'] instanceof IsotopeProduct) {
+        if (($options['product'] ?? null) instanceof IsotopeProduct) {
             $product = $options['product'];
         } elseif (($item = $options['item']) instanceof ProductCollectionItem && $item->hasProduct()) {
             $product = $item->getProduct();

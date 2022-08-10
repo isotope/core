@@ -137,7 +137,7 @@ class Callback extends Permission
     {
         $objTaxRate = TaxRate::findByPk($dc->id);
 
-        if ($objTaxRate->config > 0 && null !== $objTaxRate->getRelated('config')) {
+        if (null !== $objTaxRate && $objTaxRate->config > 0 && null !== $objTaxRate->getRelated('config')) {
             $GLOBALS['TL_DCA']['tl_iso_tax_rate']['fields']['rate']['options'][''] = $objTaxRate->getRelated('config')->currency;
         }
     }

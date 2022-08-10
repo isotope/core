@@ -533,9 +533,8 @@ class Isotope extends Controller
 
                     $arrOptions = array_filter(
                         $arrField['options'],
-                        function(&$option) use (&$values) {
+                        function($option) use (&$values) {
                             if (($pos = array_search($option['value'], $values)) !== false) {
-                                $option = $option['label'];
                                 unset($values[$pos]);
 
                                 return true;
@@ -544,6 +543,8 @@ class Isotope extends Controller
                             return false;
                         }
                     );
+
+                    $arrOptions = array_column($arrOptions, 'label');
 
                     if (!empty($values)) {
                         $arrOptions = array_merge($arrOptions, $values);

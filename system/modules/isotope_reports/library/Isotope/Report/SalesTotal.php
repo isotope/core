@@ -37,11 +37,11 @@ class SalesTotal extends Sales
     {
         $arrSession    = Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
+        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $strPeriod = (string) $arrSession[$this->name]['period'];
         $intStart  = (int) $arrSession[$this->name]['start'];
         $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         $period   = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
@@ -201,7 +201,7 @@ class SalesTotal extends Sales
     protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
     {
         $arrSession  = Session::getInstance()->get('iso_reports');
-        $intConfig   = (int) $arrSession[$this->name]['iso_config'];
+        $intConfig   = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $intStart    = strtotime('first day of this month', $intStart);
 
         $arrData = array();
@@ -266,11 +266,11 @@ class SalesTotal extends Sales
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['stop'] == '') {
+        if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
@@ -283,7 +283,7 @@ class SalesTotal extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '') {
+        if (empty($arrSession[$this->name]['start'])) {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps

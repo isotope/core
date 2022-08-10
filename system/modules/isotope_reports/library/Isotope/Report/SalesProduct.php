@@ -41,8 +41,8 @@ class SalesProduct extends Sales
 
         $strPeriod = (string) $arrSession[$this->name]['period'];
         $intColumns = (int) $arrSession[$this->name]['columns'];
-        $blnVariants = (bool) $arrSession[$this->name]['variants'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $blnVariants = (bool) ($arrSession[$this->name]['variants'] ?? false);
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         if ($arrSession[$this->name]['from'] == '') {
             $intStart = strtotime('-'.($intColumns - 1).' '.$strPeriod);
@@ -255,7 +255,7 @@ class SalesProduct extends Sales
         $arrSession = Session::getInstance()->get('iso_reports')
         ;
 
-        if ($arrSession[$this->name]['tl_sort'] == '') {
+        if (empty($arrSession[$this->name]['tl_sort'])) {
             $arrSession[$this->name]['tl_sort'] = 'total';
         }
 
