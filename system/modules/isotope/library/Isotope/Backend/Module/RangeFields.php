@@ -35,7 +35,7 @@ class RangeFields extends Backend
                 'reference' => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFieldsMode'],
                 'eval' => [
                     'mandatory' => true,
-                    'style' => 'width:200px',
+                    'style' => 'width:100%',
                 ],
             ],
             'attribute' => [
@@ -45,7 +45,7 @@ class RangeFields extends Backend
                 'eval' => [
                     'mandatory' => true,
                     'includeBlankOption' => true,
-                    'style' => 'width:300px',
+                    'style' => 'width:100%',
                 ],
             ],
             'attribute_max' => [
@@ -56,23 +56,23 @@ class RangeFields extends Backend
                     'mandatory' => false,
                     'includeBlankOption' => true,
                     'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFields']['attribute_max_blank'],
-                    'style' => 'width:300px',
+                    'style' => 'width:100%',
                 ],
             ],
             'min' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFields']['min'],
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'style' => 'width:100px'],
+                'eval' => ['mandatory' => true, 'style' => 'width:100%'],
             ],
             'max' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFields']['max'],
                 'inputType' => 'text',
-                'eval' => ['mandatory' => true, 'style' => 'width:100px'],
+                'eval' => ['mandatory' => true, 'style' => 'width:100%'],
             ],
             'step' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_module']['iso_rangeFields']['step'],
                 'inputType' => 'text',
-                'eval' => ['rgxp' => 'natural', 'style' => 'width:50px'],
+                'eval' => ['rgxp' => 'natural', 'style' => 'width:100%'],
             ],
         ];
     }

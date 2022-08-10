@@ -90,7 +90,7 @@ body.popup a[href*="table=tl_iso_attribute_option"].header_back {
 }
 
 .tl_mediamanager .qq-upload-drop-area {
-	width: 700px;
+    width: 700px;
     padding: 56px 0;
     margin-bottom: 12px;
     text-align: center;
@@ -99,7 +99,7 @@ body.popup a[href*="table=tl_iso_attribute_option"].header_back {
     border-right: none;
     background-color: #f7f7f7;
     /** IE FIXES **/
-	width: 100%;
+    width: 100%;
     position: relative;
     top: 0;
     left: 0;
@@ -481,4 +481,25 @@ body.iso_be_overview .tip-wrap{
 .iso_panels .tl_radio {
     margin-left: 8px;
     margin-right: 4px;
+}
+
+#ctrl_iso_rangeFields {
+    max-width: none;
+}
+#ctrl_iso_rangeFields td:nth-child(1n) {
+    width: 15%;
+}
+#ctrl_iso_rangeFields td:nth-child(2n),
+#ctrl_iso_rangeFields td:nth-child(3n) {
+    width: 30%;
+}
+
+#ctrl_iso_rangeFields td:nth-child(4n) {
+    width: 10%;
+}
+#ctrl_iso_rangeFields td:nth-child(5n) {
+    width: 10%;
+}
+#ctrl_iso_rangeFields td:nth-child(6n) {
+    width: 5%;
 }
