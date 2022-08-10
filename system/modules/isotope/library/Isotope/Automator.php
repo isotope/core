@@ -90,7 +90,8 @@ class Automator extends Controller
 
         foreach ($configs as $config) {
             switch ($config->currencyProvider) {
-                case 'ecb.int':
+                case 'ecb_int':
+                case 'ecb.int': // Backwards compatibility
                     $fltCourse       = ('EUR' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
@@ -128,7 +129,8 @@ class Automator extends Controller
                     $config->save();
                     break;
 
-                case 'admin.ch':
+                case 'admin_ch':
+                case 'admin.ch': // Backwards compatibility
                     $fltCourse       = ('CHF' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('CHF' === $config->currencyOrigin) ? 1 : 0;
 

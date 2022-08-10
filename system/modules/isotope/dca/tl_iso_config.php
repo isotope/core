@@ -514,7 +514,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
         (
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('ecb.int', 'admin.ch'),
+            'options'               => array('ecb_int', 'admin_ch'),
             'reference'             => &$GLOBALS['TL_LANG']['tl_iso_config'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'save_callback'         => array(
