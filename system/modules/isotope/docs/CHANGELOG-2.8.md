@@ -1,6 +1,22 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.6 (2022-08-15)
+--------------------------
+
+- Allow terminal42/contao-fineuploader v2 and v3 (#2321)
+- Use ResponseException instead of exit; call
+- Make sure the isotope directory actually exists (#2346)
+- Handle case when host matches no roots, and no root with wildcard DNS exists (#2347
+- Correctly check for downloads array in collection template (#2330)
+- Fixed explanation for uploadable attributes (#2322)
+- Fixed array to string conversion (#2324)
+- Fixed default translate value of images in MediaManager.php (#2349)
+- Fixed translations for currency providers (#2327)
+- Fixed lots of PHP8 errors (#2338)
+- Fixed translations for member and user groups (#2332)
+
+
 Version 2.8.5 (2022-07-11)
 --------------------------
 
