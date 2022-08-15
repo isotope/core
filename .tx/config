@@ -156,6 +156,11 @@ file_filter = system/modules/isotope/languages/<lang>/tl_member.xlf
 source_file = system/modules/isotope/languages/en/tl_member.xlf
 source_lang = en
 
+[o:terminal42:p:isotope:r:v2_8-isotope-tl_member_group]
+file_filter = system/modules/isotope/languages/<lang>/tl_member_group.xlf
+source_file = system/modules/isotope/languages/en/tl_member_group.xlf
+source_lang = en
+
 [o:terminal42:p:isotope:r:v2_8-isotope-tl_module]
 file_filter = system/modules/isotope/languages/<lang>/tl_module.xlf
 source_file = system/modules/isotope/languages/en/tl_module.xlf
@@ -225,4 +230,3 @@ source_lang = en
 file_filter = system/modules/isotope_rules/languages/<lang>/tl_iso_rule.xlf
 source_file = system/modules/isotope_rules/languages/en/tl_iso_rule.xlf
 source_lang = en
-
