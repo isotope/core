@@ -626,6 +626,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['iso_productcache'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['iso_notifications'] = array
 (
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_notification'],
     'exclude'                   => true,
     'inputType'                 => 'select',
     'options_callback'          => array('NotificationCenter\tl_module', 'getNotificationChoices'),
