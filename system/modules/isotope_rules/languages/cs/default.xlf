@@ -3,27 +3,35 @@
     <body>
       <trans-unit id="ERR.couponCodeDropped">
         <source>Your coupon code &quot;%s&quot; could not be applied. Please review your order again.</source>
+        <target>Vaš kupón %s nelze použít. Zkontrolujte prosím svou objednávku.</target>
       </trans-unit>
       <trans-unit id="MSC.couponHeadline">
         <source>Apply Promotional Codes</source>
+        <target>Použijte propagační kódy</target>
       </trans-unit>
       <trans-unit id="MSC.couponLabel">
         <source>Promotional code</source>
+        <target>Slevový kód</target>
       </trans-unit>
       <trans-unit id="MSC.couponApply">
         <source>Apply</source>
+        <target>Aplikovat</target>
       </trans-unit>
       <trans-unit id="MSC.couponInvalid">
         <source>Your coupon %s is not valid.</source>
+        <target>Váš kupón %s není platný.</target>
       </trans-unit>
       <trans-unit id="MSC.couponApplied">
         <source>Your coupon %s has been applied.</source>
+        <target>Váš kupón %s byl uplatněn.</target>
       </trans-unit>
       <trans-unit id="MSC.couponDuplicate">
         <source>Your coupon %s has already been applied.</source>
+        <target>Váš kupón %s již byl uplatněn.</target>
       </trans-unit>
       <trans-unit id="MSC.couponSingle">
         <source>Your coupon %s cannot be used because another coupon is already redeemed.</source>
+        <target>Váš kupón %s nelze použít, protože jiný kupón je již uplatněn.</target>
       </trans-unit>
     </body>
   </file>

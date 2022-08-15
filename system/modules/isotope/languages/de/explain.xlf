@@ -67,12 +67,12 @@
 </target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFile">
-        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
-        <target>&lt;p class="tl_help_table"&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Dateinamen zu erzeugen.&lt;/p&gt;</target>
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Dateinamen zu erzeugen.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.checkoutTargetFolder">
-        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
-        <target>&lt;p class="tl_help_table"&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Ordnernamen zu erzeugen.&lt;/p&gt;</target>
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Ordnernamen zu erzeugen.&lt;/p&gt;</target>
       </trans-unit>
     </body>
   </file>

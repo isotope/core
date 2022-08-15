@@ -3,12 +3,15 @@
     <body>
       <trans-unit id="tl_iso_product_collection_log.id.0">
         <source>ID</source>
+        <target>ID</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection_log.tstamp.0">
         <source>Date created</source>
+        <target>Datum vytvoření</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection_log.author.0">
         <source>Author</source>
+        <target>Autor</target>
       </trans-unit>
     </body>
   </file>
