@@ -333,7 +333,7 @@ class Backend extends Contao_Backend
                 /** @var \Isotope\Widget\MediaManager $objWidget */
                 $objWidget = new $GLOBALS['BE_FFL']['mediaManager']($arrData, $dc);
                 $objWidget->ajaxUpload();
-                break;
+                break; // $objWidget->ajaxUpload() will throw a ResponseException
 
             case 'reloadMediaManager':
                 $intId    = Input::get('id');

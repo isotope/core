@@ -255,7 +255,10 @@ class ProductList extends Module
                 && Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
                 && !$this->iso_disable_options
             ) {
-                throw new ResponseException(new Response($objProduct->generate($arrConfig)));
+                $content = $objProduct->generate($arrConfig);
+                $content = Controller::replaceInsertTags($content, false);
+
+                throw new ResponseException(new Response($content));
             }
 
             $objProduct->mergeRow($arrDefaultOptions);

@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
@@ -107,12 +108,13 @@ class ProductReader extends Module
             && !$this->iso_disable_options
         ) {
             try {
-                $output = $objProduct->generate($arrConfig);
+                $content = $objProduct->generate($arrConfig);
+                $content = Controller::replaceInsertTags($content, false);
             } catch (\InvalidArgumentException $e) {
                 return;
             }
 
-            throw new ResponseException(new Response($output));
+            throw new ResponseException(new Response($content));
         }
 
         $this->addMetaTags($objProduct);

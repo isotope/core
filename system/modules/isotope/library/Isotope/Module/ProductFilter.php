@@ -122,7 +122,12 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 throw new ResponseException(new JsonResponse([]));
             }
 
-            throw new ResponseException(new JsonResponse(array_values($objProducts->fetchEach($this->iso_searchAutocomplete))));
+            $data = array_values($objProducts->fetchEach($this->iso_searchAutocomplete));
+            $data = array_map(static function ($value) {
+                return Controller::replaceInsertTags($value);
+            }, $data);
+
+            throw new ResponseException(new JsonResponse($data));
         }
     }
 
