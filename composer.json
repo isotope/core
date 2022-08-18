@@ -45,6 +45,7 @@
         "terminal42/dc_multilingual": "^4.0",
         "tecnickcom/tcpdf": "^6.2.22",
         "patchwork/utf8": "^1.2",
+        "webmozart/path-util": "^2.2",
         "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
         "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
         "symfony/polyfill-php80": "^1.25"
