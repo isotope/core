@@ -89,6 +89,11 @@ class AddressFieldsWizard extends Backend
             if (!($arrDCA[$strName]['eval']['feEditable'] ?? false)) {
                 continue;
             }
+            
+            if(!isset($arrField['eval']['mandatory']))
+            {
+                $arrField['eval']['mandatory'] = false;
+            }
 
             $arrFields[$strName] = array(
                 'name'      => $strName,
