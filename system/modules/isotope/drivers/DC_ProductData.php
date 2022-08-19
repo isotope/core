@@ -1594,7 +1594,7 @@ class DC_ProductData extends \DC_Table
                             }
 
                             $implode = static function ($v) use (&$implode) {
-                                return implode(', ', array_map(static function($vv) {
+                                return implode(', ', array_map(static function($vv) use ($implode) {
                                     return \is_array($vv) ? $implode($vv) : $vv;
                                 }, $v));
                             };
