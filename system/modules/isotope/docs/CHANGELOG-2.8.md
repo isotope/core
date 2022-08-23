@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.7 (2022-08-23)
+--------------------------
+
+- Added missing dependency for webmozart/path-util (#2357)
+- Fixed insert tags not being replaced on ajax requests
+- Fixed various PHP compatibility issues (#2352, #2354, #2358, #2359)
+- Fixed missing product sorting icon (#2361)
+- Correctly remove field from palette after unsetting it (#2360)
+
+
 Version 2.8.6 (2022-08-15)
 --------------------------
 
