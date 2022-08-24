@@ -82,7 +82,7 @@ interface IsotopePayment
      *
      * @return mixed
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule);
+    public function processPayment(IsotopeProductCollection $objOrder, \Contao\Module $objModule);
 
     /**
      * Return a html form for checkout or false.
@@ -92,7 +92,7 @@ interface IsotopePayment
      *
      * @return mixed
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule);
+    public function checkoutForm(IsotopeProductCollection $objOrder, \Contao\Module $objModule);
 
     /**
      * Return the checkout review information.
