@@ -523,7 +523,7 @@
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.2">
         <source>Pay now</source>
-        <target>Bezahlen</target>
+        <target>Jetzt bezahlen</target>
       </trans-unit>
       <trans-unit id="MSC.pay_with_redirect.3">
         <source>Please click on the &quot;Pay now&quot; button to continue.</source>
