@@ -12,7 +12,7 @@ class To0020080000 extends Base
             return;
         }
 
-        if (Database::getInstance()->fieldExists('iso_setReaderJumpTo', 'tl_page') && $this->createDatabaseField('iso_readerMode', 'tl_page')) {
+        if (Database::getInstance()->fieldExists('iso_setReaderJumpTo', 'tl_page', true) && $this->createDatabaseField('iso_readerMode', 'tl_page')) {
             Database::getInstance()->execute("UPDATE tl_page SET iso_readerMode='page' WHERE iso_setReaderJumpTo='1'");
         }
     }

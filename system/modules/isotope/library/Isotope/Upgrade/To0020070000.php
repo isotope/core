@@ -35,8 +35,8 @@ class To0020070000 extends Base
 
     private function migrateProductCollectionLog(Database $db)
     {
-        if (!$db->tableExists('tl_iso_product_collection', true)
-            || $db->tableExists('tl_iso_product_collection_log', true)
+        if (!$db->tableExists('tl_iso_product_collection', null, true)
+            || $db->tableExists('tl_iso_product_collection_log', null, true)
         ) {
             return;
         }
@@ -53,19 +53,19 @@ CREATE TABLE tl_iso_product_collection_log (
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = MyISAM
         ");
 
-        $orders = $db->execute("SELECT * FROM tl_iso_product_collection WHERE type='order' AND locked IS NOT NULL");
+        $orders = $db->execute("SELECT * FROM tl_iso_product_collection WHERE type='order' AND locked IS NOT NULL")->fetchAllAssoc();
 
-        while ($orders->next()) {
+        foreach ($orders as $order) {
             $db
                 ->prepare('INSERT INTO tl_iso_product_collection_log %s')
                 ->set([
-                    'pid' => $orders->id,
-                    'tstamp' => $orders->tstamp,
+                    'pid' => $order['id'],
+                    'tstamp' => $order['tstamp'],
                     'data' => json_encode([
-                        'order_status' => $orders->order_status,
-                        'date_paid' => $orders->date_paid,
-                        'date_shipped' => $orders->date_shipped,
-                        'notes' => $orders->notes,
+                        'order_status' => $order['order_status'],
+                        'date_paid' => $order['date_paid'],
+                        'date_shipped' => $order['date_shipped'],
+                        'notes' => $order['notes'],
                     ]),
                 ])
                 ->execute()

@@ -29,11 +29,11 @@ abstract class Base extends System
      */
     protected function createDatabaseField($strField, $strTable)
     {
-        if (!Database::getInstance()->tableExists($strTable)) {
+        if (!Database::getInstance()->tableExists($strTable, null, true)) {
             return false;
         }
 
-        if (!\Database::getInstance()->fieldExists($strField, $strTable)) {
+        if (!\Database::getInstance()->fieldExists($strField, $strTable, true)) {
             Database::getInstance()->query("
                 ALTER TABLE $strTable
                 ADD COLUMN `$strField` " . $this->getSqlForField($strField, $strTable)
