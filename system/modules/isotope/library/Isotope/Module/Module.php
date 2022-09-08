@@ -145,7 +145,7 @@ abstract class Module extends AbstractFrontendModule
             }
 
             if (\is_array($arrCategories)) {
-                return $arrCategories;
+                return empty($arrCategories) ? array(0) : array_map('intval', $arrCategories);
             }
         }
 
