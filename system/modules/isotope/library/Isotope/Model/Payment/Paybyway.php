@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\StringUtil;
@@ -47,7 +46,7 @@ class Paybyway extends Payment implements IsotopePostsale
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_paybyway');

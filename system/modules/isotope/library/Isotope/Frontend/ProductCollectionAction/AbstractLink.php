@@ -41,7 +41,7 @@ abstract class AbstractLink implements ProductCollectionActionInterface
     /**
      * {@inheritdoc}
      */
-    public function handleSubmit(IsotopeProductCollection $collection, \Module $module = null)
+    public function handleSubmit(IsotopeProductCollection $collection)
     {
         Controller::redirect($this->getHref());
     }

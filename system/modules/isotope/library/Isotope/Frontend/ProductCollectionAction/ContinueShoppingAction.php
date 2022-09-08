@@ -18,15 +18,10 @@ use Isotope\Interfaces\IsotopeProductCollection;
 class  ContinueShoppingAction extends AbstractLink
 {
     /**
-     * @var \Module
+     * @var Module
      */
     private $module;
 
-    /**
-     * Constructor.
-     *
-     * @param Module $module
-     */
     public function __construct(Module $module)
     {
         $this->module = $module;

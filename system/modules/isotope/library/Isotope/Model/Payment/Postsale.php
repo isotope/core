@@ -12,6 +12,7 @@
 namespace Isotope\Model\Payment;
 
 use Contao\Environment;
+use Contao\Module;
 use Contao\System;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -28,7 +29,7 @@ abstract class Postsale extends Payment implements IsotopePostsale
      *
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if ($objOrder->order_status > 0) {
             unset($_SESSION['POSTSALE_TIMEOUT']);
