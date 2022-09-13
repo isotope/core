@@ -15,36 +15,36 @@ class To0020070001 extends Base
 
     private function migrateProductCollectionLog(Database $db)
     {
-        if (!$db->tableExists('tl_iso_product_collection', true)
-            || !$db->tableExists('tl_iso_product_collection_log', true)
-            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log', true)
+        if (!$db->tableExists('tl_iso_product_collection', null, true)
+            || !$db->tableExists('tl_iso_product_collection_log', null, true)
+            || !$db->fieldExists('order_status', 'tl_iso_product_collection_log', null, true)
         ) {
             return;
         }
 
         $this->createDatabaseField('data', 'tl_iso_product_collection_log');
 
-        $records = $db->execute("SELECT * FROM tl_iso_product_collection_log");
+        $records = $db->execute("SELECT * FROM tl_iso_product_collection_log")->fetchAllAssoc();
 
-        while ($records->next()) {
-            if ($records->data) {
+        foreach ($records as $record) {
+            if ($record['data']) {
                 continue;
             }
 
             $data = [
-                'sendNotification' => $records->sendNotification,
-                'notification_shipping_tracking' => $records->notification_shipping_tracking,
-                'notification_customer_notes' => $records->notification_customer_notes,
-                'notification' => $records->notification,
-                'notes' => $records->notes,
-                'date_shipped' => $records->date_shipped,
-                'date_paid' => $records->date_paid,
-                'order_status' => $records->order_status,
+                'sendNotification' => $record['sendNotification'],
+                'notification_shipping_tracking' => $record['notification_shipping_tracking'],
+                'notification_customer_notes' => $record['notification_customer_notes'],
+                'notification' => $record['notification'],
+                'notes' => $record['notes'],
+                'date_shipped' => $record['date_shipped'],
+                'date_paid' => $record['date_paid'],
+                'order_status' => $record['order_status'],
             ];
 
             $db
                 ->prepare("UPDATE tl_iso_product_collection_log SET data=? WHERE id=?")
-                ->execute(json_encode($data), $records->id)
+                ->execute(json_encode($data), $record['id'])
             ;
         }
 
