@@ -212,7 +212,7 @@ class AttributeWizard extends Backend
                 continue;
             }
 
-            if ($arrField['legend'] == '') {
+            if (empty($arrField['legend'])) {
                 $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'] ?? '';
             }
 
