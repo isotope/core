@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 use Isotope\Isotope;
 use Isotope\Translation;
 
@@ -27,7 +28,7 @@ use Isotope\Translation;
  * @property bool   $applyRoundingIncrement
  * @property bool   $notNegative
  */
-class TaxClass extends \Model
+class TaxClass extends Model
 {
 
     /**

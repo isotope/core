@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 use Contao\StringUtil;
 use Isotope\Translation;
 
@@ -27,7 +28,7 @@ use Isotope\Translation;
  * @property int    $notification
  * @property string $saferpay_status
  */
-class OrderStatus extends \Model
+class OrderStatus extends Model
 {
 
     /**

@@ -12,10 +12,12 @@
 namespace Isotope\Model;
 
 
+use Contao\Model;
+
 /**
  * Group defines a backend product group
  */
-class Group extends \Model
+class Group extends Model
 {
 
     /**

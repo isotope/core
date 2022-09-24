@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\Database;
+use Contao\Model;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
@@ -21,7 +22,7 @@ use Model\Registry;
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
  */
-class RequestCache extends \Model
+class RequestCache extends Model
 {
 
     /**
@@ -438,7 +439,7 @@ class RequestCache extends \Model
      *
      * @param array $arrData
      *
-     * @return \Model
+     * @return Model
      */
     public function setRow(array $arrData)
     {

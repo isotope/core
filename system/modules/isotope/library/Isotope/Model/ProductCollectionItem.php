@@ -38,7 +38,7 @@ use Isotope\Isotope;
  * @property string $tax_id
  * @property int    $jumpTo
 */
-class ProductCollectionItem extends \Model
+class ProductCollectionItem extends Model
 {
 
     /**

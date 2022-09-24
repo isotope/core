@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -144,7 +145,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      * Split tax amount amongst collection products
      *
      * @param IsotopeProductCollection $objCollection
-     * @param \Model                   $objSource
+     * @param Model                    $objSource
      */
     public function applySplittedTax(IsotopeProductCollection $objCollection, $objSource)
     {
@@ -200,7 +201,7 @@ abstract class ProductCollectionSurcharge extends TypeAgent
      *
      * @param array $arrData The data record
      *
-     * @return \Model The model object
+     * @return Model The model object
      */
     public function setRow(array $arrData)
     {

@@ -13,6 +13,7 @@ namespace Isotope\Model;
 
 use Contao\Database;
 use Contao\MemberModel;
+use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
@@ -59,7 +60,7 @@ use Isotope\Translation;
  * @property bool   $enabled
  * @property bool   $groupOnly
  */
-class Rule extends \Model
+class Rule extends Model
 {
     const ROUND_NORMAL = 'normal';
     const ROUND_UP = 'up';
@@ -89,7 +90,7 @@ class Rule extends \Model
      */
     public function isPercentage()
     {
-        return (substr($this->discount, -1) == '%') ? true : false;
+        return '%' === substr($this->discount, -1);
     }
 
     /**
@@ -118,7 +119,7 @@ class Rule extends \Model
 
     public static function findByProduct(IsotopeProduct $objProduct, $strField, $fltPrice)
     {
-        return static::findByConditions(array("type='product'"), array(), array($objProduct), ($strField == 'low_price' ? true : false), array($strField => $fltPrice));
+        return static::findByConditions(array("type='product'"), array(), array($objProduct), 'low_price' === $strField, array($strField => $fltPrice));
     }
 
     public static function findForCart($intId = null)

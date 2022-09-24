@@ -12,13 +12,14 @@
 namespace Isotope\Model;
 
 use Contao\FilesModel;
+use Contao\Model;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
  * Download model represents a file or folder download for a product.
  */
-class Download extends \Model
+class Download extends Model
 {
     /**
      * @var string

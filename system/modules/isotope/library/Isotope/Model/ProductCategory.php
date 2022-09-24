@@ -13,8 +13,9 @@ namespace Isotope\Model;
 
 
 use Contao\Date;
+use Contao\Model;
 
-class ProductCategory extends \Model
+class ProductCategory extends Model
 {
 
     /**

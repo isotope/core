@@ -11,8 +11,9 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 
-class RelatedCategory extends \Model
+class RelatedCategory extends Model
 {
 
     /**

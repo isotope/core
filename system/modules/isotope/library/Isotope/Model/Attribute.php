@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Controller;
 use Contao\Database;
 use Contao\FilesModel;
+use Contao\Model;
 use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeAttribute;
@@ -946,9 +947,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         // Allow to set custom option conditions
         if (!isset($arrOptions['column'])) {
-            $arrOptions['column'] = array();
+            $arrOptions['column'] = [];
         } elseif (!\is_array($arrOptions['column'])) {
-            $arrOptions['column'] = $t.'.'.$arrOptions['column'].'=?';
+            $arrOptions['column'] = [$t.'.'.$arrOptions['column'].'=?'];
         }
 
         $arrOptions['column'][] = "$t.type!=''";
@@ -963,9 +964,9 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
      * @param string $strField
      * @param array  $arrOptions
      *
-     * @return \Model|null
+     * @return Model|null
      */
-    public static function findByFieldName($strField, array $arrOptions = array())
+    public static function findByFieldName($strField, array $arrOptions = [])
     {
         if (!isset(static::$arrFieldNameMap[$strField])) {
             $objAttribute = static::findOneBy('field_name', $strField, $arrOptions);

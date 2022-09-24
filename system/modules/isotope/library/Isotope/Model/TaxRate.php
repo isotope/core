@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\FrontendUser;
+use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Frontend;
@@ -40,7 +41,7 @@ use Isotope\Translation;
  * @property bool   $protected
  * @property array  $groups
  */
-class TaxRate extends \Model
+class TaxRate extends Model
 {
 
     /**

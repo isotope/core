@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\FrontendUser;
 use Contao\Input;
+use Contao\Model;
 
 /**
  * Isotope\Model\ProductCache represents an Isotope product cache model
@@ -27,7 +28,7 @@ use Contao\Input;
  * @property array  $products
  * @property int    $expires
  */
-class ProductCache extends \Model
+class ProductCache extends Model
 {
 
     /**

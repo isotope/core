@@ -22,7 +22,7 @@ use Contao\Model\Registry;
  * Class TypeAgent
  * Parent class for Isotope Type Agent models.
  */
-abstract class TypeAgent extends \Model
+abstract class TypeAgent extends Model
 {
 
     /**
@@ -161,12 +161,10 @@ abstract class TypeAgent extends \Model
      * Find sibling records by a column value
      *
      * @param string $strColumn
-     * @param \Model $objModel
-     * @param array  $arrOptions
      *
-     * @return \Model|\Model\Collection|null
+     * @return Model|Collection|null
      */
-    public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
+    public static function findSiblingsBy($strColumn, Model $objModel, array $arrOptions=array())
     {
         $t = static::getTable();
 
@@ -195,7 +193,7 @@ abstract class TypeAgent extends \Model
      *
      * @param array $arrOptions
      *
-     * @return \Model|\Model\Collection|null
+     * @return Model|Collection|null
      */
     protected static function find(array $arrOptions)
     {

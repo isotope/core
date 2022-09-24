@@ -16,6 +16,7 @@ use Contao\Database;
 use Contao\File;
 use Contao\Frontend;
 use Contao\Input;
+use Contao\Model;
 use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\StringUtil;
@@ -33,7 +34,7 @@ use Isotope\Model\ProductCollection\Order;
  * @property string $downloads_remaining
  * @property string $expires
  */
-class ProductCollectionDownload extends \Model
+class ProductCollectionDownload extends Model
 {
 
     /**

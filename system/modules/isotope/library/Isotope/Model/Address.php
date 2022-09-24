@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Controller;
 use Contao\MemberModel;
 use Contao\Model;
+use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
 use Database\Result;
@@ -259,7 +260,7 @@ class Address extends Model
      * @param int   $intMember
      * @param array $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {

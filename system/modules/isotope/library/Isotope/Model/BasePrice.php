@@ -11,13 +11,14 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 use Isotope\Translation;
 
 
 /**
  * ProductType defines a product configuration
  */
-class BasePrice extends \Model
+class BasePrice extends Model
 {
 
     /**

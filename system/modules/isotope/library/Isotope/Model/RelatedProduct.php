@@ -12,6 +12,8 @@
 namespace Isotope\Model;
 
 use Contao\Database;
+use Contao\Model;
+use Contao\Model\Collection;
 use Isotope\Interfaces\IsotopeProduct;
 
 
@@ -24,7 +26,7 @@ use Isotope\Interfaces\IsotopeProduct;
  * @property int    $category
  * @property string $products
  */
-class RelatedProduct extends \Model
+class RelatedProduct extends Model
 {
 
     /**
@@ -40,7 +42,7 @@ class RelatedProduct extends \Model
      * @param array          $arrCategories
      * @param array          $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findByProductAndCategories(IsotopeProduct $objProduct, array $arrCategories, array $arrOptions = array())
     {

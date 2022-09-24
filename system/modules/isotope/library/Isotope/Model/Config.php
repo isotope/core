@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Date;
 use Contao\FrontendUser;
+use Contao\Model;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Translation;
@@ -74,7 +75,7 @@ use Isotope\Translation;
  * @property string $ga_account
  * @property string $ga_member
  */
-class Config extends \Model
+class Config extends Model
 {
     const PRICE_DISPLAY_NET = 'net';
     const PRICE_DISPLAY_GROSS = 'gross';

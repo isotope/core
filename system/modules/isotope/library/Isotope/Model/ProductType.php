@@ -13,6 +13,8 @@ namespace Isotope\Model;
 
 
 use Contao\Database;
+use Contao\Model;
+use Contao\Model\Collection;
 use Contao\StringUtil;
 
 /**
@@ -38,7 +40,7 @@ use Contao\StringUtil;
  * @property string $shipping_exempt
  * @property bool   $downloads
  */
-class ProductType extends \Model
+class ProductType extends Model
 {
 
     /**
@@ -187,7 +189,7 @@ class ProductType extends \Model
      *
      * @param array $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findAllUsed(array $arrOptions = array())
     {
