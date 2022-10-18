@@ -399,8 +399,8 @@ class Standard extends Gallery implements IsotopeGallery
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
-        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'], true);
-        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'], true);
+        $arrFile['alt']     = StringUtil::specialchars(($arrFile['alt'] ??''), true);
+        $arrFile['desc']    = StringUtil::specialchars(($arrFile['desc'] ?? ''), true);
         $arrFile['picture'] = $picture;
 
         $arrFile[$strType] = TL_ASSETS_URL . $strImage;
