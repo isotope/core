@@ -819,6 +819,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     }
                 }
             }
+        } elseif (isset($_GET[$strField]) && empty(Input::post('FORM_SUBMIT')) && !$objAttribute->isVariantOption()) {
+            $this->arrCustomerConfig[$strField] = $objWidget->value = Input::get($strField);
         }
 
         $wizard = '';
