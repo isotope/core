@@ -32,7 +32,7 @@ class InsertTag
      */
     public function replace($insertTag)
     {
-        $tokens = StringUtil::trimsplit('::', $insertTag);
+        $tokens = StringUtil::trimsplit('::', $insertTag) + [null, null, null];
 
         switch ($tokens[0]) {
             case 'cart':
