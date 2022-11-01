@@ -1,6 +1,19 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.8 (2022-11-01)
+--------------------------
+
+- Correctly store dateAdded for product variants (#2376)
+- Correctly handle empty result from multiple category filters
+- Correctly set product attributes from URL parameters
+- Make sure address format are loaded (#2377)
+- Fixed legacy Contao class usages (#2363)
+- Fixed unbuffered database queries in migrations (#2367)
+- Fixed PHP warning on empty attribute legend (#2369)
+- Fixed various PHP 8 warning (#2369, #2381, #2382, #2384)
+
+
 Version 2.8.7 (2022-08-23)
 --------------------------
 
