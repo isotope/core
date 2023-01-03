@@ -412,7 +412,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        $defaultId = $cache[$objProduct->getProductId()];
+        $defaultId = $cache[$objProduct->getProductId()] ?? null;
 
         if ($defaultId < 1 || !\in_array($defaultId, $objProduct->getVariantIds())) {
             return null;
@@ -622,7 +622,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
 
-            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id';
+            $arrOptions['group'] = (empty($arrOptions['group']) ? '' : $arrOptions['group'].', ') . 'translation.id';
         }
 
         if ($hasVariants) {

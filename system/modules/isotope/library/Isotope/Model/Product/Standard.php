@@ -724,8 +724,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         if ($objAttribute->isVariantOption()
             || ($objAttribute instanceof IsotopeAttributeWithOptions && $objAttribute->canHavePrices())
-            || $arrData['attributes']['ajax_option']
-            || $arrField['attributes']['ajax_option'] // see https://github.com/isotope/core/issues/2096
+            || ($arrData['attributes']['ajax_option'] ?? null)
+            || ($arrField['attributes']['ajax_option'] ?? null) // see https://github.com/isotope/core/issues/2096
         ) {
             $arrAjaxOptions[] = $strField;
         }
@@ -733,7 +733,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // Convert optgroups so they work with FormSelectMenu
         // @deprecated Remove in Isotope 3.0, the options should match for frontend if attribute is customer defined
         if (
-            \is_array($arrField['options'])
+            \is_array($arrField['options'] ?? null)
             && array_is_assoc($arrField['options'])
             && \count(
                 array_filter(
@@ -906,7 +906,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
             if (Input::post('FORM_SUBMIT') == $this->getFormId() && \in_array(Input::post($attribute), $arrValues)) {
                 $arrOptions[$attribute] = Input::post($attribute);
-            } elseif (Input::post('FORM_SUBMIT') == '' && \in_array($arrDefaults[$attribute], $arrValues)) {
+            } elseif (Input::post('FORM_SUBMIT') == '' && isset($arrDefaults[$attribute]) && \in_array($arrDefaults[$attribute], $arrValues)) {
                 $arrOptions[$attribute] = $arrDefaults[$attribute];
             } elseif (\count($arrValues) == 1) {
                 $arrOptions[$attribute] = $arrValues[0];
