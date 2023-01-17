@@ -294,7 +294,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                [$link, $rel] = explode('|', $arrFile['link'], 2);
+                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
@@ -399,8 +399,8 @@ class Standard extends Gallery implements IsotopeGallery
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
-        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'], true);
-        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'], true);
+        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'] ?? '', true);
+        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'] ?? '', true);
         $arrFile['picture'] = $picture;
 
         $arrFile[$strType] = TL_ASSETS_URL . $strImage;

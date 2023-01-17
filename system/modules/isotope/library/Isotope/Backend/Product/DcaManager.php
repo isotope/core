@@ -70,6 +70,8 @@ class DcaManager extends Backend
     public function updateNewRecord($strTable, $insertID, $arrSet)
     {
         if (($arrSet['pid'] ?? 0) > 0) {
+            Database::getInstance()->prepare("UPDATE $strTable SET dateAdded=? WHERE id=?")->execute(time(), $insertID);
+
             return;
         }
 

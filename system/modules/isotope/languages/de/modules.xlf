@@ -171,11 +171,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.0">
         <source>Related products</source>
-        <target>Ähnliche Produkte</target>
+        <target>Verknüpfte Produkte</target>
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.1">
         <source>List products related to the current one.</source>
-        <target>Zeigt Produkte an, die Ähnlichkeit mit dem aktiven Produkt haben.</target>
+        <target>Zeigt Produkte an, die aktiven Produkt verknüpft sind.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_messages.0">
         <source>Messages</source>

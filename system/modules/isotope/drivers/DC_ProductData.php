@@ -2662,7 +2662,7 @@ class DC_ProductData extends \DC_Table
                 $option_label = \is_array($GLOBALS['TL_LANG']['MSC'][$field]) ? $GLOBALS['TL_LANG']['MSC'][$field][0] : $GLOBALS['TL_LANG']['MSC'][$field];
             }
 
-            $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . ((isset($session['search'][$this->strTable]['field']) && $session['search'][$sessionKey]['field'] == $field) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
+            $options_sorter[$option_label . '_' . $field] = '  <option value="' . StringUtil::specialchars($field) . '"' . ((isset($session['search'][$sessionKey]['field']) && $session['search'][$sessionKey]['field'] == $field) ? ' selected="selected"' : '') . '>' . $option_label . '</option>';
         }
 
         // Sort by option values

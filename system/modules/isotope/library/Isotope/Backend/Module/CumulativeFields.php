@@ -68,7 +68,7 @@ class CumulativeFields extends Backend
         $arrAttributes = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_filter']) {
+            if ($arrData['attributes']['fe_filter'] ?? false) {
                 $arrAttributes[$field] = sprintf(
                     '%s (%s)',
                     (\strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),

@@ -79,7 +79,7 @@
       </trans-unit>
       <trans-unit id="tl_iso_related_product.products_legend">
         <source>Related products</source>
-        <target>Ähnliche Produkte</target>
+        <target>Verwandte Produkte</target>
       </trans-unit>
     </body>
   </file>

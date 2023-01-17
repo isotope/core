@@ -39,7 +39,7 @@ class Inline extends Standard
         }
 
         // Add class "active" to the first file
-        $this->arrFiles[0]['class'] = trim($this->arrFiles[0]['class'] . ' active');
+        $this->arrFiles[0]['class'] = trim(($this->arrFiles[0]['class'] ?? '') . ' active');
 
         return parent::generateGallery($intSkip);
     }
@@ -51,8 +51,6 @@ class Inline extends Standard
      * @param string          $strType
      * @param array           $arrFile
      * @param bool            $blnWatermark
-     *
-     * @return string
      */
     protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {

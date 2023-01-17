@@ -172,7 +172,7 @@ class ProductType extends Model
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
             return ($a['enabled']
-                && \is_array($arrFields[$a['name']])
+                && \is_array($arrFields[$a['name']] ?? null)
                 && $arrFields[$a['name']]['attributes']['legend'] != ''
             );
         });
