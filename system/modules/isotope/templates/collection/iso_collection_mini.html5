@@ -17,5 +17,5 @@
 </div>
 <?php endforeach; ?>
 <div class="subtotal"><span class="label"><?= $GLOBALS['TL_LANG']['MSC']['subTotalLabel'] ?></span> <?= $this->subtotal ?></div><?php if ($this->buttons['cart']): ?>
-<div class="cart"><a class="button" href="<?= $this->buttons['cart']['href'] ?>"><?= $this->buttons['cart']['label'] ?></a></div><?php endif; if ($this->buttons['checkout']): ?>
+<div class="cart"><a class="button" href="<?= $this->buttons['cart']['href'] ?>"><?= $this->buttons['cart']['label'] ?></a></div><?php endif; if ($this->buttons['checkout'] ?? null): ?>
 <div class="checkout"><a class="button dark" href="<?= $this->buttons['checkout']['href'] ?>"><?= $this->buttons['checkout']['label'] ?></a></div><?php endif; ?>

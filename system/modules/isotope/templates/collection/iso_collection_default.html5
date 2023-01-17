@@ -51,7 +51,7 @@
         <td class="col_<?= $i++; if(!$this->isEditable && $this->total_tax_ids < 2) echo ' col_last' ?> price total"><?= $item['total'] ?></td><?php if ($this->total_tax_ids > 1): ?>
         <td class="col_<?= $i++; if(!$this->isEditable) echo ' col_last' ?> tax"><?= $item['tax_id'] ?></td><?php endif; if($this->isEditable): ?>
         <td class="col_<?= $i++ ?> col_last actions">
-            <?php if ($item['edit_href']): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>
+            <?php if ($item['edit_href'] ?? null): ?><a href="<?= $item['edit_href'] ?>" class="edit" title="<?= $item['edit_title'] ?>"><?= $item['edit_link'] ?></a><?php endif; ?>
             <a href="<?= $item['remove_href'] ?>" class="remove" title="<?= $item['remove_title'] ?>"><?= $item['remove_link'] ?></a>
         </td><?php endif; ?>
     </tr><?php if($item['item']->hasErrors()): ?>

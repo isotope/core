@@ -81,7 +81,7 @@ class Message
             throw new \LogicException("Invalid message type $strType");
         }
 
-        if (!\is_array($_SESSION[$strType])) {
+        if (!\is_array($_SESSION[$strType] ?? null)) {
             $_SESSION[$strType] = array();
         }
 
