@@ -126,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_iso_address'] = array
         (
             'exclude'               => true,
             'inputType'             => 'select',
-            'options'               => array('male', 'female'),
+            'options'               => array('male', 'female', 'other'),
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'feEditable'=>true, 'feGroup'=>'personal', 'tl_class'=>'w50'),
             'sql'                   => "varchar(32) NOT NULL default ''",
