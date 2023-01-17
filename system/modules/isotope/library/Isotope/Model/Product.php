@@ -568,7 +568,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 // Add product array as the last item.
                 // This will sort the products array based on the sorting of the passed in arguments.
                 $arrParam[] = &$arrProducts;
-                \call_user_func_array('array_multisort', $arrParam);
+                array_multisort(...$arrParam);
             }
 
             $objProducts = new Collection($arrProducts, static::$strTable);
@@ -746,7 +746,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
 
-            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id, tl_iso_product.id';
+            $arrOptions['group'] = (!empty($arrOptions['group']) ? $arrOptions['group'].', ' : '') . 'translation.id, tl_iso_product.id';
         }
 
         if ($hasVariants) {

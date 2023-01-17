@@ -108,7 +108,7 @@ class FilterQueryBuilder
         // Initiate native SQL filtering
         /** @var \Isotope\RequestCache\Filter $objFilter  */
         foreach ($arrFilters as $k => $objFilter) {
-            if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+            if ($objFilter->hasGroup() && ($arrGroups[$objFilter->getGroup()] ?? null) !== false) {
                 if ($objFilter->isDynamicAttribute()) {
                     $arrGroups[$objFilter->getGroup()] = false;
                 } else {

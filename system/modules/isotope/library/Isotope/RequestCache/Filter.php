@@ -197,7 +197,7 @@ class Filter implements \ArrayAccess
      */
     public function getGroup()
     {
-        return (string) $this->arrConfig['group'];
+        return (string) ($this->arrConfig['group'] ?? null);
     }
 
     /**
