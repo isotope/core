@@ -546,25 +546,33 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                         // will come before strings starting with a lowercase letter. To perform a case insensitive
                         // search, force the sorting order to be determined by a lowercase copy of the original value.
 
-                        $sortingProduct = $objProduct;
-
-                        if(($objProduct->getType()->hasVariants() && (int)$objProduct->pid === 0)
-                            && in_array($strField, $objProduct->getType()->getVariantAttributes())) {
-                            $sortingProduct = Product::findDefaultVariantOfProduct($objProduct);
-                        }
-
                         // Temporary fix for price attribute (see #945)
                         if ('price' === $strField) {
-                            if (null !== $sortingProduct->getPrice()) {
-                                $arrData[$strField][$objProduct->id] = $sortingProduct->getPrice()->getAmount();
+                            if (null !== $objProduct->getPrice()) {
+                                $arrData[$strField][$objProduct->id] = $objProduct->getPrice()->getAmount();
                             } else {
                                 $arrData[$strField][$objProduct->id] = 0;
                             }
-                        } else {
-                            $arrData[$strField][$objProduct->id] = strtolower(
-                                str_replace('"', '', $sortingProduct->$strField)
-                            );
+
+                            continue;
                         }
+
+                        if(
+                            $objProduct->hasVariants()
+                            && !$objProduct->isVariant()
+                            && \in_array($strField, $objProduct->getType()->getVariantAttributes(), true)
+                            && ($defaultVariant = Product::findDefaultVariantOfProduct($objProduct))
+                        ) {
+                            $arrData[$strField][$objProduct->id] = strtolower(
+                                str_replace('"', '', $defaultVariant->$strField)
+                            );
+
+                            continue;
+                        }
+
+                        $arrData[$strField][$objProduct->id] = strtolower(
+                            str_replace('"', '', $objProduct->$strField)
+                        );
                     }
 
                     $arrParam[] = &$arrData[$strField];
