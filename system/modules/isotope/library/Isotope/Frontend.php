@@ -729,7 +729,8 @@ class Frontend extends \Contao\Frontend
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->getLanguageId(), $value)) {
-                            $amount = $objOption->getAmount($fltPrice, 0);
+                            // Do not use getAmount() for non-percentage price, it would run Isotope::calculatePrice again (see isotope/core#2342)
+                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : $objOption->price;
                             $objTax = $objSource->getRelated('tax_class');
 
                             if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
