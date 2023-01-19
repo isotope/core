@@ -489,7 +489,7 @@ class Frontend extends \Contao\Frontend
             $objPageDetails = PageModel::findWithDetails($intPage);
 
             // Page is not in the current root
-            if ($objPageDetails->rootId != $objPage->rootId) {
+            if (null === $objPageDetails || $objPageDetails->rootId != $objPage->rootId) {
                 continue;
             }
 
@@ -497,19 +497,24 @@ class Frontend extends \Contao\Frontend
             if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
                 $arrUnavailable[$intMember][] = $intPage;
                 continue;
+            }
 
-            } elseif ($objPageDetails->protected) {
-                // Page is protected but we have no member
-                if ($intMember == 0) {
-                    $arrUnavailable[$intMember][] = $intPage;
-                    continue;
-                }
-
+            if ($objPageDetails->protected) {
                 $arrPGroups = StringUtil::deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!\is_array($arrPGroups)) {
                     $arrUnavailable[$intMember][] = $intPage;
+                    continue;
+                }
+
+                // Page is protected but we have no member
+                if ($intMember == 0) {
+                    if (in_array(-1, $arrPGroups, false)) { // "Guests" group in Contao 4.13+
+                        $arrAvailable[$intMember][] = $intPage;
+                    } else {
+                        $arrUnavailable[$intMember][] = $intPage;
+                    }
                     continue;
                 }
 
@@ -807,9 +812,7 @@ class Frontend extends \Contao\Frontend
      */
     public function replaceIsotopeTags($strTag)
     {
-        $callback = new InsertTag();
-
-        return $callback->replace($strTag);
+        return (new InsertTag())->replace($strTag);
     }
 
     /**
@@ -823,8 +826,7 @@ class Frontend extends \Contao\Frontend
      */
     public function translateProductUrls($arrGet)
     {
-        $listener = new ChangeLanguageListener();
-        return $listener->onTranslateUrlParameters($arrGet);
+        return (new ChangeLanguageListener())->onTranslateUrlParameters($arrGet);
     }
 
     /**
