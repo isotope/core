@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.9 (2023-01-23)
+--------------------------
+
+- Added "other" to gender (#2390)
+- Add handling for sorting by variant attributes (#2378)
+- Correctly check for default shipping address (#2316)
+- Correctly calculate option prices with price modifier (#2342)
+- Correctly check for guest permissions in Contao 4.13+
+- Fixed various PHP8 warnings
+
+
 Version 2.8.8 (2022-11-01)
 --------------------------
 
