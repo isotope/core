@@ -26,6 +26,7 @@ use Isotope\Model\Product;
 use Isotope\RequestCache\CsvFilter;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Sort;
 use Isotope\Template;
 
 /**
@@ -443,14 +444,27 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     private function saveFilter($action, $attribute, $value)
     {
-        if ($action == 'add') {
+        if ('add' === $action) {
             Isotope::getRequestCache()->setFiltersForModule(
                 $this->addFilter($this->activeFilters, $attribute, $value),
                 $this->id
             );
+
+            if ('' === Isotope::getRequestCache()->getFirstSortingFieldForModule($this->id)) {
+                Isotope::getRequestCache()->setSortingForModule(
+                    $this->iso_listingSortField,
+                    'DESC' === $this->iso_listingSortDirection ? Sort::descending() : Sort::ascending(),
+                    $this->id
+                );
+            }
         } else {
             Isotope::getRequestCache()->removeFilterForModule(
                 $this->generateFilterKey($attribute, $value),
+                $this->id
+            );
+
+            Isotope::getRequestCache()->removeSortingForModule(
+                $this->iso_listingSortField,
                 $this->id
             );
         }
