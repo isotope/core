@@ -553,11 +553,26 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                             } else {
                                 $arrData[$strField][$objProduct->id] = 0;
                             }
-                        } else {
-                            $arrData[$strField][$objProduct->id] = strtolower(
-                                str_replace('"', '', $objProduct->$strField)
-                            );
+
+                            continue;
                         }
+
+                        if(
+                            $objProduct->hasVariants()
+                            && !$objProduct->isVariant()
+                            && \in_array($strField, $objProduct->getType()->getVariantAttributes(), true)
+                            && ($defaultVariant = Product::findDefaultVariantOfProduct($objProduct))
+                        ) {
+                            $arrData[$strField][$objProduct->id] = strtolower(
+                                str_replace('"', '', $defaultVariant->$strField)
+                            );
+
+                            continue;
+                        }
+
+                        $arrData[$strField][$objProduct->id] = strtolower(
+                            str_replace('"', '', $objProduct->$strField)
+                        );
                     }
 
                     $arrParam[] = &$arrData[$strField];
