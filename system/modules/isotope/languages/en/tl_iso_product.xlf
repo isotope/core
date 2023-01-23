@@ -173,6 +173,9 @@
       <trans-unit id="tl_iso_product.source.1">
         <source>Please choose the folder where product assets are located.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product.hitCount.0">
+        <source>Hit counter</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product.mmSrc">
         <source>Preview</source>
       </trans-unit>

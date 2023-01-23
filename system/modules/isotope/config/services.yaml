@@ -6,6 +6,13 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    Isotope\Controller\ProductHitController:
+        arguments:
+            - '@database_connection'
+            - '%kernel.secret%'
+        tags:
+            - { name: controller.service_arguments }
+
     isotope.listener.symlink:
         class: Isotope\EventListener\SymlinkListener
         arguments:
