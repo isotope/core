@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<file datatype="plaintext" original="system/modules/isotope_rules/languages/en/modules.xlf" source-language="en" target-language="sv-SE">
+  <body>
+    <trans-unit id="MOD.isotope_rules.0">
+      <source>Isotope eCommerce: Rules &amp; Coupons</source>
+      <target>Isotope eCommerce: Regler och kuponger</target>
+    </trans-unit>
+      <trans-unit id="MOD.iso_rules.0">
+        <source>Rules &amp; Coupons</source>
+        <target>Regler &amp; kuponger</target>
+    </trans-unit>
+    <trans-unit id="FMD.iso_coupons.0">
+      <source>Coupon Codes</source>
+      <target>Kupongkoder</target>
+    </trans-unit>
+  </body>
+</file>
+</xliff>

@@ -1,0 +1,186 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_tax_rate.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_tax_rate.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name.1">
+        <source>Enter a name for this tax rate.</source>
+        <target>Ange ett namn för denna skattesats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.label.1">
+        <source>This label will be used on the front end in the checkout process.</source>
+        <target>Denna etikett kommer att användas på front end i kassan.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.0">
+        <source>Address to use for calculation</source>
+        <target>Adress att använda för beräkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.address.1">
+        <source>Select to which address this rate should use to apply its calculation. Be aware that for non-shippable products, the shipping address will equal to billing address.</source>
+        <target>Välj vilken adress denna kurs ska använda för att tillämpa sin beräkning. Tänk på att för icke-leveransbara produkter kommer leveransadressen att vara lika med faktureringsadress.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.0">
+        <source>Countries</source>
+        <target>Länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.countries.1">
+        <source>Select the countries this tax class applies to.</source>
+        <target>Välj de länderna som denna skatteklass gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.0">
+        <source>States/Regions</source>
+        <target>Stater/Regioner</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.subdivisions.1">
+        <source>Select the states or regions this tax class applies to.</source>
+        <target>Välj de staterna eller regionerna som denna skatteklass gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.0">
+        <source>Postal codes</source>
+        <target>Postnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.postalCodes.1">
+        <source>Limit the tax rate to postal codes. You can enter a comma separated list and ranges (e.g. 1234,1235,1236-1239,1100-1200).</source>
+        <target>Begränsa skattesatsen till postnummer. Du kan ange en kommaseparerad lista och intervall (t.ex. 1234,1235,1236-1239,1100-1200).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.0">
+        <source>Subtotal amount restriction</source>
+        <target>Subtotalt beloppsbegränsning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.amount.1">
+        <source>Optional: Restrict this tax rate to specific subtotal amount (such as for a luxury tax.)</source>
+        <target>Valfritt: Begränsa denna skattesats till ett specifikt delbelopp (som för en lyxskatt.)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.0">
+        <source>Tax rate</source>
+        <target>Skattesats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate.1">
+        <source>A rate in percent this tax is set at.</source>
+        <target>En skattesats i procent som denna skatt är satt till.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.0">
+        <source>Store configuration</source>
+        <target>Shop konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config.1">
+        <source>Select the store configuration that the tax rate applies to.</source>
+        <target>Välj den butikskonfiguration som skattesatsen gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.0">
+        <source>Exempt on valid VAT number</source>
+        <target>Befriad på giltigt VAT-nummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.exemptOnValidVAT.1">
+        <source>Do not apply tax if the VAT number is valid.</source>
+        <target>Ta inte ut skatt om VAT-numret är giltigt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.0">
+        <source>Stop calculations on trigger?</source>
+        <target>Stoppa beräkningar på trigger?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.stop.1">
+        <source>Stop other calculations if this tax rate is triggered.</source>
+        <target>Stoppa andra beräkningar om denna skattesats utlöses.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.0">
+        <source>Member groups</source>
+        <target>Medlemsgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.groups.1">
+        <source>Restrict this tax rate to certain member groups.</source>
+        <target>Begränsa denna skattesats till vissa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.0">
+        <source>Protect tax rate</source>
+        <target>Skydda skattesatsen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.protected.1">
+        <source>Apply the tax rate to certain member groups only.</source>
+        <target>Tillämpa skattesatsen endast på vissa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.0">
+        <source>Apply to guests only</source>
+        <target>Gäller endast gäster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.guests.1">
+        <source>Do not apply tax rate if a member is logged in.</source>
+        <target>Tillämpa inte skattesats om en medlem är inloggad.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.0">
+        <source>New tax rate</source>
+        <target>Ny skattesats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.new.1">
+        <source>Create a new tax rate</source>
+        <target>Skapa en ny skattesats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.0">
+        <source>Edit tax rate</source>
+        <target>Redigera skattesats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.edit.1">
+        <source>Edit tax rate ID %s</source>
+        <target>Redigera skattesats ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.0">
+        <source>Copy tax rate</source>
+        <target>Kopiera skattesatsen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.copy.1">
+        <source>Copy tax rate ID %s</source>
+        <target>Kopiera skattesatsen ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.0">
+        <source>Delete tax rate</source>
+        <target>Ta bort skattesatsen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.delete.1">
+        <source>Delete tax rate ID %s</source>
+        <target>Ta bort skattesatsen ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.0">
+        <source>Tax rate details</source>
+        <target>Information om skattesatsen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.show.1">
+        <source>Show details of tax rate ID %s</source>
+        <target>Visa information om skattesats ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.billing">
+        <source>Billing Address</source>
+        <target>Fakturaadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.shipping">
+        <source>Shipping Address</source>
+        <target>Leveransadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.name_legend">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.rate_legend">
+        <source>Rate</source>
+        <target>Sats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.location_legend">
+        <source>Location</source>
+        <target>Plats</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.condition_legend">
+        <source>Conditions</source>
+        <target>Villkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_tax_rate.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

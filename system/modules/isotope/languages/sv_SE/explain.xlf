@@ -1,0 +1,79 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="XPL.isoReaderJumpTo">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+    Unlike any other Contao module, a user is not redirected to the reader page when viewing the product details. To solve the issue of nice aliases and to know the detail page of a product, we came up with a new solution.&lt;br&gt;
+    &lt;br&gt;
+    The reader page (alias) will always be the same page as you selected as a category for the product. The following options are available for the detail page:&lt;br&gt;
+&lt;/p&gt;</source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Till skillnad från alla andra Contao-moduler omdirigeras en användare inte till läsarsidan när han tittar på produktinformationen. För att lösa problemet med snygga alias och för att känna till detaljsidan för en produkt kom vi på en ny lösning.&lt;br&gt;
+&lt;br&gt;
+Läsarsidan (alias) kommer alltid att vara samma sida som du valde som kategori för produkten. Följande alternativ är tillgängliga för detaljsidan:&lt;br&gt;
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.mediaManager">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;För att ladda upp en ny bild, välj filen och spara produkten. Efter framgångsrik uppladdning visas en förhandsgranskning av bilden och bredvid den kan du ange dess alternativa text och en beskrivning. För flera bilder kan du klicka på pilarna till höger och ändra deras ordning, den översta bilden används som huvudbild för varje produkt.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.noVariantAttributes">
+        <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
+        <target>För att använda produktvarianter med Isotope eCommerce måste du först konfigurera attributen.&lt;br&gt;Se &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;manualen&lt;/a&gt; för mer information om attributinställningar.</target>
+      </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Konfigurerar frakthantering i kassaprocessen.
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Undantagen:&lt;/strong&gt;&lt;br&gt;
+Om varukorgen endast innehåller produkter som är befriade från frakt kommer kassaprocessen inte att fråga efter en leveransadress eller en fraktmetod.
+Detta är användbart för nedladdning eller andra typer av digitala produkter.&lt;br&gt;
+Om det finns minst en icke-befriad produkt i varukorgen är processen som vanligt, men undantagna produkter ignoreras (t.ex. från fraktprisberäkning).
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Plocka upp:&lt;/strong&gt;&lt;br&gt;
+Om minst en produkttyp i varukorgen har detta alternativ aktiverat, kommer leveransadressen i kassasteget inte att samlas in.
+Du kan fortfarande använda fraktmetoderna för att t.ex. erbjuda olika hämtningsalternativ. Se till att ställa in fraktmetoderna korrekt för att inte
+erbjuda verklig frakt för dessa produkttyper.
+&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.elevatezoom_position">
+        <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
+        <target>Du kan placera fönstret i genom att ställa in en standardposition och sedan använda x och y offset för att justera. Du kan också placera fönstret i en container - Se mer på: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/ modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.iso_category_scope">
+        <source><![CDATA[
+            Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
+        ]]></source>
+        <target>
+             Välj vilka produktkategorier (sidor) som ska beaktas för produkterna.&lt;br&gt;&lt;br&gt;&lt;u&gt;Om detta är en produktlistamodul och du har konfigurerat en kategorifiltermodul, kommer kategorifiltervalet att åsidosätta denna konfiguration!&lt;/u &gt;&lt;br&gt;&lt;br&gt;
+         </target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Använd dessa enkla tokens för att skapa ett dynamiskt filnamn.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Använd dessa enkla tokens för att skapa ett dynamiskt mappnamn.&lt;/p&gt;</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

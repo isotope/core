@@ -1,0 +1,18 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/iso_upgrade.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="UPG.headline">
+        <source>Migration Assistant (Version: %s)</source>
+        <target>Migreringsassistent (version: %s)</target>
+      </trans-unit>
+      <trans-unit id="UPG.submit">
+        <source>Update</source>
+        <target>Uppdatering</target>
+      </trans-unit>
+      <trans-unit id="UPG.20010000">
+        <source>Isotope needs to know which JavaScript template is responsible to render the lightbox for a gallery. Please select the appropriate template for each gallery (usually &lt;i&gt;moo_mediabox&lt;/i&gt; or &lt;i&gt;j_colorbox&lt;/i&gt;) depending on if you use MooTools or jQuery on your website. You can always change this later in the gallery settings.</source>
+        <target>Isotope behöver veta vilken JavaScript-mall som är ansvarig för att rendera lightbox för ett galleri. Välj lämplig mall för varje galleri (vanligtvis &lt;i&gt;moo_mediabox&lt;/i&gt; eller &lt;i&gt;j_colorbox&lt;/i&gt;) beroende på om du använder MooTools eller jQuery på din webbplats. Du kan alltid ändra detta senare i galleriinställningarna.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

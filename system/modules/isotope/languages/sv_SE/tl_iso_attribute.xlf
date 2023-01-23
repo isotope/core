@@ -1,0 +1,774 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_attribute.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_attribute.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name.1">
+        <source>Please enter a name for this attribute.</source>
+        <target>Ange ett namn för detta attribut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.0">
+        <source>Internal name</source>
+        <target>Internt namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.field_name.1">
+        <source>Internal name is the database field name and must be unique.</source>
+        <target>Internt namn är databasfältets namn och måste vara unikt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.type.1">
+        <source>Please select a type for this attribute.</source>
+        <target>Välj en typ för detta attribut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.legend.0">
+        <source>Field Group</source>
+        <target>Fältgrupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.legend.1">
+        <source>Select a field group that this attribute relates to (used to organize related fields into collapsible fieldset groups when editing products.</source>
+        <target>Välj en fältgrupp som detta attribut relaterar till (används för att organisera relaterade fält i hopfällbara fältuppsättningsgrupper när du redigerar produkter.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.variant_option.0">
+        <source>Add to product variants wizard</source>
+        <target>Guiden Lägg till produktvarianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.variant_option.1">
+        <source>If selected, this attribute will be added to the product variants wizard for use as a product variant option.</source>
+        <target>Om det väljs kommer detta attribut att läggas till i guiden för produktvarianter för användning som ett alternativ för produktvarianter.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customer_defined.0">
+        <source>Defined by customer</source>
+        <target>Definierat av kunden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customer_defined.1">
+        <source>Please select if this value defined by the customer (frontend).</source>
+        <target>Vänligen välj om detta värde definieras av kunden (frontend).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.0">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description.1">
+        <source>The description is shown as a hint to the backend user.</source>
+        <target>Beskrivningen visas som ett tips till backend-användaren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.0">
+        <source>Options source</source>
+        <target>Alternativ källa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.1">
+        <source>Choose where the options for this field should be loaded from.</source>
+        <target>Välj var alternativen för detta fält ska laddas från.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.name">
+        <source>Attribute Name (Single Option)</source>
+        <target>Attributnamn (enkelt alternativ)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.table">
+        <source>Options Manager</source>
+        <target>Alternativhanterare</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.product">
+        <source>Product</source>
+        <target>Produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.foreignKey">
+        <source>Custom database table (foreignKey)</source>
+        <target>Anpassad databastabell (foreignKey)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsSource.attribute">
+        <source>Options Wizard (deprecated)</source>
+        <target>Options Wizard (utfasad)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.0">
+        <source>Options</source>
+        <target>Alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.1">
+        <source>Please enter one or more options. Use the buttons to add, move or delete an option. If you are working without JavaScript assistance, you should save your changes before you modify the order!</source>
+        <target>Ange ett eller flera alternativ. Använd knapparna för att lägga till, flytta eller ta bort ett alternativ. Om du arbetar utan JavaScript-hjälp bör du spara dina ändringar innan du ändrar beställningen!</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.value.0">
+        <source>Value</source>
+        <target>Värde</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.default.0">
+        <source>Default</source>
+        <target>Standard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options.group.0">
+        <source>Group</source>
+        <target>Grupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable.0">
+        <source>Options</source>
+        <target>Alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable.1">
+        <source>Use the options manager to add your options to the field.</source>
+        <target>Använd alternativhanteraren för att lägga till dina alternativ i fältet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.includeBlankOption.0">
+        <source>Include blank option</source>
+        <target>Inkludera tomt alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.includeBlankOption.1">
+        <source>Check here to include a blank option in the select menu.</source>
+        <target>Markera här för att inkludera ett tomt alternativ i valmenyn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.blankOptionLabel.0">
+        <source>Label for blank option</source>
+        <target>Etikett för tomt alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.blankOptionLabel.1">
+        <source>You can optionally enter a label for the blank option. If you do not enter anything, a dash (-) will be used.</source>
+        <target>Du kan valfritt ange en etikett för det tomma alternativet. Om du inte anger något kommer ett bindestreck (-) att användas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.mandatory.0">
+        <source>Mandatory field</source>
+        <target>Obligatoriskt fält</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.mandatory.1">
+        <source>The field must be filled when editing a product.</source>
+        <target>Fältet måste fyllas i när du redigerar en produkt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multiple.0">
+        <source>Multiple selection</source>
+        <target>Flerval</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multiple.1">
+        <source>Allow visitors to select more than one option.</source>
+        <target>Tillåt besökare att välja mer än ett alternativ.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.size.0">
+        <source>Size/Amount</source>
+        <target>Storlek/Mängd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.size.1">
+        <source>Here you can set a limit, e.g. size of the select box or number of file uploads.</source>
+        <target>Här kan du sätta en gräns, t.ex. storleken på den valda rutan eller antalet filuppladdningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chosen.0">
+        <source>Use &quot;Chosen&quot; JavaScript</source>
+        <target>Använd &quot;valt&quot; JavaScript</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chosen.1">
+        <source>This option enables the usage of the &quot;Chosen&quot; JavaScript for the select field, which enables you to select multiple values via a search function.</source>
+        <target>Det här alternativet möjliggör användningen av det &quot;valda&quot; JavaScriptet för urvalsfältet, vilket gör att du kan välja flera värden via en sökfunktion.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extensions.0">
+        <source>Allowed file types</source>
+        <target>Tillåtna filtyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extensions.1">
+        <source>A comma separated list of valid file extensions.</source>
+        <target>En kommaseparerad lista över giltiga filtillägg.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rte.0">
+        <source>Use HTML editor</source>
+        <target>Använd HTML-editor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rte.1">
+        <source>Select a tinyMCE configuration file to enable the rich text editor.</source>
+        <target>Välj en tinyMCE-konfigurationsfil för att aktivera rich text-redigeraren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multilingual.0">
+        <source>Multilingual</source>
+        <target>Flerspråkig</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.multilingual.1">
+        <source>Check here if this field should be translated.</source>
+        <target>Kontrollera här om detta fält ska översättas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rgxp.0">
+        <source>Input validation</source>
+        <target>Input validering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rgxp.1">
+        <source>Validate the input against a regular expression.</source>
+        <target>Validera indata mot ett reguljärt uttryck.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.placeholder.0">
+        <source>Placeholder</source>
+        <target>Platshållare</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.placeholder.1">
+        <source>Show this text as long as the field is empty (requires HTML5).</source>
+        <target>Visa denna text så länge fältet är tomt (kräver HTML5).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minlength.0">
+        <source>Minimum length</source>
+        <target>Minsta längd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minlength.1">
+        <source>Require the field value to be a certain number of characters (text) or bytes (file uploads).</source>
+        <target>Kräv att fältvärdet är ett visst antal tecken (text) eller byte (filuppladdningar).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxlength.0">
+        <source>Maximum length</source>
+        <target>Maximal längd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxlength.1">
+        <source>Limit the field length to a certain number of characters (text) or bytes (file uploads).</source>
+        <target>Begränsa fältlängden till ett visst antal tecken (text) eller byte (filuppladdningar).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minval.0">
+        <source>Minimum value</source>
+        <target>Minsta värde</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.minval.1">
+        <source>Here you can set the minimum value for numeric fields.</source>
+        <target>Här kan du ställa in minimivärdet för numeriska fält.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxval.0">
+        <source>Maximum value</source>
+        <target>Maximalt värde</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.maxval.1">
+        <source>Here you can set the maximum value for numeric fields.</source>
+        <target>Här kan du ställa in det maximala värdet för numeriska fält.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.step.0">
+        <source>Step</source>
+        <target>Steg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.step.1">
+        <source>Here you can set the discrete step size of the field.</source>
+        <target>Här kan du ställa in fältets diskreta stegstorlek.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.foreignKey.0">
+        <source>Foreign table &amp; field</source>
+        <target>Extern tabell &amp; fält</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.foreignKey.1">
+        <source>Instead of adding options you can enter a table.field combination to select from database. To use multilingual foreignKeys, enter one per line and specify the language (example: en=tl_table.field)</source>
+        <target>Istället för att lägga till alternativ kan du ange en tabell.fältkombination för att välja från databasen. För att använda flerspråkiga främmande nycklar, ange en per rad och ange språket (exempel: en=tl_table.field)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.conditionField.0">
+        <source>Parent field</source>
+        <target>Förälderfält</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.conditionField.1">
+        <source>Please select the parent field, which must be of type &quot;Select-Menu&quot;. For parent-child relation to work, define each option of this parent field as group of the conditional select-menu.</source>
+        <target>Vänligen välj det överordnade fältet, som måste vara av typen &quot;Select-Menu&quot;. För förälder-barn-relation till arbete, definiera varje alternativ i detta överordnade fält som grupp av den villkorliga valmenyn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.files.0">
+        <source>Show files</source>
+        <target>Visa filer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.files.1">
+        <source>Show both files and folders.</source>
+        <target>Visa både filer och mappar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.filesOnly.0">
+        <source>Files only</source>
+        <target>Endast filer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.filesOnly.1">
+        <source>Remove the radio buttons or checkboxes next to folders.</source>
+        <target>Ta bort alternativknapparna eller kryssrutorna bredvid mappar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.isGallery.0">
+        <source>Mark as gallery</source>
+        <target>Markera som galleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.isGallery.1">
+        <source>Mark the attribute as image gallery which allows for better display in the backend.</source>
+        <target>Markera attributet som bildgalleri vilket möjliggör bättre visning i backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fieldType.0">
+        <source>Field type</source>
+        <target>Fälttyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fieldType.1">
+        <source>Display radio buttons or checkboxes next to folders.</source>
+        <target>Visa alternativknappar eller kryssrutor bredvid mappar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.sortBy.0">
+        <source>Order by</source>
+        <target>Sortera efter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.sortBy.1">
+        <source>Please choose the sort order.</source>
+        <target>Välj sorteringsordning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.path.0">
+        <source>Root directory</source>
+        <target>Rotkatalog</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.path.1">
+        <source>You can limit the file tree by defining a root directory here.</source>
+        <target>Du kan begränsa filträdet genom att definiera en rotkatalog här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.0">
+        <source>Root nodes</source>
+        <target>Rotknutpunkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.rootNodes.1">
+        <source>You can limit the page tree by defining a root page here.</source>
+        <target>Du kan begränsa sidträdet genom att definiera en rotsida här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.storeFile.0">
+        <source>Store uploaded files</source>
+        <target>Lagra uppladdade filer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.storeFile.1">
+        <source>Move the uploaded files to a folder on the server.</source>
+        <target>Flytta de uppladdade filerna till en mapp på servern.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.uploadFolder.0">
+        <source>Target folder</source>
+        <target>Målmapp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.uploadFolder.1">
+        <source>Please select the target folder from the files directory.</source>
+        <target>Välj målmapp från filkatalogen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.useHomeDir.0">
+        <source>Use home directory</source>
+        <target>Använd hemkatalogen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.useHomeDir.1">
+        <source>Store the file in the home directory if there is an authenticated user.</source>
+        <target>Spara filen i hemkatalogen om det finns en autentiserad användare.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.doNotOverwrite.0">
+        <source>Preserve existing files</source>
+        <target>Bevara befintliga filer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.doNotOverwrite.1">
+        <source>Add a numeric suffix to the new file if the file name already exists.</source>
+        <target>Lägg till ett numeriskt suffix till den nya filen om filnamnet redan finns.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutRelocate.0">
+        <source>Move file(s) after checkout</source>
+        <target>Flytta fil(er) efter kassan</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutRelocate.1">
+        <source>Re-organize files after an order has been completed.</source>
+        <target>Omorganisera filer efter att en beställning har slutförts.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFolder.0">
+        <source>Target folder</source>
+        <target>Målmapp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFolder.1">
+        <source>Enter the target path relative to Contao root. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+        <target>Ange målsökvägen i förhållande till Contao-roten. Använd enkla tokens och insert tags för att skapa ett dynamiskt namn (se hjälpguiden).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFile.0">
+        <source>Target file name</source>
+        <target>Målfilens namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkoutTargetFile.1">
+        <source>Enter the target file name. Use simple tokens and insert tags to generate a dynamic name (see help wizard).</source>
+        <target>Ange målfilens namn. Använd enkla tokens och insert tags för att skapa ett dynamiskt namn (se hjälpguiden).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_sorting.0">
+        <source>Add to &quot;Order By&quot; option list</source>
+        <target>Lägg till i alternativlistan &quot;Sortera efter&quot;.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_sorting.1">
+        <source>This field will be sortable in the listing module provided the attribute is visible to customers.</source>
+        <target>Detta fält kommer att kunna sorteras i listningsmodulen förutsatt att attributet är synligt för kunder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_filter.0">
+        <source>Backend filterable</source>
+        <target>Filtrering backend</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_filter.1">
+        <source>Can this attribute be used in a backend filter?</source>
+        <target>Kan detta attribut användas i ett backend-filter?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_search.0">
+        <source>Backend searchable</source>
+        <target>Backend sökbar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.be_search.1">
+        <source>Should the field be available in the backend search?</source>
+        <target>Ska fältet vara tillgängligt i backend-sökningen?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_filter.0">
+        <source>Frontend filterable</source>
+        <target>Frontend filtrerbar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_filter.1">
+        <source>Can this attribute be used in a frontend filter?</source>
+        <target>Kan detta attribut användas i ett frontend-filter?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_search.0">
+        <source>Frontend searchable</source>
+        <target>Frontend sökbar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.fe_search.1">
+        <source>Should the search engine look in this field for search terms?</source>
+        <target>Ska sökmotorn leta efter söktermer i det här fältet?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datepicker.0">
+        <source>Date picker</source>
+        <target>Datumväljare</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datepicker.1">
+        <source>Show a date picker for this field.</source>
+        <target>Visa en datumväljare för det här fältet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunking.0">
+        <source>Enable chunking</source>
+        <target>Aktivera chunking</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunking.1">
+        <source>Enable the file chunking. It is useful to upload big files.</source>
+        <target>Aktivera filchunking. Det är användbart att ladda upp stora filer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunkSize.0">
+        <source>Chunk size in bytes</source>
+        <target>Klumpstorlek i byte</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.chunkSize.1">
+        <source>Please enter the chunk size in bytes (1MB = 1000000 bytes).</source>
+        <target>Ange bitstorleken i byte (1MB = 1000000 byte).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customTpl.0">
+        <source>Form field template</source>
+        <target>Formulär field template</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.customTpl.1">
+        <source>Here you can select the template to render the front end form field.</source>
+        <target>Här kan du välja mallen för att återge front end-formulärfältet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.optionsTable_edit">
+        <source>Edit options</source>
+        <target>Redigera alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkbox">
+        <source>Checkbox</source>
+        <target>Kryssruta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.radio">
+        <source>Radio</source>
+        <target>Radio</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.digit.0">
+        <source>Numeric characters</source>
+        <target>Numeriska tecken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.digit.1">
+        <source>Allows numeric characters, minus (-), full stop (.) and space ( ).</source>
+        <target>Tillåter numeriska tecken, minus (-), punkt (.) och mellanslag ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alpha.0">
+        <source>Alphabetic characters</source>
+        <target>Alfabetiska tecken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alpha.1">
+        <source>Allows alphabetic characters, minus (-), full stop (.) and space ( ).</source>
+        <target>Tillåter alfabetiska tecken, minus (-), punkt (.) och mellanslag ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alnum.0">
+        <source>Alphanumeric characters</source>
+        <target>Alfanumeriska tecken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.alnum.1">
+        <source>Allows alphabetic and numeric characters, minus (-), full stop (.), underscore (_) and space ( ).</source>
+        <target>Tillåter alfabetiska och numeriska tecken, minus (-), punkt (.), understreck (_) och mellanslag ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extnd.0">
+        <source>Extended alphanumeric characters</source>
+        <target>Utökade alfanumeriska tecken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.extnd.1">
+        <source>Allows everything except special characters which are usually encoded for security reasons (#/()&lt;=&gt;).</source>
+        <target>Tillåter allt utom specialtecken som vanligtvis är kodade av säkerhetsskäl (#/()&lt;=&gt;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date.0">
+        <source>Date</source>
+        <target>Datum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date.1">
+        <source>Checks whether the input matches the global date format.</source>
+        <target>Kontrollerar om inmatningen matchar det globala datumformatet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.time.0">
+        <source>Time</source>
+        <target>Tid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.time.1">
+        <source>Checks whether the input matches the global time format.</source>
+        <target>Kontrollerar om inmatningen matchar det globala tidsformatet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datim.0">
+        <source>Date and time</source>
+        <target>Datum och tid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.datim.1">
+        <source>Checks whether the input matches the global date and time format.</source>
+        <target>Kontrollerar om inmatningen matchar det globala datum- och tidsformatet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.phone.1">
+        <source>Allows numeric characters, plus (+), minus (-), slash (/), parentheses () and space ( ).</source>
+        <target>Tillåter numeriska tecken, plus (+), minus (-), snedstreck (/), parentes () och mellanslag ( ).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.email.0">
+        <source>E-mail address</source>
+        <target>E-postadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.email.1">
+        <source>Checks whether the input is a valid e-mail address.</source>
+        <target>Kontrollerar om inmatningen är en giltig e-postadress.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.url.0">
+        <source>URL format</source>
+        <target>URL-format</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.url.1">
+        <source>Checks whether the input is a valid URL.</source>
+        <target>Kontrollerar om inmatningen är en giltig URL.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.0">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.price.1">
+        <source>Checks whether the input is a valid price.</source>
+        <target>Kontrollerar om ingången är ett giltigt pris.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.0">
+        <source>Discount</source>
+        <target>Rabatt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.discount.1">
+        <source>Checks whether the input is a valid discount.&lt;br /&gt;Example: -10%, -10, +10, +10%</source>
+        <target>Kontrollerar om inmatningen är en giltig rabatt.&lt;br /&gt;Exempel: -10 %, -10, +10, +10 %</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.surcharge.0">
+        <source>Surcharge</source>
+        <target>Tilläggsavgift</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.surcharge.1">
+        <source>Checks whether the input is a valid surcharge.&lt;br /&gt;Example: 10.00, 10%</source>
+        <target>Kontrollerar om inmatningen är en giltig tilläggsavgift.&lt;br /&gt;Exempel: 10,00, 10 %</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.custom">
+        <source>Custom order</source>
+        <target>Anpassad ordning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name_asc">
+        <source>File name (ascending)</source>
+        <target>Filnamn (stigande)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.name_desc">
+        <source>File name (descending)</source>
+        <target>Filnamn (fallande)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date_asc">
+        <source>Date (ascending)</source>
+        <target>Datum (stigande)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.date_desc">
+        <source>Date (descending)</source>
+        <target>Datum (fallande)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.random">
+        <source>Random order</source>
+        <target>Slumpmässig ordning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.1.0">
+        <source>##document_number##</source>
+        <target>##document_number##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.1.1">
+        <source>Generated document number for the order.</source>
+        <target>Genererat dokumentnummer för beställningen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.2.0">
+        <source>##order_id##</source>
+        <target>##order_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.2.1">
+        <source>Database ID of the order record.</source>
+        <target>Databas-ID för orderposten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.3.0">
+        <source>##order_date##</source>
+        <target>##order_date##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.3.1">
+        <source>Date of the order as timestamp. Use insert tags &lt;i&gt;{{formatted_datetime::*}}&lt;/i&gt; to convert timestamp to formatted date.</source>
+        <target>Datum för beställningen som tidsstämpel. Använd insert tags {{formatted_datetime::*}} för att konvertera tidsstämpel till formaterat datum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.4.0">
+        <source>##product_id##</source>
+        <target>##product_id##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.4.1">
+        <source>Database ID of the product.</source>
+        <target>Databas-ID för produkten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.5.0">
+        <source>##product_sku##</source>
+        <target>##product_sku##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.5.1">
+        <source>SKU of the product.</source>
+        <target>SKU för produkten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.6.0">
+        <source>##product_name##</source>
+        <target>##product_name##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.6.1">
+        <source>Name of the product.</source>
+        <target>Produktens namn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.7.0">
+        <source>##product_position##</source>
+        <target>##product_position##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.7.1">
+        <source>Position of the product on the order document, starting from 1.</source>
+        <target>Produktens position på beställningsdokumentet, från och med 1.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.8.0">
+        <source>##attribute_field##</source>
+        <target>##attribute_field##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.8.1">
+        <source>Database field name of the attribute.</source>
+        <target>Databasfältnamn för attributet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.9.0">
+        <source>##attribute_name##</source>
+        <target>##attribute_name##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.9.1">
+        <source>Name of the attribute.</source>
+        <target>Namn på attributet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.10.0">
+        <source>##file_name##</source>
+        <target>##file_name##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.10.1">
+        <source>Full file name and extension as uploaded by the user.</source>
+        <target>Fullständigt filnamn och filtillägg som laddats upp av användaren.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.11.0">
+        <source>##file_target##</source>
+        <target>##file_target##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.11.1">
+        <source>Full file name and extension as uploaded by the user, but renamed if &quot;Preserve existing files&quot; is enabled and a file with same name exists in target folder. &lt;br&gt;&lt;strong&gt;Only available for the file name, not for the folder!&lt;/strong&gt;</source>
+        <target>Fullständigt filnamn och filtillägg som laddats upp av användaren, men bytt namn om &quot;Bevara befintliga filer&quot; är aktiverat och en fil med samma namn finns i målmappen. &lt;br&gt;&lt;strong&gt;Endast tillgängligt för filnamnet, inte för mappen!&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.12.0">
+        <source>##file_extension##</source>
+        <target>##file_extension##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.12.1">
+        <source>The original file extension.</source>
+        <target>Den ursprungliga filtillägget.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.13.0">
+        <source>##has_member##</source>
+        <target>##has_member##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.13.1">
+        <source>1 if a member is signed in to the frontend, 0 if not.</source>
+        <target>1 om en medlem är inloggad på frontend, 0 om inte.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.14.0">
+        <source>##member_*##</source>
+        <target>##member_*##</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.checkout_tokens.14.1">
+        <source>If a user is logged in, all member fields are available as tokens.</source>
+        <target>Om en användare är inloggad är alla medlemsfält tillgängliga som tokens.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.new.0">
+        <source>New attribute</source>
+        <target>Nytt attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.new.1">
+        <source>Create a new attribute.</source>
+        <target>Skapa ett nytt attribut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.edit.0">
+        <source>Edit attribute</source>
+        <target>Redigera attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.edit.1">
+        <source>Edit attribute ID %s.</source>
+        <target>Redigera attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.copy.0">
+        <source>Copy attribute</source>
+        <target>Kopiera attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.copy.1">
+        <source>Copy attribute ID %s.</source>
+        <target>Kopiera attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.delete.0">
+        <source>Delete attribute</source>
+        <target>Ta bort attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.delete.1">
+        <source>Delete attribute ID %s. The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
+        <target>Ta bort attribut ID %s. Databaskolumnen kommer inte att tas bort, du måste uppdatera databasen manuellt med installationsverktyget eller repository manager.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.show.0">
+        <source>Attribute details</source>
+        <target>Attributdetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.show.1">
+        <source>Show details for attribute ID %s.</source>
+        <target>Visa detaljer för attribut ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.deleteConfirm">
+        <source>Do you really want to delete attribute ID %s? The database column will not be deleted, you need to manually update the database using the install tool or repository manager.</source>
+        <target>Vill du verkligen ta bort attribut ID %s? Databaskolumnen kommer inte att tas bort, du måste uppdatera databasen manuellt med installationsverktyget eller repository manager.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.attribute_legend">
+        <source>Attribute name &amp; type</source>
+        <target>Attributnamn och typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.description_legend">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.options_legend">
+        <source>Options</source>
+        <target>Alternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.config_legend">
+        <source>Attribute configuration</source>
+        <target>Attributkonfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.search_filters_legend">
+        <source>Search &amp; Filtering Settings</source>
+        <target>Sök- och filtreringsinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.store_legend">
+        <source>Store file</source>
+        <target>Lagra fil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_attribute.template_legend">
+        <source>Template settings</source>
+        <target>Mallinställningar</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,138 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+        <target>Ange ett namn för denna status.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+        <target>Färg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
+        <target>Här kan du ställa in en anpassad färg för denna status. Färgen kommer att synas på beställningslistan i back end.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.0">
+        <source>Order is paid</source>
+        <target>Beställning är betald</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.1">
+        <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
+        <target>Antag att beställningen är betald när den har denna status. Detta gör till exempel att filer kan laddas ner.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+        <target>Visa på välkomstskärmen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+        <target>Visa antalet beställningar med denna status på backend-välkomstskärmen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.0">
+        <source>Notification</source>
+        <target>Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.1">
+        <source>Please select a notification.</source>
+        <target>Välj ett meddelande.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.0">
+        <source>Saferpay transaction</source>
+        <target>Saferpay-transaktion</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.1">
+        <source>Please select an option if you want to automatically update the payment gateway. This only applies if the client has used &quot;Saferpay&quot; or &quot;Billpay for Saferpay&quot; payment method.</source>
+        <target>Vänligen välj ett alternativ om du vill uppdatera betalningsgatewayen automatiskt. Detta gäller endast om kunden har använt &quot;Saferpay&quot; eller &quot;Billpay for Saferpay&quot; betalningsmetod.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.capture">
+        <source>Capture payment</source>
+        <target>Registrera betalning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.cancel">
+        <source>Suggest manual payment cancellation</source>
+        <target>Föreslå manuell avbokning av betalningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.0">
+        <source>New order status</source>
+        <target>Ny orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.1">
+        <source>Create a new order status</source>
+        <target>Skapa en ny orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.0">
+        <source>Edit order status</source>
+        <target>Redigera orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.1">
+        <source>Edit order status ID %s</source>
+        <target>Redigera orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.0">
+        <source>Duplicate order status</source>
+        <target>Duplicera orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.1">
+        <source>Duplicate order status ID %s</source>
+        <target>Duplicerad orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.0">
+        <source>Move order status</source>
+        <target>Flytta orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.1">
+        <source>Move order status ID %s</source>
+        <target>Flytta orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.0">
+        <source>Delete order status</source>
+        <target>Ta bort orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.1">
+        <source>Delete order status ID %s</source>
+        <target>Ta bort orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.0">
+        <source>Order status details</source>
+        <target>Beställningsstatusdetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.1">
+        <source>Show details of order status ID %s</source>
+        <target>Visa information om orderstatus ID%s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.0">
+        <source>Paste after</source>
+        <target>Klistra in efter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.1">
+        <source>Paste after order status ID %s</source>
+        <target>Klistra in efter orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.0">
+        <source>Paste into</source>
+        <target>Klistra in i</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.1">
+        <source>Paste into order status ID %s</source>
+        <target>Klistra in i orderstatus ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.email_legend">
+        <source>E-Mail Notification</source>
+        <target>E-postmeddelande</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.payment_legend">
+        <source>Payment Gateways</source>
+        <target>Payment Gateways</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

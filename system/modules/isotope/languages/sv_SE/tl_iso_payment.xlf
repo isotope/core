@@ -1,0 +1,1018 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_payment.name.0">
+        <source>Payment Method Name</source>
+        <target>Betalningsmetods namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.name.1">
+        <source>Enter a name for this payment method. This will only be used in the backend.</source>
+        <target>Ange ett namn för denna betalningsmetod. Detta kommer endast att användas i backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.0">
+        <source>Payment Method Label</source>
+        <target>Betalningsmetodetikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.label.1">
+        <source>The label will be shown to customers on checkout.</source>
+        <target>Etiketten kommer att visas för kunderna i kassan.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.0">
+        <source>Type of Payment Gateway</source>
+        <target>Typ av betalningsgateway</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type.1">
+        <source>Select a particular payment gateway</source>
+        <target>Välj en viss betalningsgateway</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.0">
+        <source>Payment Note</source>
+        <target>Betalningsanmärkning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note.1">
+        <source>This note can be sent in confirmation mails (##payment_note##).</source>
+        <target>Denna notering kan skickas i bekräftelsemail (##payment_note##).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new_order_status.0">
+        <source>Status for new orders</source>
+        <target>Status för nya beställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new_order_status.1">
+        <source>Choose a matching status for new orders.</source>
+        <target>Välj en matchande status för nya beställningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_total.0">
+        <source>Minimum total</source>
+        <target>Minsta summa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_total.1">
+        <source>Enter a number greater zero to exclude this payment method for lower priced orders.</source>
+        <target>Ange ett nummer större noll för att utesluta denna betalningsmetod för lägre prissatta beställningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_total.0">
+        <source>Maximum total</source>
+        <target>Maximal summa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_total.1">
+        <source>Enter a number greater zero to exclude this payment method for higher priced orders.</source>
+        <target>Ange en siffra högre än noll för att utesluta denna betalningsmetod för högre prissatta beställningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_quantity.0">
+        <source>Minimum quantity</source>
+        <target>Minsta kvantitet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.minimum_quantity.1">
+        <source>Enter a number greater zero to exclude this payment method for orders with lower quantity.</source>
+        <target>Ange ett nummer större noll för att utesluta denna betalningsmetod för beställningar med lägre kvantitet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_quantity.0">
+        <source>Maximum quantity</source>
+        <target>Maximal kvantitet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.maximum_quantity.1">
+        <source>Enter a number greater zero to exclude this payment method for orders with higher quantity.</source>
+        <target>Ange ett nummer större noll för att utesluta denna betalningsmetod för beställningar med högre kvantitet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.0">
+        <source>Quantity calculation mode</source>
+        <target>Kvantitets beräkningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Välj ett beräkningsläge för min/max kvantitet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Total kvantitet i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quantity_mode.cart_products">
+        <source>Total products in cart</source>
+        <target>Totalt antal produkter i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.countries.0">
+        <source>Available countries</source>
+        <target>Tillgängliga länder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.countries.1">
+        <source>Select the countries where this payment method may be used (customer's billing address).</source>
+        <target>Välj de länder där denna betalningsmetod kan användas (kundens faktureringsadress).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.0">
+        <source>Shipping methods</source>
+        <target>Fraktmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.shipping_modules.1">
+        <source>You can restrict this payment method to certain shipping methods (e.g. Cash only when picking up).</source>
+        <target>Du kan begränsa denna betalningsmetod till vissa fraktmetoder (t.ex. endast kontanter vid hämtning).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.0">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types.1">
+        <source>You can restrict this payment method to certain product types. If the cart contains a product type you have not selected, the payment method is not available.</source>
+        <target>Du kan begränsa denna betalningsmetod till vissa produkttyper. Om varukorgen innehåller en produkttyp som du inte har valt är betalningsmetoden inte tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.0">
+        <source>Product type condition</source>
+        <target>Produkttyp skick</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Välj hur produkttypfiltret ska tillämpas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_ids.0">
+        <source>Store configurations</source>
+        <target>Shop konfigurationer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_ids.1">
+        <source>You can restrict this payment method to certain shop configurations.</source>
+        <target>Du kan begränsa denna betalningsmetod till vissa butikskonfigurationer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.0">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price.1">
+        <source>Enter a price or percent value (e.g. &quot;10&quot; or &quot;10%&quot;).</source>
+        <target>Ange ett pris eller procentvärde (t.ex. &quot;10&quot; eller &quot;10 %&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.0">
+        <source>Tax Class</source>
+        <target>Skatteklass</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.tax_class.1">
+        <source>Please select a tax class for the price.</source>
+        <target>Vänligen välj en skatteklass för priset.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.trans_type.0">
+        <source>Transaction type</source>
+        <target>Överföringstyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.trans_type.1">
+        <source>Select if you want to instantly capture the money or authorize (and hold) for a later transaction (e.g. when shipping).</source>
+        <target>Välj om du omedelbart vill fånga pengarna eller auktorisera (och behålla) för en senare transaktion (t.ex. vid leverans).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paybyway_merchant_id.0">
+        <source>Merchant ID</source>
+        <target>Säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paybyway_merchant_id.1">
+        <source>Please enter your Paybyway merchant ID. The sub-merchant ID is listed in the sub-merchants page in the merchant UI.</source>
+        <target>Ange ditt Paybyway-säljar-ID. Undersäljar-ID:t finns på sidan för undersäljare i säljarens användargränssnitt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paybyway_private_key.0">
+        <source>Private Key</source>
+        <target>Privat nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paybyway_private_key.1">
+        <source>Please enter your Paybyway private key.</source>
+        <target>Vänligen ange din Paybyway privata nyckel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.0">
+        <source>PayPal Account</source>
+        <target>PayPal Account</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_account.1">
+        <source>Enter the default email address from your PayPal-Account. Note: Check the correct spelling, and case-sensitive.</source>
+        <target>Ange standard-e-postadressen från ditt PayPal-konto. Obs: Kontrollera rätt stavning och versaler och gemener..</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.0">
+        <source>Client ID</source>
+        <target>Klient ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_client.1">
+        <source>Enter your PayPal Client ID. You must create an application on the PayPal portal to get the access details.</source>
+        <target>Ange ditt PayPal-klient-ID. Du måste skapa en applikation på PayPal-portalen för att få åtkomstinformationen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.0">
+        <source>Secret</source>
+        <target>Hemligt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.paypal_secret.1">
+        <source>Enter your PayPal API secret.</source>
+        <target>Ange din PayPal API-hemlighet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_pspid.0">
+        <source>PSPID</source>
+        <target>PSPID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_pspid.1">
+        <source>The PSPID is your unique identification for the payment method.</source>
+        <target>Die PSPID ist Ihre eindeutige Identifikation für die Zahlungsmethode.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_http_method.0">
+        <source>HTTP method</source>
+        <target>HTTP-metod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_http_method.1">
+        <source>Type of HTTP data transfer from and to the servers.</source>
+        <target>Typ av HTTP-dataöverföring från och till servrarna.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.0">
+        <source>Hash method</source>
+        <target>Hash-metod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.1">
+        <source>Hashing algorithm for data transfer from and to the servers.</source>
+        <target>Hashingalgoritm för dataöverföring från och till servrarna.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha1">
+        <source>SHA-1</source>
+        <target>SHA-1</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_method.sha512">
+        <source>SHA-512</source>
+        <target>SHA-512</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_in.0">
+        <source>SHA-IN signature</source>
+        <target>SHA-IN signatur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_in.1">
+        <source>This will be used to validate the server to server communication.</source>
+        <target>Detta kommer att användas för att validera server till server-kommunikation.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_out.0">
+        <source>SHA-OUT signature</source>
+        <target>SHA-OUT signatur</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_hash_out.1">
+        <source>This will be used to validate the server to server communication.</source>
+        <target>Detta kommer att användas för att validera server till server-kommunikation.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_dynamic_template.0">
+        <source>Dynamic template URL</source>
+        <target>Dynamisk mall-URL</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_dynamic_template.1">
+        <source>Enter a valid &lt;strong&gt;absolute&lt;/strong&gt; URL to a dynamic template here.</source>
+        <target>Ange en giltig absolut URL till en dynamisk mall här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_payment_method.0">
+        <source>Payment method</source>
+        <target>Betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.psp_payment_method.1">
+        <source>You can select a payment method here. Make sure your PSP contract also includes this payment method! If you don't select anything at all here, the customer will have to choose the preferred payment method on the PSP interface!</source>
+        <target>Du kan välja en betalningsmetod här. Se till att ditt PSP-kontrakt även innehåller denna betalningsmetod! Om du inte väljer något alls här, måste kunden välja den föredragna betalningsmetoden på PSP-gränssnittet!</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.requireCCV.0">
+        <source>Require Card Code Verification (CCV) Number</source>
+        <target>Kräv kortkodverifieringsnummer (CVV).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.requireCCV.1">
+        <source>Choose this option if you would like to increase transaction security by requiring the card code verification number.</source>
+        <target>Välj det här alternativet om du vill öka transaktionssäkerheten genom att kräva verifieringsnumret för kortkoden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.allowed_cc_types.0">
+        <source>Allowed Credit Card Types</source>
+        <target>Tillåtna kreditkortstyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.allowed_cc_types.1">
+        <source>Select which credit cards the payment method accepts.</source>
+        <target>Välj vilka kreditkort som betalningsmetoden accepterar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_id.0">
+        <source>Merchant-ID</source>
+        <target>Säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_id.1">
+        <source>Please enter your merchant ID.</source>
+        <target>Ange ditt säljar-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_sign.0">
+        <source>HMAC Key</source>
+        <target>HMAC-nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_sign.1">
+        <source>Please enter your HMAC key from the Datatrans control panel.</source>
+        <target>Vänligen ange din HMAC-nyckel från Datatrans kontrollpanel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.0">
+        <source>Hash method</source>
+        <target>Hash-metod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.1">
+        <source>Please select the hashing method configured in your Datatrans control panel.</source>
+        <target>Välj hashmetoden som konfigurerats i din Datatrans kontrollpanel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.md5">
+        <source>MD5 (outdated)</source>
+        <target>MD5 (föråldrad)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_method.sha256">
+        <source>SHA-256</source>
+        <target>SHA-256</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_convert.0">
+        <source>Convert hash to binary</source>
+        <target>Konvertera hash till binär</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.datatrans_hash_convert.1">
+        <source>Check here if the hash key needs to be converted to binary.</source>
+        <target>Kontrollera här om hash-nyckeln behöver konverteras till binär.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.vads_site_id.0">
+        <source>Site Identifier</source>
+        <target>Webbplatsidentifierare</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.vads_site_id.1">
+        <source>Please enter your payment site identifier.</source>
+        <target>Ange din betalningswebbplatsidentifierare.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.vads_certificate.0">
+        <source>Certificate</source>
+        <target>Certifikat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.vads_certificate.1">
+        <source>Please enter your TEST or PRODUCTION certificate.</source>
+        <target>Ange ditt TEST- eller PRODUKTIONScertifikat.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.0">
+        <source>Payment method</source>
+        <target>Betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.1">
+        <source>Please select a payment method for this method.</source>
+        <target>Välj en betalningsmetod för denna metod.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.creditcard">
+        <source>Credit card</source>
+        <target>Kreditkort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.maestro">
+        <source>Debig card</source>
+        <target>Kontokort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_paymentmethod.directdebit">
+        <source>Direct debit</source>
+        <target>Direktbetalning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslmerchant.0">
+        <source>Seller ID</source>
+        <target>Säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslmerchant.1">
+        <source>Please enter your seller ID (Händlerkennung).</source>
+        <target>Ange ditt säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslpassword.0">
+        <source>Password</source>
+        <target>Lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_sslpassword.1">
+        <source>Please enter your SSL-Password.</source>
+        <target>Vänligen ange ditt SSL-lösenord.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_merchantref.0">
+        <source>Reference</source>
+        <target>Referens</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sparkasse_merchantref.1">
+        <source>A reference that will be shown on the seller details page instead of the cart ID.</source>
+        <target>En referens som kommer att visas på säljarens informationssida istället för kundvagns-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.0">
+        <source>Customer ID</source>
+        <target>Kundnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_user_id.1">
+        <source>Your customer ID for sofortüberweisung.de</source>
+        <target>Ditt kund-ID för sofortüberweisung.de</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.0">
+        <source>Project ID</source>
+        <target>Projekt-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_project_id.1">
+        <source>Your project ID for sofortüberweisung.de</source>
+        <target>Ditt projekt-ID för sofortüberweisung.de</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.0">
+        <source>Projekt password</source>
+        <target>Projekt lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.sofortueberweisung_project_password.1">
+        <source>Your project password for sofortüberweisung.de</source>
+        <target>Ditt projektlösenord för DIRECTebanking.com</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_accountid.0">
+        <source>Saferpay Account ID (CustomerId-TerminalId)</source>
+        <target>Saferpay-konto-ID (CustomerId-TerminalId)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_accountid.1">
+        <source>Please enter your unique Saferpay account id. It should be in the form CustomerId-TerminalId</source>
+        <target>Ange ditt unika Saferpay-konto-id. Det ska vara i formen CustomerId-TerminalId</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_username.0">
+        <source>Saferpay API User</source>
+        <target>Saferpay API-användare</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_username.1">
+        <source>Please enter your Saferpay JSON API username.</source>
+        <target>Ange ditt Saferpay JSON API-användarnamn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_password.0">
+        <source>Saferpay API Password</source>
+        <target>Saferpay API-lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_password.1">
+        <source>Please enter your Saferpay JSON API password.</source>
+        <target>Ange ditt Saferpay JSON API-lösenord.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_description.0">
+        <source>Checkout description</source>
+        <target>Checkout beskrivningen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_description.1">
+        <source>The customer will see this description on the Saferpay checkout page.</source>
+        <target>Kunden kommer att se den här beskrivningen på Saferpay kassasidan.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_vtconfig.0">
+        <source>Payment page configuration (VTCONFIG)</source>
+        <target>Betalningssidans konfiguration (VTCONFIG)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_vtconfig.1">
+        <source>You can create different Payment Page configurations. If you want to use a specific one of them, enter its &quot;Parameter for the request&quot; value here.</source>
+        <target>Du kan skapa olika konfigurationer för betalningssidan. Om du vill använda en specifik av dem anger du dess &quot;Parameter för begäran&quot;-värdet här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_paymentmethods.0">
+        <source>Payment methods</source>
+        <target>Betalningsmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.saferpay_paymentmethods.1">
+        <source>You can limit the available payment methods (e.g. only MasterCard). If you do not select anything, all payment methods will be allowed.</source>
+        <target>Du kan begränsa de tillgängliga betalningsmetoderna (t.ex. endast MasterCard). Om du inte väljer något kommer alla betalningsmetoder att tillåtas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_popupId.0">
+        <source>ExperCash Popup-ID</source>
+        <target>ExperCash Popup ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_popupId.1">
+        <source>Geben Sie die Popup-ID aus Ihrem ExperCash Portal ein.</source>
+        <target>Ange popup-ID från din ExperCash-portal.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_profile.0">
+        <source>ExperCash Profile</source>
+        <target>ExperCash-profil</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_profile.1">
+        <source>Geben Sie die dreistellige Profilnummer ein.</source>
+        <target>Ange det tresiffriga profilnumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_popupKey.0">
+        <source>ExperCash Popup-Key</source>
+        <target>ExperCash popup-nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_popupKey.1">
+        <source>Geben Sie den Popup-Key aus Ihrem ExperCash Portal ein.</source>
+        <target>Ange popup-nyckeln från din ExperCash-portal.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.0">
+        <source>Transaktionsart</source>
+        <target>Överföringstyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.1">
+        <source>Sie können eine Transaktionsart vordefinieren oder den Kunden wählen lassen.</source>
+        <target>Du kan fördefiniera en transaktionstyp eller låta kunden välja.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.automatic_payment_method">
+        <source>Auswahl der Zahlart durch den Endkunden</source>
+        <target>Val av betalningsmetod av slutkunden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.elv_buy">
+        <source>Zahlung per Lastschrift (ELV)</source>
+        <target>Betalning med autogiro (ELV)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.elv_authorize">
+        <source>Prüfung und Speicherung von Kontodaten zum späteren Einzug</source>
+        <target>Kontrollera och spara kontodata för senare insamling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_buy">
+        <source>Kreditkartenzahlung</source>
+        <target>Keditkortsbetalning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.cc_authorize">
+        <source>verbindliche Reservierung auf eine Kreditkarte zum späteren Einzug</source>
+        <target>Bindande reservation på kreditkort för senare hämtning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.giropay">
+        <source>Transaktion über giropay</source>
+        <target>Transaktion via giropay</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_paymentMethod.sofortueberweisung">
+        <source>Transaktion über Sofortüberweisung</source>
+        <target>Transaktion via directebanking</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_css.0">
+        <source>CSS-Vorlage</source>
+        <target>CSS-mall</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expercash_css.1">
+        <source>Wählen Sie eine CSS-Datei für die Übergabe an ExperCash.</source>
+        <target>Välj en CSS-fil att skicka till ExperCash.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_merchantnumber.0">
+        <source>Merchant number</source>
+        <target>Säljarnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_merchantnumber.1">
+        <source>The unique merchant number created in ePay. This merchant number is to be found in your contract with PBS.</source>
+        <target>Det unika handlarnumret skapat i ePay. Detta handlarnummer finns i ditt avtal med PBS.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_windowstate.0">
+        <source>Integration type</source>
+        <target>integrationstyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_windowstate.1">
+        <source>Select on of the available integration options. Please note that when using the integrated payment form, you can only accept payment cards.</source>
+        <target>Välj ett av de tillgängliga integrationsalternativen. Observera att när du använder det integrerade betalningsformuläret kan du endast acceptera betalkort.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_secretkey.0">
+        <source>Secret key</source>
+        <target>Hemlig nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_secretkey.1">
+        <source>The secret key set up in your ePay configuration.</source>
+        <target>Den hemliga nyckeln som ställs in i din ePay-konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_clearingtype.0">
+        <source>Clearing type</source>
+        <target>Clearing typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_clearingtype.1">
+        <source>Please choose a clearing type.</source>
+        <target>Välj en clearingtyp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_aid.0">
+        <source>PAYONE subaccount ID (aid)</source>
+        <target>PAYONE-underkonto-ID (aid)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_aid.1">
+        <source>Please enter your unique PAYONE subaccount ID (aid).</source>
+        <target>Ange ditt unika PAYONE-underkonto-ID (aid).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_portalid.0">
+        <source>PAYONE Portal ID</source>
+        <target>PAYONE Portal ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_portalid.1">
+        <source>Please enter your unique PAYONE portal ID.</source>
+        <target>Ange ditt unika PAYONE-portal-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_key.0">
+        <source>Secret key</source>
+        <target>Hemlig nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone_key.1">
+        <source>Enter the secret key you specified for this portal.</source>
+        <target>Ange den hemliga nyckeln du angav för den här portalen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_instId.0">
+        <source>Installation ID</source>
+        <target>Installations-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_instId.1">
+        <source>Please enter your WorldPay Installation ID</source>
+        <target>Ange ditt WorldPay installations-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_callbackPW.0">
+        <source>Transaction Password</source>
+        <target>Transaktionslösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_callbackPW.1">
+        <source>Enter the same transaction password as in your WorldPay configuration.</source>
+        <target>Ange samma transaktionslösenord som i din WorldPay-konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_signatureFields.0">
+        <source>SignatureFields</source>
+        <target>Signaturfält</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_signatureFields.1">
+        <source>Enter the same SignatureField value as in your WorldPay configuration.</source>
+        <target>Ange samma SignatureField-värde som i din WorldPay-konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_md5secret.0">
+        <source>MD5 Secret</source>
+        <target>MD5 hemlighet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_md5secret.1">
+        <source>Enter the same MD5 secret value as in your WorldPay configuration.</source>
+        <target>Ange samma MD5-hemliga värde som i din WorldPay-konfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_description.0">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.worldpay_description.1">
+        <source>Enter a description for your store. It will be shown to the customer on the worldpay checkout process.</source>
+        <target>Ange en beskrivning för din butik. Det kommer att visas för kunden i worldpay-utcheckningsprocessen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_merchantId.0">
+        <source>Merchant ID</source>
+        <target>Säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_merchantId.1">
+        <source>Please enter your merchant ID.</source>
+        <target>Ange ditt säljar-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_agreementId.0">
+        <source>Agreement ID</source>
+        <target>Avtals-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_agreementId.1">
+        <source>Please enter your agreement ID.</source>
+        <target>Ange ditt avtals-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_apiKey.0">
+        <source>API key</source>
+        <target>API-nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_apiKey.1">
+        <source>Please enter your API key.</source>
+        <target>Ange ditt avtals-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_privateKey.0">
+        <source>Private key</source>
+        <target>Privat nyckel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_privateKey.1">
+        <source>Please enter your private key.</source>
+        <target>Vänligen ange din privata nyckel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_paymentMethods.0">
+        <source>Payment methods</source>
+        <target>Betalningsmetoder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.quickpay_paymentMethods.1">
+        <source>Enter a configuration string to limit the payment methods. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;More Information&lt;/a&gt;.</source>
+        <target>Ange en konfigurationssträng för att begränsa betalningsmetoderna. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;Mer information&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.0">
+        <source>Entity/Channel ID</source>
+        <target>Entitet/kanal-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.1">
+        <source>Please enter your entity or channel ID</source>
+        <target>Ange ditt entitet- eller kanal-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.0">
+        <source>Authentication Scheme</source>
+        <target>Autentiseringsschema</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.1">
+        <source>Select the authentication scheme of your Open Payment provider.</source>
+        <target>Välj autentiseringsschemat för din Open Payment-leverantör.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.user">
+        <source>User ID &amp; Password</source>
+        <target>Användar-ID och lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.token">
+        <source>Authentication Token</source>
+        <target>Autentiseringstoken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.0">
+        <source>Authentication Token</source>
+        <target>Autentiseringstoken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.1">
+        <source>Please enter your authentication token.</source>
+        <target>Ange din autentiseringstoken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.0">
+        <source>User ID</source>
+        <target>Användar ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_user_id.1">
+        <source>Please enter your user ID.</source>
+        <target>Ange ditt användar-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.0">
+        <source>Password</source>
+        <target>Lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_password.1">
+        <source>Please enter your user password.</source>
+        <target>Vänligen ange ditt användarlösenord.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.0">
+        <source>Payment Brands</source>
+        <target>Betalningsmärken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.1">
+        <source>Select the payment brands you want to support in this payment method.</source>
+        <target>Välj de betalningsmärken du vill stödja i den här betalningsmetoden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.AMEX">
+        <source>American Express</source>
+        <target>American Express</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DINERS">
+        <source>Diners Club</source>
+        <target>Diners Club</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.DIRECTDEBIT_SEPA">
+        <source>SEPA Direct Debit</source>
+        <target>SEPA Direct Debit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.GIROPAY">
+        <source>giropay</source>
+        <target>giropay</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.JCB">
+        <source>JCB</source>
+        <target>JCB</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INSTALLMENTS">
+        <source>Klarna Ratenkauf</source>
+        <target>Klarna avbetalningsköp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.KLARNA_INVOICE">
+        <source>Klarna Rechnung</source>
+        <target>Klarna faktura</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.MASTER">
+        <source>MasterCard</source>
+        <target>MasterCard</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYDIREKT">
+        <source>paydirect</source>
+        <target>paydirect</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.PAYPAL">
+        <source>PayPal</source>
+        <target>PayPal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.RATENKAUF">
+        <source>Ratenkauf by easyCredit</source>
+        <target>Avbetalningsköp av easyCredit</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.SOFORTUEBERWEISUNG">
+        <source>SOFORTüberweisung</source>
+        <target>Directebanking</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_brands.VISA">
+        <source>VISA</source>
+        <target>VISA</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.0">
+        <source>Merchant ID</source>
+        <target>Säljar-ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_merchant.1">
+        <source>Please enter your merchant ID.</source>
+        <target>Ange ditt säljar-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.0">
+        <source>Password</source>
+        <target>Lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.mpay24_password.1">
+        <source>Please enter your SOAP password.</source>
+        <target>Vänligen ange ditt SOAP-lösenord.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.0">
+        <source>SwissBilling ID</source>
+        <target>SwissBilling ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.1">
+        <source>Please enter your SwissBilling ID.</source>
+        <target>Ange ditt SwissBilling-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.0">
+        <source>Password</source>
+        <target>Lösenord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.1">
+        <source>Please enter your SwissBilling password.</source>
+        <target>Vänligen ange ditt SwissBilling-lösenord.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.0">
+        <source>Enable PreScreening</source>
+        <target>Aktivera PreScreening</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.1">
+        <source>Only show payment option if allowed by SwissBilling. Please check with SwissBilling before activating this option.</source>
+        <target>Visa endast betalningsalternativ om det tillåts av SwissBilling. Kontrollera med SwissBilling innan du aktiverar det här alternativet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.0">
+        <source>Enable B2B support</source>
+        <target>Aktivera B2B-stöd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
+        <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
+        <target>Aktivera B2B-stöd för SwissBilling-betalningar. Kontrollera med SwissBilling innan du aktiverar det här alternativet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.groups.0">
+        <source>Member groups</source>
+        <target>Medlemsgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.groups.1">
+        <source>Restrict this payment method to certain member groups.</source>
+        <target>Begränsa denna betalningsmetod till vissa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.protected.0">
+        <source>Protect payment method</source>
+        <target>Skydda betalningssätt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.protected.1">
+        <source>Show the payment method to certain member groups only.</source>
+        <target>Visa endast betalningsmetoden för vissa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.guests.0">
+        <source>Show to guests only</source>
+        <target>Visa endast för gäster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.guests.1">
+        <source>Hide the payment method if a member is logged in.</source>
+        <target>Dölj betalningsmetoden om en medlem är inloggad.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.0">
+        <source>Debug mode</source>
+        <target>Felsökningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.debug.1">
+        <source>For testing without actually capturing for payment.</source>
+        <target>För att testa utan att faktiskt registrera betalning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.0">
+        <source>Enable logging</source>
+        <target>Aktivera loggning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.logging.1">
+        <source>Write transaction information to the system log files.</source>
+        <target>Skriv transaktionsinformation till systemloggfilerna.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiverad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled.1">
+        <source>Check here if the payment method should be enabled in the store.</source>
+        <target>Markera här om betalningsmetoden ska vara aktiverad i butiken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new.0">
+        <source>New payment method</source>
+        <target>Ny betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.new.1">
+        <source>Create a new payment method</source>
+        <target>Skapa en ny betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.edit.0">
+        <source>Edit payment method</source>
+        <target>Redigera betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.edit.1">
+        <source>Edit payment method ID %s</source>
+        <target>Redigera betalningsmetod ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.copy.0">
+        <source>Copy payment method</source>
+        <target>Kopiera betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.copy.1">
+        <source>Copy payment method ID %s</source>
+        <target>Kopiera betalningsmetod ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.delete.0">
+        <source>Delete payment method</source>
+        <target>Ta bort betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.delete.1">
+        <source>Delete payment method ID %s</source>
+        <target>Ta bort betalningsmetod ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.toggle.0">
+        <source>Enable/disable payment method</source>
+        <target>Aktivera/inaktivera betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.toggle.1">
+        <source>Enable/disable payment method ID %s</source>
+        <target>Enable/disable payment method ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.show.0">
+        <source>Payment method details</source>
+        <target>Betalningsmetod detaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.show.1">
+        <source>Show details of payment method ID %s</source>
+        <target>Visa information om betalningsmetod ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.capture.0">
+        <source>Authorize and Capture</source>
+        <target>Auktorisera och registrera</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.capture.1">
+        <source>Transactions of this type will be sent for authorization. The transaction will be automatically picked up for settlement if approved.</source>
+        <target>Transaktioner av denna typ kommer att skickas för auktorisering. Transaktionen hämtas automatiskt för avveckling om den godkänns.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.auth.0">
+        <source>Authorize Only</source>
+        <target>Endast auktorisera</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.auth.1">
+        <source>Transactions of this type are submitted if the merchant wishes to validate the credit card for the amount of the goods sold. If the merchant does not have goods in stock or wishes to review orders before shipping the goods, this transaction type should be submitted.</source>
+        <target>Transaktioner av denna typ görs om handlaren vill validera kreditkortet för beloppet av de sålda varorna. Om handlaren inte har varor i lager eller vill granska beställningar innan varorna skickas, ska denna transaktionstyp anges.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.no_shipping">
+        <source>Orders without shipping</source>
+        <target>Beställningar utan frakt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+        <target>Enable if only these product types are in cart</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.notAvailable">
+        <source>Disable if one of these product types are in cart</source>
+        <target>Inaktivera om någon av dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+        <target>Aktivera om alla dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+        <target>Aktivera om en av dessa produkttyper finns i kundvagnen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.elv">
+        <source>Debit withdrawal</source>
+        <target>Debetuttag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.cc">
+        <source>Credit card</source>
+        <target>Kreditkort</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.dc">
+        <source>Debit card</source>
+        <target>Debit card</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.vor">
+        <source>Prepayment</source>
+        <target>Förskottsbetalning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.rec">
+        <source>Invoice</source>
+        <target>Faktura</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.sb">
+        <source>Online bank transfer (SOFORT/Giropay/PostFinance/iDEAL)</source>
+        <target>Banköverföring online (SOFORT/Giropay/PostFinance/iDEAL)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.wlt">
+        <source>e-Wallet (PayPal)</source>
+        <target>e-Wallet (PayPal)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.payone.fnc">
+        <source>Financing (BillSAFE Invoice)</source>
+        <target>Financing (BillSAFE Invoice)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_windowstate_options.3">
+        <source>Full screen</source>
+        <target>Fullskärm</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.epay_windowstate_options.4">
+        <source>Integrated payment form</source>
+        <target>Integrerad betalningsform</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.type_legend">
+        <source>Name &amp; Type</source>
+        <target>Namn &amp; Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.note_legend">
+        <source>Additional notes</source>
+        <target>Ytterligare anmärkningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.config_legend">
+        <source>General configuration</source>
+        <target>Allmän konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.gateway_legend">
+        <source>Payment gateway configuration</source>
+        <target>Konfiguration av betalningsgateway</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.price_legend">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.template_legend">
+        <source>Template</source>
+        <target>Mall</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.expert_legend">
+        <source>Expert settings</source>
+        <target>Expertinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.enabled_legend">
+        <source>Approval</source>
+        <target>Godkännande</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,522 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_product.id.0">
+        <source>Product ID</source>
+        <target>Produkt ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.0">
+        <source>Categories</source>
+        <target>Kategorier</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pages.1">
+        <source>Select a category (page-based categories take advantage of Contao pages features such as navigation automation, protection, templates, and full integration with content elements.</source>
+        <target>Välj en kategori (sidbaserade kategorier drar fördel av Contao-sidornas funktioner som navigationsautomation, skydd, mallar och fullständig integrering med innehållselement.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.0">
+        <source>Product type</source>
+        <target>Produkttyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.type.1">
+        <source>Select your product type. Product types are defined in the store configuration.</source>
+        <target>Välj din produkttyp. Produkttyper definieras i butikskonfigurationen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.0">
+        <source>Default variant</source>
+        <target>Standardvariant</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.fallback.1">
+        <source>Click here if this variant should be pre-selected by default.</source>
+        <target>Klicka här om denna variant ska vara förvald som standard.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.0">
+        <source>Alias</source>
+        <target>Alias</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.alias.1">
+        <source>You can enter a unique alias for this product. It will be automatically generated from the name if empty.</source>
+        <target>Du kan ange ett unikt alias för denna produkt. Det kommer att genereras automatiskt från namnet om det är tomt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.name.1">
+        <source>Please enter the name of this product.</source>
+        <target>Vänligen ange namnet på denna produkt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.gtin.0">
+        <source>GTIN (Global Trade Item Number)</source>
+        <target>GTIN (Global Trade Item Number)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.gtin.1">
+        <source>Please enter a unique GTIN (or EAN number).</source>
+        <target>Ange ett unikt GTIN (eller EAN-nummer).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.0">
+        <source>SKU</source>
+        <target>SKU</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sku.1">
+        <source>Please enter a unique stock keeping unit for this product.</source>
+        <target>Ange en unik lagerhållningsenhet för denna produkt.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.0">
+        <source>Shipping weight</source>
+        <target>Fraktvikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_weight.1">
+        <source>Please enter the shipping weight for this product. This can be used to calculate shipping cost.</source>
+        <target>Vänligen ange fraktvikten för denna produkt. Detta kan användas för att beräkna fraktkostnader.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.0">
+        <source>Shipping price</source>
+        <target>Fraktkostnad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_price.1">
+        <source>Please enter the shipping price for this product. This can be used to calculate shipping cost.</source>
+        <target>Please enter the shipping price for this product. This can be used to calculate shipping cost.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.0">
+        <source>Teaser</source>
+        <target>Förhandstitt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.teaser.1">
+        <source>Please enter the teaser.</source>
+        <target>Vänligen ange teasern.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.0">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.description.1">
+        <source>Please enter the product description.</source>
+        <target>Vänligen ange produktbeskrivningen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.0">
+        <source>Meta title</source>
+        <target>Meta titel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_title.1">
+        <source>Meta title is used as page title in the product detail view. If you leave it empty, the product name will be used.</source>
+        <target>Metatitel används som sidtitel i produktdetaljvyn. Om du lämnar den tom kommer produktnamnet att användas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.0">
+        <source>Meta description</source>
+        <target>Metabeskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_description.1">
+        <source>Meta description will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Metabeskrivning kommer att placeras i rubriken på produktdetaljsidan, för sökmotoroptimering.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.0">
+        <source>Meta keywords</source>
+        <target>Meta nyckelord</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_keywords.1">
+        <source>Meta keywords will be placed in the header on product detail page, for search engine optimization.</source>
+        <target>Meta keywords will be placed in the header on product detail page, for search engine optimization.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.0">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price.1">
+        <source>Please enter the price(s) for this product and select the tax class.</source>
+        <target>Vänligen ange priset/priserna för denna produkt och välj skatteklass.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.0">
+        <source>Exempt from shipping</source>
+        <target>Befriad från frakt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_exempt.1">
+        <source>Check if item is not a shipped item (such as downloadable products).</source>
+        <target>Kontrollera om varan är en inte skickad vara (som nedladdningsbara produkter).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.0">
+        <source>Pickup only</source>
+        <target>Endast upphämtning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.1">
+        <source>Check if item can only be picked up (such as fresh or oversized products).</source>
+        <target>Kontrollera om varan endast kan hämtas (som färska eller överdimensionerade produkter).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.0">
+        <source>Base price amount</source>
+        <target>Grundpreisbetrag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.baseprice.1">
+        <source>Enter the amount to calculate the base price (e.g. &quot;1500&quot; if your product is 1500 grams).</source>
+        <target>Ange beloppet för att beräkna baspriset (t.ex. &quot;1500&quot; om din produkt är 1500 gram).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.0">
+        <source>Images</source>
+        <target>Bilder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.images.1">
+        <source>Upload images to this product. Please save the product after selecting a file.</source>
+        <target>Ladda upp bilder till denna produkt. Spara produkten efter att ha valt en fil.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.0">
+        <source>Protect product</source>
+        <target>Skydda produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.protected.1">
+        <source>Restrict product access to certain member groups.</source>
+        <target>Begränsa produktåtkomst till vissa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.0">
+        <source>Allowed member groups</source>
+        <target>Tillåtna medlemsgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groups.1">
+        <source>These groups will be able to access the product.</source>
+        <target>Dessa grupper kommer att kunna komma åt produkten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.0">
+        <source>Show to guests only</source>
+        <target>Visa endast för gäster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.guests.1">
+        <source>Hide the product if there is an authenticated user.</source>
+        <target>Dölj produkten om det finns en autentiserad användare.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.0">
+        <source>CSS ID/class</source>
+        <target>CSS ID/class</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cssID.1">
+        <source>Here you can set an ID and one or more classes.</source>
+        <target>Här kan du ställa in ett ID och en eller flera klasser.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.0">
+        <source>Publish product</source>
+        <target>Publicera produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.published.1">
+        <source>Click here to show this product on your website.</source>
+        <target>Klicka här för att visa denna produkt på din webbplats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.0">
+        <source>Start date</source>
+        <target>Start datum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.start.1">
+        <source>Do not show this product before the date specified.</source>
+        <target>Visa inte denna produkt före angivet datum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.0">
+        <source>Stop date</source>
+        <target>Stoppdatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.stop.1">
+        <source>Do not show this product after the date specified.</source>
+        <target>Visa inte denna produkt efter det angivna datumet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.0">
+        <source>Inherited attributes</source>
+        <target>Ärvda attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inherit.1">
+        <source>Check the fields you want to inherit from base product.</source>
+        <target>Markera fälten du vill ärva från basprodukten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.0">
+        <source>Source folder</source>
+        <target>Källmapp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.source.1">
+        <source>Please choose the folder where product assets are located.</source>
+        <target>Vänligen välj mappen där produkttillgångarna finns.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmSrc">
+        <source>Preview</source>
+        <target>Förhandsvisning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmAlt">
+        <source>Alternate text</source>
+        <target>Alternativ text</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmLink">
+        <source>Link target</source>
+        <target>Länkmål</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmDesc">
+        <source>Description</source>
+        <target>Beskrivning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslate">
+        <source>Translate</source>
+        <target>Översätt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.0">
+        <source>None</source>
+        <target>Ingen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateNone.1">
+        <source>Do not translate this image.</source>
+        <target>Do not translate this image.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.0">
+        <source>Text</source>
+        <target>Text</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateText.1">
+        <source>Translate alt text and description for this image.</source>
+        <target>Översätt alternativ text och beskrivning för denna bild.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.0">
+        <source>All</source>
+        <target>Allt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.mmTranslateAll.1">
+        <source>Do not include this image in translated version.</source>
+        <target>Inkludera inte denna bild i översatt version.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variantValuesLabel">
+        <source>Variant</source>
+        <target>Variant</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.showVariants">
+        <source>Show product variants</source>
+        <target>Visa produktvarianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.0">
+        <source>New product</source>
+        <target>Ny produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new.1">
+        <source>Create new product</source>
+        <target>Skapa ny produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.0">
+        <source>Add variant</source>
+        <target>Lägg till variant</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.new_variant.1">
+        <source>Add new variant to a given product</source>
+        <target>Lägg till en ny variant till en given produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.0">
+        <source>Edit product</source>
+        <target>Redigera produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.edit.1">
+        <source>Edit product ID %s</source>
+        <target>Redigera produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.0">
+        <source>Copy product</source>
+        <target>Kopiera produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.copy.1">
+        <source>Copy product ID %s</source>
+        <target>Kopiera produkten ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.0">
+        <source>Move product</source>
+        <target>Flytta produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.cut.1">
+        <source>Move product ID %s</source>
+        <target>Flytta produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.0">
+        <source>Delete product</source>
+        <target>Ta bort produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.delete.1">
+        <source>Delete product ID %s</source>
+        <target>Ta bort produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.0">
+        <source>Publish/unpublish product</source>
+        <target>Publicera/avpublicera produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.toggle.1">
+        <source>Publish/unpublish product ID %s</source>
+        <target>Publicera/avpublicera produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.0">
+        <source>Product details</source>
+        <target>Produktinformation</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.show.1">
+        <source>Show details of product ID %s</source>
+        <target>Visa information om produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter">
+        <source>Advanced filter:</source>
+        <target>Avancerat filter:</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_noimages">
+        <source>Without images</source>
+        <target>Utan bilder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_nocategory">
+        <source>Unassigned products</source>
+        <target>Otilldelade produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new">
+        <source>New products</source>
+        <target>Nya produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_today">
+        <source>Added today</source>
+        <target>Lades till idag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_week">
+        <source>Added this week</source>
+        <target>Lades till denna vecka</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.filter_new_month">
+        <source>Added this month</source>
+        <target>Tillagd denna månad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.sorting">
+        <source>Manually sort products in a page</source>
+        <target>Sortera produkter manuellt på en sida</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.0">
+        <source>Product groups</source>
+        <target>Produktgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.product_groups.1">
+        <source>Manage product groups</source>
+        <target>Hantera produktgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.0">
+        <source>Import assets</source>
+        <target>Importera tillgångar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.import.1">
+        <source>Import images and other media from a folder</source>
+        <target>Importera bilder och andra media från en mapp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.0">
+        <source>Manage prices</source>
+        <target>Hantera priser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.1">
+        <source>Click the button to manage advanced prices for this product.</source>
+        <target>Click the button to manage advanced prices for this product.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.prices.apply_and_close">
+        <source>Apply and close</source>
+        <target>Applicera och stäng</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.0">
+        <source>Product variants</source>
+        <target>Product variants</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.variants.1">
+        <source>Show variants for product ID %s</source>
+        <target>Show variants for product ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.0">
+        <source>Generate variants</source>
+        <target>Skapa varianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.generate.1">
+        <source>Generate variants for product ID %s</source>
+        <target>Generera varianter för produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.0">
+        <source>Related products</source>
+        <target>Relaterade produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.related.1">
+        <source>Manage related products for product ID %s</source>
+        <target>Hantera relaterade produkter för produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.0">
+        <source>Downloads</source>
+        <target>Downloads</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.1">
+        <source>Edit downloads for product ID %s</source>
+        <target>Redigera nedladdningar för produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.downloads.2">
+        <source>Currently: %s downloads.</source>
+        <target>För närvarande: %s nedladdningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.0">
+        <source>Move to group</source>
+        <target>Flytta till grupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.group.1">
+        <source>Move product ID %s to a group</source>
+        <target>Flytta produkt ID %s till en grupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.groupSelected">
+        <source>Group</source>
+        <target>Grupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.general_legend">
+        <source>General Settings</source>
+        <target>Allmänna Inställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.meta_legend">
+        <source>Meta data</source>
+        <target>Metadata</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.pricing_legend">
+        <source>Pricing Settings</source>
+        <target>Prisinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.inventory_legend">
+        <source>Inventory Settings</source>
+        <target>Lagerinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_legend">
+        <source>Shipping Settings</source>
+        <target>Fraktinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.options_legend">
+        <source>Product Options Settings</source>
+        <target>Inställningar för produktalternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.media_legend">
+        <source>Media Management</source>
+        <target>Mediehantering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.expert_legend">
+        <source>Expert settings</source>
+        <target>Expertinställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.publish_legend">
+        <source>Publishing</source>
+        <target>Publishing</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min">
+        <source>Quantity</source>
+        <target>Antal</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.min_format">
+        <source>from %s pcs.</source>
+        <target>från %s st.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.price_tiers.price">
+        <source>Price</source>
+        <target>Pris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.importAssetsDescr">
+        <source>&lt;p&gt;There are two different ways this feature may be used:&lt;/p&gt;
+&lt;ol&gt;
+    &lt;li&gt;The source folder you select contains files that either match the product's SKU or name. Isotope eCommerce is going to match all the files against all of your products and import them into the respective product's assets folder.&lt;/li&gt;
+    &lt;li&gt;The source folder you select contains subfolders that either match the product's SKU or name. Isotope eCommerce is going to match all the subfolders against all of your products and import everything within one subfolder into the respective product's asset folder.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Hint: Any developer can provide you with other matching rules than just the product's SKU or name.&lt;/p&gt;
+</source>
+        <target>&lt;p&gt;Det finns två olika sätt att använda den här funktionen:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Källmappen du väljer innehåller filer som antingen matchar produktens SKU eller namn. Isotope eCommerce kommer att matcha alla filer mot alla dina produkter och importera dem till respektive produkts tillgångsmapp.&lt;/li&gt;
+&lt;li&gt;Källmappen du väljer innehåller undermappar som antingen matchar produktens SKU eller namn. Isotope eCommerce kommer att matcha alla undermappar mot alla dina produkter och importera allt inom en undermapp till respektive produkts tillgångsmapp.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Tips: Alla utvecklare kan ge dig andra matchningsregler än bara produktens SKU eller namn.&lt;/p&gt;
+</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

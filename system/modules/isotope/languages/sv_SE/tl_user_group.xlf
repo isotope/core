@@ -1,0 +1,142 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_user_group.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_user_group.isotope_legend">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Isotopmoduler</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Välj vilka butikskonfigurationsmoduler som användaren av denna grupp kan komma åt.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_types.0">
+        <source>Allowed product types</source>
+        <target>Tillåtna produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_types.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Här kan du ge tillgång till en eller flera produkttyper.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_typep.0">
+        <source>Product type permissions</source>
+        <target>Produkttypsbehörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_typep.1">
+        <source>Here you can define the product type permissions.</source>
+        <target>Här kan du definiera produkttypsbehörigheterna.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modules.0">
+        <source>Allowed payment modules</source>
+        <target>Tillåtna betalningsmoduler</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modules.1">
+        <source>Here you can grant access to one or more payment modules.</source>
+        <target>Här kan du ge tillgång till en eller flera betalningsmoduler.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modulep.0">
+        <source>Payment module permissions</source>
+        <target>Betalningsmodulens behörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modulep.1">
+        <source>Here you can define the payment module permissions.</source>
+        <target>Här kan du definiera betalningsmodulens behörigheter.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modules.0">
+        <source>Allowed shipping modules</source>
+        <target>Tillåtna fraktmoduler</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modules.1">
+        <source>Here you can grant access to one or more shipping modules.</source>
+        <target>Här kan du ge tillgång till en eller flera fraktmoduler.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modulep.0">
+        <source>Shipping module permissions</source>
+        <target>Behörigheter för fraktmoduler</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modulep.1">
+        <source>Here you can define the shipping module permissions.</source>
+        <target>Här kan du definiera fraktmodulens behörigheter.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.0">
+        <source>Allowed tax classes</source>
+        <target>Tillåtna skatteklasser</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.1">
+        <source>Here you can grant access to one or more tax classes.</source>
+        <target>Här kan du ge tillgång till en eller flera skatteklasser.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classp.0">
+        <source>Tax class permissions</source>
+        <target>Skatteklassbehörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classp.1">
+        <source>Here you can define the tax class permissions.</source>
+        <target>Här kan du definiera skatteklassbehörigheterna.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.0">
+        <source>Allowed tax rates</source>
+        <target>Tillåtna skattesatser</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.1">
+        <source>Here you can grant access to one or more tax rates.</source>
+        <target>Här kan du ge tillgång till en eller flera skattesatser.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_ratep.0">
+        <source>Tax rate permissions</source>
+        <target>Skattesatsbehörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_ratep.1">
+        <source>Here you can define the tax rate permissions.</source>
+        <target>Här kan du definiera skattesatsbehörigheterna.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Tillåtna butikskonfigurationer</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Här kan du ge åtkomst till en eller flera butikskonfigurationer.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configp.0">
+        <source>Store configuration permissions</source>
+        <target>Butikskonfigurations behörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configp.1">
+        <source>Here you can define the store configuration permissions.</source>
+        <target>Här kan du definiera butikskonfigurationsbehörigheterna.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groups.0">
+        <source>Allowed product groups</source>
+        <target>Tillåtna produktgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groups.1">
+        <source>Limit access to product groups for this user group. Gets inherited.</source>
+        <target>Begränsa åtkomsten till produktgrupper för denna användargrupp. Går i arv.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groupp.0">
+        <source>Product group permissions</source>
+        <target>Produktgruppsbehörigheter</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groupp.1">
+        <source>Here you can define the product group permissions.</source>
+        <target>Här kan du definiera produktgruppsbehörigheterna.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.0">
+        <source>Allowed member groups</source>
+        <target>Tillåtna medlemsgrupper</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+        <target>Backend-användare kan bara se beställningar av dessa medlemsgrupper.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Gäster</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

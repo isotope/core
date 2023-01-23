@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_related_category.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_related_category.name.0">
+        <source>Category name</source>
+        <target>Kategori namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name.1">
+        <source>Please enter a name for this category.</source>
+        <target>Ange ett namn för denna kategori.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.new.0">
+        <source>New category</source>
+        <target>Ny kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.new.1">
+        <source>Create a new category</source>
+        <target>Skapa en ny kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.edit.0">
+        <source>Edit category</source>
+        <target>Redigera kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.edit.1">
+        <source>Edit category ID %s</source>
+        <target>Redigera kategori ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.copy.0">
+        <source>Duplicate category</source>
+        <target>Duplicera kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.copy.1">
+        <source>Duplicate category ID %s</source>
+        <target>Duplicera kategori ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.delete.0">
+        <source>Delete category</source>
+        <target>Ta bort kategori</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.delete.1">
+        <source>Delete category ID %s</source>
+        <target>Ta bort kategori ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.show.0">
+        <source>Category details</source>
+        <target>Kategoridetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.show.1">
+        <source>Show details of category ID %s</source>
+        <target>Visa information om kategori ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_related_category.name_legend">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
