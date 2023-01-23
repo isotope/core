@@ -190,7 +190,7 @@ class MediaManager extends Widget implements \uploadable
 
         if (\is_array($arrFallback)) {
             foreach ($arrFallback as $k => $arrImage) {
-                if ('all' === $arrImage['translate']) {
+                if ('all' === ($arrImage['translate'] ?? null)) {
                     unset($arrFallback[$k]);
                 }
             }
@@ -402,13 +402,13 @@ class MediaManager extends Widget implements \uploadable
         '.($blnLanguage ? ('<input type="hidden" name="' . $this->strName . '['.$i.'][translate]" value="'.$this->varValue[$i]['translate'].'">') : '').'
         <fieldset class="radio_container">
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.Widget::optionChecked('none', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_none" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="none"'.Widget::optionChecked('none', $this->varValue[$i]['translate'] ?? null).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_none" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateNone'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.Widget::optionChecked('text', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_text" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="text"'.Widget::optionChecked('text', $this->varValue[$i]['translate'] ?? null).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_text" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateText'][0].'</label></span>
             <span>
-                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.Widget::optionChecked('all', $this->varValue[$i]['translate']).($blnLanguage ? ' disabled="disabled"' : '').'>
+                <input id="' . $this->strName . '_'.$i.'_translate_all" name="' . $this->strName . '['.$i.'][translate]" type="radio" class="tl_radio" value="all"'.Widget::optionChecked('all', $this->varValue[$i]['translate'] ?? null).($blnLanguage ? ' disabled="disabled"' : '').'>
                 <label for="' . $this->strName . '_'.$i.'_translate_all" title="'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][1].'">'.$GLOBALS['TL_LANG'][$this->strTable]['mmTranslateAll'][0].'</label></span>
         </fieldset>
     </td>
