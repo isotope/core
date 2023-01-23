@@ -21,6 +21,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Hashids\Hashids;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -611,6 +612,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
 
             return $arrButtons;
+        };
+
+        $objTemplate->hitCountUrl = function () {
+            $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
+
+            return System::getContainer()
+                ->get('router')
+                ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
+            ;
         };
 
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
