@@ -231,6 +231,10 @@ class DcaManager extends Backend
         }
 
         foreach (array_diff(array_keys($GLOBALS['TL_DCA'][Product::getTable()]['fields']), array_unique($arrAttributes)) as $field) {
+            if ($GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['attributes']['systemColumn'] ?? false) {
+                continue;
+            }
+
             $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['filter'] = false;
             $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['sorting'] = false;
             $GLOBALS['TL_DCA'][Product::getTable()]['fields'][$field]['search'] = false;
