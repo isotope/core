@@ -103,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
         'paybyway'                  => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paybyway_merchant_id,paybyway_private_key;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'paypal'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_account;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'paypal_plus'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_client,paypal_secret;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
-        'paypal_checkout'           => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_client,paypal_secret;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
+        'paypal_checkout'           => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},paypal_client,paypal_secret,paypal_enable_funding;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'postfinance'               => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template,psp_payment_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'viveum'                    => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},psp_pspid,psp_http_method,psp_hash_method,psp_hash_in,psp_hash_out,psp_dynamic_template,psp_payment_method;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
         'datatrans'                 => '{type_legend},name,label,type;{note_legend:hide},note;{config_legend},new_order_status,trans_type,quantity_mode,minimum_quantity,maximum_quantity,minimum_total,maximum_total,countries,shipping_modules,product_types,product_types_condition,config_ids;{gateway_legend},datatrans_id,datatrans_sign,datatrans_hash_method,datatrans_hash_convert;{price_legend:hide},price,tax_class;{expert_legend:hide},guests,protected;{enabled_legend},enabled,debug,logging',
@@ -343,6 +343,18 @@ $GLOBALS['TL_DCA']['tl_iso_payment'] = array
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>128, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(128) NOT NULL default ''",
+        ),
+        'paypal_enable_funding' => array
+        (
+            'exclude'               => true,
+            'inputType'             => 'select',
+            'options'               => \Isotope\Model\Payment\PaypalCheckout::$enableFundingParameters,
+            'options_callback'      => function() {
+                return \Isotope\Model\Payment\PaypalCheckout::getEnableFundingOptions();
+            },
+            'reference'             => &$GLOBALS['TL_LANG']['tl_iso_payment']['paypal_enable_funding'],
+            'eval'                  => array('multiple'=>true, 'size'=>8, 'tl_class'=>'w50 w50h', 'chosen'=>true),
+            'sql'                   => "blob NULL",
         ),
         'psp_pspid' => array
         (
