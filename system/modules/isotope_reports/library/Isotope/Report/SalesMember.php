@@ -30,10 +30,10 @@ class SalesMember extends Sales
     {
         $arrSession    = \Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
+        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $intStart  = (int) $arrSession[$this->name]['start'];
         $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         $period   = PeriodFactory::create('day');
         $intStart = $period->getPeriodStart($intStart);
@@ -97,7 +97,7 @@ class SalesMember extends Sales
 
         $arrData['header'] = [
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['customer#'], // TODO: Label
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['customer#'],
                 'header'        => true,
             ],
             [
@@ -117,7 +117,7 @@ class SalesMember extends Sales
                 'attributes'    => ' style="text-align:right"',
             ],
             [
-                'value'         => 'Vgl. Vorjahr', // TODO: Add label
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['comparePrevYear#'],
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
@@ -156,7 +156,7 @@ class SalesMember extends Sales
             $label = '';
 
             if ($objData->member == 0) {
-                $label = '<b>Gastbestellungen</b>'; // TODO: Add labels
+                $label = '<strong>' . $GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] . '</strong>';
             } else if ($objData->company) {
                 $label = $objData->company;
             }
