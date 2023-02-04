@@ -48,7 +48,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                 'sales_member' => array
                 (
                     'callback'          => 'Isotope\Report\SalesMember',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales_member'], // TODO: create
+                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales_member'],
                     'icon'              => 'system/modules/isotope_reports/assets/sales_member.png',
                     'panels' => array
                     (
