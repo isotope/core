@@ -23,7 +23,7 @@ $GLOBALS['ISO_ADR']['generic'] =
 ##hcard_country_name##</div>{endif}
 
 
-{if hcard_tel!=""}##hcard_tel##{endif}
+{if hcard_tel!=""}##hcard_tel##<br>{endif}
 {if hcard_email!=""}##hcard_email##{endif}</div>';
 
 $GLOBALS['ISO_ADR']['it'] =
@@ -35,7 +35,7 @@ $GLOBALS['ISO_ADR']['it'] =
 ##hcard_country_name##</div>{endif}
 
 
-{if hcard_tel!=""}##hcard_tel##{endif}
+{if hcard_tel!=""}##hcard_tel##<br>{endif}
 {if hcard_email!=""}##hcard_email##{endif}</div>';
 
 $GLOBALS['ISO_ADR']['gb'] =
@@ -50,7 +50,7 @@ $GLOBALS['ISO_ADR']['gb'] =
 ##hcard_country_name##</div>{endif}
 
 
-{if hcard_tel!=""}##hcard_tel##{endif}
+{if hcard_tel!=""}##hcard_tel##<br>{endif}
 {if hcard_email!=""}##hcard_email##{endif}</div>';
 
 $GLOBALS['ISO_ADR']['us'] =
