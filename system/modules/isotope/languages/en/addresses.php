@@ -21,10 +21,12 @@ $GLOBALS['ISO_ADR']['generic'] =
 {endif}{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 ##hcard_postal_code## ##hcard_locality##
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##<br>{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
 
 $GLOBALS['ISO_ADR']['it'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -33,10 +35,12 @@ $GLOBALS['ISO_ADR']['it'] =
 ##hcard_postal_code## ##hcard_locality## {if hcard_region!=""}(##hcard_region##){endif}
 
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##<br>{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
 
 $GLOBALS['ISO_ADR']['gb'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -48,10 +52,12 @@ $GLOBALS['ISO_ADR']['gb'] =
 
 ##hcard_postal_code##
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##<br>{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
 
 $GLOBALS['ISO_ADR']['us'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -59,10 +65,12 @@ $GLOBALS['ISO_ADR']['us'] =
 {endif}{if hcard_adr=="1"}<div class="adr">##hcard_street_address##
 ##hcard_locality##, ##hcard_region_abbr## ##hcard_postal_code##
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
 
 $GLOBALS['ISO_ADR']['eg'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -74,10 +82,12 @@ $GLOBALS['ISO_ADR']['eg'] =
 {endif}
 
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
 
 $GLOBALS['ISO_ADR']['th'] =
 '<div class="vcard">{if hcard_org!=""}##hcard_org##
@@ -89,7 +99,9 @@ $GLOBALS['ISO_ADR']['th'] =
 {endif}
 
 ##hcard_country_name##</div>{endif}
-
-
-{if hcard_tel!=""}##hcard_tel##{endif}
-{if hcard_email!=""}##hcard_email##{endif}</div>';
+{if hcard_tel!="" || hcard_email!=""}
+<br>
+{if hcard_tel!=""}<br>##hcard_tel##{endif}
+{if hcard_email!=""}<br>##hcard_email##{endif}
+{endif}
+</div>';
