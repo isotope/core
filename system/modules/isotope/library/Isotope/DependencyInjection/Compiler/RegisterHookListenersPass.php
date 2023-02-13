@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Isotope\DependencyInjection\Compiler;
 
-use Contao\CoreBundle\EventListener\GlobalsMapListener;
+use Isotope\EventListener\RegisterHooksListener;
 use Symfony\Component\Config\Definition\Exception\InvalidDefinitionException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,7 +29,7 @@ class RegisterHookListenersPass implements CompilerPassInterface
             $hooks[$hook] = array_merge(...$hooks[$hook]);
         }
 
-        $listener = new Definition(GlobalsMapListener::class, [['ISO_HOOKS' => $hooks]]);
+        $listener = new Definition(RegisterHooksListener::class, [$hooks]);
         $listener->setPublic(true);
         $listener->addTag('contao.hook', ['hook' => 'initializeSystem', 'priority' => 255]);
 
