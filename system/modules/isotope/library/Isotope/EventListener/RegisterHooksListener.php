@@ -7,19 +7,26 @@ class RegisterHooksListener
     /**
      * @var array
      */
-    private $hooks;
+    private $hookListeners;
 
-    public function __construct(array $hooks)
+    public function __construct(array $hookListeners)
     {
-        $this->hooks = $hooks;
+        $this->hookListeners = $hookListeners;
     }
 
-    public function onInitializeSystem(): void
+    public function __invoke(): void
     {
-        if (isset($GLOBALS['ISO_HOOKS']) && \is_array($GLOBALS['ISO_HOOKS'])) {
-            $GLOBALS['ISO_HOOKS'] = array_merge_recursive($GLOBALS['ISO_HOOKS'], $this->hooks);
-        } else {
-            $GLOBALS['ISO_HOOKS'] = $this->hooks;
+        foreach ($this->hookListeners as $hookName => $priorities) {
+            if (isset($GLOBALS['ISO_HOOKS'][$hookName]) && \is_array($GLOBALS['ISO_HOOKS'][$hookName])) {
+                if (isset($priorities[0])) {
+                    $priorities[0] = array_merge($GLOBALS['ISO_HOOKS'][$hookName], $priorities[0]);
+                } else {
+                    $priorities[0] = $GLOBALS['ISO_HOOKS'][$hookName];
+                    krsort($priorities);
+                }
+            }
+
+            $GLOBALS['ISO_HOOKS'][$hookName] = array_merge(...$priorities);
         }
     }
 }

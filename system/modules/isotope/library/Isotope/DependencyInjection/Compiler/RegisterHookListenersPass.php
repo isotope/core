@@ -26,7 +26,6 @@ class RegisterHookListenersPass implements CompilerPassInterface
         // Sort the listeners by priority
         foreach (array_keys($hooks) as $hook) {
             krsort($hooks[$hook]);
-            $hooks[$hook] = array_merge(...$hooks[$hook]);
         }
 
         $listener = new Definition(RegisterHooksListener::class, [$hooks]);
