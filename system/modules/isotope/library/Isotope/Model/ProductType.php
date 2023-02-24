@@ -171,14 +171,14 @@ class ProductType extends Model
         $arrAttributes = StringUtil::deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
-            return ($a['enabled']
+            return (($a['enabled'] ?? false)
                 && \is_array($arrFields[$a['name']] ?? null)
-                && $arrFields[$a['name']]['attributes']['legend'] != ''
+                && !empty($arrFields[$a['name']]['attributes']['legend'])
             );
         });
 
         uasort($arrAttributes, function ($a, $b) {
-            return $a["position"] > $b["position"];
+            return $a['position'] > $b['position'];
         });
 
         return array_keys($arrAttributes);
