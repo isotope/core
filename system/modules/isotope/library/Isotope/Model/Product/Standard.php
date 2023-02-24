@@ -629,7 +629,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formId = $this->getFormId();
         $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = $this->getProductId();
-        $objTemplate->module_id = $arrConfig['module']->id;
+        $objTemplate->module_id = $arrConfig['module']->id ?? null;
 
         if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
