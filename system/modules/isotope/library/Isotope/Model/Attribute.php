@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Contao\ArrayUtil;
 use Contao\Controller;
 use Contao\Database;
 use Contao\FilesModel;
@@ -413,11 +414,11 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
         }
 
         // Generate a HTML table for associative arrays
-        if (!array_is_assoc($varValue) && \is_array($varValue[0])) {
-            return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
+        if (!ArrayUtil::isAssoc($varValue) && \is_array($varValue[0])) {
+            return ($arrOptions['noHtml'] ?? false) ? $varValue : $this->generateTable($varValue, $objProduct);
         }
 
-        if ($arrOptions['noHtml']) {
+        if ($arrOptions['noHtml'] ?? false) {
             $result = array();
 
             foreach ($varValue as $v1) {
