@@ -707,7 +707,7 @@ class Frontend extends \Contao\Frontend
      */
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
-        $fltAmount = $fltPrice;
+        $fltAmount = (float) $fltPrice;
 
         if ($objSource instanceof IsotopePrice
             && ($objProduct = $objSource->getRelated('pid')) instanceof IsotopeProduct
@@ -735,7 +735,7 @@ class Frontend extends \Contao\Frontend
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->getLanguageId(), $value)) {
                             // Do not use getAmount() for non-percentage price, it would run Isotope::calculatePrice again (see isotope/core#2342)
-                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : $objOption->price;
+                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : (float) $objOption->price;
                             $objTax = $objSource->getRelated('tax_class');
 
                             if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
