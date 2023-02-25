@@ -38,6 +38,9 @@ class InsertTag
             case 'cart':
                 return $this->getValueForCollectionTag(Isotope::getCart(), $tokens);
 
+            case 'favorites':
+                return $this->getValueForCollectionTag(Isotope::getFavorites(), $tokens);
+
             case 'order':
                 if (!Input::get('uid') || ($order = Order::findOneBy('uniqid', Input::get('uid'))) === null) {
                     return '';
