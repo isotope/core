@@ -63,6 +63,12 @@ class Isotope extends Controller
     protected static $objConfig;
 
     /**
+     * Current favorites instance
+     * @var Favorites
+     */
+    protected static $objFavorites;
+
+    /**
      * Current request cache instance
      * @var RequestCache
      */
@@ -130,7 +136,14 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        return Favorites::findForCurrentStore();
+        if (null === static::$objFavorites && 'FE' === TL_MODE) {
+            static::initialize();
+            if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
+                static::$objFavorites->mergeGuestCollection();
+            }
+        }
+
+        return static::$objFavorites;
     }
 
     /**

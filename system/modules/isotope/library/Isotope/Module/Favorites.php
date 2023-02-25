@@ -30,18 +30,6 @@ class Favorites extends AbstractProductCollection
     /**
      * @inheritdoc
      */
-    public function generate()
-    {
-        if ('FE' === TL_MODE && true !== FE_USER_LOGGED_IN) {
-            return '';
-        }
-
-        return parent::generate();
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function getCollection()
     {
         return Isotope::getFavorites();
