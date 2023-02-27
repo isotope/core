@@ -1,6 +1,17 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.10 (2023-02-27)
+--------------------------
+
+- Correctly hide empty fields in address (#2370)
+- Correctly delete variants when deleting product (#2187)
+- Reload the page when updating cart (#2379)
+- Fixed the legacy registered hooks being overwritten by the annotation ones (#2418)
+- Fixed math operation on string (#2417)
+- Fixed multiple PHP8 issues (#2410, #2408, #2407)
+
+
 Version 2.8.9 (2023-01-23)
 --------------------------
 
