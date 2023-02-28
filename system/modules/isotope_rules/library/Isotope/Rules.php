@@ -258,12 +258,12 @@ class Rules extends Controller
         $objTemplate->usedCoupons = $arrCoupons;
         $objTemplate->rules = $objRules;
 
-        if ($_SESSION['COUPON_FAILED'][$objModule->id] != '') {
+        if (!empty($_SESSION['COUPON_FAILED'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];
             $objTemplate->mclass = 'failed';
             unset($_SESSION['COUPON_FAILED']);
 
-        } elseif ($_SESSION['COUPON_SUCCESS'][$objModule->id] != '') {
+        } elseif (!empty($_SESSION['COUPON_SUCCESS'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_SUCCESS'][$objModule->id];
             $objTemplate->mclass = 'success';
             unset($_SESSION['COUPON_SUCCESS']);
