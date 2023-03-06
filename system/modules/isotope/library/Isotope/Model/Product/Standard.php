@@ -451,7 +451,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         $this->strFormId = (($arrConfig['module'] instanceof ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             $objProduct = $this->validateVariant($loadFallback);
 
             // A variant has been loaded, generate the variant
@@ -533,7 +533,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
                 $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
@@ -631,11 +631,11 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->product_id = $this->getProductId();
         $objTemplate->module_id = $arrConfig['module']->id ?? null;
 
-        if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
+        if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
         }
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
         }
 

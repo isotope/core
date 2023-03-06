@@ -302,10 +302,17 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             'href'  => $href,
             'class' => trim($class.($isActive ? ' active' : '') . ($matchCount === 0 ? ' empty' : '')),
             'title' => StringUtil::specialchars($label),
+            'pageTitle' => '',
             'link'  => $link,
             'label' => $label,
             'count' => $matchCount,
             'nofollow' => true,
+            'isActive' => $isActive,
+
+            // Default keys necessary for nav_default template
+            'accesskey' => '',
+            'tabindex' => '',
+            'target' => '',
         );
     }
 
