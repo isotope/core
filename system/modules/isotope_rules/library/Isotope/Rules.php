@@ -81,7 +81,7 @@ class Rules extends Controller
         if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
 
         // @todo try not to use getRelated() because it loads variants
-            $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
+        $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
         if (null !== $objRules) {
                 while ($objRules->next()) {
