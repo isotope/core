@@ -708,7 +708,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                         } else {
                             $blankOption = $k;
                         }
-                    } elseif (!\in_array($option['value'], $arrOptions) && !$option['group']) {
+                    } elseif (!\in_array($option['value'], $arrOptions) && !($option['group'] ?? false)) {
                         unset($arrField['options'][$k]);
                     }
                 }

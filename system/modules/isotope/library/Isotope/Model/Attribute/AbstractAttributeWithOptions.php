@@ -95,7 +95,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                         foreach ($options as $option) {
                             $option['label'] = Translation::get($option['label']);
 
-                            if ($option['group']) {
+                            if ($option['group'] ?? false) {
                                 $group = $option['label'];
                                 continue;
                             }
