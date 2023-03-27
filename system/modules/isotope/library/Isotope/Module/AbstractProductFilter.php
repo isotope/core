@@ -262,6 +262,6 @@ abstract class AbstractProductFilter extends Module
             return (array) ($cache['variant_attributes'][$attributeName] ?? null);
         }
 
-        return (array) $cache['attributes'][$attributeName];
+        return (array) ($cache['attributes'][$attributeName] ?? null);
     }
 }

@@ -52,7 +52,7 @@ class PriceTiers extends Attribute
             );
         }
 
-        $order = $arrOptions['order'];
+        $order = $arrOptions['order'] ?? '';
         if ($order != '' && \in_array($order, array_keys($arrTiers[0]))) {
 
             usort($arrTiers, function ($a, $b) use ($order) {
