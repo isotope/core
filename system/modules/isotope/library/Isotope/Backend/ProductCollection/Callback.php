@@ -686,7 +686,7 @@ class Callback extends Backend
                     if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
                         $previousLogData = $previousLogModel->getData();
 
-                        if ($previousLogData[$field] === $value) {
+                        if (($previousLogData[$field] ?? null) === $value) {
                             continue;
                         }
                     }
