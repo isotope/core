@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.8.11 (2023-03-30)
+--------------------------
+
+- Fixed rules with negative condition not being applied to cart (#1823)
+- Correctly hide unpublished variants in product filter (#2430)
+- Correctly set the current record ID to fix duplicating records (#2323)
+- Fixed multiple PHP8 issues (#2434, #2426 and others)
+- Make sure database migration has field names (#2433)
+- Only load page config if a page is found (#2427)
+
+
 Version 2.8.10 (2023-02-27)
 --------------------------
 
