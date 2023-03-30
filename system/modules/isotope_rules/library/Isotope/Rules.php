@@ -81,7 +81,7 @@ class Rules extends Controller
         if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
 
         // @todo try not to use getRelated() because it loads variants
-            $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
+        $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
         if (null !== $objRules) {
                 while ($objRules->next()) {
@@ -258,12 +258,12 @@ class Rules extends Controller
         $objTemplate->usedCoupons = $arrCoupons;
         $objTemplate->rules = $objRules;
 
-        if ($_SESSION['COUPON_FAILED'][$objModule->id] != '') {
+        if (!empty($_SESSION['COUPON_FAILED'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];
             $objTemplate->mclass = 'failed';
             unset($_SESSION['COUPON_FAILED']);
 
-        } elseif ($_SESSION['COUPON_SUCCESS'][$objModule->id] != '') {
+        } elseif (!empty($_SESSION['COUPON_SUCCESS'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_SUCCESS'][$objModule->id];
             $objTemplate->mclass = 'success';
             unset($_SESSION['COUPON_SUCCESS']);

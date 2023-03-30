@@ -512,7 +512,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     <tr>';
 
         foreach (array_keys($arrValues[0]) as $i => $name) {
-            if ($arrFormat[$name]['doNotShow']) {
+            if ($arrFormat[$name]['doNotShow'] ?? null) {
                 continue;
             }
 
@@ -534,11 +534,11 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $c = -1;
 
             foreach ($row as $name => $value) {
-                if ($arrFormat[$name]['doNotShow']) {
+                if ($arrFormat[$name]['doNotShow'] ?? null) {
                     continue;
                 }
 
-                if ('price' === $arrFormat[$name]['rgxp']) {
+                if ('price' === $arrFormat[$name]['rgxp'] ?? null) {
                     $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));

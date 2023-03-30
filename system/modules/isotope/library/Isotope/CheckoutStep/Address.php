@@ -324,7 +324,7 @@ abstract class Address extends CheckoutStep
                     $arrOptions[] = [
                         'value'   => $objAddress->id,
                         'label'   => $objAddress->generate($arrFields),
-                        'default' => $objAddress->id == $objDefault->id ? '1' : '',
+                        'default' => $objAddress->id == ($objDefault->id ?? false) ? '1' : '',
                     ];
                 }
             }

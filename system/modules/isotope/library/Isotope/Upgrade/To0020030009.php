@@ -45,7 +45,7 @@ class To0020030009 extends Base
         if (null !== $attributes) {
             /** @var Attribute $attribute */
             foreach ($attributes as $attribute) {
-                if ($attribute instanceof IsotopeAttributeWithOptions) {
+                if ($attribute instanceof IsotopeAttributeWithOptions && !empty($attribute->field_name)) {
                     $fields[] = $attribute->field_name;
                 }
             }
