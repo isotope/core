@@ -600,8 +600,11 @@ class Frontend extends \Contao\Frontend
         $strLanguage = $strLanguage ?: $objOrder->language;
 
         // Load page configuration
-        if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
-            $objPage = PageModel::findWithDetails($objOrder->pageId);
+        if (
+            $objOrder->pageId > 0
+            && (null === $objPage || $objPage->id != $objOrder->pageId)
+            && ($objPage = PageModel::findWithDetails($objOrder->pageId))
+        ) {
             $objPage = static::loadPageConfig($objPage);
         }
 
@@ -625,6 +628,10 @@ class Frontend extends \Contao\Frontend
      */
     public static function loadPageConfig($objPage)
     {
+        if (!\is_object($objPage)) {
+            return $objPage;
+        }
+
         // Use the global date format if none is set
         if ($objPage->dateFormat == '') {
             $objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];

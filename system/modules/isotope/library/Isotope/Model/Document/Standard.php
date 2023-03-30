@@ -275,8 +275,11 @@ class Standard extends Document implements IsotopeDocument
     {
         global $objPage;
 
-        if (!\is_object($objPage) && $objCollection->pageId > 0) {
-            $objPage = PageModel::findWithDetails($objCollection->pageId);
+        if (
+            !\is_object($objPage)
+            && $objCollection->pageId > 0
+            && ($objPage = PageModel::findWithDetails($objCollection->pageId))
+        ) {
             $objPage = \Isotope\Frontend::loadPageConfig($objPage);
 
             System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE'], true);
