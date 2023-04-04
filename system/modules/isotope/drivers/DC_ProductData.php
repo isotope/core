@@ -2181,6 +2181,12 @@ class DC_ProductData extends \DC_Table
                 // Label
                 foreach ($showFields as $k=>$v)
                 {
+                    if (!isset($row[$v]))
+                    {
+                        $args[$k] = '';
+                        continue;
+                    }
+
                     // Decrypt the value
                     if ($GLOBALS['TL_DCA'][$this->strTable]['fields'][$v]['eval']['encrypt'] ?? null)
                     {
@@ -2227,7 +2233,7 @@ class DC_ProductData extends \DC_Table
 
                             foreach ($row_v as $option)
                             {
-                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?: $option;
+                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? serialize($option);
                             }
 
                             $args[$k] = implode(', ', $args_k);
