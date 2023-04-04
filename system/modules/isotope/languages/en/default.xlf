@@ -92,6 +92,9 @@
       <trans-unit id="MSC.filterByPages">
         <source>Pages</source>
       </trans-unit>
+      <trans-unit id="MSC.filterByProducts">
+        <source>Products</source>
+      </trans-unit>
       <trans-unit id="MSC.groupPickerHome">
         <source>Back to the group picker</source>
       </trans-unit>

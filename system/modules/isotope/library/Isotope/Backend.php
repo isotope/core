@@ -303,6 +303,14 @@ class Backend extends Contao_Backend
                 Controller::reload();
                 break;
 
+            // Filter product collection by product
+            case 'filterProducts':
+                $filter = Session::getInstance()->get('filter');
+                $filter['tl_iso_product_collection']['iso_product'] = (int) Input::post('value');
+                Session::getInstance()->set('filter', $filter);
+                Controller::reload();
+                break;
+
             // Sort products by page
             case 'sortByPage':
                 if (Input::post('value') > 0) {
