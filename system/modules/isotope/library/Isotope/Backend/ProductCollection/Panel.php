@@ -95,8 +95,8 @@ class Panel extends Backend
             SELECT c.id
             FROM tl_iso_product_collection c
             JOIN tl_iso_product_collection_item i ON i.pid=c.id
-            JOIN tl_iso_product v ON i.product_id=v.id AND v.language=''
-            JOIN tl_iso_product p ON v.pid=p.id AND p.language=''
+            LEFT JOIN tl_iso_product v ON i.product_id=v.id AND v.language=''
+            LEFT JOIN tl_iso_product p ON v.pid=p.id AND p.language=''
             WHERE
                 c.type='order'
                 AND (i.product_id=? OR p.id=?)
