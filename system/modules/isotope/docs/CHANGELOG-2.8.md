@@ -2,6 +2,14 @@ Isotope eCommerce Changelog
 ===========================
 
 
+Version 2.8.12 (2023-04-12)
+--------------------------
+
+- Fixed compatibility with Contao 4.9 (#2442)
+- Fixed order status log for Contao >=4.13.17 (#2437)
+- Fixed various PHP8 issues
+
+
 Version 2.8.11 (2023-03-30)
 --------------------------
 
