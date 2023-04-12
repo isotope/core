@@ -167,7 +167,7 @@ class Standard extends Document implements IsotopeDocument
      */
     protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {
-        $objPage = PageModel::findWithDetails($objCollection->page_id);
+        $objPage = PageModel::findWithDetails($objCollection->pageId);
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($this->documentTpl);
@@ -177,9 +177,9 @@ class Standard extends Document implements IsotopeDocument
         $objTemplate->collection    = $objCollection;
         $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
-        $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
-        $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
-        $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
+        $objTemplate->dateFormat    = $objPage->dateFormat ?? $GLOBALS['TL_CONFIG']['dateFormat'];
+        $objTemplate->timeFormat    = $objPage->timeFormat ?? $GLOBALS['TL_CONFIG']['timeFormat'];
+        $objTemplate->datimFormat   = $objPage->datimFormat ?? $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
         $objCollectionTemplate = new Template($this->collectionTpl);

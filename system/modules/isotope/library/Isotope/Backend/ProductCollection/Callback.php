@@ -727,7 +727,7 @@ class Callback extends Backend
         return $template->parse();
     }
 
-    public function prepareOrderLog(DataContainer $dc)
+    public function prepareOrderLog(DataContainer $dc): void
     {
         // Do not handle order log when toggling the notification subpalette
         if ('toggleSubpalette' === Input::post('action')) {
@@ -757,7 +757,7 @@ class Callback extends Backend
     /**
      * On data container submit callback.
      */
-    public function writeOrderLog($dc)
+    public function writeOrderLog($dc): void
     {
         if (empty($GLOBALS['ISO_ORDER_LOG']) || ($order = Order::findByPk($dc->id)) === null) {
             return;
@@ -810,7 +810,7 @@ class Callback extends Backend
         $blnNotificationError = null;
 
         // Send a notification
-        if ($logData['sendNotification'] && $logData['notification'] && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
+        if (($logData['sendNotification'] ?? false) && ($logData['notification'] ?? null) && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
             $objOldStatus = OrderStatus::findByPk($oldOrderStatus);
             $objNewStatus = OrderStatus::findByPk($order->order_status);
 

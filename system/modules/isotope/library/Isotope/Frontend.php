@@ -654,10 +654,10 @@ class Frontend extends \Contao\Frontend
 
         // Define the static URL constants
         $isDebugMode = System::getContainer()->getParameter('kernel.debug');
-        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        \define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
-        \define('TL_SCRIPT_URL', TL_ASSETS_URL);
-        \define('TL_PLUGINS_URL', TL_ASSETS_URL);
+        self::define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        self::define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        self::define('TL_SCRIPT_URL', TL_ASSETS_URL);
+        self::define('TL_PLUGINS_URL', TL_ASSETS_URL);
 
         $objLayout = Database::getInstance()->prepare("
             SELECT l.*, t.templates
@@ -673,7 +673,7 @@ class Frontend extends \Contao\Frontend
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
-            [$strFormat, $strVariant] = explode('_', $objLayout->doctype);
+            [$strFormat, $strVariant] = explode('_', $objLayout->doctype) + [null, null];
             $objPage->outputFormat  = $strFormat;
             $objPage->outputVariant = $strVariant;
         }
@@ -871,5 +871,14 @@ class Frontend extends \Contao\Frontend
         }
 
         System::loadLanguageFile('default', $language, true);
+    }
+
+    private static function define(string $constant_name, $value): void
+    {
+        if (defined($constant_name)) {
+            return;
+        }
+
+        \define($constant_name, $value);
     }
 }
