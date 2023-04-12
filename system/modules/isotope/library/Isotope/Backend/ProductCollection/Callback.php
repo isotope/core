@@ -729,6 +729,11 @@ class Callback extends Backend
 
     public function prepareOrderLog(DataContainer $dc)
     {
+        // Do not handle order log when toggling the notification subpalette
+        if ('toggleSubpalette' === Input::post('action')) {
+            return;
+        }
+
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
         $GLOBALS['TL_DCA']['tl_iso_product_collection']['config']['onsubmit_callback'][] = function (DataContainer $dc) {
