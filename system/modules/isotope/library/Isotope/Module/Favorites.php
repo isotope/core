@@ -19,6 +19,9 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 
+/**
+ * @property bool $iso_moveFavorites
+ */
 class Favorites extends AbstractProductCollection
 {
     /**
@@ -93,6 +96,10 @@ class Favorites extends AbstractProductCollection
                 ['jumpTo' => $item->getRelated('jumpTo')]
             );
 
+            if ($this->iso_moveFavorites) {
+                $collection->deleteItem($item);
+            }
+
             Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
@@ -103,9 +110,13 @@ class Favorites extends AbstractProductCollection
         ) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),
-                $quantity[$item->id] > 0 ? $quantity[$item->id] : 1,
+                ($quantity[$item->id] ?? null) > 0 ? $quantity[$item->id] : 1,
                 ['jumpTo' => $item->getRelated('jumpTo')]
             );
+
+            if ($this->iso_moveFavorites) {
+                $collection->deleteItem($item);
+            }
 
             $hasChanges = true;
         }
