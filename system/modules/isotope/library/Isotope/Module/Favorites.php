@@ -98,6 +98,7 @@ class Favorites extends AbstractProductCollection
 
             if ($this->iso_moveFavorites) {
                 $collection->deleteItem($item);
+                $hasChanges = true;
             }
 
             Controller::redirect(Url::removeQueryString(['add_to_cart']));
