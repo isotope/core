@@ -79,7 +79,8 @@ class DcaManager extends Backend
         $intGroup = (int) Session::getInstance()->get('iso_products_gid');
 
         if (!$intGroup) {
-            $intGroup = BackendUser::getInstance()->isAdmin ? 0 : (int) BackendUser::getInstance()->iso_groups[0];
+            $objUser = BackendUser::getInstance();
+            $intGroup = ($objUser->isAdmin || empty($objUser->iso_groups)) ? 0 : (int) $objUser->iso_groups[0];
         }
 
         $objGroup = Group::findByPk($intGroup);
