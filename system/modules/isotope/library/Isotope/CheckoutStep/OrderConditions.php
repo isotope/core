@@ -101,7 +101,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
             $_SESSION['CHECKOUT_DATA'] = \is_array($_SESSION['CHECKOUT_DATA'] ?? null) ? $_SESSION['CHECKOUT_DATA'] : array();
             foreach (array_keys($this->objForm->getFormFields()) as $strField) {
-                if ($this->objForm->getWidget($strField) instanceof \uploadable) {
+                if ($this->objForm->getWidget($strField) instanceof \uploadable && !empty($_SESSION['FILES'][$strField])) {
                     $arrFile  = $_SESSION['FILES'][$strField];
                     $varValue = str_replace(TL_ROOT . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
                 } else {
@@ -119,7 +119,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
-                if ($objClone instanceof \uploadable) {
+                if ($objClone instanceof \uploadable && !empty($_SESSION['FILES'][$strField])) {
                     $_FILES[$strField] = $_SESSION['FILES'][$strField];
                 } else {
                     Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField] ?? null);
