@@ -15,6 +15,7 @@ use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Module;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -238,6 +239,15 @@ abstract class Payment extends TypeAgent implements IsotopePayment
                     throw new \UnexpectedValueException(
                         'Unknown product type condition "' . $this->product_types_condition . '"'
                     );
+            }
+        }
+
+        // !HOOK: modify if payment method is available
+        if (isset($GLOBALS['ISO_HOOKS']['paymentAvailable']) && \is_array($GLOBALS['ISO_HOOKS']['paymentAvailable'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['paymentAvailable'] as $callback) {
+                if (!System::importStatic($callback[0])->{$callback[1]}($this)) {
+                    return false;
+                }
             }
         }
 

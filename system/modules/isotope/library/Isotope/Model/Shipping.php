@@ -14,6 +14,7 @@ namespace Isotope\Model;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
 use Isotope\Frontend;
@@ -245,6 +246,15 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
                         throw new \UnexpectedValueException(
                             'Unknown product type condition "' . $this->product_types_condition . '"'
                         );
+                }
+            }
+        }
+
+        // !HOOK: modify if shipping method is available
+        if (isset($GLOBALS['ISO_HOOKS']['shippingAvailable']) && \is_array($GLOBALS['ISO_HOOKS']['shippingAvailable'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['shippingAvailable'] as $callback) {
+                if (!System::importStatic($callback[0])->{$callback[1]}($this)) {
+                    return false;
                 }
             }
         }
