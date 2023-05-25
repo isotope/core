@@ -13,6 +13,7 @@ namespace Isotope\Backend\Address;
 
 use Contao\Backend;
 use Contao\Database;
+use Contao\DataContainer;
 use Contao\System;
 use Isotope\Model\Address;
 
@@ -57,6 +58,10 @@ class Callback extends Backend
      */
     public function updateDefault($varValue, $dc)
     {
+        if (!$dc instanceof DataContainer) {
+            return $varValue;
+        }
+
         if ($varValue == '1' && $dc->activeRecord->{$dc->field} != $varValue) {
             Database::getInstance()
                 ->prepare("UPDATE tl_iso_address SET {$dc->field}='' WHERE pid=? AND ptable=? AND store_id=?")

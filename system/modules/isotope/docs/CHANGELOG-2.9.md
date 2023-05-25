@@ -13,3 +13,4 @@ Version 2.9.0 (2023-xx-xx)
 - Added filter for product or variant to product collection view
 - Added hook to modify if shipping or payment method is available
 - Do not apply backend configuration to system columns
+- Trigger the save_callback for address fields (#2438)
