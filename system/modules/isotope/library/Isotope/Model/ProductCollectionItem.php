@@ -100,7 +100,10 @@ class ProductCollectionItem extends Model
 
         $arrConfig = $this->getOptions();
         foreach ($this->getProduct()->getOptions() as $k => $v) {
-            if ($arrConfig[$k] !== $v) {
+            if (
+                $arrConfig[$k] !== $v
+                && (!\is_scalar($arrConfig[$k]) || !\is_scalar($v) || (string) $arrConfig[$k] !== (string) $v)
+            ) {
                 return false;
             }
         }
