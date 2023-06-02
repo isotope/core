@@ -119,8 +119,8 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
 
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
-                if ($objClone instanceof \uploadable && !empty($_SESSION['FILES'][$strField])) {
-                    $_FILES[$strField] = $_SESSION['FILES'][$strField];
+                if ($objClone instanceof \uploadable) {
+                    $_FILES[$strField] = $_SESSION['FILES'][$strField] ?? null;
                 } else {
                     Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField] ?? null);
                 }
