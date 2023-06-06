@@ -8,7 +8,7 @@
         <th width="3%">&nbsp;</th><?php endif; ?>
     </tr>
     <tr><td colspan="4" style="font-size:5px;line-height:5px; border-bottom: 2px solid #898989">&nbsp;</td></tr>
-    <?php foreach($this->items as $item):; ?>
+    <?php $i=0; foreach($this->items as $item): ?>
         <tr><td colspan="4" style="font-size:5px;line-height:5px<?php if($i!=0): ?>; border-top: 1px solid #c4c4c4<?php endif; ?>">&nbsp;</td></tr>
         <tr>
             <td><?= $item['name'] ?>
@@ -32,7 +32,7 @@
         <td colspan="2" style="text-align:right; font-weight:bold"><?= $this->subtotal ?></td><?php if($this->total_tax_ids > 1): ?>
         <td style="text-align:right">&nbsp;</td><?php endif; ?>
     </tr>
-    <?php foreach ($this->surcharges as $surcharge): $i=0; ?>
+    <?php foreach ($this->surcharges as $surcharge): ?>
         <tr><td colspan="4" style="font-size:5px;line-height:5px">&nbsp;</td></tr>
         <tr class="<?= $surcharge['rowClass'] ?>">
             <td colspan="2"><?= $surcharge['label'] ?></td>
