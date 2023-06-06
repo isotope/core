@@ -105,6 +105,8 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                     if (isset($_SESSION['FILES'][$strField])) {
                         $arrFile = $_SESSION['FILES'][$strField];
                         $varValue = str_replace(TL_ROOT . '/', '', \dirname($arrFile['tmp_name'])) . '/' . rawurlencode($arrFile['name']);
+                    } else {
+                        $varValue = null;
                     }
                 } else {
                     $varValue = $this->objForm->fetch($strField);
@@ -122,9 +124,7 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
                 // Clone widget because otherwise we add errors to the original widget instance
                 $objClone = clone $this->objForm->getWidget($strField);
                 if ($objClone instanceof \uploadable) {
-                    if (isset($_SESSION['FILES'][$strField])) {
-                        $_FILES[$strField] = $_SESSION['FILES'][$strField];
-                    }
+                    $_FILES[$strField] = $_SESSION['FILES'][$strField] ?? null;
                 } else {
                     Input::setPost($strField, $_SESSION['CHECKOUT_DATA'][$strField] ?? null);
                 }
