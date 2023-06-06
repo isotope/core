@@ -24,6 +24,7 @@ use Haste\Util\Format;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
+use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
 use Isotope\Model\RequestCache;
@@ -116,16 +117,25 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         }
 
         if ($this->iso_searchAutocomplete && Input::get('iso_autocomplete') == $this->id) {
-            $objProducts = Product::findPublishedByCategories($this->findCategories(), ['order' => 'c.sorting']);
+            /** @var IsotopeProduct[] $products */
+            $products = Product::findPublishedByCategories($this->findCategories(), ['order' => 'c.sorting', 'return' => 'Array']);
 
-            if (null === $objProducts) {
+            $products = array_filter($products, static function (IsotopeProduct $product) {
+                return $product->isAvailableInFrontend();
+            });
+
+            if (empty($products)) {
                 throw new ResponseException(new JsonResponse([]));
             }
 
-            $data = array_values($objProducts->fetchEach($this->iso_searchAutocomplete));
-            $data = array_map(static function ($value) {
+            $data = array_map(function (IsotopeProduct $product) {
+                $value = $product->{$this->iso_searchAutocomplete};
+
                 return Controller::replaceInsertTags($value);
-            }, $data);
+            }, $products);
+
+            // Make sure we don't show duplicate autocomplete options and JSON generates an array not an object
+            $data = array_values(array_unique($data));
 
             throw new ResponseException(new JsonResponse($data));
         }
