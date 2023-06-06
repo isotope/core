@@ -42,6 +42,7 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\TaxClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 /**
  * Provide methods to handle Isotope front end components.
@@ -559,29 +560,33 @@ class Frontend extends \Contao\Frontend
             $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
             $arrItems[$last]['link']  = $objProduct->name;
         } else {
-            $listPage = $objIsotopeListPage ?: $objPage;
-            $originalRow = $listPage->originalRow();
+            try {
+                $listPage = $objIsotopeListPage ?: $objPage;
+                $originalRow = $listPage->originalRow();
 
-            // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
-            $arrItems[$last] = array(
-                'isRoot'   => (bool) $arrItems[$last]['isRoot'],
-                'isActive' => false,
-                'href'     => $listPage->getFrontendUrl(),
-                'title'    => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
-                'link'     => $originalRow['title'],
-                'data'     => $originalRow,
-                'class'    => ''
-            );
+                // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
+                $arrItems[$last] = array(
+                    'isRoot' => (bool) $arrItems[$last]['isRoot'],
+                    'isActive' => false,
+                    'href' => $listPage->getFrontendUrl(),
+                    'title' => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
+                    'link' => $originalRow['title'],
+                    'data' => $originalRow,
+                    'class' => ''
+                );
 
-            // Add a new item for the current product
-            $arrItems[] = array(
-                'isRoot'   => false,
-                'isActive' => true,
-                'href'     => $objProduct->generateUrl($objPage),
-                'title'    => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
-                'link'     => $objProduct->name,
-                'data'     => $objPage->row(),
-            );
+                // Add a new item for the current product
+                $arrItems[] = array(
+                    'isRoot' => false,
+                    'isActive' => true,
+                    'href' => $objProduct->generateUrl($objPage),
+                    'title' => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name)),
+                    'link' => $objProduct->name,
+                    'data' => $objPage->row(),
+                );
+            } catch (ExceptionInterface $exception) {
+                // Ignore exceptions when generating front end URLs
+            }
         }
 
         return $arrItems;

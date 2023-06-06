@@ -257,7 +257,7 @@ class RequestCache extends Model
      */
     public function getFirstSortingFieldForModule($intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             return '';
         }
 

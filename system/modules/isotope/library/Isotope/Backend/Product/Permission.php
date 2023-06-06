@@ -76,19 +76,19 @@ class Permission extends Backend
             }
         } else {
             // Maybe another function has already set allowed product IDs
-            if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])) {
+            if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'] ?? null)) {
                 $arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], $arrProducts);
             }
 
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'] = $arrProducts;
 
             // Set allowed product IDs (edit multiple)
-            if (\is_array($session['CURRENT']['IDS'])) {
+            if (\is_array($session['CURRENT']['IDS'] ?? null)) {
                 $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root']);
             }
 
             // Set allowed clipboard IDs
-            if (\is_array($session['CLIPBOARD']['tl_iso_product']['id'])) {
+            if (\is_array($session['CLIPBOARD']['tl_iso_product']['id'] ?? null)) {
                 $session['CLIPBOARD']['tl_iso_product']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_product']['id'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], Database::getInstance()->query("SELECT id FROM tl_iso_product WHERE pid=0")->fetchEach('id'));
 
                 if (empty($session['CLIPBOARD']['tl_iso_product']['id'])) {

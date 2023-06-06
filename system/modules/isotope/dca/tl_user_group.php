@@ -9,29 +9,33 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-\System::loadLanguageFile(\Isotope\Model\Group::getTable());
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\System;
+use Isotope\Model\Group;
+
+System::loadLanguageFile(Group::getTable());
 
 /**
  * Extend a tl_user_group palette
  */
-\Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'alexf_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_types', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_typep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_classes', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_classp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_rates', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_ratep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_configs', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_configp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groupp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_member_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'alexf_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_types', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_typep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classes', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_rates', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_ratep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configs', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groupp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_member_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('default', 'tl_user_group')
 ;
 

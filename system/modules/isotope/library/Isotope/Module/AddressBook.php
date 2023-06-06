@@ -178,7 +178,7 @@ class AddressBook extends Module
         $table = Address::getTable();
         System::loadLanguageFile(MemberModel::getTable());
 
-        $this->Template            = new Template($this->memberTpl);
+        $this->Template            = new Template($this->memberTpl ?: 'member_default');
         $this->Template->hasError  = false;
         $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
