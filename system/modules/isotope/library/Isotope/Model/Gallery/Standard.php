@@ -275,8 +275,8 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->file       = $arrFile;
         $objTemplate->src        = $arrFile[$strType] ?? '';
         $objTemplate->size       = $arrFile[$strType . '_size'] ?? '';
-        $objTemplate->alt        = $arrFile['alt'];
-        $objTemplate->title      = $arrFile['desc'];
+        $objTemplate->alt        = $arrFile['alt'] ?? '';
+        $objTemplate->title      = $arrFile['desc'] ?? '';
         $objTemplate->class      = trim(($this->arrData['class'] ?? '') . ' ' . ($arrFile['class'] ?? ''));
 
         // Add the missing data to the picture
