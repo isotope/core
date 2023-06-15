@@ -310,7 +310,7 @@ class RequestCache extends Model
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             $this->arrSortings[$intModule] = array();
         }
 
