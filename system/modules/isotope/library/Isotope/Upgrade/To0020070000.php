@@ -77,6 +77,7 @@ CREATE TABLE tl_iso_product_collection_log (
     {
         if (!$db->tableExists('tl_module')
             || !$db->fieldExists('iso_order_conditions', 'tl_module')
+            || !$db->fieldExists('iso_order_conditions_position', 'tl_module')
         ) {
             return;
         }
