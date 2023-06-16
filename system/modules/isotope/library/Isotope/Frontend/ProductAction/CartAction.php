@@ -88,9 +88,9 @@ class CartAction extends AbstractButton
         }
 
         /** @var ProductCollectionItem $item */
-        $item = ProductCollectionItem::findByPk(Input::get('collection_item'));
+        $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
 
-        if ($item->pid == Isotope::getCart()->id
+        if (null !== $item
             && $item->hasProduct()
             && $item->getProduct()->getProductId() == $product->getProductId()
         ) {
