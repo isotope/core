@@ -1,6 +1,14 @@
 Isotope eCommerce Changelog
 ===========================
 
+
+Version 2.8.14 (2023-06-19)
+--------------------------
+
+- Correctly fetch items from current cart (#2465)
+- Fixed various PHP8 issues (#2460)
+
+
 Version 2.8.13 (2023-06-06)
 --------------------------
 
@@ -10,7 +18,7 @@ Version 2.8.13 (2023-06-06)
 - Automatically clear the product list cache (#2265)
 - Fixed checking for product configuration in collection (#2435)
 - Fixed undefined variable in iso_collection_invoice template (#2458)
-- Fixed various PHP8 issues (2446, #2456, #2457)
+- Fixed various PHP8 issues (#2446, #2456, #2457)
 
 
 Version 2.8.12 (2023-04-12)

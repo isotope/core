@@ -42,7 +42,7 @@ class Isotope extends Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.8.13';
+    const VERSION = '2.8.14';
 
     /**
      * True if the system has been initialized
