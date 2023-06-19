@@ -86,7 +86,7 @@ class OrderConditionFields extends \Backend
             $groupLabel = $GLOBALS['TL_LANG']['MSC']['checkout_'.$group];
 
             foreach ($steps as $step) {
-                $options[$groupLabel][$step] = $GLOBALS['TL_LANG']['CHECKOUT'][$step] ?: substr($step, strrpos($step, '\\') + 1);
+                $options[$groupLabel][$step] = $GLOBALS['TL_LANG']['CHECKOUT'][$step] ?? substr($step, strrpos($step, '\\') + 1);
             }
         }
 
