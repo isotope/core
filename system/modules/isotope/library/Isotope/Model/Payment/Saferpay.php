@@ -426,6 +426,11 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $objRequest->setHeader('Accept', 'application/json');
         $objRequest->setHeader('Content-Type', 'application/json; charset=utf-8');
 
+        if ($this->saferpay_username) {
+            $objRequest->username = $this->saferpay_username;
+            $objRequest->password = $this->saferpay_password;
+        }
+
         $objRequest->send($this->getApiUrl($script), json_encode($data), 'POST');
 
         if ($objRequest->code !== 200) {
@@ -469,9 +474,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         }
 
         return sprintf(
-            'https://%s:%s@%s.saferpay.com/api/%s',
-            $this->saferpay_username,
-            $this->saferpay_password,
+            'https://%s.saferpay.com/api/%s',
             $this->debug ? 'test' : 'www',
             ltrim($script, '/')
         );
