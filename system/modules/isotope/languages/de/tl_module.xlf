@@ -515,7 +515,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.1">
         <source>Allow the user to select the number of records to show per page.</source>
-        <target>Ermäglichen Sie es den Nutzern, dass sie auswählen wieviele Einträge pro Seite angezeigt werden.</target>
+        <target>Ermöglichen Sie es den Nutzern, dass sie auswählen wie viele Einträge pro Seite angezeigt werden.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_perPage.0">
         <source>Per page options</source>
