@@ -172,6 +172,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
                 $objItem->price          = $objItem->getPrice();
                 $objItem->tax_free_price = $objItem->getTaxFreePrice();
+                $objItem->name           = $objItem->getName();
                 $objItem->save();
             }
 
