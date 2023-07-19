@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -170,7 +169,7 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    throw new RedirectResponseException(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -179,7 +178,7 @@ class Checkout extends Module
                 if ($strBuffer === true) {
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
-                        Controller::redirect(
+                        throw new RedirectResponseException(
                             Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
                         );
                     }
@@ -533,10 +532,11 @@ class Checkout extends Module
                 return false;
             }
 
-            $objJump->loadDetails();
-            Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+            throw new RedirectResponseException($objJump->getAbsoluteUrl());
 
-        } elseif ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+        }
+
+        if ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
             $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
@@ -561,8 +561,7 @@ class Checkout extends Module
                 $objJump = PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
-                    $objJump->loadDetails();
-                    Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+                    throw new RedirectResponseException($objJump->getAbsoluteUrl());
                 }
             }
 

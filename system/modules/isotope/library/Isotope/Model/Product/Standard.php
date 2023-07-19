@@ -1130,7 +1130,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     private function getCollectionItem()
     {
         if (Input::get('collection_item') > 0) {
-            $item = ProductCollectionItem::findByPk(Input::get('collection_item'));
+            $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
 
             if (null !== $item
                 && $item->hasProduct()

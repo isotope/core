@@ -175,7 +175,7 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $attribute => $config) {
-            if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager') {
+            if (!empty($config['attributes']['legend']) && $attribute !== 'pages' && ($config['inputType'] ?? null) !== 'mediaManager') {
                 $arrAttributes[$attribute] = Format::dcaLabel('tl_iso_product', $attribute);
             }
         }

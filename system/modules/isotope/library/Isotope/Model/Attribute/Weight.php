@@ -59,7 +59,7 @@ class Weight extends Attribute
         }
 
         return sprintf(
-            $arrOptions['format'] ?: '%s %s',
+            $arrOptions['format'] ?? '%s %s',
             Isotope::formatPrice($weight->getWeightValue(), false),
             $weight->getWeightUnit()
         );
