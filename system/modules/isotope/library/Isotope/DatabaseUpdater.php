@@ -42,6 +42,11 @@ class DatabaseUpdater extends Installer
             if (!empty($arrCommands['ALTER_CHANGE']) && \is_array($arrCommands['ALTER_CHANGE'])) {
                 foreach ($arrCommands['ALTER_CHANGE'] as $strCommand) {
                     if (strpos($strCommand, 'ALTER TABLE `' . $strTable . '`') === 0) {
+                        // Try to fix string to int field conversion
+                        if (preg_match('/`([^`]+)` int\(10\) NOT NULL default 0;?$/i', $strCommand, $match)) {
+                            Database::getInstance()->query("UPDATE `$strTable` SET `$match[1]`=0 WHERE `$match[1]`=''");
+                        }
+
                         Database::getInstance()->query($strCommand);
                     }
                 }
