@@ -1,6 +1,18 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.15 (2023-07-19)
+--------------------------
+
+- Fixed encoding issues with Saferpay credentials
+- Generate correct redirects in checkout module (#2471)
+- Fixed "not equal" condition for attribute restriction in rules
+- Update database when attribute type is changed to integer (#2470)
+- Added image width and height to inline gallery template (#2473)
+- Update name of product in cart if site language is switched (#2467)
+- Support returning Array result on model queries
+- Fixed various PHP8 issues (#2466, #2476, #2478)
+
 
 Version 2.8.14 (2023-06-19)
 --------------------------
