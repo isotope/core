@@ -169,7 +169,9 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    throw new RedirectResponseException(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    throw new RedirectResponseException(
+                        PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
+                    );
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -179,7 +181,7 @@ class Checkout extends Module
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
                         throw new RedirectResponseException(
-                            Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
+                            PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
                         );
                     }
 
