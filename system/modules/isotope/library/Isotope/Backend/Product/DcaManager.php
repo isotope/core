@@ -335,7 +335,7 @@ class DcaManager extends Backend
                     }
 
                     // Variant fields can only be edited in variant mode
-                    if (null !== $arrAttributes[$name]
+                    if (isset($arrAttributes[$name])
                         && !$blnVariants
                         && /* @todo in 3.0: $arrAttributes[$name] instanceof IsotopeAttributeForVariants
                         && */$arrAttributes[$name]->isVariantOption()

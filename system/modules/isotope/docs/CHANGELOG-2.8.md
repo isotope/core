@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.16 (2023-07-31)
+--------------------------
+
+- Correctly generate URLs for the order confirmation page
+- Correctly load the member labels for address groups
+- Improve conversion of string to int attributes (#2480)
+- Fixed missing label in coupon template (#2443)
+- Fixed various PHP8 issues
+
+
 Version 2.8.15 (2023-07-19)
 --------------------------
 

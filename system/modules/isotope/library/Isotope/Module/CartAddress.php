@@ -78,6 +78,7 @@ class CartAddress extends Module
         $table = Address::getTable();
 
         System::loadLanguageFile($table);
+        System::loadLanguageFile('tl_member');
         Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)

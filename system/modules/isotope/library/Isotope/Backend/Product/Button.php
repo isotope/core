@@ -401,6 +401,6 @@ class Button extends Backend
             }
         }
 
-        return (int) $arrDownloads[$intProduct];
+        return (int) ($arrDownloads[$intProduct] ?? 0);
     }
 }
