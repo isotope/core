@@ -38,7 +38,7 @@ class Permission extends Backend
             throw new InternalServerErrorException('Product ID '.Input::get('id').' is used in an order and can\'t be deleted');
         }
 
-        if ('deleteAll' === Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
+        if ('deleteAll' === Input::get('act') && \is_array($session['CURRENT']['IDS'] ?? null)) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
             if (\count($arrDeletable) != \count($session['CURRENT']['IDS'])) {

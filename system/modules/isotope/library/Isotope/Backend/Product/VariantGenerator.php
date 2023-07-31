@@ -42,7 +42,7 @@ class VariantGenerator extends Backend
         $values = [];
 
         foreach ($objProduct->getType()->getVariantAttributes() as $attribute) {
-            if ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['variant_option']) {
+            if ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['variant_option'] ?? false) {
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['mandatory'] = true;
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple']  = true;
 
