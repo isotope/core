@@ -38,7 +38,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_setup' => array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
-        'tables'            => array(),
+        'tables'            => array(\Isotope\Model\Payment::getTable(), \Isotope\Model\Shipping::getTable(), \Isotope\Model\OrderStatus::getTable()),
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
     ),
 ));

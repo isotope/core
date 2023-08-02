@@ -19,6 +19,7 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\DcaExtractor;
 use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
@@ -136,6 +137,8 @@ class Callback extends Backend
             Controller::redirect('contao/main.php?act=error');
         }
 
+        $arrRelations = DcaExtractor::getInstance('tl_iso_product_collection')->getRelations();
+
         $strBuffer = '
 <div>
 <table class="tl_show">
@@ -146,10 +149,74 @@ class Callback extends Backend
                 continue;
             }
 
+            $operations = [];
+
+            if (isset($arrRelations[$field]['table']) && 'tl_iso_product_collection' !== $arrRelations[$field]['table'] && $dc->activeRecord->{$field}) {
+                $relatedTable = $arrRelations[$field]['table'];
+                $module = null;
+                $name = null;
+
+                $objRecord = Database::getInstance()->prepare("SELECT id FROM $relatedTable WHERE id=?")->execute($dc->activeRecord->{$field});
+
+                if ($objRecord->numRows) {
+                    foreach ($GLOBALS['BE_MOD'] as $modules) {
+                        foreach ($modules as $moduleName => $moduleConfig) {
+                            if (isset($moduleConfig['tables']) && \in_array($relatedTable, $moduleConfig['tables'], true)) {
+                                $module = $moduleConfig;
+                                $name = $moduleName;
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($module && BackendUser::getInstance()->hasAccess($name, 'modules')) {
+                        Controller::loadDataContainer($relatedTable);
+
+                        if (isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show'])) {
+                            $operations[] = sprintf(
+                                '<a href="%s" title="%s" onclick="Backend.openModalIframe({\'title\':\'%s\',\'url\':this.href});return false" class="%s">%s</a>',
+                                System::getContainer()->get('router')->generate('contao_backend', [
+                                    'do' => $name,
+                                    'table' => $relatedTable,
+                                    'act' => 'show',
+                                    'id' => $dc->activeRecord->{$field},
+                                    'popup' => 1,
+                                    'rt' => REQUEST_TOKEN,
+                                ]),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['show']['label'], $dc->activeRecord->{$field}),
+                                $name,
+                                Image::getHtml('show')
+                            );
+                        }
+
+                        if (
+                            isset($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['edit'])
+                            && BackendUser::getInstance()->canEditFieldsOf($relatedTable)
+                        ) {
+                            array_unshift($operations, sprintf(
+                                '<a href="%s" title="%s" class="%s">%s</a>',
+                                System::getContainer()->get('router')->generate('contao_backend', [
+                                    'do' => $name,
+                                    'table' => $relatedTable,
+                                    'act' => 'edit',
+                                    'id' => $dc->activeRecord->{$field},
+                                    'rt' => REQUEST_TOKEN,
+                                ]),
+                                sprintf($GLOBALS['TL_DCA'][$relatedTable]['list']['operations']['edit']['label'][0], $dc->activeRecord->{$field}),
+                                $name,
+                                Image::getHtml('edit')
+                            ));
+                        }
+                    }
+                }
+            }
+
             $strBuffer .= '
   <tr>
     <td class="tl_label">' . Format::dcaLabel($dc->table, $field) . ' <small>'.$field.'</small></td>
     <td>' . Format::dcaValue($dc->table, $field, $objOrder->{$field}, $dc) . '</td>
+    <td>' . implode(' ', $operations) . '</td>
   </tr>';
         }
 
