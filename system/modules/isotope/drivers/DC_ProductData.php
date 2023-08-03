@@ -2181,7 +2181,7 @@ class DC_ProductData extends \DC_Table
                 // Label
                 foreach ($showFields as $k=>$v)
                 {
-                    if (!isset($row[$v]))
+                    if (strpos($v, ':') === false && !isset($row[$v]))
                     {
                         $args[$k] = '';
                         continue;

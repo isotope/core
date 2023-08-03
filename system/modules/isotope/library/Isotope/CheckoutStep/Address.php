@@ -200,7 +200,7 @@ abstract class Address extends CheckoutStep
                     }
                 }
 
-                if (\is_array($objWidget->dca_config['save_callback']) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
                     foreach ($objWidget->dca_config['save_callback'] as $callback) {
                         try {
                             if (\is_array($callback)) {
@@ -230,7 +230,7 @@ abstract class Address extends CheckoutStep
                 $objValidator->validate();
                 $varValue = (string) $objWidget->value;
 
-                if (\is_array($objWidget->dca_config['save_callback']) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
                     foreach ($objWidget->dca_config['save_callback'] as $callback) {
                         try {
                             if (\is_array($callback)) {
