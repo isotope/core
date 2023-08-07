@@ -11,7 +11,12 @@
 
 namespace Isotope\Module;
 
+use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\FrontendUser;
+use Contao\Input;
 use Contao\PageError403;
+use Contao\PageModel;
+use Contao\StringUtil;
 use Haste\Util\Format;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
@@ -63,7 +68,7 @@ class OrderDetails extends AbstractProductCollection
 
         parent::compile();
 
-        $this->Template->info                 = deserialize($order->checkout_info, true);
+        $this->Template->info                 = StringUtil::deserialize($order->checkout_info, true);
         $this->Template->date                 = Format::date($order->locked);
         $this->Template->time                 = Format::time($order->locked);
         $this->Template->datim                = Format::datim($order->locked);
@@ -83,13 +88,13 @@ class OrderDetails extends AbstractProductCollection
             return $order;
         }
 
-        $order = Order::findOneBy('uniqid', (string) \Input::get('uid'));
+        $order = Order::findOneBy('uniqid', (string) Input::get('uid'));
 
         // Also check owner (see #126)
         if (null === $order
             || (FE_USER_LOGGED_IN === true
                 && $order->member > 0
-                && \FrontendUser::getInstance()->id != $order->member
+                && FrontendUser::getInstance()->id != $order->member
             )
         ) {
             $this->Template          = new Template('mod_message');
@@ -101,17 +106,11 @@ class OrderDetails extends AbstractProductCollection
 
         // Order belongs to a member but not logged in
         if ('FE' === TL_MODE && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
-            /** @var \PageModel $objPage */
-            global $objPage;
-
-            /** @var PageError403 $objHandler */
-            $objHandler = new $GLOBALS['TL_PTY']['error_403']();
-            $objHandler->generate($objPage->id);
-            exit;
+            throw new AccessDeniedException();
         }
 
         if ('FE' === TL_MODE) {
-            /** @var \PageModel $objPage */
+            /** @var PageModel $objPage */
             global $objPage;
 
             $order->preventSaving(false);

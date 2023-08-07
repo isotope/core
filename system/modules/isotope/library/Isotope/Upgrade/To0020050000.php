@@ -20,6 +20,8 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
+
 class To0020050000 extends Base
 {
     public function run($blnInstalled)
@@ -29,19 +31,19 @@ class To0020050000 extends Base
         }
 
         if ($this->updateDatabaseField('price', 'tl_iso_payment')) {
-            \Database::getInstance()->query(
+            Database::getInstance()->query(
                 "UPDATE tl_iso_payment SET price=NULL WHERE price='' OR price REGEXP '^0(\.[0]*)?$'"
             );
         }
 
         if ($this->updateDatabaseField('price', 'tl_iso_shipping')) {
-            \Database::getInstance()->query(
+            Database::getInstance()->query(
                 "UPDATE tl_iso_shipping SET price=NULL WHERE price='' OR price REGEXP '^0(\.[0]*)?$'"
             );
         }
 
         if ($this->createDatabaseField('iso_notifications', 'tl_module')) {
-            \Database::getInstance()->query("UPDATE tl_module SET iso_notifications=nc_notification");
+            Database::getInstance()->query("UPDATE tl_module SET iso_notifications=nc_notification");
         }
     }
 }

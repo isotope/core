@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="fa">
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
@@ -37,6 +37,30 @@
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.date_shipped.1">
         <source>Enter a date when this order has been shipped.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.0">
+        <source>Send a notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.1">
+        <source>Send an extra notification when saving this record.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.0">
+        <source>Notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.1">
+        <source>Choose a notification that will be sent when saving this record.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.0">
+        <source>Tracking numbers</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
+        <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; simple token in the notification.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
+        <source>Customer notes</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.1">
+        <source>Here you can enter a message to the customer for this status update. Use the &lt;em&gt;##order_status_notes##&lt;/em&gt; simple token in the notification.</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.config_id.0">
         <source>Shop configuration</source>
@@ -85,23 +109,11 @@
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
       </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.0">
-        <source>Copy order</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.copy.1">
-        <source>Copy order ID %s</source>
-      </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.0">
         <source>Delete order</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.delete.1">
         <source>Delete order ID %s</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.0">
-        <source>Order details</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_product_collection.show.1">
-        <source>Show details of order ID %s</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
@@ -151,11 +163,23 @@
       <trans-unit id="tl_iso_product_collection.noEmailData">
         <source>No additional email data available.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.updateOrderStatus">
+        <source>Update order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noLogData">
+        <source>No order logs are available.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.status_legend">
         <source>Order status</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.log_legend">
+        <source>Order log</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.details_legend">
         <source>Order details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_legend">
+        <source>Order information</source>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.email_legend">
         <source>Email data</source>

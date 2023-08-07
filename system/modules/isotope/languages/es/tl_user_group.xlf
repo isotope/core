@@ -1,9 +1,138 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_user_group.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="tl_user_group.isotope_legend">
         <source>Isotope eCommerce</source>
         <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.0">
+        <source>Isotope modules</source>
+        <target>Modulos Isotope</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_modules.1">
+        <source>Select which store configuration modules user of this group can access.</source>
+        <target>Selecciona que módulos de tienda puede acceder el usuario de este grupo.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_types.0">
+        <source>Allowed product types</source>
+        <target>Tipos de productos permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_types.1">
+        <source>Here you can grant access to one or more product types.</source>
+        <target>Aquí podrá conceder el acceso a uno o varios tipos de productos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_typep.0">
+        <source>Product type permissions</source>
+        <target>Permisos del tipo de producto</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_product_typep.1">
+        <source>Here you can define the product type permissions.</source>
+        <target>Aquí puede definir los permisos del tipo de producto.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modules.0">
+        <source>Allowed payment modules</source>
+        <target>Módulos de pago permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modules.1">
+        <source>Here you can grant access to one or more payment modules.</source>
+        <target>Aquí podrá conceder el acceso a uno o varios módulos de pago.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modulep.0">
+        <source>Payment module permissions</source>
+        <target>Permisos del módulo de pago</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_payment_modulep.1">
+        <source>Here you can define the payment module permissions.</source>
+        <target>Aquí puede definir los permisos del módulo de pago.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modules.0">
+        <source>Allowed shipping modules</source>
+        <target>Módulos de envío permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modules.1">
+        <source>Here you can grant access to one or more shipping modules.</source>
+        <target>Aquí podrá conceder el acceso a uno o varios módulos de envío.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modulep.0">
+        <source>Shipping module permissions</source>
+        <target>Permisos del módulo de envío</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_shipping_modulep.1">
+        <source>Here you can define the shipping module permissions.</source>
+        <target>Aquí puede definir los permisos del módulo de envío.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.0">
+        <source>Allowed tax classes</source>
+        <target>Clases de impuestos permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classes.1">
+        <source>Here you can grant access to one or more tax classes.</source>
+        <target>Aquí se puede permitir el acceso a una o varias clases de impuestos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classp.0">
+        <source>Tax class permissions</source>
+        <target>Permisos de la clase de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_classp.1">
+        <source>Here you can define the tax class permissions.</source>
+        <target>Aquí puede definir los permisos de la clase de impuestos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.0">
+        <source>Allowed tax rates</source>
+        <target>Tasas de impuestos permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_rates.1">
+        <source>Here you can grant access to one or more tax rates.</source>
+        <target>Aquí podrá conceder el acceso a uno o varios tipos de impuestos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_ratep.0">
+        <source>Tax rate permissions</source>
+        <target>Permisos del tipo de impuestos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_tax_ratep.1">
+        <source>Here you can define the tax rate permissions.</source>
+        <target>Aquí puede definir los permisos del tipo de impuestos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.0">
+        <source>Allowed store configurations</source>
+        <target>Configuraciones de tiendas permitidas</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configs.1">
+        <source>Here you can grant access to one or more store configurations.</source>
+        <target>Aquí podrá conceder el acceso a una o varias configuraciones de tienda.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configp.0">
+        <source>Store configuration permissions</source>
+        <target>Permisos de la tienda</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_configp.1">
+        <source>Here you can define the store configuration permissions.</source>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groups.0">
+        <source>Allowed product groups</source>
+        <target>Grupos de productos permitidos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groups.1">
+        <source>Limit access to product groups for this user group. Gets inherited.</source>
+        <target>Limitar a este grupo de usuarios el acceso a estos grupos de productos. Se hereda.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groupp.0">
+        <source>Product group permissions</source>
+        <target>Permisos grupo de productos</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_groupp.1">
+        <source>Here you can define the product group permissions.</source>
+        <target>Aquí puede definir los permisos del grupo de productos.</target>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.0">
+        <source>Allowed member groups</source>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.1">
+        <source>Back end users can only see orders of these member groups.</source>
+      </trans-unit>
+      <trans-unit id="tl_user_group.iso_member_groups.2">
+        <source>Guests</source>
+        <target>Invitados</target>
       </trans-unit>
     </body>
   </file>

@@ -19,11 +19,7 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
-        'closed'                    => true,
-        'onload_callback' => array
-        (
-            array('Isotope\Backend', 'initializeSetupModule')
-        ),
+        'backlink'                  => 'do=iso_setup',
         'sql' => array
         (
             'keys' => array
@@ -50,23 +46,8 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'global_operations' => array
         (
-            'back' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'              => 'mod=&table=',
-                'class'             => 'header_back',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_document']['new'],
-                'href'              => 'act=create',
-                'class'             => 'header_new',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -76,28 +57,24 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_document']['edit'],
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif',
+                'icon'              => 'edit.svg',
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_document']['copy'],
                 'href'              => 'act=copy',
-                'icon'              => 'copy.gif'
+                'icon'              => 'copy.svg'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_document']['delete'],
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+                'icon'              => 'delete.svg',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_document']['show'],
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             )
         )
     ),
@@ -123,7 +100,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -131,7 +107,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['type'],
             'exclude'               => true,
             'filter'                => true,
             'inputType'             => 'select',
@@ -144,7 +119,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'documentTitle' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['documentTitle'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -152,7 +126,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'fileTitle' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['fileTitle'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -160,7 +133,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'documentTpl'  => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['documentTpl'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function(\DataContainer $dc) {
@@ -171,7 +143,6 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'collectionTpl'  => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['collectionTpl'],
             'exclude'               => true,
             'default'               => 'iso_collection_invoice',
             'inputType'             => 'select',
@@ -183,17 +154,15 @@ $GLOBALS['TL_DCA']['tl_iso_document'] = array
         ),
         'orderCollectionBy' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['orderCollectionBy'],
             'exclude'               => true,
             'default'               => 'asc_id',
             'inputType'             => 'select',
-            'options'               => $GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
+            'options'               => &$GLOBALS['TL_LANG']['MSC']['iso_orderCollectionBy'],
             'eval'                  => array('mandatory'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'gallery' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_document']['gallery'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\Gallery::getTable().'.name',

@@ -11,6 +11,9 @@
 
 namespace Isotope\Report;
 
+use Contao\Date;
+use Contao\Message;
+use Contao\Session;
 use Isotope\Model\OrderStatus;
 
 abstract class Sales extends Report
@@ -30,47 +33,47 @@ abstract class Sales extends Report
     protected function initializeDefaultValues()
     {
         // Set default session data
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['columns'] == '') {
+        if (empty($arrSession[$this->name]['columns'])) {
             $arrSession[$this->name]['columns'] = '6';
         }
 
-        if (!\in_array($arrSession[$this->name]['date_field'], ['locked', 'date_paid', 'date_shipped'], true)) {
+        if (!\in_array($arrSession[$this->name]['date_field'] ?? null, ['locked', 'date_paid', 'date_shipped'], true)) {
             $arrSession[$this->name]['date_field'] = 'locked';
         }
 
-        if ($arrSession[$this->name]['from'] == '') {
+        if (empty($arrSession[$this->name]['from'])) {
             $arrSession[$this->name]['from'] = '';
         } elseif (!is_numeric($arrSession[$this->name]['from'])) {
             // Convert date formats into timestamps
             try {
-                $objDate = new \Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $objDate = new Date($arrSession[$this->name]['from'], $GLOBALS['TL_CONFIG']['dateFormat']);
                 $arrSession[$this->name]['from'] = $objDate->tstamp;
             } catch (\OutOfBoundsException $e) {
-                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
                 $arrSession[$this->name]['from'] = '';
             }
         }
 
-        \Session::getInstance()->set('iso_reports', $arrSession);
+        Session::getInstance()->set('iso_reports', $arrSession);
     }
 
 
     protected function getSelectFromPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'      => 'from',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
-            'value'     => ($arrSession[$this->name]['from'] ? \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
+            'value'     => ($arrSession[$this->name]['from'] ? Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['from']) : ''),
             'class'     => 'tl_from',
         ];
     }
@@ -78,7 +81,7 @@ abstract class Sales extends Report
 
     protected function getSelectColumnsPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'  => 'columns',
@@ -142,8 +145,8 @@ abstract class Sales extends Report
             }
         }
 
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $varValue = (int) $arrSession[$this->name]['iso_status'];
+        $arrSession = Session::getInstance()->get('iso_reports');
+        $varValue = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         return [
             'name'      => 'iso_status',
@@ -159,7 +162,7 @@ abstract class Sales extends Report
 
     protected function getDateFieldPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
         $varValue = $arrSession[$this->name]['date_field'];
 
         return [

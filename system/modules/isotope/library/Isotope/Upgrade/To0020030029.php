@@ -11,18 +11,18 @@
 
 namespace Isotope\Upgrade;
 
-use Isotope\Model\Attribute;
+use Contao\Database;
 
 class To0020030029 extends Base
 {
     /**
-     * @var \Contao\Database
+     * @var Database
      */
     private $db;
 
     public function run($blnInstalled)
     {
-        $this->db = \Database::getInstance();
+        $this->db = Database::getInstance();
 
         if ($blnInstalled) {
             $collections = $this->db->execute(

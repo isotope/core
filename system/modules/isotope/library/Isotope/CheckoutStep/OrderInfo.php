@@ -37,7 +37,6 @@ class OrderInfo extends CheckoutStep implements IsotopeCheckoutStep
         $objTemplate            = new Template('iso_checkout_order_info');
         $objTemplate->headline  = $GLOBALS['TL_LANG']['MSC']['order_review'];
         $objTemplate->message   = $GLOBALS['TL_LANG']['MSC']['order_review_message'];
-        $objTemplate->summary   = $GLOBALS['TL_LANG']['MSC']['cartSummary'];
         $objTemplate->info      = $this->objModule->getCheckoutInfo();
         $objTemplate->edit_info = $GLOBALS['TL_LANG']['MSC']['changeCheckoutInfo'];
 

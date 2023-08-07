@@ -9,29 +9,33 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-\System::loadLanguageFile(\Isotope\Model\Group::getTable());
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\System;
+use Isotope\Model\Group;
+
+System::loadLanguageFile(Group::getTable());
 
 /**
  * Extend a tl_user_group palette
  */
-\Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'alexf_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_types', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_product_typep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_payment_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modules', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_shipping_modulep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_classes', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_classp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_rates', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_tax_ratep', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_configs', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_configp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_groupp', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-    ->addField('iso_member_groups', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'alexf_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_types', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_product_typep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_payment_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modules', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_shipping_modulep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classes', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_classp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_rates', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_tax_ratep', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configs', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_configp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_groupp', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+    ->addField('iso_member_groups', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('default', 'tl_user_group')
 ;
 
@@ -41,7 +45,6 @@
  */
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_modules'],
     'exclude'               => true,
     'filter'                => true,
     'inputType'             => 'checkbox',
@@ -53,7 +56,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_modules'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_product_types'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',
@@ -63,7 +65,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_types'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_typep'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_product_typep'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -74,7 +75,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_product_typep'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modules'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_payment_modules'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\Payment::getTable().'.name',
@@ -84,7 +84,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modules'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modulep'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_payment_modulep'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -95,7 +94,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_payment_modulep'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modules'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modules'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\Shipping::getTable().'.name',
@@ -105,7 +103,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modules'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modulep'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_shipping_modulep'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -116,7 +113,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_shipping_modulep'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classes'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_classes'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\TaxClass::getTable().'.name',
@@ -126,7 +122,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classes'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classp'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_classp'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -137,7 +132,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_classp'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_rates'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_rates'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\TaxRate::getTable().'.name',
@@ -147,7 +141,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_rates'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_ratep'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_tax_ratep'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -158,7 +151,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_tax_ratep'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configs'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_configs'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
@@ -168,7 +160,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configs'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configp'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_configp'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete'),
@@ -179,7 +170,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_configp'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_groups'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options_callback'      => array('\Isotope\Backend\User\Callback', 'getGroups'),
@@ -189,7 +179,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groups'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groupp'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_groupp'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options'               => array('create', 'delete', 'rootPaste'),
@@ -200,7 +189,6 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_groupp'] = array
 
 $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_member_groups'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_user']['iso_member_groups'],
     'exclude'               => true,
     'inputType'             => 'checkbox',
     'options_callback'      => array('\Isotope\Backend\User\Callback', 'getMemberGroups'),

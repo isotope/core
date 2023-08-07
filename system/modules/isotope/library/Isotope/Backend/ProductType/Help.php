@@ -11,9 +11,10 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\Backend;
 use Isotope\Model\ProductType;
 
-class Help extends \Backend
+class Help extends Backend
 {
 
     public function initializeWizard($strName, $strLanguage)

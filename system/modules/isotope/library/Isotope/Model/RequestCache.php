@@ -11,6 +11,8 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\Model;
 use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
@@ -19,11 +21,8 @@ use Model\Registry;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class RequestCache extends \Model
+class RequestCache extends Model
 {
 
     /**
@@ -90,7 +89,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return \call_user_func_array('array_merge', $arrMatches);
+        return array_merge(...$arrMatches);
     }
 
     /**
@@ -217,7 +216,7 @@ class RequestCache extends \Model
             return array();
         }
 
-        return \call_user_func_array('array_merge', $arrMatches);
+        return array_merge(...$arrMatches);
     }
 
     /**
@@ -258,7 +257,7 @@ class RequestCache extends \Model
      */
     public function getFirstSortingFieldForModule($intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             return '';
         }
 
@@ -311,7 +310,7 @@ class RequestCache extends \Model
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             $this->arrSortings[$intModule] = array();
         }
 
@@ -440,11 +439,12 @@ class RequestCache extends \Model
      *
      * @param array $arrData
      *
-     * @return \Model
+     * @return Model
      */
     public function setRow(array $arrData)
     {
-        // Do not use deserialize() because we have objects (see https://github.com/contao/core/issues/6695)
+        // Do not use StringUtil::deserialize() because we have objects (see https://github.com/contao/core/issues/6695)
+        /** @noinspection UnserializeExploitsInspection */
         $arrConfig = unserialize($arrData['config']);
 
         $this->arrFilters  = $arrConfig['filters'];
@@ -499,7 +499,7 @@ class RequestCache extends \Model
      */
     public static function deleteById($intId)
     {
-        $affected = \Database::getInstance()
+        $affected = Database::getInstance()
             ->prepare("DELETE FROM tl_iso_requestcache WHERE id=?")
             ->execute($intId)
             ->affectedRows
@@ -513,7 +513,7 @@ class RequestCache extends \Model
      */
     public static function purge()
     {
-        \Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
+        Database::getInstance()->query("TRUNCATE tl_iso_requestcache");
     }
 
     /**

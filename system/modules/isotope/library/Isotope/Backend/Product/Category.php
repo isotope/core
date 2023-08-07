@@ -11,12 +11,18 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\StringUtil;
+use Contao\Widget;
 use Isotope\Backend\SubtableVersion;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCategory;
 
 
-class Category extends \Backend
+class Category extends Backend
 {
 
     /**
@@ -28,16 +34,16 @@ class Category extends \Backend
      */
     public function updateSorting($insertId)
     {
-        $objCategories = \Database::getInstance()->prepare('
-            SELECT id, page_id 
-            FROM tl_iso_product_category 
+        $objCategories = Database::getInstance()->prepare('
+            SELECT id, page_id
+            FROM tl_iso_product_category
             WHERE pid=?'
         )->execute($insertId);
 
         while ($objCategories->next()) {
-            \Database::getInstance()->prepare('
-                UPDATE tl_iso_product_category 
-                SET sorting=(SELECT max_sorting FROM (SELECT MAX(sorting) AS max_sorting FROM tl_iso_product_category WHERE page_id=?) subq)+128 
+            Database::getInstance()->prepare('
+                UPDATE tl_iso_product_category
+                SET sorting=(SELECT max_sorting FROM (SELECT MAX(sorting) AS max_sorting FROM tl_iso_product_category WHERE page_id=?) subq)+128
                 WHERE id=?'
             )->execute($objCategories->page_id, $objCategories->id);
         }
@@ -59,19 +65,19 @@ class Category extends \Backend
 
         SubtableVersion::create($strTable, $intId, ProductCategory::getTable(), $arrCategories);
 
-        $current = \Database::getInstance()
+        $current = Database::getInstance()
             ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
             ->limit(1)
             ->execute($strTable, $intId)
         ;
 
         if (1 === $current->numRows) {
-            $data = deserialize($current->data);
+            $data = StringUtil::deserialize($current->data);
             $data['pages'] = array_map(function ($category) {
                 return $category['id'];
             }, $arrCategories);
 
-            \Database::getInstance()
+            Database::getInstance()
                 ->prepare('UPDATE tl_version SET data=? WHERE id=?')
                 ->execute(serialize($data), $current->id)
             ;
@@ -95,29 +101,29 @@ class Category extends \Backend
         $arrData = SubtableVersion::find('tl_iso_product_category', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query('DELETE FROM tl_iso_product_category WHERE pid=' . (int) $intId);
+            Database::getInstance()->query('DELETE FROM tl_iso_product_category WHERE pid=' . (int) $intId);
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_category'));
+            $tableFields = array_flip(Database::getInstance()->getFieldNames('tl_iso_product_category'));
 
-            \Controller::loadDataContainer('tl_iso_product_category');
+            Controller::loadDataContainer('tl_iso_product_category');
 
             foreach ($arrData as $data) {
                 $data = array_intersect_key($data, $tableFields);
 
                 // Reset fields added after storing the version to their default value (see contao/core#7755)
                 foreach (array_diff_key($tableFields, $data) as $k=>$v) {
-                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
+                    $data[$k] = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_category']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_category %s')->set($data)->execute();
+                Database::getInstance()->prepare('INSERT INTO tl_iso_product_category %s')->set($data)->execute();
             }
 
-            \Database::getInstance()
+            Database::getInstance()
                      ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
                      ->execute($intId, 'tl_iso_product_category')
             ;
 
-            \Database::getInstance()
+            Database::getInstance()
                      ->prepare('UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?')
                      ->execute($intId, 'tl_iso_product_category', $intVersion)
             ;
@@ -128,11 +134,10 @@ class Category extends \Backend
      * Load page IDs from product categories table
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
      *
      * @return mixed
      */
-    public function load($varValue, \DataContainer $dc)
+    public function load($varValue, DataContainer $dc)
     {
         $objCategories = ProductCategory::findBy('pid', $dc->id);
 
@@ -145,14 +150,13 @@ class Category extends \Backend
      * Save page ids to product category table. This allows to retrieve all products associated to a page.
      *
      * @param mixed $varValue
-     * @param \DataContainer $dc
      *
      * @return mixed
      */
-    public function save($varValue, \DataContainer $dc)
+    public function save($varValue, DataContainer $dc)
     {
-        $db = \Database::getInstance();
-        $arrIds = deserialize($varValue);
+        $db = Database::getInstance();
+        $arrIds = StringUtil::deserialize($varValue);
 
         if (\is_array($arrIds) && !empty($arrIds)) {
             $time = time();
@@ -167,13 +171,13 @@ class Category extends \Backend
             if (!empty($arrIds)) {
                 foreach ($arrIds as $id) {
                     $sorting = (int) $db->execute("
-                        SELECT MAX(sorting) AS sorting 
-                        FROM tl_iso_product_category 
+                        SELECT MAX(sorting) AS sorting
+                        FROM tl_iso_product_category
                         WHERE page_id=$id
                     ")->sorting + 128;
 
                     $db->query("
-                        INSERT INTO tl_iso_product_category (pid,tstamp,page_id,sorting) 
+                        INSERT INTO tl_iso_product_category (pid,tstamp,page_id,sorting)
                         VALUES ({$dc->id}, $time, $id, $sorting)
                     ");
                 }

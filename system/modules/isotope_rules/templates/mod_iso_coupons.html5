@@ -27,7 +27,7 @@
         <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
         <div class="widget widget-text">
-            <label for="ctrl_coupon_<?php echo $this->id; ?>">
+            <label for="ctrl_coupon_<?= $this->id ?>">
                 <span class="invisible"><?= $GLOBALS['TL_LANG']['MSC']['mandatory'] ?> </span><?= $GLOBALS['TL_LANG']['MSC']['couponLabel'] ?><span class="mandatory">*</span>
             </label>
             <input type="text" name="coupon" id="ctrl_coupon_<?= $this->id; ?>" class="text">

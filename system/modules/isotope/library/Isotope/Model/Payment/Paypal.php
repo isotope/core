@@ -11,16 +11,22 @@
 
 namespace Isotope\Model\Payment;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-use Haste\Http\Response\Response;
-use Haste\Util\StringUtil;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
+use Contao\StringUtil;
+use Contao\System;
+use Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 
 /**
  * PayPal Standard payment method
@@ -40,44 +46,43 @@ class Paypal extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
-            return;
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
-        if ('Completed' !== \Input::post('payment_status')) {
-            \System::log('PayPal IPN: payment status "' . \Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
-            return;
+        if ('Completed' !== Input::post('payment_status')) {
+            System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
+            return new Response('', Response::HTTP_NOT_IMPLEMENTED);
         }
 
         if (!$this->validateInput()) {
-            return;
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
-
-        if (!$this->debug && \Input::post('receiver_email', true) != $this->paypal_account) {
-            \System::log('PayPal IPN: Account email does not match (got ' . \Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
-            return;
+        if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
+            System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         // Validate payment data (see #2221)
-        if ($objOrder->getCurrency() !== \Input::post('mc_currency')
-            || $objOrder->getTotal() != \Input::post('mc_gross')
+        if ($objOrder->getCurrency() !== Input::post('mc_currency')
+            || $objOrder->getTotal() != Input::post('mc_gross')
         ) {
-            \System::log('PayPal IPN: manipulation in payment from "' . \Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
-            return;
+            System::log('PayPal IPN: manipulation in payment from "' . Input::post('payer_email') . '" !', __METHOD__, TL_ERROR);
+            return new Response('', Response::HTTP_BAD_REQUEST);
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
-            return;
+            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" already completed', __METHOD__, TL_GENERAL);
+            return new Response();
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('PayPal IPN: checkout for Order ID "' . \Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
-            return;
+            System::log('PayPal IPN: checkout for Order ID "' . Input::post('invoice') . '" failed', __METHOD__, TL_ERROR);
+            return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Store request data in order for future references
-        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data = $arrPayment;
 
@@ -86,7 +91,9 @@ class Paypal extends Postsale
 
         $objOrder->save();
 
-        \System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+        System::log('PayPal IPN: data accepted', __METHOD__, TL_GENERAL);
+
+        return new Response();
     }
 
     /**
@@ -95,21 +102,18 @@ class Paypal extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk((int) \Input::post('invoice'));
+        return Order::findByPk((int) Input::post('invoice'));
     }
 
     /**
      * Return the PayPal form.
      *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
-     *
      * @return string
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -139,9 +143,9 @@ class Paypal extends Postsale
                 $strConfig = ' (' . implode(', ', $arrConfig) . ')';
             }
 
-            $strName = StringUtil::convertToText(
+            $strName = HasteStringUtil::convertToText(
                 $objItem->getName() . $strConfig,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
             );
 
             // Make sure name is not empty, otherwise PayPal ignores all subsequent products
@@ -168,9 +172,9 @@ class Paypal extends Postsale
                 continue;
             }
 
-            $arrData['item_name_' . ++$i] = StringUtil::convertToText(
+            $arrData['item_name_' . ++$i] = HasteStringUtil::convertToText(
                 $objSurcharge->label,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_INSERTTAGS | StringUtil::NO_ENTITIES
+                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_INSERTTAGS | HasteStringUtil::NO_ENTITIES
             );
             $arrData['amount_' . $i]      = $objSurcharge->total_price;
         }
@@ -182,17 +186,17 @@ class Paypal extends Postsale
         $objTemplate->id            = $this->id;
         $objTemplate->action        = ('https://www.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr');
         $objTemplate->invoice       = $objOrder->getId();
-        $objTemplate->data          = array_map([\Contao\StringUtil::class, 'specialchars'], $arrData);
+        $objTemplate->data          = array_map([StringUtil::class, 'specialchars'], $arrData);
         $objTemplate->discount      = $fltDiscount;
         $objTemplate->address       = $objOrder->getBillingAddress();
         $objTemplate->currency      = $objOrder->getCurrency();
-        $objTemplate->return        = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $objTemplate->cancel_return = \Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $objTemplate->notify_url    = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->headline      = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
-        $objTemplate->message       = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
-        $objTemplate->slabel        = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
-        $objTemplate->noscript = \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
+        $objTemplate->return        = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $objTemplate->cancel_return = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
+        $objTemplate->notify_url    = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
+        $objTemplate->headline      = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][0]);
+        $objTemplate->message       = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][1]);
+        $objTemplate->slabel        = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][2]);
+        $objTemplate->noscript = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['pay_with_redirect'][3]);
 
         return $objTemplate->parse();
     }
@@ -210,7 +214,7 @@ class Paypal extends Postsale
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = \Contao\StringUtil::deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($arrPayment['POSTSALE']) || empty($arrPayment['POSTSALE'])) {
             return parent::backendInterface($orderId);
@@ -222,7 +226,7 @@ class Paypal extends Postsale
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . \Contao\StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] . ')' . '</h2>
@@ -264,48 +268,25 @@ class Paypal extends Postsale
      */
     private function validateInput()
     {
+        $client = HttpClient::create();
+
         try {
             $body = file_get_contents('php://input');
-            $url  = 'https://ipnpb.'.($this->debug ? 'sandbox.' : '').'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
+            $url = 'https://ipnpb.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/cgi-bin/webscr?cmd=_notify-validate';
 
-            if (class_exists('GuzzleHttp\Client')) {
-                $request = new Client(
-                    [
-                        RequestOptions::TIMEOUT         => 5,
-                        RequestOptions::CONNECT_TIMEOUT => 5,
-                        RequestOptions::HTTP_ERRORS     => false,
-                    ]
-                );
+            $response = $client->request('POST', $url, [
+                'body' => $body
+            ]);
 
-                $response = $request->post($url, [RequestOptions::BODY => $body]);
+            if ('VERIFIED' !== $response->getContent()) {
+                \System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
 
-                if ($response->getStatusCode() != 200) {
-                    throw new \RuntimeException($response->getReasonPhrase());
-                }
-
-                if ('VERIFIED' !== $response->getBody()->getContents()) {
-                    throw new \UnexpectedValueException($response->getBody()->getContents());
-                }
-
-            } else {
-                $request = new \RequestExtended();
-                $request->send($url, $body, 'post');
-
-                if ($request->hasError()) {
-                    throw new \RuntimeException($request->error);
-                }
-
-                if ('VERIFIED' !== $request->response) {
-                    throw new \UnexpectedValueException($request->response);
-                }
+                return false;
             }
-        } catch (\UnexpectedValueException $e) {
-            \System::log('PayPal IPN: data rejected (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
+        } catch (ExceptionInterface $exception) {
+            System::log('PayPal IPN: Request Error (' . $exception->getMessage() . ')', __METHOD__, TL_ERROR);
+
             return false;
-        } catch (\RuntimeException $e) {
-            \System::log('PayPal IPN: Request Error (' . $e->getMessage() . ')', __METHOD__, TL_ERROR);
-            $response = new Response('', 500);
-            $response->send();
         }
 
         return true;

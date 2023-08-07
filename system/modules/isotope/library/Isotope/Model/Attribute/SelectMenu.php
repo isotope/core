@@ -15,9 +15,6 @@ use Isotope\Interfaces\IsotopeAttributeForVariants;
 
 /**
  * Attribute to impelement SelectMenu widget
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttributeForVariants
 {
@@ -54,9 +51,9 @@ class SelectMenu extends AbstractAttributeWithOptions implements IsotopeAttribut
             $arrData['fields'][$this->field_name]['sql'] = 'blob NULL';
         } else {
             if ('attribute' === $this->optionsSource) {
-                $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+                $arrData['fields'][$this->field_name]['sql'] = "varchar(64) NOT NULL default ''";
             } else {
-                $arrData['fields'][$this->field_name]['sql'] = "int(10) NOT NULL default 0";
+                $arrData['fields'][$this->field_name]['sql'] = 'int(10) NOT NULL default 0';
             }
 
             if ($this->fe_filter) {

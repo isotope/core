@@ -11,7 +11,11 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\DateTime\DateTime;
 use Isotope\Currency;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -20,6 +24,7 @@ use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Class VADS
@@ -52,35 +57,35 @@ abstract class VADS extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
         // Verify payment status
-        if (\Input::post('vads_result') != '00') {
-            \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
+        if (Input::post('vads_result') != '00') {
+            System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
             return;
         }
 
         // Validate HMAC sign
-        if (\Input::post('signature') != $this->calculateSignature($_POST, $this->vads_certificate)) {
-            \System::log('Invalid signature for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+        if (Input::post('signature') != $this->calculateSignature($_POST, $this->vads_certificate)) {
+            System::log('Invalid signature for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         // For maximum security, also validate individual parameters
         if (!$this->validateInboundParameters($objOrder)) {
-            \System::log('Parameter mismatch for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+            System::log('Parameter mismatch for Order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             return;
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -96,18 +101,16 @@ abstract class VADS extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('vads_order_id'));
+        return Order::findByPk(Input::post('vads_order_id'));
     }
 
     /**
      * Generate the submit form for Innopay and if javascript is enabled redirect automatically
-     *
-     * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -134,8 +137,8 @@ abstract class VADS extends Postsale
     protected function getOutboundParameters(IsotopePurchasableCollection $objOrder)
     {
         $objAddress = $objOrder->getBillingAddress();
-        $successUrl = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $failureUrl = \Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $successUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $failureUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
         $transDate  = new DateTime();
         $transDate->setTimezone(new \DateTimeZone('UTC'));
@@ -164,7 +167,7 @@ abstract class VADS extends Postsale
             'vads_trans_date'     => $transDate->format('YmdHis'),
             'vads_trans_id'       => str_pad($objOrder->getId(), 6, '0', STR_PAD_LEFT),
             'vads_url_cancel'     => $failureUrl,
-            'vads_url_check'      => \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id,
+            'vads_url_check'      => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL),
             'vads_url_error'      => $failureUrl,
             'vads_url_referral'   => $failureUrl,
             'vads_url_refused'    => $failureUrl,
@@ -210,7 +213,7 @@ abstract class VADS extends Postsale
         $parameters = $this->getOutboundParameters($objOrder);
 
         foreach ($this->inboundParameters as $key) {
-            if ($parameters[$key] != \Input::post($key)) {
+            if ($parameters[$key] != Input::post($key)) {
                 return false;
             }
         }

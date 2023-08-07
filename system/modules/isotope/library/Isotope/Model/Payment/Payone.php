@@ -11,6 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
+use Contao\System;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -37,19 +41,19 @@ class Payone extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
-        $mode     = (string) \Input::post('mode');
-        $txaction = (string) \Input::post('txaction');
+        $mode     = (string) Input::post('mode');
+        $txaction = (string) Input::post('txaction');
 
-        if (\Input::post('aid') != $this->payone_aid
-            || \Input::post('portalid') != $this->payone_portalid
+        if (Input::post('aid') != $this->payone_aid
+            || Input::post('portalid') != $this->payone_portalid
             || (!$this->debug && 'test' === $mode)
             || ($this->debug && 'live' === $mode)
         ) {
-            \System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
+            System::log('PayOne configuration mismatch', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
@@ -58,22 +62,22 @@ class Payone extends Postsale
             die('TSOK');
         }
 
-        if (\Input::post('currency') != $objOrder->getCurrency() || $objOrder->getTotal() != \Input::post('price')) {
-            \System::log('PayOne order data mismatch for Order ID "' . \Input::post('reference') . '"', __METHOD__, TL_ERROR);
+        if (Input::post('currency') != $objOrder->getCurrency() || $objOrder->getTotal() != Input::post('price')) {
+            System::log('PayOne order data mismatch for Order ID "' . Input::post('reference') . '"', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . \Input::post('reference') . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . Input::post('reference') . '" already completed', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . \Input::post('reference') . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . Input::post('reference') . '" failed', __METHOD__, TL_ERROR);
             die('TSOK');
         }
 
-        if ('paid' === \Input::post('txaction') && \Input::post('balance') == 0) {
+        if ('paid' === Input::post('txaction') && Input::post('balance') == 0) {
             $objOrder->setDatePaid(time());
         }
 
@@ -90,16 +94,16 @@ class Payone extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk((int) \Input::post('reference'));
+        return Order::findByPk((int) Input::post('reference'));
     }
 
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -115,8 +119,8 @@ class Payone extends Postsale
             'reference'         => str_pad($objOrder->getId(), 4, '0', STR_PAD_LEFT),
             'display_name'      => 'no',
             'display_address'   => 'no',
-            'successurl'        => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-            'backurl'           => \Environment::get('base') . Checkout::generateUrlForStep('failed'),
+            'successurl'        => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+            'backurl'           => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
             'amount'            => $this->formatAmount($objOrder->getTotal()),
             'currency'          => $objOrder->getCurrency(),
 

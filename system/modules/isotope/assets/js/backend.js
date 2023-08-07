@@ -6,10 +6,6 @@
  * @package    Isotope
  * @link       http://www.isotopeecommerce.com
  * @license    http://opensource.org/licenses/lgpl-3.0.html LGPL
- *
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Kamil Kuzminski <kamil.kuzminski@codefog.pl>
  */
 
 var Isotope = {};
@@ -317,8 +313,6 @@ var Isotope = {};
      * Make parent view items sortable
      *
      * @param {object} ul The DOM element
-     *
-     * @author Joe Ray Gregory
      */
     Isotope.makeParentViewSortable = function(ul) {
         var ds = new Scroller(document.getElement('body'), {

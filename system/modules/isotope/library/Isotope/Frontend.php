@@ -12,9 +12,18 @@
 namespace Isotope;
 
 use Contao\Controller;
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\Database;
+use Contao\Database\Result;
+use Contao\Date;
+use Contao\Environment;
+use Contao\FrontendTemplate;
+use Contao\FrontendUser;
+use Contao\MemberModel;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Widget;
 use Haste\Input\Input;
 use Isotope\EventListener\ChangeLanguageListener;
 use Isotope\Frontend\ProductAction\CartAction;
@@ -32,18 +41,13 @@ use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\TaxClass;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Exception\ExceptionInterface;
 
 /**
- * Class Isotope\Frontend
- *
  * Provide methods to handle Isotope front end components.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- * @author     Christian de la Haye <service@delahaye.de>
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
  */
-class Frontend extends \Frontend
+class Frontend extends \Contao\Frontend
 {
 
     /**
@@ -63,7 +67,7 @@ class Frontend extends \Frontend
     public function findShippingAndPaymentSurcharges(IsotopeProductCollection $objCollection)
     {
         if (!$objCollection instanceof IsotopeOrderableCollection) {
-            \System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objCollection->getId() . '" is not orderable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -112,7 +116,7 @@ class Frontend extends \Frontend
         global $objIsotopeListPage;
         $objIsotopeListPage = null;
 
-        if ($strAlias != '' && ($objPage = \PageModel::findPublishedByIdOrAlias($arrFragments[0])) !== null) {
+        if ($strAlias != '' && ($objPage = PageModel::findPublishedByIdOrAlias($arrFragments[0])) !== null) {
 
             // Check the URL and language of each page if there are multiple results
             // see Contao's index.php
@@ -121,7 +125,7 @@ class Frontend extends \Frontend
                 $arrPages   = array();
 
                 // Order by domain and language
-                /** @var \PageModel $objCurrentPage */
+                /** @var PageModel $objCurrentPage */
                 foreach ($objPage as $objCurrentPage) {
                     $objCurrentPage->loadDetails();
 
@@ -134,20 +138,23 @@ class Frontend extends \Frontend
                     }
                 }
 
-                $strHost = \Environment::get('host');
+                $strHost = Environment::get('host');
 
                 // Look for a root page whose domain name matches the host name
                 if (isset($arrPages[$strHost])) {
                     $arrLangs = $arrPages[$strHost];
-                } else {
+                } elseif (isset($arrPages['*'])) {
                     $arrLangs = $arrPages['*']; // Empty domain
+                } else {
+                    // No domain match (see #2347)
+                    return $arrFragments;
                 }
 
                 // Use the first result (see #4872)
                 if (!$GLOBALS['TL_CONFIG']['addLanguageToUrl']) {
                     $objNewPage = current($arrLangs);
                 } // Try to find a page matching the language parameter
-                elseif (($lang = \Input::get('language')) != '' && isset($arrLangs[$lang])) {
+                elseif (($lang = Input::get('language')) != '' && isset($arrLangs[$lang])) {
                     $objNewPage = $arrLangs[$lang];
                 }
 
@@ -158,7 +165,7 @@ class Frontend extends \Frontend
             }
 
             if ('page' === $objPage->iso_readerMode && ($objReader = $objPage->getRelated('iso_readerJumpTo')) !== null) {
-                /** @var \PageModel $objIsotopeListPage */
+                /** @var PageModel $objIsotopeListPage */
                 $objIsotopeListPage = $objPage->current();
                 $objIsotopeListPage->loadDetails();
 
@@ -172,11 +179,11 @@ class Frontend extends \Frontend
     /**
      * Overrides the reader page
      *
-     * @param \PageModel $objPage
+     * @param PageModel $objPage
      */
     public function overrideReaderPage($objPage)
     {
-        /** @var \PageModel $objIsotopeListPage */
+        /** @var PageModel $objIsotopeListPage */
         global $objIsotopeListPage;
 
         if (null !== $objIsotopeListPage) {
@@ -222,11 +229,17 @@ class Frontend extends \Frontend
      * simplicity here.
      *
      * @param string $buffer
+     * @param string $templateName
      *
      * @return string
      */
-    public function injectScripts($buffer)
+    public function injectScripts($buffer, $templateName)
     {
+        // Only add messages to the fe_page template (see isotope/core#2255)
+        if (!empty($templateName) && 0 !== strncmp($templateName, 'fe_', 3)) {
+            return $buffer;
+        }
+
         $messages = Message::generate();
         $hasProducts = !empty($GLOBALS['AJAX_PRODUCTS']) && \is_array($GLOBALS['AJAX_PRODUCTS']);
 
@@ -235,7 +248,7 @@ class Frontend extends \Frontend
             return $buffer;
         }
 
-        $template = new \FrontendTemplate('iso_scripts');
+        $template = new FrontendTemplate('iso_scripts');
 
         if ($hasProducts) {
             $template->hasProducts = true;
@@ -290,8 +303,8 @@ class Frontend extends \Frontend
      */
     public function addProductsToSearchIndex($arrPages, $intRoot = 0, $blnIsSitemap = false)
     {
-        $t         = \PageModel::getTable();
-        $time      = \Date::floorToMinute();
+        $t         = PageModel::getTable();
+        $time      = Date::floorToMinute();
         $arrValue  = array();
         $arrColumn = array(
             "$t.type='root'",
@@ -305,17 +318,21 @@ class Frontend extends \Frontend
             $arrValue[]  = $intRoot;
         }
 
-        $objRoots = \PageModel::findBy($arrColumn, $arrValue);
+        $objRoots = PageModel::findBy($arrColumn, $arrValue);
 
         if (null !== $objRoots) {
             foreach ($objRoots as $objRoot) {
-                $arrPageIds   = \Database::getInstance()->getChildRecords($objRoot->id, $t, false);
+                $arrPageIds   = Database::getInstance()->getChildRecords($objRoot->id, $t, false);
                 $arrPageIds[] = $intRoot;
 
                 $objProducts = Product::findPublishedByCategories($arrPageIds);
 
                 if (null !== $objProducts) {
                     foreach ($objProducts as $objProduct) {
+
+                        if (!$objProduct->isPublished()) {
+                            continue;
+                        }
 
                         // Find the categories in the current root
                         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
@@ -348,14 +365,10 @@ class Frontend extends \Frontend
                                 continue;
                             }
 
-                            // Generate the domain
-                            $strDomain  = ($objRoot->useSSL ? 'https://' : 'http://');
-                            $strDomain .= ($objRoot->dns ?: \Environment::get('host')) . TL_PATH . '/';
-
                             // Pass root language to page object
                             $objPage->language = $objRoot->language;
 
-                            $arrPages[] = $strDomain . $objProduct->generateUrl($objPage);
+                            $arrPages[] = $objProduct->generateUrl($objPage, true);
 
                             // Only take the first category because this is our primary one
                             // Having multiple reader pages in the sitemap XML would mean duplicate content
@@ -373,15 +386,9 @@ class Frontend extends \Frontend
     /**
      * save_callback for upload widget to store $_FILES data into the product
      *
-     * @param mixed          $varValue
-     * @param IsotopeProduct $objProduct
-     * @param \Widget        $objWidget
-     *
-     * @return mixed
-     *
      * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0.
      */
-    public function saveUpload($varValue, IsotopeProduct $objProduct, \Widget $objWidget)
+    public function saveUpload($varValue, IsotopeProduct $objProduct, Widget $objWidget)
     {
         if (\is_array($_SESSION['FILES'][$objWidget->name])
             && $_SESSION['FILES'][$objWidget->name]['uploaded'] == '1'
@@ -405,8 +412,8 @@ class Frontend extends \Frontend
     {
         $arrCodes = array();
 
-        foreach (trimsplit(',', $strPostalCodes) as $strCode) {
-            $arrCode = trimsplit('-', $strCode);
+        foreach (StringUtil::trimsplit(',', $strPostalCodes) as $strCode) {
+            $arrCode = StringUtil::trimsplit('-', $strCode);
 
             // Ignore codes with more than 1 range
             switch (\count($arrCode)) {
@@ -427,7 +434,7 @@ class Frontend extends \Frontend
     /**
      * Store the current article ID so we know it for the product list
      *
-     * @param \Database\Result $objRow
+     * @param Result $objRow
      */
     public function storeCurrentArticle($objRow)
     {
@@ -441,7 +448,7 @@ class Frontend extends \Frontend
      * Necessary to check if a product is allowed in the current site and cache the value
      *
      * @param array                      $arrPages
-     * @param \MemberModel|\FrontendUser $objMember
+     * @param MemberModel|FrontendUser $objMember
      *
      * @return array
      */
@@ -451,7 +458,7 @@ class Frontend extends \Frontend
             return $arrPages;
         }
 
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         // $objPage not available, we don't know if the page is allowed
@@ -467,7 +474,7 @@ class Frontend extends \Frontend
 
         if (null !== $objMember) {
             $intMember = $objMember->id;
-            $arrGroups = deserialize($objMember->groups, true);
+            $arrGroups = StringUtil::deserialize($objMember->groups, true);
         }
 
         if (!isset($arrAvailable[$intMember])) {
@@ -480,10 +487,10 @@ class Frontend extends \Frontend
 
         // Load remaining (not cached) pages.
         foreach (array_diff($arrPages, $arrAvailable[$intMember], $arrUnavailable[$intMember]) as $intPage) {
-            $objPageDetails = \PageModel::findWithDetails($intPage);
+            $objPageDetails = PageModel::findWithDetails($intPage);
 
             // Page is not in the current root
-            if ($objPageDetails->rootId != $objPage->rootId) {
+            if (null === $objPageDetails || $objPageDetails->rootId != $objPage->rootId) {
                 continue;
             }
 
@@ -491,19 +498,24 @@ class Frontend extends \Frontend
             if ($objPageDetails->guests && $intMember > 0 && !$objPageDetails->protected) {
                 $arrUnavailable[$intMember][] = $intPage;
                 continue;
+            }
 
-            } elseif ($objPageDetails->protected) {
-                // Page is protected but we have no member
-                if ($intMember == 0) {
-                    $arrUnavailable[$intMember][] = $intPage;
-                    continue;
-                }
-
-                $arrPGroups = deserialize($objPageDetails->groups);
+            if ($objPageDetails->protected) {
+                $arrPGroups = StringUtil::deserialize($objPageDetails->groups);
 
                 // Page is protected but has no groups
                 if (!\is_array($arrPGroups)) {
                     $arrUnavailable[$intMember][] = $intPage;
+                    continue;
+                }
+
+                // Page is protected but we have no member
+                if ($intMember == 0) {
+                    if (in_array(-1, $arrPGroups, false)) { // "Guests" group in Contao 4.13+
+                        $arrAvailable[$intMember][] = $intPage;
+                    } else {
+                        $arrUnavailable[$intMember][] = $intPage;
+                    }
                     continue;
                 }
 
@@ -529,7 +541,7 @@ class Frontend extends \Frontend
      */
     public function addProductToBreadcrumb($arrItems)
     {
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if ($objPage->type === 'error_404'
@@ -548,29 +560,33 @@ class Frontend extends \Frontend
             $arrItems[$last]['title'] = $this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name);
             $arrItems[$last]['link']  = $objProduct->name;
         } else {
-            $listPage = $objIsotopeListPage ?: $objPage;
-            $originalRow = $listPage->originalRow();
+            try {
+                $listPage = $objIsotopeListPage ?: $objPage;
+                $originalRow = $listPage->originalRow();
 
-            // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
-            $arrItems[$last] = array(
-                'isRoot'   => (bool) $arrItems[$last]['isRoot'],
-                'isActive' => false,
-                'href'     => $listPage->getFrontendUrl(),
-                'title'    => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
-                'link'     => $originalRow['title'],
-                'data'     => $originalRow,
-                'class'    => ''
-            );
+                // Replace the current page (if breadcrumb is insert tag, it would already be the product name)
+                $arrItems[$last] = array(
+                    'isRoot' => (bool) $arrItems[$last]['isRoot'],
+                    'isActive' => false,
+                    'href' => $listPage->getFrontendUrl(),
+                    'title' => StringUtil::specialchars($originalRow['pageTitle'] ?: $originalRow['title']),
+                    'link' => $originalRow['title'],
+                    'data' => $originalRow,
+                    'class' => ''
+                );
 
-            // Add a new item for the current product
-            $arrItems[] = array(
-                'isRoot'   => false,
-                'isActive' => true,
-                'href'     => $objProduct->generateUrl($objPage),
-                'title'    => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ? : $objProduct->name)),
-                'link'     => $objProduct->name,
-                'data'     => $objPage->row(),
-            );
+                // Add a new item for the current product
+                $arrItems[] = array(
+                    'isRoot' => false,
+                    'isActive' => true,
+                    'href' => $objProduct->generateUrl($objPage),
+                    'title' => StringUtil::specialchars($this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->name)),
+                    'link' => $objProduct->name,
+                    'data' => $objPage->row(),
+                );
+            } catch (ExceptionInterface $exception) {
+                // Ignore exceptions when generating front end URLs
+            }
         }
 
         return $arrItems;
@@ -589,15 +605,17 @@ class Frontend extends \Frontend
         $strLanguage = $strLanguage ?: $objOrder->language;
 
         // Load page configuration
-        if ($objOrder->pageId > 0 && (null === $objPage || $objPage->id != $objOrder->pageId)) {
-            $objPage = \PageModel::findWithDetails($objOrder->pageId);
+        if (
+            $objOrder->pageId > 0
+            && (null === $objPage || $objPage->id != $objOrder->pageId)
+            && ($objPage = PageModel::findWithDetails($objOrder->pageId))
+        ) {
             $objPage = static::loadPageConfig($objPage);
         }
 
         // Set the current system to the language when the user placed the order.
         // This will result in correct e-mails and payment description.
-        $GLOBALS['TL_LANGUAGE'] = $strLanguage;
-        \System::loadLanguageFile('default', $strLanguage, true);
+        self::setLanguage($strLanguage);
 
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
@@ -609,12 +627,16 @@ class Frontend extends \Frontend
     /**
      * Load system configuration into page object
      *
-     * @param \Database\Result|\PageModel $objPage
+     * @param Result|PageModel $objPage
      *
-     * @return \Database\Result
+     * @return Result
      */
     public static function loadPageConfig($objPage)
     {
+        if (!\is_object($objPage)) {
+            return $objPage;
+        }
+
         // Use the global date format if none is set
         if ($objPage->dateFormat == '') {
             $objPage->dateFormat = $GLOBALS['TL_CONFIG']['dateFormat'];
@@ -630,19 +652,19 @@ class Frontend extends \Frontend
 
         // Set the admin e-mail address
         if ($objPage->adminEmail != '') {
-            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = \StringUtil::splitFriendlyEmail($objPage->adminEmail);
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = StringUtil::splitFriendlyEmail($objPage->adminEmail);
         } else {
-            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = \StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = StringUtil::splitFriendlyEmail($GLOBALS['TL_CONFIG']['adminEmail']);
         }
 
         // Define the static URL constants
         $isDebugMode = System::getContainer()->getParameter('kernel.debug');
-        \define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
-        \define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
-        \define('TL_SCRIPT_URL', TL_ASSETS_URL);
-        \define('TL_PLUGINS_URL', TL_ASSETS_URL);
+        self::define('TL_FILES_URL', ($objPage->staticFiles != '' && !$isDebugMode) ? $objPage->staticFiles . TL_PATH . '/' : '');
+        self::define('TL_ASSETS_URL', ($objPage->staticPlugins != '' && !$isDebugMode) ? $objPage->staticPlugins . TL_PATH . '/' : '');
+        self::define('TL_SCRIPT_URL', TL_ASSETS_URL);
+        self::define('TL_PLUGINS_URL', TL_ASSETS_URL);
 
-        $objLayout = \Database::getInstance()->prepare("
+        $objLayout = Database::getInstance()->prepare("
             SELECT l.*, t.templates
             FROM tl_layout l
             LEFT JOIN tl_theme t ON l.pid=t.id
@@ -656,12 +678,12 @@ class Frontend extends \Frontend
             $objPage->templateGroup = $objLayout->templates;
 
             // Store the output format
-            [$strFormat, $strVariant] = explode('_', $objLayout->doctype);
+            [$strFormat, $strVariant] = explode('_', $objLayout->doctype) + [null, null];
             $objPage->outputFormat  = $strFormat;
             $objPage->outputVariant = $strVariant;
         }
 
-        $GLOBALS['TL_LANGUAGE'] = $objPage->language;
+        self::setLanguage($objPage->language);
 
         return $objPage;
     }
@@ -669,12 +691,12 @@ class Frontend extends \Frontend
     /**
      * Adjust module and module id for certain payment and/or shipping modules
      *
-     * @param \Isotope\PostSale $objPostsale
+     * @param PostSale $objPostsale
      */
     public function setPostsaleModuleSettings(PostSale $objPostsale)
     {
         // Payment method "Payone"
-        $strParam = \Input::post('param');
+        $strParam = Input::post('param');
 
         if (strpos($strParam, 'paymentMethodPayone') !== false) {
             $intId = (int) str_replace('paymentMethodPayone', '', $strParam);
@@ -697,7 +719,7 @@ class Frontend extends \Frontend
      */
     public function addOptionsPrice($fltPrice, $objSource, $strField, $intTaxClass, array $arrOptions)
     {
-        $fltAmount = $fltPrice;
+        $fltAmount = (float) $fltPrice;
 
         if ($objSource instanceof IsotopePrice
             && ($objProduct = $objSource->getRelated('pid')) instanceof IsotopeProduct
@@ -718,13 +740,14 @@ class Frontend extends \Frontend
                     && $objAttribute->canHavePrices()
                     && ($objOptions = $objAttribute->getOptionsFromManager($objProduct)) !== null
                 ) {
-                    $value = $objAttribute->isCustomerDefined() ? $arrOptions[$field] : $objProduct->$field;
-                    $value = deserialize($value, true);
+                    $value = $objAttribute->isCustomerDefined() ? ($arrOptions[$field] ?? null) : $objProduct->$field;
+                    $value = StringUtil::deserialize($value, true);
 
                     /** @var AttributeOption $objOption */
                     foreach ($objOptions as $objOption) {
                         if (\in_array($objOption->getLanguageId(), $value)) {
-                            $amount = $objOption->getAmount($fltPrice, 0);
+                            // Do not use getAmount() for non-percentage price, it would run Isotope::calculatePrice again (see isotope/core#2342)
+                            $amount = $objOption->isPercentage() ? $objOption->getAmount($fltPrice, 0) : (float) $objOption->price;
                             $objTax = $objSource->getRelated('tax_class');
 
                             if ($objOption->isPercentage() || !$objTax instanceof TaxClass) {
@@ -797,13 +820,11 @@ class Frontend extends \Frontend
      *
      * @return mixed
      *
-     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use \Isotope\InsertTag::replace() instead.
+     * @deprecated Deprecated since version 2.3, to be removed in 3.0. Use InsertTag::replace() instead.
      */
     public function replaceIsotopeTags($strTag)
     {
-        $callback = new InsertTag();
-
-        return $callback->replace($strTag);
+        return (new InsertTag())->replace($strTag);
     }
 
     /**
@@ -813,12 +834,11 @@ class Frontend extends \Frontend
      *
      * @return array
      *
-     * @deprecated Deprecated since Isotope 2.4. See Isotope\EventListener\ChangeLanguageListener
+     * @deprecated Deprecated since Isotope 2.4. See ChangeLanguageListener
      */
     public function translateProductUrls($arrGet)
     {
-        $listener = new ChangeLanguageListener();
-        return $listener->onTranslateUrlParameters($arrGet);
+        return (new ChangeLanguageListener())->onTranslateUrlParameters($arrGet);
     }
 
     /**
@@ -826,10 +846,44 @@ class Frontend extends \Frontend
      *
      * @return string
      *
-     * @deprecated use Isotope\Message::generate
+     * @deprecated use Message::generate
      */
     public static function getIsotopeMessages()
     {
         return Message::generate();
+    }
+
+    /**
+     * Switches the environment to the given language.
+     *
+     * @param string $language
+     */
+    private static function setLanguage($language)
+    {
+        $GLOBALS['TL_LANGUAGE'] = $language;
+
+        if (class_exists(ContaoCoreBundle::class)) {
+            /** @var ContainerInterface $container */
+            $container = System::getContainer();
+
+            if ($container->has('request_stack') && null !== ($request = $container->get('request_stack')->getCurrentRequest())) {
+                $request->setLocale($language);
+            }
+
+            if ($container->has('translator')) {
+                $container->get('translator')->setLocale($language);
+            }
+        }
+
+        System::loadLanguageFile('default', $language, true);
+    }
+
+    private static function define(string $constant_name, $value): void
+    {
+        if (defined($constant_name)) {
+            return;
+        }
+
+        \define($constant_name, $value);
     }
 }

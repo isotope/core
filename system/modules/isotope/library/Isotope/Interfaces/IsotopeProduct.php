@@ -11,6 +11,7 @@
 
 namespace Isotope\Interfaces;
 
+use Contao\PageModel;
 use Isotope\Model\ProductType;
 
 
@@ -168,9 +169,7 @@ interface IsotopeProduct
     /**
      * Returns URL with product alias to given page.
      *
-     * @param \PageModel $objJumpTo
-     *
      * @return string
      */
-    public function generateUrl(\PageModel $objJumpTo = null);
+    public function generateUrl(PageModel $objJumpTo = null/*, bool $absolute = false*/);
 }

@@ -1,0 +1,214 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_reports/languages/en/default.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="ISO_REPORT.sales">
+        <source>Sales Statistics</source>
+        <target>Försäljningsstatistik</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.member">
+        <source>Member Statistics</source>
+        <target>Medlemsstatistik</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules">
+        <source>Rules Statistics</source>
+        <target>Regelstatistik</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.custom">
+        <source>Custom Reports</source>
+        <target>Anpassade rapporter</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.0">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_total.1">
+        <source>Total sales of all products</source>
+        <target>Total försäljning av alla produkter</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.0">
+        <source>Per product</source>
+        <target>Per produkt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_product.1">
+        <source>Sales per product</source>
+        <target>Försäljning per produkt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.0">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total.1">
+        <source>Sales statistics by member</source>
+        <target>Försäljningsstatistik per medlem</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_currency">
+        <source>%s - Members</source>
+        <target>%s - Medlemmar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guests_currency">
+        <source>%s - Guests</source>
+        <target>%s - Gäster</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_title">
+        <source>Sales to Members</source>
+        <target>Försäljning till medlemmar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guests_title">
+        <source>Sales to Guests</source>
+        <target>Försäljning till gäster</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.0">
+        <source>Registrations</source>
+        <target>Registreringar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_registration.1">
+        <source>Statistics about member registrations</source>
+        <target>Statistik om medlemsregistreringar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.0">
+        <source>vs. Guest</source>
+        <target>kontra gäst</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_guests.1">
+        <source>Sales comparison between members and guests</source>
+        <target>Försäljningsjämförelse mellan medlemmar och gäster</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.0">
+        <source>Rules Usage</source>
+        <target>Regleranvändning</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_usage.1">
+        <source>Statistics about rules usage</source>
+        <target>Statistik om regelanvändning</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.0">
+        <source>Coupons</source>
+        <target>Kuponger</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.rules_coupons.1">
+        <source>Statistics about coupon usage</source>
+        <target>Statistik om kuponganvändning</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_summary">
+        <source>Sales in the last 24 hours</source>
+        <target>Försäljning under de senaste 24 timmarna</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.24h_empty">
+        <source>No orders have been placed in the last 24 hours.</source>
+        <target>Inga beställningar har gjorts under de senaste 24 timmarna.</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.shop_config">
+        <source>Shop configuration</source>
+        <target>Butikskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.currency">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.orders#">
+        <source>Number of orders</source>
+        <target>Antal beställningar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.products#">
+        <source>Number of products</source>
+        <target>Antal produkter</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.items#">
+        <source>Number of items</source>
+        <target>Antal artiklar</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales#">
+        <source>Sales Total</source>
+        <target>Försäljning totalt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.filter_config">
+        <source>Shop-Config</source>
+        <target>Shop-Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.all">
+        <source>All</source>
+        <target>Allt</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sums">
+        <source>Sums</source>
+        <target>Summa</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.show">
+        <source>Show</source>
+        <target>Visa</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.search">
+        <source>Search</source>
+        <target>Sök</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sort">
+        <source>Sort</source>
+        <target>Sortera</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.period">
+        <source>Period</source>
+        <target>Period</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.day">
+        <source>Day</source>
+        <target>Dag</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.week">
+        <source>Week</source>
+        <target>Vecka</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.month">
+        <source>Month</source>
+        <target>Månad</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year">
+        <source>Year</source>
+        <target>År</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.from">
+        <source>From</source>
+        <target>Från</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.to">
+        <source>To</source>
+        <target>Till</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_field">
+        <source>Report</source>
+        <target>Rapport</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.locked">
+        <source>Order date</source>
+        <target>Orderdatum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_paid">
+        <source>Payment date</source>
+        <target>Betalningsdatum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.date_shipped">
+        <source>Shiping date</source>
+        <target>Fraktdatum</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.total_sales">
+        <source>Total sales</source>
+        <target>Total försäljning</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.product_name">
+        <source>Product name</source>
+        <target>Produktnamn</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.columns">
+        <source>Columns</source>
+        <target>Kolumner</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.variants">
+        <source>Variants</source>
+        <target>Varianter</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

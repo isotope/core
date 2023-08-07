@@ -20,11 +20,7 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
     (
         'dataContainer'         => 'Table',
         'enableVersioning'      => true,
-        'closed'                => true,
-        'onload_callback' => array
-        (
-            array('Isotope\Backend', 'initializeSetupModule'),
-        ),
+        'backlink'                  => 'do=iso_setup',
         'sql' => array
         (
             'keys' => array
@@ -51,23 +47,8 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         ),
         'global_operations' => array
         (
-            'back' => array
-            (
-                'label'         => &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'          => 'mod=&table=',
-                'class'         => 'header_back',
-                'attributes'    => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new' => array
-            (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['new'],
-                'href'          => 'act=create',
-                'class'         => 'header_new',
-                'attributes'    => 'onclick="Backend.getScrollOffset();"',
-            ),
             'all' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'          => 'act=select',
                 'class'         => 'header_edit_all',
                 'attributes'    => 'onclick="Backend.getScrollOffset();" accesskey="e"'
@@ -77,28 +58,24 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         (
             'edit' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['edit'],
                 'href'          => 'act=edit',
-                'icon'          => 'edit.gif'
+                'icon'          => 'edit.svg'
             ),
             'copy' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['copy'],
                 'href'          => 'act=copy',
-                'icon'          => 'copy.gif'
+                'icon'          => 'copy.svg'
             ),
             'delete' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['delete'],
                 'href'          => 'act=delete',
-                'icon'          => 'delete.gif',
-                'attributes'    => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+                'icon'          => 'delete.svg',
+                'attributes'    => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'         => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['show'],
                 'href'          => 'act=show',
-                'icon'          => 'show.gif'
+                'icon'          => 'show.svg'
             ),
         )
     ),
@@ -122,7 +99,6 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         ),
         'name' => array
         (
-            'label'             => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['name'],
             'exclude'           => true,
             'search'            => true,
             'inputType'         => 'text',
@@ -131,7 +107,6 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         ),
         'amount' => array
         (
-            'label'             => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['amount'],
             'exclude'           => true,
             'inputType'         => 'text',
             'eval'              => array('mandatory'=>true, 'rgxp'=>'digit', 'maxlength'=>32, 'tl_class'=>'w50'),
@@ -139,7 +114,6 @@ $GLOBALS['TL_DCA']['tl_iso_baseprice'] = array
         ),
         'label' => array
         (
-            'label'             => &$GLOBALS['TL_LANG']['tl_iso_baseprice']['label'],
             'exclude'           => true,
             'search'            => true,
             'default'           => '%s',

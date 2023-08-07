@@ -1,5 +1,9 @@
 <?php
 
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\Input;
+use Contao\PageModel;
+
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
@@ -13,8 +17,8 @@
  * Callbacks
  */
 $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataContainer $dc) {
-    if (\Input::get('do') == 'page' && \Input::get('table') == 'tl_page' && \Input::get('field') == 'iso_readerJumpTo') {
-        if (($objPage = \PageModel::findWithDetails($dc->id)) !== null) {
+    if (Input::get('do') === 'page' && Input::get('table') === 'tl_page' && Input::get('field') === 'iso_readerJumpTo') {
+        if (($objPage = PageModel::findWithDetails($dc->id)) !== null) {
             $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo']['rootNodes'] = array($objPage->rootId);
         }
     }
@@ -24,17 +28,17 @@ $GLOBALS['TL_DCA']['tl_page']['config']['onload_callback'][] = function(\DataCon
  * Extend tl_page palettes
  */
 try {
-    \Haste\Dca\PaletteManipulator::create()
-        ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-        ->addField('iso_config', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
-        ->addField('iso_store_id', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+    PaletteManipulator::create()
+        ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
+        ->addField('iso_config', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
+        ->addField('iso_store_id', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
         ->applyToPalette('root', 'tl_page')
         ->applyToPalette('rootfallback', 'tl_page');
 } catch (\InvalidArgumentException $e) {}
 
-\Haste\Dca\PaletteManipulator::create()
-    ->addLegend('isotope_legend', 'publish_legend', \Haste\Dca\PaletteManipulator::POSITION_BEFORE)
-    ->addField('iso_readerMode', 'isotope_legend', \Haste\Dca\PaletteManipulator::POSITION_APPEND)
+PaletteManipulator::create()
+    ->addLegend('isotope_legend', 'publish_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField('iso_readerMode', 'isotope_legend', PaletteManipulator::POSITION_APPEND)
     ->applyToPalette('regular', 'tl_page')
 ;
 
@@ -56,7 +60,6 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['iso_readerMode_page'] = 'iso_reade
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_config'],
     'exclude'                 => true,
     'inputType'               => 'select',
     'foreignKey'              => \Isotope\Model\Config::getTable().'.name',
@@ -67,7 +70,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_config'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_store_id'],
     'exclude'                 => true,
     'inputType'               => 'text',
     'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'maxlength'=>2, 'tl_class'=>'w50'),
@@ -76,7 +78,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_store_id'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerMode'],
     'exclude'                 => true,
     'inputType'               => 'select',
     'options'                 => ['current', 'page', 'none'],
@@ -88,7 +89,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerMode'] = array
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 (
-    'label'                   => &$GLOBALS['TL_LANG']['tl_page']['iso_readerJumpTo'],
     'exclude'                 => true,
     'inputType'               => 'pageTree',
     'foreignKey'              => 'tl_page.title',
@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['iso_readerJumpTo'] = array
 /**
  * Disable header edit button
  */
-if ($_GET['table'] == \Isotope\Model\ProductCategory::getTable())
+if (($_GET['table'] ?? null) === \Isotope\Model\ProductCategory::getTable())
 {
     $GLOBALS['TL_DCA']['tl_page']['config']['notEditable'] = true;
 }

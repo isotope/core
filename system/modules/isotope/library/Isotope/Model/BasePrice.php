@@ -11,16 +11,14 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
 use Isotope\Translation;
 
 
 /**
  * ProductType defines a product configuration
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
-class BasePrice extends \Model
+class BasePrice extends Model
 {
 
     /**

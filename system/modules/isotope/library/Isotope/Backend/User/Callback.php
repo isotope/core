@@ -11,11 +11,13 @@
 
 namespace Isotope\Backend\User;
 
+use Contao\Backend;
 use Contao\Database;
+use Contao\DataContainer;
 use Isotope\Model\Group;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**

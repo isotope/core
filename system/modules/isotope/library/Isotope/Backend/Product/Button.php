@@ -11,14 +11,22 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\Environment;
+use Contao\Image;
+use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Versions;
 use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
 
-class Button extends \Backend
+class Button extends Backend
 {
 
     /**
@@ -34,14 +42,14 @@ class Button extends \Backend
      */
     public function forGroups($href, $label, $title, $class, $attributes)
     {
-        $user = \BackendUser::getInstance();
+        $user = BackendUser::getInstance();
         if (!$user->isAdmin
             && (empty($user->iso_groupp) || (empty($user->iso_groups) && (!\in_array('rootPaste', $user->iso_groupp) || !\in_array('create', $user->iso_groupp))))
         ) {
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl('&amp;' . $href) . '" class="header_icon" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . specialchars($label) . '</a>';
+        return '<a href="' . Backend::addToUrl('&amp;' . $href) . '" class="header_icon" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . StringUtil::specialchars($label) . '</a>';
     }
 
     /**
@@ -59,10 +67,10 @@ class Button extends \Backend
     public function forCopy($row, $href, $label, $title, $icon, $attributes)
     {
         if ($row['pid'] > 0) {
-            return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))) . '&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . \Input::get('id') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . \Image::getHtml($icon, $label) . '</a> ';
+            return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=copy&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -83,7 +91,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(\Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . \Input::get('id') . '&rt=' . \Input::get('rt') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . preg_replace('/&(amp;)?id=[^& ]*/i', '', ampersand(Environment::get('request'))) . '&amp;act=paste&amp;mode=cut&amp;table=tl_iso_product&amp;id=' . $row['id'] . '&amp;pid=' . Input::get('id') . '&rt=' . Input::get('rt') . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . ' onclick="Backend.getScrollOffset();">' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -101,10 +109,10 @@ class Button extends \Backend
     public function forDelete($row, $href, $label, $title, $icon, $attributes)
     {
         if (\in_array($row['id'], Permission::getUndeletableIds())) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -121,13 +129,12 @@ class Button extends \Backend
      */
     public function forVisibilityToggle($row, $href, $label, $title, $icon, $attributes)
     {
-        if (\strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
-            \Controller::redirect(\System::getReferer());
+        if (\strlen(Input::get('tid'))) {
+            $this->toggleVisibility(Input::get('tid'), Input::get('state') == 1);
+            Controller::redirect(System::getReferer());
         }
 
-        /** @var \BackendUser $user */
-        $user = \BackendUser::getInstance();
+        $user = BackendUser::getInstance();
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
         if (!$user->isAdmin && !$user->hasAccess('tl_iso_product::published', 'alexf')) {
@@ -141,15 +148,17 @@ class Button extends \Backend
             $arrAttributes = $row['pid'] ? $objProductType->getVariantAttributes() : $objProductType->getAttributes();
         }
 
-        if (($arrAttributes['start']['enabled'] && $row['start'] != '' && $row['start'] > $time) || ($arrAttributes['stop']['enabled'] && $row['stop'] != '' && $row['stop'] < $time)) {
-            return \Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label) . ' ';
-        } elseif ($row['published'] != '1') {
-            $icon = 'invisible.gif';
+        if ((($arrAttributes['start']['enabled'] ?? false) && $row['start'] != '' && $row['start'] > $time) || (($arrAttributes['stop']['enabled'] ?? false) && $row['stop'] != '' && $row['stop'] < $time)) {
+            return Image::getHtml('system/modules/isotope/assets/images/invisible-startstop.png', $label) . ' ';
+        }
+
+        if ($row['published'] != '1') {
+            $icon = 'invisible.svg';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
-        return '<a href="' . \Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -170,9 +179,9 @@ class Button extends \Backend
             return '';
         }
 
-        $icon = $row['fallback'] ? 'featured.gif' : 'featured_.gif';
+        $icon = $row['fallback'] ? 'featured.svg' : 'featured_.svg';
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -193,7 +202,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -214,7 +223,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -235,7 +244,7 @@ class Button extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title . '<br>'.sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id']))) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title . '<br>'.sprintf($GLOBALS['TL_DCA']['tl_iso_product']['list']['operations']['downloads']['label'][2], $this->getNumberOfDownloadsForProduct($row['id']))) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -258,8 +267,8 @@ class Button extends \Backend
         }
 
         // Check permission
-        if (!\BackendUser::getInstance()->isAdmin) {
-            $groups = StringUtil::deserialize(\BackendUser::getInstance()->iso_groups);
+        if (!BackendUser::getInstance()->isAdmin) {
+            $groups = StringUtil::deserialize(BackendUser::getInstance()->iso_groups);
 
             if (!\is_array($groups) || \count($groups) < 2) {
                 return '';
@@ -267,7 +276,7 @@ class Button extends \Backend
         }
 
         return '
-    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a>
+    <a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_iso_group', ['fieldType' => 'radio'])) . '" id="groupOperation'.$row['id'].'" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a>
     <script>
       document.getElementById("groupOperation'.$row['id'].'").addEventListener("click", function(e) {
         e.preventDefault();
@@ -280,7 +289,7 @@ class Button extends \Backend
               evalScripts: false,
               onRequest: AjaxRequest.displayBox(Contao.lang.loading + \' …\'),
               onSuccess: function () {
-                window.location.href = '.json_encode(StringUtil::decodeEntities(\Backend::addToUrl($href . '&pid=' . (int) \Input::get('pid') . '&id=' . $row['id']))).'
+                window.location.href = '.json_encode(StringUtil::decodeEntities(Backend::addToUrl($href . '&pid=' . (int) Input::get('pid') . '&id=' . $row['id']))).'
               }
             }).post({action:"moveProduct", value:value[0], REQUEST_TOKEN:"' . REQUEST_TOKEN . '"});
           }
@@ -298,7 +307,7 @@ class Button extends \Backend
      */
     public function forSelect($arrButtons)
     {
-        if (\Input::get('act') == 'select' && !\Input::get('id')) {
+        if ('select' === Input::get('act') && !Input::get('id')) {
 
             unset($arrButtons['copy']);
             unset($arrButtons['cut']);
@@ -340,34 +349,33 @@ class Button extends \Backend
     protected function toggleVisibility($intId, $blnVisible)
     {
         // Check permissions to edit
-        \Input::setGet('id', $intId);
-        \Input::setGet('act', 'toggle');
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
 
         Permission::check();
 
-        /** @var \BackendUser $user */
-        $user = \BackendUser::getInstance();
+        $user = BackendUser::getInstance();
 
         // Check permissions to publish
         if (!$user->isAdmin && !$user->hasAccess('tl_iso_product::published', 'alexf')) {
             throw new AccessDeniedException('Not enough permissions to publish/unpublish product ID "' . $intId . '"');
         }
 
-        $objVersions = new \Versions('tl_iso_product', $intId);
+        $objVersions = new Versions('tl_iso_product', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback
         if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields']['published']['save_callback'] as $callback) {
-                $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
+                $blnVisible = System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        Database::getInstance()->prepare("UPDATE tl_iso_product SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        \System::log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
+        System::log('A new version of record "tl_iso_product.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_product', $intId), __METHOD__, TL_GENERAL);
     }
 
 
@@ -384,7 +392,7 @@ class Button extends \Backend
         static $arrDownloads;
 
         if (null === $arrDownloads) {
-            $objDownloads = \Database::getInstance()->query(
+            $objDownloads = Database::getInstance()->query(
                 'SELECT pid, COUNT(id) AS total FROM tl_iso_download GROUP BY pid'
             );
 
@@ -393,6 +401,6 @@ class Button extends \Backend
             }
         }
 
-        return (int) $arrDownloads[$intProduct];
+        return (int) ($arrDownloads[$intProduct] ?? 0);
     }
 }

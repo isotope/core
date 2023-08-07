@@ -11,7 +11,15 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\FrontendUser;
+use Contao\Input;
+use Contao\MemberModel;
+use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
+use Contao\User;
 use Haste\Form\Form;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
@@ -21,12 +29,7 @@ use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 /**
- * Class ModuleIsotopeAddressBook
- *
  * Front end module Isotope "address book".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
 class AddressBook extends Module
 {
@@ -83,32 +86,32 @@ class AddressBook extends Module
     {
         $table = Address::getTable();
 
-        \System::loadLanguageFile($table);
-        \Controller::loadDataContainer($table);
+        System::loadLanguageFile($table);
+        Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
         if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}();
+                System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'create':
                 $this->edit();
                 break;
 
             case 'edit':
-                if (\strlen(\Input::get('address'))) {
-                    $this->edit(\Input::get('address'));
+                if (\strlen(Input::get('address'))) {
+                    $this->edit(Input::get('address'));
                 } else {
                     $this->show();
                 }
                 break;
 
             case 'delete':
-                if (\strlen(\Input::get('address'))) {
-                    $this->delete(\Input::get('address'));
+                if (\strlen(Input::get('address'))) {
+                    $this->delete(Input::get('address'));
                 } else {
                     $this->show();
                 }
@@ -126,14 +129,14 @@ class AddressBook extends Module
      */
     protected function show()
     {
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         $arrAddresses = [];
-        $strUrl = \Controller::generateFrontendUrl($objPage->row()) . ($GLOBALS['TL_CONFIG']['disableAlias'] ? '&' : '?');
+        $strUrl = $objPage->getFrontendUrl();
 
         /** @var Address[] $objAddresses */
-        $objAddresses = Address::findForMember(\FrontendUser::getInstance()->id);
+        $objAddresses = Address::findForMember(FrontendUser::getInstance()->id);
 
         if (null !== $objAddresses) {
             foreach ($objAddresses as $objAddress) {
@@ -141,8 +144,8 @@ class AddressBook extends Module
                     'id'                => $objAddress->id,
                     'class'             => ($objAddress->isDefaultBilling ? 'default_billing' : '') . ($objAddress->isDefaultShipping ? ' default_shipping' : ''),
                     'text'              => $objAddress->generate(),
-                    'edit_url'          => ampersand($strUrl . 'act=edit&address=' . $objAddress->id),
-                    'delete_url'        => ampersand($strUrl . 'act=delete&address=' . $objAddress->id),
+                    'edit_url'          => ampersand($strUrl . '?act=edit&address=' . $objAddress->id),
+                    'delete_url'        => ampersand($strUrl . '?act=delete&address=' . $objAddress->id),
                     'default_billing'   => $objAddress->isDefaultBilling ? true : false,
                     'default_shipping'  => $objAddress->isDefaultShipping ? true : false,
                 ));
@@ -161,7 +164,7 @@ class AddressBook extends Module
         $this->Template->deleteAddressLabel   = $GLOBALS['TL_LANG']['MSC']['deleteAddressLabel'];
         $this->Template->deleteAddressConfirm = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['deleteAddressConfirm']);
         $this->Template->addresses            = $arrAddresses;
-        $this->Template->addNewAddress        = ampersand($strUrl . 'act=create');
+        $this->Template->addNewAddress        = ampersand($strUrl . '?act=create');
     }
 
 
@@ -173,30 +176,30 @@ class AddressBook extends Module
     protected function edit($intAddressId = 0)
     {
         $table = Address::getTable();
-        \System::loadLanguageFile(\MemberModel::getTable());
+        System::loadLanguageFile(MemberModel::getTable());
 
-        $this->Template            = new Template($this->memberTpl);
+        $this->Template            = new Template($this->memberTpl ?: 'member_default');
         $this->Template->hasError  = false;
         $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
 
         if ($intAddressId === 0) {
-            $objAddress = Address::createForMember(\FrontendUser::getInstance()->id, ['country']);
+            $objAddress = Address::createForMember(FrontendUser::getInstance()->id, ['country']);
         } else {
-            $objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id);
+            $objAddress = Address::findOneForMember($intAddressId, FrontendUser::getInstance()->id);
         }
 
         if (null === $objAddress) {
-            /** @var \PageModel $objPage */
+            /** @var PageModel $objPage */
             global $objPage;
 
-            \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+            Controller::redirect($objPage->getAbsoluteUrl());
         }
 
         $objForm = new Form(
             $table . '_' . $this->id,
             'POST',
             function(Form $objForm) {
-                return \Input::post('FORM_SUBMIT') === $objForm->getFormId();
+                return Input::post('FORM_SUBMIT') === $objForm->getFormId();
             },
             isset($this->tableless) ? (bool) $this->tableless : true
         );
@@ -235,7 +238,7 @@ class AddressBook extends Module
                 // Call onsubmit_callback
                 if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
                     foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                        \System::importStatic($callback[0])->{$callback[1]}($objAddress);
+                        System::importStatic($callback[0])->{$callback[1]}($objAddress);
                     }
                 }
 
@@ -244,17 +247,17 @@ class AddressBook extends Module
                     && \is_array($GLOBALS['ISO_HOOKS']['updateAddressData'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateAddressData'] as $callback) {
-                        \System::importStatic($callback[0])->{$callback[1]}($objAddress, $arrOldAddress, $this);
+                        System::importStatic($callback[0])->{$callback[1]}($objAddress, $arrOldAddress, $this);
                     }
                 }
 
                 // Send notifications
-                $this->triggerNotificationCenter($objAddress, $arrOldAddress, \FrontendUser::getInstance(), Isotope::getConfig());
+                $this->triggerNotificationCenter($objAddress, $arrOldAddress, FrontendUser::getInstance(), Isotope::getConfig());
 
-                /** @var \PageModel $objPage */
+                /** @var PageModel $objPage */
                 global $objPage;
 
-                \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+                Controller::redirect(Controller::generateFrontendUrl($objPage->row()));
 
             } else {
                 $this->Template->hasError = true;
@@ -298,7 +301,7 @@ class AddressBook extends Module
      *
      * @param Address $objAddress
      * @param array   $arrOldAddress
-     * @param \User   $objMember
+     * @param User    $objMember
      * @param Config  $objConfig
      */
     protected function triggerNotificationCenter(Address $objAddress, array $arrOldAddress, $objMember, Config $objConfig)
@@ -316,8 +319,8 @@ class AddressBook extends Module
 
         $arrTokens = array();
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain'] = \Environment::get('host');
-        $arrTokens['link'] = \Environment::get('base').\Environment::get('request');
+        $arrTokens['domain'] = Environment::get('host');
+        $arrTokens['link'] = Environment::get('base').Environment::get('request');
 
         foreach ($objAddress->row() as $k => $v) {
             $arrTokens['address_'.$k] = $v;
@@ -346,13 +349,13 @@ class AddressBook extends Module
      */
     protected function delete($intAddressId)
     {
-        if (($objAddress = Address::findOneForMember($intAddressId, \FrontendUser::getInstance()->id)) !== null) {
+        if (($objAddress = Address::findOneForMember($intAddressId, FrontendUser::getInstance()->id)) !== null) {
             $objAddress->delete();
         }
 
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
-        \Controller::redirect(\Controller::generateFrontendUrl($objPage->row()));
+        Controller::redirect(Controller::generateFrontendUrl($objPage->row()));
     }
 }

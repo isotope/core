@@ -11,6 +11,11 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\Database;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -77,7 +82,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (empty($this->modules)) {
             $this->blnError = true;
 
-            \System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
+            System::log('No shipping methods available for cart ID ' . Isotope::getCart()->id, __METHOD__, TL_ERROR);
 
             /** @var Template|\stdClass $objTemplate */
             $objTemplate           = new Template('mod_message');
@@ -90,7 +95,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             return $objTemplate->parse();
         }
 
-        /** @var \Widget $objWidget */
+        /** @var Widget $objWidget */
         $objWidget = new $GLOBALS['TL_FFL']['radio'](
             [
                 'id'          => $this->getStepClass(),
@@ -110,7 +115,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
             Isotope::getCart()->setShippingMethod($objModule);
         }
 
-        if (\Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
+        if (Input::post('FORM_SUBMIT') == $this->objModule->getFormId()) {
             $objWidget->validate();
 
             if (!$objWidget->hasErrors()) {
@@ -142,7 +147,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
                 'headline' => $GLOBALS['TL_LANG']['MSC']['shipping_method'],
                 'info'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->checkoutReview(),
                 'note'     => Isotope::getCart()->getDraftOrder()->getShippingMethod()->getNote(),
-                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep('shipping'),
+                'edit'     => $this->isSkippable() ? '' : Checkout::generateUrlForStep(Checkout::STEP_SHIPPING),
             ),
         );
     }
@@ -159,7 +164,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         $this->modules = array();
         $this->options = array();
 
-        $arrIds = deserialize($this->objModule->iso_shipping_modules);
+        $arrIds = StringUtil::deserialize($this->objModule->iso_shipping_modules);
 
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
@@ -170,7 +175,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
 
             /** @var Shipping[] $objModules */
             $objModules = Shipping::findBy(
-                $arrColumns, null, array('order' => \Database::getInstance()->findInSet('id', $arrIds))
+                $arrColumns, null, array('order' => Database::getInstance()->findInSet('id', $arrIds))
             );
 
             if (null !== $objModules) {

@@ -11,9 +11,12 @@
 
 namespace Isotope;
 
+use Contao\Controller;
 use Contao\Database;
+use Contao\Environment;
+use Contao\Input;
 use Contao\ModuleModel;
-use Isotope\Exception\RuleConditionException;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Cart;
@@ -21,15 +24,7 @@ use Isotope\Model\ProductCollection\Order;
 use Isotope\Model\ProductCollectionSurcharge\Rule as RuleSurcharge;
 use Isotope\Model\Rule;
 
-
-/**
- * Class Rules
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
-class Rules extends \Controller
+class Rules extends Controller
 {
 
     /**
@@ -41,7 +36,7 @@ class Rules extends \Controller
     /**
      * Prevent cloning of the object (Singleton)
      */
-    final private function __clone() {}
+    private function __clone() {}
 
 
     /**
@@ -53,7 +48,7 @@ class Rules extends \Controller
 
         // User object must be loaded from cart, e.g. for postsale handling
         if (Isotope::getCart()->member > 0) {
-            $this->User = \Database::getInstance()->prepare('SELECT * FROM tl_member WHERE id=?')->execute(Isotope::getCart()->member);
+            $this->User = Database::getInstance()->prepare('SELECT * FROM tl_member WHERE id=?')->execute(Isotope::getCart()->member);
         }
     }
 
@@ -65,7 +60,7 @@ class Rules extends \Controller
     public static function getInstance()
     {
         if (!\is_object(static::$objInstance)) {
-            static::$objInstance = new \Isotope\Rules();
+            static::$objInstance = new Rules();
         }
 
         return static::$objInstance;
@@ -86,7 +81,7 @@ class Rules extends \Controller
         if ($objSource instanceof IsotopePrice && ('price' === $strField || 'low_price' === $strField || 'net_price' === $strField || 'gross_price' === $strField)) {
 
         // @todo try not to use getRelated() because it loads variants
-            $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
+        $objRules = Rule::findByProduct($objSource->getRelated('pid'), $strField, $fltPrice);
 
         if (null !== $objRules) {
                 while ($objRules->next()) {
@@ -173,7 +168,7 @@ class Rules extends \Controller
             }
         }
 
-        $arrCoupons = deserialize($objCart->coupons);
+        $arrCoupons = StringUtil::deserialize($objCart->coupons);
 
         if (!empty($arrCoupons) && \is_array($arrCoupons)) {
             $blnHasCode = false;
@@ -192,7 +187,7 @@ class Rules extends \Controller
             if (!empty($arrDropped)) {
                 // @todo show dropped coupons
                 $arrCoupons = array_diff($arrCoupons, $arrDropped);
-                \Database::getInstance()->query("UPDATE tl_iso_product_collection SET coupons='" . serialize($arrCoupons) . "' WHERE id=" . (int) Isotope::getCart()->id);
+                Database::getInstance()->query("UPDATE tl_iso_product_collection SET coupons='" . serialize($arrCoupons) . "' WHERE id=" . (int) Isotope::getCart()->id);
             }
         }
 
@@ -211,16 +206,16 @@ class Rules extends \Controller
      */
     public function getCouponForm($objModule)
     {
-        $arrCoupons = deserialize(Isotope::getCart()->coupons);
+        $arrCoupons = StringUtil::deserialize(Isotope::getCart()->coupons);
 
         if (!\is_array($arrCoupons)) {
             $arrCoupons = array();
         }
 
-        $strCoupon = \Input::get('coupon_' . $objModule->id);
+        $strCoupon = Input::get('coupon_' . $objModule->id);
 
         if ($strCoupon == '') {
-            $strCoupon = \Input::get('coupon');
+            $strCoupon = Input::get('coupon');
         }
 
         if ($strCoupon != '') {
@@ -241,7 +236,7 @@ class Rules extends \Controller
                 $_SESSION['COUPON_SUCCESS'][$objModule->id] = sprintf($GLOBALS['TL_LANG']['MSC']['couponApplied'], $objRule->code);
             }
 
-            \Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', \Environment::get('request')));
+            Controller::redirect(preg_replace('@[?&]coupon(_[0-9]+)?=[^&]*@', '', Environment::get('request')));
         }
 
 
@@ -253,22 +248,22 @@ class Rules extends \Controller
 
 
         //build template
-        $objTemplate = new \Isotope\Template('iso_coupons');
+        $objTemplate = new Template('iso_coupons');
 
         $objTemplate->id = $objModule->id;
-        $objTemplate->action = \Environment::get('request');
+        $objTemplate->action = Environment::get('request');
         $objTemplate->headline = $GLOBALS['TL_LANG']['MSC']['couponHeadline'];
         $objTemplate->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $objTemplate->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
         $objTemplate->usedCoupons = $arrCoupons;
         $objTemplate->rules = $objRules;
 
-        if ($_SESSION['COUPON_FAILED'][$objModule->id] != '') {
+        if (!empty($_SESSION['COUPON_FAILED'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_FAILED'][$objModule->id];
             $objTemplate->mclass = 'failed';
             unset($_SESSION['COUPON_FAILED']);
 
-        } elseif ($_SESSION['COUPON_SUCCESS'][$objModule->id] != '') {
+        } elseif (!empty($_SESSION['COUPON_SUCCESS'][$objModule->id])) {
             $objTemplate->message = $_SESSION['COUPON_SUCCESS'][$objModule->id];
             $objTemplate->mclass = 'success';
             unset($_SESSION['COUPON_SUCCESS']);
@@ -287,7 +282,7 @@ class Rules extends \Controller
 
         $objRules = Rule::findActiveWithoutCoupons();
         $arrRules = (null === $objRules) ? array() : $objRules->fetchEach('id');
-        $arrCoupons = deserialize($objCart->coupons);
+        $arrCoupons = StringUtil::deserialize($objCart->coupons);
 
         if (\is_array($arrCoupons) && !empty($arrCoupons)) {
             $blnError = false;
@@ -314,7 +309,7 @@ class Rules extends \Controller
         if (!empty($arrRules)) {
             $time = time();
 
-            \Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member})");
+            Database::getInstance()->query("INSERT INTO tl_iso_rule_usage (pid,tstamp,order_id,config_id,member_id) VALUES (" . implode(", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member}), (", $arrRules) . ", $time, {$objOrder->id}, " . (int) Isotope::getConfig()->id . ", {$objOrder->member})");
         }
 
         return true;
@@ -326,7 +321,7 @@ class Rules extends \Controller
      */
     public function cleanRuleUsages(&$objModule)
     {
-        \Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")");
+        Database::getInstance()->query("DELETE FROM tl_iso_rule_usage WHERE pid=(SELECT id FROM tl_iso_product_collection WHERE type='order' AND source_collection_id=" . (int) Isotope::getCart()->id . ")");
 
         return '';
     }
@@ -341,8 +336,8 @@ class Rules extends \Controller
     public function transferCoupons(IsotopeProductCollection $oldCollection, IsotopeProductCollection $newCollection)
     {
         if ($oldCollection instanceof Cart && $newCollection instanceof Cart) {
-            $oldCoupons = deserialize($oldCollection->coupons, true);
-            $newCoupons = deserialize($newCollection->coupons, true);
+            $oldCoupons = StringUtil::deserialize($oldCollection->coupons, true);
+            $newCoupons = StringUtil::deserialize($newCollection->coupons, true);
 
             $newCollection->coupons = array_unique(array_merge($oldCoupons, $newCoupons));
             $newCollection->save();
@@ -357,7 +352,7 @@ class Rules extends \Controller
      */
     public function deleteRuleUsages($objCollection, $intId)
     {
-        \Database::getInstance()->prepare("DELETE FROM tl_iso_rule_usage WHERE order_id=?")->execute($intId);
+        Database::getInstance()->prepare("DELETE FROM tl_iso_rule_usage WHERE order_id=?")->execute($intId);
     }
 
     private function addSurchargesForRule(Rule $objRule, IsotopeProductCollection $objCollection, array &$arrSurcharges)
@@ -375,7 +370,7 @@ class Rules extends \Controller
 
             case 'cart_group':
                 $blnResult = false;
-                $ids = deserialize($objRule->groupRules);
+                $ids = StringUtil::deserialize($objRule->groupRules);
 
                 if (!empty($ids) && \is_array($ids)) {
                     foreach ($ids as $id) {

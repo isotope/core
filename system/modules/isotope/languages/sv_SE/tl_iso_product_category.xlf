@@ -1,0 +1,26 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_category.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_product_category.cut.0">
+        <source>Move product</source>
+        <target>Flytta produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_category.cut.1">
+        <source>Move product ID %s</source>
+        <target>Flytta produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_category.pasteafter.0">
+        <source>Paste at the top</source>
+        <target>Klistra in längst upp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_category.pasteafter.1">
+        <source>Paste after product ID %s</source>
+        <target>Klistra in efter produkt ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_category.hint">
+        <source>The frontend module must not have a sorting field configured for the manual sorting to be applied.</source>
+        <target>Frontend-modulen får inte ha ett sorteringsfält konfigurerat för den manuella sorteringen som ska tillämpas.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

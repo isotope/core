@@ -11,6 +11,7 @@
         <exec executable="tx" passthru="true">
             <arg value="pull" />
             <arg value="--all" />
+            <arg value="--force" />
             <arg value="--minimum-perc=50" />
         </exec>
     </target>
@@ -19,7 +20,7 @@
         <echo message="Starting Transifex sync" />
         <exec executable="tx" passthru="true">
             <arg value="push" />
-            <arg value="-s" />
+            <arg value="--source" />
         </exec>
         <echo message="Waiting 10 seconds for sources to be parsed" />
         <exec executable="sleep">
@@ -28,6 +29,7 @@
         <exec executable="tx" passthru="true">
             <arg value="pull" />
             <arg value="--all" />
+            <arg value="--force" />
             <arg value="--minimum-perc=50" />
         </exec>
     </target>

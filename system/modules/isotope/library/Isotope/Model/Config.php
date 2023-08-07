@@ -12,7 +12,11 @@
 namespace Isotope\Model;
 
 use Contao\Database;
+use Contao\Date;
 use Contao\FrontendUser;
+use Contao\Model;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Translation;
 
 /**
@@ -71,7 +75,7 @@ use Isotope\Translation;
  * @property string $ga_account
  * @property string $ga_member
  */
-class Config extends \Model
+class Config extends Model
 {
     const PRICE_DISPLAY_NET = 'net';
     const PRICE_DISPLAY_GROSS = 'gross';
@@ -157,7 +161,7 @@ class Config extends \Model
     {
         if (!isset($this->arrCache['billingFieldsConfig'])) {
             $this->arrCache['billingFieldsConfig'] = array();
-            $arrFields                             = deserialize($this->address_fields);
+            $arrFields                             = StringUtil::deserialize($this->address_fields);
 
             if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -201,7 +205,7 @@ class Config extends \Model
     {
         if (!isset($this->arrCache['shippingFieldsConfig'])) {
             $this->arrCache['shippingFieldsConfig'] = array();
-            $arrFields                              = deserialize($this->address_fields);
+            $arrFields                              = StringUtil::deserialize($this->address_fields);
 
             if (\is_array($arrFields)) {
                 foreach ($arrFields as $arrField) {
@@ -225,10 +229,10 @@ class Config extends \Model
     public function getBillingCountries()
     {
         if (!isset($this->arrCache['billingCountries'])) {
-            $arrCountries = deserialize($this->billing_countries);
+            $arrCountries = StringUtil::deserialize($this->billing_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(\System::getCountries());
+                $arrCountries = array_keys(System::getCountries());
             }
 
             $this->arrCache['billingCountries'] = $arrCountries;
@@ -245,10 +249,10 @@ class Config extends \Model
     public function getShippingCountries()
     {
         if (!isset($this->arrCache['shippingCountries'])) {
-            $arrCountries = deserialize($this->shipping_countries);
+            $arrCountries = StringUtil::deserialize($this->shipping_countries);
 
             if (empty($arrCountries) || !\is_array($arrCountries)) {
-                $arrCountries = array_keys(\System::getCountries());
+                $arrCountries = array_keys(System::getCountries());
             }
 
             $this->arrCache['shippingCountries'] = $arrCountries;
@@ -285,7 +289,7 @@ class Config extends \Model
         // !HOOK: calculate price
         if (isset($GLOBALS['ISO_HOOKS']['priceDisplay']) && \is_array($GLOBALS['ISO_HOOKS']['priceDisplay'])) {
             foreach ($GLOBALS['ISO_HOOKS']['priceDisplay'] as $callback) {
-                $format = \System::importStatic($callback[0])->{$callback[1]}($format, $this);
+                $format = System::importStatic($callback[0])->{$callback[1]}($format, $this);
             }
         }
 
@@ -300,14 +304,14 @@ class Config extends \Model
     public function getNewProductLimit()
     {
         if (!isset($this->arrCache['newProductLimit'])) {
-            $arrPeriod = deserialize($this->newProductPeriod);
+            $arrPeriod = StringUtil::deserialize($this->newProductPeriod);
 
             if (!empty($arrPeriod) && \is_array($arrPeriod) && $arrPeriod['value'] > 0 && $arrPeriod['unit'] != '') {
                 $this->arrCache['newProductLimit'] = strtotime(
                     '-' . $arrPeriod['value'] . ' ' . $arrPeriod['unit'] . ' 00:00:00'
                 );
             } else {
-                $this->arrCache['newProductLimit'] = \Date::floorToMinute();
+                $this->arrCache['newProductLimit'] = Date::floorToMinute();
             }
         }
 

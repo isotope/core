@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en" target-language="sl">
     <body>
       <trans-unit id="tl_iso_rule.type.0">
@@ -15,6 +15,9 @@
       <trans-unit id="tl_iso_rule.type.cart">
         <source>Cart</source>
         <target>Nakupovalna košarica</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart_group">
+        <source>Cart Group</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.name.0">
         <source>Name</source>
@@ -39,6 +42,27 @@
       </trans-unit>
       <trans-unit id="tl_iso_rule.tax_class.0">
         <source>Tax Class</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.1">
+        <source>Select a tax class that should be applied to the rule.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.0">
+        <source>Grouped rules</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.1">
+        <source>Select the rules that belong to this group.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.0">
+        <source>Conditions</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.1">
+        <source>Choose how multiple rules should be applied.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.first">
+        <source>Apply first matching rule</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.all">
+        <source>Apply all matching rules</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.applyTo.0">
         <source>Apply discount to</source>
@@ -336,8 +360,17 @@
       <trans-unit id="tl_iso_rule.enabled.1">
         <source>Please select whether this rule is currently enabled or not.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.0">
+        <source>Only for groups</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.1">
+        <source>Only apply this rule as part of a rule group.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_rule.basic_legend">
         <source>Basic rule setup</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.group_legend">
+        <source>Group configuration</source>
       </trans-unit>
       <trans-unit id="tl_iso_rule.coupon_legend">
         <source>Coupon Code</source>

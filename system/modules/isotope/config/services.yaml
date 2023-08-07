@@ -1,9 +1,27 @@
 services:
-    Isotope\EventListener\FrontendPreviewListener:
+    Isotope\Controller\PostsaleController:
+        arguments:
+            - '@contao.framework'
+            - '@uri_signer'
+        tags:
+            - { name: controller.service_arguments }
+
+    isotope.listener.symlink:
+        class: Isotope\EventListener\SymlinkListener
+        arguments:
+            - '%kernel.project_dir%'
+            - '%contao.web_dir%'
+            - '@?filesystem'
+        tags:
+            - { name: kernel.event_listener, event: contao.generate_symlinks }
+
+    isotope.listener.frontend_preview:
+        class: Isotope\EventListener\FrontendPreviewListener
         tags:
             - { name: kernel.event_listener, event: contao.preview_url_create, method: onPreviewUrlCreate }
 
-    Isotope\Picker\ProductPickerProvider:
+    isotope.picker.product:
+        class: Isotope\Picker\ProductPickerProvider
         arguments:
             - '@contao.framework'
             - '@knp_menu.factory'
@@ -12,9 +30,3 @@ services:
             - '@database_connection'
         tags:
             - contao.picker_provider
-
-    Isotope\EventListener\SymlinkCommandListener:
-        arguments:
-            - '%kernel.project_dir%'
-        tags:
-            - { name: kernel.event_listener, event: console.terminate }

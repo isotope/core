@@ -11,6 +11,8 @@
 
 namespace Isotope\Module;
 
+use Contao\Environment;
+use Contao\Input;
 use Isotope\Model\Product;
 use Isotope\Model\ProductCollection\Order;
 
@@ -85,7 +87,7 @@ HTML;
 
     private function getCheckoutData()
     {
-        if (!$this->iso_tscheckout || !($uid = \Input::get('uid'))) {
+        if (!$this->iso_tscheckout || !($uid = Input::get('uid'))) {
             return [];
         }
 
@@ -125,7 +127,7 @@ HTML;
                 }
 
                 $data['items'][] = [
-                    'tsCheckoutProductUrl' => \Environment::get('base').$product->generateUrl($item->getRelated('jumpTo')),
+                    'tsCheckoutProductUrl' => $product->generateUrl($item->getRelated('jumpTo'), true),
 //                    'tsCheckoutProductImageUrl' => '',
                     'tsCheckoutProductName' => $item->getName(),
                     'tsCheckoutProductSKU' => $item->getSku(),

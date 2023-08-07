@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="MOD.isotope">
@@ -171,11 +171,11 @@
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.0">
         <source>Related products</source>
-        <target>Ähnliche Produkte</target>
+        <target>Verknüpfte Produkte</target>
       </trans-unit>
       <trans-unit id="FMD.iso_relatedproducts.1">
         <source>List products related to the current one.</source>
-        <target>Zeigt Produkte an, die Ähnlichkeit mit dem aktiven Produkt haben.</target>
+        <target>Zeigt Produkte an, die aktiven Produkt verknüpft sind.</target>
       </trans-unit>
       <trans-unit id="FMD.iso_messages.0">
         <source>Messages</source>

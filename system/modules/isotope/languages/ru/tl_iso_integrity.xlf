@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_integrity.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_iso_integrity.headline">
@@ -6,15 +6,19 @@
       </trans-unit>
       <trans-unit id="tl_iso_integrity.columns.0">
         <source>Problem</source>
+        <target>Проблема</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.columns.1">
         <source>Result of the check</source>
+        <target>Результат проверки</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.description">
         <source>Please choose the errors to be fixed.</source>
+        <target>Пожалуйста, выберите ошибки к исправлению.</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.action">
         <source>Resolve problems</source>
+        <target>Решить проблемы</target>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.permission">
         <source>Only admin can perform integrity check.</source>
@@ -26,7 +30,16 @@
         <source>%s invalid andvanced prices were found.&lt;br&gt;PIDs: %s.</source>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.pricetable.2">
-        <source>There are no invalid prices in your database.</source>
+        <source>There are no invalid advanced prices in your database.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.0">
+        <source>Invalid product prices</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.1">
+        <source>You have %s prices belonging to the wrong product/variant.&lt;br&gt;IDs: %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.2">
+        <source>There are no invalid product prices in your database.</source>
       </trans-unit>
       <trans-unit id="tl_iso_integrity.variantorphans.0">
         <source>Invalid product variants</source>

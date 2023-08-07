@@ -28,7 +28,7 @@
   &lt;br&gt;&lt;br&gt;
   &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
   If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
-  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to now
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
   offer real shipping for these product types.
 &lt;/p&gt;
         </source>
@@ -40,6 +40,12 @@
         <source><![CDATA[
             Select which product categories (pages) should be considered for the products.<br><br><u>If this is a product list module and you configured a category filter module, the category filter selection will override this configuration!</u><br><br>
         ]]></source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class="tl_help_table"&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
       </trans-unit>
     </body>
   </file>

@@ -11,6 +11,8 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\System;
+
 class Registry
 {
     /**
@@ -60,7 +62,7 @@ class Registry
                     continue;
                 }
 
-                $buttons = \System::importStatic($callback[0])->{$callback[1]}($buttons, $module);
+                $buttons = System::importStatic($callback[0])->{$callback[1]}($buttons, $module);
             }
 
             foreach ($buttons as $name => $config) {

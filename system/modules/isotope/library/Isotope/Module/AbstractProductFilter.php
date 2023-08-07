@@ -11,6 +11,12 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\Date;
+use Contao\ModuleModel;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Isotope;
 use Isotope\Model\ProductType;
 
@@ -37,15 +43,15 @@ abstract class AbstractProductFilter extends Module
     /**
      * Constructor.
      *
-     * @param \ModuleModel|object $objModule
+     * @param ModuleModel|object $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
     {
         parent::__construct($objModule, $strColumn);
 
-        \Controller::loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
+        System::loadLanguageFile('tl_iso_product');
     }
 
     /**
@@ -88,7 +94,7 @@ abstract class AbstractProductFilter extends Module
         $join           = '';
         $categoryWhere  = '';
         $published      = '';
-        $time           = \Date::floorToMinute();
+        $time           = Date::floorToMinute();
 
         if ('' !== (string) $sqlWhere) {
             $sqlWhere = ' AND ' . (string) $sqlWhere;
@@ -133,7 +139,7 @@ abstract class AbstractProductFilter extends Module
             }
         }
 
-        $result = \Database::getInstance()->execute("
+        $result = Database::getInstance()->execute("
             SELECT DISTINCT tl_iso_product.$attribute AS options
             FROM tl_iso_product
             $join
@@ -159,7 +165,7 @@ abstract class AbstractProductFilter extends Module
             if ($this->isCsv($attribute)) {
                 $values = array_merge($values, explode(',', $result->options));
             } else {
-                $values = array_merge($values, deserialize($result->options, true));
+                $values = array_merge($values, StringUtil::deserialize($result->options, true));
             }
         }
 
@@ -177,7 +183,7 @@ abstract class AbstractProductFilter extends Module
     {
         $arrData = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'][$field];
 
-        switch ($arrData['eval']['rgxp']) {
+        switch ($arrData['eval']['rgxp'] ?? null) {
             case 'price':
             case 'digit':
                 return array($GLOBALS['TL_LANG']['MSC']['low_to_high'], $GLOBALS['TL_LANG']['MSC']['high_to_low']);
@@ -200,7 +206,7 @@ abstract class AbstractProductFilter extends Module
      */
     protected function isMultiple($attribute)
     {
-        return (bool) $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'];
+        return (bool) ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple'] ?? false);
     }
 
     /**
@@ -236,14 +242,14 @@ abstract class AbstractProductFilter extends Module
             if (null !== $productTypes) {
                 foreach ($productTypes as $type) {
                     foreach ($type->attributes as $attribute => $config) {
-                        if ($config['enabled']) {
+                        if ($config['enabled'] ?? false) {
                             $cache['attributes'][$attribute][] = $type->id;
                         }
                     }
 
                     if ($type->variants) {
                         foreach ($type->variant_attributes as $attribute => $config) {
-                            if ($config['enabled']) {
+                            if ($config['enabled'] ?? false) {
                                 $cache['variant_attributes'][$attribute][] = $type->id;
                             }
                         }
@@ -253,9 +259,9 @@ abstract class AbstractProductFilter extends Module
         }
 
         if ($forVariants) {
-            return (array) $cache['variant_attributes'][$attributeName];
+            return (array) ($cache['variant_attributes'][$attributeName] ?? null);
         }
 
-        return (array) $cache['attributes'][$attributeName];
+        return (array) ($cache['attributes'][$attributeName] ?? null);
     }
 }

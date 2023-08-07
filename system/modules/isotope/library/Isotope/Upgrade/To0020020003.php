@@ -11,6 +11,7 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
 
 class To0020020003 extends Base
 {
@@ -21,8 +22,8 @@ class To0020020003 extends Base
             $this->createDatabaseField('product_types_condition', 'tl_iso_shipping');
             $this->createDatabaseField('product_types_condition', 'tl_iso_payment');
 
-            \Database::getInstance()->query("UPDATE tl_iso_shipping SET product_types_condition='onlyAvailable' WHERE product_types_condition=''");
-            \Database::getInstance()->query("UPDATE tl_iso_payment SET product_types_condition='onlyAvailable' WHERE product_types_condition=''");
+            Database::getInstance()->query("UPDATE tl_iso_shipping SET product_types_condition='onlyAvailable' WHERE product_types_condition=''");
+            Database::getInstance()->query("UPDATE tl_iso_payment SET product_types_condition='onlyAvailable' WHERE product_types_condition=''");
         }
     }
 }

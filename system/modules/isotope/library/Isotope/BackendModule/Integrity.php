@@ -11,6 +11,12 @@
 
 namespace Isotope\BackendModule;
 
+use Contao\BackendModule;
+use Contao\BackendUser;
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
+use Contao\System;
 use Isotope\Interfaces\IsotopeIntegrityCheck;
 
 
@@ -19,7 +25,7 @@ use Isotope\Interfaces\IsotopeIntegrityCheck;
  *
  * @property \Template|object $Template
  */
-class Integrity extends \BackendModule
+class Integrity extends BackendModule
 {
 
     /**
@@ -34,11 +40,11 @@ class Integrity extends \BackendModule
      */
     public function generate()
     {
-        if (!\BackendUser::getInstance()->isAdmin) {
+        if (!BackendUser::getInstance()->isAdmin) {
             return '<p class="tl_gerror">'.$GLOBALS['TL_LANG']['tl_iso_integrity']['permission'].'</p>';
         }
 
-        \System::loadLanguageFile('tl_iso_integrity');
+        System::loadLanguageFile('tl_iso_integrity');
 
         return parent::generate();
     }
@@ -53,8 +59,8 @@ class Integrity extends \BackendModule
         $arrTasks = array();
         $blnReload = false;
 
-        if ('tl_iso_integrity' === \Input::post('FORM_SUBMIT')) {
-            $arrTasks = (array) \Input::post('tasks');
+        if ('tl_iso_integrity' === Input::post('FORM_SUBMIT')) {
+            $arrTasks = (array) Input::post('tasks');
         }
 
         $this->Template->hasFixes = false;
@@ -93,11 +99,10 @@ class Integrity extends \BackendModule
         }
 
         if ($blnReload) {
-            \Controller::reload();
+            Controller::reload();
         }
 
         $this->Template->checks = $arrChecks;
-        $this->Template->action = \Environment::get('request');
-        $this->Template->back = str_replace('&mod=integrity', '', \Environment::get('request'));
+        $this->Template->back = str_replace('&mod=integrity', '', Environment::get('request'));
     }
 }

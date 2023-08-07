@@ -11,7 +11,10 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Form\Form;
 use Isotope\Isotope;
 use Isotope\Model\Address;
@@ -69,18 +72,19 @@ class CartAddress extends Module
      */
     protected function compile()
     {
-        $this->Template->hasError  = false;
-        $this->Template->slabel    = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
+        $this->Template->hasError = false;
+        $this->Template->slabel = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['saveAddressButton']);
 
         $table = Address::getTable();
 
-        \System::loadLanguageFile($table);
-        \Controller::loadDataContainer($table);
+        System::loadLanguageFile($table);
+        System::loadLanguageFile('tl_member');
+        Controller::loadDataContainer($table);
 
         // Call onload_callback (e.g. to check permissions)
-        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'])) {
+        if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] ?? null)) {
             foreach ($GLOBALS['TL_DCA'][$table]['config']['onload_callback'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}();
+                System::importStatic($callback[0])->{$callback[1]}();
             }
         }
 
@@ -92,7 +96,7 @@ class CartAddress extends Module
             'iso_cart_address_' . $this->id,
             'POST',
             function(Form $objHaste) {
-                return \Input::post('FORM_SUBMIT') === $objHaste->getFormId();
+                return Input::post('FORM_SUBMIT') === $objHaste->getFormId();
             },
             isset($this->tableless) ? (bool) $this->tableless : true
         );
@@ -103,8 +107,8 @@ class CartAddress extends Module
         $objForm->addFieldsFromDca($table, function ($strName, &$arrDca) use ($arrFields, $useBilling) {
 
             if (!\in_array($strName, $arrFields, true)
-                || !$arrDca['eval']['feEditable']
-                || ($arrDca['eval']['membersOnly'] && FE_USER_LOGGED_IN !== true)
+                || !($arrDca['eval']['feEditable'] ?? null)
+                || (($arrDca['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
             ) {
                 return false;
             }
@@ -140,9 +144,9 @@ class CartAddress extends Module
             $objAddress->save();
 
             // Call onsubmit_callback
-            if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'])) {
+            if (\is_array($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] ?? null)) {
                 foreach ($GLOBALS['TL_DCA'][$table]['config']['onsubmit_callback'] as $callback) {
-                    \System::importStatic($callback[0])->{$callback[1]}($objAddress);
+                    System::importStatic($callback[0])->{$callback[1]}($objAddress);
                 }
             }
 
@@ -184,11 +188,11 @@ class CartAddress extends Module
             $categories[$GLOBALS['TL_LANG']['tl_member'][$key]] = $v;
         }
 
-        $this->Template->categories     = $categories;
+        $this->Template->categories = $categories;
         $this->Template->addressDetails = $GLOBALS['TL_LANG'][$table]['addressDetails'];
         $this->Template->contactDetails = $GLOBALS['TL_LANG'][$table]['contactDetails'];
-        $this->Template->personalData   = $GLOBALS['TL_LANG'][$table]['personalData'];
-        $this->Template->loginDetails   = $GLOBALS['TL_LANG'][$table]['loginDetails'];
+        $this->Template->personalData = $GLOBALS['TL_LANG'][$table]['personalData'];
+        $this->Template->loginDetails = $GLOBALS['TL_LANG'][$table]['loginDetails'];
     }
 
     /**

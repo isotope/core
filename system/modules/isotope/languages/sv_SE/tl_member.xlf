@@ -1,0 +1,14 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_member.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_member.address_book.0">
+        <source>Address Book</source>
+        <target>Adressbok</target>
+      </trans-unit>
+      <trans-unit id="tl_member.address_book.1">
+        <source>Manage the address book for member ID %s.</source>
+        <target>Hantera adressboken för medlems ID %s.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

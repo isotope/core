@@ -11,15 +11,14 @@
 
 namespace Isotope;
 
+use Contao\FrontendTemplate;
+use Contao\StringUtil;
+use Contao\TemplateLoader;
+
 /**
- * Class Isotope\Template
- *
  * Provide methods to handle Isotope templates.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-class Template extends \FrontendTemplate
+class Template extends FrontendTemplate
 {
 
     /**
@@ -32,9 +31,9 @@ class Template extends \FrontendTemplate
      */
     public static function getTemplate($strTemplate, $strFormat = 'html5')
     {
-        $arrAllowed = trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles']);
+        $arrAllowed = StringUtil::trimsplit(',', $GLOBALS['TL_CONFIG']['templateFiles'] ?? '');
 
-        if (\is_array($GLOBALS['TL_CONFIG']['templateFiles']) && !\in_array($strFormat, $arrAllowed)) {
+        if (\is_array($GLOBALS['TL_CONFIG']['templateFiles'] ?? null) && !\in_array($strFormat, $arrAllowed)) {
             throw new \InvalidArgumentException("Invalid output format $strFormat");
         }
 
@@ -73,7 +72,7 @@ class Template extends \FrontendTemplate
     {
         if ($blnDefault)
         {
-            return \TemplateLoader::getDefaultPath($strTemplate, $strFormat);
+            return TemplateLoader::getDefaultPath($strTemplate, $strFormat);
         }
 
         return static::getTemplate($strTemplate, $strFormat);

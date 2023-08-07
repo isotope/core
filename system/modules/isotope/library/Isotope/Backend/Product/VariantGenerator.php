@@ -11,17 +11,25 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Backend;
+use Contao\CheckBox;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Message;
 use Contao\StringUtil;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
-class VariantGenerator extends \Backend
+class VariantGenerator extends Backend
 {
 
     /**
      * Generate all combination of product attributes
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */
@@ -34,11 +42,11 @@ class VariantGenerator extends \Backend
         $values = [];
 
         foreach ($objProduct->getType()->getVariantAttributes() as $attribute) {
-            if ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['variant_option']) {
+            if ($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['attributes']['variant_option'] ?? false) {
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['mandatory'] = true;
                 $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute]['eval']['multiple']  = true;
 
-                $arrField = \CheckBox::getAttributesFromDca(
+                $arrField = CheckBox::getAttributesFromDca(
                     $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute],
                     $attribute,
                     null,
@@ -53,9 +61,9 @@ class VariantGenerator extends \Backend
                     }
                 }
 
-                $objWidget = new \CheckBox($arrField);
+                $objWidget = new CheckBox($arrField);
 
-                if ('tl_iso_product_generate' === \Input::post('FORM_SUBMIT')) {
+                if ('tl_iso_product_generate' === Input::post('FORM_SUBMIT')) {
                     $objWidget->validate();
 
                     if ($objWidget->hasErrors()) {
@@ -69,18 +77,18 @@ class VariantGenerator extends \Backend
             }
         }
 
-        if (!$doNotSubmit && 'tl_iso_product_generate' === \Input::post('FORM_SUBMIT')) {
+        if (!$doNotSubmit && 'tl_iso_product_generate' === Input::post('FORM_SUBMIT')) {
             $this->handle($objProduct, $values);
         }
 
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=generate', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=generate', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
-<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product']['generate'][1], $dc->id) . '</h2>' . \Message::generate() . '
+<h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product']['generate'][1], $dc->id) . '</h2>' . Message::generate() . '
 
-<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_iso_product_generate" class="tl_form" method="post">
+<form id="tl_iso_product_generate" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_product_generate">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
@@ -94,7 +102,7 @@ class VariantGenerator extends \Backend
 <div class="tl_formbody_submit">
 
 <div class="tl_submit_container">
-  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]) . '">
+  <input type="submit" name="save" id="save" class="tl_submit" accesskey="s" value="' . StringUtil::specialchars($GLOBALS['TL_LANG']['tl_iso_product']['generate'][0]) . '">
 </div>
 
 </div>
@@ -124,7 +132,7 @@ class VariantGenerator extends \Backend
         }
 
         foreach ($arrCombinations as $combination) {
-            $objVariant = \Database::getInstance()->prepare('
+            $objVariant = Database::getInstance()->prepare('
                     SELECT * FROM tl_iso_product WHERE pid=? AND ' . implode('=? AND ', array_keys($combination)) . '=?'
             )->execute(array_merge([$objProduct->id], $combination));
 
@@ -145,10 +153,10 @@ class VariantGenerator extends \Backend
                     ]
                 );
 
-                \Database::getInstance()->prepare("INSERT INTO tl_iso_product %s")->set($arrSet)->execute();
+                Database::getInstance()->prepare("INSERT INTO tl_iso_product %s")->set($arrSet)->execute();
             }
         }
 
-        \Controller::redirect(str_replace('&key=generate', '', \Environment::get('request')));
+        Controller::redirect(str_replace('&key=generate', '', Environment::get('request')));
     }
 }

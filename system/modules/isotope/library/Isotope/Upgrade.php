@@ -11,12 +11,14 @@
 
 namespace Isotope;
 
+use Contao\Controller;
+use Contao\Database;
 use Haste\Util\RepositoryVersion;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCache;
 use Isotope\Model\RequestCache;
 
-class Upgrade extends \Controller
+class Upgrade extends Controller
 {
     public function __construct()
     {
@@ -30,7 +32,7 @@ class Upgrade extends \Controller
     public function run()
     {
         // Check if shop has been installed
-        $blnInstalled = \Database::getInstance()->tableExists(Config::getTable());
+        $blnInstalled = Database::getInstance()->tableExists(Config::getTable());
 
         foreach (scan(TL_ROOT . '/system/modules/isotope/library/Isotope/Upgrade') as $strFile) {
             $strVersion = pathinfo($strFile, PATHINFO_FILENAME);
@@ -109,14 +111,14 @@ h1 { font-size:18px; font-weight:normal; margin:0 0 18px; }
 </body>
 </html>
 ';
-        exit;
+        exit(1);
     }
 
 
     private function verifySystemIntegrity()
     {
         // Just make sure no variant or translation has any categories assigned
-        \Database::getInstance()->query("
+        Database::getInstance()->query("
             DELETE FROM tl_iso_product_category
             WHERE pid IN (
                 SELECT id

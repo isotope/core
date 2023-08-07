@@ -11,17 +11,18 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
 use Contao\Database\Result;
+use Contao\DcaExtractor;
+use Contao\Model;
+use Contao\Model\Collection;
+use Contao\Model\Registry;
 
 /**
  * Class TypeAgent
  * Parent class for Isotope Type Agent models.
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
  */
-abstract class TypeAgent extends \Model
+abstract class TypeAgent extends Model
 {
 
     /**
@@ -56,7 +57,10 @@ abstract class TypeAgent extends \Model
         }
 
         if ($this->arrData['type'] == '') {
-            throw new \RuntimeException(\get_called_class() . ' has no model type');
+            throw new \RuntimeException(sprintf(
+                '%s (%s.%s) has no model type',
+                \get_called_class(), static::$strTable, $this->arrData['id']
+            ));
         }
     }
 
@@ -108,11 +112,11 @@ abstract class TypeAgent extends \Model
      *
      * @param string $strName
      *
-     * @return string
+     * @return string|null
      */
     public static function getClassForModelType($strName)
     {
-        return static::$arrModelTypes[$strName];
+        return static::$arrModelTypes[$strName] ?? null;
     }
 
     /**
@@ -125,33 +129,53 @@ abstract class TypeAgent extends \Model
         $arrOptions = array();
 
         foreach (static::getModelTypes() as $strName => $strClass) {
-            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable][$strName][0] ? : $strName;
+            $arrOptions[$strName] = $GLOBALS['TL_LANG']['MODEL'][static::$strTable][$strName][0] ?? $strName;
         }
 
         return $arrOptions;
+    }
+
+    public static function findByPk($varValue, array $arrOptions = [])
+    {
+        $result = parent::findByPk($varValue, $arrOptions);
+
+        if (null !== $result && !\is_a($result, static::class, true)) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    public static function findByIdOrAlias($varId, array $arrOptions = [])
+    {
+        $result = parent::findByIdOrAlias($varId, $arrOptions);
+
+        if (null !== $result && !\is_a($result, static::class, true)) {
+            return null;
+        }
+
+        return $result;
     }
 
     /**
      * Find sibling records by a column value
      *
      * @param string $strColumn
-     * @param \Model $objModel
-     * @param array  $arrOptions
      *
-     * @return \Model|\Model\Collection|null
+     * @return Model|Collection|null
      */
-    public static function findSiblingsBy($strColumn, \Model $objModel, array $arrOptions=array())
+    public static function findSiblingsBy($strColumn, Model $objModel, array $arrOptions=array())
     {
         $t = static::getTable();
 
         $arrOptions = array_merge(
             array(
-                'column'    => array(
+                'column' => array(
                     "$t.type=?",
                     "$t.$strColumn=?",
                     "$t.id!=?"
                 ),
-                'value'     => array(
+                'value' => array(
                     $objModel->type,
                     $objModel->{$strColumn},
                     $objModel->id
@@ -169,15 +193,15 @@ abstract class TypeAgent extends \Model
      *
      * @param array $arrOptions
      *
-     * @return \Model|\Model\Collection|null
+     * @return Model|Collection|array|null
      */
     protected static function find(array $arrOptions)
     {
-        if (static::$strTable == '') {
-            return null;
+        if (empty(static::$strTable)) {
+            throw new \RuntimeException('Empty $strTable property on '.self::class);
         }
 
-        // if find() method is called in a specific model type, results must be of that type
+        // if the find() method is called in a specific model type, results must be of that type
         if (($strType = array_search(\get_called_class(), static::getModelTypes())) !== false) {
 
             // Convert to array if necessary
@@ -187,7 +211,7 @@ abstract class TypeAgent extends \Model
                 $arrOptions['column'] = array(static::$strTable . '.' . $arrOptions['column'] . '=?');
             }
 
-            $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            $objRelations = DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
             $arrFields = $objRelations->getFields();
 
@@ -207,9 +231,9 @@ abstract class TypeAgent extends \Model
 
         $arrOptions['table'] = static::$strTable;
         // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-        $strQuery            = static::buildQueryString($arrOptions);
+        $strQuery = static::buildQueryString($arrOptions);
 
-        $objStatement = \Database::getInstance()->prepare($strQuery);
+        $objStatement = Database::getInstance()->prepare($strQuery);
 
         // Defaults for limit and offset
         if (!isset($arrOptions['limit'])) {
@@ -225,35 +249,46 @@ abstract class TypeAgent extends \Model
         }
 
         $objStatement = static::preFind($objStatement);
-        $objResult    = $objStatement->execute($arrOptions['value']);
+        $objResult    = $objStatement->execute($arrOptions['value'] ?? null);
 
         if ($objResult->numRows < 1) {
-            return null;
+            return 'Array' === $arrOptions['return'] ? array() : null;
         }
 
         $objResult = static::postFind($objResult);
 
         if ('Model' === $arrOptions['return']) {
-
             // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
-
-        } else {
-            return static::createCollectionFromDbResult($objResult, static::$strTable);
         }
+
+        if ('Array' === $arrOptions['return']) {
+            return static::createCollectionFromDbResult($objResult, static::$strTable)->getModels();
+        }
+
+        return static::createCollectionFromDbResult($objResult, static::$strTable);
+    }
+
+    protected static function createCollection(array $arrModels, $strTable)
+    {
+        $arrModels = array_filter($arrModels, static function ($model) {
+            return \is_a($model, static::class, true);
+        });
+
+        return parent::createCollection($arrModels, $strTable);
     }
 
     /**
      * Build model based on database result
      *
-     * @return \Model
+     * @return Model
      */
     public static function createModelFromDbResult(Result $objResult)
     {
         $strClass = '';
 
         if (is_numeric($objResult->type)) {
-            $objRelations = \DcaExtractor::getInstance(static::$strTable);
+            $objRelations = DcaExtractor::getInstance(static::$strTable);
             $arrRelations = $objRelations->getRelations();
 
             if (isset($arrRelations['type'])) {
@@ -274,7 +309,7 @@ abstract class TypeAgent extends \Model
             $strClass = \get_called_class();
 
             $objReflection = new \ReflectionClass($strClass);
-            if ($objReflection ->isAbstract()) {
+            if ($objReflection->isAbstract()) {
                 return null;
             }
         }
@@ -293,7 +328,7 @@ abstract class TypeAgent extends \Model
      *
      * @param string $strTable
      *
-     * @return \Model\Collection
+     * @return Collection
      */
     protected static function createCollectionFromDbResult(Result $objResult, $strTable = null)
     {
@@ -314,13 +349,13 @@ abstract class TypeAgent extends \Model
             }
         }
 
-        return new \Model\Collection($arrModels, $strTable);
+        return new Collection($arrModels, $strTable);
     }
 
     /**
      * Build model based on database result
      *
-     * @return \Model
+     * @return Model
      *
      * @deprecated use createModelFromDbResult in Contao 3.3
      */
@@ -334,8 +369,8 @@ abstract class TypeAgent extends \Model
         $intPk = $objResult->$strPk;
 
         // Try to load from the registry
-        /** @var \Model $objModel */
-        $objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);
+        /** @var Model $objModel */
+        $objModel = Registry::getInstance()->fetch(static::$strTable, $intPk);
 
         if ($objModel !== null) {
             $objModel->mergeRow($objResult->row());

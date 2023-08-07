@@ -11,6 +11,11 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Contao\Controller;
+use Contao\Message;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Template;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Isotope\Interfaces\IsotopeNotificationTokens;
@@ -22,7 +27,6 @@ use Isotope\Model\Document;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollectionLog;
-use Isotope\Template;
 use NotificationCenter\Model\Notification;
 
 
@@ -41,6 +45,8 @@ use NotificationCenter\Model\Notification;
  * @property int    $date_paid
  * @property int    $date_shipped
  * @property string $notes
+ *
+ * @method static Order|null findByPk($id)
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {
@@ -176,7 +182,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $this->lock();
         }
 
-        \System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
+        System::log('New order ID ' . $this->id . ' has been placed', __METHOD__, TL_ACCESS);
 
         // Delete cart after migrating to order
         if (($objCart = Cart::findByPk($this->source_collection_id)) !== null) {
@@ -215,7 +221,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
 
                 if ($blnNotificationError === true) {
-                    \System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
+                    System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
                 }
             }
         }
@@ -233,7 +239,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             }
 
             foreach ($GLOBALS['ISO_HOOKS']['postCheckout'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
+                System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -303,7 +309,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['preOrderStatusUpdate'] as $callback) {
-                $blnCancel = \System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus, $updates);
+                $blnCancel = System::importStatic($callback[0])->{$callback[1]}($this, $objNewStatus, $updates);
 
                 if ($blnCancel === true) {
                     return false;
@@ -316,6 +322,14 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             $updates['date_paid'] = time();
         }
 
+        // Store old status and set the new one
+        $oldStatusId = $this->order_status;
+        $oldStatusLabel = $this->getStatusLabel();
+        foreach ($updates as $k => $v) {
+            $this->{$k} = $v;
+        }
+        $this->save();
+
         if (!($flags & static::STATUS_UPDATE_SKIP_NOTIFICATION)) {
             // Trigger notification
             $blnNotificationError = null;
@@ -325,8 +339,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 // Override order status and save the old one to the tokens too
                 $arrTokens['order_status_id']       = $objNewStatus->id;
                 $arrTokens['order_status']          = $objNewStatus->getName();
-                $arrTokens['order_status_old']      = $this->getStatusLabel();
-                $arrTokens['order_status_id_old']   = $this->order_status;
+                $arrTokens['order_status_old']      = $oldStatusLabel;
+                $arrTokens['order_status_id_old']   = $oldStatusId;
 
                 $blnNotificationError = true;
 
@@ -336,7 +350,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
                     if (\in_array(false, $arrResult, true)) {
                         $blnNotificationError = true;
-                        \System::log(
+                        System::log(
                             'Error sending status update notification for order ID ' . $this->id,
                             __METHOD__,
                             TL_ERROR
@@ -345,27 +359,20 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                         $blnNotificationError = false;
                     }
                 } else {
-                    \System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
+                    System::log('Invalid notification for order status ID ' . $objNewStatus->id, __METHOD__, TL_ERROR);
                 }
             }
 
             if ('BE' === TL_MODE) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+                Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {
-                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                    Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
                 } elseif ($blnNotificationError === false) {
-                    \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                    Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
                 }
             }
         }
-
-        // Store old status and set the new one
-        $intOldStatus = $this->order_status;
-        foreach ($updates as $k => $v) {
-            $this->{$k} = $v;
-        }
-        $this->save();
 
         // Add a log entry
         if (!($flags & static::STATUS_UPDATE_SKIP_LOG)) {
@@ -385,16 +392,16 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['postOrderStatusUpdate'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($this, $intOldStatus, $objNewStatus);
+                System::importStatic($callback[0])->{$callback[1]}($this, $oldStatusId, $objNewStatus);
             }
         }
 
         // Trigger payment and shipping methods that implement the interface
         if (($objPayment = $this->getPaymentMethod()) !== null && $objPayment instanceof IsotopeOrderStatusAware) {
-            $objPayment->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+            $objPayment->onOrderStatusUpdate($this, $oldStatusId, $objNewStatus);
         }
         if (($objShipping = $this->getShippingMethod()) !== null && $objShipping instanceof IsotopeOrderStatusAware) {
-            $objShipping->onOrderStatusUpdate($this, $intOldStatus, $objNewStatus);
+            $objShipping->onOrderStatusUpdate($this, $oldStatusId, $objNewStatus);
         }
 
         return true;
@@ -412,7 +419,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $objConfig = $this->getRelated('config_id') ?: Isotope::getConfig();
         Isotope::setConfig($objConfig);
 
-        $arrTokens                    = deserialize($this->email_data, true);
+        $arrTokens                    = StringUtil::deserialize($this->email_data, true);
         $arrTokens['uniqid']          = $this->uniqid;
         $arrTokens['order_status_id'] = $this->order_status;
         $arrTokens['order_status']    = $this->getStatusLabel();
@@ -509,8 +516,8 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
 
         /** @var Notification|object $objNotification */
         if ($intNotification > 0 && ($objNotification = Notification::findByPk($intNotification)) !== null) {
-            /** @var Template|object $objTemplate */
-            $objTemplate                 = new Template($objNotification->iso_collectionTpl);
+            /** @var \Isotope\Template|object $objTemplate */
+            $objTemplate                 = new \Isotope\Template($objNotification->iso_collectionTpl);
             $objTemplate->isNotification = true;
 
             $this->addToTemplate(
@@ -521,9 +528,9 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 )
             );
 
-            $arrTokens['cart_html'] = \Controller::replaceInsertTags($objTemplate->parse(), false);
+            $arrTokens['cart_html'] = Controller::replaceInsertTags($objTemplate->parse(), false);
             $objTemplate->textOnly  = true;
-            $arrTokens['cart_text'] = strip_tags(\Controller::replaceInsertTags($objTemplate->parse(), true));
+            $arrTokens['cart_text'] = strip_tags(Controller::replaceInsertTags($objTemplate->parse(), true));
 
             // Generate and "attach" document
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
@@ -540,7 +547,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
             && \is_array($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['getOrderNotificationTokens'] as $callback) {
-                $arrTokens = \System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
+                $arrTokens = System::importStatic($callback[0])->{$callback[1]}($this, $arrTokens);
             }
         }
 
@@ -550,12 +557,9 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
     /**
      * Include downloads when adding items to template
      *
-     * @param \Template $objTemplate
-     * @param Callable  $varCallable
-     *
      * @return array
      */
-    protected function addItemsToTemplate(\Template $objTemplate, $varCallable = null)
+    protected function addItemsToTemplate(Template $objTemplate, $varCallable = null)
     {
         $taxIds          = [];
         $arrItems        = [];
@@ -592,7 +596,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
      */
     protected function generateUniqueId()
     {
-        if ($this->arrData['uniqid'] != '') {
+        if (!empty($this->arrData['uniqid'])) {
             return $this->arrData['uniqid'];
         }
 
@@ -603,7 +607,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         }
 
         return uniqid(
-            \Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
+            Controller::replaceInsertTags((string) $objConfig->orderPrefix, false),
             true
         );
     }

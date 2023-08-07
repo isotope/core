@@ -84,7 +84,7 @@ class BillpayWithSaferpay extends Saferpay
             && $objCollection->hasPayment()
             && $objCollection->getPaymentMethod() instanceof BillpayWithSaferpay
         ) {
-            $arrPayment = deserialize($objCollection->payment_data);
+            $arrPayment = \Contao\StringUtil::deserialize($objCollection->payment_data);
 
             if (!empty($arrPayment) && \is_array($arrPayment) && \is_array($arrPayment['POSTSALE'])) {
                 $doc = new \DOMDocument();

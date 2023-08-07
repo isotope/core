@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Gallery;
 
+use Contao\StringUtil;
 use Isotope\Template;
 
 class ElevateZoom extends Inline
@@ -42,10 +43,10 @@ class ElevateZoom extends Inline
             }
 
             $objTemplate->zoom              = $this->getImageForType('zoom', $arrFile, $blnWatermark);
-            $objTemplate->zoom_windowSize   = deserialize($this->zoom_windowSize);
-            $objTemplate->zoom_position     = deserialize($this->zoom_position);
-            $objTemplate->zoom_windowFade   = deserialize($this->zoom_windowFade);
-            $objTemplate->zoom_border       = deserialize($this->zoom_border);
+            $objTemplate->zoom_windowSize   = StringUtil::deserialize($this->zoom_windowSize);
+            $objTemplate->zoom_position     = StringUtil::deserialize($this->zoom_position);
+            $objTemplate->zoom_windowFade   = StringUtil::deserialize($this->zoom_windowFade);
+            $objTemplate->zoom_border       = StringUtil::deserialize($this->zoom_border);
         }
     }
 }

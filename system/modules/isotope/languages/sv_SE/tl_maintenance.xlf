@@ -1,0 +1,22 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_maintenance.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_maintenance_jobs.iso_productcache.0">
+        <source>Purge Isotope product cache</source>
+        <target>Rensa Isotope-produktcache</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_productcache.1">
+        <source>Truncates the &lt;em&gt;tl_iso_productcache&lt;/em&gt; table which caches the products found for each product list on your page.</source>
+        <target>Avkorta tabellen tl_iso_productcache som cachar produkterna som hittas för varje produktlista på din sida.</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_requestcache.0">
+        <source>Purge Isotope request cache</source>
+        <target>Rensa Isotope request cache</target>
+      </trans-unit>
+      <trans-unit id="tl_maintenance_jobs.iso_requestcache.1">
+        <source>Truncates the &lt;em&gt;tl_iso_requestcache&lt;/em&gt; table which caches information from the filter module for short URLs.</source>
+        <target>Avkorta tabellen &lt;em&gt;tl_iso_requestcache&lt;/em&gt; som cachar information från filtermodulen för korta URL:er.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

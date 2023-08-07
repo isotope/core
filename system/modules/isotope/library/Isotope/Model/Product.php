@@ -11,6 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\Date;
+use Contao\DcaExtractor;
+use Contao\Model;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\RequestCache\Filter;
@@ -145,7 +149,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
                 "$t.published='1' AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')"
@@ -358,7 +362,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * @param array          $arrVariant
      * @param array          $arrOptions
      *
-     * @return \Model|null
+     * @return Model|null
      */
     public static function findVariantOfProduct(
         IsotopeProduct $objProduct,
@@ -399,7 +403,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         if (null === $cache) {
             $cache = [];
-            $data  = \Database::getInstance()->execute(
+            $data  = Database::getInstance()->execute(
                 "SELECT id, pid FROM tl_iso_product WHERE pid>0 AND language='' AND fallback='1'"
             );
 
@@ -408,7 +412,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             }
         }
 
-        $defaultId = $cache[$objProduct->getProductId()];
+        $defaultId = $cache[$objProduct->getProductId()] ?? null;
 
         if ($defaultId < 1 || !\in_array($defaultId, $objProduct->getVariantIds())) {
             return null;
@@ -450,7 +454,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
         if (BE_USER_LOGGED_IN !== true) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
                 "
@@ -475,7 +479,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         static $result;
 
         if (null === $result) {
-            $result = \Database::getInstance()->query(
+            $result = Database::getInstance()->query(
                 "SELECT COUNT(*) AS total FROM tl_iso_product WHERE language!=''"
             )->total;
         }
@@ -492,7 +496,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     protected static function find(array $arrOptions)
     {
-        $arrOptions['group'] = static::getTable() . '.id' . (null === $arrOptions['group'] ? '' : ', '.$arrOptions['group']);
+        $arrOptions['group'] = static::getTable() . '.id' . (null === ($arrOptions['group'] ?? null) ? '' : ', '.$arrOptions['group']);
 
         $objProducts = parent::find($arrOptions);
 
@@ -501,8 +505,8 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         /** @var Filter[] $arrFilters */
-        $arrFilters = $arrOptions['filters'];
-        $arrSorting = $arrOptions['sorting'];
+        $arrFilters = $arrOptions['filters'] ?? null;
+        $arrSorting = $arrOptions['sorting'] ?? null;
 
         $hasFilters = \is_array($arrFilters) && 0 !== \count($arrFilters);
         $hasSorting = \is_array($arrSorting) && 0 !== \count($arrSorting);
@@ -549,11 +553,26 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                             } else {
                                 $arrData[$strField][$objProduct->id] = 0;
                             }
-                        } else {
-                            $arrData[$strField][$objProduct->id] = strtolower(
-                                str_replace('"', '', $objProduct->$strField)
-                            );
+
+                            continue;
                         }
+
+                        if(
+                            $objProduct->hasVariants()
+                            && !$objProduct->isVariant()
+                            && \in_array($strField, $objProduct->getType()->getVariantAttributes(), true)
+                            && ($defaultVariant = Product::findDefaultVariantOfProduct($objProduct))
+                        ) {
+                            $arrData[$strField][$objProduct->id] = strtolower(
+                                str_replace('"', '', $defaultVariant->$strField)
+                            );
+
+                            continue;
+                        }
+
+                        $arrData[$strField][$objProduct->id] = strtolower(
+                            str_replace('"', '', $objProduct->$strField)
+                        );
                     }
 
                     $arrParam[] = &$arrData[$strField];
@@ -564,7 +583,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 // Add product array as the last item.
                 // This will sort the products array based on the sorting of the passed in arguments.
                 $arrParam[] = &$arrProducts;
-                \call_user_func_array('array_multisort', $arrParam);
+                array_multisort(...$arrParam);
             }
 
             $objProducts = new Collection($arrProducts, static::$strTable);
@@ -582,7 +601,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      */
     protected static function buildFindQuery(array $arrOptions)
     {
-        $objBase         = \DcaExtractor::getInstance($arrOptions['table']);
+        $objBase         = DcaExtractor::getInstance($arrOptions['table']);
         $hasTranslations = (static::countTranslatedProducts() > 0);
         $hasVariants     = (ProductType::countByVariants() > 0);
 
@@ -618,7 +637,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
 
-            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id';
+            $arrOptions['group'] = (empty($arrOptions['group']) ? '' : $arrOptions['group'].', ') . 'translation.id';
         }
 
         if ($hasVariants) {
@@ -636,7 +655,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
             ($hasVariants ? "IFNULL(parent.id, {$arrOptions['table']}.id)" : "{$arrOptions['table']}.id")
         );
 
-        if ('c.sorting' === $arrOptions['order']) {
+        if ('c.sorting' === ($arrOptions['order'] ?? '')) {
             $arrFields[] = 'c.sorting';
 
             $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'c.id';
@@ -647,10 +666,10 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
             foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if (('eager' === $arrConfig['load'] || $arrOptions['eager'])
+                if (('eager' === $arrConfig['load'] || ($arrOptions['eager'] ?? false))
                     && ('hasOne' === $arrConfig['type'] || 'belongsTo' === $arrConfig['type'])
                 ) {
-                    if (\is_array($arrOptions['joinAliases'])
+                    if (\is_array($arrOptions['joinAliases'] ?? null)
                         && ($key = array_search($arrConfig['table'], $arrOptions['joinAliases'], true)) !== false
                     ) {
                         $strJoinAlias = $key;
@@ -660,7 +679,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                         $strJoinAlias = 'j' . $intCount;
                     }
 
-                    $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
+                    $objRelated = DcaExtractor::getInstance($arrConfig['table']);
 
                     foreach ($objRelated->getFields() as $strField => $config) {
                         $arrFields[] = $strJoinAlias . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
@@ -682,7 +701,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $strQuery = 'SELECT ' . implode(', ', $arrFields) . ' FROM ' . $arrOptions['table'] . implode('', $arrJoins);
 
         // Where condition
-        if (!\is_array($arrOptions['column'])) {
+        if (!\is_array($arrOptions['column'] ?? null)) {
             $arrOptions['column'] = array($arrOptions['table'] . '.' . $arrOptions['column'] . '=?');
         }
 
@@ -690,12 +709,12 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(' AND ', $arrOptions['column']);
 
         // Group by
-        if ($arrOptions['group'] !== null) {
+        if (($arrOptions['group'] ?? null) !== null) {
             $strQuery .= ' GROUP BY ' . $arrOptions['group'];
         }
 
         // Order by
-        if ($arrOptions['order'] !== null) {
+        if (($arrOptions['order'] ?? null) !== null) {
             $strQuery .= ' ORDER BY ' . $arrOptions['order'];
         }
 
@@ -742,7 +761,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
                 str_replace('-', '_', $GLOBALS['TL_LANGUAGE'])
             );
 
-            $arrOptions['group'] = (null === $arrOptions['group'] ? '' : $arrOptions['group'].', ') . 'translation.id, tl_iso_product.id';
+            $arrOptions['group'] = (!empty($arrOptions['group']) ? $arrOptions['group'].', ' : '') . 'translation.id, tl_iso_product.id';
         }
 
         if ($hasVariants) {

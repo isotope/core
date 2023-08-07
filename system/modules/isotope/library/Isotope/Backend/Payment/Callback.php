@@ -11,8 +11,17 @@
 
 namespace Isotope\Backend\Payment;
 
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
+use Contao\Session;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Backend\Permission;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
@@ -27,11 +36,11 @@ class Callback extends Permission
     public function checkPermission()
     {
         // Do not run the permission check on other Isotope modules
-        if ('payment' !== \Input::get('mod')) {
+        if ('payment' !== Input::get('mod')) {
             return;
         }
 
-        $user = \BackendUser::getInstance();
+        $user = BackendUser::getInstance();
 
         // Return if user is admin
         if ($user->isAdmin) {
@@ -55,7 +64,7 @@ class Callback extends Permission
         }
 
         // Check current action
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'create':
             case 'select':
                 // Allow
@@ -64,10 +73,10 @@ class Callback extends Permission
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!\in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_payment', 'iso_payment_modules', 'iso_payment_modulep')
+                if (!\in_array(Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_payment', 'iso_payment_modules', 'iso_payment_modulep')
                 ) {
-                    $root[]                          = \Input::get('id');
+                    $root[]                          = Input::get('id');
                     $user->iso_payment_modules = $root;
                 }
             // No break;
@@ -76,26 +85,26 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' payment module ID "' . \Input::get('id') . '"');
+                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' payment module ID "' . Input::get('id') . '"');
                 }
                 break;
 
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $session = $this->Session->getData();
-                if ('deleteAll' === \Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep')) {
+                $session = Session::getInstance()->getData();
+                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_payment_modulep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
                 }
-                $this->Session->setData($session);
+                Session::getInstance()->setData($session);
                 break;
 
             default:
-                if (\strlen(\Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' payment modules');
+                if (\strlen(Input::get('act'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' payment modules');
                 }
                 break;
         }
@@ -105,12 +114,10 @@ class Callback extends Permission
     /**
      * Get allowed CC types and return them as array
      *
-     * @param \DataContainer $dc
-     *
      * @return array
      * @deprecated Deprecated since 2.2, to be removed in 3.0. Create your own DCA field instead.
      */
-    public function getAllowedCCTypes(\DataContainer $dc)
+    public function getAllowedCCTypes(DataContainer $dc)
     {
         $arrCCTypes = array();
 
@@ -167,7 +174,7 @@ class Callback extends Permission
      */
     public function copyPaymentModule($row, $href, $label, $title, $icon, $attributes)
     {
-        return (\BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess('create', 'iso_payment_modulep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('create', 'iso_payment_modulep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
 
@@ -185,7 +192,7 @@ class Callback extends Permission
      */
     public function deletePaymentModule($row, $href, $label, $title, $icon, $attributes)
     {
-        return (\BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess('delete', 'iso_payment_modulep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return (BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess('delete', 'iso_payment_modulep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
 
@@ -203,22 +210,22 @@ class Callback extends Permission
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (\strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
-            \Controller::redirect(\System::getReferer());
+        if (\strlen(Input::get('tid'))) {
+            $this->toggleVisibility(Input::get('tid'), Input::get('state') == 1);
+            Controller::redirect(System::getReferer());
         }
 
         if (!$row['enabled']) {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
-            return \Image::getHtml($icon) . ' ';
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
+            return Image::getHtml($icon) . ' ';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['enabled'] ? '' : 1);
 
-        return '<a href="' . \Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -231,8 +238,8 @@ class Callback extends Permission
     public function toggleVisibility($intId, $blnVisible)
     {
         // Check permissions to edit
-        \Input::setGet('id', $intId);
-        \Input::setGet('act', 'toggle');
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
         $this->checkPermission();
 
         // Check permissions to publish
@@ -246,15 +253,15 @@ class Callback extends Permission
         // Trigger the save_callback
         if (\is_array($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_payment']['fields']['enabled']['save_callback'] as $callback) {
-                $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
+                $blnVisible = System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_payment SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+        Database::getInstance()->prepare("UPDATE tl_iso_payment SET tstamp=". time() .", enabled='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
                                 ->execute($intId);
 
         $objVersions->create();
-        \System::log('A new version of record "tl_iso_payment.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_payment', $intId), __METHOD__, TL_GENERAL);
+        System::log('A new version of record "tl_iso_payment.id=' . $intId . '" has been created' . $this->getParentEntries('tl_iso_payment', $intId), __METHOD__, TL_GENERAL);
     }
 }

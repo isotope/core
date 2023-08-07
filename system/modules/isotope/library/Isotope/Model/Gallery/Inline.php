@@ -13,15 +13,6 @@ namespace Isotope\Model\Gallery;
 
 use Isotope\Template;
 
-
-/**
- * Class InlineGallery
- *
- * Provide methods to handle inline gallery.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Inline extends Standard
 {
 
@@ -48,7 +39,7 @@ class Inline extends Standard
         }
 
         // Add class "active" to the first file
-        $this->arrFiles[0]['class'] = trim($this->arrFiles[0]['class'] . ' active');
+        $this->arrFiles[0]['class'] = trim(($this->arrFiles[0]['class'] ?? '') . ' active');
 
         return parent::generateGallery($intSkip);
     }
@@ -60,8 +51,6 @@ class Inline extends Standard
      * @param string          $strType
      * @param array           $arrFile
      * @param bool            $blnWatermark
-     *
-     * @return string
      */
     protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {

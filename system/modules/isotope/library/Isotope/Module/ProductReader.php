@@ -11,11 +11,20 @@
 
 namespace Isotope\Module;
 
-use Haste\Http\Response\HtmlResponse;
+use Contao\Controller;
+use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\ResponseException;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
+use Contao\Database;
+use Contao\Environment;
+use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProductReader
@@ -54,10 +63,10 @@ class ProductReader extends Module
         // Return if no product has been specified
         if (Input::getAutoItem('product', false, true) == '') {
             if ($this->iso_display404Page) {
-                $this->generate404();
-            } else {
-                return '';
+                throw new PageNotFoundException();
             }
+
+            return '';
         }
 
         return parent::generate();
@@ -73,14 +82,14 @@ class ProductReader extends Module
         $jumpTo = $GLOBALS['objIsotopeListPage'] ?: $GLOBALS['objPage'];
 
         if ($jumpTo->iso_readerMode === 'none') {
-            $this->generate404();
+            throw new PageNotFoundException();
         }
 
         /** @var AbstractProduct $objProduct */
         $objProduct = Product::findAvailableByIdOrAlias(Input::getAutoItem('product'));
 
         if (null === $objProduct) {
-            $this->generate404();
+            throw new PageNotFoundException();
         }
 
         $arrConfig = array(
@@ -93,17 +102,19 @@ class ProductReader extends Module
             'jumpTo'      => $jumpTo,
         );
 
-        if (\Environment::get('isAjaxRequest')
-            && \Input::post('AJAX_MODULE') == $this->id
-            && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+        if (Environment::get('isAjaxRequest')
+            && Input::post('AJAX_MODULE') == $this->id
+            && Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
             && !$this->iso_disable_options
         ) {
             try {
-                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
-                $objResponse->send();
+                $content = $objProduct->generate($arrConfig);
+                $content = Controller::replaceInsertTags($content, false);
             } catch (\InvalidArgumentException $e) {
                 return;
             }
+
+            throw new ResponseException(new Response($content));
         }
 
         $this->addMetaTags($objProduct);
@@ -123,16 +134,37 @@ class ProductReader extends Module
      */
     protected function addMetaTags(Product $objProduct)
     {
-        global $objPage;
-
-        $descriptionFallback = ($objProduct->teaser ?: $objProduct->description);
-
-        $objPage->pageTitle   = $this->prepareMetaDescription($objProduct->meta_title ?: $objProduct->getName());
-        $objPage->description = $this->prepareMetaDescription($objProduct->meta_description ?: $descriptionFallback);
+        $pageTitle = $objProduct->meta_title ?: $objProduct->getName();
+        /** @noinspection NestedTernaryOperatorInspection */
+        $description = $objProduct->meta_description ?: ($objProduct->teaser ?: $objProduct->description);
 
         if ($objProduct->meta_keywords) {
             $GLOBALS['TL_KEYWORDS'] .= ($GLOBALS['TL_KEYWORDS'] != '' ? ', ' : '') . $objProduct->meta_keywords;
         }
+
+        // Support response context in Contao 4.13
+        if (System::getContainer()->has('contao.routing.response_context_accessor')) {
+            $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+            $htmlDecoder = System::getContainer()->get('contao.string.html_decoder');
+
+            if ($responseContext && $htmlDecoder && $responseContext->has(HtmlHeadBag::class)) {
+                /** @var HtmlHeadBag $htmlHeadBag */
+                $htmlHeadBag = $responseContext->get(HtmlHeadBag::class);
+
+                $htmlHeadBag->setTitle($htmlDecoder->inputEncodedToPlainText($pageTitle));
+
+                if ($description) {
+                    $htmlHeadBag->setMetaDescription($htmlDecoder->inputEncodedToPlainText($description));
+                }
+
+                return;
+            }
+        }
+
+        global $objPage;
+
+        $objPage->pageTitle = $this->prepareMetaDescription($pageTitle);
+        $objPage->description = $this->prepareMetaDescription($description);
     }
 
     /**
@@ -143,14 +175,14 @@ class ProductReader extends Module
     protected function addCanonicalProductUrls(Product $objProduct)
     {
         global $objPage;
-        $arrPageIds   = \Database::getInstance()->getChildRecords($objPage->rootId, \PageModel::getTable());
+        $arrPageIds   = Database::getInstance()->getChildRecords($objPage->rootId, PageModel::getTable());
         $arrPageIds[] = $objPage->rootId;
 
         // Find the categories in the current root
         $arrCategories = array_intersect($objProduct->getCategories(), $arrPageIds);
 
         foreach ($arrCategories as $intPage) {
-            if (($objJumpTo = \PageModel::findPublishedById($intPage)) !== null) {
+            if (($objJumpTo = PageModel::findPublishedById($intPage)) !== null) {
 
                 // Do not use the index page as canonical link
                 if ('index' === $objJumpTo->alias && \count($arrCategories) > 1) {
@@ -158,14 +190,23 @@ class ProductReader extends Module
                 }
 
                 $objJumpTo->loadDetails();
-                $strDomain = \Environment::get('base');
 
-                // Overwrite the domain
-                if ($objJumpTo->dns != '') {
-                    $strDomain = ($objJumpTo->useSSL ? 'https://' : 'http://') . $objJumpTo->dns . TL_PATH . '/';
+                $href = $objProduct->generateUrl($objJumpTo, true);
+
+                // Canonical links in Contao 4.13
+                if ($objJumpTo->enableCanonical && System::getContainer()->has('contao.routing.response_context_accessor')) {
+                    $responseContext = System::getContainer()->get('contao.routing.response_context_accessor')->getResponseContext();
+
+                    if ($responseContext && $responseContext->has(HtmlHeadBag::class)) {
+                        $responseContext
+                            ->get(HtmlHeadBag::class)
+                            ->setCanonicalUri($href)
+                        ;
+
+                        break;
+                    }
                 }
 
-                $href = $strDomain . $objProduct->generateUrl($objJumpTo);
                 $GLOBALS['TL_HEAD'][] = '<link rel="canonical" href="' . $href . '">';
 
                 break;
@@ -184,7 +225,7 @@ class ProductReader extends Module
      */
     protected function getCssId(Product $objProduct)
     {
-        $css = deserialize($objProduct->cssID, true);
+        $css = StringUtil::deserialize($objProduct->cssID, true);
 
         return $css[0] ? ' id="' . $css[0] . '"' : null;
     }
@@ -210,23 +251,11 @@ class ProductReader extends Module
             $classes[] = 'new';
         }
 
-        $arrCSS = deserialize($objProduct->cssID, true);
+        $arrCSS = StringUtil::deserialize($objProduct->cssID, true);
         if ('' !== (string) $arrCSS[1]) {
             $classes[] = (string) $arrCSS[1];
         }
 
         return implode(' ', $classes);
-    }
-
-    /**
-     * Generates a 404 page and stops page output.
-     */
-    private function generate404()
-    {
-        global $objPage;
-        /** @var \PageError404 $objHandler */
-        $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-        $objHandler->generate($objPage->id);
-        exit;
     }
 }

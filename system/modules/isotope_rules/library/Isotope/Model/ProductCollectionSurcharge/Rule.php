@@ -11,19 +11,17 @@
 
 namespace Isotope\Model\ProductCollectionSurcharge;
 
+use Contao\Database;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
 use Isotope\Isotope;
+use Isotope\Model\ProductCategory;
 use Isotope\Model\ProductCollectionSurcharge;
 use Isotope\Model\Rule as RuleModel;
 
 /**
- * Class Payment
- *
  * Implements payment surcharge in product collection
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectionSurcharge
 {
@@ -69,10 +67,10 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
         // Product or producttype restrictions
         if ($objRule->productRestrictions != '' && $objRule->productRestrictions != 'none') {
-            $arrLimit = \Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
+            $arrLimit = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$objRule->id} AND type='{$objRule->productRestrictions}'")->fetchEach('object_id');
 
             if ($objRule->productRestrictions == 'pages' && !empty($arrLimit)) {
-                $arrLimit = \Database::getInstance()->execute("SELECT pid FROM " . \Isotope\Model\ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
+                $arrLimit = Database::getInstance()->execute("SELECT pid FROM " . ProductCategory::getTable() . " WHERE page_id IN (" . implode(',', $arrLimit) . ")")->fetchEach('pid');
             }
 
             if ($objRule->quantityMode == 'cart_products' || $objRule->quantityMode == 'cart_items') {
@@ -133,25 +131,25 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                         break;
 
                     case 'lt':
-                        if (!($objProduct->{$objRule->attributeName} < $objRule->attributeValue)) {
+                        if ($objProduct->{$objRule->attributeName} >= $objRule->attributeValue) {
                             continue(2);
                         }
                         break;
 
                     case 'gt':
-                        if (!($objProduct->{$objRule->attributeName} > $objRule->attributeValue)) {
+                        if ($objProduct->{$objRule->attributeName} <= $objRule->attributeValue) {
                             continue(2);
                         }
                         break;
 
                     case 'elt':
-                        if (!($objProduct->{$objRule->attributeName} <= $objRule->attributeValue)) {
+                        if ($objProduct->{$objRule->attributeName} > $objRule->attributeValue) {
                             continue(2);
                         }
                         break;
 
                     case 'egt':
-                        if (!($objProduct->{$objRule->attributeName} >= $objRule->attributeValue)) {
+                        if ($objProduct->{$objRule->attributeName} < $objRule->attributeValue) {
                             continue(2);
                         }
                         break;
@@ -193,14 +191,14 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             // Apply To
             switch ($objRule->applyTo) {
                 case 'products':
-                    $fltPrice = $blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount;
+                    $fltPrice = (float) ($blnPercentage ? ($objItem->getTotalPrice() / 100 * $fltDiscount) : $objRule->discount);
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
                     break;
 
                 case 'items':
-                    $fltPrice = ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount) * $objItem->quantity;
+                    $fltPrice = ((float) ($blnPercentage ? ($objItem->getPrice() / 100 * $fltDiscount) : $objRule->discount)) * $objItem->quantity;
                     $fltPrice = $fltPrice > 0 ? (floor($fltPrice * 100) / 100) : (ceil($fltPrice * 100) / 100);
                     $objSurcharge->total_price += $fltPrice;
                     $objSurcharge->setAmountForCollectionItem($fltPrice, $objItem);
@@ -225,7 +223,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
 
         if ($objRule->applyTo == 'subtotal' && $blnMatch) {
             // discount total! not related to tax subtraction
-            $fltPrice = $blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount;
+            $fltPrice = (float) ($blnPercentage ? ($objSurcharge->total_price / 100 * $fltDiscount) : $objRule->discount);
             $objSurcharge->total_price = $fltPrice > 0 ? (floor(round($fltPrice * 100, 4)) / 100) : (ceil(round($fltPrice * 100, 4)) / 100);
             $objSurcharge->before_tax = ($objRule->tax_class != 0 ? true : false);
             $objSurcharge->tax_class = ($objRule->tax_class > 0 ? $objRule->tax_class : 0);

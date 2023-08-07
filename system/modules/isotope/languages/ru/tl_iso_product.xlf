@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_iso_product.id.0">
@@ -115,6 +115,12 @@
       </trans-unit>
       <trans-unit id="tl_iso_product.shipping_exempt.1">
         <source>Check if item is not a shipped item (such as downloadable products).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.0">
+        <source>Pickup only</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product.shipping_pickup.1">
+        <source>Check if item can only be picked up (such as fresh or oversized products).</source>
       </trans-unit>
       <trans-unit id="tl_iso_product.baseprice.0">
         <source>Base price amount</source>

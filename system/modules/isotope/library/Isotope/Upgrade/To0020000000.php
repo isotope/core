@@ -11,8 +11,12 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\BackendTemplate;
+use Contao\CoreBundle\Exception\ResponseException;
+use Contao\Database;
+use Contao\System;
 
-class To0020000000 extends \System
+class To0020000000 extends System
 {
 
     public function run($blnInstalled)
@@ -48,12 +52,12 @@ class To0020000000 extends \System
             'tl_iso_mail',
             'tl_iso_mail_content'
         ) as $strOldTable) {
-            if (\Database::getInstance()->tableExists($strOldTable)) {
+            if (Database::getInstance()->tableExists($strOldTable)) {
                 $this->warnForOld();
             }
         }
 
-        if (\in_array('isotope_multilingual', \Config::getInstance()->getActiveModules())) {
+        if (\array_key_exists('isotope_multilingual', System::getContainer()->getParameter('kernel.bundles'))) {
             $this->warnForOld();
         }
     }
@@ -64,9 +68,8 @@ class To0020000000 extends \System
      */
     protected function warnForOld()
     {
-        $objTemplate = new \BackendTemplate('be_iso_old');
+        $objTemplate = new BackendTemplate('be_iso_old');
 
-        $objTemplate->output();
-        exit;
+        throw new ResponseException($objTemplate->getResponse());
     }
 }

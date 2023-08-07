@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_payment.xlf" source-language="en" target-language="cs">
     <body>
       <trans-unit id="tl_iso_payment.name.0">
@@ -492,6 +492,30 @@
       <trans-unit id="tl_iso_payment.quickpay_paymentMethods.1">
         <source>Enter a configuration string to limit the payment methods. &lt;a href=&quot;http://tech.quickpay.net/appendixes/payment-methods/&quot; target=&quot;_blank&quot;&gt;More Information&lt;/a&gt;.</source>
       </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.0">
+        <source>Entity/Channel ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_entity_id.1">
+        <source>Please enter your entity or channel ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.0">
+        <source>Authentication Scheme</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.1">
+        <source>Select the authentication scheme of your Open Payment provider.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.user">
+        <source>User ID &amp; Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_auth.token">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.0">
+        <source>Authentication Token</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.opp_token.1">
+        <source>Please enter your authentication token.</source>
+      </trans-unit>
       <trans-unit id="tl_iso_payment.opp_user_id.0">
         <source>User ID</source>
       </trans-unit>
@@ -503,12 +527,6 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_password.1">
         <source>Please enter your user password.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_entity_id.0">
-        <source>Entity/Channel ID</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_payment.opp_entity_id.1">
-        <source>Please enter your entity or channel ID</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.opp_brands.0">
         <source>Payment Brands</source>
@@ -569,6 +587,30 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.mpay24_password.1">
         <source>Please enter your SOAP password.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.0">
+        <source>SwissBilling ID</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_id.1">
+        <source>Please enter your SwissBilling ID.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.0">
+        <source>Password</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_pwd.1">
+        <source>Please enter your SwissBilling password.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.0">
+        <source>Enable PreScreening</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_prescreening.1">
+        <source>Only show payment option if allowed by SwissBilling. Please check with SwissBilling before activating this option.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.0">
+        <source>Enable B2B support</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.swissbilling_b2b.1">
+        <source>Enable B2B support for SwissBilling payments. Please check with SwissBilling before activating this option.</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.groups.0">
         <source>Member groups</source>
@@ -659,6 +701,9 @@
       </trans-unit>
       <trans-unit id="tl_iso_payment.onlyAvailable">
         <source>Enable if only these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_payment.notAvailable">
+        <source>Disable if one of these product types are in cart</source>
       </trans-unit>
       <trans-unit id="tl_iso_payment.allAvailable">
         <source>Enable if all these product types are in cart</source>

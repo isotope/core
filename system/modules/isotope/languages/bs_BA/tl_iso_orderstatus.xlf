@@ -1,0 +1,107 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_orderstatus.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_iso_orderstatus.name.0">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name.1">
+        <source>Please enter a name for this status.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.0">
+        <source>Color</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.color.1">
+        <source>Here you can set a custom color for this status. The color will appear on the order list in back end.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.0">
+        <source>Order is paid</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.paid.1">
+        <source>Assume the order is paid when it has this status. This will for example allow files to be downloaded.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.0">
+        <source>Show on welcome screen</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.welcomescreen.1">
+        <source>Show number of orders with this status on the backend welcome screen.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.0">
+        <source>Notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.notification.1">
+        <source>Please select a notification.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.0">
+        <source>Saferpay transaction</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.1">
+        <source>Please select an option if you want to automatically update the payment gateway. This only applies if the client has used &quot;Saferpay&quot; or &quot;Billpay for Saferpay&quot; payment method.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.capture">
+        <source>Capture payment</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.saferpay_status.cancel">
+        <source>Suggest manual payment cancellation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.0">
+        <source>New order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.new.1">
+        <source>Create a new order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.0">
+        <source>Edit order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.edit.1">
+        <source>Edit order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.0">
+        <source>Duplicate order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.copy.1">
+        <source>Duplicate order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.0">
+        <source>Move order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.cut.1">
+        <source>Move order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.0">
+        <source>Delete order status</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.delete.1">
+        <source>Delete order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.0">
+        <source>Order status details</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.show.1">
+        <source>Show details of order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.0">
+        <source>Paste after</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteafter.1">
+        <source>Paste after order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.0">
+        <source>Paste into</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.pasteinto.1">
+        <source>Paste into order status ID %s</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.name_legend">
+        <source>Name</source>
+        <target>Naziv</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.email_legend">
+        <source>E-Mail Notification</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_orderstatus.payment_legend">
+        <source>Payment Gateways</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

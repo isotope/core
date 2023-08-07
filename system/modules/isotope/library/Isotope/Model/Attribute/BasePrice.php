@@ -11,22 +11,21 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Database\Result;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement base price calculation
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class BasePrice extends Attribute
 {
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(Result $objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception
@@ -42,7 +41,7 @@ class BasePrice extends Attribute
     {
         parent::saveToDCA($arrData);
 
-        $arrData['fields'][$this->field_name]['sql'] = "varchar(255) NOT NULL default ''";
+        $arrData['fields'][$this->field_name]['sql'] = "text NULL";
     }
 
     /**
@@ -50,7 +49,7 @@ class BasePrice extends Attribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        $arrData = deserialize($objProduct->{$this->field_name});
+        $arrData = StringUtil::deserialize($objProduct->{$this->field_name});
 
         if (\is_array($arrData) && $arrData['unit'] > 0 && $arrData['value'] != '') {
             $objBasePrice = \Isotope\Model\BasePrice::findByPk((int) $arrData['unit']);

@@ -12,7 +12,7 @@
 /**
  * Backend modules
  */
-if (!\is_array($GLOBALS['BE_MOD']['isotope']))
+if (!\is_array($GLOBALS['BE_MOD']['isotope'] ?? null))
 {
     array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
@@ -22,7 +22,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_products' => array
     (
         'tables'            => array(\Isotope\Model\Product::getTable(), \Isotope\Model\Group::getTable(), \Isotope\Model\ProductCategory::getTable(), \Isotope\Model\Download::getTable(), \Isotope\Model\RelatedProduct::getTable(), \Isotope\Model\ProductPrice::getTable(), 'tl_iso_product_pricetier', \Isotope\Model\AttributeOption::getTable()),
-        'icon'              => 'system/modules/isotope/assets/images/store-open.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
         'generate'          => array('Isotope\Backend\Product\VariantGenerator', 'generate'),
         'import'            => array('Isotope\Backend\Product\AssetImport', 'generate'),
@@ -31,7 +30,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     'iso_orders' => array
     (
         'tables'            => array(\Isotope\Model\ProductCollection::getTable(), \Isotope\Model\ProductCollectionItem::getTable(), \Isotope\Model\ProductCollectionSurcharge::getTable(), \Isotope\Model\ProductCollectionDownload::getTable(), \Isotope\Model\Address::getTable()),
-        'icon'              => 'system/modules/isotope/assets/images/shopping-basket.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
         'print_document'    => array('Isotope\Backend\ProductCollection\Callback', 'printDocument'),
         'payment'           => array('Isotope\Backend\ProductCollection\Callback', 'paymentInterface'),
@@ -41,7 +39,6 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
     (
         'callback'          => 'Isotope\BackendModule\Setup',
         'tables'            => array(),
-        'icon'              => 'system/modules/isotope/assets/images/application-monitor.png',
         'javascript'        => 'system/modules/isotope/assets/js/backend.js',
     ),
 ));
@@ -272,8 +269,9 @@ if (class_exists('Petschko\DHL\BusinessShipment')) {
 \Isotope\Model\Attribute::registerModelType('downloads', 'Isotope\Model\Attribute\Downloads');
 \Isotope\Model\Attribute::registerModelType('upload', 'Isotope\Model\Attribute\Upload');
 \Isotope\Model\Attribute::registerModelType('media', 'Isotope\Model\Attribute\Media');
+\Isotope\Model\Attribute::registerModelType('quantitySurcharge', 'Isotope\Model\Attribute\QuantitySurcharge');
 
-if (\in_array('fineuploader', \ModuleLoader::getActive(), true)) {
+if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) {
     \Isotope\Model\Attribute::registerModelType('fineUploader', 'Isotope\Model\Attribute\FineUploader');
 }
 
@@ -395,6 +393,7 @@ $GLOBALS['ISO_CHECKOUTSTEP'] = array
 $GLOBALS['ISO_INTEGRITY'] = array
 (
     '\Isotope\IntegrityCheck\PriceTable',
+    '\Isotope\IntegrityCheck\VariantPrices',
     '\Isotope\IntegrityCheck\VariantOrphans',
     '\Isotope\IntegrityCheck\AttributeOptionOrphans',
     '\Isotope\IntegrityCheck\MultilingualAttributes',
@@ -453,7 +452,7 @@ $GLOBALS['ISO_NUM']["10'000.00"]    = array(2, '.', "'");
 /**
  * Hooks
  */
-if (\Config::getInstance()->isComplete()) {
+if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['loadDataContainer'][]             = array('Isotope\Backend\Product\DcaManager', 'initialize');
     $GLOBALS['TL_HOOKS']['getAttributesFromDca'][]          = array('Isotope\Backend\Product\DcaManager', 'addOptionsFromAttribute');
     $GLOBALS['TL_HOOKS']['addCustomRegexp'][]               = array('Isotope\Isotope', 'validateRegexp');
@@ -474,13 +473,13 @@ if (\Config::getInstance()->isComplete()) {
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\Analytics', 'trackOrder');
     $GLOBALS['ISO_HOOKS']['postCheckout'][]                 = array('Isotope\EventListener\PostCheckoutUploads', 'onPostCheckout');
     $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\Frontend', 'addOptionsPrice');
+    $GLOBALS['ISO_HOOKS']['calculatePrice'][]               = array('Isotope\EventListener\CalculatePrice\QuantitySurchagePriceListener', '__invoke');
     $GLOBALS['ISO_HOOKS']['orderConditions'][]              = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addOrderCondition');
     $GLOBALS['ISO_HOOKS']['generateDocumentTemplate'][]     = array('Isotope\Model\Payment\BillpayWithSaferpay', 'addToDocumentTemplate');
     $GLOBALS['ISO_HOOKS']['initializePostsale'][]           = array('Isotope\Frontend', 'setPostsaleModuleSettings');
 
-    // changelanguage v2 + v3
-    $GLOBALS['TL_HOOKS']['translateUrlParameters'][]        = array('Isotope\EventListener\ChangeLanguageListener', 'onTranslateUrlParameters');
-    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', 'onChangelanguageNavigation');
+    // changelanguage
+    $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
 
     // Set module and module id for payment and/or shipping modules
     if ('FE' === TL_MODE) {
@@ -513,10 +512,6 @@ if (\Config::getInstance()->isComplete()) {
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldCarts');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'deleteOldOrders');
 $GLOBALS['TL_CRON']['daily'][] = array('Isotope\Automator', 'convertCurrencies');
-
-if (VERSION >= 4.0) {
-    $GLOBALS['TL_CRON']['daily'][] = array('Contao\Automator', 'rotateLogs');
-}
 
 
 /**

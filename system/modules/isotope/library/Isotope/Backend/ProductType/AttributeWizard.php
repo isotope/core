@@ -11,13 +11,19 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\DataContainer;
+use Contao\StringUtil;
+use Contao\System;
+use Contao\Widget;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Model\Attribute;
 use Isotope\Model\Product;
 
 
-class AttributeWizard extends \Backend
+class AttributeWizard extends Backend
 {
 
     /**
@@ -29,7 +35,7 @@ class AttributeWizard extends \Backend
      */
     public function getColumns($objWidget)
     {
-        \Controller::loadDataContainer(Product::getTable());
+        Controller::loadDataContainer(Product::getTable());
 
         $arrValues   = $objWidget->value;
         $blnVariants = $this->isVariants($objWidget->name);
@@ -47,7 +53,7 @@ class AttributeWizard extends \Backend
                 }
 
                 /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']];
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute['name']] ?? null;
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $objWidget->addDataToFieldAtIndex($i, 'mandatory', array('eval' => array('hideBody' => true)));
                 }
@@ -93,7 +99,7 @@ class AttributeWizard extends \Backend
     /**
      * For each call, return the name of the next attribute in the wizard (for input_field_callback)
      *
-     * @param \Widget|object $objWidget
+     * @param Widget|object $objWidget
      *
      * @return string
      */
@@ -103,18 +109,22 @@ class AttributeWizard extends \Backend
         static $strWidget;
         static $i = 0;
 
-        if ($objWidget->name !== $strWidget) {
+        if ($objWidget->name !== $strWidget || empty($arrValues)) {
             $strWidget = $objWidget->name;
             $arrValues = $objWidget->value;
             $i         = 0;
         }
 
         $arrField = array_shift($arrValues);
+        if (null === $arrField) {
+            return '';
+        }
+
         $strName  = $arrField['name'];
         $style = '';
 
         /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
-        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName];
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$strName] ?? null;
 
         if (null !== $objAttribute && $objAttribute->isVariantOption()) {
             $style = ';font-style:italic';
@@ -142,8 +152,8 @@ class AttributeWizard extends \Backend
      */
     public function getLegends($objWidget)
     {
-        \Controller::loadDataContainer(Attribute::getTable());
-        \System::loadLanguageFile(Product::getTable());
+        Controller::loadDataContainer(Attribute::getTable());
+        System::loadLanguageFile(Product::getTable());
 
         $arrLegends = $GLOBALS['TL_DCA'][Attribute::getTable()]['fields']['legend']['options'];
         $arrLegends = array_intersect_key($GLOBALS['TL_LANG'][Product::getTable()], array_flip($arrLegends));
@@ -165,17 +175,17 @@ class AttributeWizard extends \Backend
      * Generate list of fields and add missing ones from DCA
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return array
      */
     public function load($varValue, $dc)
     {
-        \Controller::loadDataContainer('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
 
         $arrDCA      = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
         $arrFields   = array();
-        $arrValues   = deserialize($varValue);
+        $arrValues   = StringUtil::deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
         if ($blnVariants) {
@@ -196,14 +206,14 @@ class AttributeWizard extends \Backend
                 || !isset($arrDCA[$strName])
                 || $arrDCA[$strName]['attributes']['legend'] == ''
                 || $this->isExcluded($strName, $blnVariants)
-                || ($blnVariants && $arrDCA[$strName]['attributes']['inherit'])
-                || (!$blnVariants && $arrDCA[$strName]['attributes']['variant_option'])
+                || ($blnVariants && ($arrDCA[$strName]['attributes']['inherit'] ?? false))
+                || (!$blnVariants && ($arrDCA[$strName]['attributes']['variant_option'] ?? false))
             ) {
                 continue;
             }
 
-            if ($arrField['legend'] == '') {
-                $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'];
+            if (empty($arrField['legend'])) {
+                $arrField['legend'] = $arrDCA[$arrField['name']]['attributes']['legend'] ?? '';
             }
 
             $arrFields[$arrField['name']] = $arrField;
@@ -211,11 +221,11 @@ class AttributeWizard extends \Backend
 
         foreach (array_diff_key($arrDCA, $arrFields) as $strName => $arrField) {
 
-            if (!\is_array($arrField['attributes'])
-                || $arrField['attributes']['legend'] == ''
+            if (!\is_array($arrField['attributes'] ?? null)
+                || ($arrField['attributes']['legend'] ?? '') == ''
                 || $this->isExcluded($strName, $blnVariants)
-                || ($blnVariants && $arrField['attributes']['inherit'])
-                || (!$blnVariants && $arrField['attributes']['variant_option'])
+                || ($blnVariants && ($arrField['attributes']['inherit'] ?? false))
+                || (!$blnVariants && ($arrField['attributes']['variant_option'] ?? false))
             ) {
                 continue;
             }
@@ -241,7 +251,7 @@ class AttributeWizard extends \Backend
     public function save($varValue, $dc)
     {
         $arrLegends  = array();
-        $arrFields   = deserialize($varValue);
+        $arrFields   = StringUtil::deserialize($varValue);
         $blnVariants = $this->isVariants($dc->field);
 
         if (empty($arrFields) || !\is_array($arrFields)) {
@@ -255,11 +265,11 @@ class AttributeWizard extends \Backend
         }
 
         foreach ($arrFields as $k => $arrField) {
-            if (\in_array($arrField['name'], $arrFixed, true)) {
+            if (\in_array($arrField['name'] ?? null, $arrFixed, true)) {
                 $arrFields[$k]['enabled'] = '1';
             }
 
-            if (!\in_array($arrField['legend'], $arrLegends, true)) {
+            if (!\in_array($arrField['legend'] ?? null, $arrLegends, true)) {
                 $arrLegends[] = $arrField['legend'];
             }
         }
@@ -267,16 +277,20 @@ class AttributeWizard extends \Backend
         uksort($arrFields, function ($a, $b) use ($arrFields, $arrLegends) {
             if ($arrFields[$a]['enabled'] && !$arrFields[$b]['enabled']) {
                 return -1;
-            } elseif ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {
-                return 1;
-            } elseif ($arrFields[$a]['legend'] === $arrFields[$b]['legend']) {
-                return ($a > $b) ? +1 : -1;
-            } else {
-                $posA = array_search($arrFields[$a]['legend'], $arrLegends, true);
-                $posB = array_search($arrFields[$b]['legend'], $arrLegends, true);
-
-                return ($posA > $posB) ? +1 : -1;
             }
+
+            if ($arrFields[$b]['enabled'] && !$arrFields[$a]['enabled']) {
+                return 1;
+            }
+
+            if ($arrFields[$a]['legend'] === $arrFields[$b]['legend']) {
+                return ($a > $b) ? +1 : -1;
+            }
+
+            $posA = array_search($arrFields[$a]['legend'], $arrLegends, true);
+            $posB = array_search($arrFields[$b]['legend'], $arrLegends, true);
+
+            return ($posA > $posB) ? +1 : -1;
         });
 
         $arrValues = array();

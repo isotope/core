@@ -11,7 +11,12 @@
 
 namespace Isotope\Backend\Module;
 
-class CumulativeFields extends \Backend
+use Contao\Backend;
+use Contao\Controller;
+use Contao\StringUtil;
+use Contao\System;
+
+class CumulativeFields extends Backend
 {
     /**
      * Gets the multi column wizard configuration for the cumulative filter fields.
@@ -57,13 +62,13 @@ class CumulativeFields extends \Backend
      */
     public function getAttributes()
     {
-        \Controller::loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
+        System::loadLanguageFile('tl_iso_product');
 
         $arrAttributes = [];
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_filter']) {
+            if ($arrData['attributes']['fe_filter'] ?? false) {
                 $arrAttributes[$field] = sprintf(
                     '%s (%s)',
                     (\strlen($arrData['label'][0]) ? $arrData['label'][0] : $field),
@@ -87,7 +92,7 @@ class CumulativeFields extends \Backend
      */
     public function validateConfiguration($value)
     {
-        $value = deserialize($value);
+        $value = StringUtil::deserialize($value);
 
         if (!\is_array($value)) {
             return '';

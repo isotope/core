@@ -11,8 +11,12 @@
 
 namespace Isotope\Model\Document;
 
+use Contao\Controller;
 use Contao\Environment;
 use Contao\File;
+use Contao\PageModel;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeDocument;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Document;
@@ -87,7 +91,7 @@ class Standard extends Document implements IsotopeDocument
         define('PDF_PAGE_ORIENTATION', 'P');
         define('PDF_CREATOR', 'Contao Open Source CMS');
         define('PDF_AUTHOR', Environment::get('url'));
-        define('PDF_HEADER_TITLE', $GLOBALS['TL_CONFIG']['websiteTitle']);
+        define('PDF_HEADER_TITLE', $GLOBALS['TL_CONFIG']['websiteTitle'] ?? '');
         define('PDF_HEADER_STRING', '');
         define('PDF_HEADER_LOGO', '');
         define('PDF_HEADER_LOGO_WIDTH', 30);
@@ -118,7 +122,7 @@ class Standard extends Document implements IsotopeDocument
         // Set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(PDF_AUTHOR);
-        $pdf->SetTitle(\StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens));
+        $pdf->SetTitle(StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens));
 
         // Prevent font subsetting (huge speed improvement)
         $pdf->setFontSubsetting(false);
@@ -163,19 +167,19 @@ class Standard extends Document implements IsotopeDocument
      */
     protected function generateTemplate(IsotopeProductCollection $objCollection, array $arrTokens)
     {
-        $objPage = \PageModel::findWithDetails($objCollection->page_id);
+        $objPage = PageModel::findWithDetails($objCollection->pageId);
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template($this->documentTpl);
         $objTemplate->setData($this->arrData);
 
-        $objTemplate->title         = \StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
+        $objTemplate->title         = StringUtil::parseSimpleTokens($this->documentTitle, $arrTokens);
         $objTemplate->collection    = $objCollection;
         $objTemplate->config        = $objCollection->getConfig();
         $objTemplate->page          = $objPage;
-        $objTemplate->dateFormat    = $objPage->dateFormat ?: $GLOBALS['TL_CONFIG']['dateFormat'];
-        $objTemplate->timeFormat    = $objPage->timeFormat ?: $GLOBALS['TL_CONFIG']['timeFormat'];
-        $objTemplate->datimFormat   = $objPage->datimFormat ?: $GLOBALS['TL_CONFIG']['datimFormat'];
+        $objTemplate->dateFormat    = $objPage->dateFormat ?? $GLOBALS['TL_CONFIG']['dateFormat'];
+        $objTemplate->timeFormat    = $objPage->timeFormat ?? $GLOBALS['TL_CONFIG']['timeFormat'];
+        $objTemplate->datimFormat   = $objPage->datimFormat ?? $GLOBALS['TL_CONFIG']['datimFormat'];
 
         // Render the collection
         $objCollectionTemplate = new Template($this->collectionTpl);
@@ -193,14 +197,14 @@ class Standard extends Document implements IsotopeDocument
         // !HOOK: customize the document template
         if (isset($GLOBALS['ISO_HOOKS']['generateDocumentTemplate']) && \is_array($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['generateDocumentTemplate'] as $callback) {
-                \System::importStatic($callback[0])->{$callback[1]}($objTemplate, $objCollection, $this);
+                System::importStatic($callback[0])->{$callback[1]}($objTemplate, $objCollection, $this);
             }
         }
 
         // Generate template and fix PDF issues, see Contao's ModuleArticle
-        $strBuffer = \Controller::replaceInsertTags($objTemplate->parse(), false);
+        $strBuffer = Controller::replaceInsertTags($objTemplate->parse(), false);
         $strBuffer = html_entity_decode($strBuffer, ENT_QUOTES, $GLOBALS['TL_CONFIG']['characterSet']);
-        $strBuffer = \Controller::convertRelativeUrls($strBuffer, '', true);
+        $strBuffer = Controller::convertRelativeUrls($strBuffer, '', true);
 
         // Remove form elements and JavaScript links
         $arrSearch = array
@@ -271,11 +275,14 @@ class Standard extends Document implements IsotopeDocument
     {
         global $objPage;
 
-        if (!\is_object($objPage) && $objCollection->pageId > 0) {
-            $objPage = \PageModel::findWithDetails($objCollection->pageId);
+        if (
+            !\is_object($objPage)
+            && $objCollection->pageId > 0
+            && ($objPage = PageModel::findWithDetails($objCollection->pageId))
+        ) {
             $objPage = \Isotope\Frontend::loadPageConfig($objPage);
 
-            \System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE'], true);
+            System::loadLanguageFile('default', $GLOBALS['TL_LANGUAGE'], true);
         }
     }
 }

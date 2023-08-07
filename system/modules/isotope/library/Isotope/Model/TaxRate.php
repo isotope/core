@@ -11,6 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\FrontendUser;
+use Contao\Model;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Isotope;
@@ -37,7 +41,7 @@ use Isotope\Translation;
  * @property bool   $protected
  * @property array  $groups
  */
-class TaxRate extends \Model
+class TaxRate extends Model
 {
 
     /**
@@ -74,9 +78,9 @@ class TaxRate extends \Model
 
         // Tax rate is protected and member logged in, check member groups
         if ($this->protected && FE_USER_LOGGED_IN === true) {
-            $groups = deserialize($this->groups);
+            $groups = StringUtil::deserialize($this->groups);
 
-            if (!\is_array($groups) || empty($groups) || !\count(array_intersect($groups, \FrontendUser::getInstance()->groups))) {
+            if (!\is_array($groups) || empty($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {
                 return false;
             }
         }
@@ -84,7 +88,7 @@ class TaxRate extends \Model
         // !HOOK: use tax rate
         if (isset($GLOBALS['ISO_HOOKS']['useTaxRate']) && \is_array($GLOBALS['ISO_HOOKS']['useTaxRate'])) {
             foreach ($GLOBALS['ISO_HOOKS']['useTaxRate'] as $callback) {
-                $varValue = \System::importStatic($callback[0])->{$callback[1]}($this, $fltPrice, $arrAddresses);
+                $varValue = System::importStatic($callback[0])->{$callback[1]}($this, $fltPrice, $arrAddresses);
 
                 if ($varValue !== true) {
                     return false;
@@ -92,18 +96,18 @@ class TaxRate extends \Model
             }
         }
 
-        $arrAddress = deserialize($this->address);
+        $arrAddress = StringUtil::deserialize($this->address);
         if (!empty($arrAddress) && \is_array($arrAddress)) {
             foreach ($arrAddresses as $name => $objAddress) {
                 if (!\in_array($name, $arrAddress)) {
                     continue;
                 }
 
-                if ($this->countries != '' && !\in_array($objAddress->country, trimsplit(',', $this->countries))) {
+                if ($this->countries != '' && !\in_array($objAddress->country, StringUtil::trimsplit(',', $this->countries))) {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, trimsplit(',', $this->subdivisions))) {
+                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, StringUtil::trimsplit(',', $this->subdivisions))) {
                     continue;
                 }
 
@@ -116,7 +120,7 @@ class TaxRate extends \Model
                     }
                 }
 
-                $arrPrice = deserialize($this->amount);
+                $arrPrice = StringUtil::deserialize($this->amount);
 
                 if (\is_array($arrPrice) && !empty($arrPrice) && \strlen($arrPrice[0])) {
                     if (\strlen($arrPrice[1])) {
@@ -131,7 +135,7 @@ class TaxRate extends \Model
                 }
 
                 if ($this->exemptOnValidVAT) {
-                    $validators = deserialize(Isotope::getConfig()->vatNoValidators);
+                    $validators = StringUtil::deserialize(Isotope::getConfig()->vatNoValidators);
                     if (!empty($validators) && \is_array($validators)) {
                         foreach ($validators as $type) {
 
@@ -164,7 +168,7 @@ class TaxRate extends \Model
      */
     public function isPercentage()
     {
-        $arrTaxRate = deserialize($this->rate, true);
+        $arrTaxRate = StringUtil::deserialize($this->rate, true);
 
         return ('%' === $arrTaxRate['unit']);
     }
@@ -184,7 +188,7 @@ class TaxRate extends \Model
      */
     public function getAmount()
     {
-        $arrTaxRate = deserialize($this->rate, true);
+        $arrTaxRate = StringUtil::deserialize($this->rate, true);
 
         return (float) $arrTaxRate['value'];
     }

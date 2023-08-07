@@ -107,6 +107,12 @@
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
       </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+      </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>
       </trans-unit>

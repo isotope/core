@@ -11,6 +11,8 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Contao\FrontendUser;
+use Contao\PageModel;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection;
 
@@ -35,20 +37,20 @@ class Favorites extends ProductCollection
             return null;
         }
 
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
-        /** @var \PageModel|\stdClass $rootPage */
-        $rootPage = \PageModel::findByPk($objPage->rootId);
+        /** @var PageModel|\stdClass $rootPage */
+        $rootPage = PageModel::findByPk($objPage->rootId);
         $storeId  = (int) $rootPage->iso_store_id;
 
         $collection = static::findOneBy(
             array('tl_iso_product_collection.member=?', 'store_id=?'),
-            array(\FrontendUser::getInstance()->id, $storeId)
+            array(FrontendUser::getInstance()->id, $storeId)
         );
 
         // Create new collection
@@ -57,7 +59,7 @@ class Favorites extends ProductCollection
 
             // Can't call the individual rows here, it would trigger markModified and a save()
             $collection->setRow(array_merge($collection->row(), array(
-                'member'    => \FrontendUser::getInstance()->id,
+                'member'    => FrontendUser::getInstance()->id,
                 'config_id' => Isotope::getConfig()->id,
                 'store_id'  => $storeId,
             )));

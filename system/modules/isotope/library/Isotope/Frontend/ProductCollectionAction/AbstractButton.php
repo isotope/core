@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Input;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Template;
 
@@ -44,6 +45,6 @@ abstract class AbstractButton implements ProductCollectionActionInterface
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {
-        return '' !== (string) \Input::post('button_' . $this->getName());
+        return '' !== (string) Input::post('button_' . $this->getName());
     }
 }

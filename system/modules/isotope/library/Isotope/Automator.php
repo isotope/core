@@ -11,12 +11,15 @@
 
 namespace Isotope;
 
+use Contao\Controller;
+use Contao\Request;
+use Contao\System;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 use Isotope\Model\ProductCollection\Cart;
 use Isotope\Model\ProductCollection\Order;
 
-class Automator extends \Controller
+class Automator extends Controller
 {
     /**
      * Make the constructor public.
@@ -38,7 +41,7 @@ class Automator extends \Controller
         );
 
         if (($intPurged = $this->deleteOldCollections($objCarts)) > 0) {
-            \System::log('Deleted ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
+            System::log('Deleted ' . $intPurged . ' old guest carts', __METHOD__, TL_CRON);
         }
     }
 
@@ -59,7 +62,7 @@ class Automator extends \Controller
         );
 
         if (($intPurged = $this->deleteOldCollections($objOrders)) > 0) {
-            \System::log('Deleted ' . $intPurged . ' incomplete orders', __METHOD__, TL_CRON);
+            System::log('Deleted ' . $intPurged . ' incomplete orders', __METHOD__, TL_CRON);
         }
     }
 
@@ -87,15 +90,16 @@ class Automator extends \Controller
 
         foreach ($configs as $config) {
             switch ($config->currencyProvider) {
-                case 'ecb.int':
+                case 'ecb_int':
+                case 'ecb.int': // Backwards compatibility
                     $fltCourse       = ('EUR' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('EUR' === $config->currencyOrigin) ? 1 : 0;
 
-                    $objRequest = new \Request();
+                    $objRequest = new Request();
                     $objRequest->send('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
 
                     if ($objRequest->hasError()) {
-                        \System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        System::log('Error retrieving data from European Central Bank (ecb.int): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -116,7 +120,7 @@ class Automator extends \Controller
 
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin) {
-                        \System::log('Could not find currency to convert in European Central Bank (ecb.int).', __METHOD__, TL_ERROR);
+                        System::log('Could not find currency to convert in European Central Bank (ecb.int).', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -125,15 +129,16 @@ class Automator extends \Controller
                     $config->save();
                     break;
 
-                case 'admin.ch':
+                case 'admin_ch':
+                case 'admin.ch': // Backwards compatibility
                     $fltCourse       = ('CHF' === $config->currency) ? 1 : 0;
                     $fltCourseOrigin = ('CHF' === $config->currencyOrigin) ? 1 : 0;
 
-                    $objRequest = new \Request();
+                    $objRequest = new Request();
                     $objRequest->send('http://www.afd.admin.ch/publicdb/newdb/mwst_kurse/wechselkurse.php');
 
                     if ($objRequest->hasError()) {
-                        \System::log('Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
+                        System::log('Error retrieving data from Swiss Federal Department of Finance (admin.ch): ' . $objRequest->error . ' (Code ' . $objRequest->code . ')', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -152,7 +157,7 @@ class Automator extends \Controller
 
                     // Log if one of the currencies is not available
                     if (!$fltCourse || !$fltCourseOrigin) {
-                        \System::log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', __METHOD__, TL_ERROR);
+                        System::log('Could not find currency to convert in Swiss Federal Department of Finance (admin.ch).', __METHOD__, TL_ERROR);
 
                         return;
                     }
@@ -167,7 +172,7 @@ class Automator extends \Controller
                         && \is_array($GLOBALS['ISO_HOOKS']['convertCurrency'])
                     ) {
                         foreach ($GLOBALS['ISO_HOOKS']['convertCurrency'] as $callback) {
-                            \System::importStatic($callback[0])->{$callback[1]}($config);
+                            System::importStatic($callback[0])->{$callback[1]}($config);
                         }
                     }
             }

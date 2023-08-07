@@ -11,16 +11,12 @@
 
 namespace Isotope\Model;
 
-use Haste\Util\StringUtil;
+use Contao\StringUtil;
+use Haste\Util\StringUtil as HasteStringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 /**
- * Class Document
- *
  * Parent class for all documents.
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Yanick Witschi <yanick.witschi@terminal42.ch>
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 abstract class Document extends TypeAgent
 {
@@ -75,10 +71,10 @@ abstract class Document extends TypeAgent
     {
         // Replace simple tokens
         $strName = $this->sanitizeFileName(
-            StringUtil::recursiveReplaceTokensAndTags(
+            HasteStringUtil::recursiveReplaceTokensAndTags(
                 $strName,
                 $arrTokens,
-                StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringUtil::NO_ENTITIES
+                HasteStringUtil::NO_TAGS | HasteStringUtil::NO_BREAKS | HasteStringUtil::NO_ENTITIES
             )
         );
 
@@ -102,6 +98,6 @@ abstract class Document extends TypeAgent
      */
     protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {
-        return standardize(ampersand($strName, false), $blnPreserveUppercase);
+        return StringUtil::standardize(ampersand($strName, false), $blnPreserveUppercase);
     }
 }

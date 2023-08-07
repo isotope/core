@@ -11,6 +11,7 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
 
 class To0020020000 extends Base
 {
@@ -21,8 +22,8 @@ class To0020020000 extends Base
             $this->createDatabaseField('optionsSource', 'tl_iso_attribute');
             $this->createDatabaseField('includeBlankOption', 'tl_iso_attribute');
 
-            \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='foreignKey', includeBlankOption='1' WHERE foreignKey!=''");
-            \Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='attribute' WHERE optionsSource=''");
+            Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='foreignKey', includeBlankOption='1' WHERE foreignKey!=''");
+            Database::getInstance()->query("UPDATE tl_iso_attribute SET optionsSource='attribute' WHERE optionsSource=''");
 
             $this->renameDatabaseField('options', 'configuration', 'tl_iso_product_collection_item');
         }

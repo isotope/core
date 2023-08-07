@@ -11,6 +11,8 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Input;
 use Haste\Util\Url;
 use Isotope\Frontend\ProductCollectionAction\AddToCartAction;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -96,19 +98,19 @@ class Favorites extends AbstractProductCollection
         $data['cart_href'] = Url::addQueryString('add_to_cart=' . $item->id);
 
         // Add single item to cart
-        if (\Input::get('add_to_cart') == $item->id && $item->hasProduct()) {
+        if (Input::get('add_to_cart') == $item->id && $item->hasProduct()) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),
                 $item->quantity,
                 ['jumpTo' => $item->getRelated('jumpTo')]
             );
 
-            \Controller::redirect(Url::removeQueryString(['add_to_cart']));
+            Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
         // Add all items to cart based on quantity field and global button
-        if (\Input::post('FORM_SUBMIT') === $this->strFormId
-            && '' !== (string) \Input::post('button_add_to_cart')
+        if (Input::post('FORM_SUBMIT') === $this->strFormId
+            && '' !== (string) Input::post('button_add_to_cart')
             && (0 === \count($quantity) || $quantity[$item->id] > 0)
         ) {
             Isotope::getCart()->addProduct(

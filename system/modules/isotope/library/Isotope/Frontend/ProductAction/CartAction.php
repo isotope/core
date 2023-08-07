@@ -11,6 +11,9 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -59,12 +62,12 @@ class CartAction extends AbstractButton
 
         if ($success) {
             if (!$config['module']->iso_addProductJumpTo) {
-                \Controller::reload();
+                Controller::reload();
             }
 
-            \Controller::redirect(
+            Controller::redirect(
                 Url::addQueryString(
-                    'continue=' . base64_encode(\Environment::get('request')),
+                    'continue=' . base64_encode(Environment::get('request')),
                     $config['module']->iso_addProductJumpTo
                 )
             );
@@ -80,14 +83,14 @@ class CartAction extends AbstractButton
      */
     private function getCurrentCartItem(IsotopeProduct $product = null)
     {
-        if (null === $product || !\Input::get('collection_item')) {
+        if (null === $product || !Input::get('collection_item')) {
             return null;
         }
 
         /** @var ProductCollectionItem $item */
-        $item = ProductCollectionItem::findByPk(\Input::get('collection_item'));
+        $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
 
-        if ($item->pid == Isotope::getCart()->id
+        if (null !== $item
             && $item->hasProduct()
             && $item->getProduct()->getProductId() == $product->getProductId()
         ) {
@@ -108,8 +111,8 @@ class CartAction extends AbstractButton
         $module   = $config['module'];
         $quantity = 1;
 
-        if ($module->iso_use_quantity && \Input::post('quantity_requested') > 0) {
-            $quantity = (int) \Input::post('quantity_requested');
+        if ($module->iso_use_quantity && Input::post('quantity_requested') > 0) {
+            $quantity = (int) Input::post('quantity_requested');
         }
 
         // Do not add parent of variant product to the cart

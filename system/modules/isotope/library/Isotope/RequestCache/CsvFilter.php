@@ -13,8 +13,6 @@ namespace Isotope\RequestCache;
 
 /**
  * Filters a product attribute using FIND_IN_SET().
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class CsvFilter extends Filter
 {

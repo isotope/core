@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="cs">
     <body>
       <trans-unit id="ERR.systemColumn">
@@ -23,9 +23,11 @@
       </trans-unit>
       <trans-unit id="ERR.emptyWishlists">
         <source>You have not created any wishlists yet.</source>
+        <target>Zatím jste nevytvořili žádný seznam přání.</target>
       </trans-unit>
       <trans-unit id="ERR.wishlistNotFound">
         <source>The requested wishlist was not found.</source>
+        <target>Požadovaný seznam přání nebyl nalezen.</target>
       </trans-unit>
       <trans-unit id="ERR.isoLoginRequired">
         <source>You must be logged in to checkout.</source>
@@ -33,12 +35,15 @@
       </trans-unit>
       <trans-unit id="ERR.variantDuplicate">
         <source>A variant with this attributes is already available. Please select another combination.</source>
+        <target>Varianta s těmito atributy je již k dispozici. Vyberte prosím jinou kombinaci.</target>
       </trans-unit>
       <trans-unit id="ERR.discount">
         <source>Please enter whole numbers or decimals signed with + or - and optionally with a percentage.</source>
+        <target>Zadejte prosím celá čísla nebo desetinná místa se znaménkem + nebo - a volitelně s procentem.</target>
       </trans-unit>
       <trans-unit id="ERR.surcharge">
         <source>Please enter whole numbers or decimals optionally with a percentage.</source>
+        <target>Zadejte prosím celá čísla nebo desetinná místa volitelně s procentem.</target>
       </trans-unit>
       <trans-unit id="ERR.orderFailed">
         <source>Checkout failed. Please try again or choose another payment method.</source>
@@ -62,6 +67,7 @@
       </trans-unit>
       <trans-unit id="ERR.datepickerRgxp">
         <source>Select an appropriate field validation (date, time, date and time) to enable the date picker.</source>
+        <target>Chcete-li povolit výběr data, vyberte příslušné ověření pole (datum, čas, datum a čas).</target>
       </trans-unit>
       <trans-unit id="ERR.emptyDownloadsFolder">
         <source>The selected folder is empty.</source>
@@ -85,15 +91,22 @@
       </trans-unit>
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
+        <target>Stejný atribut nelze konfigurovat vícekrát.</target>
+      </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
+        <target>Nahraný soubor již není k dispozici.</target>
       </trans-unit>
       <trans-unit id="ERR.oppIncompatible">
         <source>Some of the selected payment brands are not compatible to each other.</source>
+        <target>Některé z vybraných platebních značek nejsou vzájemně kompatibilní.</target>
       </trans-unit>
       <trans-unit id="ERR.oppTooMany">
         <source>The payment API currently does not support this many brands at a time.</source>
+        <target>Platební API v současné době nepodporuje tolik značek najednou.</target>
       </trans-unit>
       <trans-unit id="MSC.selectGroup">
         <source>Only show this group</source>
@@ -121,9 +134,11 @@
       </trans-unit>
       <trans-unit id="MSC.copyFallback">
         <source>Duplicate Fallback</source>
+        <target>Duplicitní záloha</target>
       </trans-unit>
       <trans-unit id="MSC.orderDetailsHeadline">
         <source>Order no %s / %s</source>
+        <target>Objednávka číslo %s / %s</target>
       </trans-unit>
       <trans-unit id="MSC.payment_processing">
         <source>Your payment is being processed. Please be patient...</source>
@@ -135,21 +150,27 @@
       </trans-unit>
       <trans-unit id="MSC.mmUnknownError">
         <source>The file could not be uploaded for unknown reason. Please check the system log.</source>
+        <target>Soubor se z neznámého důvodu nepodařilo nahrát. Zkontrolujte prosím systémový protokol.</target>
       </trans-unit>
       <trans-unit id="MSC.mmDrop">
         <source>Drop files here to upload</source>
+        <target>Sem přetáhněte soubory, které chcete nahrát</target>
       </trans-unit>
       <trans-unit id="MSC.mmUpload">
         <source>Upload files</source>
+        <target>Nahrát soubory</target>
       </trans-unit>
       <trans-unit id="MSC.mmProcessing">
         <source>Processing dropped files...</source>
+        <target>Zpracovávání zahozených souborů...</target>
       </trans-unit>
       <trans-unit id="MSC.undeletableRecords">
         <source>Some records could not be deleted.</source>
+        <target>Některé záznamy se nepodařilo smazat.</target>
       </trans-unit>
       <trans-unit id="MSC.undeletableUnpublished">
         <source>Some records could not be deleted and have been unpublished instead.</source>
+        <target>Některé záznamy nebylo možné smazat a místo toho bylo zrušeno publikování.</target>
       </trans-unit>
       <trans-unit id="MSC.quantity">
         <source>Quantity</source>
@@ -157,6 +178,7 @@
       </trans-unit>
       <trans-unit id="MSC.taxFree">
         <source>Tax-free</source>
+        <target>Osvobozeno od daně</target>
       </trans-unit>
       <trans-unit id="MSC.defaultSearchText">
         <source>search products</source>
@@ -168,6 +190,11 @@
       </trans-unit>
       <trans-unit id="MSC.priceRangeLabel">
         <source>&lt;span class=&quot;from&quot;&gt;From&lt;/span&gt; %s</source>
+        <target>&lt;span class=&quot;from&quot;&gt;Z&lt;/span&gt; %s</target>
+      </trans-unit>
+      <trans-unit id="MSC.attributePriceLabel">
+        <source>%s (%s)</source>
+        <target>%s (%s)</target>
       </trans-unit>
       <trans-unit id="MSC.detailLabel">
         <source>View Details</source>
@@ -175,6 +202,7 @@
       </trans-unit>
       <trans-unit id="MSC.reorderLabel">
         <source>Reorder</source>
+        <target>Přeobjednat</target>
       </trans-unit>
       <trans-unit id="MSC.perPageLabel">
         <source>Products Per Page</source>
@@ -202,6 +230,7 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_all_to_cart">
         <source>Add All To Cart</source>
+        <target>Přidat vše do košíku</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.update_cart">
         <source>Update Cart</source>
@@ -209,12 +238,15 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_favorites">
         <source>Add To Favorites</source>
+        <target>Přidat k oblíbeným</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.remove_from_favorites">
         <source>Remove From Favorites</source>
+        <target>Odstranit z oblíbených</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.add_to_wishlist">
         <source>Add To Wishlist</source>
+        <target>Přidat do seznamu přání</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.edit_wishlist">
         <source>Edit</source>
@@ -226,18 +258,23 @@
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.wishlist_details">
         <source>Details</source>
+        <target>Podrobnosti</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.share_wishlist">
         <source>Share Wishlist</source>
+        <target>Sdílet seznam přání</target>
       </trans-unit>
       <trans-unit id="MSC.buttonLabel.unshare_wishlist">
         <source>Unshare Wishlist</source>
+        <target>Zrušit sdílení seznamu přání</target>
       </trans-unit>
       <trans-unit id="MSC.defaultWishlistLabel">
         <source>New Wishlist …</source>
+        <target>Nový seznam přání…</target>
       </trans-unit>
       <trans-unit id="MSC.defaultWishlistName">
         <source>Wishlist 1</source>
+        <target>Seznam přání 1</target>
       </trans-unit>
       <trans-unit id="MSC.orderByLabel">
         <source>Order By:</source>
@@ -269,6 +306,7 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInFavorites">
         <source>There are no items in your favorites list.</source>
+        <target>Ve vašem seznamu oblíbených nejsou žádné položky.</target>
       </trans-unit>
       <trans-unit id="MSC.noItemsInCart">
         <source>There are no items in your cart.</source>
@@ -276,6 +314,7 @@
       </trans-unit>
       <trans-unit id="MSC.noItemsInWishlist">
         <source>There are no items in this wishlist.</source>
+        <target>V tomto seznamu přání nejsou žádné položky.</target>
       </trans-unit>
       <trans-unit id="MSC.addedToFavorites">
         <source>The selected product has been added to your favorites.</source>
@@ -289,6 +328,9 @@
       <trans-unit id="MSC.addedToCart">
         <source>The selected product has been added to your shopping cart.</source>
         <target>Vybrané zboží bylo vloženo do nákupního košíku.</target>
+      </trans-unit>
+      <trans-unit id="MSC.updatedInCart">
+        <source>The product has been updated in your shopping cart.</source>
       </trans-unit>
       <trans-unit id="MSC.cartMerged">
         <source>The products from your last visit have been readded. Please review your shopping cart items.</source>
@@ -426,6 +468,12 @@
       <trans-unit id="MSC.iso_order_total">
         <source>Total</source>
         <target>Celkem</target>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
       </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
@@ -719,6 +767,7 @@
       </trans-unit>
       <trans-unit id="MSC.saveAddressButton">
         <source>Save address</source>
+        <target>Uložit adresu</target>
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_de">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
@@ -728,6 +777,30 @@
       </trans-unit>
       <trans-unit id="MSC.billpay_agb_at">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.0">
+        <source>Net</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.0">
+        <source>Gross (recommended)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.0">
+        <source>Fixed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.legacy.0">
+        <source>Legacy</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.legacy.1">
+        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
       </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
@@ -753,108 +826,151 @@
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.dhl_business.0">
         <source>DHL Business Shipping</source>
+        <target>DHL Business Shipping</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_shipping.dhl_business.1">
         <source>Registers the shipment for DHL business delivery, including tracking number and shipping label.</source>
+        <target>Registruje zásilku pro obchodní doručení DHL, včetně čísla zásilky a přepravního štítku.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.0">
         <source>Cash</source>
+        <target>Hotovost</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.cash.1">
         <source>Use this for all offline processed payment.</source>
+        <target>Použijte toto pro všechny offline zpracované platby.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.concardis.0">
         <source>Concardis</source>
+        <target>Concardis</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.concards.1">
         <source>Payment gateway for Concardis GmbH.</source>
+        <target>Platební brána pro Concardis GmbH.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paybyway.0">
         <source>Paybyway</source>
+        <target>Paybyway</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paybyway.1">
         <source>Implements payment provider &lt;a href=&quot;https://www.paybyway.com/en/&quot; target=&quot;_blank&quot;&gt;Paybyway&lt;/a&gt;.</source>
+        <target>Implementuje poskytovatel plateb &lt;a href=&quot;https://www.paybyway.com/en/&quot; target=&quot;_blank&quot;&gt;Paybyway&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal.0">
         <source>PayPal Standard Checkout</source>
+        <target>PayPal Standard Checkout</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal.1">
         <source>This PayPal module supports IPN (Instant Payment Notifications).</source>
+        <target>Tento modul PayPal podporuje IPN (Instant Payment Notifications).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.0">
         <source>PayPal PLUS</source>
+        <target>PayPal PLUS</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.paypal_plus.1">
         <source>Paypal PLUS is currently only available in Germany.</source>
+        <target>Paypal PLUS je v současné době k dispozici pouze v Německu.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.0">
         <source>PostFinance</source>
+        <target>PostFinance</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.postfinance.1">
         <source>Payment gateway for the swiss post payment system that supports various card types. The store will be instantly notified about successfull transactions.</source>
+        <target>Platební brána pro platební systém swiss post, která podporuje různé typy karet. Obchod bude okamžitě informován o úspěšných transakcích.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.viveum.0">
         <source>VIVEUM</source>
+        <target>VIVEUM</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.viveum.1">
         <source>Payment gateway for VIVEUM Zahlungssysteme GmbH.</source>
+        <target>Platební brána pro VIVEUM Zahlungssysteme GmbH.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.datatrans.0">
         <source>Datatrans</source>
+        <target>Datatrans</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.datatrans.1">
         <source>A payment module for the swiss payment gateway &quot;Datatrans&quot;.</source>
+        <target>Platební modul pro švýcarskou platební bránu &quot;Datatrans&quot;.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.innopay.0">
         <source>Innopay</source>
+        <target>Innopay</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.innopay.1">
         <source>A payment module for the swiss payment gateway &quot;Innocard&quot;.</source>
+        <target>Platební modul pro švýcarskou platební bránu &quot;Innocard&quot;.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.sparkasse.0">
         <source>Sparkasse</source>
+        <target>Sparkasse</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.saferpay.0">
         <source>Saferpay</source>
+        <target>Saferpay</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.billpay_saferpay.0">
         <source>BillPay (using Saferpay)</source>
+        <target>BillPay (using Saferpay)</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.sofortueberweisung.0">
         <source>sofortüberweisung.de</source>
+        <target>sofortüberweisung.de</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.expercash.0">
         <source>ExperCash</source>
+        <target>ExperCash</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.epay.0">
         <source>ePay</source>
+        <target>ePay</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.epay.1">
         <source>Implements payment provider &lt;a href=&quot;http://www.epay.eu&quot; target=&quot;_blank&quot;&gt;ePay&lt;/a&gt;.</source>
+        <target>Implementuje poskytovatel plateb &lt;a href=&quot;http://www.epay.eu&quot; target=&quot;_blank&quot;&gt;ePay&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.payone.0">
         <source>PayOne</source>
+        <target>PayOne</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.worldpay.0">
         <source>WorldPay</source>
+        <target>WorldPay</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.quickpay.0">
         <source>QuickPay</source>
+        <target>QuickPay</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.0">
         <source>Open Payment Platform</source>
+        <target>Open Payment Platform</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.opp.1">
         <source>A payment gateway for various payment providers (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</source>
+        <target>Platební brána pro různé poskytovatele plateb (e.g. &lt;a href=&quot;http://www.payunity.com&quot; target=&quot;_blank&quot;&gt;PayUnity.PAY&lt;/a&gt;).</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_payment.mpay24.0">
         <source>mPAY24</source>
+        <target>mPAY24</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.0">
+        <source>SwissBilling</source>
+        <target>SwissBilling</target>
+      </trans-unit>
+      <trans-unit id="MODEL.tl_iso_payment.swissbilling.1">
+        <source>Swiss payment provider for invoice payments.</source>
+        <target>Švýcarský poskytovatel plateb pro platby faktur.</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_document.standard.0">
         <source>Standard</source>
+        <target>Standard</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.0">
         <source>Default gallery</source>
+        <target>Výchozí galerie</target>
       </trans-unit>
       <trans-unit id="MODEL.tl_iso_gallery.standard.1">
         <source>&lt;p&gt;Uses the lightbox/mediabox for full size images. Make sure you select the appropriate &quot;moo_&quot; template in your page layout configuration.&lt;/p&gt;&lt;p&gt;You can supply a &quot;rel&quot; attribute to the link target by using a pipe (e.g. &quot;tl_files/video.mov|lightbox[400 300]&quot;). If no &quot;rel&quot; attribute is supplied, the link will be opened in a new window.&lt;/p&gt;</source>
@@ -879,86 +995,6 @@
       </trans-unit>
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
-      </trans-unit>
-      <trans-unit id="CCT.mc">
-        <source>MasterCard</source>
-        <target>MasterCard</target>
-      </trans-unit>
-      <trans-unit id="CCT.visa">
-        <source>Visa</source>
-        <target>Visa</target>
-      </trans-unit>
-      <trans-unit id="CCT.amex">
-        <source>American Express</source>
-        <target>AmericanExpress</target>
-      </trans-unit>
-      <trans-unit id="CCT.discover">
-        <source>Discover</source>
-        <target>DIscover</target>
-      </trans-unit>
-      <trans-unit id="CCT.jcb">
-        <source>JCB</source>
-        <target>JCB</target>
-      </trans-unit>
-      <trans-unit id="CCT.diners">
-        <source>Diner's Club</source>
-        <target>Diner's Club</target>
-      </trans-unit>
-      <trans-unit id="CCT.enroute">
-        <source>EnRoute</source>
-        <target>EnRoute</target>
-      </trans-unit>
-      <trans-unit id="CCT.carte_blanche">
-        <source>Carte Blanche</source>
-        <target>Carte Blanche</target>
-      </trans-unit>
-      <trans-unit id="CCT.jal">
-        <source>JAL</source>
-        <target>JAL</target>
-      </trans-unit>
-      <trans-unit id="CCT.maestro">
-        <source>Maestro UK</source>
-        <target>Maestro UK</target>
-      </trans-unit>
-      <trans-unit id="CCT.delta">
-        <source>Delta</source>
-        <target>Delta</target>
-      </trans-unit>
-      <trans-unit id="CCT.solo">
-        <source>Solo</source>
-        <target>Solo</target>
-      </trans-unit>
-      <trans-unit id="CCT.visa_electron">
-        <source>Visa Electron</source>
-        <target>Visa Electron</target>
-      </trans-unit>
-      <trans-unit id="CCT.dankort">
-        <source>Dankort</source>
-        <target>Dankort</target>
-      </trans-unit>
-      <trans-unit id="CCT.laser">
-        <source>Laser</source>
-        <target>Laser</target>
-      </trans-unit>
-      <trans-unit id="CCT.carte_bleue">
-        <source>Carte Bleue</source>
-        <target>Carte Bleue</target>
-      </trans-unit>
-      <trans-unit id="CCT.carta_si">
-        <source>Carta Si</source>
-        <target>Carta Si</target>
-      </trans-unit>
-      <trans-unit id="CCT.enc_acct_num">
-        <source>Encoded Account Number</source>
-      </trans-unit>
-      <trans-unit id="CCT.uatp">
-        <source>Universal Air Travel Program</source>
-      </trans-unit>
-      <trans-unit id="CCT.maestro_intl">
-        <source>Maestro International</source>
-      </trans-unit>
-      <trans-unit id="CCT.ge_money_uk">
-        <source>GE Money UK</source>
       </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>
@@ -1009,6 +1045,12 @@
       <trans-unit id="ATTR.fileTree.1">
         <source>A file tree for single or multiple files and folders.</source>
       </trans-unit>
+      <trans-unit id="ATTR.pageTree.0">
+        <source>Page tree</source>
+      </trans-unit>
+      <trans-unit id="ATTR.pageTree.1">
+        <source>Pick one or multiple pages from the site structure.</source>
+      </trans-unit>
       <trans-unit id="ATTR.downloads.0">
         <source>Downloads</source>
         <target>Stáhnout</target>
@@ -1028,6 +1070,12 @@
       </trans-unit>
       <trans-unit id="ATTR.media.1">
         <source>Generates a video or audio player.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.0">
+        <source>Surcharge per quantity</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.1">
+        <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
@@ -1498,6 +1546,9 @@
       <trans-unit id="CUR.XCD">
         <source>XCD - East Caribbean Dollar</source>
       </trans-unit>
+      <trans-unit id="CUR.XOF">
+        <source>XOF - CFA Franc BCEAO</source>
+      </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>
       </trans-unit>
@@ -1536,6 +1587,24 @@
       </trans-unit>
       <trans-unit id="CUR_SYMBOL.USD">
         <source>$</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\BillingAddress">
+          <source>Billing address</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingAddress">
+          <source>Shipping address</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\ShippingMethod">
+          <source>Shipping method</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\PaymentMethod">
+          <source>Payment method</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderInfo">
+          <source>Order summary</source>
+      </trans-unit>
+      <trans-unit id="CHECKOUT.Isotope\CheckoutStep\OrderProducts">
+          <source>Order products</source>
       </trans-unit>
     </body>
   </file>

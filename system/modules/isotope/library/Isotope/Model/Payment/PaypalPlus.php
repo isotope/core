@@ -11,39 +11,40 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Date;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
 use Contao\StringUtil;
-use GuzzleHttp\Psr7\Response;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class PaypalPlus extends PaypalApi
 {
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             Checkout::redirectToStep(Checkout::STEP_COMPLETE, $objOrder);
         }
 
-        $request = $this->createPayment($objOrder);
-
-        if ($request instanceof Response) {
-            $responseCode  = (int) $request->getStatusCode();
-            $responseError = $request->getReasonPhrase();
-            $responseData  = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseError = $request->error;
-            $responseData = $request->response;
+        try {
+            $response = $this->createPayment($objOrder);
+        } catch (TransportExceptionInterface $e) {
+            System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
+            Checkout::redirectToStep(Checkout::STEP_FAILED);
         }
 
-        $this->debugLog($responseData);
+        $this->debugLog($response->getContent(false));
 
-        if (201 === $responseCode) {
-            $paypalData = json_decode($responseData, true);
+        if (201 === $response->getStatusCode()) {
+            $paypalData = $response->toArray();
             $this->storePayment($objOrder, $paypalData);
             $this->storeHistory($objOrder, $paypalData);
 
@@ -62,19 +63,7 @@ class PaypalPlus extends PaypalApi
             }
         }
 
-        \System::log('PayPayl payment failed. See paypal.log for more information.', __METHOD__, TL_ERROR);
-
-        $this->debugLog(
-            sprintf(
-                "PayPal API Error! (HTTP %s %s)\n\nResponse:\n%s",
-                $responseCode,
-                $responseError,
-                $responseData
-            )
-        );
-
-        Checkout::redirectToStep(Checkout::STEP_FAILED);
-        exit;
+        return false;
     }
 
     /**
@@ -86,7 +75,7 @@ class PaypalPlus extends PaypalApi
             return parent::backendInterface($orderId);
         }
 
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!\is_array($arrPayment['PAYPAL_HISTORY']) || empty($arrPayment['PAYPAL_HISTORY'])) {
             return parent::backendInterface($orderId);
@@ -94,7 +83,7 @@ class PaypalPlus extends PaypalApi
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>';
 
         foreach ($arrPayment['PAYPAL_HISTORY'] as $response) {
@@ -120,7 +109,7 @@ class PaypalPlus extends PaypalApi
 
         foreach (array_reverse($arrPayment['PAYPAL_HISTORY']) as $transaction) {
             if (isset($transaction['create_time'])) {
-                $dateCreated = \Date::parse(
+                $dateCreated = Date::parse(
                     $GLOBALS['TL_CONFIG']['datimFormat'],
                     strtotime($transaction['create_time'])
                 );
@@ -183,45 +172,35 @@ class PaypalPlus extends PaypalApi
     /**
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
         $paypalData = $this->retrievePayment($objOrder);
 
         if (0 === \count($paypalData)
-            || \Input::get('paymentId') !== $paypalData['id']
+            || Input::get('paymentId') !== $paypalData['id']
             || 'created' !== $paypalData['state']
         ) {
             return false;
         }
 
-        /*$request = $this->patchPayment($objOrder, $paypalData['id']);
-
-        if (200 !== $request->code) {
-            return false;
-        }*/
-
-        $request = $this->executePayment($paypalData['id'], \Input::get('PayerID'));
-
-        if ($request instanceof Response) {
-            $responseCode = (int) $request->getStatusCode();
-            $responseData = $request->getBody()->getContents();
-        } else {
-            $responseCode = (int) $request->code;
-            $responseData = $request->response;
-        }
-
-        $this->debugLog($responseData);
-
-        if (200 !== $responseCode) {
+        try {
+            $response = $this->executePayment($paypalData['id'], Input::get('PayerID'));
+        } catch (TransportExceptionInterface $e) {
             return false;
         }
 
-        $this->storeHistory($objOrder, json_decode($responseData, true));
+        $this->debugLog($response->getContent(false));
+
+        if (200 !== $response->getStatusCode()) {
+            return false;
+        }
+
+        $this->storeHistory($objOrder, $response->toArray());
 
         $objOrder->checkout();
         $objOrder->setDatePaid(time());

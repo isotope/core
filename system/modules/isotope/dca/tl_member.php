@@ -21,7 +21,6 @@ $GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('\Isoto
  */
 $GLOBALS['TL_DCA']['tl_member']['list']['operations']['address_book'] = array
 (
-    'label'               => &$GLOBALS['TL_LANG']['tl_member']['address_book'],
     'href'                => 'table='.\Isotope\Model\Address::getTable(),
     'icon'                => 'system/modules/isotope/assets/images/cards-address.png',
 );

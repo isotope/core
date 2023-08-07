@@ -11,10 +11,10 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\Backend;
 use Haste\Util\Format;
-use Isotope\Model\Product;
 
-class Label extends \Backend
+class Label extends Backend
 {
 
     /**
@@ -28,7 +28,7 @@ class Label extends \Backend
     public function generate($row, $label, $dc, $args)
     {
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
-            if ($field == 'name' && $row['fallback']) {
+            if ('name' === $field && $row['fallback']) {
                 $args[$i] = sprintf(
                     '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
                     $row['name'],

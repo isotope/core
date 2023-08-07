@@ -20,10 +20,9 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
     (
         'dataContainer'             => 'Table',
         'enableVersioning'          => true,
-        'closed'                    => true,
+        'backlink'                  => 'do=iso_setup',
         'onload_callback' => array
         (
-            array('Isotope\\Backend', 'initializeSetupModule'),
             array('Isotope\\Backend\\Gallery\\Callback', 'showJsLibraryHint'),
         ),
         'sql' => array
@@ -52,23 +51,8 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'global_operations' => array
         (
-            'back' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'              => 'mod=&table=',
-                'class'             => 'header_back',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['new'],
-                'href'              => 'act=create',
-                'class'             => 'header_new',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
@@ -78,28 +62,24 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['edit'],
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.svg'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['copy'],
                 'href'              => 'act=copy',
-                'icon'              => 'copy.gif'
+                'icon'              => 'copy.svg'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['delete'],
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+                'icon'              => 'delete.svg',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_gallery']['show'],
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             ),
         )
     ),
@@ -129,7 +109,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -138,7 +117,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['type'],
             'exclude'               => true,
             'filter'                => true,
             'default'               => 'standard',
@@ -152,7 +130,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'anchor' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['anchor'],
             'exclude'               => true,
             'inputType'             => 'radio',
             'options'               => array('none', 'reader', 'lightbox'),
@@ -162,7 +139,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'placeholder' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['placeholder'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'w50 w50h'),
@@ -170,11 +146,10 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_size' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -182,11 +157,10 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_size' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -194,14 +168,13 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_template' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_template'],
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'options_callback'      => function() {
                 // Do not use \Isotope\Backend::getTemplates() here, as they cannot be selected in a page layout!
                 return array_merge(
-                    \Controller::getTemplateGroup('moo_'),
-                    \Controller::getTemplateGroup('j_')
+                    \Contao\Controller::getTemplateGroup('moo_'),
+                    \Contao\Controller::getTemplateGroup('j_')
                 );
             },
             'eval'                  => array('mandatory'=>true, 'multiple'=>true, 'tl_class'=>'w50 w50h'),
@@ -209,11 +182,10 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_size' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -221,11 +193,10 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'zoom_size' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_size'],
             'exclude'               => true,
             'inputType'             => 'imageSize',
             'options_callback'      => function () {
-                return \System::getImageSizes();
+                return \Contao\System::getImageSizes();
             },
             'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('includeBlankOption'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'helpwizard'=>true, 'tl_class'=>'w50'),
@@ -233,7 +204,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'zoom_windowSize' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowSize'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
@@ -241,7 +211,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'zoom_position' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_position'],
             'exclude'               => true,
             'inputType'             => 'multiColumnWizard',
             'eval'                  => array(
@@ -272,17 +241,16 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
             'sql'                   => "varchar(64) NOT NULL default ''",
             'explanation'           => 'elevatezoom_position',
             'load_callback' => [function ($value) {
-                $value = deserialize($value);
+                $value = \Contao\StringUtil::deserialize($value);
                 return \is_array($value) && !\is_array($value[0]) ? [$value] : [];
             }],
             'save_callback' => [function ($value) {
-                $value = deserialize($value);
+                $value = \Contao\StringUtil::deserialize($value);
                 return \is_array($value) ? serialize($value[0]) : '';
             }],
         ),
         'zoom_windowFade' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_windowFade'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('multiple'=>true, 'size'=>2, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
@@ -290,7 +258,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'zoom_border' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_border'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('maxlength'=>6, 'multiple'=>true, 'size'=>2, 'colorpicker'=>true, 'isHexColor'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50 wizard'),
@@ -298,7 +265,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_watermark_image' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -306,7 +272,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'main_watermark_position' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['main_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -316,7 +281,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_image' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -324,7 +288,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'gallery_watermark_position' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['gallery_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -334,7 +297,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_image' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -342,17 +304,15 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'lightbox_watermark_position' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['lightbox_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
-            'reference'             => $GLOBALS['TL_LANG']['MSC'],
+            'reference'             => &$GLOBALS['TL_LANG']['MSC'],
             'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(16) NOT NULL default ''",
         ),
         'zoom_watermark_image' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_image'],
             'exclude'               => true,
             'inputType'             => 'fileTree',
             'eval'                  => array('fieldType'=>'radio', 'files'=>true, 'filesOnly'=>true, 'extensions'=>$GLOBALS['TL_CONFIG']['validImageTypes'], 'tl_class'=>'clr w50 w50h'),
@@ -360,7 +320,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'zoom_watermark_position' => array
         (
-            'label'                 => $GLOBALS['TL_LANG']['tl_iso_gallery']['zoom_watermark_position'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options'               => array('left_top', 'center_top', 'right_top', 'left_center', 'center_center', 'right_center', 'left_bottom', 'center_bottom', 'right_bottom'),
@@ -370,7 +329,6 @@ $GLOBALS['TL_DCA']['tl_iso_gallery'] = array
         ),
         'customTpl' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_gallery']['customTpl'],
             'exclude'               => true,
             'inputType'             => 'select',
             'options_callback'      => function() {

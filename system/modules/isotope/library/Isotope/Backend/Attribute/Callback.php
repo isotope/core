@@ -11,25 +11,30 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\Backend;
 use Contao\Controller;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\Database;
 use Contao\DataContainer;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
+use Contao\TemplateLoader;
+use Contao\Widget;
 use Isotope\Model\Attribute;
 use Isotope\Model\AttributeOption;
 
-class Callback extends \Backend
+class Callback extends Backend
 {
     public function onLoad($dc)
     {
-        $act = \Input::get('act');
+        $act = Input::get('act');
 
         // Hide the field in editAll & overrideAll mode (Thanks to Yanick Witschi)
         if ('editAll' === $act || 'overrideAll' === $act) {
             $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['doNotShow'] = true;
         } elseif ($dc->id) {
-            $objAttribute = \Database::getInstance()->execute("SELECT * FROM tl_iso_attribute WHERE id={$dc->id}");
+            $objAttribute = Database::getInstance()->execute("SELECT * FROM tl_iso_attribute WHERE id={$dc->id}");
 
             if ($objAttribute->field_name != '') {
                 $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['field_name']['eval']['disabled']  = true;
@@ -54,18 +59,16 @@ class Callback extends \Backend
     /**
      * Show price column in dcaWizard if attribute is not a variant option
      *
-     * @param \Widget|object $objWidget
-     *
      * @return string
      */
-    public function initializeTableOptions(\Widget $objWidget)
+    public function initializeTableOptions(Widget $objWidget)
     {
         /** @var Attribute $objAttribute */
 
-        if ('iso_products' === \Input::get('do')) {
+        if ('iso_products' === Input::get('do')) {
             $objAttribute = Attribute::findByFieldName($objWidget->name);
         } else {
-            $objAttribute = Attribute::findByPk(\Input::get('id'));
+            $objAttribute = Attribute::findByPk(Input::get('id'));
         }
 
         if (null !== $objAttribute && !$objAttribute->isVariantOption()) {
@@ -85,9 +88,9 @@ class Callback extends \Backend
      */
     public function validateFieldName($varValue)
     {
-        \Controller::loadDataContainer('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
 
-        $varValue = str_replace('-', '_', standardize($varValue));
+        $varValue = str_replace('-', '_', StringUtil::standardize($varValue));
 
         if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue])
             && $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$varValue]['attributes']['systemColumn']
@@ -95,13 +98,11 @@ class Callback extends \Backend
             throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
 
-        if (method_exists('Contao\System', 'getContainer')) {
-            $platform = System::getContainer()->get('database_connection')->getDatabasePlatform();
-            $keywords = $platform->getReservedKeywordsList();
+        $platform = System::getContainer()->get('database_connection')->getDatabasePlatform();
+        $keywords = $platform->getReservedKeywordsList();
 
-            if ($keywords->isKeyword($varValue)) {
-                throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
-            }
+        if ($keywords->isKeyword($varValue)) {
+            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['systemColumn'], $varValue));
         }
 
         return $varValue;
@@ -110,7 +111,7 @@ class Callback extends \Backend
     /**
      * Alter attribute columns in tl_iso_product table
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @deprecated Deprecated since Isotope 2.4.4, use DatabaseUpdate::updateDatabase().
      */
@@ -127,7 +128,7 @@ class Callback extends \Backend
      */
     public function getConditionFields($dc)
     {
-        \Controller::loadDataContainer('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
         $arrFields = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
@@ -150,7 +151,7 @@ class Callback extends \Backend
     {
         $options = array();
 
-        foreach (preg_grep('/^be_tiny/', array_keys(\TemplateLoader::getFiles())) as $template) {
+        foreach (preg_grep('/^be_tiny/', array_keys(TemplateLoader::getFiles())) as $template) {
             $options[] = substr($template, 3);
         }
 
@@ -167,7 +168,7 @@ class Callback extends \Backend
     public function validateForeignKey($varValue)
     {
         if ($varValue != '') {
-            $arrLines = trimsplit('@\r\n|\n|\r@', $varValue);
+            $arrLines = StringUtil::trimsplit('@\r\n|\n|\r@', $varValue);
 
             foreach ($arrLines as $foreignKey) {
                 if (empty($foreignKey) || strpos($foreignKey, '#') === 0) {
@@ -179,7 +180,7 @@ class Callback extends \Backend
                 }
 
                 [$strTable, $strField] = explode('.', $foreignKey, 2);
-                \Database::getInstance()->execute("SELECT $strField FROM $strTable");
+                Database::getInstance()->execute("SELECT $strField FROM $strTable");
             }
         }
 

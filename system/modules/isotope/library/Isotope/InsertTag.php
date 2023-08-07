@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\StringUtil;
 use Haste\Input\Input;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProduct;
@@ -31,14 +32,14 @@ class InsertTag
      */
     public function replace($insertTag)
     {
-        $tokens = trimsplit('::', $insertTag);
+        $tokens = StringUtil::trimsplit('::', $insertTag) + [null, null, null];
 
         switch ($tokens[0]) {
             case 'cart':
                 return $this->getValueForCollectionTag(Isotope::getCart(), $tokens);
 
             case 'order':
-                if (!\Input::get('uid') || ($order = Order::findOneBy('uniqid', \Input::get('uid'))) === null) {
+                if (!Input::get('uid') || ($order = Order::findOneBy('uniqid', Input::get('uid'))) === null) {
                     return '';
                 }
 

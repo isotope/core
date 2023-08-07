@@ -11,6 +11,9 @@
 
 namespace Isotope\Model;
 
+use Contao\Environment;
+use Contao\FrontendUser;
+use Contao\Module;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -84,7 +87,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     {
         parent::__construct($objResult);
 
-        $this->arrData['allowed_cc_types'] = deserialize($this->arrData['allowed_cc_types']);
+        $this->arrData['allowed_cc_types'] = StringUtil::deserialize($this->arrData['allowed_cc_types'] ?? null);
 
         if (\is_array($this->arrData['allowed_cc_types'])) {
             $this->arrData['allowed_cc_types'] = array_intersect(static::getAllowedCCTypes(), $this->arrData['allowed_cc_types']);
@@ -124,11 +127,11 @@ abstract class Payment extends TypeAgent implements IsotopePayment
         }
 
         if ($this->protected) {
-            $arrGroups = deserialize($this->groups);
+            $arrGroups = StringUtil::deserialize($this->groups);
 
             if (!\is_array($arrGroups)
                 || 0 === \count($arrGroups)
-                || 0 === \count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+                || 0 === \count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -161,12 +164,12 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             }
         }
 
-        $arrConfigs = deserialize($this->config_ids);
+        $arrConfigs = StringUtil::deserialize($this->config_ids);
         if (\is_array($arrConfigs) && \count($arrConfigs) > 0 && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
-        $arrCountries = deserialize($this->countries);
+        $arrCountries = StringUtil::deserialize($this->countries);
 
         if (\is_array($arrCountries) && \count($arrCountries) > 0
             && !\in_array(Isotope::getCart()->getBillingAddress()->country, $arrCountries, true)
@@ -174,7 +177,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return false;
         }
 
-        $arrShippings = deserialize($this->shipping_modules);
+        $arrShippings = StringUtil::deserialize($this->shipping_modules);
 
         if (\is_array($arrShippings)
             && \count($arrShippings) > 0
@@ -187,7 +190,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return false;
         }
 
-        $arrConfigTypes = deserialize($this->product_types);
+        $arrConfigTypes = StringUtil::deserialize($this->product_types);
 
         if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
             $arrItems = Isotope::getCart()->getItems();
@@ -324,12 +327,12 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     /**
      * Return a html form for checkout or false
      *
-     * @param IsotopeProductCollection $objOrder  The order being places
-     * @param \Module                  $objModule The checkout module instance
+     * @param IsotopeProductCollection $objOrder The order being places
+     * @param Module $objModule The checkout module instance
      *
      * @return bool
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         return false;
     }
@@ -346,7 +349,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     {
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>
@@ -398,8 +401,9 @@ abstract class Payment extends TypeAgent implements IsotopePayment
         $className = substr(\get_called_class(), $pos+1);
 
         $logFile = sprintf(
-            'isotope_%s.log',
-            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className)))
+            'isotope_%s-%s.log',
+            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className))),
+            date('Y-m-d')
         );
 
         log_message(print_r($value, true), $logFile);

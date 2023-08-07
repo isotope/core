@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/exception.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="XPT.isotopeOld">
+        <source>Isotope eCommerce - data loss protection</source>
+        <target>Isotope eCommerce - skydd för dataförlust</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldError">
+        <source>An old version of Isotope eCommerce has been detected on your installation. If you would update the database now, your existing customer data and configuration might be lost. To prevent this, the database update tools have been locked automatically.</source>
+        <target>En gammal version av Isotope eCommerce har upptäckts på din installation. Om du skulle uppdatera databasen nu kan din befintliga kunddata och konfiguration gå förlorad. För att förhindra detta har databasuppdateringsverktygen låsts automatiskt.</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldFix">
+        <source>There are multiple options to get your installation back:</source>
+        <target>Det finns flera alternativ för att få tillbaka din installation:</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldFix1">
+        <source>Create a backup, then completely uninstall Isotope and remove all it's database tables and related extensions. Afterwards you can install Isotope eCommerce 2.0 again.</source>
+        <target>Skapa en säkerhetskopia, avinstallera sedan Isotope helt och ta bort alla dess databastabeller och relaterade tillägg. Efteråt kan du installera Isotope eCommerce 2.0 igen.</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldFix2">
+        <source>We are currently running a fundraising to develop an update tool. The more people that help, the sooner you will be able to update your old installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Please consider participating&lt;/a&gt;.</source>
+        <target>Vi driver för närvarande en insamling för att utveckla ett uppdateringsverktyg. Ju fler som hjälper till, desto snabbare kommer du att kunna uppdatera din gamla installation. &lt;a href=&quot;http://isotopeecommerce.com/en/&quot; target=&quot;_blank&quot;&gt;Överväg att delta&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldFix3">
+        <source>Get an experienced Contao developer to migrate your data manually. We suggest to take a look at &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;the Contao partner listing&lt;/a&gt;.</source>
+        <target>Få en erfaren Contao-utvecklare att migrera dina data manuellt. Vi föreslår att du tar en titt på &lt;a href=&quot;http://contao.org/en/&quot; target=&quot;_blank&quot;&gt;Contao-partnerlistan&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="XPT.isotopeOldExplain">
+        <source>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Visit our website&lt;/a&gt; for more information about Isotope eCommerce.</source>
+        <target>&lt;a href=&quot;http://isotopeecommerce.org/&quot; target=&quot;_blank&quot;&gt;Besök vår webbplats&lt;/a&gt; för mer information om Isotope eCommerce.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

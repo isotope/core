@@ -11,8 +11,10 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Config;
 use Contao\Files;
 use Contao\Folder;
+use Contao\Widget;
 use Haste\Util\FileUpload;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
@@ -20,9 +22,6 @@ use Isotope\Model\ProductCollectionItem;
 
 /**
  * Attribute to implement frontend uploads
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Upload extends Attribute implements \uploadable
 {
@@ -79,14 +78,7 @@ class Upload extends Attribute implements \uploadable
         return basename($value);
     }
 
-    /**
-     * @param mixed          $value
-     * @param IsotopeProduct $product
-     * @param \Widget        $widget
-     *
-     * @return mixed
-     */
-    public function processFiles($value, IsotopeProduct $product, \Widget $widget)
+    public function processFiles($value, IsotopeProduct $product, Widget $widget)
     {
         if (!isset($_SESSION['FILES'][$this->field_name]) || empty($_SESSION['FILES'][$this->field_name]['name'])) {
             return $value;
@@ -104,7 +96,7 @@ class Upload extends Attribute implements \uploadable
         $file = $folder->path . '/' . $file;
 
         Files::getInstance()->move_uploaded_file($temp, $file);
-        Files::getInstance()->chmod($file, \Config::get('defaultFileChmod'));
+        Files::getInstance()->chmod($file, Config::get('defaultFileChmod'));
 
         return $file;
     }

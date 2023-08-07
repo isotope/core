@@ -79,15 +79,14 @@ class ShippingCalculator extends Module
 
         $objAddress = $objCart->getShippingAddress();
 
-        // There is no address
-        if (!$objAddress->id) {
-            $this->Template->showResults = false;
+        if (!$objCart->requiresShipping()) {
+            $this->Template->requiresShipping = false;
             return;
         }
 
-        // Get the shipping methods
-        if (!$objCart->requiresShipping()) {
-            $this->Template->requiresShipping = false;
+        // There is no address
+        if (!$objAddress->id) {
+            $this->Template->showResults = false;
             return;
         }
 

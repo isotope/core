@@ -11,8 +11,12 @@
 
 namespace Isotope\Model\Gallery;
 
+use Contao\Environment;
 use Contao\File;
+use Contao\FilesModel;
+use Contao\Picture;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Image\Image;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
@@ -160,7 +164,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     protected function hasPlaceholderImage()
     {
-        return ($this->placeholder && null !== \FilesModel::findByPk($this->placeholder));
+        return ($this->placeholder && null !== FilesModel::findByPk($this->placeholder));
     }
 
     /**
@@ -188,9 +192,9 @@ class Standard extends Gallery implements IsotopeGallery
 
         $objTemplate->javascript = '';
 
-        if (\Environment::get('isAjaxRequest')) {
+        if (Environment::get('isAjaxRequest')) {
             $strScripts = '';
-            $arrTemplates = deserialize($this->lightbox_template, true);
+            $arrTemplates = StringUtil::deserialize($this->lightbox_template, true);
 
             if (!empty($arrTemplates)) {
                 foreach ($arrTemplates as $strTemplate) {
@@ -269,11 +273,11 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->name       = $this->getName();
         $objTemplate->product_id = $this->product_id;
         $objTemplate->file       = $arrFile;
-        $objTemplate->src        = $arrFile[$strType];
-        $objTemplate->size       = $arrFile[$strType . '_size'];
-        $objTemplate->alt        = $arrFile['alt'];
-        $objTemplate->title      = $arrFile['desc'];
-        $objTemplate->class      = trim($this->arrData['class'] . ' ' . $arrFile['class']);
+        $objTemplate->src        = $arrFile[$strType] ?? '';
+        $objTemplate->size       = $arrFile[$strType . '_size'] ?? '';
+        $objTemplate->alt        = $arrFile['alt'] ?? '';
+        $objTemplate->title      = $arrFile['desc'] ?? '';
+        $objTemplate->class      = trim(($this->arrData['class'] ?? '') . ' ' . ($arrFile['class'] ?? ''));
 
         // Add the missing data to the picture
         $arrFile['picture']['alt']   = $objTemplate->alt;
@@ -290,7 +294,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                list($link, $rel) = explode('|', $arrFile['link'], 2);
+                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
@@ -313,7 +317,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     protected function getPlaceholderImage()
     {
-        $objPlaceholder = \FilesModel::findByPk($this->placeholder);
+        $objPlaceholder = FilesModel::findByPk($this->placeholder);
 
         if (null === $objPlaceholder) {
             throw new \UnderflowException('Placeholder image requested but not defined!');
@@ -348,20 +352,19 @@ class Standard extends Gallery implements IsotopeGallery
             $strFile = 'isotope/' . strtolower(substr($strFile, 0, 1)) . '/' . $strFile;
         }
 
-        $objFile = new \File($strFile);
+        $objFile = new File($strFile);
 
         if (!$objFile->exists()) {
             return [];
-            throw new \InvalidArgumentException('The file "' . $strFile . '" does not exist!');
         }
 
-        $size = deserialize($this->{$strType . '_size'}, true);
+        $size = StringUtil::deserialize($this->{$strType . '_size'}, true);
 
         try {
-            $strImage = \Image::create($strFile, $size)->executeResize()->getResizedPath();
-            $picture = \Picture::create($strFile, $size)->getTemplateData();
+            $strImage = \Contao\Image::create($strFile, $size)->executeResize()->getResizedPath();
+            $picture = Picture::create($strFile, $size)->getTemplateData();
         } catch (\Exception $e) {
-            \System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            System::log('Image "' . $strFile . '" could not be processed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
             $strImage = '';
             $picture = array('img'=>array('src'=>'', 'srcset'=>''), 'sources'=>array());
@@ -370,7 +373,7 @@ class Standard extends Gallery implements IsotopeGallery
         // Watermark
         if ($blnWatermark
             && $this->{$strType . '_watermark_image'} != ''
-            && ($objWatermark = \FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
+            && ($objWatermark = FilesModel::findByUuid($this->{$strType . '_watermark_image'})) !== null
         ) {
             if (method_exists(File::class, 'createIfDeferred')) {
                 (new File(rawurldecode($strImage)))->createIfDeferred();
@@ -396,8 +399,8 @@ class Standard extends Gallery implements IsotopeGallery
             $arrFile[$strType . '_imageSize'] = $arrSize;
         }
 
-        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'], true);
-        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'], true);
+        $arrFile['alt']     = StringUtil::specialchars($arrFile['alt'] ?? '', true);
+        $arrFile['desc']    = StringUtil::specialchars($arrFile['desc'] ?? '', true);
         $arrFile['picture'] = $picture;
 
         $arrFile[$strType] = TL_ASSETS_URL . $strImage;

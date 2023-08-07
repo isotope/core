@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_iso_rule_usage'] = array
         ),
         'member_id' => array
         (
-            'foreignKey'            => \MemberModel::getTable().'.username',
+            'foreignKey'            => \Contao\MemberModel::getTable().'.username',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),

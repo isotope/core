@@ -11,7 +11,9 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Contao\Module;
+use Contao\System;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -20,7 +22,7 @@ use Isotope\Message;
 class ReorderAction extends AbstractButton
 {
     /**
-     * @var \Module
+     * @var Module
      */
     private $module;
 
@@ -63,14 +65,12 @@ class ReorderAction extends AbstractButton
 
         Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
 
-        \Controller::redirect(
+        Controller::redirect(
             Url::addQueryString(
-                'continue=' . base64_encode(\System::getReferer()),
+                'continue=' . base64_encode(System::getReferer()),
                 $this->module->iso_cart_jumpTo
             )
         );
-
-        return true;
     }
 
     /**

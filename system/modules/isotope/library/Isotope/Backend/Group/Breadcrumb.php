@@ -11,11 +11,18 @@
 
 namespace Isotope\Backend\Group;
 
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Controller;
+use Contao\Database;
+use Contao\Environment;
+use Contao\Input;
+use Contao\Session;
 use Contao\StringUtil;
 use Isotope\Model\Group;
 
 
-class Breadcrumb extends \Backend
+class Breadcrumb extends Backend
 {
 
     /**
@@ -27,12 +34,12 @@ class Breadcrumb extends \Backend
     public static function generate($intId, $intProductId = null)
     {
         $arrGroups  = array();
-        $objSession = \Session::getInstance();
+        $objSession = Session::getInstance();
 
         // Set a new gid
         if (isset($_GET['gid'])) {
-            $objSession->set('iso_products_gid', \Input::get('gid'));
-            \Controller::redirect(preg_replace('/&gid=[^&]*/', '', \Environment::get('request')));
+            $objSession->set('iso_products_gid', Input::get('gid'));
+            Controller::redirect(preg_replace('/&gid=[^&]*/', '', Environment::get('request')));
         }
 
         // Return if there is no trail
@@ -40,8 +47,8 @@ class Breadcrumb extends \Backend
             return '';
         }
 
-        $objUser     = \BackendUser::getInstance();
-        $objDatabase = \Database::getInstance();
+        $objUser     = BackendUser::getInstance();
+        $objDatabase = Database::getInstance();
 
         // Include the product in variants view
         if ($intProductId) {
@@ -78,7 +85,7 @@ class Breadcrumb extends \Backend
         } while ($objGroup->pid);
 
         $arrLinks = array();
-        $strUrl   = \Environment::get('request');
+        $strUrl   = Environment::get('request');
 
         // Remove the product ID from URL
         if ($intProductId) {

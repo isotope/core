@@ -1,0 +1,58 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_nc_notification.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.0">
+        <source>Product collection template</source>
+        <target>Produkt samling mall</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_collectionTpl.1">
+        <source>Please choose a template to render the products for the notification content.</source>
+        <target>Om du placerar modulen i en artikel kommer den att visa produkter som tilldelats artikelns delsida, även om du placerar artikeln på en annan sida (t.ex. med hjälp av insert tag).</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Sortering</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Definiera i vilken ordning samlingsobjekten ska listas.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.0">
+        <source>Gallery</source>
+        <target>Galleri</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Välj ett galleri för att rendera bilder.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_document.0">
+        <source>Document</source>
+        <target>Dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.iso_document.1">
+        <source>If you would like to attach a document to the notification, choose one here and use the simple token in the notification center.</source>
+        <target>Om du vill bifoga ett dokument till aviseringen, välj ett här och använd den enkla token i meddelandecentret.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_status_change.0">
+        <source>Order status change</source>
+        <target>Ändring av orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_order_status_change.1">
+        <source>This notification type can be sent when the order status changes.</source>
+        <target>Denna meddelandetyp kan skickas när orderstatusen ändras.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_memberaddress_change.0">
+        <source>Addressbook change</source>
+        <target>Byte av adressbok</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.iso_memberaddress_change.1">
+        <source>This notification type can be sent when the customer makes changes in his addressbook.</source>
+        <target>Denna meddelandetyp kan skickas när kunden gör ändringar i sin adressbok.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

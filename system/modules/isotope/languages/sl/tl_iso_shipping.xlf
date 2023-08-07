@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_shipping.xlf" source-language="en" target-language="sl">
     <body>
       <trans-unit id="tl_iso_shipping.name.0">
@@ -63,6 +63,48 @@
       </trans-unit>
       <trans-unit id="tl_iso_shipping.shipping_weight.1">
         <source>Adds additional weight to the shipping to account for packaging material.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.0">
+        <source>Price calculation</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculation.1">
+        <source>Select how the shipping price should be calculated.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.0">
+        <source>Highest price of product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestProduct.1">
+        <source>Uses the highest shipping price of one product in the cart.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.0">
+        <source>Lowest price of product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestProduct.1">
+        <source>Uses the lowest shipping price of one product in the cart.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.0">
+        <source>Sum of price per product</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumProducts.1">
+        <source>Uses a summary of all shipping prices of all products in the cart.</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.0">
+        <source>Highest price of items</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.highestItem.1">
+        <source>Uses the highest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.0">
+        <source>Lowest price of items</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.lowestItem.1">
+        <source>Uses the lowest shipping price of one product item (shipping price multiplied by quantity in cart).</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.0">
+        <source>Sum of price per items</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_shipping.productCalculationOptions.sumItems.1">
+        <source>Uses a summary of all shipping prices of all product items (shipping price multiplied by quantity in cart).</source>
       </trans-unit>
       <trans-unit id="tl_iso_shipping.countries.0">
         <source>Countries</source>

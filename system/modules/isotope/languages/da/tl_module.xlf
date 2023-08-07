@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="da">
     <body>
       <trans-unit id="tl_module.iso_list_layout.0">
@@ -165,13 +165,44 @@
         <source>Order conditions form</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
-        <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
+        <source>Configure custom forms that are display in the checkout process (e.g. for your order terms and conditions).</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.0">
-        <source>Position of order conditions form</source>
+      <trans-unit id="tl_module.iso_order_conditions.form.0">
+        <source>Form</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.1">
-        <source>Define if the order condition form should be shown before or after the products list.</source>
+      <trans-unit id="tl_module.iso_order_conditions.step.0">
+        <source>Checkout Step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.0">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.0">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.1">
+        <source>You can restrict this checkout form to certain product types. If the cart contains a product type you have not selected, the checkout form is not shown.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.0">
+        <source>Product type condition</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.before">
+        <source>Before step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.after">
+        <source>After step</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.top">
         <source>On top (before address)</source>
@@ -278,8 +309,29 @@
       <trans-unit id="tl_module.iso_rangeFields.1">
         <source>Please configure the range filter fields.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.mode">
+        <source>Filter mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.range">
+        <source>Range</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.min">
+        <source>Higher than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.max">
+        <source>Lower than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.fields">
+        <source>Value within</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute">
         <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max">
+        <source>Attribute to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max_blank">
+        <source>(only select for mode &quot;Value within&quot;)</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>

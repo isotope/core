@@ -11,10 +11,14 @@
 
 namespace Isotope\Backend\RelatedProduct;
 
+use Contao\Backend;
+use Contao\Database;
+use Contao\Input;
+use Contao\StringUtil;
 use Isotope\Model\RelatedCategory;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -29,11 +33,11 @@ class Callback extends \Backend
 
         $strBuffer = '<div class="cte_type" style="color:#666966"><strong>' . $GLOBALS['TL_LANG']['tl_iso_related_product']['category'][0] . ':</strong> ' . $strCategory . '</div>';
 
-        $arrProducts = trimsplit(',', $row['products']);
+        $arrProducts = StringUtil::trimsplit(',', $row['products']);
 
         if (!empty($arrProducts) && \is_array($arrProducts)) {
             $strBuffer .= '<div class="limit_height' . (!$GLOBALS['TL_CONFIG']['doNotCollapse'] ? ' h0' : '') . ' block"><ul>';
-            $objProducts = \Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE " . \Database::getInstance()->findInSet('id', $arrProducts) . " ORDER BY name");
+            $objProducts = Database::getInstance()->execute("SELECT * FROM tl_iso_product WHERE " . Database::getInstance()->findInSet('id', $arrProducts) . " ORDER BY name");
 
             while ($objProducts->next()) {
                 $strBuffer .= '<li>' . $objProducts->name . '</li>';
@@ -49,17 +53,16 @@ class Callback extends \Backend
     /**
      * Initialize the data container
      * @param object
-     * @return string
      */
     public function initDCA($dc)
     {
         $arrCategories = array();
-        $objCategories = \Database::getInstance()
+        $objCategories = Database::getInstance()
             ->prepare('
-                SELECT * FROM tl_iso_related_category 
+                SELECT * FROM tl_iso_related_category
                 WHERE id NOT IN (
-                    SELECT category FROM tl_iso_related_product 
-                    WHERE pid=' . (\strlen(\Input::get('act')) ? "(SELECT pid FROM tl_iso_related_product WHERE id=?) AND id!=?" : '?') . '
+                    SELECT category FROM tl_iso_related_product
+                    WHERE pid=' . (\strlen(Input::get('act')) ? "(SELECT pid FROM tl_iso_related_product WHERE id=?) AND id!=?" : '?') . '
                 )
             ')
             ->execute($dc->id, $dc->id)
@@ -73,10 +76,10 @@ class Callback extends \Backend
             $GLOBALS['TL_DCA']['tl_iso_related_product']['config']['closed'] = true;
         }
 
-        if ('edit' === \Input::get('act')) {
+        if ('edit' === Input::get('act')) {
             unset($GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['foreignKey']);
             $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['category']['options']            = $arrCategories;
-            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = \Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
+            $GLOBALS['TL_DCA']['tl_iso_related_product']['fields']['products']['eval']['allowedIds'] = Database::getInstance()->prepare("SELECT id FROM tl_iso_product WHERE pid=0 AND id!=(SELECT pid FROM tl_iso_related_product WHERE id=?)")->execute($dc->id)->fetchEach('id');
         }
     }
 }

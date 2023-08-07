@@ -11,6 +11,7 @@
 
 namespace Isotope\RequestCache;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeAttributeWithRange;
 use Isotope\Interfaces\IsotopeProduct;
@@ -19,8 +20,6 @@ use Isotope\Model\Product;
 
 /**
  * Build filter configuration for request cache
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class Filter implements \ArrayAccess
 {
@@ -198,7 +197,7 @@ class Filter implements \ArrayAccess
      */
     public function getGroup()
     {
-        return (string) $this->arrConfig['group'];
+        return (string) ($this->arrConfig['group'] ?? null);
     }
 
     /**
@@ -232,7 +231,7 @@ class Filter implements \ArrayAccess
         }
 
         if (!\is_array($varValues)) {
-            $varValues = deserialize($varValues, true);
+            $varValues = StringUtil::deserialize($varValues, true);
         }
 
         foreach ($varValues as $varValue) {

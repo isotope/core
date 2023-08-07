@@ -1,0 +1,582 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_config.name.0">
+        <source>Configuration Name</source>
+        <target>Konfigurationsnamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name.1">
+        <source>Please enter a name for your configuration. This is only used for back end reference.</source>
+        <target>Ange ett namn för din konfiguration. Detta används endast för backend-referens.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.label.1">
+        <source>The label is used in frontend, e.g. for config switcher.</source>
+        <target>Etiketten används i frontend, t.ex. för config switcher.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.0">
+        <source>Set as default store</source>
+        <target>Ställ in som standardbutik</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.fallback.1">
+        <source>Set this as the default store for back-end currency formatting and other locale-specific information.</source>
+        <target>Ställ in detta som standardbutik för backend-valutaformatering och annan lokalspecifik information.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.0">
+        <source>First name</source>
+        <target>Förnamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.firstname.1">
+        <source>Please enter the first name (if applicable).</source>
+        <target>Ange förnamnet (om tillämpligt).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.0">
+        <source>Last name</source>
+        <target>Efternamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.lastname.1">
+        <source>Please enter the last name (if applicable).</source>
+        <target>Ange efternamnet (om tillämpligt).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.0">
+        <source>Company</source>
+        <target>Företag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.company.1">
+        <source>You can enter a company name here (if applicable).</source>
+        <target>Du kan ange ett företagsnamn här (om tillämpligt).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.0">
+        <source>VAT No.</source>
+        <target>Momsregistreringsnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Vänligen ange ett momsnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.0">
+        <source>Street</source>
+        <target>Gata</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Ange gatunamn och gatunummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.0">
+        <source>Street 2</source>
+        <target>Gata 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Ange en andra gatuinformation om det finns någon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.0">
+        <source>Street 3</source>
+        <target>Gata 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Ange information om en tredje gata om det finns någon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.0">
+        <source>Postal code</source>
+        <target>Postnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Vänligen ange postnumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.0">
+        <source>City</source>
+        <target>Stad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Vänligen ange namnet på staden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.0">
+        <source>State</source>
+        <target>Stat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Vänligen ange namnet på staten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.country.1">
+        <source>Please select a country. This is also the default for custom shipping/billing addresses.</source>
+        <target>Välj ett land. Detta är också standard för anpassade leverans-/faktureringsadresser.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Vänligen ange telefonnumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.0">
+        <source>Shipping email address</source>
+        <target>Leverans e-postadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Vänligen ange en giltig e-postadress.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.0">
+        <source>Bank name</source>
+        <target>Bank namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankName.1">
+        <source>Please enter your bank name.</source>
+        <target>Vänligen ange ditt banknamn.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.0">
+        <source>Bank account number (IBAN)</source>
+        <target>Bankkontonummer (IBAN)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankAccount.1">
+        <source>Please enter your bank account number (IBAN).</source>
+        <target>Ange ditt bankkontonummer (IBAN).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.0">
+        <source>Bank code (BIC/SWIFT)</source>
+        <target>Bankkod (BIC/SWIFT)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bankCode.1">
+        <source>Please enter your bank code (BIC/SWIFT).</source>
+        <target>Ange din bankkod (BIC/SWIFT).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.0">
+        <source>Tax number</source>
+        <target>Skattenummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.taxNumber.1">
+        <source>Here you can enter your tax number.</source>
+        <target>Här kan du ange ditt skattenummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.0">
+        <source>Address fields</source>
+        <target>Adressfält</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.1">
+        <source>Select the fields for a billing and shipping address when checking out.</source>
+        <target>Välj fälten för en fakturerings- och leveransadress när du checkar ut.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.billing.0">
+        <source>For billing address</source>
+        <target>För faktureringsadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.shipping.0">
+        <source>For shipping address</source>
+        <target>För leveransadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.disabled">
+        <source>Disabled</source>
+        <target>Inaktiverad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.enabled">
+        <source>Enabled (not mandatory)</source>
+        <target>Aktiverad (inte obligatorisk)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_fields.mandatory">
+        <source>Enabled (mandatory)</source>
+        <target>Aktiverad (obligatorisk)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.0">
+        <source>Default billing country</source>
+        <target>Standard faktureringsland</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_country.1">
+        <source>Select a default country for new billing addresses.</source>
+        <target>Välj ett standardland för nya faktureringsadresser.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.0">
+        <source>Default shipping country</source>
+        <target>Standard fraktland</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_country.1">
+        <source>Select a default country for new shipping addresses.</source>
+        <target>Välj ett standardland för nya leveransadresser.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.0">
+        <source>Available billing countries</source>
+        <target>Tillgängliga faktureringsländer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.billing_countries.1">
+        <source>Select the countries you want to allow for checkout billing address. Select none to allow all countries.</source>
+        <target>Välj de länder du vill tillåta för faktureringsadress för kassan. Välj ingen för att tillåta alla länder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.0">
+        <source>Available shipping countries</source>
+        <target>Tillgängliga leveransländer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.shipping_countries.1">
+        <source>Select the countries you want to allow for checkout shipping address. Select none to allow all countries.</source>
+        <target>Välj de länder du vill tillåta för leveransadress för kassan. Välj ingen för att tillåta alla länder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.0">
+        <source>Limit member countries</source>
+        <target>Begränsa medlemsländerna</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.limitMemberCountries.1">
+        <source>Limit member countries (Registration, Personal Data) to the combined list of billing and shipping countries.</source>
+        <target>Begränsa medlemsländerna (registrering, personuppgifter) till den kombinerade listan över fakturerings- och leveransländer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.0">
+        <source>VAT No. validation</source>
+        <target>VAT-nr validering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.vatNoValidators.1">
+        <source>If you enable one or multiple services, the VAT No. address field will be validated.</source>
+        <target>Om du aktiverar en eller flera tjänster kommer adressfältet för VAT-nummer att valideras.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.0">
+        <source>Price display</source>
+        <target>Prisvisning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceDisplay.1">
+        <source>Select if you want to display net or gross prices in your shop. See the help wizard for more information.</source>
+        <target>Välj om du vill visa netto- eller bruttopriser i din butik. Se hjälpguiden för mer information.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.0">
+        <source>Price formatting</source>
+        <target>Prisformatering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyFormat.1">
+        <source>Choose a formatting for prices.</source>
+        <target>Välj en formatering för priser.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.0">
+        <source>Rounding precision</source>
+        <target>Avrundningsprecision</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundPrecision.1">
+        <source>How much decimal precision to have. You should set something between 0 and 2 for all payment gateways to work correctly. See PHP manual for round().</source>
+        <target>Hur mycket decimalprecision man ska ha. Du bör ställa in något mellan 0 och 2 för att alla betalningsgateways ska fungera korrekt. Se PHP-manualen för round().</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.0">
+        <source>Rounding increment</source>
+        <target>Avrundningssteg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceRoundIncrement.1">
+        <source>Some currencies (e.g. swiss francs) do not support 0.01 precision.</source>
+        <target>Vissa valutor (t.ex. schweiziska franc) stöder inte 0,01 precision.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency.1">
+        <source>Please select a currency for this store.</source>
+        <target>Välj en valuta för denna butik.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.0">
+        <source>Position of currency code/symbol</source>
+        <target>Position för valutakod/symbol</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyPosition.1">
+        <source>Select if you want to show currency on the left or right side of the price.</source>
+        <target>Välj om du vill visa valuta på vänster eller höger sida av priset.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.0">
+        <source>Use currency symbol</source>
+        <target>Använd valutasymbol</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySymbol.1">
+        <source>Use a currency symbol ($, €) if available.</source>
+        <target>Använd en valutasymbol ($, €) om tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.0">
+        <source>Include blank space</source>
+        <target>Inkludera tomt utrymme</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencySpace.1">
+        <source>Add space between price and currency symbol.</source>
+        <target>Lägg till mellanslag mellan pris och valutasymbol.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.0">
+        <source>Price factor</source>
+        <target>Prisfaktor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateFactor.1">
+        <source>Defaults should be 1. You can use this to convert between multiple currencies.</source>
+        <target>Standardvärdena bör vara 1. Du kan använda detta för att konvertera mellan flera valutor.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.0">
+        <source>Calculation mode</source>
+        <target>Beräkningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.priceCalculateMode.1">
+        <source>Divide or multiply using this factor.</source>
+        <target>Dividera eller multiplicera med denna faktor.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.0">
+        <source>Automatic currency conversion</source>
+        <target>Automatisk valutaomvandling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyAutomator.1">
+        <source>Enable automatic update of price calcuation factors by using an online currency conversion provider.</source>
+        <target>Aktivera automatisk uppdatering av prisberäkningsfaktorer genom att använda en onlineleverantör av valutaomvandling.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.0">
+        <source>Currency origin</source>
+        <target>Källvaluta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyOrigin.1">
+        <source>Please select the source currency for calculation.</source>
+        <target>Välj källvaluta för beräkning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.0">
+        <source>Currency Data Provider</source>
+        <target>Valutadataleverantör</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currencyProvider.1">
+        <source>Select an available online provider of currency calculation data.</source>
+        <target>Välj en tillgänglig onlineleverantör av valutaberäkningsdata.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.0">
+        <source>Order number prefix</source>
+        <target>Ordernummer prefix</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderPrefix.1">
+        <source>You can add a prefix (e.g. fiscal year) to the auto-incrementing order number.</source>
+        <target>Du kan lägga till ett prefix (t.ex. räkenskapsår) till det automatiskt ökande ordernumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.0">
+        <source>Order number length</source>
+        <target>Ordernummerlängd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDigits.1">
+        <source>Select the minimum length of the order number (not including order prefix).</source>
+        <target>Välj minsta längd på beställningsnumret (exklusive beställningsprefix).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.0">
+        <source>Status for new orders</source>
+        <target>Status för nya beställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_new.1">
+        <source>Choose a matching status for new orders. A payment module can override this.</source>
+        <target>Välj en matchande status för nya beställningar. En betalningsmodul kan åsidosätta detta.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.0">
+        <source>Order status on error</source>
+        <target>Orderstatus vid fel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderstatus_error.1">
+        <source>Select an order status if something goes wrong (e.g. payment).</source>
+        <target>Välj en orderstatus om något går fel (t.ex. betalning).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.0">
+        <source>Module for backend view</source>
+        <target>Modul för backend-vy</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.orderDetailsModule.1">
+        <source>Select a order details module that is used to show the order in the backend.</source>
+        <target>Välj en orderinformationsmodul som används för att visa ordern i backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.0">
+        <source>Invoice Logo</source>
+        <target>Fakturalogotyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.invoiceLogo.1">
+        <source>Select a logo to show up on the invoices for this store.</source>
+        <target>Välj en logotyp som ska visas på fakturorna för den här butiken.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.0">
+        <source>Templates folder</source>
+        <target>Mallmapp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.templateGroup.1">
+        <source>Here you can select a templates folder to search before every other template folder.</source>
+        <target>Här kan du välja en mallmapp att söka före varje annan mallmapp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Minsta delsumma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.cartMinSubtotal.1">
+        <source>The minimum cart subtotal required to order. Enter 0 to disable.</source>
+        <target>Minsta delsumma för varukorgen som krävs för att beställa. Ange 0 för att inaktivera.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.0">
+        <source>Duration to mark a product as &quot;new&quot;</source>
+        <target>Varaktighet för att markera en produkt som &quot;ny&quot;</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.newProductPeriod.1">
+        <source>If you would like to highlight new products, you can enter a time period here. It will automatically add a CSS class &quot;new&quot; to every product everywhere within Isotope eCommerce.</source>
+        <target>Om du vill lyfta fram nya produkter kan du ange en tidsperiod här. Det kommer automatiskt att lägga till en CSS-klass &quot;ny&quot; till varje produkt överallt inom Isotope eCommerce.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.0">
+        <source>Enable Google Analytics</source>
+        <target>Aktivera Google Analytics</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_enable.1">
+        <source>Enable e-commerce tracking with Google Analytics.</source>
+        <target>Aktivera spårning av e-handel med Google Analytics.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.0">
+        <source>Account</source>
+        <target>Konto</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_account.1">
+        <source>Please provde the account key (UA-XXXXXXX-X).</source>
+        <target>Ange kontonyckeln (UA-XXXXXXX-X).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.0">
+        <source>Track member</source>
+        <target>Spårmedlem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ga_member.1">
+        <source>Enter simple tokens to track a member (e.g. ##firstname## ##lastname##). ATTENTION: make sure you're allowed to do this!</source>
+        <target>Ange enkla tokens för att spåra en medlem (t.ex. ##firstname## ##efternamn##). OBS: se till att du får göra detta!</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.left">
+        <source>To the left of price</source>
+        <target>Till vänster om priset</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.right">
+        <source>To the right of price</source>
+        <target>Till höger om priset</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.div">
+        <source>Divide</source>
+        <target>Dividera</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.mul">
+        <source>Multiply</source>
+        <target>Multiplicera</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwName.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWidth.0">
+        <source>Width</source>
+        <target>Bredd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwHeight.0">
+        <source>Height</source>
+        <target>Höjd</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwMode.0">
+        <source>Mode</source>
+        <target>Läge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwWatermark.0">
+        <source>Watermark image</source>
+        <target>Vattenstämpel bild</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.iwPosition.0">
+        <source>Position</source>
+        <target>Position</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.ecb_int">
+        <source>European Central Bank</source>
+        <target>Europeiska centralbanken</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.admin_ch">
+        <source>Swiss Federal Department of Finance</source>
+        <target>Schweiziska federala finansdepartementet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.0">
+        <source>New configuration</source>
+        <target>Ny konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.new.1">
+        <source>Create a new store configuration.</source>
+        <target>Skapa en ny butikskonfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.0">
+        <source>Edit configuration</source>
+        <target>Redigera konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.edit.1">
+        <source>Edit store configuration ID %s.</source>
+        <target>Redigera butikskonfigurations ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.0">
+        <source>Copy configuration</source>
+        <target>Kopiera konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.copy.1">
+        <source>Copy store configuration ID %s.</source>
+        <target>Kopiera butikskonfigurations ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.0">
+        <source>Delete configuration</source>
+        <target>Ta bort konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.delete.1">
+        <source>Delete store configuration ID %s.</source>
+        <target>Ta bort butikskonfigurations ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.0">
+        <source>Show configuration details</source>
+        <target>Visa konfigurationsdetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.show.1">
+        <source>Show details for store configuration ID %s.</source>
+        <target>Visa detaljer för butikskonfigurations ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.name_legend">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.address_legend">
+        <source>Address configuration</source>
+        <target>Adresskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.config_legend">
+        <source>Configuration</source>
+        <target>Konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.checkout_legend">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.bank_legend">
+        <source>Bank details</source>
+        <target>Bankuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.pricing_legend">
+        <source>Pricing</source>
+        <target>Prissättning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.currency_legend">
+        <source>Currency formatting</source>
+        <target>Valutaformatering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.converter_legend">
+        <source>Currency conversion</source>
+        <target>Valutaväxling</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.order_legend">
+        <source>Orders</source>
+        <target>Order</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.images_legend">
+        <source>Images</source>
+        <target>Bilder</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.url_legend">
+        <source>URL settings</source>
+        <target>URL-inställningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.products_legend">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.analytics_legend">
+        <source>Analytics</source>
+        <target>Analytics</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
 use Contao\Controller;
@@ -18,6 +19,11 @@ use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\Database;
 use Contao\DataContainer;
+use Contao\Environment;
+use Contao\Image;
+use Contao\Input;
+use Contao\Message;
+use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
@@ -37,7 +43,7 @@ use Isotope\Module\OrderDetails;
 use NotificationCenter\Model\Notification;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -45,12 +51,11 @@ class Callback extends \Backend
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
      * @param array          $args
      *
-     * @return string
+     * @return array
      */
-    public function getOrderLabel($row, $label, \DataContainer $dc, $args)
+    public function getOrderLabel($row, $label, DataContainer $dc, array $args)
     {
         /** @var Order $objOrder */
         $objOrder = Order::findByPk($row['id']);
@@ -62,20 +67,26 @@ class Callback extends \Backend
         // Override system to correctly format currencies etc
         Isotope::setConfig($objOrder->getRelated('config_id'));
 
-        $objAddress = $objOrder->getBillingAddress();
+        foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
+            switch ($field) {
+                case 'billing_address_id':
+                    if (null !== ($objAddress = $objOrder->getBillingAddress())) {
+                        $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
+                        $args[$i] = $arrTokens['hcard_fn'];
+                    }
+                    break;
 
-        if (null !== $objAddress) {
-            $arrTokens = $objAddress->getTokens(Isotope::getConfig()->getBillingFieldsConfig());
-            $args[3]   = $arrTokens['hcard_fn'];
-        }
+                case 'total':
+                    $args[$i] = Isotope::formatPriceWithCurrency($row['total']);
+                    break;
 
-        $args[4] = Isotope::formatPriceWithCurrency($row['total']);
-
-        /** @var \Isotope\Model\OrderStatus $objStatus */
-        if (($objStatus = $objOrder->getRelated('order_status')) !== null) {
-            $args[5] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
-        } else {
-            $args[5] = '<span>' . $objOrder->getStatusLabel() . '</span>';
+                case 'order_status':
+                    /** @var OrderStatus $objStatus */
+                    if (null !== ($objStatus = $objOrder->getRelated('order_status'))) {
+                        $args[$i] = '<span style="' . $objStatus->getColorStyles() . '">' . $objOrder->getStatusLabel() . '</span>';
+                    }
+                    break;
+            }
         }
 
         return $args;
@@ -92,7 +103,7 @@ class Callback extends \Backend
     {
         $objOrder = Order::findByPk($dc->id);
 
-        if ($objOrder === null) {
+        if (null === $objOrder) {
             return '';
         }
 
@@ -108,10 +119,10 @@ class Callback extends \Backend
         }
 
         // Generate a regular order details module
-        \Input::setGet('uid', $objOrder->uniqid);
+        Input::setGet('uid', $objOrder->uniqid);
         $objModule = new OrderDetails($moduleModel);
 
-        return \Controller::replaceInsertTags($objModule->generate(true));
+        return Controller::replaceInsertTags($objModule->generate(true));
     }
 
     /**
@@ -122,7 +133,7 @@ class Callback extends \Backend
         $objOrder = Order::findByPk($dc->id);
 
         if (null === $objOrder) {
-            \Controller::redirect('contao/main.php?act=error');
+            Controller::redirect('contao/main.php?act=error');
         }
 
         $strBuffer = '
@@ -166,7 +177,7 @@ class Callback extends \Backend
             throw new InternalServerErrorException('Order ID '.$dc->id.' not found');
         }
 
-        $arrEmail = deserialize($objOrder->email_data, true);
+        $arrEmail = StringUtil::deserialize($objOrder->email_data, true);
 
         if (empty($arrEmail) || !\is_array($arrEmail)) {
             return '<div class="tl_info">' . $GLOBALS['TL_LANG']['tl_iso_product_collection']['noEmailData'] . '</div>';
@@ -186,7 +197,7 @@ class Callback extends \Backend
 
             $strBuffer .= '
   <tr>
-    <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?: $k) . ': <small>'.$k.'</small></td>
+    <td class="tl_label">' . ($GLOBALS['TL_LANG']['tl_iso_product_collection']['emailData'][$k] ?? $k) . ': <small>'.$k.'</small></td>
     <td>' . $strValue . '</td>
   </tr>';
         }
@@ -241,8 +252,8 @@ class Callback extends \Backend
             return '<div class="tl_gerror">No address data available.</div>';
         }
 
-        \System::loadLanguageFile(Address::getTable());
-        \Controller::loadDataContainer(Address::getTable());
+        System::loadLanguageFile(Address::getTable());
+        Controller::loadDataContainer(Address::getTable());
 
         $strBuffer = '
 <div>
@@ -281,7 +292,7 @@ class Callback extends \Backend
 
         // Only admins can delete orders. Others should set the order_status to cancelled.
         unset($GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['operations']['delete']);
-        if ('delete' === \Input::get('act') || 'deleteAll' === \Input::get('act')) {
+        if ('delete' === Input::get('act') || 'deleteAll' === Input::get('act')) {
             throw new AccessDeniedException('Only admin can delete orders!');
         }
 
@@ -309,7 +320,7 @@ class Callback extends \Backend
             }
 
             if (!empty($arrLike)) {
-                $memberIds = \Database::getInstance()->execute(
+                $memberIds = Database::getInstance()->execute(
                     'SELECT id FROM tl_member WHERE '.implode(' OR ', $arrLike)
                 )->fetchEach('id');
             }
@@ -326,7 +337,7 @@ class Callback extends \Backend
         }
 
         if (!empty($arrWhere) && !\in_array(false, $arrWhere, true)) {
-            $objOrders = \Database::getInstance()->query(
+            $objOrders = Database::getInstance()->query(
                 'SELECT id FROM tl_iso_product_collection WHERE '.implode(' AND ', $arrWhere)
             );
 
@@ -337,8 +348,8 @@ class Callback extends \Backend
 
         $GLOBALS['TL_DCA']['tl_iso_product_collection']['list']['sorting']['root'] = $arrIds;
 
-        if (\Input::get('id') != '' && !\in_array(\Input::get('id'), $arrIds)) {
-            throw new AccessDeniedException('Trying to access disallowed order ID ' . \Input::get('id'));
+        if (Input::get('id') != '' && !\in_array(Input::get('id'), $arrIds)) {
+            throw new AccessDeniedException('Trying to access disallowed order ID ' . Input::get('id'));
         }
     }
 
@@ -369,7 +380,7 @@ class Callback extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -429,7 +440,7 @@ class Callback extends \Backend
             return '';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -482,33 +493,31 @@ class Callback extends \Backend
             $hasDocuments = Database::getInstance()->execute('SELECT COUNT(*) AS count FROM tl_iso_document')->count > 0;
         }
 
-        return $hasDocuments ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return $hasDocuments ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
      * Pass an order to the document
      *
-     * @param \DataContainer $dc
-     *
      * @throws \Exception
      * @return string
      */
-    public function printDocument(\DataContainer $dc)
+    public function printDocument(DataContainer $dc)
     {
-        $strRedirectUrl = str_replace('&key=print_document', '', \Environment::get('request'));
+        $strRedirectUrl = str_replace('&key=print_document', '', Environment::get('request'));
 
-        if ('tl_iso_print_document' === \Input::post('FORM_SUBMIT')) {
+        if ('tl_iso_print_document' === Input::post('FORM_SUBMIT')) {
             if (($objOrder = Order::findByPk($dc->id)) === null) {
-                \Message::addError('Could not find order id.');
-                \Controller::redirect($strRedirectUrl);
+                Message::addError('Could not find order id.');
+                Controller::redirect($strRedirectUrl);
             }
 
             Frontend::loadOrderEnvironment($objOrder);
 
             /** @var \Isotope\Interfaces\IsotopeDocument $objDocument */
-            if (($objDocument = Document::findByPk(\Input::post('document'))) === null) {
-                \Message::addError('Could not find document id.');
-                \Controller::redirect($strRedirectUrl);
+            if (($objDocument = Document::findByPk(Input::post('document'))) === null) {
+                Message::addError('Could not find document id.');
+                Controller::redirect($strRedirectUrl);
             }
 
             $objDocument->outputToBrowser($objOrder);
@@ -523,10 +532,16 @@ class Callback extends \Backend
             'eval'       => array('mandatory' => true),
         );
 
-        $objSelect = new \SelectMenu(\SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']));
+        $arrSelect = SelectMenu::getAttributesFromDca($arrSelect, $arrSelect['name']);
 
-        $strMessages = \Message::generate();
-        \Message::reset();
+        if (\count($arrSelect['options'] ?? []) > 1) {
+            array_unshift($arrSelect['options'], ['value' => '', 'label' => '-']);
+        }
+
+        $objSelect = new SelectMenu($arrSelect);
+
+        $strMessages = Message::generate();
+        Message::reset();
 
         // Return form
         return '
@@ -536,7 +551,7 @@ class Callback extends \Backend
 
 <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id) . '</h2>' . $strMessages . '
 
-<form action="' . ampersand(\Environment::get('request'), true) . '" id="tl_iso_product_import" class="tl_form" method="post">
+<form id="tl_iso_product_import" class="tl_form" method="post">
 <div class="tl_formbody_edit">
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
@@ -671,7 +686,7 @@ class Callback extends \Backend
                     if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
                         $previousLogData = $previousLogModel->getData();
 
-                        if ($previousLogData[$field] === $value) {
+                        if (($previousLogData[$field] ?? null) === $value) {
                             continue;
                         }
                     }
@@ -696,7 +711,7 @@ class Callback extends \Backend
 
             if (isset($GLOBALS['ISO_HOOKS']['generateOrderLog']) && \is_array($GLOBALS['ISO_HOOKS']['generateOrderLog'])) {
                 foreach ($GLOBALS['ISO_HOOKS']['generateOrderLog'] as $callback) {
-                    \System::importStatic($callback[0])->{$callback[1]}($order, $logs);
+                    System::importStatic($callback[0])->{$callback[1]}($order, $logs);
                 }
             }
 
@@ -712,15 +727,20 @@ class Callback extends \Backend
         return $template->parse();
     }
 
-    public function prepareOrderLog(DataContainer $dc)
+    public function prepareOrderLog(DataContainer $dc): void
     {
+        // Do not handle order log when toggling the notification subpalette
+        if ('toggleSubpalette' === Input::post('action')) {
+            return;
+        }
+
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
         $GLOBALS['TL_DCA']['tl_iso_product_collection']['config']['onsubmit_callback'][] = function (DataContainer $dc) {
             $this->writeOrderLog($dc);
         };
 
-        if ('edit' === \Input::get('act')) {
+        if ('edit' === Input::get('act')) {
             $GLOBALS['TL_DCA']['tl_iso_product_collection']['edit']['buttons_callback'][] = static function () { return []; };
         }
 
@@ -737,7 +757,7 @@ class Callback extends \Backend
     /**
      * On data container submit callback.
      */
-    public function writeOrderLog($dc)
+    public function writeOrderLog($dc): void
     {
         if (empty($GLOBALS['ISO_ORDER_LOG']) || ($order = Order::findByPk($dc->id)) === null) {
             return;
@@ -790,7 +810,7 @@ class Callback extends \Backend
         $blnNotificationError = null;
 
         // Send a notification
-        if ($logData['sendNotification'] && $logData['notification'] && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
+        if (($logData['sendNotification'] ?? false) && ($logData['notification'] ?? null) && ($objNotification = Notification::findByPk($logData['notification'])) !== null) {
             $objOldStatus = OrderStatus::findByPk($oldOrderStatus);
             $objNewStatus = OrderStatus::findByPk($order->order_status);
 
@@ -808,7 +828,7 @@ class Callback extends \Backend
 
             if (\in_array(false, $arrResult, true)) {
                 $blnNotificationError = true;
-                \System::log(
+                System::log(
                     'Error sending status update notification for order ID ' . $order->id,
                     __METHOD__,
                     TL_ERROR
@@ -819,12 +839,12 @@ class Callback extends \Backend
         }
 
         if ('BE' === TL_MODE) {
-            \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
+            Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {
-                \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
+                Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationError']);
             } elseif ($blnNotificationError === false) {
-                \Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
+                Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusNotificationSuccess']);
             }
         }
     }

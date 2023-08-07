@@ -11,9 +11,11 @@
 
 namespace Isotope\CheckoutStep;
 
+use Contao\Controller;
+use Contao\StringUtil;
 use Isotope\Module\Checkout;
 
-abstract class CheckoutStep extends \Controller
+abstract class CheckoutStep extends Controller
 {
 
     /**
@@ -67,6 +69,6 @@ abstract class CheckoutStep extends \Controller
         $strClass = \get_class($this);
         $strClass = substr($strClass, strrpos($strClass, '\\') + 1);
 
-        return standardize($strClass);
+        return StringUtil::standardize($strClass);
     }
 }

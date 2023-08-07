@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductAction;
 
+use Contao\System;
 use Isotope\Interfaces\IsotopeProduct;
 
 class LegacyButtonAction extends AbstractButton
@@ -99,7 +100,7 @@ class LegacyButtonAction extends AbstractButton
         }
 
         if (null !== $this->callback) {
-            $objCallback = \System::importStatic($this->callback[0]);
+            $objCallback = System::importStatic($this->callback[0]);
             $objCallback->{$this->callback[1]}($product, $config);
         }
 

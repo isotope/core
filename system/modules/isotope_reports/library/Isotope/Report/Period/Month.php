@@ -11,6 +11,8 @@
 
 namespace Isotope\Report\Period;
 
+use Contao\Date;
+
 class Month implements PeriodInterface
 {
     public function format($tstamp)
@@ -25,14 +27,14 @@ class Month implements PeriodInterface
 
     public function getPeriodStart($tstamp)
     {
-        $date = new \Date($tstamp);
+        $date = new Date($tstamp);
 
         return $date->monthBegin;
     }
 
     public function getPeriodEnd($tstamp)
     {
-        $date = new \Date($tstamp);
+        $date = new Date($tstamp);
 
         return $date->monthEnd;
     }

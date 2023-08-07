@@ -1,0 +1,38 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/default.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="ERR.couponCodeDropped">
+        <source>Your coupon code &quot;%s&quot; could not be applied. Please review your order again.</source>
+        <target>Din kupongkod &quot;%s&quot; kunde inte tillämpas. Vänligen granska din beställning igen.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponHeadline">
+        <source>Apply Promotional Codes</source>
+        <target>Använd kampanjkoder</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponLabel">
+        <source>Promotional code</source>
+        <target>Kampanjkod</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApply">
+        <source>Apply</source>
+        <target>Tillämpa</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponInvalid">
+        <source>Your coupon %s is not valid.</source>
+        <target>Din kupong %s är inte giltig.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponApplied">
+        <source>Your coupon %s has been applied.</source>
+        <target>Din kupong %s har använts.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponDuplicate">
+        <source>Your coupon %s has already been applied.</source>
+        <target>Din kupong %s har redan använts.</target>
+      </trans-unit>
+      <trans-unit id="MSC.couponSingle">
+        <source>Your coupon %s cannot be used because another coupon is already redeemed.</source>
+        <target>Din kupong %s kan inte användas eftersom en annan kupong redan är inlöst.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

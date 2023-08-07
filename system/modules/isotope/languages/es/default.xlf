@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/default.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="ERR.systemColumn">
@@ -84,6 +84,9 @@
       </trans-unit>
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
+      </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an &quot;Attribute to&quot; on row %s.</source>
       </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
@@ -431,6 +434,13 @@
       <trans-unit id="MSC.iso_order_total">
         <source>Total</source>
       </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
+        <target>Divisa</target>
+      </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
         <target>de menos a más</target>
@@ -748,6 +758,30 @@
       <trans-unit id="MSC.billpay_agb_at">
         <source>Mit der &amp;Uuml;bermittlung der für die Abwicklung des Rechnungskaufs und einer Identitäts und Bonitätsprüfung erforderlichen Daten an die &lt;a href=&quot;https://billpay.de/endkunden&quot; target=&quot;_blank&quot;&gt;Billpay GmbH&lt;/a&gt; bin ich einverstanden. Es gelten die &lt;a href=&quot;https://www.billpay.de/kunden/agb-at#datenschutz&quot; target=&quot;_blank&quot;&gt;Datenschutzbestimmungen&lt;/a&gt; von Billpay.</source>
       </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.0">
+        <source>Net</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.net.1">
+        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.0">
+        <source>Gross (recommended)</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.gross.1">
+        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.0">
+        <source>Fixed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.fixed.1">
+        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.legacy.0">
+        <source>Legacy</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_priceDisplay.legacy.1">
+        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
+      </trans-unit>
       <trans-unit id="CTE.isotope">
         <source>Isotope eCommerce</source>
         <target>Isotope eCommerce</target>
@@ -921,90 +955,6 @@
       <trans-unit id="ISO_VAT.eu_vies">
         <source>European VAT Number (&lt;a href=&quot;http://ec.europa.eu/taxation_customs/vies/vieshome.do&quot; target=&quot;_blank&quot;&gt;VIES&lt;/a&gt;)</source>
       </trans-unit>
-      <trans-unit id="CCT.mc">
-        <source>MasterCard</source>
-        <target>MasterCard</target>
-      </trans-unit>
-      <trans-unit id="CCT.visa">
-        <source>Visa</source>
-        <target>Visa</target>
-      </trans-unit>
-      <trans-unit id="CCT.amex">
-        <source>American Express</source>
-        <target>American Express</target>
-      </trans-unit>
-      <trans-unit id="CCT.discover">
-        <source>Discover</source>
-        <target>Discover</target>
-      </trans-unit>
-      <trans-unit id="CCT.jcb">
-        <source>JCB</source>
-        <target>JCB</target>
-      </trans-unit>
-      <trans-unit id="CCT.diners">
-        <source>Diner's Club</source>
-        <target>Diner's Club</target>
-      </trans-unit>
-      <trans-unit id="CCT.enroute">
-        <source>EnRoute</source>
-        <target>EnRoute</target>
-      </trans-unit>
-      <trans-unit id="CCT.carte_blanche">
-        <source>Carte Blanche</source>
-        <target>Carte Blanche</target>
-      </trans-unit>
-      <trans-unit id="CCT.jal">
-        <source>JAL</source>
-        <target>JAL</target>
-      </trans-unit>
-      <trans-unit id="CCT.maestro">
-        <source>Maestro UK</source>
-        <target>Maestro UK</target>
-      </trans-unit>
-      <trans-unit id="CCT.delta">
-        <source>Delta</source>
-        <target>Delta</target>
-      </trans-unit>
-      <trans-unit id="CCT.solo">
-        <source>Solo</source>
-        <target>Solo</target>
-      </trans-unit>
-      <trans-unit id="CCT.visa_electron">
-        <source>Visa Electron</source>
-        <target>Visa Electron</target>
-      </trans-unit>
-      <trans-unit id="CCT.dankort">
-        <source>Dankort</source>
-        <target>Dankort</target>
-      </trans-unit>
-      <trans-unit id="CCT.laser">
-        <source>Laser</source>
-        <target>Laser</target>
-      </trans-unit>
-      <trans-unit id="CCT.carte_bleue">
-        <source>Carte Bleue</source>
-        <target>Carte Bleue</target>
-      </trans-unit>
-      <trans-unit id="CCT.carta_si">
-        <source>Carta Si</source>
-        <target>Carta Si</target>
-      </trans-unit>
-      <trans-unit id="CCT.enc_acct_num">
-        <source>Encoded Account Number</source>
-        <target>Número de cuenta codificado</target>
-      </trans-unit>
-      <trans-unit id="CCT.uatp">
-        <source>Universal Air Travel Program</source>
-        <target>Programa Universal Air Travel</target>
-      </trans-unit>
-      <trans-unit id="CCT.maestro_intl">
-        <source>Maestro International</source>
-        <target>Maestro International</target>
-      </trans-unit>
-      <trans-unit id="CCT.ge_money_uk">
-        <source>GE Money UK</source>
-        <target>GE Money UK</target>
-      </trans-unit>
       <trans-unit id="ATTR.text.0">
         <source>Text field</source>
         <target>Campo de texto</target>
@@ -1096,6 +1046,12 @@
       </trans-unit>
       <trans-unit id="ATTR.media.1">
         <source>Generates a video or audio player.</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.0">
+        <source>Surcharge per quantity</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.1">
+        <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
       </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
@@ -1718,6 +1674,9 @@
       <trans-unit id="CUR.XCD">
         <source>XCD - East Caribbean Dollar</source>
         <target>XCD - East Caribbean Dollar</target>
+      </trans-unit>
+      <trans-unit id="CUR.XOF">
+        <source>XOF - CFA Franc BCEAO</source>
       </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>

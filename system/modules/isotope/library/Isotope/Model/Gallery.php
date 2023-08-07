@@ -12,6 +12,7 @@
 namespace Isotope\Model;
 
 use Contao\PageModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 
@@ -77,8 +78,8 @@ abstract class Gallery extends TypeAgent
 
         $objGallery->setName($objProduct->getFormId() . '_' . $strAttribute);
         $objGallery->setFiles(static::mergeMediaData(
-            deserialize($objProduct->$strAttribute, true),
-            deserialize($objProduct->{$strAttribute . '_fallback'}, true)
+            StringUtil::deserialize($objProduct->$strAttribute, true),
+            StringUtil::deserialize($objProduct->{$strAttribute . '_fallback'}, true)
         ));
         $objGallery->product_id = $objProduct->getProductId();
 
@@ -105,7 +106,7 @@ abstract class Gallery extends TypeAgent
 
             // Create an array of images where key = image name
             foreach ($arrParent as $image) {
-                if ('all' !== $image['translate']) {
+                if ('all' !== ($image['translate'] ?? null)) {
                     $arrTranslate[$image['src']] = $image;
                 }
             }
@@ -115,11 +116,11 @@ abstract class Gallery extends TypeAgent
             foreach ($arrCurrent as $i => $image) {
 
                 if (isset($arrTranslate[$image['src']])) {
-                    if ('none' === $arrTranslate[$image['src']]['translate']) {
+                    if ('none' === ($arrTranslate[$image['src']]['translate'] ?? null)) {
                         $arrCurrent[$i] = $arrTranslate[$image['src']];
                     } else {
-                        $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'];
-                        $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'];
+                        $arrCurrent[$i]['link']      = $arrTranslate[$image['src']]['link'] ?? '';
+                        $arrCurrent[$i]['translate'] = $arrTranslate[$image['src']]['translate'] ?? '';
                     }
 
                     unset($arrTranslate[$image['src']]);

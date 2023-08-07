@@ -1,0 +1,130 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_download.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_download.singleSRC.0">
+        <source>Attachement</source>
+        <target>Bilaga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.singleSRC.1">
+        <source>Select the file or folder content you want to sell.</source>
+        <target>Välj fil- eller mappinnehållet du vill sälja.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.downloads_allowed.0">
+        <source>Downloads allowed</source>
+        <target>Nedladdningar tillåtna</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.downloads_allowed.1">
+        <source>The number of times these file(s) can be downloaded per order (multiplied by the quantity sold). Enter 0 for unlimited downloads.</source>
+        <target>Antalet gånger dessa filer kan laddas ner per beställning (multiplicerat med den sålda kvantiteten). Ange 0 för obegränsade nedladdningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.expires.0">
+        <source>Expiration</source>
+        <target>Ablauf</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.expires.1">
+        <source>Define if the download(s) expires after a certain time period.</source>
+        <target>Definiera om nedladdningen/erna går ut efter en viss tidsperiod.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.published.0">
+        <source>Download available</source>
+        <target>Nedladdning tillgänglig</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.published.1">
+        <source>Click here to include this download in new orders.</source>
+        <target>Klicka här för att inkludera denna nedladdning i nya beställningar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.new.0">
+        <source>Add download</source>
+        <target>Add download</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.new.1">
+        <source>Add a new download to this product</source>
+        <target>Lägg till en ny nedladdning till den här produkten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.edit.0">
+        <source>Edit download</source>
+        <target>Redigera nedladdning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.edit.1">
+        <source>Edit download ID %s</source>
+        <target>Redigera nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.copy.0">
+        <source>Duplicate download</source>
+        <target>Duplicera nedladdning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.copy.1">
+        <source>Duplicate download ID %s</source>
+        <target>Duplicera nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.cut.0">
+        <source>Move download</source>
+        <target>Flytta nedladdning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.cut.1">
+        <source>Move download ID %s</source>
+        <target>Flytta nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.delete.0">
+        <source>Delete download</source>
+        <target>Delete download</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.delete.1">
+        <source>Delete download ID %s</source>
+        <target>Delete download ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.toggle.0">
+        <source>Publish/unpublish download</source>
+        <target>Publicera/avpublicera nedladdning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.toggle.1">
+        <source>Publish/unpublish download ID %s</source>
+        <target>Publicera/avpublicera nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.show.0">
+        <source>Download details</source>
+        <target>Detaljer nedladdning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.show.1">
+        <source>Show details of download ID %s</source>
+        <target>Visa detaljer om nedladdnings ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.editheader.0">
+        <source>Edit product</source>
+        <target>Redigera produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.editheader.1">
+        <source>Edit this product</source>
+        <target>Redigera denna produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pasteafter.0">
+        <source>Paste at the top</source>
+        <target>Klistra in längst upp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pasteafter.1">
+        <source>Paste after download ID %s</source>
+        <target>Klistra in efter nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pastenew.0">
+        <source>Add new at the top</source>
+        <target>Lägg till nytt överst</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.pastenew.1">
+        <source>Add new after download ID %s</source>
+        <target>Lägg till nytt efter nedladdning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.file_legend">
+        <source>Attachement</source>
+        <target>Bilaga</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.limit_legend">
+        <source>Limits</source>
+        <target>Gränser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_download.publish_legend">
+        <source>Publishing</source>
+        <target>Publishing</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

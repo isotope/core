@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_module.xlf" source-language="en" target-language="ru">
     <body>
       <trans-unit id="tl_module.iso_list_layout.0">
@@ -17,6 +17,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_gallery.0">
         <source>Gallery</source>
+        <target>Галерея</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_gallery.1">
         <source>Select a gallery to render images (overrides the product type config).</source>
@@ -29,6 +30,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_filterTpl.0">
         <source>Filter template</source>
+        <target>Шаблон фильтра</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterTpl.1">
         <source>Please choose a filter template. Filter template files start with &lt;em&gt;iso_filter_&lt;/em&gt;.</source>
@@ -48,6 +50,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.0">
         <source>Hide in reader mode</source>
+        <target>Скрыть в режиме для чтения</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_hide_list.1">
         <source>Hide product list when a product alias is found in the URL.</source>
@@ -66,6 +69,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_display404Page.0">
         <source>Display a 404 page</source>
+        <target>Показать страницу 404</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_display404Page.1">
         <source>Display the 404 not found page if no product alias is in the URL. Use this if your reader module is on a separate page that should not be available otherwise.</source>
@@ -76,18 +80,22 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method.1">
         <source>Choose your checkout method.</source>
+        <target>Выбрать метод оформления заказа.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_loginRequired.0">
         <source>Require login</source>
+        <target>Требуется вход</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_loginRequired.1">
         <source>A member login is required to view this page (e.g. if the order belongs to a member).</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_login_jumpTo.0">
         <source>Login page</source>
+        <target>Страница входа</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_login_jumpTo.1">
         <source>Select the page where a member can login.</source>
+        <target>Выбрать страницу, где член может войти.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addProductJumpTo.0">
         <source>Add product jump to page</source>
@@ -117,21 +125,21 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_config_ids.0">
         <source>Store configurations</source>
-        <target>Конфигурации магазинов</target>
+        <target>Конфигурации магазина</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_config_ids.1">
         <source>Select the store configurations that this module will be used for.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_payment_modules.0">
         <source>Payment methods</source>
-        <target>Методы оплаты</target>
+        <target>Способы оплаты</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_payment_modules.1">
         <source>Select one or more payment methods for this checkout module.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_shipping_modules.0">
         <source>Shipping methods</source>
-        <target>Методы доставки</target>
+        <target>Способы доставки</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_shipping_modules.1">
         <source>Select one or more shipping methods for this checkout module.</source>
@@ -159,6 +167,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.shipping_address">
         <source>Always use billing address as shipping address</source>
+        <target>Всегда выбирать платежный адрес как адрес доставки</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.shipping_method">
         <source>Skip shipping step if only one shippig method is available</source>
@@ -170,31 +179,70 @@
         <source>Order conditions form</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions.1">
-        <source>Choose a custom form that is used to display your order terms and conditions (optional).</source>
+        <source>Configure custom forms that are display in the checkout process (e.g. for your order terms and conditions).</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.0">
-        <source>Position of order conditions form</source>
+      <trans-unit id="tl_module.iso_order_conditions.form.0">
+        <source>Form</source>
       </trans-unit>
-      <trans-unit id="tl_module.iso_order_conditions_position.1">
-        <source>Define if the order condition form should be shown before or after the products list.</source>
+      <trans-unit id="tl_module.iso_order_conditions.step.0">
+        <source>Checkout Step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.0">
+        <source>Position</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.0">
+        <source>Product types</source>
+        <target>Типы товаров</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types.1">
+        <source>You can restrict this checkout form to certain product types. If the cart contains a product type you have not selected, the checkout form is not shown.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.0">
+        <source>Product type condition</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.1">
+        <source>Select how the product type filter should be applied.</source>
+        <target>Выберите, как должен применяться фильтр типа товаров.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.oneAvailable">
+        <source>Enable if one of these product types is in cart</source>
+        <target>Разрешить, если один из типов товаров в корзине</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.onlyAvailable">
+        <source>Enable if only these product types are in cart</source>
+        <target>Разрешить, если только эти типы товаров в корзине</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.product_types_condition.allAvailable">
+        <source>Enable if all these product types are in cart</source>
+        <target>Разрешить, если все типы товаров в корзине</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.before">
+        <source>Before step</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_order_conditions.position.after">
+        <source>After step</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.top">
         <source>On top (before address)</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.before">
         <source>Before products list</source>
+        <target>Перед списком товаров</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_order_conditions_position.after">
         <source>After products list</source>
+        <target>После списка товаров</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addToAddressbook.0">
         <source>Add to address book</source>
+        <target>Добавить в адресную книгу</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addToAddressbook.1">
         <source>Add new addresses to members address book (if logged in).</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_orderCollectionBy.0">
         <source>Sorting</source>
+        <target>Сортировка</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_orderCollectionBy.1">
         <source>Define in what order the collection items should be listed.</source>
@@ -231,6 +279,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_list_where.0">
         <source>Condition</source>
+        <target>Условие</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_list_where.1">
         <source>Here you can enter a SQL condition to filter the products. You must prefix the fields with &quot;tl_iso_product.&quot; (e.g. &lt;em&gt;tl_iso_product.featured=1&lt;/em&gt; or &lt;em&gt;tl_iso_product.color!='red'&lt;/em&gt;)!</source>
@@ -256,27 +305,35 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.attribute.0">
         <source>Attribute</source>
+        <target>Атрибут</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.0">
         <source>Query Type</source>
+        <target>Тип запроса</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.and">
         <source>AND</source>
+        <target>И</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.queryType.or">
         <source>OR</source>
+        <target>ИЛИ</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.0">
         <source>Number of results</source>
+        <target>Кол-во результатов</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.none">
         <source>Do not show</source>
+        <target>Не показывать</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.all">
         <source>Show total</source>
+        <target>Показать итог</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_cumulativeFields.matchCount.new">
         <source>Show difference</source>
+        <target>Показать разницу</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.0">
         <source>Filter configuration</source>
@@ -284,8 +341,30 @@
       <trans-unit id="tl_module.iso_rangeFields.1">
         <source>Please configure the range filter fields.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.mode">
+        <source>Filter mode</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.range">
+        <source>Range</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.min">
+        <source>Higher than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.max">
+        <source>Lower than</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFieldsMode.fields">
+        <source>Value within</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.attribute">
         <source>Attribute</source>
+        <target>Атрибут</target>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max">
+        <source>Attribute to</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_rangeFields.attribute_max_blank">
+        <source>(only select for mode &quot;Value within&quot;)</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.min">
         <source>Range from</source>
@@ -295,6 +374,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_rangeFields.step">
         <source>Steps</source>
+        <target>Шаги</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_filterHideSingle.0">
         <source>Hide single options</source>
@@ -334,12 +414,15 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.show_all">
         <source>Show all products</source>
+        <target>Показать все товары</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.show_new">
         <source>Only show new products</source>
+        <target>Показать только новые товары</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_newFilter.show_old">
         <source>Only show old products</source>
+        <target>Показать только старые товары</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_enableLimit.0">
         <source>Enable per-page limiting</source>
@@ -393,6 +476,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_related_categories.1">
         <source>Select the categories to show products of.</source>
+        <target>Выбрать категории товаров к показу</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_includeMessages.0">
         <source>Include messaging</source>
@@ -402,30 +486,38 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.0">
         <source>Enable &quot;Continue shopping&quot; button</source>
+        <target>Включить кнопку &quot;Продолжить покупки&quot;</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
+        <target>Добавить ссылку к только что добавленному в корзину товару.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
+        <target>Типы адресов</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_address.1">
         <source>Please choose the address types.</source>
+        <target>Пожалуйста, выберите типы адресов.</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_address.billing">
         <source>Billing address</source>
+        <target>Платежный адрес</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_address.shipping">
         <source>Shipping address</source>
+        <target>Адрес доставки</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addressFields.0">
         <source>Available address fields</source>
+        <target>Доступные поля адреса</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>
+        <target>Trusted Shops ID</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsid.1">
         <source>Please enter your Trusted Shops ID.</source>
@@ -456,12 +548,14 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_tscheckout.0">
         <source>Enable buyer protection</source>
+        <target>Включить защиту покупателя</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tscheckout.1">
         <source>Automatically show the buyer protection popup on order confirmation page.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsproducts.0">
         <source>Include product data</source>
+        <target>Включить данные товара</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsproducts.1">
         <source>Allow users to rate individual products.</source>
@@ -477,6 +571,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.topLeft">
         <source>Top Left</source>
+        <target>Слева сверху</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_tsdirection.bottomRight">
         <source>Bottom Right</source>
@@ -489,6 +584,7 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method_ref.member">
         <source>Login/Registration required</source>
+        <target>Требуется вход/регистрация</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_checkout_method_ref.guest">
         <source>Guest checkout only</source>
@@ -505,12 +601,14 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.0">
         <source>Current Category and First Child Category</source>
+        <target>Текущая категория и первая дочерняя категория</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_first_child.1">
         <source>Show all products that are assigned to the active page or child pages on the first sublevel.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.0">
         <source>Current Category and All Child Categories</source>
+        <target>Текущая категория и все дочерние категории</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.current_and_all_children.1">
         <source>Show all products that are assigned to the active page or any child page of it.</source>
@@ -524,12 +622,14 @@
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.parent.0">
         <source>Parent Category</source>
+        <target>Родительская категория</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.parent.1">
         <source>Show all products that are assigned to the parent page of the active page.</source>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.product.0">
         <source>Current Product's Categories</source>
+        <target>Текущие категории товаров</target>
       </trans-unit>
       <trans-unit id="tl_module.iso_category_scope_ref.product.1">
         <source>Show all products that are assigned to the same pages the currently active product is assigned to.</source>
@@ -542,9 +642,11 @@
       </trans-unit>
       <trans-unit id="tl_module.sortingDirection.ASC">
         <source>ASC</source>
+        <target>ASC</target>
       </trans-unit>
       <trans-unit id="tl_module.sortingDirection.DESC">
         <source>DESC</source>
+        <target>DESC</target>
       </trans-unit>
     </body>
   </file>

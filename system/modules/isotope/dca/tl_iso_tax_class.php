@@ -20,10 +20,9 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
     (
         'dataContainer'            => 'Table',
         'enableVersioning'         => true,
-        'closed'                   => true,
+        'backlink'                 => 'do=iso_setup',
         'onload_callback' => array
         (
-            array('Isotope\Backend', 'initializeSetupModule'),
             array('Isotope\Backend\TaxClass\Callback', 'checkPermission'),
         ),
         'sql' => array
@@ -53,23 +52,8 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'global_operations' => array
         (
-            'back' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['backBT'],
-                'href'              => 'mod=&table=',
-                'class'             => 'header_back',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
-            'new' => array
-            (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['new'],
-                'href'              => 'act=create',
-                'class'             => 'header_new',
-                'attributes'        => 'onclick="Backend.getScrollOffset();"',
-            ),
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -79,30 +63,26 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['edit'],
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif'
+                'icon'              => 'edit.svg'
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['copy'],
                 'href'              => 'act=copy',
-                'icon'              => 'copy.gif',
+                'icon'              => 'copy.svg',
                 'button_callback'   => array('Isotope\Backend\TaxClass\Callback', 'copyTaxClass'),
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['delete'],
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+                'icon'              => 'delete.svg',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\TaxClass\Callback', 'deleteTaxClass'),
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['show'],
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             )
         )
     ),
@@ -126,7 +106,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['name'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -135,7 +114,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'fallback' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['fallback'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('fallback'=>true, 'tl_class'=>'w50 m12'),
@@ -143,7 +121,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'includes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['includes'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\TaxRate::getTable().'.name',
@@ -153,7 +130,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'label' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['label'],
             'exclude'               => true,
             'search'                => true,
             'inputType'             => 'text',
@@ -162,7 +138,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'rates' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['rates'],
             'exclude'               => true,
             'inputType'             => 'checkboxWizard',
             'foreignKey'            => \Isotope\Model\TaxRate::getTable().'.name',
@@ -172,7 +147,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'applyRoundingIncrement' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['applyRoundingIncrement'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),
@@ -180,7 +154,6 @@ $GLOBALS['TL_DCA']['tl_iso_tax_class'] = array
         ),
         'notNegative' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_tax_class']['notNegative'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('tl_class'=>'w50'),

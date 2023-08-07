@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en" target-language="es">
     <body>
       <trans-unit id="tl_iso_config.name.0">
@@ -438,37 +438,13 @@
         <source>Position</source>
         <target>Posición</target>
       </trans-unit>
-      <trans-unit id="tl_iso_config.ecb.int">
+      <trans-unit id="tl_iso_config.ecb_int">
         <source>European Central Bank</source>
         <target>Banco Central Europeo</target>
       </trans-unit>
-      <trans-unit id="tl_iso_config.admin.ch">
+      <trans-unit id="tl_iso_config.admin_ch">
         <source>Swiss Federal Department of Finance</source>
         <target>Departamento Federal Suizo de Finanzas</target>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.net.0">
-        <source>Net</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.net.1">
-        <source>Show net prices to all customers. Taxes included in the product price (tax rate configuration) will be deducted.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.gross.0">
-        <source>Gross (recommended)</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.gross.1">
-        <source>Show gross prices to all customers. Applicable taxes will be added to the product price display.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.fixed.0">
-        <source>Fixed</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.fixed.1">
-        <source>The product price will always be shown as in the product setting. Taxes are always calculated as &quot;included&quot;. This means the shop owner's profit varies depending on the applicable taxes.</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.legacy.0">
-        <source>Legacy</source>
-      </trans-unit>
-      <trans-unit id="tl_iso_config.legacy.1">
-        <source>Price display as in Isotope &lt; 2.3. Prices are shown as gross prices if a tax is included and applicable. Additional taxes are only shown as surcharges.</source>
       </trans-unit>
       <trans-unit id="tl_iso_config.new.0">
         <source>New configuration</source>

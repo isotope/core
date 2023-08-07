@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_baseprice.xlf" source-language="en" target-language="cs">
     <body>
       <trans-unit id="tl_iso_baseprice.name.0">
@@ -7,51 +7,67 @@
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name.1">
         <source>Enter a name for this base price.</source>
+        <target>Zadejte název této základní ceny.</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.amount.0">
         <source>Base amount</source>
+        <target>Základní množství</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.amount.1">
         <source>Enter the base amount (e.g. &quot;100&quot;).</source>
+        <target>Zadejte základní množství (např. „100“).</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.0">
         <source>Label</source>
+        <target>Označení</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.label.1">
         <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
+        <target>Zadejte štítek pro tuto základní cenu (např. &quot;%s za 100g&quot;.)</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.0">
         <source>New base price</source>
+        <target>Nová základní cena</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.new.1">
         <source>Create a new base price</source>
+        <target>Vytvořte novou základní cenu</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.0">
         <source>Edit base price</source>
+        <target>Upravit základní cenu</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.edit.1">
         <source>Edit base price ID %s</source>
+        <target>Upravit základní cenu ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.0">
         <source>Duplicate base price</source>
+        <target>Kopírovat základní cenu</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.copy.1">
         <source>Duplicate base price ID %s</source>
+        <target>Kopírovat základní cenu ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.0">
         <source>Delete base price</source>
+        <target>Smazat základní cenu</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.delete.1">
         <source>Delete base price ID %s</source>
+        <target>Smazat základní cenu ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.0">
         <source>Base price details</source>
+        <target>Podrobnosti o základní ceně</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.show.1">
         <source>Show details of base price ID %s</source>
+        <target>Podrobnosti o základní ceně ID %s</target>
       </trans-unit>
       <trans-unit id="tl_iso_baseprice.name_legend">
         <source>Base price</source>
+        <target>Základní cena</target>
       </trans-unit>
     </body>
   </file>

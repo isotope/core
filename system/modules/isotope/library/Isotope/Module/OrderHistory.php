@@ -11,6 +11,9 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Input;
+use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Haste\Util\Url;
@@ -95,7 +98,7 @@ class OrderHistory extends Module
             return;
         }
 
-        $reorder = (int) \Input::get('reorder');
+        $reorder = (int) Input::get('reorder');
 
         foreach ($objOrders as $objOrder) {
             if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
@@ -129,9 +132,9 @@ class OrderHistory extends Module
 
         Message::addConfirmation($GLOBALS['TL_LANG']['MSC']['reorderConfirmation']);
 
-        \Controller::redirect(
+        Controller::redirect(
             Url::addQueryString(
-                'continue=' . base64_encode(\System::getReferer()),
+                'continue=' . base64_encode(System::getReferer()),
                 $this->iso_cart_jumpTo
             )
         );

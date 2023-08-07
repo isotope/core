@@ -11,8 +11,17 @@
 
 namespace Isotope\Backend\Download;
 
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\File;
+use Contao\Image;
+use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
+use Contao\Versions;
 use Isotope\Model\Attribute;
 use Isotope\Model\Download;
 use Isotope\Model\Product;
@@ -20,7 +29,7 @@ use Isotope\Model\ProductCollectionDownload;
 use Haste\Util\Format;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -48,7 +57,7 @@ class Callback extends \Backend
 
             foreach (scan(TL_ROOT . '/' . $path) as $file) {
                 if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
-                    $objFile        = new \File($path . '/' . $file);
+                    $objFile        = new File($path . '/' . $file);
                     $icon           = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
                     $arrDownloads[] = sprintf('<div style="margin-bottom:5px;height:16px;%s">%s</div>', $icon, $path . '/' . $file);
                 }
@@ -62,7 +71,7 @@ class Callback extends \Backend
         }
 
         if (is_file(TL_ROOT . '/' . $path)) {
-            $objFile = new \File($path);
+            $objFile = new File($path);
             $icon    = 'background: url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';
         }
 
@@ -125,10 +134,10 @@ class Callback extends \Backend
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         if (ProductCollectionDownload::countBy('download_id', $row['id']) > 0) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -144,23 +153,23 @@ class Callback extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (\strlen(\Input::get('tid'))) {
-            $this->toggleVisibility(\Input::get('tid'), \Input::get('state') == 1);
-            \Controller::redirect(\System::getReferer());
+        if (\strlen(Input::get('tid'))) {
+            $this->toggleVisibility(Input::get('tid'), Input::get('state') == 1);
+            Controller::redirect(System::getReferer());
         }
 
         // Check permissions AFTER checking the tid, so hacking attempts are logged
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
             return '';
         }
 
         if ($row['published'] != '1') {
-            $icon = 'invisible.gif';
+            $icon = 'invisible.svg';
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
 
-        return '<a href="' . \Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
 
@@ -173,28 +182,28 @@ class Callback extends \Backend
     public function toggleVisibility($intId, $blnVisible)
     {
         // Check permissions to edit
-        \Input::setGet('id', $intId);
-        \Input::setGet('act', 'toggle');
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
             throw new AccessDeniedException('Not enough permissions to publish/unpublish download ID "' . $intId . '"');
         }
 
-        $objVersions = new \Versions('tl_iso_download', $intId);
+        $objVersions = new Versions('tl_iso_download', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback
         if (\is_array($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_iso_download']['fields']['published']['save_callback'] as $callback) {
-                $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
+                $blnVisible = System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
             }
         }
 
         // Update the database
-        \Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
+        Database::getInstance()->prepare("UPDATE tl_iso_download SET published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")->execute($intId);
 
         $objVersions->create();
-        \System::log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
+        System::log('A new version of record "tl_iso_download.id='.$intId.'" has been created'.$this->getParentEntries('tl_iso_download', $intId), __METHOD__, TL_GENERAL);
     }
 }

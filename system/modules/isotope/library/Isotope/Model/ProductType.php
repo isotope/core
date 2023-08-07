@@ -12,6 +12,11 @@
 namespace Isotope\Model;
 
 
+use Contao\Database;
+use Contao\Model;
+use Contao\Model\Collection;
+use Contao\StringUtil;
+
 /**
  * ProductType defines a product configuration
  *
@@ -35,7 +40,7 @@ namespace Isotope\Model;
  * @property string $shipping_exempt
  * @property bool   $downloads
  */
-class ProductType extends \Model
+class ProductType extends Model
 {
 
     /**
@@ -67,8 +72,8 @@ class ProductType extends \Model
     {
         parent::setRow($arrData);
 
-        $this->attributes = deserialize($this->attributes);
-        $this->variant_attributes = deserialize($this->variant_attributes);
+        $this->attributes = StringUtil::deserialize($this->attributes);
+        $this->variant_attributes = StringUtil::deserialize($this->variant_attributes);
 
         if (!\is_array($this->attributes)) {
             $this->attributes = array();
@@ -163,17 +168,17 @@ class ProductType extends \Model
     protected function getEnabledAttributesByPosition($varValue)
     {
         $arrFields     = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
-        $arrAttributes = deserialize($varValue, true);
+        $arrAttributes = StringUtil::deserialize($varValue, true);
 
         $arrAttributes = array_filter($arrAttributes, function ($a) use ($arrFields) {
-            return ($a['enabled']
-                && \is_array($arrFields[$a['name']])
-                && $arrFields[$a['name']]['attributes']['legend'] != ''
+            return (($a['enabled'] ?? false)
+                && \is_array($arrFields[$a['name']] ?? null)
+                && !empty($arrFields[$a['name']]['attributes']['legend'])
             );
         });
 
         uasort($arrAttributes, function ($a, $b) {
-            return $a["position"] > $b["position"];
+            return $a['position'] > $b['position'];
         });
 
         return array_keys($arrAttributes);
@@ -184,7 +189,7 @@ class ProductType extends \Model
      *
      * @param array $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findAllUsed(array $arrOptions = array())
     {
@@ -232,7 +237,7 @@ class ProductType extends \Model
         static $result;
 
         if (null === $result) {
-            $result = \Database::getInstance()->query(
+            $result = Database::getInstance()->query(
                 "SELECT COUNT(*) AS total FROM tl_iso_producttype WHERE variants='1'"
             )->total;
         }

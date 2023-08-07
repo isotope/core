@@ -11,7 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Input;
+use Contao\Module;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopePostsale;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -20,6 +23,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Paybyway extends Payment implements IsotopePostsale
 {
@@ -42,7 +46,7 @@ class Paybyway extends Payment implements IsotopePostsale
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_paybyway');
@@ -58,8 +62,10 @@ class Paybyway extends Payment implements IsotopePostsale
         $objTemplate->currency = 'EUR';
         $objTemplate->order_number = $objOrder->getId();
         $objTemplate->lang = ('fi' === $GLOBALS['TL_LANGUAGE'] ? 'FI' : 'EN');
-        $objTemplate->return_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
-        $objTemplate->cancel_address = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+
+        $postsaleUrl = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
+        $objTemplate->return_address = $postsaleUrl;
+        $objTemplate->cancel_address = $postsaleUrl;
 
         if ($this->debug) {
             $objTemplate->action = 'https://www.paybyway.com/e-payments/test_pay';
@@ -83,7 +89,7 @@ class Paybyway extends Payment implements IsotopePostsale
     /**
      * @inheritdoc
      */
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if ($objOrder->isLocked()) {
             return true;
@@ -98,7 +104,7 @@ class Paybyway extends Payment implements IsotopePostsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -108,23 +114,23 @@ class Paybyway extends Payment implements IsotopePostsale
 
         $strChecksum = strtoupper(md5(
             $this->paybyway_private_key .
-            '|' . \Input::post('RETURN_CODE') .
-            '|' . \Input::post('ORDER_NUMBER') .
-            (\Input::post('SETTLED') ? ('|' . \Input::post('SETTLED')) : '') .
-            (\Input::post('INCIDENT_ID') ? ('|' . \Input::post('INCIDENT_ID')) : '')
+            '|' . Input::post('RETURN_CODE') .
+            '|' . Input::post('ORDER_NUMBER') .
+            (Input::post('SETTLED') ? ('|' . Input::post('SETTLED')) : '') .
+            (Input::post('INCIDENT_ID') ? ('|' . Input::post('INCIDENT_ID')) : '')
         ));
 
-        if (\Input::post('AUTHCODE') != $strChecksum) {
-            \System::log('Postsale manipulation for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+        if (Input::post('AUTHCODE') != $strChecksum) {
+            System::log('Postsale manipulation for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
             Checkout::redirectToStep('failed');
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Paybyway checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Paybyway checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
-        switch (\Input::post('RETURN_CODE')) {
+        switch (Input::post('RETURN_CODE')) {
 
             case 0: // Payment completed successfully.
                 if ($objOrder->checkout()) {
@@ -136,7 +142,7 @@ class Paybyway extends Payment implements IsotopePostsale
 
             case 4: // Transaction status could not be updated after customer returned from the web page of a bank. Please use the merchant UI to resolve the payment status.
                 if (null === $objOrder->getConfig()) {
-                    \System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
+                    System::log('Config for Order ID ' . $objOrder->getId() . ' not found', __METHOD__, TL_ERROR);
 
                 } elseif ($objOrder->checkout()) {
                     $objOrder->updateOrderStatus($objOrder->getConfig()->orderstatus_error);
@@ -152,7 +158,7 @@ class Paybyway extends Payment implements IsotopePostsale
                 break;
         }
 
-        \System::log('Paybyway checkout failed for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
+        System::log('Paybyway checkout failed for order ID ' . $objOrder->getId(), __METHOD__, TL_ERROR);
 
         Checkout::redirectToStep('failed');
     }
@@ -162,6 +168,6 @@ class Paybyway extends Payment implements IsotopePostsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::post('ORDER_NUMBER'));
+        return Order::findByPk(Input::post('ORDER_NUMBER'));
     }
 }

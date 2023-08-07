@@ -2,7 +2,7 @@
     <?php if ($this->logs): ?>
         <?php foreach ($this->logs as $index => $log): ?>
             <?php if ($index > 0): ?><hr style="margin: 18px 2%"><?php endif; ?>
-            <table class="tl_show"<?php if(VERSION < 4): ?> style="margin-left:0;margin-right:0<?php if ($index === count($this->logs) - 1): ?>;margin-bottom:0<?php endif; ?>"<?php elseif ($index === count($this->logs) - 1): ?> style="margin-bottom:0"<?php endif; ?>>
+            <table class="tl_show"<?php if ($index === count($this->logs) - 1): ?> style="margin-bottom:0"<?php endif; ?>>
                 <tbody>
                     <?php $count = 0; foreach ($log as $logEntry): ?>
                         <tr>

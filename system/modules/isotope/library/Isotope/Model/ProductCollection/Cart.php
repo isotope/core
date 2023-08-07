@@ -11,6 +11,11 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Contao\Controller;
+use Contao\FrontendUser;
+use Contao\Input;
+use Contao\PageModel;
+use Contao\System;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -41,6 +46,20 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
      */
     protected $objDraftOrder;
 
+    /**
+     * A cart does not have a payment method,
+     * but the order might require payment for surcharges (e.g. shipping)
+     */
+    public function requiresPayment()
+    {
+        $draftOrder = $this->getDraftOrder();
+
+        if (null !== $draftOrder) {
+            return $draftOrder->requiresPayment();
+        }
+
+        return parent::requiresPayment();
+    }
 
     /**
      * Get billing address or create if none exists
@@ -57,7 +76,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
-            $objAddress = Address::findDefaultBillingForMember(\FrontendUser::getInstance()->id);
+            $objAddress = Address::findDefaultBillingForMember(FrontendUser::getInstance()->id);
         }
 
         // Try to load the default collection address
@@ -94,7 +113,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Try to load the default member address
         if (null === $objAddress && FE_USER_LOGGED_IN === true) {
-            $objAddress = Address::findDefaultShippingForMember(\FrontendUser::getInstance()->id);
+            $objAddress = Address::findDefaultShippingForMember(FrontendUser::getInstance()->id);
         }
 
         // Try to load the default collection address
@@ -126,7 +145,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
     {
         $this->ensureNotLocked();
 
-        $strHash = (string) \Input::cookie(static::$strCookie);
+        $strHash = (string) Input::cookie(static::$strCookie);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
         if (FE_USER_LOGGED_IN === true && '' !== $strHash && $this->member > 0) {
@@ -144,8 +163,8 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             }
 
             // Delete cookie
-            \System::setCookie(static::$strCookie, '', time() - 3600, $GLOBALS['TL_CONFIG']['websitePath']);
-            \Controller::reload();
+            System::setCookie(static::$strCookie, '', time() - 3600);
+            Controller::reload();
         }
     }
 
@@ -197,7 +216,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
                     && \is_array($GLOBALS['ISO_HOOKS']['updateDraftOrder'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['updateDraftOrder'] as $callback) {
-                        \System::importStatic($callback[0])->{$callback[1]}($objOrder, $this, $arrItemIds);
+                        System::importStatic($callback[0])->{$callback[1]}($objOrder, $this, $arrItemIds);
                     }
                 }
             } catch (\Exception $e) {
@@ -252,11 +271,10 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
 
         // Create/renew the guest cart cookie
         if (!$this->member && !headers_sent()) {
-            \System::setCookie(
+            System::setCookie(
                 static::$strCookie,
                 $this->uniqid,
-                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                $GLOBALS['TL_CONFIG']['websitePath']
+                $this->tstamp + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
             );
         }
 
@@ -290,15 +308,15 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
      */
     public static function findForCurrentStore()
     {
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
-        /** @var \PageModel|\stdClass $rootPage */
-        $rootPage = \PageModel::findByPk($objPage->rootId);
+        /** @var PageModel|\stdClass $rootPage */
+        $rootPage = PageModel::findByPk($objPage->rootId);
 
         $time       = time();
         $objCart    = null;
@@ -308,10 +326,10 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         if (true === FE_USER_LOGGED_IN) {
             $objCart = static::findOneBy(
                 array('tl_iso_product_collection.member=?', 'store_id=?'),
-                array(\FrontendUser::getInstance()->id, $storeId)
+                array(FrontendUser::getInstance()->id, $storeId)
             );
         } else {
-            $cookieHash = (string) \Input::cookie(static::$strCookie);
+            $cookieHash = (string) Input::cookie(static::$strCookie);
 
             if ('' !== $cookieHash) {
                 $objCart = static::findOneBy(array('uniqid=?', 'store_id=?'), array($cookieHash, $storeId));
@@ -330,7 +348,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             // Can't call the individual rows here, it would trigger markModified and a save()
             $objCart->setRow(array_merge($objCart->row(), array(
                 'tstamp'    => $time,
-                'member'    => FE_USER_LOGGED_IN === true ? \FrontendUser::getInstance()->id : 0,
+                'member'    => FE_USER_LOGGED_IN === true ? FrontendUser::getInstance()->id : 0,
                 'uniqid'    => $cookieHash,
                 'config_id' => $objConfig->id,
                 'store_id'  => $storeId,
@@ -351,11 +369,10 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
             }
 
             if (!headers_sent()) {
-                \System::setCookie(
+                System::setCookie(
                     static::$strCookie,
                     $objCart->uniqid,
-                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout'],
-                    $GLOBALS['TL_CONFIG']['websitePath']
+                    $time + $GLOBALS['TL_CONFIG']['iso_cartTimeout']
                 );
             }
         }

@@ -1,0 +1,254 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_product_collection.id.0">
+        <source>ID</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_number.0">
+        <source>Order Number</source>
+        <target>Ordernummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.member.0">
+        <source>Member (empty for guests)</source>
+        <target>Medlem (tom för gäster)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.uniqid.0">
+        <source>Unique ID</source>
+        <target>Unikt ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.0">
+        <source>Order status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.order_status.1">
+        <source>Select the status of this order.</source>
+        <target>Välj status för denna beställning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.locked.0">
+        <source>Placed</source>
+        <target>Placerad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.source_collection_id.0">
+        <source>Source (Cart ID)</source>
+        <target>Källa (vagn-ID)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.0">
+        <source>Payment date</source>
+        <target>Betalningsdatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_paid.1">
+        <source>Enter a date when this order has been paid.</source>
+        <target>Ange ett datum när denna beställning har betalats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.0">
+        <source>Shipped date</source>
+        <target>Datum för utleverans</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.date_shipped.1">
+        <source>Enter a date when this order has been shipped.</source>
+        <target>Ange ett datum när denna beställning har skickats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.0">
+        <source>Send a notification</source>
+        <target>Skicka ett meddelande</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.sendNotification.1">
+        <source>Send an extra notification when saving this record.</source>
+        <target>Skicka ett extra meddelande när du sparar denna post.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.0">
+        <source>Notification</source>
+        <target>Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification.1">
+        <source>Choose a notification that will be sent when saving this record.</source>
+        <target>Välj ett meddelande som ska skickas när du sparar denna post.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.0">
+        <source>Tracking numbers</source>
+        <target>Spårningsnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_shipping_tracking.1">
+        <source>Here you can enter the shipping tracking information. Use the &lt;em&gt;##order_status_tracking_numbers##&lt;/em&gt; simple token in the notification.</source>
+        <target>Här kan du ange fraktspårningsinformationen. Använd ##order_status_tracking_numbers## enkla token i meddelandet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.0">
+        <source>Customer notes</source>
+        <target>Kundanteckningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notification_customer_notes.1">
+        <source>Here you can enter a message to the customer for this status update. Use the &lt;em&gt;##order_status_notes##&lt;/em&gt; simple token in the notification.</source>
+        <target>Här kan du skriva ett meddelande till kunden för denna statusuppdatering. Använd &lt;em&gt;##order_status_notes##&lt;/em&gt; enkla token i meddelandet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.config_id.0">
+        <source>Shop configuration</source>
+        <target>Butikskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment_id.0">
+        <source>Payment method</source>
+        <target>Betalningsmetod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_id.0">
+        <source>Shipping method</source>
+        <target>Frakt metod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_id.0">
+        <source>Billing address</source>
+        <target>Fakturaadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_id.0">
+        <source>Shipping address</source>
+        <target>Leveransadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.subtotal.0">
+        <source>Subtotal</source>
+        <target>Delsumma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_subtotal.0">
+        <source>Subtotal without tax</source>
+        <target>Delsumma utan skatt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.total.0">
+        <source>Total</source>
+        <target>Total</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.tax_free_total.0">
+        <source>Total without tax</source>
+        <target>Totalt utan skatt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.currency.0">
+        <source>Currency</source>
+        <target>Valuta</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.language.0">
+        <source>Language</source>
+        <target>Språk</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.0">
+        <source>Order notes</source>
+        <target>Beställ anteckningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.notes.1">
+        <source>If you would like to convey information to other backend users, please do so here.</source>
+        <target>Om du vill förmedla information till andra backend-användare, vänligen gör det här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.0">
+        <source>Edit order</source>
+        <target>Redigera beställning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.edit.1">
+        <source>Edit order ID %s</source>
+        <target>Redigera beställning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Ta bort beställning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Ta bort beställning ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.0">
+        <source>Payment details</source>
+        <target>Betalningsinformation</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.payment.1">
+        <source>Show payment details of order ID %s</source>
+        <target>Visa betalningsinformation för order -ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.0">
+        <source>Shipping details</source>
+        <target>Frakt detaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping.1">
+        <source>Show shipping details of order ID %s</source>
+        <target>Visa fraktinformation för beställnings ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.0">
+        <source>Print a document</source>
+        <target>Skriv ut ett dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print_document.1">
+        <source>Print order ID %s with a document of your choice</source>
+        <target>Skriv ut order ID %s med ett valfritt dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.0">
+        <source>Document</source>
+        <target>Dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.document_choice.1">
+        <source>Choose the document you would like to print the data with.</source>
+        <target>Välj det dokument du vill skriva ut data med.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.print">
+        <source>Print</source>
+        <target>Skriva ut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusUpdate">
+        <source>The status of your order has been updated.</source>
+        <target>Statusen för din beställning har uppdaterats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationSuccess">
+        <source>Notifications (e.g. email to client) have been sent.</source>
+        <target>Meddelanden (t.ex. e-post till klient) har skickats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.orderStatusNotificationError">
+        <source>Notifications (e.g. email to client) clould not be sent. Check the system log.</source>
+        <target>Meddelanden (t.ex. e-post till klient) kunde inte skickas. Kontrollera systemloggen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusSuccess">
+        <source>Saferpay payment was sucessfully captured.</source>
+        <target>Saferpay-betalningen lyckades</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusError">
+        <source>Saferpay payment could not be captured! Please check &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt;.</source>
+        <target>Saferpay-betalning kunde inte fångas! Kontrollera &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;Saferpays webbgränssnitt&lt;/a&gt;.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.saferpayStatusCancel">
+        <source>Saferpay payment cannot be canceled automatically. Use &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;the Saferpay web interface&lt;/a&gt; to issue a refund.</source>
+        <target>Saferpay-betalning kan inte avbrytas automatiskt. Använd &lt;a href=&quot;https://www.saferpay.com/BO/Login/&quot; target=&quot;_blank&quot;&gt;Saferpays webbgränssnitt&lt;/a&gt; för att utfärda en återbetalning.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noEmailData">
+        <source>No additional email data available.</source>
+        <target>Ingen ytterligare e-postdata tillgänglig.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.updateOrderStatus">
+        <source>Update order status</source>
+        <target>Uppdatera orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.noLogData">
+        <source>No order logs are available.</source>
+        <target>Inga orderloggar finns tillgängliga.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.status_legend">
+        <source>Order status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.log_legend">
+        <source>Order log</source>
+        <target>Beställningslogg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.details_legend">
+        <source>Order details</source>
+        <target>Orderdetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.show_legend">
+        <source>Order information</source>
+        <target>Beställningsinformation</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.email_legend">
+        <source>Email data</source>
+        <target>E-post data</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.billing_address_legend">
+        <source>Billing address data</source>
+        <target>Faktureringsadressdata</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.shipping_address_legend">
+        <source>Shipping address data</source>
+        <target>Leveransadressdata</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

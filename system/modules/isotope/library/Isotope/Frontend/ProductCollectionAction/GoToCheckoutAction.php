@@ -11,7 +11,9 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Contao\Module;
+use Contao\PageModel;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class GoToCheckoutAction extends AbstractButton
@@ -38,7 +40,7 @@ class GoToCheckoutAction extends AbstractButton
     {
         return $this->module->iso_checkout_jumpTo > 0
             && !$collection->hasErrors()
-            && \PageModel::findByPk($this->module->iso_checkout_jumpTo) !== null
+            && PageModel::findByPk($this->module->iso_checkout_jumpTo) !== null
         ;
     }
 
@@ -67,9 +69,7 @@ class GoToCheckoutAction extends AbstractButton
             return false;
         }
 
-        \Controller::redirect($this->getHref());
-
-        return true;
+        Controller::redirect($this->getHref());
     }
 
     /**
@@ -77,6 +77,6 @@ class GoToCheckoutAction extends AbstractButton
      */
     public function getHref()
     {
-        return \PageModel::findByPk($this->module->iso_checkout_jumpTo)->getFrontendUrl();
+        return PageModel::findByPk($this->module->iso_checkout_jumpTo)->getFrontendUrl();
     }
 }

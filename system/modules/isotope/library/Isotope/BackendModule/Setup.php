@@ -11,16 +11,10 @@
 
 namespace Isotope\BackendModule;
 
+use Contao\BackendTemplate;
+use Contao\BackendUser;
 use Contao\StringUtil;
 
-/**
- * Class ModuleIsotopeSetup
- *
- * Back end module Isotope "setup".
- * @copyright  Isotope eCommerce Workgroup 2009-2012
- * @author     Andreas Schempp <andreas.schempp@terminal42.ch>
- * @author     Fred Bliss <fred.bliss@intelligentspark.com>
- */
 class Setup extends BackendOverview
 {
     /**
@@ -36,7 +30,7 @@ class Setup extends BackendOverview
             foreach ($arrModules as $strModule => $arrConfig) {
 
                 if ($this->checkUserAccess($strModule)) {
-                    if (\is_array($arrConfig['tables'])) {
+                    if (\is_array($arrConfig['tables'] ?? null)) {
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] += $arrConfig['tables'];
                     }
 
@@ -45,7 +39,7 @@ class Setup extends BackendOverview
                         'label'         => StringUtil::specialchars($GLOBALS['TL_LANG']['IMD'][$strModule][0] ?: $strModule),
                         'description'   => StringUtil::specialchars(strip_tags($GLOBALS['TL_LANG']['IMD'][$strModule][1])),
                         'href'          => TL_SCRIPT . '?do=iso_setup&mod=' . $strModule,
-                        'class'         => $arrConfig['class'],
+                        'class'         => $arrConfig['class'] ?? '',
                     ));
 
                     $strLabel = str_replace(':hide', '', $strGroup);
@@ -62,7 +56,7 @@ class Setup extends BackendOverview
      */
     protected function checkUserAccess($module)
     {
-        return \BackendUser::getInstance()->isAdmin || \BackendUser::getInstance()->hasAccess($module, 'iso_modules');
+        return BackendUser::getInstance()->hasAccess($module, 'iso_modules');
     }
 
 
@@ -73,8 +67,8 @@ class Setup extends BackendOverview
      */
     protected function addIntroduction(array &$return)
     {
-        if (\BackendUser::getInstance()->isAdmin) {
-            $objTemplate = new \BackendTemplate('be_iso_introduction');
+        if (BackendUser::getInstance()->isAdmin) {
+            $objTemplate = new BackendTemplate('be_iso_introduction');
 
             $return['introduction']['label'] = &$GLOBALS['TL_LANG']['MSC']['isotopeIntroductionLegend'];
             $return['introduction']['html']  = $objTemplate->parse();

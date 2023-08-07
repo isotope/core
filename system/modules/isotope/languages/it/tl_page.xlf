@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_page.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="tl_page.iso_config.0">
@@ -11,6 +11,7 @@
       </trans-unit>
       <trans-unit id="tl_page.iso_readerMode.0">
         <source>Show product details</source>
+        <target>Mostra dettagli del prodotto</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerMode.1">
         <source>Overwrite the configuration of this page if product details are shown. See help wizard of the page selection for more information.</source>
@@ -18,20 +19,29 @@
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.current.0">
         <source>On current page</source>
+        <target>Sulla pagina corrente</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.current.1">
         <source>Place the list and reader module on the same page. Tell the list module to hide if a product alias is found (there's a checkbox in the module settings). The reader will automatically be invisible if no reader is found.&lt;br&gt;
           &lt;u&gt;Advantage:&lt;/u&gt; Pretty simple to set up&lt;br&gt;
           &lt;u&gt;Disadvantage:&lt;/u&gt; The layout of reader and list will be identical, and you cannot have different article content for the two cases.</source>
+        <target>Mettere il modulo elenco e il modulo lettore sulla stessa pagina. Indicate al modulo elenco di nascondersi se viene trovato un alias di prodotto (c'è una casella di controllo nelle impostazioni del modulo). Il lettore sarà automaticamente invisibile se non viene trovato nessun lettore.&lt;br&gt;
+&lt;u&gt;Vantaggio:&lt;/u&gt; Abbastanza semplice da configurare&lt;br&gt;
+&lt;u&gt;Svantaggio:&lt;/u&gt; Il layout del lettore e della lista saranno identici, e non si può avere un contenuto di articolo diverso per i due casi.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.page.0">
         <source>On separate page</source>
+        <target>Sulla pagina separata</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.page.1">
         <source>Set a reader page for every list page (product category) in the site structure. &lt;i&gt;Be aware that the reader setting is not inherited!&lt;/i&gt; Add the reader module to this page as usual.&lt;br&gt;
           Isotope will now use this page to generate the site if a product alias is found in the URL. The alias will still be the one from the list page though.&lt;br&gt;
           &lt;u&gt;Advantage:&lt;/u&gt; You can have different page content and layout (e.g. different columns) for the reader page then the list page.&lt;br&gt;
           &lt;u&gt;Disadvantage:&lt;/u&gt; You MUST set a reader page for every list page (category) you have. The setting is NOT INHERITED.</source>
+        <target>Impostare una pagina di lettura per ogni pagina di elenco (categoria di prodotti) nella struttura del sito. &lt;i&gt;Da notare che l'impostazione del lettore non è ereditata!&lt;/i&gt; Aggiungere il modulo lettore a questa pagina come al solito.&lt;br&gt;
+Isotope userà ora questa pagina per generare il sito se un alias di prodotto viene trovato nell'URL. L'alias sarà comunque quello della pagina elenco.&lt;br&gt;
+&lt;u&gt;Vantaggio:&lt;/u&gt; Si possono avere contenuti e layout di pagina diversi (ad esempio colonne diverse) per la pagina del lettore e per la pagina dell'elenco.&lt;br&gt;
+&lt;u&gt;Svantaggio:&lt;/u&gt; Devi impostare una pagina di lettura per ogni pagina elenco (categoria) che hai. L'impostazione NON E EREDITATA.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.none.0">
         <source>Disabled</source>
@@ -39,6 +49,7 @@
       </trans-unit>
       <trans-unit id="tl_page.iso_readerModes.none.1">
         <source>Prevent reader pages for this category. This means products will not have a detail page (useful if you have simple lists), and such detail pages will not appear in the sitemap.xml and search index.</source>
+        <target>Impedisci le pagine dei lettori per questa categoria. Questo significa che i prodotti non avranno una pagina di dettaglio (utile se hai elenchi semplici), e tali pagine di dettaglio non appariranno nel sitemap.xml e nell'indice di ricerca.</target>
       </trans-unit>
       <trans-unit id="tl_page.iso_readerJumpTo.0">
         <source>Reader page</source>

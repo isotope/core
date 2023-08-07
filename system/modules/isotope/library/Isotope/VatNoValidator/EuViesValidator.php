@@ -11,6 +11,7 @@
 
 namespace Isotope\VatNoValidator;
 
+use Contao\System;
 use Isotope\Interfaces\IsotopeVatNoValidator;
 use Isotope\Model\Address;
 use Isotope\Model\TaxRate;
@@ -47,7 +48,7 @@ class EuViesValidator implements IsotopeVatNoValidator
             $this->soap = new \SoapClient(static::$url_vies, ['exceptions' => true]);
         } catch (\SoapFault $e) {
             $this->soap = false;
-            \System::log('EU VAT validation failed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            System::log('EU VAT validation failed: ' . $e->getMessage(), __METHOD__, TL_ERROR);
         }
     }
 

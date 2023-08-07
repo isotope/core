@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
@@ -17,11 +17,42 @@
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
-        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.</target>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Wenn Sie ein neues Bild hochladen möchten, wählen Sie die Datei aus und speichern Sie das Produkt. Nach dem Sie das Bild erfolgreich hochgeladen haben, wird ein Vorschaubild angezeigt neben dem Sie den Alternativtext und eine Beschreibung eingeben können. Wenn Sie mehrere Bilder nutzen, können Sie ihre Reihenfolge durch Klicken auf die Pfeile rechts verändern. Das oberste Bild wird als Hauptbild des Produktes genutzt.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
         <target>Um Produktvarianten mit Isotope eCommerce nutzen zu können, müssen Sie erst Attribute konfigurieren.&lt;br&gt;Bitte beachten Sie &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;das Handbuch&lt;/a&gt; für weitere Infos zur Attribut-Erstellung</target>
+      </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Konfiguriert die Versandbehandlung im Bestellprozess.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Ausgeschlossen:&lt;/strong&gt;&lt;br&gt;
+  Enthält der Warenkorb nur Produkte die vom Versand ausgeschlossen sind, wird im Bestellprozess weder nach Versandadresse noch Versandmethode gefragt.
+  Die ist sinnvoll für Downloads oder andere digitale Produkte.&lt;br&gt;
+  Enthält der Warenkorb mindestens ein Produkt das nicht vom Versand ausgeschlossen ist, verhält sich der Prozess normal, aber ausgeschlossene Produkte werden ignoriert (z. B. für die Berechnung der Versandkosten).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Abholung:&lt;/strong&gt;&lt;br&gt;
+  Enthält der Warenkorb mindestens ein Produkt das nur abgeholt werden kann, wird im Bestellprozess nicht nach einer Versandadresse gefragt.
+  Versandmethoden sind weiterhin verfügbar, z B. für verschiedene Abholmöglichkeiten. Stelle sicher dass die Versandmethoden entsprechend richtig konfiguriert sind, um keinen echten Versand anzubieten.
+&lt;/p&gt;
+        </target>
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
@@ -34,6 +65,14 @@
         <target>
  Wählen Sie aus, welche Produktkategorien (Seiten) für die Produkte berücksichtigt werden sollen. &lt;br&gt;&lt;br&gt;&lt;u&gt;Wenn dies ein Produkt-Listen-Modul ist und Sie ein Kategorie-Filter-Modul konfiguriert haben, überschreibt die Kategorie-Filter-Auswahl diese Konfiguration!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
 </target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Dateinamen zu erzeugen.&lt;/p&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;Verwenden Sie diese Simple Tokens, um einen dynamischen Ordnernamen zu erzeugen.&lt;/p&gt;</target>
       </trans-unit>
     </body>
   </file>

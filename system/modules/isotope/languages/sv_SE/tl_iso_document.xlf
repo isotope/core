@@ -1,0 +1,130 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_document.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_document.name.0">
+        <source>Document name</source>
+        <target>Document name</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.name.1">
+        <source>Enter a name for this document. This will only be used in the backend.</source>
+        <target>Ange ett namn för detta dokument. Detta kommer endast att användas i backend.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type.0">
+        <source>Type of document</source>
+        <target>Typ av dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type.1">
+        <source>Select a particular document rendering class.</source>
+        <target>Välj en viss dokument renderingsklass.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.0">
+        <source>Logo</source>
+        <target>Logotyp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.logo.1">
+        <source>Select a logo.</source>
+        <target>Välj en logotyp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.0">
+        <source>Document title</source>
+        <target>Dokument titel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTitle.1">
+        <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;Invoice title ##collection_document_number##&quot;).</source>
+        <target>Du kan använda enkla tokens (&quot;collection_*&quot; whereas * är lika med databaskolumnen i samlingen) för att återge din filtitel (t.ex. &quot;Fakturatitel ##collection_document_number##&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.0">
+        <source>File title</source>
+        <target>Filtitel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.fileTitle.1">
+        <source>You can use simple tokens (&quot;collection_*&quot; whereas * equals the database column of the collection) to render your file title (e.g. &quot;invoice_##collection_document_number##&quot;).</source>
+        <target>Du kan använda enkla tokens (&quot;collection_*&quot; whereas * är lika med databaskolumnen i samlingen) för att återge din filtitel (t.ex. &quot;invoice_##collection_document_number##&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTpl.0">
+        <source>Document template</source>
+        <target>Dokumentmall</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.documentTpl.1">
+        <source>Choose a template you want to render this document with.</source>
+        <target>Välj en mall som du vill rendera detta dokument med.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.0">
+        <source>Gallery</source>
+        <target>Galleri</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.gallery.1">
+        <source>Select a gallery to render images.</source>
+        <target>Välj ett galleri för att rendera bilder.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.collectionTpl.0">
+        <source>Collection template</source>
+        <target>Samling mall</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.collectionTpl.1">
+        <source>Choose a collection template you want to render the products with.</source>
+        <target>Välj en samlingsmall som du vill rendera produkterna med.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.0">
+        <source>Sorting</source>
+        <target>Sortering</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.orderCollectionBy.1">
+        <source>Define in what order the collection items should be listed.</source>
+        <target>Definiera i vilken ordning samlingsobjekten ska listas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.new.0">
+        <source>New document</source>
+        <target>Nytt dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.new.1">
+        <source>Create a new document</source>
+        <target>Skapa ett nytt dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.edit.0">
+        <source>Edit document</source>
+        <target>Redigera dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.edit.1">
+        <source>Edit document ID %s</source>
+        <target>Redigera dokument ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.copy.0">
+        <source>Copy document</source>
+        <target>Kopiera dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.copy.1">
+        <source>Copy document ID %s</source>
+        <target>Kopiera dokument ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.delete.0">
+        <source>Delete document</source>
+        <target>Ta bort dokument</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.delete.1">
+        <source>Delete document ID %s</source>
+        <target>Ta bort dokument ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.show.0">
+        <source>Document details</source>
+        <target>Dokumentdetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.show.1">
+        <source>Show details of document ID %s</source>
+        <target>Visa detaljer om dokument ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.type_legend">
+        <source>Name &amp; type</source>
+        <target>Namn &amp; typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.config_legend">
+        <source>General configuration</source>
+        <target>Allmän konfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_document.template_legend">
+        <source>Template</source>
+        <target>Mall</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

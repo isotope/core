@@ -11,13 +11,17 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Automator;
+use Contao\Backend;
+use Contao\DataContainer;
+use Contao\Session;
 
-class XmlSitemap extends \Backend
+class XmlSitemap extends Backend
 {
 
     /**
      * Schedule an XML sitemap update
-     * @param \DataContainer
+     * @param DataContainer
      */
     public function scheduleUpdate($dc)
     {
@@ -27,9 +31,9 @@ class XmlSitemap extends \Backend
         }
 
         // Store the ID in the session
-        $session   = \Session::getInstance()->get('iso_product_updater');
+        $session   = Session::getInstance()->get('iso_product_updater');
         $session[] = $dc->id;
-        \Session::getInstance()->set('iso_product_updater', array_unique($session));
+        Session::getInstance()->set('iso_product_updater', array_unique($session));
     }
 
     /**
@@ -43,7 +47,7 @@ class XmlSitemap extends \Backend
             return;
         }
 
-        $objAutomator = new \Automator();
+        $objAutomator = new Automator();
         $objAutomator->generateSitemap();
 
         $this->Session->set('iso_product_updater', null);

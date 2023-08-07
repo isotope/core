@@ -11,12 +11,17 @@
 
 namespace Isotope\Backend\Module;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\System;
 use Isotope\Frontend\ProductAction\Registry;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -26,8 +31,8 @@ class Callback extends \Backend
     {
         parent::__construct();
 
-        \Controller::loadDataContainer('tl_iso_product');
-        \System::loadLanguageFile('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
+        System::loadLanguageFile('tl_iso_product');
     }
 
 
@@ -40,7 +45,7 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_filter']) {
+            if ($arrData['attributes']['fe_filter'] ?? false) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -58,8 +63,8 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_sorting']) {
-                $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
+            if ($arrData['attributes']['fe_sorting'] ?? false) {
+                $arrAttributes[$field] = $arrData['label'][0] ?? $field;
             }
         }
 
@@ -76,14 +81,14 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['dynamic']
-                || ($arrData['eval']['multiple'] && !$arrData['eval']['csv'])
+            if (($arrData['attributes']['dynamic'] ?? false)
+                || (($arrData['eval']['multiple'] ?? false) && !($arrData['eval']['csv'] ?? false))
             ) {
                 // Cannot search for dynamic attributes
                 continue;
             }
 
-            if ($arrData['attributes']['fe_search']) {
+            if ($arrData['attributes']['fe_search'] ?? false) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -101,7 +106,7 @@ class Callback extends \Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $arrData) {
-            if ($arrData['attributes']['fe_search'] && !$arrData['attributes']['dynamic']) {
+            if (($arrData['attributes']['fe_search'] ?? false) && !($arrData['attributes']['dynamic'] ?? false)) {
                 $arrAttributes[$field] = \strlen($arrData['label'][0]) ? $arrData['label'][0] : $field;
             }
         }
@@ -151,7 +156,7 @@ class Callback extends \Backend
     public function getLoginModuleList()
     {
         $arrModules = array();
-        $objModules = \Database::getInstance()->execute("SELECT id, name FROM tl_module WHERE type='login'");
+        $objModules = Database::getInstance()->execute("SELECT id, name FROM tl_module WHERE type='login'");
 
         while ($objModules->next()) {
             $arrModules[$objModules->id] = $objModules->name;
@@ -193,7 +198,7 @@ class Callback extends \Backend
      * @param DataContainer
      * @return array
      */
-    public function getFilterModules(\DataContainer $dc)
+    public function getFilterModules(DataContainer $dc)
     {
         $arrClasses = array();
 
@@ -211,7 +216,7 @@ class Callback extends \Backend
         }
 
         $arrModules = array();
-        $objModules = \Database::getInstance()->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
+        $objModules = Database::getInstance()->execute("SELECT * FROM tl_module WHERE type IN ('" . implode("','", $arrClasses) . "')");
 
         while ($objModules->next()) {
             $arrModules[$objModules->id] = $objModules->name;

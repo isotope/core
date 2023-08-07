@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="tr">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
@@ -17,6 +17,23 @@
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
         <target>Isotope eCommerce ile ürün çeşitlerini kullanmak için öncelikle özellikleri yapılandırmanız gerekir. &lt;br&gt; Lütfen daha fazla bilgi için &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt; öznitelik ayarlarına kılavuzuna &lt;/a&gt;  bakın.</target>
       </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+      </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
         <target>Pencerenin konumlandırılması, bir varsayılan konum ayarlayarak ve daha sonra ayarlamak için x ve y kaydırıcısını kullanarak yapılabilir. Ayrıca pencereyi bir konteynere yerleştirebilirsiniz - Daha fazla bilgi için bkz:&lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</target>
@@ -28,6 +45,12 @@
         <target>
             Ürünler için hangi ürün kategorilerinin (sayfalarının) dikkate alınması gerektiğini seçin.&lt;br&gt;&lt;br&gt;&lt;u&gt;Bu bir ürün listesi modülü ise ve bir kategori filtre modülü yapılandırdıysanız, kategori filtre seçimi bu yapılandırmayı geçersiz kılacaktır!&lt;/u&gt;&lt;br&gt;&lt;br&gt;
         </target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
       </trans-unit>
     </body>
   </file>

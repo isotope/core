@@ -1,0 +1,74 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_baseprice.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_baseprice.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name.1">
+        <source>Enter a name for this base price.</source>
+        <target>Ange ett namn för detta baspris.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.0">
+        <source>Base amount</source>
+        <target>Basbelopp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.amount.1">
+        <source>Enter the base amount (e.g. &quot;100&quot;).</source>
+        <target>Ange basbeloppet (t.ex. &quot;100&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.label.1">
+        <source>Enter a label for this base price (e.g. &quot;%s per 100g&quot;.)</source>
+        <target>Ange en etikett för detta baspris (t.ex. &quot;%s per 100g&quot;).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.new.0">
+        <source>New base price</source>
+        <target>Nytt grundpris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.new.1">
+        <source>Create a new base price</source>
+        <target>Skapa ett nytt grundpris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.edit.0">
+        <source>Edit base price</source>
+        <target>Redigera baspris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.edit.1">
+        <source>Edit base price ID %s</source>
+        <target>Redigera baspris ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.copy.0">
+        <source>Duplicate base price</source>
+        <target>Duplicera baspris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.copy.1">
+        <source>Duplicate base price ID %s</source>
+        <target>Duplicera baspris ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.delete.0">
+        <source>Delete base price</source>
+        <target>Ta bort baspris</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.delete.1">
+        <source>Delete base price ID %s</source>
+        <target>Ta bort baspris ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.show.0">
+        <source>Base price details</source>
+        <target>Baspris detaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.show.1">
+        <source>Show details of base price ID %s</source>
+        <target>Visa detaljer om baspris ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_baseprice.name_legend">
+        <source>Base price</source>
+        <target>Baspris</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

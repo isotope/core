@@ -11,13 +11,14 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\File;
+use Contao\FilesModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement FileTree widget
- *
- * @author Andreas Schempp <andreas.schempp@terminal42.ch>
  */
 class FileTree extends Attribute
 {
@@ -57,7 +58,7 @@ class FileTree extends Attribute
         $value = parent::getValue($product);
 
         if ('checkbox' === $this->fieldType) {
-            $value = deserialize($value);
+            $value = StringUtil::deserialize($value);
         }
 
         return (array) $value;
@@ -70,8 +71,8 @@ class FileTree extends Attribute
     {
         $varValue = $this->getValue($objProduct);
 
-        /** @var \FilesModel[] $objFiles */
-        $objFiles = \FilesModel::findMultipleByUuids((array) $varValue);
+        /** @var FilesModel[] $objFiles */
+        $objFiles = FilesModel::findMultipleByUuids((array) $varValue);
 
         if (null !== $objFiles) {
             $files = [];
@@ -109,7 +110,7 @@ class FileTree extends Attribute
     /**
      * Sort the files
      *
-     * @param \FilesModel[]  $files
+     * @param FilesModel[]  $files
      * @param IsotopeProduct $product
      *
      * @return array
@@ -140,7 +141,7 @@ class FileTree extends Attribute
 
             case 'custom':
                 if (($orderSource = $product->{$this->getOrderFieldName()}) != '') {
-                    $tmp = deserialize($orderSource);
+                    $tmp = StringUtil::deserialize($orderSource);
 
                     if (!empty($tmp) && \is_array($tmp)) {
                         // Remove all values
@@ -177,7 +178,7 @@ class FileTree extends Attribute
     /**
      * Get the sort date helper
      *
-     * @param \FilesModel[] $files
+     * @param FilesModel[] $files
      *
      * @return array
      */
@@ -186,7 +187,7 @@ class FileTree extends Attribute
         $helper = [];
 
         foreach ($files as $fileModel) {
-            $file = new \File($fileModel->path);
+            $file = new File($fileModel->path);
             $helper[] = $file->mtime;
         }
 

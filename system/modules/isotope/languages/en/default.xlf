@@ -71,6 +71,9 @@
       <trans-unit id="ERR.cumulativeDuplicateAttribute">
         <source>You cannot configure the same attribute multiple times.</source>
       </trans-unit>
+      <trans-unit id="ERR.rangeAttributeMax">
+        <source>Please select an "Attribute to" on row %s.</source>
+      </trans-unit>
       <trans-unit id="ERR.uploadNotFound">
         <source>The uploaded file is no longer available.</source>
       </trans-unit>
@@ -358,6 +361,12 @@
       </trans-unit>
       <trans-unit id="MSC.iso_order_total">
         <source>Total</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_locked">
+        <source>Placed</source>
+      </trans-unit>
+      <trans-unit id="MSC.iso_order_currency">
+        <source>Currency</source>
       </trans-unit>
       <trans-unit id="MSC.low_to_high">
         <source>lo to hi</source>
@@ -872,6 +881,12 @@
       <trans-unit id="ATTR.media.1">
         <source>Generates a video or audio player.</source>
       </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.0">
+        <source>Surcharge per quantity</source>
+      </trans-unit>
+      <trans-unit id="ATTR.quantitySurcharge.1">
+        <source>Adds an amount to the product price multiplied by quantity entered by the customer.</source>
+      </trans-unit>
       <trans-unit id="ATTR.fineUploader.0">
         <source>Fine Uploader</source>
       </trans-unit>
@@ -1339,6 +1354,9 @@
       </trans-unit>
       <trans-unit id="CUR.XCD">
         <source>XCD - East Caribbean Dollar</source>
+      </trans-unit>
+      <trans-unit id="CUR.XOF">
+        <source>XOF - CFA Franc BCEAO</source>
       </trans-unit>
       <trans-unit id="CUR.YER">
         <source>YER - Yemeni Riyal</source>

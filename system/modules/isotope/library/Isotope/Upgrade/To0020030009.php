@@ -11,19 +11,21 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Database;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
 class To0020030009 extends Base
 {
     /**
-     * @var \Contao\Database
+     * @var Database
      */
     private $db;
 
     public function run($blnInstalled)
     {
-        $this->db = \Database::getInstance();
+        $this->db = Database::getInstance();
 
         if ($blnInstalled) {
             $this->convertSerializedValues();
@@ -43,7 +45,7 @@ class To0020030009 extends Base
         if (null !== $attributes) {
             /** @var Attribute $attribute */
             foreach ($attributes as $attribute) {
-                if ($attribute instanceof IsotopeAttributeWithOptions) {
+                if ($attribute instanceof IsotopeAttributeWithOptions && !empty($attribute->field_name)) {
                     $fields[] = $attribute->field_name;
                 }
             }
@@ -61,7 +63,7 @@ class To0020030009 extends Base
                 $set = array();
 
                 foreach ($fields as $field) {
-                    $value = deserialize($products->$field);
+                    $value = StringUtil::deserialize($products->$field);
 
                     if (!empty($value) && \is_array($value)) {
                         $set[$field] = implode(',', $value);

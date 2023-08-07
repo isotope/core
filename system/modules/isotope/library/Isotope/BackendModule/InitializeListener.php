@@ -21,13 +21,13 @@ class InitializeListener
      */
     public function enableModuleTablesInSetup()
     {
-        if ('iso_setup' !== $_GET['do']) {
+        if ('iso_setup' !== ($_GET['do'] ?? null)) {
             return;
         }
 
         foreach ($GLOBALS['ISO_MOD'] as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
-                if (\is_array($arrConfig['tables'])) {
+                if (\is_array($arrConfig['tables'] ?? null)) {
                     $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'] = array_merge(
                         $GLOBALS['BE_MOD']['isotope']['iso_setup']['tables'],
                         $arrConfig['tables']

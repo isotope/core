@@ -49,11 +49,11 @@ class Reports extends BackendOverview
 
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
-                        'name' => $strModule,
-                        'label' => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
-                        'description' => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
-                        'href' => $this->addToUrl('mod=' . $strModule),
-                        'class' => $arrConfig['class'] ?? '',
+                        'name'          => $strModule,
+                        'label'         => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
+                        'description'   => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
+                        'href'          => $this->addToUrl('mod=' . $strModule),
+                        'class'         => $arrConfig['class'] ?? '',
                     ));
 
                     // @deprecated remove ISO_LANG in Isotope 3.0
@@ -81,7 +81,7 @@ class Reports extends BackendOverview
     {
         foreach ($data as $config_name => $config_data) {
             $config = Config::findBy('name',$config_name);
-            $strBuffer .= '
+        $strBuffer .= '
 <fieldset class="tl_tbox">
 <legend style="cursor: default;">' . $text . ': <b>'. $config_name . '</b></legend>
 <div class="summary">';

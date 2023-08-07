@@ -2,13 +2,13 @@
 
 <?php $this->block('content'); ?>
 
-<?php if (!$this->showResults): ?>
+<?php if (!$this->requiresShipping): ?>
+
+<p class="info no_shipping_required"><?= $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg'] ?></p>
+
+<?php elseif (!$this->showResults): ?>
 
     <p class="info no_shipping_address"><?= $GLOBALS['TL_LANG']['MSC']['noShippingAddress'] ?></p>
-
-<?php elseif (!$this->requiresShipping): ?>
-
-    <p class="info no_shipping_required"><?= $GLOBALS['TL_LANG']['MSC']['noShippingRequiredMsg'] ?></p>
 
 <?php elseif (count($this->shippingMethods) == 0): ?>
 

@@ -11,6 +11,10 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\Environment;
+use Contao\Input;
+use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
 use Isotope\Isotope;
@@ -91,10 +95,10 @@ class WishlistManager extends Module
             return;
         }
 
-        if ('wishlists'.$this->id === \Input::post('FORM_SUBMIT')) {
-            $names = \Input::post('name');
-            $new   = (string) \Input::post('new');
-            $delete = (int) \Input::post('delete');
+        if ('wishlists'.$this->id === Input::post('FORM_SUBMIT')) {
+            $names = Input::post('name');
+            $new   = (string) Input::post('new');
+            $delete = (int) Input::post('delete');
 
             if ($delete > 0) {
                 $wishlist = Wishlist::findByIdForCurrentUser($delete);
@@ -119,7 +123,7 @@ class WishlistManager extends Module
                 }
             }
 
-            \Controller::reload();
+            Controller::reload();
         }
 
         $url = $this->getJumpTo()->getFrontendUrl();
@@ -139,14 +143,13 @@ class WishlistManager extends Module
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($items);
 
         $this->Template->id = $this->id;
-        $this->Template->action = \Environment::get('request');
         $this->Template->items = $items;
     }
 
 
     private function getJumpTo()
     {
-        if ($this->jumpTo > 0 && ($jumpTo = \PageModel::findByPk($this->jumpTo)) !== null) {
+        if ($this->jumpTo > 0 && ($jumpTo = PageModel::findByPk($this->jumpTo)) !== null) {
             return $jumpTo;
         }
 

@@ -1,0 +1,102 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_integrity.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_integrity.headline">
+        <source>Integrity Check</source>
+        <target>Integritetskontroll</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.columns.0">
+        <source>Problem</source>
+        <target>Problem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.columns.1">
+        <source>Result of the check</source>
+        <target>Resultat av kontrollen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.description">
+        <source>Please choose the errors to be fixed.</source>
+        <target>Välj de fel som ska åtgärdas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.action">
+        <source>Resolve problems</source>
+        <target>Lös problem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.permission">
+        <source>Only admin can perform integrity check.</source>
+        <target>Endast admin kan utföra integritetskontroll.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.0">
+        <source>Advanced prices</source>
+        <target>Avancerade priser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.1">
+        <source>%s invalid andvanced prices were found.&lt;br&gt;PIDs: %s.</source>
+        <target>%s ogiltiga och avancerade priser hittades.&lt;br&gt;PID: %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.pricetable.2">
+        <source>There are no invalid advanced prices in your database.</source>
+        <target>Det finns inga ogiltiga avancerade priser i din databas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.0">
+        <source>Invalid product prices</source>
+        <target>Ogiltiga produktpriser</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.1">
+        <source>You have %s prices belonging to the wrong product/variant.&lt;br&gt;IDs: %s</source>
+        <target>Du har %s priser som hör till fel produkt/variant. &lt;br&gt;ID:n: %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantprices.2">
+        <source>There are no invalid product prices in your database.</source>
+        <target>Det finns inga ogiltiga produktpriser i din databas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.0">
+        <source>Invalid product variants</source>
+        <target>Ogiltiga produktvarianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.1">
+        <source>You have %s variants that belong to products without active variant support.&lt;br&gt;IDs: %s</source>
+        <target>Du har %s varianter som tillhör produkter utan aktiva variantstöd.&lt;br&gt;ID:n: %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.variantorphans.2">
+        <source>There are no invalid variants in your database.</source>
+        <target>Det finns inga ogiltiga varianter i din databas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.0">
+        <source>Invalid attribute options</source>
+        <target>Ogiltiga attributalternativ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.1">
+        <source>You have %s attribute options that belong to non-existant variants or products or have a wrong optionsSource set.&lt;br&gt;IDs: %s</source>
+        <target>Du har %s attributalternativ som tillhör icke-existerande varianter eller produkter eller har fel optionsSource set.&lt;br&gt;ID:n:%s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.attributeoptionorphans.2">
+        <source>There are no invalid attribute options in your database.</source>
+        <target>Det finns inga ogiltiga attributalternativ i din databas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.0">
+        <source>Multilingual Attributes</source>
+        <target>Flerspråkiga attribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.1">
+        <source>%s invalid multilingual attributes were found.&lt;br&gt;Attributes: %s.</source>
+        <target>%s ogiltiga flerspråkiga attribut hittades. &lt;br&gt;Attribut: %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.multilingualattributes.2">
+        <source>There are no invalid multilingual attributes in your database.</source>
+        <target>Det finns inga ogiltiga flerspråkiga attribut i din databas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.0">
+        <source>Rules module</source>
+        <target>Regelmodul</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.1">
+        <source>The rules module should be disabled if you do not use it.</source>
+        <target>Regelmodulen bör inaktiveras om du inte använder den.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_integrity.unusedrules.2">
+        <source>The rules module is disabled or in use.</source>
+        <target>Regelmodulen är inaktiverad eller används.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

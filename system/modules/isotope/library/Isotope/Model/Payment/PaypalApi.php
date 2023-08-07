@@ -11,12 +11,16 @@
 
 namespace Isotope\Model\Payment;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
+use Contao\Environment;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\Payment;
 use Isotope\Module\Checkout;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @property string $paypal_client
@@ -27,7 +31,8 @@ abstract class PaypalApi extends Payment
     /**
      * @param IsotopePurchasableCollection $order
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function createPayment(IsotopePurchasableCollection $order)
     {
@@ -66,8 +71,8 @@ abstract class PaypalApi extends Payment
         $data = [
             'intent'        => 'sale',
             'redirect_urls' => [
-                'return_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order),
-                'cancel_url' => \Environment::get('base') . Checkout::generateUrlForStep(Checkout::STEP_FAILED),
+                'return_url' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $order, null, true),
+                'cancel_url' => Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true),
             ],
             'payer'         => [
                 'payment_method' => 'paypal',
@@ -133,9 +138,10 @@ abstract class PaypalApi extends Payment
 
     /**
      * @param IsotopePurchasableCollection $order
-     * @param string                       $paymentId
+     * @param string $paymentId
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function patchPayment(IsotopePurchasableCollection $order, $paymentId)
     {
@@ -166,7 +172,8 @@ abstract class PaypalApi extends Payment
      * @param string $paymentId
      * @param string $payerId
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @return ResponseInterface
+     * @throws TransportExceptionInterface
      */
     public function executePayment($paymentId, $payerId)
     {
@@ -183,7 +190,7 @@ abstract class PaypalApi extends Payment
      */
     protected function storePayment(IsotopeProductCollection $collection, array $paypalData)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
         $paymentData['PAYPAL'] = $paypalData;
 
         $collection->payment_data = $paymentData;
@@ -197,7 +204,7 @@ abstract class PaypalApi extends Payment
      */
     protected function retrievePayment(IsotopeProductCollection $collection)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
         return \array_key_exists('PAYPAL', $paymentData) ? $paymentData['PAYPAL'] : [];
     }
@@ -208,7 +215,7 @@ abstract class PaypalApi extends Payment
      */
     protected function storeHistory(IsotopeProductCollection $collection, array $paypalData)
     {
-        $paymentData = deserialize($collection->payment_data, true);
+        $paymentData = StringUtil::deserialize($collection->payment_data, true);
 
         if (!\is_array($paymentData['PAYPAL_HISTORY'])) {
             $paymentData['PAYPAL_HISTORY'] = [];
@@ -225,43 +232,31 @@ abstract class PaypalApi extends Payment
      */
     private function getApiToken()
     {
-        $request = $this->prepareRequest();
+        $client = $this->prepareClient();
 
-        if ($request instanceof Client) {
-            $response = $request->post(
-                $this->getApiUrl('/oauth2/token'),
-                [
-                    RequestOptions::FORM_PARAMS => ['grant_type' => 'client_credentials'],
-                    RequestOptions::HEADERS     => [
-                        'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
-                    ],
-                ]
-            );
+        try {
+            $response = $client->request('POST', $this->getApiUrl('/oauth2/token'), [
+                'body' => ['grant_type' => 'client_credentials'],
+                'headers' => [
+                    'Authorization' => 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret),
+                ],
+            ]);
 
-            if ($response->getStatusCode() != 200) {
+            if (200 !== $response->getStatusCode()) {
                 return null;
             }
 
-            $response = json_decode($response->getBody()->getContents(), true);
+            $content = $response->toArray();
 
-        } else {
-            $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
-            $request->setHeader('Authorization', 'Basic ' . base64_encode($this->paypal_client . ':' . $this->paypal_secret));
+            return \array_key_exists('access_token', $content) ? $content : null;
+        } catch (TransportExceptionInterface $transportException) {
+            $this->debugLog(sprintf(
+                "PayPal API Error! (%s)",
+                $transportException->getMessage()
+            ));
 
-            $request->send(
-                $this->getApiUrl('/oauth2/token'),
-                'grant_type=client_credentials',
-                'POST'
-            );
-
-            if ($request->code != 200) {
-                return null;
-            }
-
-            $response = json_decode($request->response, true);
+            return null;
         }
-
-        return \array_key_exists('access_token', $response) ? $response : null;
     }
 
     /**
@@ -270,38 +265,23 @@ abstract class PaypalApi extends Payment
      * @param null $method
      * @param bool $renewToken
      *
-     * @return \Psr\Http\Message\ResponseInterface|\RequestExtended
+     * @throws TransportExceptionInterface
      */
-    private function sendRequest($path, array $data = null, $method = null, $renewToken = false)
+    private function sendRequest($path, array $data = null, $method = null, $renewToken = false): ResponseInterface
     {
-        $request = $this->prepareRequest();
+        $client = $this->prepareClient();
 
         // TODO store and reuse token
         $token = $this->getApiToken();
 
-        if ($request instanceof Client) {
-            $response = $request->request(
-                $method,
-                $this->getApiUrl($path),
-                [
-                    RequestOptions::JSON    => $data,
-                    RequestOptions::HEADERS => [
-                        'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
-                    ],
-                ]
-            );
+        $response = $client->request($method, $this->getApiUrl($path), [
+            'json' => $data,
+            'headers' => [
+                'Authorization' => $token['token_type'] . ' ' . $token['access_token'],
+            ],
+        ]);
 
-            $responseCode = $response->getStatusCode();
-
-        } else {
-            $request->setHeader('Authorization', $token['token_type'] . ' ' . $token['access_token']);
-            $request->setHeader('Content-Type', 'application/json');
-
-            $request->send($this->getApiUrl($path), json_encode($data), $method);
-
-            $responseCode = $request->code;
-            $response     = $request;
-        }
+        $responseCode = $response->getStatusCode();
 
         // Token probably expired, try again with a new token
         if (401 === $responseCode && !$renewToken) {
@@ -311,33 +291,18 @@ abstract class PaypalApi extends Payment
         return $response;
     }
 
-    /**
-     * @return Client|\RequestExtended
-     */
-    private function prepareRequest()
+    private function prepareClient(): HttpClientInterface
     {
-        if (class_exists('GuzzleHttp\Client')) {
-            $request = new Client(
-                [
-                    RequestOptions::TIMEOUT         => 5,
-                    RequestOptions::CONNECT_TIMEOUT => 5,
-                    RequestOptions::HTTP_ERRORS     => false,
-                    RequestOptions::HEADERS         => [
-                        'Accept'          => 'application/json',
-                        'Accept-Language' => 'en_US',
-                    ],
-                ]
-            );
-        } else {
-            $request = new \RequestExtended();
-            $request->setHeader('Accept', 'application/json');
-            $request->setHeader('Accept-Language', 'en_US');
-        }
-
-        return $request;
+        return HttpClient::create([
+            'max_duration' => 5,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Accept-Language' => 'en_US',
+            ],
+        ]);
     }
 
-    private function getApiUrl($path)
+    private function getApiUrl($path): string
     {
         return 'https://api.' . ($this->debug ? 'sandbox.' : '') . 'paypal.com/v1' . $path;
     }

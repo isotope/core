@@ -11,6 +11,10 @@
 
 namespace Isotope\Model;
 
+use Contao\Database;
+use Contao\Model;
+use Contao\StringUtil;
+use Contao\System;
 use Haste\Data\Plain;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductWithOptions;
@@ -34,7 +38,7 @@ use Isotope\Isotope;
  * @property string $tax_id
  * @property int    $jumpTo
 */
-class ProductCollectionItem extends \Model
+class ProductCollectionItem extends Model
 {
 
     /**
@@ -81,7 +85,7 @@ class ProductCollectionItem extends \Model
 
         if (isset($GLOBALS['ISO_HOOKS']['itemIsAvailable']) && \is_array($GLOBALS['ISO_HOOKS']['itemIsAvailable'])) {
             foreach ($GLOBALS['ISO_HOOKS']['itemIsAvailable'] as $callback) {
-                $available = \System::importStatic($callback[0])->{$callback[1]}($this);
+                $available = System::importStatic($callback[0])->{$callback[1]}($this);
 
                 // If return value is boolean then we accept it as result
                 if (true === $available || false === $available) {
@@ -96,7 +100,10 @@ class ProductCollectionItem extends \Model
 
         $arrConfig = $this->getOptions();
         foreach ($this->getProduct()->getOptions() as $k => $v) {
-            if ($arrConfig[$k] !== $v) {
+            if (
+                $arrConfig[$k] !== $v
+                && (!\is_scalar($arrConfig[$k]) || !\is_scalar($v) || (string) $arrConfig[$k] !== (string) $v)
+            ) {
                 return false;
             }
         }
@@ -131,7 +138,7 @@ class ProductCollectionItem extends \Model
         $intAffected = parent::delete();
 
         if ($intAffected) {
-            \Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
+            Database::getInstance()->query("DELETE FROM tl_iso_product_collection_download WHERE pid=$intId");
         }
 
         return $intAffected;
@@ -154,7 +161,7 @@ class ProductCollectionItem extends \Model
             $strClass = Product::getClassForModelType($this->type);
 
             if ($strClass == '' || !class_exists($strClass)) {
-                \System::log('Error creating product object of type "' . $this->type . '"', __METHOD__, TL_ERROR);
+                System::log('Error creating product object of type "' . $this->type . '"', __METHOD__, TL_ERROR);
 
                 return null;
             }
@@ -168,7 +175,7 @@ class ProductCollectionItem extends \Model
 
             if (null !== $this->objProduct && $this->objProduct instanceof IsotopeProductWithOptions) {
                 try {
-                    if ($this->objProduct instanceof \Model) {
+                    if ($this->objProduct instanceof Model) {
                         $this->objProduct = clone $this->objProduct;
                         $this->objProduct->preventSaving(false);
                         $this->objProduct->id = $this->product_id;
@@ -233,7 +240,7 @@ class ProductCollectionItem extends \Model
      */
     public function getOptions()
     {
-        $arrConfig = deserialize($this->configuration);
+        $arrConfig = StringUtil::deserialize($this->configuration);
 
         return \is_array($arrConfig) ? $arrConfig : [];
     }
@@ -247,7 +254,7 @@ class ProductCollectionItem extends \Model
      */
     public function getConfiguration()
     {
-        $arrConfig = deserialize($this->configuration);
+        $arrConfig = StringUtil::deserialize($this->configuration);
 
         if (empty($arrConfig) || !\is_array($arrConfig)) {
             return array();
@@ -382,20 +389,20 @@ class ProductCollectionItem extends \Model
      *
      * @param int $intQuantity
      *
-     * @return bool
+     * @return self
      */
     public function increaseQuantityBy($intQuantity)
     {
         $time = time();
 
-        \Database::getInstance()->query("
-            UPDATE tl_iso_product_collection_item 
-            SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ') 
+        Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item
+            SET tstamp=$time, quantity=(quantity+" . (int) $intQuantity . ')
             WHERE id=' . $this->id
         );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()
+        $this->quantity = Database::getInstance()
             ->query("SELECT quantity FROM tl_iso_product_collection_item WHERE id=" . $this->id)
             ->quantity
         ;
@@ -408,7 +415,7 @@ class ProductCollectionItem extends \Model
      *
      * @param int $intQuantity
      *
-     * @return bool
+     * @return self
      */
     public function decreaseQuantityBy($intQuantity)
     {
@@ -418,14 +425,14 @@ class ProductCollectionItem extends \Model
 
         $time = time();
 
-        \Database::getInstance()->query("
-            UPDATE tl_iso_product_collection_item 
-            SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ') 
+        Database::getInstance()->query("
+            UPDATE tl_iso_product_collection_item
+            SET tstamp=$time, quantity=(quantity-" . (int) $intQuantity . ')
             WHERE id=' . $this->id
         );
 
         $this->tstamp   = $time;
-        $this->quantity = \Database::getInstance()
+        $this->quantity = Database::getInstance()
             ->query('SELECT quantity FROM tl_iso_product_collection_item WHERE id=' . $this->id)
             ->quantity
         ;
@@ -450,7 +457,7 @@ class ProductCollectionItem extends \Model
             $strQuery .= ' WHERE ' . (\is_array($strColumn) ? implode(' AND ', $strColumn) : static::$strTable . '.' . $strColumn . "=?");
         }
 
-        return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
+        return (int) Database::getInstance()->prepare($strQuery)->execute($varValue)->sum;
     }
 
     /**

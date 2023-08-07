@@ -10,7 +10,7 @@
  */
 
 $this->loadLanguageFile(\Isotope\Model\Group::getTable());
-$this->loadDataContainer(\UserModel::getTable());
+$this->loadDataContainer(\Contao\UserModel::getTable());
 
 /**
  * Extend a tl_user_group palette
@@ -28,4 +28,5 @@ $GLOBALS['TL_DCA']['tl_user_group']['fields']['iso_reports'] = array
     'inputType'               => 'checkbox',
     'options_callback'        => array('tl_iso_reports', 'getReports'),
     'eval'                    => array('multiple'=>true, 'tl_class'=>'w50 w50h'),
+    'sql'                     => 'blob NULL',
 );

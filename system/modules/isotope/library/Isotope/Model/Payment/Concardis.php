@@ -11,16 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\Model\Payment;
-
-
-/**
- * Class Concardis
- *
- * Handle Concardis payments
-
- * @author Yanick Witschi <yanick.witschi@terminal42.ch>
- */
 class Concardis extends PSP
 {
 

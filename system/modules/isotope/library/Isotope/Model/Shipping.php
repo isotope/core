@@ -11,6 +11,8 @@
 
 namespace Isotope\Model;
 
+use Contao\Environment;
+use Contao\FrontendUser;
 use Contao\StringUtil;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -127,11 +129,11 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         if ($this->protected) {
-            $arrGroups = deserialize($this->groups);
+            $arrGroups = StringUtil::deserialize($this->groups);
 
             if (!\is_array($arrGroups)
                 || empty($arrGroups)
-                || !\count(array_intersect($arrGroups, \FrontendUser::getInstance()->groups))
+                || !\count(array_intersect($arrGroups, FrontendUser::getInstance()->groups))
             ) {
                 return false;
             }
@@ -178,20 +180,20 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             }
         }
 
-        $arrConfigs = deserialize($this->config_ids);
+        $arrConfigs = StringUtil::deserialize($this->config_ids);
         if (\is_array($arrConfigs) && !empty($arrConfigs) && !\in_array(Isotope::getConfig()->id, $arrConfigs)) {
             return false;
         }
 
         $objAddress = Isotope::getCart()->getShippingAddress();
 
-        $arrCountries = deserialize($this->countries);
+        $arrCountries = StringUtil::deserialize($this->countries);
         if (\is_array($arrCountries) && !empty($arrCountries)) {
             if (!\in_array($objAddress->country, $arrCountries, true)) {
                 return false;
             }
 
-            $arrSubdivisions = deserialize($this->subdivisions);
+            $arrSubdivisions = StringUtil::deserialize($this->subdivisions);
             if (\is_array($arrSubdivisions)
                 && !empty($arrSubdivisions)
                 && !\in_array($objAddress->subdivision, $arrSubdivisions, true)
@@ -210,7 +212,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         if ('calculation' !== $this->product_types_condition) {
-            $arrConfigTypes = deserialize($this->product_types);
+            $arrConfigTypes = StringUtil::deserialize($this->product_types);
 
             if (\is_array($arrConfigTypes) && \count($arrConfigTypes) > 0) {
                 $arrItems = Isotope::getCart()->getItems();
@@ -325,7 +327,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
     {
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=shipping', '', \Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . ampersand(str_replace('&key=shipping', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'][$this->type][0] . ')' . '</h2>
@@ -380,8 +382,9 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         $className = substr(\get_called_class(), $pos+1);
 
         $logFile = sprintf(
-            'isotope_%s.log',
-            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className)))
+            'isotope_%s-%s.log',
+            strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), str_replace('_', '.', $className))),
+            date('Y-m-d')
         );
 
         log_message(print_r($value, true), $logFile);

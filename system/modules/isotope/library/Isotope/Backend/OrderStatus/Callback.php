@@ -11,11 +11,16 @@
 
 namespace Isotope\Backend\OrderStatus;
 
+use Contao\Backend;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
 use Contao\StringUtil;
 use Isotope\Model\OrderStatus;
 
 
-class Callback extends \Backend
+class Callback extends Backend
 {
 
     /**
@@ -32,14 +37,14 @@ class Callback extends \Backend
             $image = 'un' . $image;
         }
 
-        return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.gif\');">%s</div>', \Backend::getTheme(), $image, $label);
+        return sprintf('<div class="list_icon" style="background-image:url(\'system/themes/%s/images/%s.svg\');">%s</div>', Backend::getTheme(), $image, $label);
     }
 
 
     /**
      * Return the paste button
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param array          $row
      * @param string         $table
      * @param boolean        $cr
@@ -47,17 +52,17 @@ class Callback extends \Backend
      *
      * @return string
      */
-    public function pasteButton(\DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
+    public function pasteButton(DataContainer $dc, $row, $table, $cr, $arrClipboard = false)
     {
         if ($row['id'] == 0) {
-            $imagePasteInto = \Image::getHtml('pasteinto.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
+            $imagePasteInto = Image::getHtml('pasteinto.svg', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id']));
 
-            return $cr ? \Image::getHtml('pasteinto_.gif') . ' ' : '<a href="' . \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=2&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . StringUtil::specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteInto . '</a> ';
+            return $cr ? Image::getHtml('pasteinto_.svg') . ' ' : '<a href="' . Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=2&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . StringUtil::specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteinto'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteInto . '</a> ';
         }
 
-        $imagePasteAfter = \Image::getHtml('pasteafter.gif', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
+        $imagePasteAfter = Image::getHtml('pasteafter.svg', sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id']));
 
-        return (('cut' === $arrClipboard['mode'] && $arrClipboard['id'] == $row['id']) || $cr) ? \Image::getHtml('pasteafter_.gif') . ' ' : '<a href="' . \Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=1&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . StringUtil::specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteAfter . '</a> ';
+        return (('cut' === $arrClipboard['mode'] && $arrClipboard['id'] == $row['id']) || $cr) ? Image::getHtml('pasteafter_.svg') . ' ' : '<a href="' . Backend::addToUrl('act=' . $arrClipboard['mode'] . '&mode=1&pid=' . $row['id'] . '&id=' . $arrClipboard['id']) . '" title="' . StringUtil::specialchars(sprintf($GLOBALS['TL_LANG'][$dc->table]['pasteafter'][1], $row['id'])) . '" onclick="Backend.getScrollOffset();">' . $imagePasteAfter . '</a> ';
     }
 
     /**
@@ -65,7 +70,7 @@ class Callback extends \Backend
      */
     public function addDefault()
     {
-        if (\Input::get('act') != '' || OrderStatus::countAll() > 0) {
+        if (Input::get('act') != '' || OrderStatus::countAll() > 0) {
             return;
         }
 
@@ -104,14 +109,12 @@ class Callback extends \Backend
     /**
      * Gets notification options for order status change.
      *
-     * @param \DataContainer $dc
-     *
      * @return array
      */
-    public function getNotificationChoices(\DataContainer $dc)
+    public function getNotificationChoices(DataContainer $dc)
     {
         $arrChoices = array();
-        $objNotifications = \Database::getInstance()->execute(
+        $objNotifications = Database::getInstance()->execute(
             "SELECT id,title FROM tl_nc_notification WHERE type='iso_order_status_change' ORDER BY title"
         );
 

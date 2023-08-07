@@ -11,7 +11,14 @@
 
 namespace Isotope\Backend\Group;
 
+use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
+use Contao\Session;
 use Contao\StringUtil;
 use Isotope\Backend\Permission;
 use Isotope\Model\Group;
@@ -34,9 +41,9 @@ class Callback extends Permission
      */
     public function checkPermission($dc)
     {
-        /** @var \BackendUser $user */
-        $user    = \BackendUser::getInstance();
-        $session = \Session::getInstance();
+        /** @var BackendUser $user */
+        $user    = BackendUser::getInstance();
+        $session = Session::getInstance();
 
         if ($user->isAdmin) {
             return;
@@ -85,10 +92,10 @@ class Callback extends Permission
             $GLOBALS['TL_DCA']['tl_iso_group']['config']['notEditable'] = true;
         }
 
-        $root = array_merge($root, \Database::getInstance()->getChildRecords($root, 'tl_iso_group'));
+        $root = array_merge($root, Database::getInstance()->getChildRecords($root, 'tl_iso_group'));
 
         // Check current action
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'create':
             case 'copy':
             case 'select':
@@ -100,10 +107,10 @@ class Callback extends Permission
             case 'edit':
 
                 // Dynamically add the record to the user profile
-                if (!\in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_group', 'iso_groups', 'iso_groupp')
+                if (!\in_array(Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_group', 'iso_groups', 'iso_groupp')
                 ) {
-                    $root[]           = \Input::get('id');
+                    $root[] = Input::get('id');
                     $user->iso_groups = $root;
                 }
             // No break;
@@ -111,13 +118,13 @@ class Callback extends Permission
             case 'delete':
             case 'show':
             case 'cut':
-                if (!\in_array(\Input::get('id'), $root)
+                if (!\in_array(Input::get('id'), $root)
                     || (
-                        'delete' === \Input::get('act')
+                        'delete' === Input::get('act')
                         && !$user->hasAccess('delete', 'iso_groupp')
                     )
                 ) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' group ID "' . \Input::get('id') . '"');
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' group ID "' . Input::get('id') . '"');
                 }
                 break;
 
@@ -125,7 +132,7 @@ class Callback extends Permission
             case 'deleteAll':
             case 'overrideAll':
                 $sessionData = $session->getData();
-                if ('deleteAll' === \Input::get('act') && !$user->hasAccess('delete', 'iso_groupp')) {
+                if ('deleteAll' === Input::get('act') && !$user->hasAccess('delete', 'iso_groupp')) {
                     $sessionData['CURRENT']['IDS'] = array();
                 } else {
                     $sessionData['CURRENT']['IDS'] = array_intersect($sessionData['CURRENT']['IDS'], $root);
@@ -134,8 +141,8 @@ class Callback extends Permission
                 break;
 
             default:
-                if (\strlen(\Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' groups');
+                if (\strlen(Input::get('act'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' groups');
                 }
                 break;
         }
@@ -146,26 +153,26 @@ class Callback extends Permission
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param string         $imageAttribute
      *
      * @return string
      */
-    public function addIcon($row, $label, \DataContainer $dc = null, $imageAttribute = '')
+    public function addIcon($row, $label, DataContainer $dc = null, $imageAttribute = '')
     {
-        $image = \Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
+        $image = Image::getHtml('system/modules/isotope/assets/images/folder-network.png', '', $imageAttribute);
 
         if ('tl_iso_product' === $dc->table) {
             return $image . ' <span style="font-weight:bold">' . $label . '</span>';
-        } else {
-            $strProductType = '';
-
-            if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null) {
-                $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
-            }
-
-            return $image . ' ' . $label . $strProductType;
         }
+
+        $strProductType = '';
+
+        if (($objProductType = Group::findByPk($row['id'])->getRelated('product_type')) !== null) {
+            $strProductType = ' <span style="color:#b3b3b3; padding-left:3px;">[' . $objProductType->name . ']</span>';
+        }
+
+        return $image . ' ' . $label . $strProductType;
     }
 
     /**
@@ -175,10 +182,10 @@ class Callback extends Permission
      */
     public function deleteGroup($dc)
     {
-        $arrGroups   = \Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
+        $arrGroups   = Database::getInstance()->getChildRecords($dc->id, 'tl_iso_group');
         $arrGroups[] = $dc->id;
 
-        \Database::getInstance()->query(
+        Database::getInstance()->query(
             'UPDATE tl_iso_product SET gid=0 WHERE gid IN (' . implode(',', $arrGroups) . ')'
         );
     }
@@ -197,13 +204,13 @@ class Callback extends Permission
      */
     public function editButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!\BackendUser::getInstance()->isAdmin
-            && !\BackendUser::getInstance()->canEditFieldsOf('tl_iso_group')
+        if (!BackendUser::getInstance()->isAdmin
+            && !BackendUser::getInstance()->canEditFieldsOf('tl_iso_group')
         ) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -220,16 +227,16 @@ class Callback extends Permission
      */
     public function copyButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!\BackendUser::getInstance()->isAdmin
+        if (!BackendUser::getInstance()->isAdmin
             && (
-                !\is_array(\BackendUser::getInstance()->iso_groupp)
-                || !\in_array('create', \BackendUser::getInstance()->iso_groupp, true)
+                !\is_array(BackendUser::getInstance()->iso_groupp)
+                || !\in_array('create', BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -246,15 +253,15 @@ class Callback extends Permission
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
-        if (!\BackendUser::getInstance()->isAdmin
+        if (!BackendUser::getInstance()->isAdmin
             && (
-                !\is_array(\BackendUser::getInstance()->iso_groupp)
-                || !\in_array('delete', \BackendUser::getInstance()->iso_groupp, true)
+                !\is_array(BackendUser::getInstance()->iso_groupp)
+                || !\in_array('delete', BackendUser::getInstance()->iso_groupp, true)
             )
         ) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        return '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
 }

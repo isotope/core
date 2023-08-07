@@ -10,11 +10,10 @@ PaletteManipulator::create()
 
 $GLOBALS['TL_DCA']['tl_member_group']['fields']['iso_priceDisplay'] = array
 (
-    'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['priceDisplay'],
     'exclude'               => true,
     'inputType'             => 'select',
     'options'               => array(\Isotope\Model\Config::PRICE_DISPLAY_NET, \Isotope\Model\Config::PRICE_DISPLAY_GROSS, \Isotope\Model\Config::PRICE_DISPLAY_FIXED),
     'reference'             => &$GLOBALS['TL_LANG']['MSC']['iso_priceDisplay'],
     'eval'                  => array('includeBlankOption'=>true, 'tl_class'=>'w50', 'helpwizard'=>true),
-    'sql'                   => "varchar(9) NOT NULL default ''",
+    'sql'                   => "varchar(8) NOT NULL default ''",
 );

@@ -27,8 +27,8 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         'onload_callback' => array
         (
             function() {
-                if (\Input::get('act') == '' && \BackendUser::getInstance()->hasAccess('modules', 'themes')) {
-                    \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint']);
+                if (\Contao\Input::get('act') == '' && \Contao\BackendUser::getInstance()->hasAccess('modules', 'themes')) {
+                    \Contao\Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_category']['hint'] ?? '');
                 }
             }
         ),
@@ -62,7 +62,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_category'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'

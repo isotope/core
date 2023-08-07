@@ -11,6 +11,8 @@
 
 namespace Isotope\Model;
 
+use Contao\Model;
+
 /**
  * ProductCollectionLog represents a log in a product collection.
  *
@@ -24,7 +26,7 @@ namespace Isotope\Model;
  * @property string $notes
  * @property int    $notification
 */
-class ProductCollectionLog extends \Model
+class ProductCollectionLog extends Model
 {
     /**
      * Name of the current table

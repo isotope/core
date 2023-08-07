@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/explain.xlf" source-language="en" target-language="it">
     <body>
       <trans-unit id="XPL.isoReaderJumpTo">
@@ -8,6 +8,11 @@
     &lt;br&gt;
     The reader page (alias) will always be the same page as you selected as a category for the product. The following options are available for the detail page:&lt;br&gt;
 &lt;/p&gt;</source>
+        <target>&lt;p class=&quot;tl_help_table&quot;&gt;
+A differenza di qualsiasi altro modulo Contao, un utente non viene reindirizzato alla pagina del lettore quando visualizza i dettagli del prodotto. Per risolvere il problema dei simpatici alias e per conoscere la pagina di dettaglio di un prodotto, abbiamo ideato una nuova soluzione.&lt;br&gt;
+&lt;br&gt;
+La pagina del lettore (alias) sarà sempre la stessa pagina che hai selezionato come categoria per il prodotto. Per la pagina di dettaglio sono disponibili le seguenti opzioni:&lt;br&gt;
+&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="XPL.mediaManager">
         <source>&lt;p class=&quot;tl_help_table&quot;&gt;To upload a new picture, select the file and save the product. After successfully uploading, a preview of the image is displayed and next to it you can enter its alternative text and a description. For multiple pictures, you can click on the arrows to the right and change their order, the top image is used as the main image of each product.&lt;/p&gt;</source>
@@ -16,6 +21,38 @@
       <trans-unit id="XPL.noVariantAttributes">
         <source>To use product variants with Isotope eCommerce, you must first configure the attributes.&lt;br&gt;Please refer to &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;the manual&lt;/a&gt; for more information about attribute setup.</source>
         <target>Per utilizzare le varianti di prodotto con Isotope eCommerce, è necessario prima configurare gli attributi. &lt;br&gt;Consultare &lt;a href=&quot;http://isotopeecommerce.org/en/manual.html&quot; target=&quot;_blank&quot; style=&quot;text-decoration:underline&quot;&gt;il manuale&lt;/a&gt; per maggiori informazioni sulla configurazione degli attributi.</target>
+      </trans-unit>
+      <trans-unit id="XPL.shippingExempt">
+        <source>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+  Configures shipping handling in the checkout process.
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Exempted:&lt;/strong&gt;&lt;br&gt;
+  If the cart only contains products exempted from shipping, the checkout process will not ask for a shipping address nor a shipping method.
+  This is useful for download or other types of digital product.&lt;br&gt;
+  If there is at least one non-exempted product in the cart, the process is as normal, but exempted products are ignored (e.g. from shipping price calculation).
+  &lt;br&gt;&lt;br&gt;
+  &lt;strong&gt;Pick up:&lt;/strong&gt;&lt;br&gt;
+  If at least one product type in the cart has this option enabled, the shipping address in the checkout step will not be collected.
+  You can still use the shipping methods to e.g. offer different pickup options. Make sure to setup the shipping methods correctly to not
+  offer real shipping for these product types.
+&lt;/p&gt;
+        </source>
+        <target>
+&lt;p class=&quot;tl_help_table&quot;&gt;
+Configura la gestione della spedizione nel processo di checkout.
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Escluso:&lt;/strong&gt;&lt;br&gt;
+Se il carrello contiene solo prodotti esentati dalla spedizione, il processo di checkout non chiederà un indirizzo di spedizione né un metodo di spedizione.
+Questo è utile per i download o altri tipi di prodotti digitali.&lt;br&gt;
+Se c'è almeno un prodotto non esentato nel carrello, il processo è normale, ma i prodotti esentati vengono ignorati (ad esempio dal calcolo del prezzo di spedizione).
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Ritiro:&lt;/strong&gt;&lt;br&gt;
+Se almeno un tipo di prodotto nel carrello ha questa opzione abilitata, l'indirizzo di spedizione nella fase di checkout non verrà raccolto.
+Puoi ancora usare i metodi di spedizione per offrire, ad esempio, diverse opzioni di ritiro. Assicurati di impostare correttamente i metodi di spedizione per non
+offrire una vera spedizione per questi tipi di prodotto.
+&lt;/p&gt;
+</target>
       </trans-unit>
       <trans-unit id="XPL.elevatezoom_position">
         <source>Positioning the window can be done in by setting a default position, and then using x and y offset to adjust. You can also position the window into a container - See more at: &lt;a href=&quot;http://www.elevateweb.co.uk/image-zoom/examples#window-position&quot; target=&quot;_blank&quot;&gt;http://www.elevateweb.co.uk/image-zoom/examples#window-position&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;img src=&quot;system/modules/isotope/assets/images/elevatezoom-positions.png&quot; alt=&quot;&quot;&gt;</source>
@@ -27,6 +64,12 @@
         ]]></source>
         <target>
 Selezionate quali categorie di prodotti (pagine) devono essere prese in considerazione per i prodotti. &lt;br&gt;&lt;br&gt;&lt;u&gt;Se si tratta di un modulo di elenco prodotti e avete configurato un modulo di filtro di categoria, la selezione del filtro di categoria sovrascriverà questa configurazione!&lt;/u&gt;&lt;br&gt;&lt;br&gt;</target>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFile">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic file name.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="XPL.checkoutTargetFolder">
+        <source>&lt;p class=&quot;tl_help_table&quot;&gt;Use these simple tokens to generate a dynamic folder name.&lt;/p&gt;</source>
       </trans-unit>
     </body>
   </file>

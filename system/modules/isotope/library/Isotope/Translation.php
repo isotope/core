@@ -11,12 +11,12 @@
 
 namespace Isotope;
 
+use Contao\Model\Collection;
+use Contao\StringUtil;
 use Isotope\Model\Label;
 
 /**
  * Translates labels
- *
- * @author Yanick Witschi <yanick.witschi@terminal42.ch>
  */
 class Translation
 {
@@ -66,7 +66,7 @@ class Translation
         // Load labels
         static::initialize($strLanguage);
 
-        $varLabel = \StringUtil::decodeEntities($varLabel);
+        $varLabel = StringUtil::decodeEntities($varLabel);
 
         if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
             return static::$arrLabels[$strLanguage][$varLabel];
@@ -90,7 +90,7 @@ class Translation
 
         static::initialize($strLanguage);
 
-        static::$arrLabels[$strLanguage][\StringUtil::decodeEntities($strLabel)] = $strReplacement;
+        static::$arrLabels[$strLanguage][StringUtil::decodeEntities($strLabel)] = $strReplacement;
     }
 
     /**
@@ -106,12 +106,12 @@ class Translation
 
         if (!isset(static::$arrLoaded[$strLanguage])) {
 
-            /** @var Label[]|\Model\Collection $objLabels */
+            /** @var Label[]|Collection $objLabels */
             $objLabels = Label::findBy('language', $strLanguage);
 
             if (null !== $objLabels) {
                 while ($objLabels->next()) {
-                    static::$arrLabels[$strLanguage][\StringUtil::decodeEntities($objLabels->label)] = $objLabels->replacement;
+                    static::$arrLabels[$strLanguage][StringUtil::decodeEntities($objLabels->label)] = $objLabels->replacement;
                 }
             }
 

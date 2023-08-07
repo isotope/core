@@ -1,0 +1,242 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_address.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_address.store_id.0">
+        <source>Store ID</source>
+        <target>Shop ID</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_id.1">
+        <source>Different store IDs group a store on multiple root sites. A members's cart and addresses will be shared across the same store IDs.</source>
+        <target>Olika butiks-ID:n grupperar en butik på flera rotwebbplatser. Medlemmars kundvagn och adresser kommer att delas mellan samma butiks-ID.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.label.1">
+        <source>Please enter a custom label for this address.</source>
+        <target>Ange en anpassad etikett för den här adressen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.0">
+        <source>Gender</source>
+        <target>Kön</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.gender.1">
+        <source>Please choose the gender.</source>
+        <target>Vänligen välj kön.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.0">
+        <source>Salutation</source>
+        <target>Hälsning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.salutation.1">
+        <source>Please enter the salutation (Mr, Mrs, Dr., Prof.).</source>
+        <target>Vänligen ange hälsningen (Herr, Fru,...).</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.0">
+        <source>First name</source>
+        <target>Förnamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.firstname.1">
+        <source>Please enter the first name.</source>
+        <target>Vänligen ange förnamnet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.0">
+        <source>Last name</source>
+        <target>Efternamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.lastname.1">
+        <source>Please enter the last name.</source>
+        <target>Vänligen ange efternamnet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.0">
+        <source>Date of birth</source>
+        <target>Födelsedatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.dateOfBirth.1">
+        <source>Please enter the date of birth.</source>
+        <target>Ange födelsedatum.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.0">
+        <source>Company</source>
+        <target>Företag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.company.1">
+        <source>You can enter a company name here.</source>
+        <target>Du kan ange ett företagsnamn här.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.0">
+        <source>VAT No.</source>
+        <target>Momsregistreringsnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.vat_no.1">
+        <source>Please enter a VAT number.</source>
+        <target>Vänligen ange ett momsnummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.0">
+        <source>Street</source>
+        <target>Gata</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_1.1">
+        <source>Please enter the street name and the street number.</source>
+        <target>Ange gatunamn och gatunummer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.0">
+        <source>Street 2</source>
+        <target>Gata 2</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_2.1">
+        <source>Enter a second street info if there's any.</source>
+        <target>Ange en andra gatuinformation om det finns någon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.0">
+        <source>Street 3</source>
+        <target>Gata 3</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.street_3.1">
+        <source>Enter a third street info if there's any.</source>
+        <target>Ange information om en tredje gata om det finns någon.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.0">
+        <source>Postal code</source>
+        <target>Postnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.postal.1">
+        <source>Please enter the postal code.</source>
+        <target>Vänligen ange postnumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.0">
+        <source>City</source>
+        <target>Stad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.city.1">
+        <source>Please enter the name of the city.</source>
+        <target>Vänligen ange namnet på staden.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.0">
+        <source>State</source>
+        <target>Stat</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.subdivision.1">
+        <source>Please enter the name of the state.</source>
+        <target>Vänligen ange namnet på staten.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.0">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.country.1">
+        <source>Please select a country.</source>
+        <target>Välj ett land.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.0">
+        <source>Phone number</source>
+        <target>Telefonnummer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.phone.1">
+        <source>Please enter the phone number.</source>
+        <target>Vänligen ange telefonnumret.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.0">
+        <source>E-mail address</source>
+        <target>E-postadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.email.1">
+        <source>Please enter a valid e-mail address.</source>
+        <target>Vänligen ange en giltig e-postadress.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.0">
+        <source>Default billing address</source>
+        <target>Standardfaktureringsadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultBilling.1">
+        <source>Is this your default billing address?</source>
+        <target>Är detta din standardfaktureringsadress?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.0">
+        <source>Default shipping address</source>
+        <target>Standard leveransadress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.isDefaultShipping.1">
+        <source>Is this your default shipping address?</source>
+        <target>Är detta din standardleveransadress?</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.store_legend">
+        <source>Store</source>
+        <target>Spara</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personal_legend">
+        <source>Personal data</source>
+        <target>Personlig information</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.address_legend">
+        <source>Address details</source>
+        <target>Adressuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contact_legend">
+        <source>Contact details</source>
+        <target>Kontaktuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.default_legend">
+        <source>Default address</source>
+        <target>Standard adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.personalData">
+        <source>Personal data</source>
+        <target>Personlig information</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.addressDetails">
+        <source>Address details</source>
+        <target>Adressuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.contactDetails">
+        <source>Contact details</source>
+        <target>Kontaktuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.loginDetails">
+        <source>Default address</source>
+        <target>Standard adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.0">
+        <source>New address</source>
+        <target>Ny adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.new.1">
+        <source>Create a new address</source>
+        <target>Skapa en ny adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.0">
+        <source>Edit address</source>
+        <target>Redigera adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.edit.1">
+        <source>Edit address ID %s</source>
+        <target>Redigera adress ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.0">
+        <source>Duplicate address</source>
+        <target>Duplicera adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.copy.1">
+        <source>Duplicate address ID %s</source>
+        <target>Duplicate address ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.0">
+        <source>Delete address</source>
+        <target>Radera adress</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.delete.1">
+        <source>Delete address ID %s</source>
+        <target>Radera adress ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.0">
+        <source>Address details</source>
+        <target>Adressuppgifter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_address.show.1">
+        <source>Show details of address ID %s</source>
+        <target>Visa information om adress ID %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

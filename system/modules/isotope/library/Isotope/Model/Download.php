@@ -11,12 +11,15 @@
 
 namespace Isotope\Model;
 
+use Contao\FilesModel;
+use Contao\Model;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 
 /**
  * Download model represents a file or folder download for a product.
  */
-class Download extends \Model
+class Download extends Model
 {
     /**
      * @var string
@@ -39,7 +42,7 @@ class Download extends \Model
 
         if ('folder' === $objFile->type) {
             $arrFiles = array();
-            $objFiles = \FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
+            $objFiles = FilesModel::findBy(array("pid=?", "type='file'"), array($objFile->id));
 
             if (null !== $objFiles) {
                 while ($objFiles->next()) {
@@ -70,7 +73,7 @@ class Download extends \Model
             return null;
         }
 
-        $arrExpires = deserialize($this->expires, true);
+        $arrExpires = StringUtil::deserialize($this->expires, true);
 
         if ($arrExpires['value'] == 0 || $arrExpires['unit'] == '') {
             return null;

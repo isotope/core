@@ -11,7 +11,12 @@
 
 namespace Isotope\Model;
 
+use Contao\Controller;
 use Contao\MemberModel;
+use Contao\Model;
+use Contao\Model\Collection;
+use Contao\StringUtil;
+use Contao\System;
 use Database\Result;
 use Haste\Util\Format;
 use Isotope\Backend;
@@ -47,7 +52,7 @@ use Isotope\Isotope;
  * @property bool   $isDefaultShipping
  * @property bool   $isDefaultBilling
  */
-class Address extends \Model
+class Address extends Model
 {
 
     /**
@@ -65,9 +70,9 @@ class Address extends \Model
     {
         parent::__construct($objResult);
 
-        if (!\is_array($GLOBALS['ISO_ADR'])) {
-            \Controller::loadDataContainer(static::$strTable);
-            \System::loadLanguageFile('addresses');
+        if (!\is_array($GLOBALS['ISO_ADR'] ?? null)) {
+            Controller::loadDataContainer(static::$strTable);
+            System::loadLanguageFile('addresses');
         }
     }
 
@@ -99,7 +104,7 @@ class Address extends \Model
             $config = Isotope::getConfig();
         }
 
-        $validators = deserialize($config->vatNoValidators);
+        $validators = StringUtil::deserialize($config->vatNoValidators);
 
         // if no validators are enabled, the VAT No is always valid
         if (!\is_array($validators) || 0 === \count($validators)) {
@@ -138,11 +143,11 @@ class Address extends \Model
         $strCountry = $this->country ?: Isotope::getConfig()->country;
 
         // Use generic format if no country specific format is available
-        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?: $GLOBALS['ISO_ADR']['generic'];
+        $strFormat = $GLOBALS['ISO_ADR'][$strCountry] ?? $GLOBALS['ISO_ADR']['generic'];
 
         $arrTokens  = $this->getTokens($arrFields);
 
-        return \StringUtil::parseSimpleTokens($strFormat, $arrTokens);
+        return StringUtil::parseSimpleTokens($strFormat, $arrTokens);
     }
 
     /**
@@ -200,7 +205,7 @@ class Address extends \Model
             }
 
             if ('subdivision' === $strField && $this->subdivision != '') {
-                list($country, $subdivision) = explode('-', $this->subdivision);
+                [$country, $subdivision] = explode('-', $this->subdivision);
 
                 $arrTokens['subdivision_abbr'] = $subdivision;
                 $arrTokens['subdivision']      = Backend::getLabelForSubdivision($country, $this->subdivision);
@@ -241,7 +246,7 @@ class Address extends \Model
             'hcard_street_address'   => $street ? '<div class="street-address">' . $street . '</div>' : '',
             'hcard_locality'         => $arrTokens['city'] ? '<span class="locality">' . $arrTokens['city'] . '</span>' : '',
             'hcard_region'           => $arrTokens['subdivision'] ? '<span class="region">' . $arrTokens['subdivision'] . '</span>' : '',
-            'hcard_region_abbr'      => $arrTokens['subdivision_abbr'] ? '<abbr class="region" title="' . $arrTokens['subdivision'] . '">' . $arrTokens['subdivision_abbr'] . '</abbr>' : '',
+            'hcard_region_abbr'      => !empty($arrTokens['subdivision_abbr']) ? '<abbr class="region" title="' . $arrTokens['subdivision'] . '">' . $arrTokens['subdivision_abbr'] . '</abbr>' : '',
             'hcard_postal_code'      => $arrTokens['postal'] ? '<span class="postal-code">' . $arrTokens['postal'] . '</span>' : '',
             'hcard_country_name'     => $arrTokens['country'] ? '<div class="country-name">' . $arrTokens['country'] . '</div>' : '',
         ];
@@ -255,7 +260,7 @@ class Address extends \Model
      * @param int   $intMember
      * @param array $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findForMember($intMember, array $arrOptions = array())
     {
@@ -363,7 +368,7 @@ class Address extends \Model
             'store_id' => (int) Isotope::getCart()->store_id,
         );
 
-        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = \MemberModel::findByPk($intMember)) !== null) {
+        if (!empty($arrFill) && \is_array($arrFill) && ($objMember = MemberModel::findByPk($intMember)) !== null) {
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
@@ -403,7 +408,7 @@ class Address extends \Model
             $arrData = array_merge(static::getAddressDataForMember($objMember, $arrFill), $arrData);
         }
 
-        if ($arrData['country'] == '' && null !== ($objConfig = $objCollection->getConfig())) {
+        if (empty($arrData['country']) && null !== ($objConfig = $objCollection->getConfig())) {
             if ($blnDefaultBilling) {
                 $arrData['country'] = $objConfig->billing_country ?: $objConfig->country;
             } elseif ($blnDefaultShipping) {

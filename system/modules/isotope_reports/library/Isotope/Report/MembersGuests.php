@@ -11,10 +11,13 @@
 
 namespace Isotope\Report;
 
+use Contao\Database;
+use Contao\Date;
+use Contao\Message;
+use Contao\Session;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
-use Isotope\Model\ProductCollection;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 
@@ -30,13 +33,13 @@ class MembersGuests extends Sales
 
     protected function compile()
     {
-        $arrSession    = \Session::getInstance()->get('iso_reports');
+        $arrSession    = Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
-        $strPeriod = (string) $arrSession[$this->name]['period'];
-        $intStart  = (int) $arrSession[$this->name]['start'];
-        $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
+        $strPeriod = (string) ($arrSession[$this->name]['period'] ?? '');
+        $intStart  = (int) ($arrSession[$this->name]['start'] ?? 0);
+        $intStop   = (int) ($arrSession[$this->name]['stop'] ?? 0);
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         $period   = PeriodFactory::create($strPeriod);
         $intStart = $period->getPeriodStart($intStart);
@@ -50,7 +53,7 @@ class MembersGuests extends Sales
 
         $dateGroup = $period->getSqlField('o.' . $this->strDateField);
 
-        $objData = \Database::getInstance()->query("
+        $objData = Database::getInstance()->query("
             SELECT
                 c.id AS config_id,
                 c.currency,
@@ -122,13 +125,13 @@ class MembersGuests extends Sales
             $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
         }
 
-        $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] + $objData->total_sales;
+        $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales;
 
         // Summary in the footer
         $arrData['footer'][1]['value'] += $objData->total_orders;
         $arrData['footer'][2]['value'] += $objData->total_products;
         $arrData['footer'][3]['value'] += $objData->total_items;
-        $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
+        $arrData['footer'][4]['value'][$objData->currency] = ((float) ($arrData['footer'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
         return $arrData;
     }
@@ -217,12 +220,12 @@ class MembersGuests extends Sales
 
     protected function initializeChart(PeriodInterface $period, $intStart, $intStop)
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $intConfig  = (int) $arrSession[$this->name]['iso_config'];
+        $arrSession = Session::getInstance()->get('iso_reports');
+        $intConfig  = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
         $intStart   = strtotime('first day of this month', $intStart);
 
         $arrData       = array();
-        $arrCurrencies = \Database::getInstance()->execute("
+        $arrCurrencies = Database::getInstance()->execute("
             SELECT DISTINCT currency FROM tl_iso_config WHERE currency!=''
             " . static::getConfigProcedure() . "
             " . ($intConfig > 0 ? ' AND id=' . $intConfig : '') . "
@@ -283,7 +286,7 @@ class MembersGuests extends Sales
     protected function initializeDefaultValues()
     {
         // Set default session data
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         if ($arrSession[$this->name]['period'] == '') {
             $arrSession[$this->name]['period'] = 'month';
@@ -294,10 +297,10 @@ class MembersGuests extends Sales
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
             try {
-                $objDate = new \Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $objDate = new Date($arrSession[$this->name]['stop'], $GLOBALS['TL_CONFIG']['dateFormat']);
                 $arrSession[$this->name]['stop'] = $objDate->tstamp;
             } catch (\OutOfBoundsException $e) {
-                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
                 $arrSession[$this->name]['stop'] = time();
             }
         }
@@ -307,15 +310,15 @@ class MembersGuests extends Sales
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps
             try {
-                $objDate = new \Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
+                $objDate = new Date($arrSession[$this->name]['start'], $GLOBALS['TL_CONFIG']['dateFormat']);
                 $arrSession[$this->name]['start'] = $objDate->tstamp;
             } catch (\OutOfBoundsException $e) {
-                \Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
+                Message::addError(sprintf($GLOBALS['TL_LANG']['ERR']['date'], $GLOBALS['TL_CONFIG']['dateFormat']));
                 $arrSession[$this->name]['start'] = strtotime('-6 months');
             }
         }
 
-        \Session::getInstance()->set('iso_reports', $arrSession);
+        Session::getInstance()->set('iso_reports', $arrSession);
 
         parent::initializeDefaultValues();
     }

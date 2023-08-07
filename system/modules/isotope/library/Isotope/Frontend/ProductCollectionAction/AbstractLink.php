@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 
@@ -40,9 +41,9 @@ abstract class AbstractLink implements ProductCollectionActionInterface
     /**
      * {@inheritdoc}
      */
-    public function handleSubmit(IsotopeProductCollection $collection, \Module $module = null)
+    public function handleSubmit(IsotopeProductCollection $collection)
     {
-        \Controller::redirect($this->getHref());
+        Controller::redirect($this->getHref());
     }
 
     /**

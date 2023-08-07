@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><xliff version="1.1" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
   <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_product_collection.xlf" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_iso_product_collection.id.0">
@@ -140,6 +140,14 @@
       <trans-unit id="tl_iso_product_collection.edit.1">
         <source>Edit order ID %s</source>
         <target>Bestellung ID %s bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.0">
+        <source>Delete order</source>
+        <target>Bestellung löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_product_collection.delete.1">
+        <source>Delete order ID %s</source>
+        <target>Bestellung ID %s löschen</target>
       </trans-unit>
       <trans-unit id="tl_iso_product_collection.payment.0">
         <source>Payment details</source>

@@ -11,21 +11,29 @@ $GLOBALS['TL_BODY'][] = <<<HTML
 <script>
 (function() {
     JSON.parse('{$this->jsonFields}').forEach(function (config) {
-        var slider = document.getElementById('slider-' + config.attribute + '-{$this->id}'),
-            min    = document.getElementById('ctrl_' + config.attribute + '_min_{$this->id}'),
-            max    = document.getElementById('ctrl_' + config.attribute + '_max_{$this->id}');
+        var slider = document.getElementById('slider-' + config.id + '-{$this->id}'),
+            inputs = [];
+
+        config.inputs.forEach(function (input) {
+            inputs.push(document.getElementById(input.id));
+        });
 
         noUiSlider.create(slider, {
             start: config.value,
             connect: true,
-            tooltips: [true, true],
+            tooltips: config.inputs.map(function () { return true; }),
             range: {'min':config.min, 'max':config.max},
             step: config.step
         });
 
         slider.noUiSlider.on('change', function(values) {
-            min.value = values[0];
-            max.value = values[1];
+            if (Array.isArray(values)) {
+                values.forEach(function (value, i) {
+                    inputs[i].value = value;
+                })
+            } else {
+                inputs[0].value = values;
+            }
         });
     });
 })();
@@ -36,15 +44,16 @@ HTML;
 $this->block('content');
 ?>
 
-<form action="<?= $this->action ?>" id="<?= $this->formId ?>" method="post">
+<form id="<?= $this->formId ?>" method="post">
     <div class="formbody">
         <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
         <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
 
         <?php foreach ($this->fields as $config): ?>
-        <div id="slider-<?= $config['attribute'] ?>-<?= $this->id ?>">
-            <input type="hidden" name="<?= $config['attribute'] ?>[min]" id="ctrl_<?= $config['attribute'] ?>_min_<?= $this->id ?>" value="<?= $config['min'] ?>">
-            <input type="hidden" name="<?= $config['attribute'] ?>[max]" id="ctrl_<?= $config['attribute'] ?>_max_<?= $this->id ?>" value="<?= $config['max'] ?>">
+        <div id="slider-<?= $config['id'] ?>-<?= $this->id ?>">
+          <?php foreach ($config['inputs'] as $input): ?>
+            <input type="hidden" name="<?= $input['name'] ?>" id="<?= $input['id'] ?>" value="<?= $input['value'] ?>">
+          <?php endforeach; ?>
         </div>
         <?php endforeach; ?>
 

@@ -11,6 +11,8 @@
 
 namespace Isotope\Backend;
 
+use Contao\Database;
+use Contao\StringUtil;
 use Contao\Template;
 
 class SubtableVersion
@@ -49,7 +51,7 @@ class SubtableVersion
      */
     public static function initialize($strTable, $intId, $strSubtable, $arrData)
     {
-        $objVersion = \Database::getInstance()
+        $objVersion = Database::getInstance()
             ->prepare('SELECT COUNT(*) AS count FROM tl_version WHERE fromTable=? AND pid=?')
             ->limit(1)
             ->execute($strSubtable, $intId)
@@ -70,7 +72,7 @@ class SubtableVersion
      */
     public static function create($strTable, $intId, $strSubtable, $arrData)
     {
-        $objVersion = \Database::getInstance()
+        $objVersion = Database::getInstance()
             ->prepare('SELECT * FROM tl_version WHERE pid=? AND fromTable=? ORDER BY version DESC')
             ->limit(1)
             ->execute($intId, $strTable)
@@ -81,10 +83,10 @@ class SubtableVersion
             return;
         }
 
-        \Database::getInstance()->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
+        Database::getInstance()->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
                        ->execute($intId, $strSubtable);
 
-        \Database::getInstance()
+        Database::getInstance()
             ->prepare(/** @lang text */ 'INSERT INTO tl_version %s')
             ->set(
                 [
@@ -115,7 +117,7 @@ class SubtableVersion
      */
     public static function find($strTable, $intPid, $intVersion)
     {
-        $objVersion = \Database::getInstance()
+        $objVersion = Database::getInstance()
             ->prepare('SELECT data FROM tl_version WHERE fromTable=? AND pid=? AND version=?')
             ->limit(1)
             ->execute($strTable, $intPid, $intVersion)
@@ -125,7 +127,7 @@ class SubtableVersion
             return null;
         }
 
-        $arrData = deserialize($objVersion->data);
+        $arrData = StringUtil::deserialize($objVersion->data);
 
         if (!\is_array($arrData)) {
             return null;

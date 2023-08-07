@@ -11,10 +11,16 @@
 
 namespace Isotope\Module;
 
+use Contao\Controller;
+use Contao\CoreBundle\Exception\PageNotFoundException;
+use Contao\CoreBundle\Exception\RedirectResponseException;
+use Contao\CoreBundle\Exception\ResponseException;
 use Contao\Database;
+use Contao\Date;
+use Contao\Environment;
+use Contao\Pagination;
 use Contao\System;
 use Haste\Generator\RowClass;
-use Haste\Http\Response\HtmlResponse;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeProduct;
@@ -26,6 +32,7 @@ use Isotope\Model\ProductPrice;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Sort;
 use Isotope\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @property string $iso_list_layout
@@ -106,8 +113,8 @@ class ProductList extends Module
     protected function compile()
     {
         // return message if no filter is set
-        if ($this->iso_emptyFilter && !\Input::get('isorc') && !\Input::get('keywords')) {
-            $this->Template->message  = \Controller::replaceInsertTags($this->iso_noFilter);
+        if ($this->iso_emptyFilter && !Input::get('isorc') && !Input::get('keywords')) {
+            $this->Template->message  = Controller::replaceInsertTags($this->iso_noFilter);
             $this->Template->type     = 'noFilter';
             $this->Template->products = array();
 
@@ -124,11 +131,11 @@ class ProductList extends Module
             $arrCacheIds = $objCache->getProductIds();
 
             // Use the cache if keywords match. Otherwise we will use the product IDs as a "limit" for findProducts()
-            if ($objCache->keywords == \Input::get('keywords')) {
+            if ($objCache->keywords == Input::get('keywords')) {
                 $arrCacheIds = $this->generatePagination($arrCacheIds);
 
                 $objProducts = Product::findAvailableByIds($arrCacheIds, array(
-                    'order' => \Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
+                    'order' => Database::getInstance()->findInSet(Product::getTable().'.id', $arrCacheIds)
                 ));
 
                 $arrProducts = (null === $objProducts) ? array() : $objProducts->getModels();
@@ -144,9 +151,9 @@ class ProductList extends Module
         if (!\is_array($arrProducts)) {
             // Display "loading products" message and add cache flag
             if ($this->blnCacheProducts) {
-                $blnCacheMessage = (bool) $this->iso_productcache[$cacheKey];
+                $blnCacheMessage = (bool) ($this->iso_productcache[$cacheKey] ?? false);
 
-                if ($blnCacheMessage && !\Input::get('buildCache')) {
+                if ($blnCacheMessage && !Input::get('buildCache')) {
                     // Do not index or cache the page
                     $objPage->noSearch = 1;
                     $objPage->cache    = 0;
@@ -165,21 +172,28 @@ class ProductList extends Module
 
                 // Decide if we should show the "caching products" message the next time
                 $end = microtime(true) - $start;
-                $this->blnCacheProducts = $end > 1 ? true : false;
+                $this->blnCacheProducts = $end > 1;
 
                 $arrCacheMessage = $this->iso_productcache;
-                if ($blnCacheMessage != $this->blnCacheProducts) {
+                if ($blnCacheMessage !== $this->blnCacheProducts) {
                     $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
 
-                    \Database::getInstance()
+                    $data = serialize($arrCacheMessage);
+
+                    // Automatically clear iso_productcache if it exceeds the blob field length
+                    if (strlen($data) > 65535) {
+                        $data = serialize([$cacheKey => $this->blnCacheProducts]);
+                    }
+
+                    Database::getInstance()
                         ->prepare('UPDATE tl_module SET iso_productcache=? WHERE id=?')
-                        ->execute(serialize($arrCacheMessage), $this->id)
+                        ->execute($data, $this->id)
                     ;
                 }
 
                 // Do not write cache if table is locked. That's the case if another process is already writing cache
                 if (ProductCache::isWritable()) {
-                    \Database::getInstance()
+                    Database::getInstance()
                         ->lockTables(array(ProductCache::getTable() => 'WRITE', 'tl_iso_product' => 'READ'))
                     ;
 
@@ -196,7 +210,7 @@ class ProductList extends Module
                     $objCache->setProductIds($arrIds);
                     $objCache->save();
 
-                    \Database::getInstance()->unlockTables();
+                    Database::getInstance()->unlockTables();
                 }
             } else {
                 $arrProducts = $this->findProducts();
@@ -243,20 +257,22 @@ class ProductList extends Module
 
             $arrConfig = $this->getProductConfig($objProduct);
 
-            if (\Environment::get('isAjaxRequest')
-                && \Input::post('AJAX_MODULE') == $this->id
-                && \Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
+            if (Environment::get('isAjaxRequest')
+                && Input::post('AJAX_MODULE') == $this->id
+                && Input::post('AJAX_PRODUCT') == $objProduct->getProductId()
                 && !$this->iso_disable_options
             ) {
-                $objResponse = new HtmlResponse($objProduct->generate($arrConfig));
-                $objResponse->send();
+                $content = $objProduct->generate($arrConfig);
+                $content = Controller::replaceInsertTags($content, false);
+
+                throw new ResponseException(new Response($content));
             }
 
             $objProduct->mergeRow($arrDefaultOptions);
 
             // Must be done after setting options to generate the variant config into the URL
             if ($this->iso_jump_first && Input::getAutoItem('product', false, true) == '') {
-                \Controller::redirect($objProduct->generateUrl($arrConfig['jumpTo']));
+                throw new RedirectResponseException($objProduct->generateUrl($arrConfig['jumpTo'], true));
             }
 
             $arrBuffer[] = array(
@@ -272,7 +288,7 @@ class ProductList extends Module
             && \is_array($GLOBALS['ISO_HOOKS']['generateProductList'])
         ) {
             foreach ($GLOBALS['ISO_HOOKS']['generateProductList'] as $callback) {
-                $arrBuffer = \System::importStatic($callback[0])->{$callback[1]}($arrBuffer, $arrProducts, $this->Template, $this);
+                $arrBuffer = System::importStatic($callback[0])->{$callback[1]}($arrBuffer, $arrProducts, $this->Template, $this);
             }
         }
 
@@ -402,16 +418,11 @@ class ProductList extends Module
 
             // Get the current page
             $id   = 'page_iso' . $this->id;
-            $page = \Input::get($id) ?: 1;
+            $page = Input::get($id) ?: 1;
 
             // Do not index or cache the page if the page number is outside the range
             if ($page < 1 || $page > max(ceil($total / $this->perPage), 1)) {
-                global $objPage;
-
-                /** @var \PageError404 $objHandler */
-                $objHandler = new $GLOBALS['TL_PTY']['error_404']();
-                $objHandler->generate($objPage->id);
-                exit;
+                throw new PageNotFoundException();
             }
 
             // Set limit and offset
@@ -424,7 +435,7 @@ class ProductList extends Module
             }
 
             // Add the pagination menu
-            $objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
+            $objPagination = new Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
 
             $pagination = $objPagination->generate("\n  ");
         }
@@ -519,7 +530,7 @@ class ProductList extends Module
         return md5(
             'productlist=' . $this->id . ':'
             . 'where=' . $this->iso_list_where . ':'
-            . 'isorc=' . (int) \Input::get('isorc') . ':'
+            . 'isorc=' . (int) Input::get('isorc') . ':'
             . implode(',', $categories)
         );
     }
@@ -531,17 +542,17 @@ class ProductList extends Module
      */
     protected function getProductCacheExpiration()
     {
-        $time = \Date::floorToMinute();
+        $time = Date::floorToMinute();
 
         // Find timestamp when the next product becomes available
-        $expires = (int) \Database::getInstance()
+        $expires = (int) Database::getInstance()
             ->execute("SELECT MIN(start) AS expires FROM tl_iso_product WHERE start>'$time'")
             ->expires
         ;
 
         // Find
         if ('show_new' === $this->iso_newFilter || 'show_old' === $this->iso_newFilter) {
-            $added = \Database::getInstance()
+            $added = Database::getInstance()
                 ->execute("
                     SELECT MIN(dateAdded) AS expires
                     FROM tl_iso_product
@@ -577,7 +588,7 @@ class ProductList extends Module
         $query = "SELECT c.pid, GROUP_CONCAT(c.page_id) AS page_ids FROM tl_iso_product_category c JOIN tl_page p ON c.page_id=p.id WHERE p.type!='error_403' AND p.type!='error_404'";
 
         if (!BE_USER_LOGGED_IN) {
-            $time = \Date::floorToMinute();
+            $time = Date::floorToMinute();
             $query .= " AND p.published='1' AND (p.start='' OR p.start<'$time') AND (p.stop='' OR p.stop>'" . ($time + 60) . "')";
         }
 

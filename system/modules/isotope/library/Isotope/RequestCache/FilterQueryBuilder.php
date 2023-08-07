@@ -11,6 +11,7 @@
 
 namespace Isotope\RequestCache;
 
+use Contao\Date;
 use Isotope\Model\Product;
 use Isotope\Model\ProductType;
 
@@ -107,7 +108,7 @@ class FilterQueryBuilder
         // Initiate native SQL filtering
         /** @var \Isotope\RequestCache\Filter $objFilter  */
         foreach ($arrFilters as $k => $objFilter) {
-            if ($objFilter->hasGroup() && $arrGroups[$objFilter->getGroup()] !== false) {
+            if ($objFilter->hasGroup() && ($arrGroups[$objFilter->getGroup()] ?? null) !== false) {
                 if ($objFilter->isDynamicAttribute()) {
                     $arrGroups[$objFilter->getGroup()] = false;
                 } else {
@@ -145,11 +146,11 @@ class FilterQueryBuilder
             $strWhere = implode(' AND ', $arrWhere);
 
             if (ProductType::countByVariants() > 0) {
-                $time      = \Date::floorToMinute();
+                $time      = Date::floorToMinute();
                 $t         = Product::getTable();
                 $protected = '';
 
-                if (BE_USER_LOGGED_IN === true) {
+                if (BE_USER_LOGGED_IN !== true) {
                     $protected = "
                         AND $t.published='1'
                         AND ($t.start='' OR $t.start<'$time')

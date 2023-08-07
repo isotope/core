@@ -11,7 +11,10 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
 use Contao\Input;
+use Contao\Module;
+use Contao\System;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -22,6 +25,7 @@ use Isotope\Model\Payment;
 use Isotope\Model\ProductCollectionSurcharge\Payment as PaymentSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Shipping as ShippingSurcharge;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
+use Isotope\Model\TaxRate;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use Terminal42\SwissbillingApi\ApiFactory;
@@ -91,10 +95,10 @@ class Swissbilling extends Payment
         return true;
     }
 
-    public function processPayment(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function processPayment(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -129,10 +133,10 @@ class Swissbilling extends Payment
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -205,7 +209,7 @@ class Swissbilling extends Payment
         $transaction->vol_discount = 0;
         $transaction->coupon_discount_amount = $discount;
         $transaction->phys_delivery = true;
-        $transaction->debtor_IP = \Environment::get('ip');
+        $transaction->debtor_IP = Environment::get('ip');
 
         return $transaction;
     }
@@ -251,7 +255,7 @@ class Swissbilling extends Payment
                 'shipping' => $collection->getShippingAddress(),
             );
 
-            /** @var \Isotope\Model\TaxRate $taxRate */
+            /** @var TaxRate $taxRate */
             if (($taxRate = $taxClass->getRelated('includes')) !== null && $taxRate->isApplicable($item->price, $arrAddresses)) {
                 $vatRate = $taxRate->getAmount();
             } else if (($taxRates = $this->getRelated('rates')) !== null) {
@@ -279,7 +283,7 @@ class Swissbilling extends Payment
 
     private function getClient(IsotopeOrderableCollection $collection, DateTime $timestamp = null): Client
     {
-        $returnUrl = \Environment::get('base').Checkout::generateUrlForStep('complete', $collection);
+        $returnUrl = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $collection, null, true);
 
         if ($timestamp) {
             $returnUrl = Url::addQueryString('timestamp='.$timestamp, $returnUrl);

@@ -11,20 +11,24 @@
 
 namespace Isotope\Upgrade;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\StringUtil;
+use Contao\System;
 
-class To0020010064 extends \System
+class To0020010064 extends System
 {
 
     public function run($blnInstalled)
     {
         if ($blnInstalled) {
 
-            \Controller::loadDataContainer('tl_iso_product');
+            Controller::loadDataContainer('tl_iso_product');
 
             $arrFields = array();
 
             foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $field => $config) {
-                if ('mediaManager' === $config['inputType']) {
+                if ('mediaManager' === ($config['inputType'] ?? '')) {
                     $arrFields[] = $field;
                 }
             }
@@ -33,19 +37,19 @@ class To0020010064 extends \System
                 return;
             }
 
-            $objProducts = \Database::getInstance()->query("
+            $arrProducts = Database::getInstance()->query("
                 SELECT * FROM tl_iso_product WHERE language=''
-            ");
+            ")->fetchAllAssoc();
 
-            while ($objProducts->next()) {
+            foreach ($arrProducts as $arrProduct) {
                 $arrUpdate = array();
 
                 foreach ($arrFields as $field) {
-                    $arrData = deserialize($objProducts->$field);
+                    $arrData = StringUtil::deserialize($arrProduct[$field]);
 
                     if (!empty($arrData) && \is_array($arrData)) {
                         foreach ($arrData as $k => $image) {
-                            if ($image['translate'] == '') {
+                            if (($image['translate'] ?? '') == '') {
                                 $arrData[$k]['translate'] = 'none';
                             }
                         }
@@ -55,9 +59,9 @@ class To0020010064 extends \System
                 }
 
                 if (0 !== \count($arrUpdate)) {
-                    \Database::getInstance()->prepare(
-                        "UPDATE tl_iso_product %s WHERE id=?"
-                    )->set($arrUpdate)->execute($objProducts->id);
+                    Database::getInstance()->prepare(
+                        'UPDATE tl_iso_product %s WHERE id=?'
+                    )->set($arrUpdate)->execute($arrProduct['id']);
                 }
             }
         }

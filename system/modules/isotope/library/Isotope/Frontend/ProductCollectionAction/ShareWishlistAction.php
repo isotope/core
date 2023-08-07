@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Wishlist;
 
@@ -57,7 +58,7 @@ class ShareWishlistAction extends AbstractButton
         $collection->date_shipped = $published ? null : time();
         $collection->save();
 
-        \Controller::reload();
+        Controller::reload();
 
         return true;
     }

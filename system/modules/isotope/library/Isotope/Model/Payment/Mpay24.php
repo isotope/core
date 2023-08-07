@@ -11,6 +11,11 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\FrontendTemplate;
+use Contao\Input;
+use Contao\Module;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -18,6 +23,7 @@ use Isotope\Module\Checkout;
 use Mpay24\Mpay24Config;
 use Mpay24\Mpay24Order;
 use Isotope\Model\Address;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * mPAY24 payment method
@@ -35,7 +41,7 @@ class Mpay24 extends Postsale
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
@@ -44,23 +50,23 @@ class Mpay24 extends Postsale
         }
 
         $mpay24 = $this->getApiClient();
-        $status = $mpay24->paymentStatus(\Input::get('MPAYTID'));
+        $status = $mpay24->paymentStatus(Input::get('MPAYTID'));
 
         $this->debugLog($status);
 
         if ($status->getParam('STATUS') !== 'BILLED') {
-            \System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
+            System::log('Payment for order ID "' . $objOrder->getId() . '" failed.', __METHOD__, TL_ERROR);
 
             return;
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . \Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . Input::post('refno') . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -78,16 +84,16 @@ class Mpay24 extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk(\Input::get('TID'));
+        return Order::findByPk(Input::get('TID'));
     }
 
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -105,11 +111,11 @@ class Mpay24 extends Postsale
             $this->setAddress($mdxi, $shippingAddress, 'ShippingAddr');
         }
 
-        $mdxi->Order->URL->Success = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $mdxi->Order->URL->Error = \Environment::get('base') . Checkout::generateUrlForStep('failed');
-        $mdxi->Order->URL->Confirmation = \Environment::get('base') . 'system/modules/isotope/postsale.php?mod=pay&id=' . $this->id;
+        $mdxi->Order->URL->Success = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $mdxi->Order->URL->Error = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
+        $mdxi->Order->URL->Confirmation = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $template = new \FrontendTemplate('iso_payment_mpay24');
+        $template = new FrontendTemplate('iso_payment_mpay24');
         $template->setData($this->row());
         $template->mpay24 = $mpay24;
         $template->mdxi = $mdxi;

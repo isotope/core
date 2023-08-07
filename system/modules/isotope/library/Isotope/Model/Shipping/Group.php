@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Shipping;
 
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Model\Shipping;
@@ -163,7 +164,7 @@ class Group extends Shipping
     {
         if (false === $this->arrMethods) {
             $this->arrMethods = array();
-            $arrMethods = deserialize($this->group_methods, true);
+            $arrMethods = StringUtil::deserialize($this->group_methods, true);
 
             // Prevent recursion if we should load ourselves
             if (($key = array_search($this->id, $arrMethods)) !== false) {

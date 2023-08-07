@@ -11,14 +11,15 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\ContentMedia;
+use Contao\ContentModel;
+use Contao\FilesModel;
+use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 
 /**
  * Attribute to provide an audio/video player in the product details
- *
- * @copyright  Isotope eCommerce Workgroup 2009-2014
- * @author     Christoph Wiechert <cw@4wardmedia.de>
  */
 class Media extends Attribute
 {
@@ -51,7 +52,7 @@ class Media extends Attribute
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
         $strPoster = null;
-        $arrFiles = deserialize($objProduct->{$this->field_name}, true);
+        $arrFiles = StringUtil::deserialize($objProduct->{$this->field_name}, true);
 
         // Return if there are no files
         if (empty($arrFiles) || !\is_array($arrFiles)) {
@@ -59,7 +60,7 @@ class Media extends Attribute
         }
 
         // Get the file entries from the database
-        $objFiles = \FilesModel::findMultipleByIds($arrFiles);
+        $objFiles = FilesModel::findMultipleByIds($arrFiles);
 
         if (null === $objFiles) {
             return '';
@@ -67,13 +68,13 @@ class Media extends Attribute
 
         // Find poster
         while ($objFiles->next()) {
-            if (\in_array($objFiles->extension, trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
+            if (\in_array($objFiles->extension, StringUtil::trimsplit(',', $GLOBALS['TL_CONFIG']['validImageTypes']))) {
                 $strPoster = $objFiles->uuid;
                 $arrFiles = array_diff($arrFiles, array($objFiles->uuid));
             }
         }
 
-        $objContentModel = new \ContentModel();
+        $objContentModel = new ContentModel();
         $objContentModel->tstamp = time();
         $objContentModel->type = 'media';
         $objContentModel->cssID = serialize(array('', $this->field_name));
@@ -88,7 +89,7 @@ class Media extends Attribute
             $objContentModel->playerSize = serialize(array($arrOptions['width'], $arrOptions['height']));
         }
 
-        $objElement = new \ContentMedia($objContentModel);
+        $objElement = new ContentMedia($objContentModel);
         return $objElement->generate();
     }
 }

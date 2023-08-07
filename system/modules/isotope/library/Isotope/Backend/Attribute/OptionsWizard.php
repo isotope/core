@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\Attribute;
 
+use Contao\Backend;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Model\Attribute;
 
@@ -20,7 +21,7 @@ use Isotope\Model\Attribute;
  *
  * @deprecated only for optionsSource=attribute
  */
-class OptionsWizard extends \Backend
+class OptionsWizard extends Backend
 {
 
     /**
@@ -35,7 +36,7 @@ class OptionsWizard extends \Backend
             (
                 'label'     => &$GLOBALS['TL_LANG']['tl_iso_attribute']['options']['value'],
                 'inputType' => 'text',
-                'eval'      => array('class'=>'tl_text_2'),
+                'eval'      => array('maxlength' => 64, 'class'=>'tl_text_2'),
             ),
             'label' => array
             (

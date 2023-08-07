@@ -11,21 +11,17 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Input;
 use Contao\Module;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class  ContinueShoppingAction extends AbstractLink
 {
     /**
-     * @var \Module
+     * @var Module
      */
     private $module;
 
-    /**
-     * Constructor.
-     *
-     * @param Module $module
-     */
     public function __construct(Module $module)
     {
         $this->module = $module;
@@ -36,7 +32,7 @@ class  ContinueShoppingAction extends AbstractLink
      */
     public function isAvailable(IsotopeProductCollection $collection)
     {
-        return $this->module->iso_continueShopping && \Input::get('continue') != '';
+        return $this->module->iso_continueShopping && Input::get('continue') != '';
     }
 
     /**
@@ -62,6 +58,6 @@ class  ContinueShoppingAction extends AbstractLink
      */
     public function getHref()
     {
-        return ampersand(base64_decode(\Input::get('continue', true)));
+        return ampersand(base64_decode(Input::get('continue', true)));
     }
 }

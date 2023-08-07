@@ -11,7 +11,13 @@
 
 namespace Isotope\Backend\Config;
 
+use Contao\Backend;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
+use Contao\Session;
 use Contao\StringUtil;
 use Isotope\Automator;
 use Isotope\Backend\Permission;
@@ -25,12 +31,12 @@ class Callback extends Permission
     public function checkPermission()
     {
         // Do not run the permission check on other Isotope modules
-        if ('configs' !== \Input::get('mod')) {
+        if ('configs' !== Input::get('mod')) {
             return;
         }
 
         // Set fallback if no fallback is available
-        $objConfig = \Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
+        $objConfig = Database::getInstance()->query("SELECT COUNT(*) AS total FROM tl_iso_config WHERE fallback='1'");
 
         if ($objConfig->total == 0) {
             $GLOBALS['TL_DCA']['tl_iso_config']['fields']['fallback']['default'] = '1';
@@ -59,7 +65,7 @@ class Callback extends Permission
         }
 
         // Check current action
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'create':
             case 'select':
                 // Allow
@@ -69,10 +75,10 @@ class Callback extends Permission
             case 'edit':
 
                 // Dynamically add the record to the user profile
-                if (!\in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_config', 'iso_configs', 'iso_configp')
+                if (!\in_array(Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_config', 'iso_configs', 'iso_configp')
                 ) {
-                    $root[] = \Input::get('id');
+                    $root[] = Input::get('id');
                     $this->User->iso_configs = $root;
                 }
                 // No break;
@@ -80,26 +86,26 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' store configuration ID "' . \Input::get('id') . '"');
+                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' store configuration ID "' . Input::get('id') . '"');
                 }
                 break;
 
             case 'editAll':
             case 'deleteAll':
             case 'overrideAll':
-                $session = $this->Session->getData();
-                if ('deleteAll' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp')) {
+                $session = Session::getInstance()->getData();
+                if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_configp')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
                 }
-                $this->Session->setData($session);
+                Session::getInstance()->setData($session);
                 break;
 
             default:
-                if (\strlen(\Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' store configurations');
+                if (\strlen(Input::get('act'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' store configurations');
                 }
                 break;
         }
@@ -201,7 +207,7 @@ class Callback extends Permission
      */
     public function copyConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('create', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**
@@ -218,21 +224,21 @@ class Callback extends Permission
      */
     public function deleteConfig($row, $href, $label, $title, $icon, $attributes)
     {
-        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($this->User->isAdmin || $this->User->hasAccess('delete', 'iso_configp')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**
      * Return the file picker wizard
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */
-    public function filePicker(\DataContainer $dc)
+    public function filePicker(DataContainer $dc)
     {
-        $strField = 'ctrl_' . $dc->field . (('editAll' === \Input::get('act')) ? '_' . $dc->id : '');
+        $strField = 'ctrl_' . $dc->field . (('editAll' === Input::get('act')) ? '_' . $dc->id : '');
 
-        return ' ' . \Image::getHtml('pickfile.gif', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
+        return ' ' . Image::getHtml('pickfile.svg', $GLOBALS['TL_LANG']['MSC']['filepicker'], 'style="vertical-align:top;cursor:pointer" onclick="Backend.pickFile(\'' . $strField . '\')"');
     }
 
     /**
@@ -253,7 +259,7 @@ class Callback extends Permission
     public function getOrderDetailsModules()
     {
         $modules = [];
-        $result  = \Database::getInstance()->query("
+        $result  = Database::getInstance()->query("
             SELECT m.id, m.name, t.name AS theme
             FROM tl_module m
             JOIN tl_theme t ON t.id=m.pid
@@ -294,11 +300,11 @@ class Callback extends Permission
      * Store if we need to update the currencies
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return mixed
      */
-    public function checkNeedToConvertCurrencies($varValue, \DataContainer $dc)
+    public function checkNeedToConvertCurrencies($varValue, DataContainer $dc)
     {
         $objConfig = Config::findByPk($dc->id);
         if ($objConfig !== null && $varValue != $objConfig->{$dc->field}) {
@@ -311,11 +317,11 @@ class Callback extends Permission
     /**
      * Convert currencies if the settings have changed
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public function convertCurrencies(\DataContainer $dc)
+    public function convertCurrencies(DataContainer $dc)
     {
-        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES']) {
+        if ($GLOBALS['ISOTOPE_CONFIG_UPDATE_CURRENCIES'] ?? false) {
             $objAutomator = new Automator();
             $objAutomator->convertCurrencies($dc->id);
         }

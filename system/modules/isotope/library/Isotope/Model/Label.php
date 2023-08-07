@@ -12,6 +12,8 @@
 namespace Isotope\Model;
 
 
+use Contao\Model;
+
 /**
  * Label defines a translation
  *
@@ -21,7 +23,7 @@ namespace Isotope\Model;
  * @property string $label
  * @property string $replacement
  */
-class Label extends \Model
+class Label extends Model
 {
 
     /**

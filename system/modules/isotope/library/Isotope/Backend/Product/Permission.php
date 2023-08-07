@@ -11,13 +11,19 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Backend;
+use Contao\BackendUser;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\Database;
+use Contao\Input;
+use Contao\Message;
+use Contao\Session;
+use Contao\System;
 use Isotope\Model\Group;
 use Isotope\Model\Product;
-use Isotope\Model\ProductCollection;
 
-class Permission extends \Backend
+class Permission extends Backend
 {
 
     /**
@@ -26,17 +32,19 @@ class Permission extends \Backend
      */
     public static function check()
     {
-        $session = \Session::getInstance()->getData();
+        $session = Session::getInstance()->getData();
 
-        if ('delete' === \Input::get('act') && \in_array(\Input::get('id'), static::getUndeletableIds())) {
-            throw new InternalServerErrorException('Product ID '.\Input::get('id').' is used in an order and can\'t be deleted');
-        } elseif ('deleteAll' === \Input::get('act') && \is_array($session['CURRENT']['IDS'])) {
+        if ('delete' === Input::get('act') && \in_array(Input::get('id'), static::getUndeletableIds())) {
+            throw new InternalServerErrorException('Product ID '.Input::get('id').' is used in an order and can\'t be deleted');
+        }
+
+        if ('deleteAll' === Input::get('act') && \is_array($session['CURRENT']['IDS'] ?? null)) {
             $arrDeletable = array_diff($session['CURRENT']['IDS'], static::getUndeletableIds());
 
             if (\count($arrDeletable) != \count($session['CURRENT']['IDS'])) {
 
                 // Unpublish all undeletable records
-                \Database::getInstance()->query("
+                Database::getInstance()->query("
                     UPDATE " . Product::getTable() . "
                     SET published=''
                     WHERE id IN (" . implode(',', array_intersect($session['CURRENT']['IDS'], static::getUndeletableIds())) . ")
@@ -44,9 +52,9 @@ class Permission extends \Backend
 
                 // Remove undeletable products from selection
                 $session['CURRENT']['IDS'] = array_values($arrDeletable);
-                \Session::getInstance()->setData($session);
+                Session::getInstance()->setData($session);
 
-                \Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']);
+                Message::addInfo($GLOBALS['TL_LANG']['MSC']['undeletableUnpublished']);
             }
         }
 
@@ -68,20 +76,20 @@ class Permission extends \Backend
             }
         } else {
             // Maybe another function has already set allowed product IDs
-            if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])) {
+            if (\is_array($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'] ?? null)) {
                 $arrProducts = array_intersect($GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], $arrProducts);
             }
 
             $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'] = $arrProducts;
 
             // Set allowed product IDs (edit multiple)
-            if (\is_array($session['CURRENT']['IDS'])) {
+            if (\is_array($session['CURRENT']['IDS'] ?? null)) {
                 $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root']);
             }
 
             // Set allowed clipboard IDs
-            if (\is_array($session['CLIPBOARD']['tl_iso_product']['id'])) {
-                $session['CLIPBOARD']['tl_iso_product']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_product']['id'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], \Database::getInstance()->query("SELECT id FROM tl_iso_product WHERE pid=0")->fetchEach('id'));
+            if (\is_array($session['CLIPBOARD']['tl_iso_product']['id'] ?? null)) {
+                $session['CLIPBOARD']['tl_iso_product']['id'] = array_intersect($session['CLIPBOARD']['tl_iso_product']['id'], $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'], Database::getInstance()->query("SELECT id FROM tl_iso_product WHERE pid=0")->fetchEach('id'));
 
                 if (empty($session['CLIPBOARD']['tl_iso_product']['id'])) {
                     unset($session['CLIPBOARD']['tl_iso_product']);
@@ -89,16 +97,16 @@ class Permission extends \Backend
             }
 
             // Overwrite session
-            \Session::getInstance()->setData($session);
+            Session::getInstance()->setData($session);
 
             // Check if the product is accessible by user
-            if (\Input::get('id') > 0
-                && !\in_array(\Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])
+            if (Input::get('id') > 0
+                && !\in_array(Input::get('id'), $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['root'])
                 && (!\is_array($session['new_records']['tl_iso_product'])
-                    || !\in_array(\Input::get('id'), $session['new_records']['tl_iso_product'])
+                    || !\in_array(Input::get('id'), $session['new_records']['tl_iso_product'])
                 )
             ) {
-                throw new AccessDeniedException('Cannot access product ID ' . \Input::get('id'));
+                throw new AccessDeniedException('Cannot access product ID ' . Input::get('id'));
             }
         }
     }
@@ -114,7 +122,7 @@ class Permission extends \Backend
         static $arrProducts;
 
         if (null === $arrProducts) {
-            $arrProducts = \Database::getInstance()->query("
+            $arrProducts = Database::getInstance()->query("
                     SELECT i.product_id AS id FROM tl_iso_product_collection_item i
                     INNER JOIN tl_iso_product_collection c ON i.pid=c.id
                     WHERE c.type='order'
@@ -135,12 +143,12 @@ class Permission extends \Backend
      */
     public static function getAllowedIds()
     {
-        $objUser = \BackendUser::getInstance();
+        $objUser = BackendUser::getInstance();
 
         if ($objUser->isAdmin) {
             $arrProducts = true;
         } else {
-            $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'];
+            $arrNewRecords   = $_SESSION['BE_DATA']['new_records']['tl_iso_product'] ?? null;
             $arrProductTypes = $objUser->iso_product_types;
             $arrGroups       = array();
 
@@ -151,14 +159,14 @@ class Permission extends \Backend
 
             // Find the user groups
             if (\is_array($objUser->iso_groups) && \count($objUser->iso_groups) > 0) {
-                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, \Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
+                $arrGroups = array_merge($arrGroups, $objUser->iso_groups, Database::getInstance()->getChildRecords($objUser->iso_groups, Group::getTable()));
 
                 if (\is_array($objUser->iso_groupp) && \in_array('rootPaste', $objUser->iso_groupp)) {
                     $arrGroups[] = 0;
                 }
             }
 
-            $objProducts = \Database::getInstance()->execute("
+            $objProducts = Database::getInstance()->execute("
                 SELECT id FROM tl_iso_product
                 WHERE pid=0
                     AND language=''
@@ -176,7 +184,7 @@ class Permission extends \Backend
             $arrProducts = $objProducts->fetchEach('id');
             $arrProducts = array_merge(
                 $arrProducts,
-                \Database::getInstance()->execute(
+                Database::getInstance()->execute(
                     "SELECT id FROM tl_iso_product WHERE language='' AND pid IN(".implode(',', $arrProducts).")"
                 )->fetchEach('id')
             );
@@ -185,11 +193,13 @@ class Permission extends \Backend
         // HOOK: allow extensions to define allowed products
         if (isset($GLOBALS['ISO_HOOKS']['getAllowedProductIds']) && \is_array($GLOBALS['ISO_HOOKS']['getAllowedProductIds'])) {
             foreach ($GLOBALS['ISO_HOOKS']['getAllowedProductIds'] as $callback) {
-                $arrAllowed = \System::importStatic($callback[0])->{$callback[1]}();
+                $arrAllowed = System::importStatic($callback[0])->{$callback[1]}();
 
                 if ($arrAllowed === false) {
                     return false;
-                } elseif (\is_array($arrAllowed)) {
+                }
+
+                if (\is_array($arrAllowed)) {
                     if ($arrProducts === true) {
                         $arrProducts = $arrAllowed;
                     } else {
@@ -199,7 +209,7 @@ class Permission extends \Backend
             }
         }
 
-        $totalProducts = \Database::getInstance()->execute("SELECT COUNT(*) AS count FROM tl_iso_product WHERE language=''")->count;
+        $totalProducts = Database::getInstance()->execute("SELECT COUNT(*) AS count FROM tl_iso_product WHERE language=''")->count;
 
         // If all product are allowed, we don't need to filter
         if ($arrProducts === true || \count($arrProducts) == $totalProducts) {

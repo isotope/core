@@ -11,8 +11,16 @@
 
 namespace Isotope\Backend\ProductType;
 
+use Contao\Backend;
+use Contao\BackendUser;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Image;
+use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Util\Format;
 use Isotope\Backend\Permission;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
@@ -30,12 +38,11 @@ class Callback extends Permission
     public function checkPermission()
     {
         // Do not run the permission check on other Isotope modules
-        if ('producttypes' !== \Input::get('mod')) {
+        if ('producttypes' !== Input::get('mod')) {
             return;
         }
 
-        /** @var \BackendUser $objBackendUser */
-        $objBackendUser = \BackendUser::getInstance();
+        $objBackendUser = BackendUser::getInstance();
 
         if ($objBackendUser->isAdmin) {
             return;
@@ -58,7 +65,7 @@ class Callback extends Permission
         }
 
         // Check current action
-        switch (\Input::get('act')) {
+        switch (Input::get('act')) {
             case 'create':
             case 'select':
                 // Allow
@@ -67,10 +74,10 @@ class Callback extends Permission
             /** @noinspection PhpMissingBreakStatementInspection */
             case 'edit':
                 // Dynamically add the record to the user profile
-                if (!\in_array(\Input::get('id'), $root)
-                    && $this->addNewRecordPermissions(\Input::get('id'), 'tl_iso_producttype', 'iso_product_types', 'iso_product_typep')
+                if (!\in_array(Input::get('id'), $root)
+                    && $this->addNewRecordPermissions(Input::get('id'), 'tl_iso_producttype', 'iso_product_types', 'iso_product_typep')
                 ) {
-                    $root[]                            = \Input::get('id');
+                    $root[] = Input::get('id');
                     $objBackendUser->iso_product_types = $root;
                 }
                 // No break;
@@ -78,8 +85,8 @@ class Callback extends Permission
             case 'copy':
             case 'delete':
             case 'show':
-                if (!\in_array(\Input::get('id'), $root) || ('delete' === \Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' product type ID "' . \Input::get('id') . '"');
+                if (!\in_array(Input::get('id'), $root) || ('delete' === Input::get('act') && !$objBackendUser->hasAccess('delete', 'iso_product_typep'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' product type ID "' . Input::get('id') . '"');
                 }
                 break;
 
@@ -87,7 +94,7 @@ class Callback extends Permission
             case 'deleteAll':
             case 'overrideAll':
                 $session = $this->Session->getData();
-                if ('deleteAll' === \Input::get('act') && !$this->User->hasAccess('delete', 'iso_product_typep')) {
+                if ('deleteAll' === Input::get('act') && !$this->User->hasAccess('delete', 'iso_product_typep')) {
                     $session['CURRENT']['IDS'] = array();
                 } else {
                     $session['CURRENT']['IDS'] = array_intersect($session['CURRENT']['IDS'], $root);
@@ -96,8 +103,8 @@ class Callback extends Permission
                 break;
 
             default:
-                if (\strlen(\Input::get('act'))) {
-                    throw new AccessDeniedException('Not enough permissions to ' . \Input::get('act') . ' product types');
+                if (\strlen(Input::get('act'))) {
+                    throw new AccessDeniedException('Not enough permissions to ' . Input::get('act') . ' product types');
                 }
                 break;
         }
@@ -118,10 +125,9 @@ class Callback extends Permission
      */
     public function copyProductType($row, $href, $label, $title, $icon, $attributes)
     {
-        /** @var \BackendUser $objUser */
-        $objUser = \BackendUser::getInstance();
+        $objUser = BackendUser::getInstance();
 
-        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($objUser->isAdmin || $objUser->hasAccess('create', 'iso_product_typep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
 
@@ -140,20 +146,19 @@ class Callback extends Permission
     public function deleteProductType($row, $href, $label, $title, $icon, $attributes)
     {
         // Do not use Product::countBy() as it uses a way too complex query with joined subtables for no reason
-        $count = \Database::getInstance()
+        $count = Database::getInstance()
             ->prepare("SELECT COUNT(*) AS count FROM tl_iso_product WHERE pid=0 AND language='' AND type=?")
             ->execute($row['id'])
             ->count
         ;
 
         if ($count > 0) {
-            return \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+            return Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
         }
 
-        /** @var \BackendUser $objUser */
-        $objUser = \BackendUser::getInstance();
+        $objUser = BackendUser::getInstance();
 
-        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : \Image::getHtml(preg_replace('/\.gif$/i', '_.gif', $icon)) . ' ';
+        return ($objUser->isAdmin || $objUser->hasAccess('delete', 'iso_product_typep')) ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : Image::getHtml(preg_replace('/\.svg$/i', '_.svg', $icon)) . ' ';
     }
 
     /**
@@ -163,8 +168,7 @@ class Callback extends Permission
      */
     public function getOptions()
     {
-        /** @var \BackendUser $objUser */
-        $objUser = \BackendUser::getInstance();
+        $objUser = BackendUser::getInstance();
 
         $arrTypes = $objUser->iso_product_types;
 
@@ -173,7 +177,7 @@ class Callback extends Permission
         }
 
         $arrProductTypes = array();
-        $objProductTypes = \Database::getInstance()->execute('
+        $objProductTypes = Database::getInstance()->execute('
             SELECT id,name FROM tl_iso_producttype
             WHERE tstamp>0' . ($objUser->isAdmin ? '' : (' AND id IN (' . implode(',', $arrTypes) . ')')) . '
             ORDER BY name
@@ -190,26 +194,25 @@ class Callback extends Permission
      * Make sure at least one variant attribute is enabled
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
      *
      * @return mixed
      *
      * @throws \UnderflowException
      * @throws \LogicException
      */
-    public function validateVariantAttributes($varValue, \DataContainer $dc)
+    public function validateVariantAttributes($varValue, DataContainer $dc)
     {
-        \Controller::loadDataContainer('tl_iso_product');
+        Controller::loadDataContainer('tl_iso_product');
 
         $blnError = true;
-        $arrAttributes = deserialize($varValue);
+        $arrAttributes = StringUtil::deserialize($varValue);
         $arrVariantAttributeLabels = array();
 
         if (!empty($arrAttributes) && \is_array($arrAttributes)) {
             foreach ($arrAttributes as $arrAttribute) {
 
                 /** @var IsotopeAttributeForVariants|Attribute $objAttribute */
-                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']];
+                $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrAttribute['name']] ?? null;
 
                 if (null !== $objAttribute && /* @todo in 3.0: $objAttribute instanceof IsotopeAttributeForVariants && */$objAttribute->isVariantOption()) {
                     $arrVariantAttributeLabels[] = $objAttribute->name;
@@ -222,7 +225,7 @@ class Callback extends Permission
         }
 
         if ($blnError) {
-            \System::loadLanguageFile('explain');
+            System::loadLanguageFile('explain');
             throw new \UnderflowException(
                 sprintf($GLOBALS['TL_LANG']['tl_iso_producttype']['noVariantAttributes'],
                     implode(', ', $arrVariantAttributeLabels)
@@ -237,16 +240,15 @@ class Callback extends Permission
      * Check if singular attributes appear in the both product type attributes and variant attributes
      *
      * @param mixed          $value
-     * @param \DataContainer $dc
      *
      * @return mixed
      *
      * @throws \LogicException
      */
-    public function validateSingularAttributes($value, \DataContainer $dc)
+    public function validateSingularAttributes($value, DataContainer $dc)
     {
-        $productFields  = deserialize($dc->activeRecord->attributes);
-        $variantFields  = deserialize($value);
+        $productFields  = StringUtil::deserialize($dc->activeRecord->attributes);
+        $variantFields  = StringUtil::deserialize($value);
         $singularFields = Attribute::getSingularFields();
 
         if (!\is_array($productFields) || !\is_array($variantFields) || 0 === \count($singularFields)) {

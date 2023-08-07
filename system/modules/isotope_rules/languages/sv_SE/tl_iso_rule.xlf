@@ -1,0 +1,570 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope_rules/languages/en/tl_iso_rule.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="tl_iso_rule.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.1">
+        <source>Please choose the type of rule.</source>
+        <target>Välj typ av regel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.product">
+        <source>Product</source>
+        <target>Produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart">
+        <source>Cart</source>
+        <target>Varukorg</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.type.cart_group">
+        <source>Cart Group</source>
+        <target>Varukorgsgrupp</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.0">
+        <source>Name</source>
+        <target>Namn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.name.1">
+        <source>Please enter a name for this rule.</source>
+        <target>Ange ett namn för denna regel.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.0">
+        <source>Label</source>
+        <target>Etikett</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.label.1">
+        <source>The label will be show in cart. If you do not enter a label, the name will be used.</source>
+        <target>Etiketten kommer att visas i kundvagnen. Om du inte anger en etikett kommer namnet att användas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.0">
+        <source>Discount</source>
+        <target>Rabatt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.discount.1">
+        <source>Valid values are decimals or whole numbers, minus a numerical value or minus a percentage.</source>
+        <target>Giltiga värden är decimaler eller heltal, minus ett numeriskt värde eller minus en procentsats.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.0">
+        <source>Tax Class</source>
+        <target>Skatteklass</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.tax_class.1">
+        <source>Select a tax class that should be applied to the rule.</source>
+        <target>Välj en skatteklass som ska tillämpas på regeln.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.0">
+        <source>Grouped rules</source>
+        <target>Grupperade regler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupRules.1">
+        <source>Select the rules that belong to this group.</source>
+        <target>Välj de reglerna som tillhör denna grupp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.0">
+        <source>Conditions</source>
+        <target>Villkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.1">
+        <source>Choose how multiple rules should be applied.</source>
+        <target>Välj hur flera regler ska tillämpas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.first">
+        <source>Apply first matching rule</source>
+        <target>Tillämpa första matchningsregeln</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupCondition.all">
+        <source>Apply all matching rules</source>
+        <target>Tillämpa alla matchningsregler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.0">
+        <source>Apply discount to</source>
+        <target>Tillämpa rabatt på</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.1">
+        <source>Select how the discount is applied.</source>
+        <target>Välj hur rabatten ska tillämpas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.products">
+        <source>to each product</source>
+        <target>till varje produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.items">
+        <source>to each unit of a product</source>
+        <target>till varje enhet av en produkt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.applyTo.subtotal">
+        <source>to the cart subtotal</source>
+        <target>till varukorgens delsumma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.0">
+        <source>Discount rounding</source>
+        <target>Rabattavrundning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.1">
+        <source>Define how percentual discounts should be rounded.</source>
+        <target>Definiera hur procentuella rabatter ska avrundas.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.normal">
+        <source>Commercial rounding</source>
+        <target>Kommersiell avrundning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.down">
+        <source>Always round down (in favor of shop owner)</source>
+        <target>Avrunda alltid nedåt (till förmån för butiksägaren)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.rounding.up">
+        <source>Always round up (in favor of shop visitor)</source>
+        <target>Runda alltid uppåt (till förmån för butiksbesökare)</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.0">
+        <source>Enable coupon code</source>
+        <target>Aktivera kupongkod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enableCode.1">
+        <source>Require a code to be entered to invoke this rule, as a coupon.</source>
+        <target>Kräv att en kod anges för att åberopa denna regel, som en kupong.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.0">
+        <source>Rule (coupon) code</source>
+        <target>Regel (kupong) kod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.code.1">
+        <source>Please enter a code by which a customer will invoke this rule, as a coupon.</source>
+        <target>Vänligen ange en kod med vilken en kund kommer att åberopa denna regel, som en kupong.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.singleCode.0">
+        <source>Single usage</source>
+        <target>Engångsanvändning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.singleCode.1">
+        <source>Do not allow this coupon code if another code has already been applied.</source>
+        <target>Tillåt inte denna kupongkod om en annan kod redan har använts.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.0">
+        <source>Uses per member</source>
+        <target>Användning per medlem</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerMember.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each customer.</source>
+        <target>Detta kommer att användas för att se om regeln redan har lösts in. Om detta är satt till 0 kan det användas obegränsat med tider för varje kund.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.0">
+        <source>Uses per store config</source>
+        <target>Används per butikskonfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limitPerConfig.1">
+        <source>This will be used to see if the rule has already been redeemed. If this is set to 0, it can be used unlimited times for each store config.</source>
+        <target>Detta kommer att användas för att se om regeln redan har lösts in. Om detta är satt till 0, kan det användas obegränsat antal gånger för varje butikskonfiguration.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.0">
+        <source>Minimum subtotal</source>
+        <target>Minsta delsumma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minSubtotal.1">
+        <source>Please specify a minimum subtotal this rule applies to.</source>
+        <target>Vänligen ange en lägsta delsumma som denna regel gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.0">
+        <source>Maximum subtotal</source>
+        <target>Maximal delsumma</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxSubtotal.1">
+        <source>Please specify a maximum subtotal this rule applies to.</source>
+        <target>Vänligen ange en maximal delsumma som denna regel gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.0">
+        <source>Minimum weight</source>
+        <target>Minsta vikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minWeight.1">
+        <source>Enter a minimum weight to control availability based on the products in cart.</source>
+        <target>Ange en minimivikt för att kontrollera tillgängligheten baserat på produkterna i kundvagnen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.0">
+        <source>Maximum weight</source>
+        <target>Maxvikt</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxWeight.1">
+        <source>Enter a maximum weight to control availability based on the products in cart.</source>
+        <target>Ange en maxvikt för att kontrollera tillgängligheten baserat på produkterna i kundvagnen.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.0">
+        <source>Minimum item quantity</source>
+        <target>Minsta artikelkvantitet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.minItemQuantity.1">
+        <source>Please specify a minimum quantity of an item this rule applies to.</source>
+        <target>Vänligen ange en minsta kvantitet för en vara som denna regel gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.0">
+        <source>Maximum item quantity</source>
+        <target>Maximal artikelkvantitet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.maxItemQuantity.1">
+        <source>Please specify a maximum quantity of a single item this rule applies to.</source>
+        <target>Vänligen ange ett maximalt antal för en enskild artikel som denna regel gäller.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.0">
+        <source>Quantity calculation mode</source>
+        <target>Kvantitets beräkningsläge</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.1">
+        <source>Select a calculation mode for min/max quantity.</source>
+        <target>Välj ett beräkningsläge för min/max kvantitet.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.product_quantity">
+        <source>Quantity of product in cart</source>
+        <target>Antal produkter i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_products">
+        <source>Total products in cart</source>
+        <target>Totalt antal produkter i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.quantityMode.cart_items">
+        <source>Total quantity in cart</source>
+        <target>Total kvantitet i varukorgen</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.0">
+        <source>Start date</source>
+        <target>Start datum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startDate.1">
+        <source>If desired, please specify the date this rule will become eligible on.</source>
+        <target>Om så önskas, vänligen ange det datum då denna regel blir kvalificerad.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.0">
+        <source>End date</source>
+        <target>Slutdatum</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endDate.1">
+        <source>If desired, please specify the date after which this rule will no longer be eligible on.</source>
+        <target>Om så önskas, vänligen ange det datum efter vilket denna regel inte längre är berättigad.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.0">
+        <source>Start time</source>
+        <target>Starttid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.startTime.1">
+        <source>If desired, please specify the time this rule will become eligible at.</source>
+        <target>Om så önskas, vänligen ange den tidpunkt då denna regel blir kvalificerad vid.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.0">
+        <source>End time</source>
+        <target>Sluttid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.endTime.1">
+        <source>If desired, please specify the time this rule will not longer be eligible at.</source>
+        <target>Om så önskas, vänligen ange den tidpunkt då denna regel inte längre är kvalificerad vid.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configRestrictions.0">
+        <source>Store config restrictions</source>
+        <target>Butikskonfigurationsbegränsningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configRestrictions.1">
+        <source>Restrict a rule to certain store configs.</source>
+        <target>Begränsa en regel till vissa butikskonfigurationer.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configCondition.0">
+        <source>Store config condition</source>
+        <target>Spara konfigurations kondition</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Definiera om urvalet ska matcha eller inte.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configs.0">
+        <source>Store configs</source>
+        <target>Spara konfigurationer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.configs.1">
+        <source>Select configs this rule is restricted to.</source>
+        <target>Välj konfigurationer som denna regel är begränsad till.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.0">
+        <source>Member restrictions</source>
+        <target>Medlemsbegränsningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.1">
+        <source>Restrict a rule to certain groups or members.</source>
+        <target>Begränsa en regel till vissa grupper eller medlemmar.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.none">
+        <source>No restrictions</source>
+        <target>Inga begränsningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.guests">
+        <source>Guests</source>
+        <target>Gäster</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.groups">
+        <source>Specific groups</source>
+        <target>Specifika grupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberRestrictions.members">
+        <source>Specific members</source>
+        <target>Specifika medlemmar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberCondition.0">
+        <source>Member condition</source>
+        <target>Medlemsvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.memberCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Definiera om urvalet ska matcha eller inte.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.members.0">
+        <source>Members</source>
+        <target>Medlemmar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.members.1">
+        <source>Select members this rule is restricted to.</source>
+        <target>Välj medlemmar som denna regel är begränsad till.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.0">
+        <source>Groups</source>
+        <target>Grupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groups.1">
+        <source>Select groups this rule is restricted to.</source>
+        <target>Välj grupper som denna regel är begränsad till.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.0">
+        <source>Product restrictions</source>
+        <target>Produktrestriktioner</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.1">
+        <source>Restrict this rule to certain product types, categories, or to individual products.</source>
+        <target>Begränsa denna regel till vissa produkttyper, kategorier eller till enskilda produkter.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.none">
+        <source>No restrictions</source>
+        <target>Inga begränsningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.producttypes">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.pages">
+        <source>Categories</source>
+        <target>Kategorier</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.products">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.variants">
+        <source>Products &amp; Variants</source>
+        <target>Produkter och varianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productRestrictions.attribute">
+        <source>Product attribute</source>
+        <target>Produktattribut</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productCondition.0">
+        <source>Product condition</source>
+        <target>Produktens skick</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.productCondition.1">
+        <source>Define if the selection should match or not.</source>
+        <target>Definiera om urvalet ska matcha eller inte.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.producttypes.0">
+        <source>Product Types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.producttypes.1">
+        <source>Select the product types this rule is restricted to. If none, all are eligible.</source>
+        <target>Välj de produkttyper som denna regel är begränsad till. Om ingen är alla kvalificerade.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.0">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.products.1">
+        <source>Select products this rule is restricted to. If none, all are eligible.</source>
+        <target>Välj produkter som denna regel är begränsad till. Om ingen är alla kvalificerade.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.variants.0">
+        <source>Products &amp; Variants</source>
+        <target>Produkter och varianter</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.variants.1">
+        <source>Enter a comma-separated list of product or variant IDs to limit this rule to.</source>
+        <target>Ange en kommaseparerad lista med produkt- eller variant-id:n att begränsa denna regel till.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeName.0">
+        <source>Attribute name</source>
+        <target>Attributnamn</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeName.1">
+        <source>Select the product attribute you want to restrict.</source>
+        <target>Välj det produktattribut du vill begränsa.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.0">
+        <source>Attribute condition</source>
+        <target>Attributvillkor</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.1">
+        <source>Select the product attribute you want to restrict.</source>
+        <target>Välj det produktattribut du vill begränsa.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.eq">
+        <source>equals</source>
+        <target>lika</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.neq">
+        <source>not equal</source>
+        <target>inte lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.lt">
+        <source>less than</source>
+        <target>mindre än</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.gt">
+        <source>greater than</source>
+        <target>större än</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.elt">
+        <source>less than or equal to</source>
+        <target>mindre än eller lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.egt">
+        <source>greater than or equal to</source>
+        <target>större än eller lika med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.starts">
+        <source>starts with</source>
+        <target>börjar med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.ends">
+        <source>ends with</source>
+        <target>slutar med</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.attributeCondition.contains">
+        <source>contains</source>
+        <target>innehåller</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.0">
+        <source>Categories</source>
+        <target>Kategorier</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.pages.1">
+        <source>Select categories this rule is restricted to. If none, all are eligible.</source>
+        <target>Select categories this rule is restricted to. If none, all are eligible.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.0">
+        <source>Enabled</source>
+        <target>Aktiverad</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled.1">
+        <source>Please select whether this rule is currently enabled or not.</source>
+        <target>Välj om den här regeln för närvarande är aktiverad eller inte.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.0">
+        <source>Only for groups</source>
+        <target>Endast för grupper</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.groupOnly.1">
+        <source>Only apply this rule as part of a rule group.</source>
+        <target>Använd endast denna regel som en del av en regelgrupp.</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.basic_legend">
+        <source>Basic rule setup</source>
+        <target>Grundläggande regeluppsättning</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_group.group_legend">
+        <source>Group configuration</source>
+        <target>Gruppkonfiguration</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.coupon_legend">
+        <source>Coupon Code</source>
+        <target>Kupongskod</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.limit_legend">
+        <source>Limit Uses</source>
+        <target>Begränsa användningsområden</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.datim_legend">
+        <source>Date &amp; Time Restrictions</source>
+        <target>Begränsningar för datum och tid</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.advanced_legend">
+        <source>Advanced Restrictions</source>
+        <target>Avancerade begränsningar</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.enabled_legend">
+        <source>Availability</source>
+        <target>Tillgänglighet</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.all">
+        <source>Exclude all other rules</source>
+        <target>Uteslut alla andra regler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.none">
+        <source>No rule exclusions</source>
+        <target>Inga regelundantag</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.ruleRestrictions.rules">
+        <source>Exclude certain rules</source>
+        <target>Uteslut vissa regler</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.condition_true">
+        <source>true</source>
+        <target>Sann</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.condition_false">
+        <source>false</source>
+        <target>falsk</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.new.0">
+        <source>Add rule</source>
+        <target>Lägg till regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.new.1">
+        <source>Create a new rule</source>
+        <target>Skapa en ny regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.edit.0">
+        <source>Edit rule</source>
+        <target>Redigera regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.edit.1">
+        <source>Edit rule ID %s</source>
+        <target>Redigera regel ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.copy.0">
+        <source>Duplicate rule</source>
+        <target>Duplicera regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.copy.1">
+        <source>Duplicate rule ID %s</source>
+        <target>Duplicera regel ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.delete.0">
+        <source>Delete rule</source>
+        <target>Ta bort regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.delete.1">
+        <source>Delete rule ID %s</source>
+        <target>Ta bort regel ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.toggle.0">
+        <source>Publish/unpublish rule</source>
+        <target>Publicera/avpublicera regel</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.toggle.1">
+        <source>Publish/unpublish rule ID %s</source>
+        <target>Publicera/avpublicera regel ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.show.0">
+        <source>Rule details</source>
+        <target>Regeldetaljer</target>
+      </trans-unit>
+      <trans-unit id="tl_iso_rule.show.1">
+        <source>Show the details of rule ID %s</source>
+        <target>Visa detaljer om regel ID %s</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

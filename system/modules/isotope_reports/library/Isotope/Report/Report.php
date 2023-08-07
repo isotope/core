@@ -11,11 +11,20 @@
 
 namespace Isotope\Report;
 
+use Contao\Backend;
+use Contao\BackendTemplate;
+use Contao\BackendUser;
+use Contao\Controller;
+use Contao\Date;
+use Contao\Input;
+use Contao\Session;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Backend\Product\Permission;
 use Isotope\Model\Config;
 
 
-abstract class Report extends \Backend
+abstract class Report extends Backend
 {
 
     /**
@@ -83,26 +92,25 @@ abstract class Report extends \Backend
 
     public function generate()
     {
-        if ('tl_filters' === \Input::post('FORM_SUBMIT')) {
-            $session = \Session::getInstance()->getData();
+        if ('tl_filters' === Input::post('FORM_SUBMIT')) {
+            $session = Session::getInstance()->getData();
 
-            if (\Input::post('filter_reset')) {
+            if (Input::post('filter_reset')) {
                 $session['iso_reports'][$this->name] = [];
             } else {
                 foreach ($_POST as $strKey => $v) {
-                    $session['iso_reports'][$this->name][$strKey] = \Input::post($strKey);
+                    $session['iso_reports'][$this->name][$strKey] = Input::post($strKey);
                 }
             }
 
-            \Session::getInstance()->setData($session);
-            \Controller::reload();
+            Session::getInstance()->setData($session);
+            Controller::reload();
         }
 
-        $this->Template = new \BackendTemplate($this->strTemplate);
+        $this->Template = new BackendTemplate($this->strTemplate);
         $this->Template->setData($this->arrData);
 
         // Filter stuff
-        $this->Template->action = ampersand($this->Environment->request);
         $this->Template->panels = $this->getPanels();
 
         $this->Template->buttons = $this->getButtons();
@@ -129,7 +137,7 @@ abstract class Report extends \Backend
         foreach ($this->arrData['panels'] as $group=>$callbacks) {
             foreach ($callbacks as $callback) {
                 if (\is_array($callback)) {
-                    $objCallback = \System::importStatic($callback[0]);
+                    $objCallback = System::importStatic($callback[0]);
                     $buffer = $objCallback->{$callback[1]}();
                 } else {
                     $buffer = $this->$callback();
@@ -147,7 +155,7 @@ abstract class Report extends \Backend
 
     protected function getButtons()
     {
-        return array('<a href="contao/main.php?do=reports" class="header_back" title="' . specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>');
+        return array('<a href="contao/main.php?do=reports" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>');
     }
 
 
@@ -157,7 +165,7 @@ abstract class Report extends \Backend
             return null;
         }
 
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'          => 'tl_limit',
@@ -177,7 +185,7 @@ abstract class Report extends \Backend
             return null;
         }
 
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
         $varValue = array('tl_field'=>(string) $arrSession[$this->name]['tl_field'], 'tl_value'=>(string) $arrSession[$this->name]['tl_value']);
 
         return [
@@ -197,7 +205,7 @@ abstract class Report extends \Backend
             return null;
         }
 
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
         $varValue = (string) $arrSession[$this->name]['tl_sort'];
 
         return [
@@ -222,8 +230,8 @@ abstract class Report extends \Backend
             }
         }
 
-        $arrSession = \Session::getInstance()->get('iso_reports');
-        $varValue = (string) $arrSession[$this->name]['iso_config'];
+        $arrSession = Session::getInstance()->get('iso_reports');
+        $varValue = (string) ($arrSession[$this->name]['iso_config'] ?? '');
 
         return [
             'name'      => 'iso_config',
@@ -239,7 +247,7 @@ abstract class Report extends \Backend
 
     protected function getSelectPeriodPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'      => 'period',
@@ -260,14 +268,14 @@ abstract class Report extends \Backend
 
     protected function getSelectStartPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'      => 'start',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['from'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
-            'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
+            'value'     => Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['start']),
             'class'     => 'tl_start',
         ];
     }
@@ -275,14 +283,14 @@ abstract class Report extends \Backend
 
     protected function getSelectStopPanel()
     {
-        $arrSession = \Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         return [
             'name'      => 'stop',
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['to'],
             'type'      => 'date',
             'format'    => $GLOBALS['TL_CONFIG']['dateFormat'],
-            'value'     => \Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
+            'value'     => Date::parse($GLOBALS['TL_CONFIG']['dateFormat'], (int) $arrSession[$this->name]['stop']),
             'class'     => 'tl_stop',
         ];
     }
@@ -322,11 +330,11 @@ abstract class Report extends \Backend
      */
     public static function getConfigProcedure($strTable = 'tl_iso_config', $strField = 'id', $strPrefix = ' AND ')
     {
-        if (\BackendUser::getInstance()->isAdmin) {
+        if (BackendUser::getInstance()->isAdmin) {
             return '';
         }
 
-        $arrConfig = deserialize(\BackendUser::getInstance()->iso_configs);
+        $arrConfig = StringUtil::deserialize(BackendUser::getInstance()->iso_configs);
 
         if (empty($arrConfig) || !\is_array($arrConfig)) {
             $arrConfig = array(0);

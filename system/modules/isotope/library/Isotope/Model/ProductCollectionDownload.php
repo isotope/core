@@ -11,8 +11,16 @@
 
 namespace Isotope\Model;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\File;
+use Contao\Frontend;
+use Contao\Input;
+use Contao\Model;
+use Contao\Model\Collection;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
@@ -26,7 +34,7 @@ use Isotope\Model\ProductCollection\Order;
  * @property string $downloads_remaining
  * @property string $expires
  */
-class ProductCollectionDownload extends \Model
+class ProductCollectionDownload extends Model
 {
 
     /**
@@ -56,10 +64,10 @@ class ProductCollectionDownload extends \Model
     protected function download($strFile)
     {
         if ('FE' === TL_MODE && $this->downloads_remaining !== '') {
-            \Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
+            Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
-        \Controller::sendFileToBrowser($strFile);
+        Controller::sendFileToBrowser($strFile);
     }
 
     /**
@@ -72,7 +80,7 @@ class ProductCollectionDownload extends \Model
      */
     public function getForTemplate($blnOrderPaid = false, $orderDetailsPageId = null)
     {
-        /** @var \PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
 
         /** @var Download $objDownload */
@@ -83,7 +91,7 @@ class ProductCollectionDownload extends \Model
         }
 
         $arrDownloads    = array();
-        $allowedDownload = trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
+        $allowedDownload = StringUtil::trimsplit(',', strtolower($GLOBALS['TL_CONFIG']['allowedDownload']));
 
         $baseUrl = null;
         if ($orderDetailsPageId > 0 && ($orderDetailsPage = PageModel::findByPk($orderDetailsPageId)) !== null) {
@@ -94,7 +102,7 @@ class ProductCollectionDownload extends \Model
         }
 
         foreach ($objDownload->getFiles() as $objFileModel) {
-            $objFile = new \File($objFileModel->path, true);
+            $objFile = new File($objFileModel->path, true);
 
             if (!\in_array($objFile->extension, $allowedDownload)
                 || preg_match('/^meta(_[a-z]{2})?\.txt$/', $objFile->basename)
@@ -105,8 +113,8 @@ class ProductCollectionDownload extends \Model
             // Send file to the browser
             if ($blnOrderPaid &&
                 $this->canDownload() &&
-                \Input::get('download') == $objDownload->id &&
-                \Input::get('file') == $objFileModel->path
+                Input::get('download') == $objDownload->id &&
+                Input::get('file') == $objFileModel->path
             ) {
                 $path = $objFileModel->path;
 
@@ -114,7 +122,7 @@ class ProductCollectionDownload extends \Model
                     && \is_array($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'])
                 ) {
                     foreach ($GLOBALS['ISO_HOOKS']['downloadFromProductCollection'] as $callback) {
-                        $path = \System::importStatic($callback[0])->{$callback[1]}(
+                        $path = System::importStatic($callback[0])->{$callback[1]}(
                             $path,
                             $objFileModel,
                             $objDownload,
@@ -126,7 +134,7 @@ class ProductCollectionDownload extends \Model
                 $this->download($objFileModel->path);
             }
 
-            $arrMeta = \Frontend::getMetaData($objFileModel->meta, $objPage->language);
+            $arrMeta = Frontend::getMetaData($objFileModel->meta, $objPage->language);
 
             // Use the file name as title if none is given
             if ($arrMeta['title'] == '') {
@@ -150,7 +158,7 @@ class ProductCollectionDownload extends \Model
                 'link'          => $arrMeta['title'],
                 'caption'       => $arrMeta['caption'],
                 'href'          => $strHref,
-                'filesize'      => \System::getReadableSize($objFile->filesize, 1),
+                'filesize'      => System::getReadableSize($objFile->filesize, 1),
                 'icon'          => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,
                 'mime'          => $objFile->mime,
                 'meta'          => $arrMeta,
@@ -170,7 +178,7 @@ class ProductCollectionDownload extends \Model
      * @param IsotopeProductCollection $objCollection
      * @param array                    $arrOptions
      *
-     * @return \Model\Collection|null
+     * @return Collection|null
      */
     public static function findByCollection(IsotopeProductCollection $objCollection, array $arrOptions = array())
     {

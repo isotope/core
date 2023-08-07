@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
     (
         'dataContainer'             => 'Table',
         'label'                     => &$GLOBALS['TL_LANG']['tl_iso_group']['label'],
-        'backlink'                  => \Input::get('popup') ? null : 'do=iso_products',
+        'backlink'                  => \Contao\Input::get('popup') ? null : 'do=iso_products',
         'enableVersioning'          => true,
         'onload_callback' => array
         (
@@ -60,7 +60,6 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
@@ -70,47 +69,41 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['edit'],
                 'href'              => 'table=tl_iso_group&amp;act=edit',
-                'icon'              => 'edit.gif',
+                'icon'              => 'edit.svg',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'editButton'),
             ),
             'copy' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['copy'],
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy',
-                'icon'              => 'copy.gif',
+                'icon'              => 'copy.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'copyChilds' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['copyChilds'],
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=copy&amp;childs=1',
-                'icon'              => 'copychilds.gif',
+                'icon'              => 'copychilds.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset()"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'copyButton'),
             ),
             'cut' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['cut'],
                 'href'              => 'table=tl_iso_group&amp;act=paste&amp;mode=cut',
-                'icon'              => 'cut.gif',
+                'icon'              => 'cut.svg',
                 'attributes'        => 'onclick="Backend.getScrollOffset();"'
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['delete'],
                 'href'              => 'table=tl_iso_group&amp;act=delete',
-                'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"',
+                'icon'              => 'delete.svg',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"',
                 'button_callback'   => array('Isotope\Backend\Group\Callback', 'deleteButton'),
             ),
             'show' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_group']['show'],
                 'href'              => 'act=show',
-                'icon'              => 'show.gif'
+                'icon'              => 'show.svg'
             ),
         )
     ),
@@ -144,7 +137,6 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         ),
         'name' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_group']['name'],
             'exclude'               => true,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
@@ -152,7 +144,6 @@ $GLOBALS['TL_DCA']['tl_iso_group'] = array
         ),
         'product_type' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_group']['product_type'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\ProductType::getTable().'.name',

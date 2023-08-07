@@ -1,25 +1,13 @@
 <?php
 
-/*
- * Isotope eCommerce for Contao Open Source CMS
- *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
- *
- * @link       https://isotopeecommerce.org
- * @license    https://opensource.org/licenses/lgpl-3.0.html
- */
-namespace {
-    if (!\class_exists('\MultilingualModel')) {
-        class MultilingualModel extends \Terminal42\DcMultilingualBundle\Model\Multilingual {}
-    }
-}
+namespace Isotope\Model;
 
-namespace Isotope\Model {
-
+use Contao\Database\Result;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
+use Terminal42\DcMultilingualBundle\Model\Multilingual;
 
 /**
  * Class AttributeOption
@@ -38,26 +26,13 @@ use Isotope\Isotope;
  * @property string $price
  * @property bool   $published
  */
-class AttributeOption extends \MultilingualModel
+class AttributeOption extends Multilingual
 {
     /**
      * Name of the current table
      * @var string
      */
     protected static $strTable = 'tl_iso_attribute_option';
-
-    /**
-     * Backwards compatibility with DC_Multilingual v2
-     * @return int
-     */
-    public function getLanguageId()
-    {
-        if ($this instanceof \Terminal42\DcMultilingualBundle\Model\Multilingual) {
-            return parent::getLanguageId();
-        }
-
-        return $this->id;
-    }
 
     /**
      * Get array representation of the attribute option
@@ -104,7 +79,7 @@ class AttributeOption extends \MultilingualModel
      */
     public function isPercentage()
     {
-        return '%' === substr($this->arrData['price'], -1) ? true : false;
+        return '%' === substr($this->arrData['price'], -1);
     }
 
     /**
@@ -189,9 +164,9 @@ class AttributeOption extends \MultilingualModel
             /** @var ProductPrice|ProductPrice[] $objPrice */
             if (null !== $objProduct && ($objPrice = $objProduct->getPrice()) !== null) {
                 return Isotope::calculatePrice($this->price, $this, 'price', $objPrice->tax_class);
-            } else {
-                return Isotope::calculatePrice($this->price, $this, 'price');
             }
+
+            return Isotope::calculatePrice($this->price, $this, 'price');
         }
 
         return $this->price;
@@ -393,15 +368,13 @@ class AttributeOption extends \MultilingualModel
     /**
      * Create a new collection from a database result
      *
-     * @param \Database\Result $objResult The database result object
-     * @param string           $strTable  The table name
+     * @param Result $objResult The database result object
+     * @param string $strTable  The table name
      *
      * @return \Isotope\Collection\AttributeOption The model collection
      */
-    protected static function createCollectionFromDbResult(\Database\Result $objResult, $strTable)
+    protected static function createCollectionFromDbResult(Result $objResult, $strTable)
     {
         return \Isotope\Collection\AttributeOption::createFromDbResult($objResult, $strTable);
     }
-}
-
 }

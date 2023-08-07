@@ -11,6 +11,7 @@
 
 namespace Isotope\Frontend\ProductCollectionAction;
 
+use Contao\Controller;
 use Isotope\Interfaces\IsotopeProductCollection;
 
 class LegacyButtonAction extends AbstractButton
@@ -56,7 +57,7 @@ class LegacyButtonAction extends AbstractButton
         }
 
         if (\is_string($this->button['action'])) {
-            \Controller::redirect($this->button['action']);
+            Controller::redirect($this->button['action']);
         }
 
         \call_user_func(

@@ -1,0 +1,350 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/modules.xlf" source-language="en" target-language="sv-SE">
+    <body>
+      <trans-unit id="MOD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.0">
+        <source>Product management</source>
+        <target>Produkt hantering</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_products.1">
+        <source>Manage products for your Isotope eCommerce shop</source>
+        <target>Hantera produkter för din Isotope e-handelsbutik</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.0">
+        <source>Orders</source>
+        <target>Order</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_orders.1">
+        <source>See and manage orders for your shop</source>
+        <target>Se och hantera beställningar för din butik</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.0">
+        <source>Store configuration</source>
+        <target>Shop konfiguration</target>
+      </trans-unit>
+      <trans-unit id="MOD.iso_setup.1">
+        <source>Setup and configure Isotope eCommerce to your needs</source>
+        <target>Ställ in och konfigurera Isotope eCommerce efter dina behov</target>
+      </trans-unit>
+      <trans-unit id="FMD.isotope">
+        <source>Isotope eCommerce</source>
+        <target>Isotope eCommerce</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.0">
+        <source>Product Filter</source>
+        <target>Produktfilter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productfilter.1">
+        <source>Define individual filters for Isotope such as category trees and product attribute filters.</source>
+        <target>Definiera individuella filter för isotop som kategoriträd och produktattributfilter.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.0">
+        <source>Cumulative Filter</source>
+        <target>Kumulativt filter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cumulativefilter.1">
+        <source>Provides a cumulative filter so visitors can cut down the product choice by clicking on multiple conditions.</source>
+        <target>Tillhandahåller ett kumulativt filter så att besökare kan minska produktvalet genom att klicka på flera villkor.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_categoryfilter.0">
+        <source>Category Filter</source>
+        <target>Kategorifilter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_categoryfilter.1">
+        <source>Provides a filter by product category (page tree).</source>
+        <target>Ger ett filter efter produktkategori (sidträd).</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.0">
+        <source>Range Filter</source>
+        <target>Områdesfilter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_rangefilter.1">
+        <source>Provides a range filter to find products within a value range.</source>
+        <target>Tillhandahåller ett intervallfilter för att hitta produkter inom ett värdeintervall.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.0">
+        <source>Product List</source>
+        <target>Produktlista</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productlist.1">
+        <source>General Listing module. Can be used to list products or values of attributes. May be combined with other modules (i.e. the Filter Module) to provide further drill-down capabilities.</source>
+        <target>Allmän listamodul. Kan användas för att lista produkter eller värden på attribut. Kan kombineras med andra moduler (d.v.s. filtermodulen) för att ge ytterligare möjligheter till borrning.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.0">
+        <source>Product Variant List</source>
+        <target>Lista över produktvarianter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productvariantlist.1">
+        <source>Lists each variant of a product. Make sure you use the iso_list_variants template.</source>
+        <target>Listar varje variant av en produkt. Se till att du använder mallen iso_list_variants.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.0">
+        <source>Product Reader</source>
+        <target>Produktläsare</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_productreader.1">
+        <source>Product reader module. This is used to display product details.</source>
+        <target>Produktläsarmodul. Detta används för att visa produktdetaljer.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.0">
+        <source>Favorites</source>
+        <target>Favoriter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_favorites.1">
+        <source>Renders the list of products on the favorites list.</source>
+        <target>Återger listan över produkter på favoritlistan.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.0">
+        <source>Shopping Cart</source>
+        <target>Kundvagn</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart.1">
+        <source>A fully-featured shopping cart module.  Box or Full Display can be set by template selection.</source>
+        <target>En fullutrustad kundvagnsmodul. Box eller Full Display kan ställas in genom val av mall.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.0">
+        <source>Checkout</source>
+        <target>Kassa</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_checkout.1">
+        <source>Allow store customers to complete their transactions.</source>
+        <target>Tillåt butikskunder att slutföra sina transaktioner.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.0">
+        <source>Address Book</source>
+        <target>Adressbok</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_addressbook.1">
+        <source>Allow customers to manage their address book.</source>
+        <target>Tillåt kunder att hantera sin adressbok.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.0">
+        <source>Order History</source>
+        <target>Beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderhistory.1">
+        <source>Order lister that allows customers to view their order history</source>
+        <target>Beställningslista som låter kunder se sin beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.0">
+        <source>Order Details</source>
+        <target>Orderdetaljer</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_orderdetails.1">
+        <source>Order reader that allows customers to view order history details</source>
+        <target>Beställningsläsare som låter kunder se detaljer om beställningshistorik</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.0">
+        <source>Wishlist Manager</source>
+        <target>Önskelista Manager</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistmanager.1">
+        <source>Allows the current member to manage it's wishlists.</source>
+        <target>Tillåter den nuvarande medlemmen att hantera sina önskelistor.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.0">
+        <source>Public Wishlists</source>
+        <target>Offentliga önskelista</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistviewer.1">
+        <source>Shows published wishlists of all users.</source>
+        <target>Visar publicerade önskelistor för alla användare.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.0">
+        <source>Wishlist Details</source>
+        <target>Önskelista Detaljer</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_wishlistdetails.1">
+        <source>Shows details of a given wishlist.</source>
+        <target>Visar detaljer om en given önskelista.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.0">
+        <source>Store Config Switcher</source>
+        <target>Shop konfiguraton växlare</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_configswitcher.1">
+        <source>Switch between store configuration to change currency and other settings.</source>
+        <target>Växla mellan butikskonfiguration för att ändra valuta och andra inställningar.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.0">
+        <source>Related products</source>
+        <target>Relaterade produkter</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_relatedproducts.1">
+        <source>List products related to the current one.</source>
+        <target>Lista produkter relaterade till den aktuella.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.0">
+        <source>Messages</source>
+        <target>Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_messages.1">
+        <source>Displays all Isotope messages if they have not been displayed elsewhere.</source>
+        <target>Visar alla Isotopmeddelanden om de inte har visats någon annanstans.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.0">
+        <source>Shipping cost calculator</source>
+        <target>Kalkylator för fraktkostnad</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_shipping_calculator.1">
+        <source>Displays a module to calculate the shipping costs before going to the checkout page.</source>
+        <target>Visar en modul för att beräkna fraktkostnaderna innan du går till kassasidan.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.0">
+        <source>Cart address</source>
+        <target>Kundvagnens adress</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_cart_address.1">
+        <source>Displays a form to enter the cart address data that will be used to calculate prices.</source>
+        <target>Visar ett formulär för att ange kundvagnsadressdata som kommer att användas för att beräkna priser.</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.0">
+        <source>Trusted Shops Badge</source>
+        <target>Trusted Shops-märke</target>
+      </trans-unit>
+      <trans-unit id="FMD.iso_trustedshops.1">
+        <source>Displays a Trusted Shops Badge on your website.</source>
+        <target>Visar ett Trusted Shops-märke på din webbplats.</target>
+      </trans-unit>
+      <trans-unit id="IMD.product">
+        <source>Products</source>
+        <target>Produkter</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.0">
+        <source>Attributes</source>
+        <target>Attribut</target>
+      </trans-unit>
+      <trans-unit id="IMD.attributes.1">
+        <source>Manage and create product attributes such as size, color, etc.</source>
+        <target>Hantera och skapa produktattribut som storlek, färg etc.</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.0">
+        <source>Product types</source>
+        <target>Produkttyper</target>
+      </trans-unit>
+      <trans-unit id="IMD.producttypes.1">
+        <source>Manage and create product types from sets of attributes.</source>
+        <target>Hantera och skapa produkttyper från uppsättningar av attribut.</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.0">
+        <source>Related categories</source>
+        <target>Relaterade kategorier</target>
+      </trans-unit>
+      <trans-unit id="IMD.related_categories.1">
+        <source>Define categories for product relations.</source>
+        <target>Definiera kategorier för produktrelationer.</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.0">
+        <source>Galleries</source>
+        <target>Gallerier</target>
+      </trans-unit>
+      <trans-unit id="IMD.gallery.1">
+        <source>Define how you want the images in your product to be rendered.</source>
+        <target>Definiera hur du vill att bilderna i din produkt ska renderas.</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.0">
+        <source>Base prices</source>
+        <target>Baspriser</target>
+      </trans-unit>
+      <trans-unit id="IMD.baseprice.1">
+        <source>Define base price.</source>
+        <target>Definiera grundpris.</target>
+      </trans-unit>
+      <trans-unit id="IMD.checkout">
+        <source>Checkout Flow</source>
+        <target>Kassaflöde</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.0">
+        <source>Shipping methods</source>
+        <target>Fraktmetoder</target>
+      </trans-unit>
+      <trans-unit id="IMD.shipping.1">
+        <source>Set up shipping methods.</source>
+        <target>Ställ in fraktmetoder.</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.0">
+        <source>Payment methods</source>
+        <target>Betalningsmetoder</target>
+      </trans-unit>
+      <trans-unit id="IMD.payment.1">
+        <source>Set up payment methods.</source>
+        <target>Ställ in betalningsmetoder.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.0">
+        <source>Tax classes</source>
+        <target>Skatteklasser</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_class.1">
+        <source>Set up Tax classes, which contain sets of Tax rates.</source>
+        <target>Ställ in skatteklasser, som innehåller uppsättningar av skattesatser.</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.0">
+        <source>Tax rates</source>
+        <target>Skattesatser</target>
+      </trans-unit>
+      <trans-unit id="IMD.tax_rate.1">
+        <source>Set up tax rates based on things like shipping/billing location and order total.</source>
+        <target>Ställ in skattesatser baserat på saker som frakt/faktureringsplats och ordersumma.</target>
+      </trans-unit>
+      <trans-unit id="IMD.config">
+        <source>General settings</source>
+        <target>Allmänna Inställningar</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.0">
+        <source>Store configurations</source>
+        <target>Shop konfigurationer</target>
+      </trans-unit>
+      <trans-unit id="IMD.configs.1">
+        <source>Configure general settings for this store.</source>
+        <target>Konfigurera allmänna inställningar för den här butiken.</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.0">
+        <source>Order status</source>
+        <target>Orderstatus</target>
+      </trans-unit>
+      <trans-unit id="IMD.orderstatus.1">
+        <source>Define order status.</source>
+        <target>Definiera orderstatus.</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.0">
+        <source>Notifications</source>
+        <target>Meddelanden</target>
+      </trans-unit>
+      <trans-unit id="IMD.notifications.1">
+        <source>Use the Notification Center to manage emails etc. for Isotope eCommerce.</source>
+        <target>Använd Notification Center för att hantera e-postmeddelanden etc. för Isotope eCommerce.</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.0">
+        <source>Documents</source>
+        <target>Dokument</target>
+      </trans-unit>
+      <trans-unit id="IMD.documents.1">
+        <source>Define documents.</source>
+        <target>Definiera dokument.</target>
+      </trans-unit>
+      <trans-unit id="IMD.miscellaneous">
+        <source>Miscellaneous</source>
+        <target>Diverse</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.0">
+        <source>Translations</source>
+        <target>Översättningar</target>
+      </trans-unit>
+      <trans-unit id="IMD.labels.1">
+        <source>Replace given labels for certain languages.</source>
+        <target>Ersätt givna etiketter för vissa språk.</target>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.0">
+        <source>Integrity Check</source>
+        <target>Integritetskontroll</target>
+      </trans-unit>
+      <trans-unit id="IMD.integrity.1">
+        <source>Validate your shop configuration against common errors.</source>
+        <target>Validera din butikskonfiguration mot vanliga fel.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

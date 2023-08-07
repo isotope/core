@@ -32,7 +32,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'notCreatable'              => true,
         'notCopyable'               => true,
         'notSortable'               => true,
-        'notDeletable'              => ('select' === \Input::get('act')),
+        'notDeletable'              => ('select' === \Contao\Input::get('act')),
         'onload_callback' => array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
@@ -71,7 +71,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'all' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['MSC']['all'],
                 'href'              => 'act=select',
                 'class'             => 'header_edit_all',
                 'attributes'        => 'onclick="Backend.getScrollOffset();" accesskey="e"'
@@ -81,34 +80,29 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'edit' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['edit'],
                 'href'              => 'act=edit',
-                'icon'              => 'edit.gif',
+                'icon'              => 'edit.svg',
             ),
             'delete' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['delete'],
                 'href'              => 'act=delete',
-                'icon'              => 'delete.gif',
-                'attributes'        => 'onclick="if (!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\')) return false; Backend.getScrollOffset();"'
+                'icon'              => 'delete.svg',
+                'attributes'        => 'onclick="if (!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? '') . '\')) return false; Backend.getScrollOffset();"'
             ),
             'payment' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment'],
                 'href'              => 'key=payment',
                 'icon'              => 'system/modules/isotope/assets/images/money-coin.png',
                 'button_callback'   => array('\Isotope\Backend\ProductCollection\Callback', 'paymentButton'),
             ),
             'shipping' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping'],
                 'href'              => 'key=shipping',
                 'icon'              => 'system/modules/isotope/assets/images/box-label.png',
                 'button_callback'   => array('\Isotope\Backend\ProductCollection\Callback', 'shippingButton'),
             ),
             'print_document' => array
             (
-                'label'             => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'],
                 'href'              => 'key=print_document',
                 'icon'              => 'system/modules/isotope/assets/images/document-pdf-text.png',
                 'button_callback'   => array('\Isotope\Backend\ProductCollection\Callback', 'printButton'),
@@ -134,7 +128,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
     (
         'id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['id'],
             'search'                => true,
             'sql'                   =>  "int(10) unsigned NOT NULL auto_increment",
         ),
@@ -149,7 +142,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'member'  =>  array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['member'],
             'search'                => true,
             'foreignKey'            => "tl_member.CONCAT_WS(' ', company, firstname, lastname, street, postal, city)",
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
@@ -157,7 +149,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'locked' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['locked'],
             'flag'                  => 8,
             'filter'                => true,
             'sorting'               => true,
@@ -198,49 +189,43 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'document_number' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['document_number'],
             'search'                => true,
             'sorting'               => true,
             'sql'                   => "varchar(64) NOT NULL default ''",
         ),
         'uniqid' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['uniqid'],
             'search'                => true,
             'sql'                   => "varchar(64) NULL",
         ),
         'order_status' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['order_status'],
             'exclude'               => true,
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
             'foreignKey'            => \Isotope\Model\OrderStatus::getTable().'.name',
             'options_callback'      => array('\Isotope\Backend', 'getOrderStatus'),
-            'eval'                  => array('tl_class'=>'w50', 'doNotShow'=>true),
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'date_paid' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_paid'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'clr w50 wizard', 'doNotShow'=>true),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'clr w50 wizard'),
             'sql'                   => 'int(10) NULL'
         ),
         'date_shipped' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['date_shipped'],
             'exclude'               => true,
             'inputType'             => 'text',
-            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>(method_exists($this,'getDatePickerString') ? $this->getDatePickerString() : true), 'tl_class'=>'w50 wizard', 'doNotShow'=>true),
+            'eval'                  => array('rgxp'=>'datim', 'datepicker'=>true, 'tl_class'=>'w50 wizard'),
             'sql'                   => 'int(10) NULL',
         ),
         'sendNotification' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['sendNotification'],
             'exclude'               => true,
             'inputType'             => 'checkbox',
             'eval'                  => array('submitOnChange' => true, 'logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
@@ -248,7 +233,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'notification' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification'],
             'exclude'               => true,
             'inputType'             => 'select',
             'foreignKey'            => 'tl_nc_notification.title',
@@ -257,14 +241,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'notification_shipping_tracking' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_shipping_tracking'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
         ),
         'notification_customer_notes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notification_customer_notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
             'eval'                  => array('logAlwaysVisible' => true, 'tl_class' => 'clr', 'doNotShow'=>true),
@@ -276,14 +258,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'config_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['config_id'],
             'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),
         ),
         'payment_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['payment_id'],
             'filter'                => true,
             'foreignKey'            => \Isotope\Model\Payment::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
@@ -291,7 +271,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'shipping_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_id'],
             'filter'                => true,
             'foreignKey'            => \Isotope\Model\Shipping::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
@@ -299,7 +278,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'billing_address_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['billing_address_id'],
             'search'                => true,
             'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval'                  => array('doNotShow'=>true),
@@ -308,7 +286,6 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'shipping_address_id' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['shipping_address_id'],
             'search'                => true,
             'foreignKey'            => \Isotope\Model\Address::getTable().".CONCAT_WS(' ', label, company, firstname, lastname, street_1, street_2, street_3, postal, city)",
             'eval'                  => array('doNotShow'=>true),
@@ -322,33 +299,27 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'subtotal' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['subtotal'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'tax_free_subtotal' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_subtotal'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['total'],
             'sorting'               => true,
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'tax_free_total' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['tax_free_total'],
             'sql'                   => "decimal(12,2) NOT NULL default '0.00'",
         ),
         'currency' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['currency'],
             'sql'                   => "varchar(4) NOT NULL default ''",
         ),
         'language' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['language'],
             'options_callback' => static function () {
                 return \Contao\System::getLanguages();
             },
@@ -356,11 +327,10 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'notes' => array
         (
-            'label'                 => &$GLOBALS['TL_LANG']['tl_iso_product_collection']['notes'],
             'exclude'               => true,
             'inputType'             => 'textarea',
-            'eval'                  => array('style'=>'height:80px;', 'tl_class' => 'clr', 'doNotShow' => true),
-            'sql'                   => "text NULL",
+            'eval'                  => array('style'=>'height:80px;', 'tl_class' => 'clr'),
+            'sql'                   => 'text NULL',
         ),
         'details' => array
         (

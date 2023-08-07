@@ -1,0 +1,21 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_settings.xlf" source-language="en" target-language="bs-BA">
+    <body>
+      <trans-unit id="tl_settings.iso_cartTimeout.0">
+        <source>Guest cart timeout</source>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_cartTimeout.1">
+        <source>Enter the maximum lifetime of a guest cart in seconds (30 days = 2592000 seconds).</source>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_orderTimeout.0">
+        <source>Order timeout</source>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_orderTimeout.1">
+        <source>Enter how long an order will stay in the database if the checkout was not successful (7 days = 604800 seconds).</source>
+      </trans-unit>
+      <trans-unit id="tl_settings.iso_timeout_legend">
+        <source>Timeout values</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

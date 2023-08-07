@@ -11,20 +11,25 @@
 
 namespace Isotope\Backend\Product;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\StringUtil;
+use Contao\Widget;
 use Isotope\Backend\SubtableVersion;
 use Isotope\Model\Product;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\TaxClass;
 
 
-class Price extends \Backend
+class Price extends Backend
 {
 
     /**
      * Save prices history when creating a new version of a product
      * @param   string
      * @param   int
-     * @param   \DataContainer
      */
     public function createVersion($strTable, $intId)
     {
@@ -37,7 +42,7 @@ class Price extends \Backend
         $objPrices = ProductPrice::findBy('pid', $intId);
 
         if (null !== $objPrices) {
-            $objTiers = \Database::getInstance()->query(
+            $objTiers = Database::getInstance()->query(
                 'SELECT * FROM tl_iso_product_pricetier WHERE pid IN (' . implode(',', $objPrices->fetchEach('id')) . ')'
             );
 
@@ -47,14 +52,14 @@ class Price extends \Backend
 
         SubtableVersion::create($strTable, $intId, ProductPrice::getTable(), $arrData);
 
-        $current = \Database::getInstance()
+        $current = Database::getInstance()
             ->prepare("SELECT * FROM tl_version WHERE fromTable=? AND pid=? AND active='1'")
             ->limit(1)
             ->execute($strTable, $intId)
         ;
 
         if (1 === $current->numRows) {
-            $data = deserialize($current->data);
+            $data = StringUtil::deserialize($current->data);
 
             if (empty($arrData['prices'])) {
                 $data['price'] = '';
@@ -67,7 +72,7 @@ class Price extends \Backend
                 );
             }
 
-            \Database::getInstance()
+            Database::getInstance()
                      ->prepare("UPDATE tl_version SET data=? WHERE id=?")
                      ->execute(serialize($data), $current->id)
             ;
@@ -90,50 +95,50 @@ class Price extends \Backend
         $arrData = SubtableVersion::find('tl_iso_product_price', $intId, $intVersion);
 
         if (null !== $arrData) {
-            \Database::getInstance()->query('
+            Database::getInstance()->query('
                 DELETE FROM tl_iso_product_pricetier
                 WHERE pid IN (
                     SELECT id FROM tl_iso_product_price WHERE pid=' . $intId . '
                 )
             ');
 
-            \Database::getInstance()->query('DELETE FROM tl_iso_product_price WHERE pid=' . $intId);
+            Database::getInstance()->query('DELETE FROM tl_iso_product_price WHERE pid=' . $intId);
 
-            \Controller::loadDataContainer('tl_iso_product_price');
-            \Controller::loadDataContainer('tl_iso_product_pricetier');
+            Controller::loadDataContainer('tl_iso_product_price');
+            Controller::loadDataContainer('tl_iso_product_pricetier');
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_price'));
+            $tableFields = array_flip(Database::getInstance()->getFieldNames('tl_iso_product_price'));
 
             foreach ($arrData['prices'] as $data) {
                 $data = array_intersect_key($data, $tableFields);
 
                 // Reset fields added after storing the version to their default value (see contao/core#7755)
                 foreach (array_diff_key($tableFields, $data) as $k=>$v) {
-                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_price']['fields'][$k]['sql']);
+                    $data[$k] = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_price']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_price %s')->set($data)->execute();
+                Database::getInstance()->prepare('INSERT INTO tl_iso_product_price %s')->set($data)->execute();
             }
 
-            $tableFields = array_flip(\Database::getInstance()->getFieldNames('tl_iso_product_pricetier'));
+            $tableFields = array_flip(Database::getInstance()->getFieldNames('tl_iso_product_pricetier'));
 
             foreach ($arrData['tiers'] as $data) {
                 $data = array_intersect_key($data, $tableFields);
 
                 // Reset fields added after storing the version to their default value (see contao/core#7755)
                 foreach (array_diff_key($tableFields, $data) as $k=>$v) {
-                    $data[$k] = \Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_pricetier']['fields'][$k]['sql']);
+                    $data[$k] = Widget::getEmptyValueByFieldType($GLOBALS['TL_DCA']['tl_iso_product_pricetier']['fields'][$k]['sql']);
                 }
 
-                \Database::getInstance()->prepare('INSERT INTO tl_iso_product_pricetier %s')->set($data)->execute();
+                Database::getInstance()->prepare('INSERT INTO tl_iso_product_pricetier %s')->set($data)->execute();
             }
 
-            \Database::getInstance()
+            Database::getInstance()
                      ->prepare("UPDATE tl_version SET active='' WHERE pid=? AND fromTable=?")
                      ->execute($intId, 'tl_iso_product_price')
             ;
 
-            \Database::getInstance()
+            Database::getInstance()
                      ->prepare('UPDATE tl_version SET active=1 WHERE pid=? AND fromTable=? AND version=?')
                      ->execute($intId, 'tl_iso_product_price', $intVersion)
             ;
@@ -142,13 +147,10 @@ class Price extends \Backend
 
     /**
      * Load price from prices subtable
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
      */
-    public function load($varValue, \DataContainer $dc)
+    public function load($varValue, DataContainer $dc)
     {
-        $objPrice = \Database::getInstance()->query("
+        $objPrice = Database::getInstance()->query("
             SELECT t.id, p.id AS pid, p.tax_class, t.price
             FROM tl_iso_product_price p
             LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1
@@ -169,20 +171,17 @@ class Price extends \Backend
 
     /**
      * Save price to the prices subtable
-     * @param   mixed
-     * @param   DataContainer
-     * @return  mixed
      */
-    public function save($varValue, \DataContainer $dc)
+    public function save($varValue, DataContainer $dc)
     {
         $time = time();
 
         // Parse the timePeriod widget
-        $arrValue = deserialize($varValue, true);
+        $arrValue = StringUtil::deserialize($varValue, true);
         $strPrice = (string) $arrValue['value'];
         $intTax   = (int) $arrValue['unit'];
 
-        $objPrice = \Database::getInstance()->query("
+        $objPrice = Database::getInstance()->query("
             SELECT t.id, p.id AS pid, p.tax_class, t.price
             FROM tl_iso_product_price p
             LEFT JOIN tl_iso_product_pricetier t ON p.id=t.pid AND t.min=1
@@ -193,7 +192,7 @@ class Price extends \Backend
         if ($objPrice->numRows && $objPrice->id > 0) {
 
             if ($objPrice->price != $strPrice) {
-                \Database::getInstance()
+                Database::getInstance()
                     ->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE id=?")
                     ->execute($strPrice, $objPrice->id)
                 ;
@@ -202,7 +201,7 @@ class Price extends \Backend
             }
 
             if ($objPrice->tax_class != $intTax) {
-                \Database::getInstance()
+                Database::getInstance()
                     ->prepare("UPDATE tl_iso_product_price SET tstamp=$time, tax_class=? WHERE id=?")
                     ->execute($intTax, $objPrice->pid)
                 ;
@@ -216,20 +215,20 @@ class Price extends \Backend
 
             // Neither price tier nor price record exist, must add both
             if (!$objPrice->numRows) {
-                $intPrice = \Database::getInstance()
+                $intPrice = Database::getInstance()
                     ->prepare("INSERT INTO tl_iso_product_price (pid,tstamp,tax_class) VALUES (?,?,?)")
                     ->execute($dc->id, $time, $intTax)
                     ->insertId
                 ;
 
             } elseif ($objPrice->tax_class != $intTax) {
-                \Database::getInstance()
+                Database::getInstance()
                     ->prepare('UPDATE tl_iso_product_price SET tstamp=?, tax_class=? WHERE id=?')
                     ->execute($time, $intTax, $intPrice)
                 ;
             }
 
-            \Database::getInstance()
+            Database::getInstance()
                 ->prepare('INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?,?,1,?)')
                 ->execute($intPrice, $time, $strPrice)
             ;

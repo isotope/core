@@ -12,7 +12,11 @@
 namespace Isotope\Upgrade;
 
 
-abstract class Base extends \System
+use Contao\Controller;
+use Contao\Database;
+use Contao\System;
+
+abstract class Base extends System
 {
 
     /**
@@ -25,12 +29,12 @@ abstract class Base extends \System
      */
     protected function createDatabaseField($strField, $strTable)
     {
-        if (!\Database::getInstance()->tableExists($strTable)) {
+        if (!Database::getInstance()->tableExists($strTable, null, true)) {
             return false;
         }
 
-        if (!\Database::getInstance()->fieldExists($strField, $strTable)) {
-            \Database::getInstance()->query("
+        if (!\Database::getInstance()->fieldExists($strField, $strTable, true)) {
+            Database::getInstance()->query("
                 ALTER TABLE $strTable
                 ADD COLUMN `$strField` " . $this->getSqlForField($strField, $strTable)
             );
@@ -52,14 +56,14 @@ abstract class Base extends \System
      */
     protected function renameDatabaseField($strOldField, $strNewField, $strTable)
     {
-        if (!\Database::getInstance()->tableExists($strTable)) {
+        if (!Database::getInstance()->tableExists($strTable)) {
             return false;
         }
 
-        if (\Database::getInstance()->fieldExists($strOldField, $strTable)
-            && !\Database::getInstance()->fieldExists($strNewField, $strTable)
+        if (Database::getInstance()->fieldExists($strOldField, $strTable)
+            && !Database::getInstance()->fieldExists($strNewField, $strTable)
         ) {
-            \Database::getInstance()->query("
+            Database::getInstance()->query("
                 ALTER TABLE $strTable
                 CHANGE COLUMN `$strOldField` `$strNewField` " . $this->getSqlForField($strNewField, $strTable)
             );
@@ -86,7 +90,7 @@ abstract class Base extends \System
             return false;
         }
 
-        $statement = \Database::getInstance()->prepare("
+        $statement = Database::getInstance()->prepare("
             ALTER TABLE $strTable
             CHANGE COLUMN `$strField` `$strField` " . $this->getSqlForField($strField, $strTable)
         );
@@ -106,7 +110,7 @@ abstract class Base extends \System
      */
     private function getSqlForField($strField, $strTable)
     {
-        \Controller::loadDataContainer($strTable);
+        Controller::loadDataContainer($strTable);
         $strSql = (string) $GLOBALS['TL_DCA'][$strTable]['fields'][$strField]['sql'];
 
         if ($strSql == '') {

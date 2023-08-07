@@ -11,13 +11,19 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
+use Contao\Input;
+use Contao\Module;
+use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
 use Isotope\Translation;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Isotope payment method for www.worldpay.com
@@ -36,40 +42,40 @@ class Worldpay extends Postsale
     public function processPostSale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
-            $this->postsaleError();
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            return $this->postsaleError();
         }
 
-        if (\Input::post('instId') != $this->worldpay_instId) {
-            \System::log('Installation ID does not match', __METHOD__, TL_ERROR);
-            $this->postsaleError();
+        if (Input::post('instId') != $this->worldpay_instId) {
+            System::log('Installation ID does not match', __METHOD__, TL_ERROR);
+            return $this->postsaleError();
         }
 
         // Validate payment data
         if (
-            $objOrder->getCurrency() != \Input::post('currency') ||
-            $objOrder->getTotal() != \Input::post('amount') ||
-            $this->worldpay_callbackPW != \Input::post('callbackPW') ||
-            (!$this->debug && \Input::post('testMode') == '100')
+            $objOrder->getCurrency() != Input::post('currency') ||
+            $objOrder->getTotal() != Input::post('amount') ||
+            $this->worldpay_callbackPW != Input::post('callbackPW') ||
+            (!$this->debug && Input::post('testMode') == '100')
         ) {
-            \System::log('Data manipulation in payment from "' . \Input::post('email') . '" !', __METHOD__, TL_ERROR);
-            $this->postsaleError();
+            System::log('Data manipulation in payment from "' . Input::post('email') . '" !', __METHOD__, TL_ERROR);
+            return $this->postsaleError();
         }
 
         // Order status cancelled and order not yet completed, do nothing
-        if ('Y' !== \Input::post('transStatus') && $objOrder->status == 0) {
-            $this->postsaleError();
+        if ('Y' !== Input::post('transStatus') && $objOrder->status == 0) {
+            return $this->postsaleError();
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
-            $this->postsaleSuccess($objOrder);
+            System::log('Checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            return $this->postsaleSuccess($objOrder);
         }
 
-        if ('Y' === \Input::post('transStatus')) {
+        if ('Y' === Input::post('transStatus')) {
             if (!$objOrder->checkout()) {
-                \System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
-                $this->postsaleError();
+                System::log('Checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+                return $this->postsaleError();
             }
 
             $objOrder->setDatePaid(time());
@@ -77,13 +83,13 @@ class Worldpay extends Postsale
         }
 
         // Store request data in order for future references
-        $arrPayment               = deserialize($objOrder->payment_data, true);
+        $arrPayment               = StringUtil::deserialize($objOrder->payment_data, true);
         $arrPayment['POSTSALE'][] = $_POST;
         $objOrder->payment_data   = $arrPayment;
 
         $objOrder->save();
 
-        $this->postsaleSuccess($objOrder);
+        return $this->postsaleSuccess($objOrder);
     }
 
     /**
@@ -91,16 +97,16 @@ class Worldpay extends Postsale
      */
     public function getPostsaleOrder()
     {
-        return Order::findByPk((int) \Input::post('cartId'));
+        return Order::findByPk((int) Input::post('cartId'));
     }
 
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -133,7 +139,7 @@ class Worldpay extends Postsale
         $arrData['email']    = substr($objAddress->email, 0, 80);
 
         // Generate MD5 secret hash
-        $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(trimsplit(':', $this->worldpay_signatureFields)))));
+        $arrData['signature'] = md5($this->worldpay_md5secret . ':' . implode(':', array_intersect_key($arrData, array_flip(StringUtil::trimsplit(':', $this->worldpay_signatureFields)))));
 
         /** @var Template|\stdClass $objTemplate */
         $objTemplate = new Template('iso_payment_worldpay');
@@ -156,11 +162,11 @@ class Worldpay extends Postsale
      */
     protected function postsaleError()
     {
-        $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('failed', null, $objPage);
+        $objPage = PageModel::findWithDetails((int) Input::post('M_pageId'));
+        $strUrl  = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, $objPage, true);
 
-        // Output a HTML page to redirect the client from WorldPay back to the shop
-        echo '
+        // HTML page to redirect the client from WorldPay back to the shop
+        return new Response('
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -172,8 +178,7 @@ class Worldpay extends Postsale
 Redirecting back to shop...
 </body>
 </html>
-';
-        exit;
+');
     }
 
     /**
@@ -183,11 +188,11 @@ Redirecting back to shop...
      */
     protected function postsaleSuccess(IsotopeProductCollection $objOrder)
     {
-        $objPage = \PageModel::findWithDetails((int) \Input::post('M_pageId'));
-        $strUrl  = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder, $objPage);
+        $objPage = PageModel::findWithDetails((int) Input::post('M_pageId'));
+        $strUrl  = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, $objPage, true);
 
-        // Output a HTML page to redirect the client from WorldPay back to the shop
-        echo '
+        // HTML page to redirect the client from WorldPay back to the shop
+        return new Response('
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -199,7 +204,6 @@ Redirecting back to shop...
 Redirecting back to shop...
 </body>
 </html>
-';
-        exit;
+');
     }
 }

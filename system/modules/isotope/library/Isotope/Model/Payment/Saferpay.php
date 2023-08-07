@@ -11,13 +11,20 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Environment;
 use Contao\Input;
+use Contao\Message;
+use Contao\Module;
+use Contao\Request;
+use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\OrderStatus;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Saferpay payment method
@@ -39,16 +46,16 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     public function processPostsale(IsotopeProductCollection $objOrder)
     {
         if (!$objOrder instanceof IsotopePurchasableCollection) {
-            \System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
+            System::log('Product collection ID "' . $objOrder->getId() . '" is not purchasable', __METHOD__, TL_ERROR);
             return;
         }
 
         if ($objOrder->isCheckoutComplete()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
         }
 
-        $arrPayment = deserialize($objOrder->payment_data, true);
+        $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
 
         if (!$this->saferpay_username) {
             // TODO: remove once HTTPS interface is no longer supported
@@ -58,12 +65,12 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             }
 
             // Get the Payment URL from the saferpay hosting server
-            $objRequest = new \Request();
-            $objRequest->send($this->getApiUrl('VerifyPayConfirm.asp') . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(\Input::post('SIGNATURE')));
+            $objRequest = new Request();
+            $objRequest->send($this->getApiUrl('VerifyPayConfirm.asp') . "?DATA=" . urlencode($this->getPostData()) . "&SIGNATURE=" . urlencode(Input::post('SIGNATURE')));
 
             // Stop if verification is not working
             if (0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
-                \System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
+                System::log(sprintf('Payment not successfull. See log files for further details.'), __METHOD__, TL_ERROR);
                 $this->debugLog(sprintf('Payment not successfull. Message was: "%s".', $objRequest->response));
 
                 return;
@@ -88,7 +95,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                     || $json['Transaction']['Amount']['Value'] != round($objOrder->getTotal() * 100)
                     || $json['Transaction']['Amount']['CurrencyCode'] !== $objOrder->getCurrency()
                 ) {
-                    \System::log('Saferpay assertion failed, possible order manipulation! See log files for further details.', __METHOD__, TL_ERROR);
+                    System::log('Saferpay assertion failed, possible order manipulation! See log files for further details.', __METHOD__, TL_ERROR);
                     $this->debugLog(sprintf("Saferpay assertion failed, possible manipulation for order ID %s! JSON Response: %s", $objOrder->getId(), print_r($json, true)));
 
                     return;
@@ -103,7 +110,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         }
 
         if (!$objOrder->checkout()) {
-            \System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
+            System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" failed', __METHOD__, TL_ERROR);
 
             return;
         }
@@ -138,7 +145,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * @inheritdoc
      */
-    public function checkoutForm(IsotopeProductCollection $objOrder, \Module $objModule)
+    public function checkoutForm(IsotopeProductCollection $objOrder, Module $objModule)
     {
         $redirectUrl = $this->initializePaymentPage($objOrder);
 
@@ -166,19 +173,19 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     {
         if ('capture' === $objNewStatus->saferpay_status) {
 
-            $arrPayment = deserialize($objOrder->payment_data, true);
+            $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
             if ('BE' === TL_MODE) {
                 if ($blnResult) {
-                    \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
+                    Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
-                    \Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']);
+                    Message::addError($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusError']);
                 }
             }
 
         } elseif ('cancel' === $objNewStatus->saferpay_status && 'BE' === TL_MODE) {
-            \Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
+            Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }
 
@@ -197,10 +204,10 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $arrData['ACCOUNTID']   = $this->saferpay_accountid;
         $arrData['AMOUNT']      = round($objOrder->getTotal() * 100);
         $arrData['CURRENCY']    = $objOrder->getCurrency();
-        $arrData['SUCCESSLINK'] = \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder);
-        $arrData['FAILLINK']    = \Environment::get('base') . Checkout::generateUrlForStep('failed');
+        $arrData['SUCCESSLINK'] = Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true);
+        $arrData['FAILLINK']    = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
         $arrData['BACKLINK']    = $arrData['FAILLINK'];
-        $arrData['NOTIFYURL']   = \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id='.$this->id;
+        $arrData['NOTIFYURL']   = System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id], UrlGeneratorInterface::ABSOLUTE_URL);;
         $arrData['DESCRIPTION'] = $this->saferpay_description;
         $arrData['ORDERID']     = $objOrder->getId();
 
@@ -218,8 +225,8 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
 
     protected function generatePaymentJsonData(IsotopeProductCollection $objOrder)
     {
-        list(, $terminalId) = explode('-', $this->saferpay_accountid, 2);
-        $failedUrl = Checkout::generateUrlForStep('failed');
+        [, $terminalId] = explode('-', $this->saferpay_accountid, 2);
+        $failedUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
 
         $data = [
             'TerminalId' => $terminalId,
@@ -235,12 +242,12 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 'LanguageCode' => substr($GLOBALS['TL_LANGUAGE'], 0, 2),
             ],
             'ReturnUrls' => [
-                'Success' => \Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder),
-                'Fail' => \Environment::get('base') . $failedUrl,
-                'Abort' => \Environment::get('base') . $failedUrl,
+                'Success' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+                'Fail' => $failedUrl,
+                'Abort' => $failedUrl,
             ],
             'Notification' => [
-                'NotifyUrl' => \Environment::get('base') . '/system/modules/isotope/postsale.php?mod=pay&id=' . $this->id.'&orderid='.$objOrder->getId(),
+                'NotifyUrl' => System::getContainer()->get('router')->generate('isotope_postsale', ['mod' => 'pay', 'id' => $this->id, 'orderid' => $objOrder->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
             ],
         ];
 
@@ -281,13 +288,13 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 $params['spPassword'] = '8e7Yn5yk';
             }
 
-            $objRequest = new \Request();
+            $objRequest = new Request();
             $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
             $objRequest->send($this->getApiUrl('PayCompleteV2.asp'), http_build_query($params, null, '&'), 'POST');
 
             // Stop if capture was not successful
             if ($objRequest->hasError() || 0 !== strpos(strtoupper($objRequest->response), 'OK:')) {
-                \System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
+                System::log(sprintf('Saferpay PayComplete failed. See log files for further details.'), __METHOD__, TL_ERROR);
                 $this->debugLog(sprintf('Saferpay PayComplete failed. Message was: "%s".', $objRequest->response));
 
                 return false;
@@ -324,21 +331,21 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         @trigger_error('The Saferpay HTTPS interface will be discontinued soon! Please switch to the JSON API asap.', E_USER_DEPRECATED);
 
         if ($this->getPostValue('ACCOUNTID') != $this->saferpay_accountid) {
-            \System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            System::log('XML data wrong, possible manipulation (accountId validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (accountId validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('ACCOUNTID'), $this->saferpay_accountid));
 
             return false;
         }
 
         if ($this->getPostValue('AMOUNT') != round($objOrder->getTotal() * 100)) {
-            \System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            System::log('XML data wrong, possible manipulation (amount validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (amount validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('AMOUNT'), $objOrder->getTotal()));
 
             return false;
         }
 
         if ($this->getPostValue('CURRENCY') !== $objOrder->getCurrency()) {
-            \System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
+            System::log('XML data wrong, possible manipulation (currency validation failed)! See log files for further details.', __METHOD__, TL_ERROR);
             $this->debugLog(sprintf('XML data wrong, possible manipulation (currency validation failed)! XML was: "%s". Order was: "%s"', $this->getPostValue('CURRENCY'), $this->currency));
 
             return false;
@@ -355,12 +362,12 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         if (!$this->saferpay_username) {
             @trigger_error('The Saferpay HTTPS interface will be discontinued soon! Please switch to the JSON API asap.', E_USER_DEPRECATED);
 
-            $objRequest = new \Request();
+            $objRequest = new Request();
             $objRequest->setHeader('Content-Type', 'application/x-www-form-urlencoded');
             $objRequest->send($this->getApiUrl('CreatePayInit.asp'), http_build_query($this->generatePaymentPostData($objOrder), null, '&'), 'POST');
 
             if ((int) $objRequest->code !== 200 || 0 === strpos($objRequest->response, 'ERROR:')) {
-                \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+                System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
                 $this->debugLog(sprintf('Could not get the redirect URI from Saferpay. Response was: "%s".', $objRequest->response));
 
                 return null;
@@ -376,11 +383,11 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             );
 
             if (!isset($json['RedirectUrl'], $json['Token'])) {
-                \System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
+                System::log(sprintf('Could not get the redirect URI from Saferpay. See log files for further details.'), __METHOD__, TL_ERROR);
                 $this->debugLog(sprintf("Could not get the redirect URI from Saferpay. JSON Response:\n%s", print_r($json, true)));
             }
 
-            $paymentData = deserialize($objOrder->payment_data, true);
+            $paymentData = StringUtil::deserialize($objOrder->payment_data, true);
             $paymentData['PAYCONFIRM']['TOKEN'] = $json['Token'];
 
             $objOrder->payment_data = $paymentData;
@@ -401,7 +408,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
      */
     private function sendJsonRequest($script, array $data)
     {
-        list($customerId) = explode('-', $this->saferpay_accountid, 2);
+        [$customerId] = explode('-', $this->saferpay_accountid, 2);
 
         $data = array_replace(
             [
@@ -415,14 +422,19 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             $data
         );
 
-        $objRequest = new \Request();
+        $objRequest = new Request();
         $objRequest->setHeader('Accept', 'application/json');
         $objRequest->setHeader('Content-Type', 'application/json; charset=utf-8');
+
+        if ($this->saferpay_username) {
+            $objRequest->username = $this->saferpay_username;
+            $objRequest->password = $this->saferpay_password;
+        }
 
         $objRequest->send($this->getApiUrl($script), json_encode($data), 'POST');
 
         if ($objRequest->code !== 200) {
-            \System::log(sprintf('Saferpay request failed with error %s. See log files for further details.', $objRequest->code), __METHOD__, TL_ERROR);
+            System::log(sprintf('Saferpay request failed with error %s. See log files for further details.', $objRequest->code), __METHOD__, TL_ERROR);
             $this->debugLog(sprintf(
                 "Saferpay request failed with error %s.\n\nRequest:%s\n\nResponse:\n%s.",
                 $objRequest->code,
@@ -462,9 +474,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         }
 
         return sprintf(
-            'https://%s:%s@%s.saferpay.com/api/%s',
-            $this->saferpay_username,
-            $this->saferpay_password,
+            'https://%s.saferpay.com/api/%s',
             $this->debug ? 'test' : 'www',
             ltrim($script, '/')
         );
@@ -476,7 +486,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
      */
     protected function getPostData()
     {
-        // Cannot use \Input::post() here because it would kill XML data
+        // Cannot use Input::post() here because it would kill XML data
         return $_POST['DATA'];
     }
 

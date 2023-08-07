@@ -23,6 +23,7 @@ use Isotope\Interfaces\IsotopePurchasableCollection;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Isotope\Template;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Datatrans payment method
@@ -124,6 +125,11 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             return;
         }
 
+        $objOrder->payment_data = [
+            'pmethod' => Input::post('pmethod'),
+            'cardno' => Input::post('cardno'),
+        ];
+
         if ($objOrder->isCheckoutComplete()) {
             System::log('Postsale checkout for Order ID "' . $objOrder->getId() . '" already completed', __METHOD__, TL_ERROR);
             return;
@@ -138,10 +144,6 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
         $objOrder->updateOrderStatus([
             'order_status' => $this->new_order_status,
             'date_paid' => time(),
-            'payment_data' => [
-                'pmethod' => Input::post('pmethod'),
-                'cardno' => Input::post('cardno'),
-            ]
         ]);
 
         $objOrder->save();
@@ -167,6 +169,15 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
 
         $objAddress = $objOrder->getBillingAddress();
 
+        $successUrl = System::getContainer()->get('router')->generate('isotope_postsale', [
+            'mod' => 'pay',
+            'id' => $this->id,
+            'redirect' => Checkout::generateUrlForStep(Checkout::STEP_COMPLETE, $objOrder, null, true),
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $successUrl = System::getContainer()->get('uri_signer')->sign($successUrl);
+
+        $failedUrl = Checkout::generateUrlForStep(Checkout::STEP_FAILED, null, null, true);
+
         $arrParams = array
         (
             'merchantId'            => $this->datatrans_id,
@@ -186,9 +197,9 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
             'uppCustomerZipCode'    => $objAddress->postal,
             'uppCustomerPhone'      => $objAddress->phone,
             'uppCustomerEmail'      => $objAddress->email,
-            'successUrl'            => ampersand(Environment::get('base') . Checkout::generateUrlForStep('complete', $objOrder)),
-            'errorUrl'              => ampersand(Environment::get('base') . Checkout::generateUrlForStep('failed')),
-            'cancelUrl'             => ampersand(Environment::get('base') . Checkout::generateUrlForStep('failed')),
+            'successUrl'            => ampersand($successUrl),
+            'errorUrl'              => ampersand($failedUrl),
+            'cancelUrl'             => ampersand($failedUrl),
             'mod'                   => 'pay',
             'id'                    => $this->id,
         );
@@ -255,14 +266,12 @@ class Datatrans extends Postsale implements IsotopeNotificationTokens, IsotopeBa
 
     public function getNotificationTokens(IsotopeProductCollection $collection): array
     {
-        $tokens = [];
         $paymentData = StringUtil::deserialize($collection->payment_data);
 
-        if (!empty($paymentData) && \is_array($paymentData)) {
-            foreach ($paymentData as $k => $v) {
-                $tokens['payment_datatrans_'.$k] = $v;
-            }
-        }
+        $tokens = [
+            'payment_datatrans_pmethod' => self::PAYMENT_METHODS[$paymentData['pmethod']] ?? $paymentData['pmethod'],
+            'payment_datatrans_cardno' => $paymentData['cardno'],
+        ];
 
         return $tokens;
     }
