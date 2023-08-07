@@ -102,6 +102,20 @@ class MembersGuests extends Sales
         // Apply formatting
         $arrDataMember = $this->formatValues($arrDataMember, $arrCurrencies);
         $arrDataGuests = $this->formatValues($arrDataGuests, $arrCurrencies);
+        // Generate format for apexcharts
+        $arrChart = array_reduce($arrChart, function ($arrCarry, $arrItem) {
+            $arrCarry[$arrItem['label']] = [
+                'name' => $arrItem['label'],
+                'data' => [],
+            ];
+            foreach ($arrItem['data'] as $arrKey => $arrValue) {
+                $arrCarry[$arrItem['label']]['data'][] = [
+                    $arrValue['x'],
+                    $arrValue['y'],
+                ];
+            }
+            return $arrCarry;
+        }, array());
 
         $this->Template->dataMember   = $arrDataMember;
         $this->Template->dataGuests   = $arrDataGuests;
