@@ -79,6 +79,7 @@ class Reports extends BackendOverview
      */
     protected function getSummary($text, $data)
     {
+        $strBuffer = '';
         foreach ($data as $config_name => $config_data) {
             $config = Config::findBy('name',$config_name);
         $strBuffer .= '
