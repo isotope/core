@@ -103,7 +103,7 @@ interface IsotopePurchasableCollection extends IsotopeOrderableCollection
     /**
      * Update the status of this order and trigger actions (email & hook)
      *
-     * @param int $intNewStatus
+     * @param int|array<string,mixed> $intNewStatus
      *
      * @return bool
      */
