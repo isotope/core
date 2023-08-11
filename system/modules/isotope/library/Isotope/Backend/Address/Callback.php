@@ -26,8 +26,6 @@ class Callback extends Backend
      */
     public function renderLabel($arrAddress)
     {
-        System::loadLanguageFile('addresses');
-
         $objAddress = new Address();
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generate();
