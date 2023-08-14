@@ -91,31 +91,25 @@ class MembersGuests extends Sales
             if ($objData->member_number > 0) {
                 $arrDataMember = $this->fillData($arrDataMember, $objData);
                 // Generate chart data
-                $arrChart[$objData->currency . '_Members']['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency . '_Members']['data'][$objData->dateGroup]['y'] + $objData->total_sales);
+                $arrChart[$objData->currency . '_Members']['data'][$objData->dateGroup][1] = ((float) $arrChart[$objData->currency . '_Members']['data'][$objData->dateGroup][1] + $objData->total_sales);
             } else {
                 $arrDataGuests = $this->fillData($arrDataGuests, $objData);
                 // Generate chart data
-                $arrChart[$objData->currency . '_Guests']['data'][$objData->dateGroup]['y'] = ((float) $arrChart[$objData->currency . '_Guests']['data'][$objData->dateGroup]['y'] + $objData->total_sales);
+                $arrChart[$objData->currency . '_Guests']['data'][$objData->dateGroup][1] = ((float) $arrChart[$objData->currency . '_Guests']['data'][$objData->dateGroup][1] + $objData->total_sales);
             }
         }
+
+
 
         // Apply formatting
         $arrDataMember = $this->formatValues($arrDataMember, $arrCurrencies);
         $arrDataGuests = $this->formatValues($arrDataGuests, $arrCurrencies);
-        // Generate format for apexcharts
-        $arrChart = array_reduce($arrChart, function ($arrCarry, $arrItem) {
-            $arrCarry[$arrItem['label']] = [
-                'name' => $arrItem['label'],
-                'data' => [],
-            ];
-            foreach ($arrItem['data'] as $arrKey => $arrValue) {
-                $arrCarry[$arrItem['label']]['data'][] = [
-                    $arrValue['x'],
-                    $arrValue['y'],
-                ];
-            }
-            return $arrCarry;
-        }, array());
+
+        // Switch from associative array to index based for apexcharts
+        $arrChart = array_map(function ($arrItem) {
+            $arrItem['data'] = array_values($arrItem['data']);
+            return $arrItem;
+        },$arrChart);
 
         $this->Template->dataMember   = $arrDataMember;
         $this->Template->dataGuests   = $arrDataGuests;
@@ -131,21 +125,21 @@ class MembersGuests extends Sales
      */
     private function fillData($arrData, $objData)
     {
-        $arrData['rows'][$objData->dateGroup]['columns'][1]['value'] += $objData->total_orders;
-        $arrData['rows'][$objData->dateGroup]['columns'][2]['value'] += $objData->total_products;
-        $arrData['rows'][$objData->dateGroup]['columns'][3]['value'] += $objData->total_items;
+        $arrData['rows'][$objData->dateGroup]['columns']['orders']['value'] += $objData->total_orders;
+        $arrData['rows'][$objData->dateGroup]['columns']['products']['value'] += $objData->total_products;
+        $arrData['rows'][$objData->dateGroup]['columns']['items']['value'] += $objData->total_items;
 
-        if (!\is_array($arrData['rows'][$objData->dateGroup]['columns'][4]['value'])) {
-            $arrData['rows'][$objData->dateGroup]['columns'][4]['value'] = array();
+        if (!\is_array($arrData['rows'][$objData->dateGroup]['columns']['sales']['value'])) {
+            $arrData['rows'][$objData->dateGroup]['columns']['sales']['value'] = array();
         }
 
-        $arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales;
+        $arrData['rows'][$objData->dateGroup]['columns']['sales']['value'][$objData->currency] = ($arrData['rows'][$objData->dateGroup]['columns']['sales']['value'][$objData->currency] ?? 0) + $objData->total_sales;
 
         // Summary in the footer
-        $arrData['footer'][1]['value'] += $objData->total_orders;
-        $arrData['footer'][2]['value'] += $objData->total_products;
-        $arrData['footer'][3]['value'] += $objData->total_items;
-        $arrData['footer'][4]['value'][$objData->currency] = ((float) ($arrData['footer'][4]['value'][$objData->currency] ?? 0) + $objData->total_sales);
+        $arrData['footer']['orders']['value'] += $objData->total_orders;
+        $arrData['footer']['products']['value'] += $objData->total_products;
+        $arrData['footer']['items']['value'] += $objData->total_items;
+        $arrData['footer']['sales']['value'][$objData->currency] = ((float) ($arrData['footer']['sales']['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
         return $arrData;
     }
@@ -246,18 +240,16 @@ class MembersGuests extends Sales
         ")->fetchEach('currency');
 
         foreach ($arrCurrencies as $currency) {
-            $arrData[$currency . '_Members']['label']     = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['members_currency'], $currency);
-            $arrData[$currency . '_Members']['className'] = '.' . strtolower($currency) . '_M';
-            $arrData[$currency . '_Guests']['label']      = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['guests_currency'], $currency);
-            $arrData[$currency . '_Guests']['className']  = '.' . strtolower($currency) . '_G';
+            $arrData[$currency . '_Members']['name']     = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['members_currency'], $currency);
+            $arrData[$currency . '_Guests']['name']      = sprintf($GLOBALS['TL_LANG']['ISO_REPORT']['guests_currency'], $currency);
         }
 
         while ($intStart <= $intStop) {
             foreach ($arrCurrencies as $currency) {
-                $arrData[$currency . '_Members']['data'][$period->getKey($intStart)]['x'] = $intStart;
-                $arrData[$currency . '_Members']['data'][$period->getKey($intStart)]['y'] = 0;
-                $arrData[$currency . '_Guests']['data'][$period->getKey($intStart)]['x']  = $intStart;
-                $arrData[$currency . '_Guests']['data'][$period->getKey($intStart)]['y']  = 0;
+                $arrData[$currency . '_Members']['data'][$period->getKey($intStart)][0] = $intStart;
+                $arrData[$currency . '_Members']['data'][$period->getKey($intStart)][1] = 0;
+                $arrData[$currency . '_Guests']['data'][$period->getKey($intStart)][0]  = $intStart;
+                $arrData[$currency . '_Guests']['data'][$period->getKey($intStart)][1]  = 0;
             }
 
             $intStart = $period->getNext($intStart);
@@ -270,28 +262,28 @@ class MembersGuests extends Sales
     {
         // Format row totals
         foreach ($arrData['rows'] as $dateGroup => $arrRow) {
-            if (\is_array($arrRow['columns'][4]['value'])) {
-                foreach ($arrRow['columns'][4]['value'] as $currency => $varValue) {
+            if (\is_array($arrRow['columns']['sales']['value'])) {
+                foreach ($arrRow['columns']['sales']['value'] as $currency => $varValue) {
                     /** @type Config $objConfig */
                     $objConfig = Config::findByPk($arrCurrencies[$currency]);
                     Isotope::setConfig($objConfig);
 
-                    $arrData['rows'][$dateGroup]['columns'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+                    $arrData['rows'][$dateGroup]['columns']['sales']['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
                 }
             }
         }
 
         // Format footer totals
-        foreach ($arrData['footer'][4]['value'] as $currency => $varValue) {
+        foreach ($arrData['footer']['sales']['value'] as $currency => $varValue) {
             /** @type Config $objConfig */
             $objConfig = Config::findByPk($arrCurrencies[$currency]);
             Isotope::setConfig($objConfig);
 
-            $arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+            $arrData['footer']['sales']['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }
 
-        if (empty($arrData['footer'][4]['value'])) {
-            $arrData['footer'][4]['value'] = 0;
+        if (empty($arrData['footer']['sales']['value'])) {
+            $arrData['footer']['sales']['value'] = 0;
         }
 
         return $arrData;
