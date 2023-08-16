@@ -82,9 +82,9 @@ class Reports extends BackendOverview
         $strBuffer = '';
         foreach ($data as $config_name => $config_data) {
             $config = Config::findBy('name',$config_name);
-        $strBuffer .= '
-<fieldset class="tl_tbox">
-<legend style="cursor: default;">' . $text . ': <b>'. $config_name . '</b></legend>
+            $strBuffer .= '
+<fieldset id="pal_summary_'.$config_name.'" class="tl_tbox">
+<legend onclick="AjaxRequest.toggleFieldset(this,\'summary_'.$config_name.'\',\'content\')">' . $text . ': <b>'. $config_name . '</b></legend>
 <div class="summary">';
             $i = -1;
             $strBuffer .= '
