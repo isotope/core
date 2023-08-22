@@ -16,6 +16,9 @@
     window.addEvent('domready', function() {
       var options = {
         chart: {
+          toolbar: {
+            show: false
+          },
           height: 350,
           type: 'line',
           zoom: {
