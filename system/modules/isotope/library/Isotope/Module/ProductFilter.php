@@ -318,7 +318,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                     }
 
                     // Must have options to apply the filter
-                    if (!\is_array($arrWidget['options'])) {
+                    if (!\is_array($arrWidget['options'] ?? null)) {
                         continue;
                     }
 
