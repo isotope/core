@@ -37,3 +37,7 @@ services:
             - '@database_connection'
         tags:
             - contao.picker_provider
+
+    isotope.fragment.registry:
+        alias: contao.fragment.registry
+        public: true
