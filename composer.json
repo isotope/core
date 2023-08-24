@@ -32,7 +32,7 @@
         "docs": "https://docs.isotopeecommerce.org/"
     },
     "require":{
-        "php": "^7.2 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^4.9",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
