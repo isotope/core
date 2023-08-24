@@ -314,6 +314,8 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             'accesskey' => '',
             'tabindex' => '',
             'target' => '',
+            'rel' => '',
+            'subitems' => '',
         );
     }
 
@@ -335,7 +337,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
         );
 
         if (empty($usedValues)) {
-            return array();
+            return [];
         }
 
         // Use the default routine to initialize options data
@@ -344,26 +346,24 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
             $attribute
         );
 
-        $label   = $arrWidget['label'];
-        $options = $arrWidget['options'];
+        $label = $arrWidget['label'] ?? $attribute;
 
         if (($objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$attribute]) !== null
             && $objAttribute instanceof IsotopeAttributeWithOptions
         ) {
-            $options = $objAttribute->getOptionsForProductFilter($usedValues);
+            return $objAttribute->getOptionsForProductFilter($usedValues);
+        }
 
-        } elseif (\is_array($options)) {
-            $options = array_filter(
-                $options,
+        if (\is_array($arrWidget['options'] ?? null)) {
+            return array_filter(
+                $arrWidget['options'],
                 function ($option) use ($usedValues) {
                     return \in_array($option['value'], $usedValues);
                 }
             );
-        } else {
-            $options = array();
         }
 
-        return $options;
+        return array_map(static fn ($v) => ['value' => $v, 'label' => $v], $usedValues);
     }
 
     private function countNewMatches($attribute, $value, array $filters)
