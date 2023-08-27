@@ -11,7 +11,7 @@
 <div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
   <?php $GLOBALS['TL_CSS'][] = 'system/modules/isotope_reports/assets/apexcharts/apexcharts.css'; ?>
   <figure style="width:100%; height:300px" id="report-data"></figure>
-  <script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/apexcharts/apexcharts.min.js') ?>"></script>
+  <script src="system/modules/isotope_reports/assets/apexcharts/apexcharts.min.js"</script>
   <script>
     window.addEvent('domready', function() {
       var options = {
@@ -28,7 +28,7 @@
         series: <?= json_encode(array_values($this->chart)) ?>,
       yaxis: {
         title: {
-          text: <?= '"' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '"' ?>,
+          text: "<?= $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] ?>",
         }
       },
       xaxis: {

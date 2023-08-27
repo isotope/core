@@ -99,8 +99,6 @@ class MembersGuests extends Sales
             }
         }
 
-
-
         // Apply formatting
         $arrDataMember = $this->formatValues($arrDataMember, $arrCurrencies);
         $arrDataGuests = $this->formatValues($arrDataGuests, $arrCurrencies);
