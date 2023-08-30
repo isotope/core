@@ -147,45 +147,45 @@ class MembersGuests extends Sales
         $arrData = array('rows' => array());
 
         $arrData['header'] = [
-            [
+            "period" => [
                 'value'  => &$GLOBALS['TL_LANG']['ISO_REPORT']['period'],
                 'header' => true,
             ],
-            [
+            "orders" => [
                 'value'      => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "products" => [
                 'value'      => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "items" => [
                 'value'      => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "sales" => [
                 'value'      => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
                 'attributes' => ' style="text-align:right"',
             ],
         ];
 
         $arrData['footer'] = [
-            [
+            "period" => [
                 'value' => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             ],
-            [
+            "orders" => [
                 'value'      => 0,
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "products" => [
                 'value'      => 0,
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "items" => [
                 'value'      => 0,
                 'attributes' => ' style="text-align:right"',
             ],
-            [
+            "sales" => [
                 'value'      => [],
                 'attributes' => ' style="text-align:right"',
             ],
@@ -194,22 +194,22 @@ class MembersGuests extends Sales
         while ($intStart <= $intStop) {
             $arrData['rows'][$period->getKey($intStart)] = [
                 'columns' => [
-                    [
+                    "period" => [
                         'value' => $period->format($intStart),
                     ],
-                    [
+                    "orders" => [
                         'value'      => 0,
                         'attributes' => ' style="text-align:right"',
                     ],
-                    [
+                    "products" => [
                         'value'      => 0,
                         'attributes' => ' style="text-align:right"',
                     ],
-                    [
+                    "items" => [
                         'value'      => 0,
                         'attributes' => ' style="text-align:right"',
                     ],
-                    [
+                    "sales" => [
                         'value'      => 0,
                         'attributes' => ' style="text-align:right"',
                     ],
@@ -228,7 +228,6 @@ class MembersGuests extends Sales
     {
         $arrSession = Session::getInstance()->get('iso_reports');
         $intConfig  = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
-        $intStart   = strtotime('first day of this month', $intStart);
 
         $arrData       = array();
         $arrCurrencies = Database::getInstance()->execute("
