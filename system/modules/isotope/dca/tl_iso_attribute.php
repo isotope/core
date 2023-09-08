@@ -55,10 +55,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         'sorting' => array
         (
-            'mode'                  => 1,
+            'mode'                  => 2,
             'fields'                => array('legend', 'name'),
             'flag'                  => 1,
-            'panelLayout'           => 'filter;search,limit'
+            'panelLayout'           => 'filter;sort,search,limit'
         ),
         'label' => array
         (
@@ -155,6 +155,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 1,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
@@ -163,6 +165,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 1,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(30) NOT NULL default ''",
@@ -175,6 +179,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'filter'                => true,
+            'sorting'               => true,
+            'flag'                  => 11,
             'inputType'             => 'select',
             'options_callback'      => function() {
                 return \Isotope\Model\Attribute::getModelTypeOptions();
@@ -187,6 +193,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 11,
             'default'               => 'options_legend',
             'inputType'             => 'select',
             'options'               => array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
