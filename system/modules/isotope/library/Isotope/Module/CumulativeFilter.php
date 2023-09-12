@@ -53,7 +53,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
     /**
      * @var bool
      */
-    private $canShowMatches;
+    protected $canShowMatches;
 
     /**
      * Constructor.
