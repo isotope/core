@@ -13,6 +13,7 @@ namespace Isotope\BackendModule;
 
 use Contao\BackendUser;
 use Contao\Database;
+use Contao\Session;
 use Contao\StringUtil;
 use Isotope\Isotope;
 use Isotope\Model\Config;
@@ -24,10 +25,11 @@ class Reports extends BackendOverview
 
     protected function compile()
     {
+
         $last24h = $this->getSummaryFor('-24 hours', $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary']);
         $currentMonth = $this->getSummaryFor(date('Y-m-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary']);
         $currentYear = $this->getSummaryFor(date('Y-01-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary']);
-        $allSummaries = array_merge_recursive($last24h, $currentMonth, $currentYear);
+        $allSummaries = array_merge_recursive($last24h,$currentMonth, $currentYear);
 
         $this->Template->before = $this->getSummary($GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'], $allSummaries);
 
@@ -49,11 +51,11 @@ class Reports extends BackendOverview
 
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
-                        'name'          => $strModule,
-                        'label'         => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
-                        'description'   => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
-                        'href'          => $this->addToUrl('mod=' . $strModule),
-                        'class'         => $arrConfig['class'] ?? '',
+                        'name' => $strModule,
+                        'label' => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
+                        'description' => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
+                        'href' => $this->addToUrl('mod=' . $strModule),
+                        'class' => $arrConfig['class'] ?? '',
                     ));
 
                     // @deprecated remove ISO_LANG in Isotope 3.0
@@ -95,6 +97,7 @@ class Reports extends BackendOverview
         <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['orders#'] . '</th>
         <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['products#'] . '</th>
         <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '</th>
+        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['discounts#'] . '</th>
         <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales_avg'] . '</th>
     </tr>';
             foreach ($config_data as $time_range => $time_range_data) {
@@ -104,6 +107,7 @@ class Reports extends BackendOverview
         <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_orders'] . '</td>
         <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_items'] . '</td>
         <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['total_sales'], $config) . '</td>
+        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['total_discounts'], $config) . '</td>
         <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['average_sales'], $config) . '</td>
     </tr>';
             }
@@ -126,20 +130,27 @@ class Reports extends BackendOverview
             SELECT
                 c.name AS config_name,
                 IFNULL(sub.total_orders,0) AS total_orders,
-                IFNULL(sub.total_sales,0) AS total_sales,
                 IFNULL(sub.total_items,0) AS total_items,
-                IFNULL(sub.average_sales,0) AS average_sales
+                IFNULL(sub.total_sales+sub.total_discounts,0) AS total_sales,
+                IFNULL((sub.total_sales+sub.total_discounts)/sub.total_orders,0) AS average_sales,
+                IFNULL(sub.total_discounts,0) AS total_discounts
             FROM tl_iso_config c
 
             LEFT JOIN (SELECT
                             o.config_id,
                        		COUNT(DISTINCT o.id) AS total_orders,
-                			SUM(i.tax_free_price * i.quantity) AS total_sales,
+                			SUM(o.tax_free_subtotal) AS total_sales,
                 			SUM(i.quantity) AS total_items,
-                            SUM(i.tax_free_price * i.quantity)/COUNT(DISTINCT o.id) AS average_sales
+                            IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
+                       INNER JOIN tl_iso_orderstatus os ON o.order_status = os.id
             		   LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
-                       WHERE o.type='order' AND o.order_status>0 AND o.locked>=?
+                       LEFT JOIN (SELECT
+                            pid,
+                            total_price
+                       		FROM tl_iso_product_collection_surcharge
+                            WHERE type = 'rule') AS discounts ON o.id=discounts.pid
+                       WHERE o.type='order' AND os.paid = 1 AND o.locked>=?
                        GROUP BY o.config_id
                 " . Report::getProductProcedure('i', 'product_id') . "
                 " . Report::getConfigProcedure('o', 'config_id') . "
@@ -152,6 +163,7 @@ class Reports extends BackendOverview
                 'total_orders' => $objOrders->total_orders,
                 'total_sales' => $objOrders->total_sales,
                 'total_items' => $objOrders->total_items,
+                'total_discounts' => abs($objOrders->total_discounts),
                 'average_sales' => $objOrders->average_sales,
             ];
         }

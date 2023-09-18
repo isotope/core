@@ -129,6 +129,10 @@
         <source>Sales Total</source>
         <target>Verkäufe gesamt</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.discounts#">
+       <source>Discounts Total</source>
+       <target>Rabatte gesamt</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.sales_avg">
         <source>Sales Ø</source>
         <target>Verkäufe Ø</target>
