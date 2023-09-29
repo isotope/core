@@ -106,9 +106,9 @@ class Reports extends BackendOverview
         <td class="tl_file_list">' . $time_range . '</td>
         <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_orders'] . '</td>
         <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_items'] . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['total_sales'], $config) . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['total_discounts'], $config) . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrencyForConfig($time_range_data['average_sales'], $config) . '</td>
+        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['total_sales'], true, null, true, $config) . '</td>
+        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['total_discounts'], true, null, true, $config) . '</td>
+        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['average_sales'], true, null, true, $config) . '</td>
     </tr>';
             }
             $strBuffer .= '

@@ -327,7 +327,7 @@ class Isotope extends Controller
     }
 
     /**
-     * Format given price according to  store config settings, including currency representation
+     * Format given price according to store config settings, including currency representation
      *
      * @param float  $fltPrice
      * @param bool   $blnHtml
@@ -336,27 +336,14 @@ class Isotope extends Controller
      *
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true){
-        return formatPriceWithCurrencyForConfig($fltPrice, $blnHtml, $strCurrencyCode, $blnApplyRoundingIncrement, static::getConfig());
-    }
-    /**
-     * Format given price according to a given store config settings, including currency representation
-     *
-     * @param float  $fltPrice
-     * @param bool   $blnHtml
-     * @param string $strCurrencyCode
-     * @param bool   $blnApplyRoundingIncrement
-     * @param Config $config
-     *
-     * @return string
-     */
-    public static function formatPriceWithCurrencyForConfig($fltPrice, Config $objConfig, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true, Config $objConfig = null)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
+        $objConfig   = $objConfig ?: static::getConfig();
         $strCurrency = $strCurrencyCode ?: $objConfig->currency;
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
         $space       = $blnHtml ? '&nbsp;' : ' ';
