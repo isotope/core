@@ -90,16 +90,12 @@
         <target>Statistiken zur Gutschein-Nutzung</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
-        <source>last 24 hours</source>
-        <target>letzte 24 Stunden</target>
+        <source>Sales in the last 24 hours</source>
+        <target>Verkäufe in den letzten 24 Stunden</target>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.month_summary">
-        <source>this month</source>
-        <target>diesen Monat</target>
-      </trans-unit>
-      <trans-unit id="ISO_REPORT.year_summary">
-        <source>this year</source>
-        <target>dieses Jahr</target>
+      <trans-unit id="ISO_REPORT.24h_empty">
+        <source>No orders have been placed in the last 24 hours.</source>
+        <target>In den vergangenen 24 Stunden gab es keine Bestellungen.</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -121,21 +117,9 @@
         <source>Number of items</source>
         <target>Anzahl der Einträge</target>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.sales_headline">
-        <source>Sales</source>
-        <target>Verkäufe</target>
-      </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
         <target>Verkäufe gesamt</target>
-      </trans-unit>
-      <trans-unit id="ISO_REPORT.discounts#">
-       <source>Discounts Total</source>
-       <target>Rabatte gesamt</target>
-      </trans-unit>
-      <trans-unit id="ISO_REPORT.sales_avg">
-        <source>Sales Ø</source>
-        <target>Verkäufe Ø</target>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
