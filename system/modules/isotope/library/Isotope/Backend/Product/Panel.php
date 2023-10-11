@@ -16,6 +16,7 @@ use Contao\BackendUser;
 use Contao\Database;
 use Contao\Image;
 use Contao\Input;
+use Contao\RequestToken;
 use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
@@ -153,9 +154,33 @@ class Panel extends Backend
             return '';
         }
 
+        $target = System::getContainer()->get('router')->generate('contao_backend', [
+            'do' => 'iso_products',
+            'table' => 'tl_iso_product_category',
+            'id' => '_value_',
+            'page_id' => '_value_',
+            'rt' => RequestToken::get(),
+
+            // TODO: for Contao 4.13+
+            //'rt' => System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue()
+        ]);
+
         return '
 <div class="tl_subpanel tl_iso_category_sorting">
-<a href="#" onclick="Backend.getScrollOffset();Isotope.openModalPageSelector({\'width\':765,\'title\':\'' . StringUtil::specialchars($GLOBALS['TL_LANG']['MOD']['page'][0]) . '\',\'url\':\'contao/page.php?do=' . Input::get('do') . '&amp;table=tl_iso_product_category&amp;field=page_id&amp;value=0\',\'action\':\'sortByPage\'});return false" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . Image::getHtml('pagemounts.svg', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a>
+<a href="' . ampersand(System::getContainer()->get('contao.picker.builder')->getUrl('dc.tl_page')) . '" id="tl_iso_category_sorting" title="' . $GLOBALS['TL_LANG']['tl_iso_product']['sorting'] . '">' . Image::getHtml('pagemounts.svg', $GLOBALS['TL_LANG']['tl_iso_product']['sorting']) . '</a></p>
+    <script>
+      $("tl_iso_category_sorting").addEvent("click", function(e) {
+        e.preventDefault();
+        Backend.openModalSelector({
+          "id": "tl_listing",
+          "title": ' . json_encode($GLOBALS['TL_LANG']['MOD']['page'][0]) . ',
+          "url": this.href,
+          "callback": function (table, value) {
+            window.location.href = "'.$target.'".replace(\'_value_\', value);
+          }
+        });
+      });
+    </script>
 </div>';
     }
 

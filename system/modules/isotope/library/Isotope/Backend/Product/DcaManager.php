@@ -247,11 +247,6 @@ class DcaManager extends Backend
      */
     public function addBreadcrumb()
     {
-        // Avoid the page node trap (#1701)
-        if (\defined('TL_SCRIPT') && TL_SCRIPT === 'contao/page.php') {
-            return;
-        }
-
         $strBreadcrumb = Breadcrumb::generate(Session::getInstance()->get('iso_products_gid'));
         $strBreadcrumb .= static::getPagesBreadcrumb();
 
