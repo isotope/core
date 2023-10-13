@@ -9,6 +9,9 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Backend modules
  */
@@ -46,7 +49,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
 if (System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest(System::getContainer()->get('request_stack')->getCurrentRequest() ?? Request::create(''))) {
-    
+
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css|static';
 }
 
