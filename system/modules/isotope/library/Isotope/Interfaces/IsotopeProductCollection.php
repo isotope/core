@@ -16,6 +16,7 @@ use Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Template;
 
 
 /**
@@ -248,10 +249,10 @@ interface IsotopeProductCollection
     /**
      * Add the collection to a template
      *
-     * @param \Template $objTemplate
+     * @param Template $objTemplate
      * @param array     $arrConfig
      */
-    public function addToTemplate(\Template $objTemplate, array $arrConfig = []);
+    public function addToTemplate(Template $objTemplate, array $arrConfig = []);
 
     /**
      * Add an error message
