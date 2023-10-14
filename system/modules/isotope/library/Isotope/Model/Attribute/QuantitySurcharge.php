@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Helper\Scope;
 use Isotope\Model\Attribute;
 
 class QuantitySurcharge extends Attribute

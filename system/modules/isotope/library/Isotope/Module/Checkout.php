@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Helper\Scope;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;

@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\Helper\Scope;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Input;

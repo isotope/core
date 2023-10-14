@@ -11,6 +11,7 @@
 
 namespace Isotope\Backend\ProductCollection;
 
+use Isotope\Helper\Scope;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
@@ -623,7 +624,7 @@ class Callback extends Backend
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
-<div class="tl_tbox block">
+<div class="block tl_tbox">
   <div class="clr widget">
     ' . $objSelect->parse() . '
     <p class="tl_help">' . $objSelect->description . '</p>

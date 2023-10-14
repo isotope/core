@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Helper\Scope;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;

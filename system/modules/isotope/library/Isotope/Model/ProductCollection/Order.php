@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
+use Isotope\Helper\Scope;
 use Contao\Controller;
 use Contao\Message;
 use Contao\StringUtil;

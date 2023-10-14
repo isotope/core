@@ -11,6 +11,7 @@
 
 namespace Isotope\Module;
 
+use Isotope\Helper\Scope;
 use Contao\Controller;
 use Contao\Environment;
 use Haste\Input\Input;
