@@ -12,7 +12,6 @@
 namespace Isotope\Module;
 
 use Isotope\Helper\Scope;
-use Isotope\Helper\Scope;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
