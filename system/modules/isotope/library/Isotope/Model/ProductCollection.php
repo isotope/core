@@ -137,7 +137,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if (Scope::isFrontend() {
+        if (Scope::isFrontend()) {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
