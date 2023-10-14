@@ -93,7 +93,7 @@
         <source>Number of items</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales_headline">
-        <source>Sales</source>
+        <source>Period</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
