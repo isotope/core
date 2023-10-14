@@ -120,7 +120,7 @@ class Isotope extends Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && Scope::isFrontend() {
+        if (null === static::$objCart && Scope::isFrontend()) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();

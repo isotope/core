@@ -143,7 +143,7 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if (Scope::isFrontend() {
+            if (Scope::isFrontend()) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
                     $baseUrl

@@ -81,7 +81,7 @@ abstract class Module extends AbstractFrontendModule
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if (Scope::isFrontend() {
+        if (Scope::isFrontend()) {
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
                 'system/modules/isotope/assets/js/isotope.min.js|static'
             );
