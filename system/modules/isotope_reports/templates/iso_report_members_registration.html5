@@ -26,6 +26,11 @@
 			},
 			series: <?= json_encode($this->chart['series']) ?>,
 		yaxis: [{
+      labels: {
+        formatter: function (val) {
+          return val.toFixed(0);
+        }
+      },
 			title: {
 					text: <?= json_encode($GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_total']) ?>
 				},
@@ -34,6 +39,11 @@
 				title: {
 					text: <?= json_encode($GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_new']) ?>
 				},
+        labels: {
+          formatter: function (val) {
+            return val.toFixed(0);
+          }
+        },
 			}
 		],
 		labels: <?= json_encode($this->chart['labels']) ?>,
