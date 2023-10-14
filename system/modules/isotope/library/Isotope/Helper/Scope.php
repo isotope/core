@@ -11,6 +11,8 @@
 
 namespace Isotope\Helper;
 
+use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Class Scope
  *
@@ -47,6 +49,6 @@ class Scope
         $requestStack = $container->get('request_stack');
 
 
-        return $scopeMatcher->isFrontRequest($requestStack->getCurrentRequest() ?? Request::create(''));
+        return $scopeMatcher->isFrontendRequest($requestStack->getCurrentRequest() ?? Request::create(''));
     }
 }

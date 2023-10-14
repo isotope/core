@@ -137,7 +137,7 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        if (null === static::$objFavorites && Scope::isFrontend() {
+        if (null === static::$objFavorites && Scope::isFrontend()) {
             static::initialize();
             if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
                 static::$objFavorites->mergeGuestCollection();
