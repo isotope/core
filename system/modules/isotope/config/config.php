@@ -9,15 +9,17 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\ArrayUtil;
+
 /**
  * Backend modules
  */
 if (!\is_array($GLOBALS['BE_MOD']['isotope'] ?? null))
 {
-    array_insert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
+    ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, array('isotope' => array()));
 }
 
-array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
+ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
 (
     'iso_products' => array
     (
