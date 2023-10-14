@@ -48,6 +48,16 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
             ),
             'member' => array
             (
+                'members_registration' => array
+                (
+                    'callback'          => 'Isotope\Report\MembersRegistration',
+                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_registration'],
+                    'icon'              => 'system/modules/isotope_reports/assets/members_registration.png',
+                    'panels' => array
+                    (
+                        array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
+                    )
+                ),
                 'members_guests' => array
                 (
                     'callback'          => 'Isotope\Report\MembersGuests',
