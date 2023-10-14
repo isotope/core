@@ -11,6 +11,7 @@
 
 namespace Isotope\Model;
 
+use Isotope\Helper\Scope;
 use Contao\Controller;
 use Contao\Database;
 use Contao\MemberModel;
@@ -136,7 +137,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if ('FE' === TL_MODE) {
+        if (Scope::isFrontend() {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
