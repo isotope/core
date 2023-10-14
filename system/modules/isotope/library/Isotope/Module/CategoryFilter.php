@@ -56,7 +56,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -81,7 +81,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             return $this->generateWildcard();
         }
 

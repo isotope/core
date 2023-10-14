@@ -405,7 +405,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         parent::saveToDCA($arrData);
 
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             if ($this->be_filter
                 && Input::get('act') == ''
                 && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource

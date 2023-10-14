@@ -150,7 +150,7 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             return [];
         }
 

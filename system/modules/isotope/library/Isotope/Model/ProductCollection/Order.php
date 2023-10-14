@@ -363,7 +363,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
             }
 
-            if ('BE' === TL_MODE) {
+            if (Scope::isBackend()) {
                 Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {

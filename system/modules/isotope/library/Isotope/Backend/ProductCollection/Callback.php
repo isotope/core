@@ -835,7 +835,7 @@ class Callback extends Backend
         $logData = $GLOBALS['ISO_ORDER_LOG'];
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             if ($order->pageId == 0) {
                 unset($GLOBALS['objPage']);
             }
@@ -905,7 +905,7 @@ class Callback extends Backend
             }
         }
 
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {

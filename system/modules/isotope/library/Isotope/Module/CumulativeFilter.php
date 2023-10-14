@@ -101,7 +101,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (Scope::isBackend()) {
             return $this->generateWildcard();
         }
 
