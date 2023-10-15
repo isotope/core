@@ -16,7 +16,6 @@ use Contao\Files;
 use Contao\Folder;
 use Contao\Widget;
 use Haste\Util\FileUpload;
-use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;

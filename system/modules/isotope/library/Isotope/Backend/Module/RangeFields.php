@@ -16,7 +16,6 @@ use Contao\Controller;
 use Contao\StringUtil;
 use Contao\System;
 use Isotope\Interfaces\IsotopeAttributeWithRange;
-use MenAtWork\MultiColumnWizardBundle\Contao\Widgets\MultiColumnWizard;
 
 class RangeFields extends Backend
 {
