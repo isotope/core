@@ -110,7 +110,7 @@ class OrderDetails extends AbstractProductCollection
             throw new AccessDeniedException();
         }
 
-        if (isFrontend()) {
+        if CompatibilityHelper::isFrontend()) {
             /** @var PageModel $objPage */
             global $objPage;
 

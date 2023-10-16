@@ -120,7 +120,7 @@ class Isotope extends Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && isFrontend()) {
+        if (null === static::$objCart &&CompatibilityHelper::isFrontend()) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();
@@ -137,7 +137,7 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        if (null === static::$objFavorites && isFrontend()) {
+        if (null === static::$objFavorites &&CompatibilityHelper::isFrontend()) {
             static::initialize();
             if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
                 static::$objFavorites->mergeGuestCollection();

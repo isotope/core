@@ -485,7 +485,7 @@ if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
 
     // Set module and module id for payment and/or shipping modules
-    if (isFrontend()) {
+    if (CompatibilityHelper::isFrontend()) {
         // Only limit countries in FE
         $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
     }

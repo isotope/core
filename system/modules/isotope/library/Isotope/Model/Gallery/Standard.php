@@ -67,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && isFrontend()) {
+        if ($arrData['customTpl'] != '' &&CompatibilityHelper::isFrontend()) {
             $this->strTemplate = $arrData['customTpl'];
         }
 

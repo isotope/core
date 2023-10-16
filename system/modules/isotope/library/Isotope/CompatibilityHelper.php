@@ -61,7 +61,7 @@ class CompatibilityHelper
      *
      * @return bool True if a request exists and is frontend.
      */
-    public static function isFrontend(): bool
+    public static isFrontend(): bool
     {
         $container = System::getContainer(); // Define $container here
 
