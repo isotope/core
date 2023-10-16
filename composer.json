@@ -52,7 +52,6 @@
         "hashids/hashids": "^4.1"
     },
     "require-dev": {
-        "contao/core-bundle": "4.13.*",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-fineuploader": "^2.0 || ^3.0",
         "terminal42/contao-changelanguage": "^3.0",
