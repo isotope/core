@@ -42,7 +42,7 @@ class CompatibilityHelper
      */
     public static function isBackend(): bool
     {
-        $container = System::getContainer(); // Define $container here
+        $container = System::getContainer(); 
 
         $request = self::getCurrentRequest();
 
@@ -63,7 +63,7 @@ class CompatibilityHelper
      */
     public static function isFrontend(): bool
     {
-        $container = System::getContainer(); // Define $container here
+        $container = System::getContainer(); 
 
         $request = self::getCurrentRequest();
 
