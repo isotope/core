@@ -64,7 +64,7 @@ class ProductCollectionDownload extends Model
      */
     protected function download($strFile)
     {
-        if ('FE' === TL_MODE && $this->downloads_remaining !== '') {
+        if (CompatibilityHelper::isFrontend() && $this->downloads_remaining !== '') {
             Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 

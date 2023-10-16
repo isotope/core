@@ -126,7 +126,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
+                if (CompatibilityHelper::isFrontend() && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
                     );
@@ -185,7 +185,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $this->varOptionsCache;
 
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
+                if (CompatibilityHelper::isFrontend() && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
                     );

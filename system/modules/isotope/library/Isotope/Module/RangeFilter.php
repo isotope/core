@@ -55,7 +55,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
             return $this->generateWildcard();
         }
 
-        if ('FE' === TL_MODE && 0 === \count($this->iso_rangeFields)) {
+        if (CompatibilityHelper::isFrontend() && 0 === \count($this->iso_rangeFields)) {
             return '';
         }
 

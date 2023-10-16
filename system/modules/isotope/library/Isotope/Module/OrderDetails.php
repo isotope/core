@@ -106,7 +106,7 @@ class OrderDetails extends AbstractProductCollection
         }
 
         // Order belongs to a member but not logged in
-        if ('FE' === TL_MODE && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if (CompatibilityHelper::isFrontend() && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
             throw new AccessDeniedException();
         }
 

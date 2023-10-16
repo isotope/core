@@ -73,7 +73,7 @@ class WishlistDetails extends AbstractProductCollection
         }
 
         // Wishlist belongs to a member but not logged in
-        if ('FE' === TL_MODE && !$this->public && FrontendUser::getInstance()->id != $wishlist->member) {
+        if (CompatibilityHelper::isFrontend() && !$this->public && FrontendUser::getInstance()->id != $wishlist->member) {
             throw new AccessDeniedException();
         }
 

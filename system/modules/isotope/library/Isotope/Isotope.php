@@ -175,7 +175,7 @@ class Isotope extends Controller
             if (null === static::$objConfig) {
                 global $objPage;
 
-                static::$objConfig = ('FE' === TL_MODE ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
+                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
 
             // No config at all, create empty model as fallback

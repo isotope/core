@@ -39,7 +39,7 @@ class Coupons extends Module
     {
         $this->cart = Isotope::getCart();
 
-        if ('FE' === TL_MODE && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
+        if (CompatibilityHelper::isFrontend() && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
             return '';
         }
 
