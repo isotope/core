@@ -171,7 +171,7 @@ class MediaManager extends Widget implements \uploadable
             $this->addError($GLOBALS['TL_LANG']['MSC']['mmUnknownError']);
         }
 
-        return $varInput[0];
+        return $varInput[0] ?? '';
     }
 
     /**
