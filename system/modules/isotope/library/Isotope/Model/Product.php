@@ -16,7 +16,6 @@ use Contao\Date;
 use Contao\DcaExtractor;
 use Contao\Model;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
 use Isotope\RequestCache\Filter;
 use Model\Collection;
 

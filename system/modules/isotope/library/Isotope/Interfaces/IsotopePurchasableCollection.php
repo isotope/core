@@ -11,7 +11,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * IsotopePurchasableCollection describes a product collection that can be bought.

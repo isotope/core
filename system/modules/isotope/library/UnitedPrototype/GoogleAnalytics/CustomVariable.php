@@ -28,7 +28,6 @@
 
 namespace UnitedPrototype\GoogleAnalytics;
 
-use UnitedPrototype\GoogleAnalytics\Internals\Util;
 
 /**
  * @link http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html

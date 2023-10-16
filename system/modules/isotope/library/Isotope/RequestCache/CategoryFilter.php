@@ -11,11 +11,6 @@
 
 namespace Isotope\RequestCache;
 
-use Isotope\Interfaces\IsotopeAttribute;
-use Isotope\Interfaces\IsotopeAttributeWithRange;
-use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
-use Isotope\Model\Product;
 
 class CategoryFilter extends Filter
 {
