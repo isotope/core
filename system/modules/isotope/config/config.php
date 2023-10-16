@@ -47,7 +47,7 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
-if (CompatibilityHelper::CompatibilityHelper::isBackend()) {
+if (CompatibilityHelper::isBackend()) {
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css|static';
 }
 
