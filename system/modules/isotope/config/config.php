@@ -9,7 +9,7 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-use CompatibilityHelper;
+use Isotope\CompatibilityHelper;
 
 /**
  * Backend modules
