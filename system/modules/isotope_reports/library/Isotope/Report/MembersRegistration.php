@@ -67,11 +67,13 @@ class MembersRegistration extends Sales
         }
 
         // Switch from associative array to index based for apexcharts
-        for ($i = 0; $i < count($arrChart['series']); $i++) {
+        for ($i = 0, $iMax = count($arrChart['series']); $i < $iMax; $i++) {
             $arrChart['series'][$i]['data'] = is_array($arrChart['series'][$i]['data']) ? array_values($arrChart['series'][$i]['data']): [];
         }
-        for ($i = 0; $i < count($arrChart['series'][0]['data']); $i++) {
-            $arrChart['series'][0]['data'][$i] == 0 && $i > 0 ? $arrChart['series'][0]['data'][$i] = $arrChart['series'][0]['data'][$i-1] : null;
+        for ($i = 0, $iMax = count($arrChart['series'][0]['data']); $i < $iMax; $i++) {
+            if ($arrChart['series'][0]['data'][$i] == 0 && $i > 0) {
+                $arrChart['series'][0]['data'][$i] = $arrChart['series'][0]['data'][$i - 1];
+            }
         }
 
         $this->Template->chart        = $arrChart;
