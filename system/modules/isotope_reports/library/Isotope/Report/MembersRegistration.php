@@ -149,11 +149,11 @@ class MembersRegistration extends Sales
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['stop'] == '') {
+        if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
@@ -166,7 +166,7 @@ class MembersRegistration extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '') {
+        if (empty($arrSession[$this->name]['start'])) {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps
@@ -184,4 +184,3 @@ class MembersRegistration extends Sales
         parent::initializeDefaultValues();
     }
 }
-
