@@ -406,7 +406,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         parent::saveToDCA($arrData);
 
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             if ($this->be_filter
                 && Input::get('act') == ''
                 && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource

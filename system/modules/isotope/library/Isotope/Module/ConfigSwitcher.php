@@ -50,7 +50,7 @@ class ConfigSwitcher extends Module
      */
     public function generate()
     {
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

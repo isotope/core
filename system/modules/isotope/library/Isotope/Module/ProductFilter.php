@@ -64,7 +64,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -177,7 +177,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
-            if (isBackend()) {
+            if (CompatibilityHelper::isBackend()) {
                 if ($blnResult) {
                     Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
@@ -185,7 +185,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 }
             }
 
-        } elseif ('cancel' === $objNewStatus->saferpay_status && isBackend()) {
+        } elseif ('cancel' === $objNewStatus->saferpay_status && CompatibilityHelper::isBackend()) {
             Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }

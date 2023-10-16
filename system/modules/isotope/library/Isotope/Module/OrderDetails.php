@@ -151,7 +151,7 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             return [];
         }
 

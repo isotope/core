@@ -364,7 +364,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
             }
 
-            if (isBackend()) {
+            if (CompatibilityHelper::isBackend()) {
                 Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {

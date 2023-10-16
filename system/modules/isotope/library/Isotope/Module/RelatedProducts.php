@@ -51,7 +51,7 @@ class RelatedProducts extends ProductList
      */
     public function generate()
     {
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

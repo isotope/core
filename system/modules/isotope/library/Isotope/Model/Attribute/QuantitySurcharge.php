@@ -36,13 +36,13 @@ class QuantitySurcharge extends Attribute
 
     public function saveToDCA(array &$arrData): void
     {
-        $this->rgxp = isBackend() ? 'price' : 'natural';
+        $this->rgxp = CompatibilityHelper::isBackend() ? 'price' : 'natural';
 
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "decimal(12,2) NOT NULL default '0.00'";
 
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             unset(
                 $arrData['fields'][$this->field_name]['eval']['minval'],
                 $arrData['fields'][$this->field_name]['eval']['maxval'],

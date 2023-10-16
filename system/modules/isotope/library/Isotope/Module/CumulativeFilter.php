@@ -102,7 +102,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if (isBackend()) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
