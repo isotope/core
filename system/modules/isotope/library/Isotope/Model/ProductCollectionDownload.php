@@ -143,7 +143,7 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if CompatibilityHelper::isFrontend()) {
+            if (CompatibilityHelper::isFrontend()) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
                     $baseUrl
