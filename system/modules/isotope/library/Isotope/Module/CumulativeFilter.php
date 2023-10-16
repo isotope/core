@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\StringUtil;
@@ -102,7 +102,7 @@ class CumulativeFilter extends AbstractProductFilter implements IsotopeFilterMod
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -64,7 +64,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\Attribute;
 
 class QuantitySurcharge extends Attribute
@@ -36,13 +36,13 @@ class QuantitySurcharge extends Attribute
 
     public function saveToDCA(array &$arrData): void
     {
-        $this->rgxp = Scope::isBackend() ? 'price' : 'natural';
+        $this->rgxp = isBackend() ? 'price' : 'natural';
 
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "decimal(12,2) NOT NULL default '0.00'";
 
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             unset(
                 $arrData['fields'][$this->field_name]['eval']['minval'],
                 $arrData['fields'][$this->field_name]['eval']['maxval'],

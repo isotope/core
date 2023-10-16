@@ -11,7 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Input;
@@ -118,7 +118,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, Scope::isFrontend());
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, isFrontend());
 
                 } else {
                     $arrOptions = $objOptions->getArrayForBackendWidget();
@@ -139,7 +139,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
                 }
 
-                return $objOptions->getArrayForFrontendWidget($objProduct, Scope::isFrontend());
+                return $objOptions->getArrayForFrontendWidget($objProduct, isFrontend());
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
@@ -406,7 +406,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         parent::saveToDCA($arrData);
 
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             if ($this->be_filter
                 && Input::get('act') == ''
                 && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource

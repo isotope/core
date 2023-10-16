@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Date;
@@ -81,7 +81,7 @@ abstract class Module extends AbstractFrontendModule
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if (Scope::isFrontend()) {
+        if (isFrontend()) {
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
                 'system/modules/isotope/assets/js/isotope.min.js|static'
             );

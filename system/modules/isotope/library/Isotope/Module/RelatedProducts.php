@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Database;
 use Contao\StringUtil;
 use Haste\Input\Input;
@@ -51,7 +51,7 @@ class RelatedProducts extends ProductList
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -11,7 +11,7 @@
 
 namespace Isotope\Model;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\File;
@@ -143,7 +143,7 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if (Scope::isFrontend()) {
+            if (isFrontend()) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
                     $baseUrl

@@ -11,7 +11,7 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Message;
 use Contao\StringUtil;
@@ -364,7 +364,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
             }
 
-            if (Scope::isBackend()) {
+            if (isBackend()) {
                 Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {

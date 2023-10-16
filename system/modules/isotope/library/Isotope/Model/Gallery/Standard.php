@@ -11,7 +11,7 @@
 
 namespace Isotope\Model\Gallery;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Environment;
 use Contao\File;
 use Contao\FilesModel;
@@ -67,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && Scope::isFrontend()) {
+        if ($arrData['customTpl'] != '' && isFrontend()) {
             $this->strTemplate = $arrData['customTpl'];
         }
 

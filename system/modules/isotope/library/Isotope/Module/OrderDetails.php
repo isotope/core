@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
@@ -110,7 +110,7 @@ class OrderDetails extends AbstractProductCollection
             throw new AccessDeniedException();
         }
 
-        if (Scope::isFrontend()) {
+        if (isFrontend()) {
             /** @var PageModel $objPage */
             global $objPage;
 
@@ -151,7 +151,7 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return [];
         }
 

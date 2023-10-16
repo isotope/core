@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
@@ -51,7 +51,7 @@ class CartAddress extends Module
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 

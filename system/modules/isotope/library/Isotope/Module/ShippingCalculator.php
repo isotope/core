@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
@@ -48,7 +48,7 @@ class ShippingCalculator extends Module
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 

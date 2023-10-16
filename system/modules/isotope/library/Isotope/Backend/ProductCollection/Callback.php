@@ -11,7 +11,7 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
@@ -836,7 +836,7 @@ class Callback extends Backend
         $logData = $GLOBALS['ISO_ORDER_LOG'];
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             if ($order->pageId == 0) {
                 unset($GLOBALS['objPage']);
             }
@@ -906,7 +906,7 @@ class Callback extends Backend
             }
         }
 
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {

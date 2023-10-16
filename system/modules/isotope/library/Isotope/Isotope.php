@@ -11,7 +11,7 @@
 
 namespace Isotope;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
@@ -120,7 +120,7 @@ class Isotope extends Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && Scope::isFrontend()) {
+        if (null === static::$objCart && isFrontend()) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();
@@ -137,7 +137,7 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        if (null === static::$objFavorites && Scope::isFrontend()) {
+        if (null === static::$objFavorites && isFrontend()) {
             static::initialize();
             if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
                 static::$objFavorites->mergeGuestCollection();

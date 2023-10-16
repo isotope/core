@@ -11,7 +11,7 @@
 
 namespace Isotope\Module;
 
-use Isotope\Helper\Scope;
+use Isotope\CompatibilityHelper;
 use Contao\Date;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
@@ -54,7 +54,7 @@ class WishlistViewer extends Module
      */
     public function generate()
     {
-        if (Scope::isBackend()) {
+        if (isBackend()) {
             return $this->generateWildcard();
         }
 
