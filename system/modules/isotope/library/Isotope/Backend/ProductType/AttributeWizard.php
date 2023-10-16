@@ -138,7 +138,7 @@ class AttributeWizard extends Backend
             $i++,
             $strName,
             $style,
-            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? : $strName,
+            $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ?? $strName,
             $strName
         );
     }

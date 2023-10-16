@@ -325,7 +325,7 @@ class DcaManager extends Backend
             foreach ($arrFields as $name => $arrField) {
                 if (\in_array($name, $arrEnabled)) {
 
-                    if ($arrField['inputType'] == '') {
+                    if (empty($arrField['inputType']) && empty($arrField['input_field_callback'])) {
                         continue;
                     }
 
