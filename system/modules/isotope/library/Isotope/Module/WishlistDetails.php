@@ -17,6 +17,7 @@ use Contao\Input;
 use Contao\PageError403;
 use Contao\PageModel;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ShareWishlistAction;
 use Isotope\Model\ProductCollection\Wishlist as WishlistCollection;
 use Isotope\Template;

@@ -27,7 +27,7 @@ class CompatibilityHelper
      *
      * @return Request|null
      */
-    public static function getCurrentRequest()
+    private static function getCurrentRequest()
     {
         $container = System::getContainer();
 
@@ -42,7 +42,7 @@ class CompatibilityHelper
      */
     public static function isBackend(): bool
     {
-        $container = System::getContainer(); 
+        $container = System::getContainer();
 
         $request = self::getCurrentRequest();
 
@@ -63,7 +63,7 @@ class CompatibilityHelper
      */
     public static function isFrontend(): bool
     {
-        $container = System::getContainer(); 
+        $container = System::getContainer();
 
         $request = self::getCurrentRequest();
 
