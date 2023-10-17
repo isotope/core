@@ -139,7 +139,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
                 }
 
-                return $objOptions->getArrayForFrontendWidget($objProduct,CompatibilityHelper::isFrontend());
+                return $objOptions->getArrayForFrontendWidget($objProduct, CompatibilityHelper::isFrontend());
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
