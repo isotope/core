@@ -9,19 +9,34 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\Backend;
+use Contao\BackendTemplate;
+use Contao\BackendUser;
+use Contao\Config;
+use Contao\Controller;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
 use Contao\CoreBundle\Exception\ResponseException;
+use Contao\Database;
+use Contao\Date;
+use Contao\DC_Table;
+use Contao\Encryption;
+use Contao\Environment;
+use Contao\FilesModel;
+use Contao\Image;
+use Contao\Input;
+use Contao\Message;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
+use Contao\Widget;
 use Doctrine\DBAL\Exception\DriverException;
 use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Isotope\Model\Group;
 
-class DC_ProductData extends \DC_Table
+class DC_ProductData extends DC_Table
 {
 
     /**
@@ -82,7 +97,7 @@ class DC_ProductData extends \DC_Table
                 ->fetchRow()[0]
             ;
             if (0 === $firstPid) {
-                \Contao\Controller::redirect(\Contao\Backend::addToUrl('&act=cutAll&pid=0'));
+                Controller::redirect(Backend::addToUrl('&act=cutAll&pid=0'));
             }
         }
 
@@ -103,7 +118,7 @@ class DC_ProductData extends \DC_Table
         }
 
         if (\count($arrPageLanguages) > 1) {
-            $this->arrTranslationLabels = \Contao\System::getLanguages();
+            $this->arrTranslationLabels = System::getLanguages();
             $this->arrTranslations      = array_intersect(array_keys($this->arrTranslationLabels), $arrPageLanguages);
         }
     }
@@ -147,9 +162,9 @@ class DC_ProductData extends \DC_Table
         // Display products filtered by group
         if (!$this->intId) {
             if ($this->intGroupId > 0) {
-                $this->procedure[] = "gid IN(".implode(',', array_map('intval', \Contao\Database::getInstance()->getChildRecords([$this->intGroupId], Group::getTable(), false, [$this->intGroupId]))).")";
+                $this->procedure[] = "gid IN(".implode(',', array_map('intval', Database::getInstance()->getChildRecords([$this->intGroupId], Group::getTable(), false, [$this->intGroupId]))).")";
             } elseif (!BackendUser::getInstance()->isAdmin && !empty(BackendUser::getInstance()->iso_groups)) {
-                $this->procedure[] = 'gid IN('.implode(',', array_map('intval', \Contao\Database::getInstance()->getChildRecords(BackendUser::getInstance()->iso_groups, Group::getTable(), false, BackendUser::getInstance()->iso_groups))).')';
+                $this->procedure[] = 'gid IN('.implode(',', array_map('intval', Database::getInstance()->getChildRecords(BackendUser::getInstance()->iso_groups, Group::getTable(), false, BackendUser::getInstance()->iso_groups))).')';
             }
         }
 
@@ -677,7 +692,7 @@ class DC_ProductData extends \DC_Table
             $version = str_replace(
                 '<div class="tl_version_panel">',
                 '<div class="tl_version_panel tl_iso_products_panel">
-<form action="' . ampersand(\Contao\Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
+<form action="' . ampersand(Environment::get('request'), true) . '" id="tl_language" class="tl_form" method="post">
 <div class="tl_formbody">
 <input type="hidden" name="FORM_SUBMIT" value="tl_language">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
@@ -1744,7 +1759,7 @@ class DC_ProductData extends \DC_Table
         $labelPasteNew = $GLOBALS['TL_LANG'][$this->strTable]['pastenew'] ?? $GLOBALS['TL_LANG']['DCA']['pastenew'];
         $labelPasteAfter = $GLOBALS['TL_LANG'][$this->strTable]['pasteafter'] ?? $GLOBALS['TL_LANG']['DCA']['pasteafter'];
         $labelEditHeader = $GLOBALS['TL_LANG'][$this->strTable]['editmeta'] ?? $GLOBALS['TL_LANG'][$this->strTable]['editheader'] ?? $GLOBALS['TL_LANG']['DCA']['editheader'];
-        $strBackUrl = Input::get('id') ? 'contao/main.php?do=iso_products' : \Contao\System::getReferer(true, $this->ptable);
+        $strBackUrl = Input::get('id') ? 'contao/main.php?do=iso_products' : System::getReferer(true, $this->ptable);
 
         // TODO: fix back button in variants
         $return = Message::generate() . '
@@ -3140,6 +3155,6 @@ class DC_ProductData extends \DC_Table
             }
         }
 
-        \Contao\Controller::redirect(\Contao\Backend::addToUrl('act=edit'));
+        Controller::redirect(Backend::addToUrl('act=edit'));
     }
 }
