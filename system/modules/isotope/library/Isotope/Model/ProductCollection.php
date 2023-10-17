@@ -11,7 +11,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\MemberModel;
@@ -23,6 +22,7 @@ use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;

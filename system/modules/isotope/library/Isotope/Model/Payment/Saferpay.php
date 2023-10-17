@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Isotope\CompatibilityHelper;
 use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
@@ -19,6 +18,7 @@ use Contao\Module;
 use Contao\Request;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;

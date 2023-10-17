@@ -11,10 +11,10 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Database;
 use Contao\StringUtil;
 use Haste\Input\Input;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;

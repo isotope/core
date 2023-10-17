@@ -16,10 +16,10 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
 use Doctrine\DBAL\Exception\DriverException;
+use Isotope\Model\Group;
 use Patchwork\Utf8;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Isotope\Model\Group;
 
 class DC_ProductData extends \DC_Table
 {

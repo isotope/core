@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -23,6 +22,7 @@ use Contao\Widget;
 use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Interfaces\IsotopeProduct;

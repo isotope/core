@@ -11,9 +11,9 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\CompatibilityHelper;
 use Contao\FrontendUser;
 use Contao\PageModel;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\ProductCollection;
 
 class Wishlist extends ProductCollection

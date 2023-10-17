@@ -11,11 +11,11 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Contao\StringUtil;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Rule;

@@ -28,9 +28,9 @@
 
 namespace UnitedPrototype\GoogleAnalytics;
 
-use UnitedPrototype\GoogleAnalytics\Internals\Util;
-
 use DateTime;
+
+use UnitedPrototype\GoogleAnalytics\Internals\Util;
 
 /**
  * You should serialize this object and store it in the user session to keep it

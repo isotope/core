@@ -11,13 +11,13 @@
 
 namespace Isotope\Model\Attribute;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;

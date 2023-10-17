@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\Date;
@@ -21,6 +20,7 @@ use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Haste\Util\Debug;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;

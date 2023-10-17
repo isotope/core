@@ -11,8 +11,8 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 use Isotope\Template;

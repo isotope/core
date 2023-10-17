@@ -11,7 +11,6 @@
 
 namespace Isotope\Model;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Database;
 use Contao\File;
@@ -23,6 +22,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 

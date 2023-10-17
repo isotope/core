@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Gallery;
 
-use Isotope\CompatibilityHelper;
 use Contao\Environment;
 use Contao\File;
 use Contao\FilesModel;
@@ -19,6 +18,7 @@ use Contao\Picture;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Image\Image;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
 use Isotope\Template;

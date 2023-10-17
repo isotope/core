@@ -28,9 +28,9 @@
 
 namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-use UnitedPrototype\GoogleAnalytics\Transaction;
-
 use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
+
+use UnitedPrototype\GoogleAnalytics\Transaction;
 
 class TransactionRequest extends Request {
 	

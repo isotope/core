@@ -11,13 +11,13 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Input;
 use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\ProductCollection\Order;

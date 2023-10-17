@@ -17,9 +17,9 @@ use Contao\System;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
+use Isotope\Isotope;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Isotope\Isotope;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class PaypalCheckout extends PaypalApi

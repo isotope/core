@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
@@ -19,6 +18,7 @@ use Contao\PageError403;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;

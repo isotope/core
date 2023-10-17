@@ -11,7 +11,6 @@
 
 namespace Isotope\Backend\ProductCollection;
 
-use Isotope\CompatibilityHelper;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;
@@ -29,6 +28,7 @@ use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Interfaces\IsotopePayment;

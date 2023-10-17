@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\ProductCollection;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Message;
 use Contao\StringUtil;
@@ -19,6 +18,7 @@ use Contao\System;
 use Contao\Template;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;

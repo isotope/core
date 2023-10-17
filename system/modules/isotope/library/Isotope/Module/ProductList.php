@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
@@ -24,6 +23,7 @@ use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;

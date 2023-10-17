@@ -28,9 +28,9 @@
 
 namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-use UnitedPrototype\GoogleAnalytics\Page;
-
 use UnitedPrototype\GoogleAnalytics\Internals\X10;
+
+use UnitedPrototype\GoogleAnalytics\Page;
 
 class PageviewRequest extends Request {
 	

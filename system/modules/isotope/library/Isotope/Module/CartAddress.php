@@ -11,12 +11,12 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Form\Form;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 

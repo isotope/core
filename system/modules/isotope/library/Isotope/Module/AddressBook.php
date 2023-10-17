@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\FrontendUser;
@@ -23,6 +22,7 @@ use Contao\System;
 use Contao\User;
 use Haste\Form\Form;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
