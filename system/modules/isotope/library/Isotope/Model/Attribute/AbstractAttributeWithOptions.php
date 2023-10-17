@@ -118,7 +118,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct,CompatibilityHelper::isFrontend());
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, CompatibilityHelper::isFrontend());
 
                 } else {
                     $arrOptions = $objOptions->getArrayForBackendWidget();
