@@ -12,7 +12,6 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
-use Contao\Environment;
 use Contao\Input;
 use Contao\StringUtil;
 use Haste\Util\Url;

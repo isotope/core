@@ -99,7 +99,7 @@ class Label
 
                     $script = sprintf(
                         "Backend.openModalImage({'width':%s,'title':'%s','url':'%s'});return false",
-                        $size[0],
+                        $size[0] ?? 0,
                         str_replace("'", "\\'", $objProduct->name),
                         TL_FILES_URL . $strImage
                     );

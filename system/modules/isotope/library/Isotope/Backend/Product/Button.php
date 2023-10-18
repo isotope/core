@@ -22,7 +22,6 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Versions;
-use Isotope\Model\Group;
 use Isotope\Model\ProductType;
 
 

@@ -12,7 +12,6 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
-use Contao\Environment;
 use Contao\Input;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
