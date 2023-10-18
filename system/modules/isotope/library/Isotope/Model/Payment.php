@@ -116,7 +116,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      */
     public function isAvailable()
     {
-        if (CompatibilityHelper::isBackend()  === 'BE') {
+        if (CompatibilityHelper::isBackend()) {
             return true;
         }
 
