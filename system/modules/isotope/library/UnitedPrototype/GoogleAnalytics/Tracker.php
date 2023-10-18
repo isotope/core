@@ -29,11 +29,11 @@
 namespace UnitedPrototype\GoogleAnalytics;
 
 use UnitedPrototype\GoogleAnalytics\Internals\Util;
-use UnitedPrototype\GoogleAnalytics\Internals\Request\EventRequest;
-use UnitedPrototype\GoogleAnalytics\Internals\Request\ItemRequest;
 use UnitedPrototype\GoogleAnalytics\Internals\Request\PageviewRequest;
-use UnitedPrototype\GoogleAnalytics\Internals\Request\SocialInteractionRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\EventRequest;
 use UnitedPrototype\GoogleAnalytics\Internals\Request\TransactionRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\ItemRequest;
+use UnitedPrototype\GoogleAnalytics\Internals\Request\SocialInteractionRequest;
 
 class Tracker {
 

@@ -15,9 +15,10 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Message;
 use Contao\Session;
-use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
+use Haste\Generator\RowClass;
+use Isotope\Model\ProductCollection;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 

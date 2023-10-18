@@ -10,7 +10,6 @@
  */
 
 use Contao\ArrayUtil;
-
 use Isotope\CompatibilityHelper;
 
 /**
