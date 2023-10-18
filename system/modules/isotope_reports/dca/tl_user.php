@@ -9,12 +9,14 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+ use Isotope\CompatibilityHelper;
+
 $this->loadLanguageFile(\Isotope\Model\Group::getTable());
 
 /**
  * Add the Isotope style sheet
  */
-if (TL_MODE == 'BE') {
+if (CompatibilityHelper::isBackend()) {
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css';
 }
 

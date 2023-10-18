@@ -116,7 +116,7 @@ abstract class Module extends AbstractFrontendModule
         $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        if ('BE' !== TL_MODE && $this->iso_includeMessages) {
+        if (!CompatibilityHelper::isBackend() && $this->iso_includeMessages) {
             $strBuffer = Message::generate() . $strBuffer;
         }
 

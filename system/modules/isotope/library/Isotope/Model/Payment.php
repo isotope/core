@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Module;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
@@ -115,7 +116,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
      */
     public function isAvailable()
     {
-        if (TL_MODE === 'BE') {
+        if (CompatibilityHelper::isBackend()  === 'BE') {
             return true;
         }
 

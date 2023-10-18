@@ -31,7 +31,7 @@ class QuantitySurcharge extends Attribute
     public function isCustomerDefined(): bool
     {
         // Enable both frontend and backend widget
-        return 'BE' !== TL_MODE;
+        return !CompatibilityHelper::isBackend() ;
     }
 
     public function saveToDCA(array &$arrData): void

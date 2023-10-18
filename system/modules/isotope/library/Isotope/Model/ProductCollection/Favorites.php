@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollection;
 
@@ -44,7 +45,7 @@ class Favorites extends ProductCollection
         /** @var PageModel $objPage */
         global $objPage;
 
-        if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
+        if (!CompatibilityHelper::isFrontend() || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 
