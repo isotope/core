@@ -36,6 +36,10 @@
       <exclude>./tests/Fixtures</exclude>
       <exclude>./tests/Functional</exclude>
     </testsuite>
+    <testsuite name="reset">
+      <directory>./tests/Fixtures</directory>
+      <exclude>./tests/Fixtures/isotope-demo-test.sql</exclude>
+    </testsuite>
   </testsuites>
   <extensions>
     <extension class="Contao\TestCase\ClearCachePhpunitExtension"/>
