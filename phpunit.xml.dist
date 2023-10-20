@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd" colors="true" defaultTestSuite="unit" bootstrap="vendor/autoload.php" beStrictAboutChangesToGlobalState="true">
+  <coverage>
+    <include>
+      <directory>./isotope/system/modules</directory>
+    </include>
+    <exclude>
+      <!-- exclude resources that are exempt from testing -->
+      <directory>./*-bundle/src/Entity</directory>
+      <directory>./*-bundle/src/Migration/Version*</directory>
+    </exclude>
+  </coverage>
+  <php>
+    <ini name="error_reporting" value="-1"/>
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[self]=0"/>
+    <env name="SYMFONY_PATCH_TYPE_DECLARATIONS" value="deprecations=0"/>
+    <env name="KERNEL_CLASS" value="Isotope\Tests\Functional\app\AppKernel"/>
+    <env name="DISABLE_HTTP_CACHE" value="1"/>
+    <env name="APP_SECRET" value="foobar"/>
+    <env name="APP_ENV" value="test"/>
+    <env name="APP_DEBUG" value=""/>
+    <env name="DATABASE_URL" value="mysql://root@localhost:3306/isotope-demo-test"/>
+  </php>
+  <testsuites>
+    <testsuite name="unit">
+      <directory>./tests</directory>
+      <exclude>./tests/Fixtures</exclude>
+      <exclude>./tests/Functional</exclude>
+    </testsuite>
+    <testsuite name="functional">
+      <directory>./tests/Functional</directory>
+      <exclude>./core-bundle/tests/Functional/app</exclude>
+    </testsuite>
+    <testsuite name="coverage">
+      <directory>./tests</directory>
+      <exclude>./tests/Fixtures</exclude>
+      <exclude>./tests/Functional</exclude>
+    </testsuite>
+  </testsuites>
+  <extensions>
+    <extension class="Contao\TestCase\ClearCachePhpunitExtension"/>
+    <extension class="Contao\TestCase\WarnXdebugPhpunitExtension"/>
+  </extensions>
+</phpunit>

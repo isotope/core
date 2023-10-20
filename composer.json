@@ -57,7 +57,12 @@
         "terminal42/contao-changelanguage": "^3.0",
         "petschko/dhl-php-sdk": "dev-master@dev",
         "mpay24/mpay24-php": "^4.0",
-        "friendsofphp/php-cs-fixer": "^2.14"
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpunit/phpunit": "^9.3",
+        "contao/test-case": "^4.13",
+        "symfony/phpunit-bridge": "^6.3",
+        "symfony/browser-kit": "^6.3",
+        "roave/better-reflection": "^5.11"
     },
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
@@ -76,6 +81,7 @@
         "psr-0": {
             "Isotope\\": [
                 "system/modules/isotope/library",
+                "system/modules/isotope/library/Isotope/",
                 "system/modules/isotope_reports/library",
                 "system/modules/isotope_rules/library"
             ],
@@ -86,6 +92,11 @@
         "classmap": [
             "system/modules/isotope/drivers/"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Isotope\\Tests\\": "tests/"
+        }
     },
     "extra":{
         "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin",
