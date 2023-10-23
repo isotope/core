@@ -22,6 +22,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 
@@ -63,7 +64,7 @@ class ProductCollectionDownload extends Model
      */
     protected function download($strFile)
     {
-        if ('FE' === TL_MODE && $this->downloads_remaining !== '') {
+        if (CompatibilityHelper::isFrontend() && $this->downloads_remaining !== '') {
             Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
@@ -139,7 +140,7 @@ class ProductCollectionDownload extends Model
             }
 
             $strHref = '';
-            if ('FE' === TL_MODE) {
+            if (CompatibilityHelper::isFrontend()) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
                     $baseUrl

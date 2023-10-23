@@ -10,6 +10,7 @@
  */
 
 use Contao\ArrayUtil;
+use Isotope\CompatibilityHelper;
 
 /**
  * Backend modules
@@ -47,7 +48,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 0, array
 
 $GLOBALS['BE_MOD']['accounts']['member']['tables'][] = \Isotope\Model\Address::getTable();
 
-if ('BE' === TL_MODE) {
+if (CompatibilityHelper::isBackend()) {
     $GLOBALS['TL_CSS'][] = 'system/modules/isotope/assets/css/backend.css|static';
 }
 
@@ -485,12 +486,12 @@ if (\Contao\Config::getInstance()->isComplete()) {
     $GLOBALS['TL_HOOKS']['changelanguageNavigation'][]      = array('Isotope\EventListener\ChangeLanguageListener', '__invoke');
 
     // Set module and module id for payment and/or shipping modules
-    if ('FE' === TL_MODE) {
+    if (CompatibilityHelper::isFrontend()) {
         // Only limit countries in FE
         $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend\Member\Callback', 'limitCountries');
     }
 
-    if ('BE' === TL_MODE) {
+    if (CompatibilityHelper::isBackend()) {
         // Type agent help is only needed in back end
         $GLOBALS['TL_HOOKS']['loadDataContainer'][]         = array('Isotope\Backend', 'loadTypeAgentHelp');
         $GLOBALS['TL_HOOKS']['loadLanguageFile'][]          = array('Isotope\Backend\ProductType\Help', 'initializeWizard');

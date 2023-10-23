@@ -22,6 +22,7 @@ use Contao\System;
 use Contao\User;
 use Haste\Form\Form;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 use Isotope\Model\Config;
@@ -60,7 +61,7 @@ class AddressBook extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

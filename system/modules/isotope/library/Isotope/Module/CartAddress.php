@@ -16,6 +16,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Form\Form;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Address;
 
@@ -50,7 +51,7 @@ class CartAddress extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

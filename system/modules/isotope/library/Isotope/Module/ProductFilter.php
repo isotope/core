@@ -22,6 +22,7 @@ use Contao\Widget;
 use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Interfaces\IsotopeProduct;
@@ -63,7 +64,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

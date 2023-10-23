@@ -20,6 +20,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
 
@@ -55,7 +56,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

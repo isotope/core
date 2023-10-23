@@ -18,6 +18,7 @@ use Contao\Module;
 use Contao\Request;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -176,7 +177,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
-            if ('BE' === TL_MODE) {
+            if (CompatibilityHelper::isBackend()) {
                 if ($blnResult) {
                     Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
@@ -184,7 +185,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 }
             }
 
-        } elseif ('cancel' === $objNewStatus->saferpay_status && 'BE' === TL_MODE) {
+        } elseif ('cancel' === $objNewStatus->saferpay_status && CompatibilityHelper::isBackend()) {
             Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }

@@ -23,6 +23,7 @@ use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
@@ -81,7 +82,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -17,6 +17,7 @@ use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Template;
@@ -104,11 +105,11 @@ class OrderDetails extends AbstractProductCollection
         }
 
         // Order belongs to a member but not logged in
-        if ('FE' === TL_MODE && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if (CompatibilityHelper::isFrontend() && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
             throw new AccessDeniedException();
         }
 
-        if ('FE' === TL_MODE) {
+        if (CompatibilityHelper::isFrontend()) {
             /** @var PageModel $objPage */
             global $objPage;
 
@@ -149,7 +150,7 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getActions()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return [];
         }
 
