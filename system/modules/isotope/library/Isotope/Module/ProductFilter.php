@@ -327,7 +327,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 }
 
                 // Generate options from database values (e.g. for text fields)
-                if (!\is_array($arrWidget['options'])) {
+                if (!\is_array($arrWidget['options'] ?? null)) {
                     $arrWidget['options'] = array_map(static fn ($v) => ['value' => $v, 'label' => $v], $arrValues);
                 }
 

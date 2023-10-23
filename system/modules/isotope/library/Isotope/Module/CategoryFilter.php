@@ -23,7 +23,6 @@ use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
-use Isotope\RequestCache\Filter;
 
 class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModule
 {

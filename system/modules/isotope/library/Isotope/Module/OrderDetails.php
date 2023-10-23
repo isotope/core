@@ -14,7 +14,6 @@ namespace Isotope\Module;
 use Contao\CoreBundle\Exception\AccessDeniedException;
 use Contao\FrontendUser;
 use Contao\Input;
-use Contao\PageError403;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Util\Format;

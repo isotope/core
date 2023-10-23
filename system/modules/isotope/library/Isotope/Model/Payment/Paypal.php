@@ -52,12 +52,13 @@ class Paypal extends Postsale
 
         if ('Completed' !== Input::post('payment_status')) {
             System::log('PayPal IPN: payment status "' . Input::post('payment_status') . '" not implemented', __METHOD__, TL_GENERAL);
-            return new Response('', Response::HTTP_NOT_IMPLEMENTED);
+            return new Response();
         }
 
         if (!$this->validateInput()) {
             return new Response('', Response::HTTP_BAD_REQUEST);
         }
+
         if (!$this->debug && 0 !== strcasecmp(Input::post('receiver_email', true), $this->paypal_account)) {
             System::log('PayPal IPN: Account email does not match (got ' . Input::post('receiver_email', true) . ', expected ' . $this->paypal_account . ')', __METHOD__, TL_ERROR);
             return new Response('', Response::HTTP_BAD_REQUEST);

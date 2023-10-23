@@ -12,7 +12,6 @@
 namespace Isotope\Model\Payment;
 
 use Contao\Controller;
-use Contao\Environment;
 use Contao\Input;
 use Contao\Module;
 use Contao\PageModel;

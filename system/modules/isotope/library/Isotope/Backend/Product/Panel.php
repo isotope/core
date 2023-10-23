@@ -18,9 +18,7 @@ use Contao\Image;
 use Contao\Input;
 use Contao\RequestToken;
 use Contao\Session;
-use Contao\StringUtil;
 use Contao\System;
-use Isotope\Model\Group;
 
 class Panel extends Backend
 {

@@ -325,7 +325,7 @@ class DcaManager extends Backend
             foreach ($arrFields as $name => $arrField) {
                 if (\in_array($name, $arrEnabled)) {
 
-                    if ($arrField['inputType'] == '') {
+                    if (empty($arrField['inputType']) && empty($arrField['input_field_callback'])) {
                         continue;
                     }
 
@@ -417,7 +417,6 @@ class DcaManager extends Backend
             return;
         }
 
-        $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['mode']    = 4;
         $GLOBALS['TL_DCA']['tl_iso_product']['list']['sorting']['fields']  = ['id'];
         $GLOBALS['TL_DCA']['tl_iso_product']['fields']['alias']['sorting'] = false;
 
