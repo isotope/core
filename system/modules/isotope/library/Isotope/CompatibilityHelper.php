@@ -12,67 +12,37 @@
 namespace Isotope;
 
 use Contao\System;
-use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Class CompatibilityHelper
- *
- * Provides compatibility-related methods for Contao Isotope
- *
- */
 class CompatibilityHelper
 {
     /**
-     * Get the current request.
-     *
-     * @return Request|null
-     */
-    private static function getCurrentRequest()
-    {
-        $container = System::getContainer();
-
-        return $container->get('request_stack')->getCurrentRequest();
-    }
-
-
-    /**
      * Check if the current scope is backend.
-     *
-     * @return bool True if a request exists and is backend.
      */
     public static function isBackend(): bool
     {
         $container = System::getContainer();
+        $request = $container->get('request_stack')->getCurrentRequest();
 
-        $request = self::getCurrentRequest();
-
-        if ($request) {
-            $scopeMatcher = $container->get('contao.routing.scope_matcher');
-
-            return $scopeMatcher->isBackendRequest($request);
+        if (!$request) {
+            return false;
         }
 
-        return false;
+        return $container->get('contao.routing.scope_matcher')->isBackendRequest($request);
     }
 
 
     /**
      * Check if the current scope is frontend.
-     *
-     * @return bool True if a request exists and is frontend.
      */
     public static function isFrontend(): bool
     {
         $container = System::getContainer();
+        $request = $container->get('request_stack')->getCurrentRequest();
 
-        $request = self::getCurrentRequest();
-
-        if ($request) {
-            $scopeMatcher = $container->get('contao.routing.scope_matcher');
-
-            return $scopeMatcher->isFrontendRequest($request);
+        if (!$request) {
+            return false;
         }
 
-        return false;
+        return $container->get('contao.routing.scope_matcher')->isFrontendRequest($request);
     }
 }
