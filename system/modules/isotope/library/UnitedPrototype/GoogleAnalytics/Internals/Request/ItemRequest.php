@@ -28,9 +28,9 @@
 
 namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
-use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
-
 use UnitedPrototype\GoogleAnalytics\Item;
+
+use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
 
 class ItemRequest extends Request {
 	

@@ -28,14 +28,14 @@
 
 namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
+use UnitedPrototype\GoogleAnalytics\Tracker;
+use UnitedPrototype\GoogleAnalytics\Visitor;
+use UnitedPrototype\GoogleAnalytics\Session;
 use UnitedPrototype\GoogleAnalytics\CustomVariable;
+
 use UnitedPrototype\GoogleAnalytics\Internals\ParameterHolder;
 use UnitedPrototype\GoogleAnalytics\Internals\Util;
 use UnitedPrototype\GoogleAnalytics\Internals\X10;
-
-use UnitedPrototype\GoogleAnalytics\Session;
-use UnitedPrototype\GoogleAnalytics\Tracker;
-use UnitedPrototype\GoogleAnalytics\Visitor;
 
 abstract class Request extends HttpRequest {
 	
