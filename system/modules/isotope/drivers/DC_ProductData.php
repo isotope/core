@@ -2231,7 +2231,12 @@ class DC_ProductData extends \DC_Table
 
                             foreach ($row_v as $option)
                             {
-                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?: $option;
+                                if (!\is_string($option))
+                                {
+                                    continue;
+                                }
+
+                                $args_k[] = $GLOBALS['TL_DCA'][$table]['fields'][$v]['reference'][$option] ?? $option;
                             }
 
                             $args[$k] = implode(', ', $args_k);
