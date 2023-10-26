@@ -26,7 +26,10 @@ class Callback extends Backend
     public function initializeDCA()
     {
         // Set default tax class
-        $GLOBALS['TL_DCA']['tl_iso_product_price']['fields']['tax_class']['default'] = (int) \Isotope\Model\TaxClass::findFallback()->id;
+        if ($taxClass = \Isotope\Model\TaxClass::findFallback())
+        {
+            $GLOBALS['TL_DCA']['tl_iso_product_price']['fields']['tax_class']['default'] = (int) $taxClass->id;
+        }
     }
 
 
