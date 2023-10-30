@@ -34,9 +34,13 @@ class Label
      *
      * @return array
      */
-    public function generate($row, $label, $dc, $args)
+    public function generate($row, $label, DataContainer $dc, $args)
     {
         $objProduct = Product::findByPk($row['id']);
+
+        if (!$objProduct) {
+            return $args;
+        }
 
         foreach ($GLOBALS['TL_DCA'][$dc->table]['list']['label']['fields'] as $i => $field) {
             switch ($field) {
@@ -82,11 +86,9 @@ class Label
     /**
      * Generate image label for product.
      *
-     * @param Product $objProduct
-     *
      * @return string
      */
-    public static function generateImage($objProduct)
+    public static function generateImage(Product $objProduct)
     {
         $arrImages = StringUtil::deserialize($objProduct->images);
 
