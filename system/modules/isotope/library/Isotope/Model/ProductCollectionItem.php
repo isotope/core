@@ -339,7 +339,7 @@ class ProductCollectionItem extends Model
      */
     public function getTotalPrice()
     {
-        return (string) ($this->getPrice() * (int) $this->quantity);
+        return (string) ((float)$this->getPrice() * (int) $this->quantity);
     }
 
     /**
@@ -349,7 +349,7 @@ class ProductCollectionItem extends Model
      */
     public function getTotalOriginalPrice()
     {
-        return (string) ($this->getOriginalPrice() * (int) $this->quantity);
+        return (string) ((float)$this->getOriginalPrice() * (int) $this->quantity);
     }
 
     /**
@@ -359,7 +359,7 @@ class ProductCollectionItem extends Model
      */
     public function getTaxFreeTotalPrice()
     {
-        return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
+        return (string) ((float)$this->getTaxFreePrice() * (int) $this->quantity);
     }
 
     /**
