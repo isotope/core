@@ -18,9 +18,6 @@ use Contao\StringUtil;
 use Contao\System;
 use Contao\Template;
 use Haste\Generator\RowClass;
-use Haste\Units\Mass\Scale;
-use Haste\Units\Mass\Weighable;
-use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
@@ -30,10 +27,13 @@ use Isotope\Interfaces\IsotopePayment;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
+use Isotope\Interfaces\IsotopeWeighable;
+use Isotope\Interfaces\IsotopeWeightAggregate;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
+use Isotope\Scale;
 use Model\Registry;
 
 /**
@@ -1453,9 +1453,11 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
-    {
+         {
         if (null === $objScale) {
-            $objScale = new Scale();
+            $container = System::getContainer();
+            $unitConverter = $container->get('isotope.unit_converter');
+            $objScale = new Scale($unitConverter);
         }
 
         foreach ($this->getItems() as $objItem) {
@@ -1465,7 +1467,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $objProduct = $objItem->getProduct();
 
-            if ($objProduct instanceof WeightAggregate) {
+            if ($objProduct instanceof IsotopeWeightAggregate) {
                 $objWeight = $objProduct->getWeight();
 
                 if (null !== $objWeight) {
@@ -1474,7 +1476,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                     }
                 }
 
-            } elseif ($objProduct instanceof Weighable) {
+            } elseif ($objProduct instanceof IsotopeWeighable) {
                 for ($i = 0; $i < $objItem->quantity; $i++) {
                     $objScale->add($objProduct);
                 }

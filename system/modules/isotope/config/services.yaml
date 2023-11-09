@@ -41,3 +41,44 @@ services:
     isotope.fragment.registry:
         alias: contao.fragment.registry
         public: true
+
+    isotope.unit_converter:
+        class: UnitConverter\UnitConverter
+        arguments:
+            - '@isotope.unit_registry'
+            - '@isotope.binary_calculator'
+        public: true
+
+    isotope.unit_registry:
+        class: UnitConverter\Registry\UnitRegistry
+        arguments:
+            - ['@unit.milligram', '@unit.gram', '@unit.kilogram', '@unit.ounce', '@unit.pound', '@unit.stone']
+
+    unit.milligram:
+        class: UnitConverter\Unit\Mass\Milligram
+    unit.gram:
+        class: UnitConverter\Unit\Mass\Gram
+    unit.kilogram:
+        class: UnitConverter\Unit\Mass\Kilogram
+    unit.ounce:
+        class: UnitConverter\Unit\Mass\Ounce
+    unit.pound:
+        class: UnitConverter\Unit\Mass\Pound
+    unit.stone:
+        class: UnitConverter\Unit\Mass\Stone
+
+    isotope.binary_calculator:
+        class: UnitConverter\Calculator\BinaryCalculator
+        arguments:
+            - 2 # Precision
+            - 1 # PHP_ROUND_HALF_UP - Rounding mode
+
+    Isotope\Weight:
+        arguments:
+            - '@isotope.unit_converter'
+        public: true
+
+    Isotope\Scale:
+        arguments:
+            - '@isotope.unit_converter'
+        public: true

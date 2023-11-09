@@ -140,7 +140,7 @@ class DHLBusinessCheckoutListener
         $details->setProduct($shippingMethod->dhl_product);
         $details->setCustomerReference($order->getDocumentNumber());
         $details->setReturnReference($order->getDocumentNumber());
-        $details->setWeight($scale->amountIn(Unit::KILOGRAM));
+        $details->setWeight($scale->amountIn("kg"));
 
         $shippingDate = StringUtil::deserialize($shippingMethod->dhl_shipping, true);
         if (isset($shippingDate['value']) && $shippingDate['value'] && $shippingDate['unit']) {

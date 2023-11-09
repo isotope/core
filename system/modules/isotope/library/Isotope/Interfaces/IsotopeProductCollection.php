@@ -13,10 +13,10 @@ namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
 use Contao\Template;
-use Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductCollectionSurcharge;
+use Isotope\Scale;
 
 
 /**

@@ -11,10 +11,11 @@
 
 namespace Isotope\Model\Attribute;
 
-use Haste\Units\Mass\WeightAggregate;
-use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Isotope;
+use Contao\Database\Result;
 use Isotope\Model\Attribute;
+use Isotope\Interfaces\IsotopeProduct;
+use Isotope\Interfaces\IsotopeWeightAggregate;
+use Isotope\Isotope;
 
 /**
  * Attribute to implement weight formatting
@@ -24,7 +25,7 @@ class Weight extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(Result $objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception
@@ -54,7 +55,7 @@ class Weight extends Attribute
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        if (!$objProduct instanceof WeightAggregate || ($weight = $objProduct->getWeight()) === null) {
+        if (!$objProduct instanceof IsotopeWeightAggregate || ($weight = $objProduct->getWeight()) === null) {
             return '';
         }
 

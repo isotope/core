@@ -15,14 +15,14 @@ use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Units\Mass\Weight;
-use Haste\Units\Mass\WeightAggregate;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
 use Isotope\Isotope;
+use Isotope\Interfaces\IsotopeWeightAggregate;
 use Isotope\Translation;
+use Isotope\Weight;
 
 
 /**
@@ -43,8 +43,8 @@ use Isotope\Translation;
  * @property float  $quantity_mode
  * @property float  $minimum_quantity
  * @property float  $maximum_quantity
- * @property float  $minimum_weight
- * @property float  $maximum_weight
+ * @property array  $minimum_weight
+ * @property array  $maximum_weight
  * @property array  $product_types
  * @property string $product_types_condition
  * @property array  $config_ids
@@ -59,7 +59,7 @@ use Isotope\Translation;
  * @property bool   $logging
  * @property bool   $enabled
  */
-abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggregate
+abstract class Shipping extends TypeAgent implements IsotopeShipping, IsotopeWeightAggregate
 {
     const QUANTITY_MODE_ITEMS = 'cart_items';
     const QUANTITY_MODE_PRODUCTS = 'cart_products';
@@ -156,7 +156,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
         }
 
         if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null
-            && $objScale->isMoreThan($maxWeight)
+&& $objScale->isMoreThan($maxWeight)
         ) {
             return false;
         }
@@ -376,7 +376,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
     public function getWeight()
     {
         return Weight::createFromTimePeriod($this->shipping_weight);
-    }
+}
 
     /**
      * Logs information for this shipping method if enabled.

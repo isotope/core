@@ -39,7 +39,7 @@ use Isotope\Translation;
  * @property int    $limitPerConfig
  * @property int    $minSubtotal
  * @property int    $maxSubtotal
- * @property string $minWeight
+ * @property array $minWeight
  * @property string $maxWeight
  * @property int    $minItemQuantity
  * @property int    $maxItemQuantity
