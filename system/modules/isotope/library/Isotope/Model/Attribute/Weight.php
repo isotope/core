@@ -12,10 +12,10 @@
 namespace Isotope\Model\Attribute;
 
 use Contao\Database\Result;
-use Isotope\Model\Attribute;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Interfaces\IsotopeWeightAggregate;
 use Isotope\Isotope;
+use Isotope\Model\Attribute;
 
 /**
  * Attribute to implement weight formatting

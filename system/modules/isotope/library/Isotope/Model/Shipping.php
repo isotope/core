@@ -156,7 +156,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, IsotopeWei
         }
 
         if (($maxWeight = Weight::createFromTimePeriod($this->maximum_weight)) !== null
-&& $objScale->isMoreThan($maxWeight)
+            && $objScale->isMoreThan($maxWeight)
         ) {
             return false;
         }
@@ -376,7 +376,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, IsotopeWei
     public function getWeight()
     {
         return Weight::createFromTimePeriod($this->shipping_weight);
-}
+    }
 
     /**
      * Logs information for this shipping method if enabled.
