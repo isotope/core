@@ -201,7 +201,6 @@ class DcaManager extends Backend
         // Disable all variant related operations
         if (!$blnVariants) {
             unset(
-                $GLOBALS['TL_DCA'][Product::getTable()]['list']['global_operations']['toggleVariants'],
                 $GLOBALS['TL_DCA'][Product::getTable()]['list']['operations']['generate']
             );
         }
@@ -212,13 +211,13 @@ class DcaManager extends Backend
         }
 
         // Hide SKU column if not enabled in any product type
-        if (!$blnShowSku) {
-            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][2]);
+        if (!$blnShowSku && false !== ($pos = array_search('sku', $GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields']))) {
+            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][$pos]);
         }
 
         // Hide price column if not enabled in any product type
-        if (!$blnShowPrice) {
-            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][3]);
+        if (!$blnShowPrice && false !== ($pos = array_search('price', $GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields']))) {
+            unset($GLOBALS['TL_DCA'][Product::getTable()]['list']['label']['fields'][$pos]);
         }
 
         // Disable sort-into-group if no groups are defined
