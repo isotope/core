@@ -47,7 +47,6 @@ class MembersRegistration extends Sales
         $objData = Database::getInstance()->query("
             SELECT
                 COUNT(m.id) AS new_members,
-			    SUM(COUNT(m.id)) OVER(ORDER BY m.dateAdded) as all_members,
                 $dateGroup AS dateGroup
             FROM tl_member m
             GROUP BY dateGroup
@@ -57,14 +56,26 @@ class MembersRegistration extends Sales
         $arrData = $this->initializeData($period, $intStart, $intStop);
         $arrChart = $this->initializeChart($period, $intStart, $intStop);
 
+        $all_members = 0;
         while ($objData->next()) {
-            $arrData['rows'][$objData->dateGroup]['columns']['all_members']['value'] = (int)$objData->all_members;
             $arrData['rows'][$objData->dateGroup]['columns']['new_members']['value'] = (int)$objData->new_members;
+            $all_members += $objData->new_members;
+            $arrData['rows'][$objData->dateGroup]['columns']['all_members']['value'] = (int)$all_members;
 
             // Generate chart data
-            $arrChart['series'][0]['data'][$objData->dateGroup] = (int)$objData->all_members;
+            $arrChart['series'][0]['data'][$objData->dateGroup] = (int)$all_members;
             $arrChart['series'][1]['data'][$objData->dateGroup] = (int)$objData->new_members;
         }
+
+        $arrData['rows'] = array_reduce($arrData['rows'], function ($arrCarry, $arrItem) {
+            $prevItem = sizeof($arrCarry) > 0 ? $arrCarry[sizeof($arrCarry) - 1] : null;
+            if($arrItem['columns']['all_members']['value'] == 0 && $prevItem != null) {
+                echo "item:".$arrItem."|prev:".$prevItem;
+                $arrItem['columns']['all_members']['value'] = $prevItem['columns']['all_members']['value'];
+            }
+            $arrCarry[] = $arrItem;
+            return $arrCarry;
+        }, array());
 
         // Switch from associative array to index based for apexcharts
         for ($i = 0, $iMax = count($arrChart['series']); $i < $iMax; $i++) {
@@ -91,11 +102,11 @@ class MembersRegistration extends Sales
                 'header'        => true,
             ],
             "new_members" => [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_new'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_new'],
                 'attributes'    => ' style="text-align:right"',
             ],
             "all_members" => [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_total'],
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
@@ -129,13 +140,13 @@ class MembersRegistration extends Sales
     {
         $arrData = array();
         $arrData['series'] = [[
-            'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_total'],
+            'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
             'type' => 'line'
         ],
-        [
-            'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_reg_new'],
-            'type' => 'column'
-        ]];
+            [
+                'name' => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_new'],
+                'type' => 'column'
+            ]];
 
         while ($intStart <= $intStop) {
             $arrData['labels'][] = $intStart;
