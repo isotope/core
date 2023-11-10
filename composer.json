@@ -32,7 +32,7 @@
         "docs": "https://docs.isotopeecommerce.org/"
     },
     "require":{
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "composer-runtime-api": "^2",
         "contao/core-bundle": "^4.13",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
@@ -49,7 +49,8 @@
         "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
         "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
         "symfony/polyfill-php80": "^1.25",
-        "hashids/hashids": "^4.1"
+        "hashids/hashids": "^4.1",
+        "jordanbrauer/unit-converter": "^0.9.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
