@@ -35,6 +35,7 @@ use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
 use Isotope\Scale;
 use Model\Registry;
+use UnitConverter\UnitConverter;
 
 /**
  * Class ProductCollection
@@ -68,6 +69,8 @@ use Model\Registry;
  */
 abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {
+
+    private static UnitConverter $unitConverter;
 
     /**
      * Name of the current table
@@ -1453,11 +1456,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
-         {
+        {
         if (null === $objScale) {
-            $container = System::getContainer();
-            $unitConverter = $container->get('isotope.unit_converter');
-            $objScale = new Scale($unitConverter);
+            $objScale = new Scale($this->unitConverter);
         }
 
         foreach ($this->getItems() as $objItem) {
