@@ -69,9 +69,6 @@ use UnitConverter\UnitConverter;
  */
 abstract class ProductCollection extends TypeAgent implements IsotopeProductCollection
 {
-
-    private static UnitConverter $unitConverter;
-
     /**
      * Name of the current table
      * @var string
@@ -1458,7 +1455,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function addToScale(Scale $objScale = null)
         {
         if (null === $objScale) {
-            $objScale = new Scale(self::$unitConverter);
+            $objScale = new Scale();
         }
 
         foreach ($this->getItems() as $objItem) {

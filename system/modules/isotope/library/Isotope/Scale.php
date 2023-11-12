@@ -22,10 +22,7 @@ class Scale
      */
     protected $arrWeights = array();
 
-    public function __construct(
-        private UnitConverter $unitConverter
-    ) {
-    }
+    private static UnitConverter $unitConverter;
 
     /**
      * Add weight to the scale
@@ -70,11 +67,11 @@ class Scale
 
         foreach ($this->arrWeights as $objWeight) {
             if ($objWeight->getWeightValue() > 0) {
-                $fltWeight += $this->unitConverter->convert((string)$objWeight->getWeightValue())->from($objWeight->getWeightUnit())->to("kg");
+                $fltWeight += self::$unitConverter->convert((string)$objWeight->getWeightValue())->from($objWeight->getWeightUnit())->to("kg");
             }
         }
 
-        return $this->unitConverter->convert((string)$fltWeight)->from("kg")->to($strUnit);
+        return self::$unitConverter->convert((string)$fltWeight)->from("kg")->to($strUnit);
     }
 
     /**
