@@ -45,7 +45,3 @@ services:
     isotope.unit-converter:
         class: UnitConverter\UnitConverter
         factory: ['Isotope\UnitConverterStaticFactory', 'createUnitConverter']
-
-    Isotope\Weight:
-        arguments:
-            - '@isotope.unit-converter' 

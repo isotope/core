@@ -12,40 +12,19 @@
 namespace Isotope;
 
 use Contao\StringUtil;
-use Isotope\Interfaces\IsotopeWeighable;
+use Isotope\Weight;
 use UnitConverter\UnitConverter;
 
-class Weight implements IsotopeWeighable
+class WeightStaticFactory
 {
-    public function __construct(
-        private float $fltValue,
-        private string $strUnit
-    ) {
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getWeightValue()
-    {
-        return $this->fltValue;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getWeightUnit()
-    {
-        return $this->strUnit;
-    }
+    private static UnitConverter $unitConverter;
 
     /**
      * Create weight object from timePeriod widget value
      * @param   mixed $arrData
      * @return  Weight|null
      */
-    public static function createFromTimePeriod(UnitConverter $unitConverter,
-    $arrData)
+    public static function createWeightFromTimePeriod($arrData): Weight
     {
         $arrData = StringUtil::deserialize($arrData);
 
@@ -54,11 +33,11 @@ class Weight implements IsotopeWeighable
             || !is_array($arrData)
             || $arrData['value'] === ''
             || $arrData['unit'] === ''
-            || !in_array($arrData['unit'], $unitConverter->getRegistry()->listUnits('mass'))
+            || !in_array($arrData['unit'], self::$unitConverter->getRegistry()->listUnits('mass'))
         ) {
             return null;
         }
 
-        return new self($arrData['value'], $arrData['unit']);
+        return new Weight($arrData['value'], $arrData['unit']);
     }
 }
