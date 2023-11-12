@@ -49,9 +49,6 @@ class Weight implements IsotopeWeighable
      */
     public static function createFromTimePeriod($arrData)
     {
-        $container = System::getContainer();
-        self::$unitConverter = $container->get('isotope.unit_converter');
-
         $arrData = StringUtil::deserialize($arrData);
 
         if (
@@ -64,6 +61,6 @@ class Weight implements IsotopeWeighable
             return null;
         }
 
-        return new static($arrData['value'], $arrData['unit']);
+        return new self($arrData['value'], $arrData['unit']);
     }
 }
