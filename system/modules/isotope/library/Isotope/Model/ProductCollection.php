@@ -1458,7 +1458,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     public function addToScale(Scale $objScale = null)
         {
         if (null === $objScale) {
-            $objScale = new Scale($this->unitConverter);
+            $objScale = new Scale(self::$unitConverter);
         }
 
         foreach ($this->getItems() as $objItem) {
