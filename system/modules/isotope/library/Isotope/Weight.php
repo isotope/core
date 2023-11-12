@@ -13,16 +13,20 @@ namespace Isotope;
 
 use Contao\StringUtil;
 use Contao\System;
+use Haste\Units\Dimension\Unit;
 use Isotope\Interfaces\IsotopeWeighable;
 use UnitConverter\UnitConverter;
 
 class Weight implements IsotopeWeighable
 {
+private static UnitConverter $unitConverter;
+
     public function __construct(
-        private UnitConverter $unitConverter,
+        UnitConverter $unitConverter,
         private float $fltValue,
         private string $strUnit
     ) {
+        self::$unitConverter = $unitConverter;
     }
 
     /**
