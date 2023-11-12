@@ -18,9 +18,8 @@ use UnitConverter\UnitConverter;
 
 class Weight implements IsotopeWeighable
 {
-    private static UnitConverter $unitConverter;
-
     public function __construct(
+        private UnitConverter $unitConverter,
         private float $fltValue,
         private string $strUnit
     ) {
