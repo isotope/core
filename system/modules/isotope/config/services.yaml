@@ -42,6 +42,6 @@ services:
         alias: contao.fragment.registry
         public: true
 
-    isotope.unit-converter:
+    isotope.unit_converter:
         class: UnitConverter\UnitConverter
         factory: ['Isotope\UnitConverterStaticFactory', 'createUnitConverter']

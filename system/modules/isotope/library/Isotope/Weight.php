@@ -12,6 +12,7 @@
 namespace Isotope;
 
 use Contao\StringUtil;
+use Contao\System;
 use Isotope\Interfaces\IsotopeWeighable;
 use UnitConverter\UnitConverter;
 
@@ -47,6 +48,8 @@ class Weight implements IsotopeWeighable
     public static function createFromTimePeriod(UnitConverter $unitConverter,
     $arrData)
     {
+        $unitConverter = System::getContainer()->get('isotope.unit_converter');
+
         $arrData = StringUtil::deserialize($arrData);
 
         if (
