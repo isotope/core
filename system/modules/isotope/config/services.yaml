@@ -45,3 +45,4 @@ services:
     isotope.unit_converter:
         class: UnitConverter\UnitConverter
         factory: ['Isotope\UnitConverterStaticFactory', 'createUnitConverter']
+        public: true
