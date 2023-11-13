@@ -1453,7 +1453,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      * @inheritdoc
      */
     public function addToScale(Scale $objScale = null)
-        {
+    {
         if (null === $objScale) {
             $objScale = new Scale();
         }
