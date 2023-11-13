@@ -63,15 +63,17 @@ class Scale
             return 0;
         }
 
+        $unitConverter = System::getContainer()->get('isotope.unit_converter');
+
         $fltWeight = 0.0;
 
         foreach ($this->arrWeights as $objWeight) {
             if ($objWeight->getWeightValue() > 0) {
-                $fltWeight += self::$unitConverter->convert((string)$objWeight->getWeightValue())->from($objWeight->getWeightUnit())->to("kg");
+                $fltWeight += $unitConverter->convert((string)$objWeight->getWeightValue())->from($objWeight->getWeightUnit())->to("kg");
             }
         }
 
-        return self::$unitConverter->convert((string)$fltWeight)->from("kg")->to($strUnit);
+        return $unitConverter->convert((string)$fltWeight)->from("kg")->to($strUnit);
     }
 
     /**
