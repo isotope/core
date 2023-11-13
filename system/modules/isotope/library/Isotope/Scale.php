@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\System;
 use Isotope\Interfaces\IsotopeWeighable;
 use UnitConverter\UnitConverter;
 
