@@ -14,7 +14,6 @@ namespace Isotope\Backend\Address;
 use Contao\Backend;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\System;
 use Isotope\Model\Address;
 
 class Callback extends Backend
