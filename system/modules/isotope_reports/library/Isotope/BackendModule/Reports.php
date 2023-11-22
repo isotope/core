@@ -19,19 +19,24 @@ use Isotope\Isotope;
 use Isotope\Model\Config;
 use Isotope\Report\Report;
 
-
 class Reports extends BackendOverview
 {
-
     protected function compile()
     {
+        $summary = [];
+        $periods = [
+            '-24 hours' => $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary'],
+            'Y-m-01' => $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary'],
+            'Y-01-01' => $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary'],
+        ];
 
-        $last24h = $this->getSummaryFor('-24 hours', $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary']);
-        $currentMonth = $this->getSummaryFor(date('Y-m-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary']);
-        $currentYear = $this->getSummaryFor(date('Y-01-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary']);
-        $allSummaries = array_merge_recursive($last24h, $currentMonth, $currentYear);
+        foreach ($periods as $time => $label) {
+            foreach ($this->getSummaryFor(strtotime($time)) as $configId => $data) {
+                $summary[$configId][$label] = $data;
+            }
+        }
 
-        $this->Template->before = $this->getSummary($GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'], $allSummaries);
+        $this->Template->before = $this->getSummary($summary);
 
         parent::compile();
     }
@@ -62,9 +67,6 @@ class Reports extends BackendOverview
         return $arrReturn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function checkUserAccess($module)
     {
         return BackendUser::getInstance()->isAdmin || BackendUser::getInstance()->hasAccess($module, 'iso_reports');
@@ -73,18 +75,27 @@ class Reports extends BackendOverview
     /**
      * Generate a summary for config
      */
-    protected function getSummary($text, $data): string
+    private function getSummary(array $data): string
     {
-        $strBuffer = '';
-        foreach ($data as $config_name => $config_data) {
-            $config = Config::findBy('name', $config_name);
-
-            $strBuffer .= '
-<fieldset id="pal_summary_'.$config_name.'" class="tl_tbox">
-<legend onclick="AjaxRequest.toggleFieldset(this,\'summary_'.$config_name.'\',\'content\')">'.$text.': <b>'.$config_name.'</b></legend>
+        $strBuffer = '
+<fieldset id="pal_summary" class="tl_tbox">
+<legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</b></legend>
 <div class="summary">
 <div class="tl_listing_container list_view">
-    <table class="tl_listing">
+    <table class="tl_listing">';
+
+        $hasMultipleConfigs = \count($data) > 0;
+        foreach ($data as $configId => $configData) {
+            $config = Config::findBy('id', $configId);
+
+            if ($hasMultipleConfigs) {
+                $strBuffer .= '
+    <tr>
+        <th colspan="6" style="padding:5px 0">'.$GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'].': '.$config->name.'</th>
+    </tr>';
+            }
+
+            $strBuffer .= '
     <tr>
         <th class="tl_folder_tlist">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales_headline'].'</th>
         <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'].'</th>
@@ -92,47 +103,50 @@ class Reports extends BackendOverview
         <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'].'</th>
         <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['discounts#'].'</th>
         <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales_avg'].'</th>
-    </tr>';
+    </tr>
+            ';
 
             $i = -1;
-            foreach ($config_data as $time_range => $time_range_data) {
+            foreach ($configData as $timeRange => $timeRangeData) {
                 $strBuffer .= '
     <tr class="row_'.++$i.($i % 2 ? ' odd' : ' even').'">
-        <td class="tl_file_list">'.$time_range.'</td>
-        <td class="tl_file_list" style="text-align:right">'.$time_range_data['total_orders'].'</td>
-        <td class="tl_file_list" style="text-align:right">'.$time_range_data['total_items'].'</td>
-        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['total_sales'], true, null, true, $config).'</td>
-        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['total_discounts'], true, null, true, $config).'</td>
-        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['average_sales'], true, null, true, $config).'</td>
+        <td class="tl_file_list">'.$timeRange.'</td>
+        <td class="tl_file_list" style="text-align:right">'.$timeRangeData['total_orders'].'</td>
+        <td class="tl_file_list" style="text-align:right">'.$timeRangeData['total_items'].'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['total_sales'], true, null, true, $config).'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['total_discounts'], true, null, true, $config).'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($timeRangeData['average_sales'], true, null, true, $config).'</td>
     </tr>';
             }
 
-            $strBuffer .= '
+            if ($hasMultipleConfigs) {
+                $strBuffer .= '<tr><th colspan="6">&nbsp;</th></tr>';
+            }
+        }
+
+        $strBuffer .= '
     </table>
 </div>
 </div>
 </fieldset>';
-        }
 
         return $strBuffer;
     }
 
     /**
      * Generate a summary for time range
-     * @return array
      */
-    protected function getSummaryFor($timeRange, $timeRangeLabel)
+    private function getSummaryFor(int $locked): array
     {
         $objOrders = Database::getInstance()->prepare("
             SELECT
-                c.name AS config_name,
+                c.id AS config_id,
                 IFNULL(sub.total_orders,0) AS total_orders,
                 IFNULL(sub.total_items,0) AS total_items,
                 IFNULL(sub.total_sales+sub.total_discounts,0) AS total_sales,
                 IFNULL((sub.total_sales+sub.total_discounts)/sub.total_orders,0) AS average_sales,
                 IFNULL(sub.total_discounts,0) AS total_discounts
             FROM tl_iso_config c
-
             LEFT JOIN (SELECT
                             o.config_id,
                             COUNT(DISTINCT o.id) AS total_orders,
@@ -152,11 +166,12 @@ class Reports extends BackendOverview
                 ".Report::getProductProcedure('i', 'product_id')."
                 ".Report::getConfigProcedure('o', 'config_id')."
             ) AS sub ON sub.config_id=c.id
-        ")->execute(strtotime($timeRange));
+        ")->execute($locked);
 
-        $data = array();
+        $data = [];
+
         while ($objOrders->next()) {
-            $data[$objOrders->config_name][$timeRangeLabel] = [
+            $data[$objOrders->config_id] = [
                 'total_orders' => $objOrders->total_orders,
                 'total_sales' => $objOrders->total_sales,
                 'total_items' => $objOrders->total_items,

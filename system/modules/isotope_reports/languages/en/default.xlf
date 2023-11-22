@@ -68,6 +68,9 @@
       <trans-unit id="ISO_REPORT.rules_coupons.1">
         <source>Statistics about coupon usage</source>
       </trans-unit>
+        <trans-unit id="ISO_REPORT.summary">
+            <source>Sales summary</source>
+        </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
         <source>last 24 hours</source>
       </trans-unit>
