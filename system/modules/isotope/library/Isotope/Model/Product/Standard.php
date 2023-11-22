@@ -645,6 +645,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = $this->getProductId();
         $objTemplate->module_id = $arrConfig['module']->id ?? null;
+        $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);

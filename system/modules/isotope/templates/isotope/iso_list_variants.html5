@@ -1,7 +1,7 @@
 <form id="<?= $this->formId ?>" name="iso<?= rand() ?>" method="post" enctype="<?= $this->enctype ?>">
 <div class="formbody" itemscope itemtype="http://schema.org/Product">
 <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formSubmit ?>">
-<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+<input type="hidden" name="REQUEST_TOKEN" value="<?= $this->requestToken ?>">
 <input type="hidden" name="AJAX_PRODUCT" value="<?= $this->product_id ?>">
 <input type="hidden" name="AJAX_MODULE" value="<?= $this->module_id ?>">
 

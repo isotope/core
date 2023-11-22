@@ -152,6 +152,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
         $this->Template->steps = array();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {
