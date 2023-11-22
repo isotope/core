@@ -77,8 +77,10 @@ class Reports extends BackendOverview
      */
     private function getSummary(array $data): string
     {
+        $session = Session::getInstance()->get('fieldset_states');
+
         $strBuffer = '
-<fieldset id="pal_summary" class="tl_tbox">
+<fieldset id="pal_summary" class="tl_tbox '.(($session['iso_be_overview_legend']['summary'] ?? null) ? '' : ' collapsed').'">
 <legend onclick="AjaxRequest.toggleFieldset(this,\'summary\',\'iso_be_overview_legend\')">'.$GLOBALS['TL_LANG']['ISO_REPORT']['summary'].'</b></legend>
 <div class="summary">
 <div class="tl_listing_container list_view">
