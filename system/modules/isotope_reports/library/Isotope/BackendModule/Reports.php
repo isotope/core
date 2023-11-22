@@ -29,16 +29,13 @@ class Reports extends BackendOverview
         $last24h = $this->getSummaryFor('-24 hours', $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary']);
         $currentMonth = $this->getSummaryFor(date('Y-m-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary']);
         $currentYear = $this->getSummaryFor(date('Y-01-01'), $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary']);
-        $allSummaries = array_merge_recursive($last24h,$currentMonth, $currentYear);
+        $allSummaries = array_merge_recursive($last24h, $currentMonth, $currentYear);
 
         $this->Template->before = $this->getSummary($GLOBALS['TL_LANG']['ISO_REPORT']['shop_config'], $allSummaries);
 
         parent::compile();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModules()
     {
         $arrReturn = array();
@@ -46,15 +43,13 @@ class Reports extends BackendOverview
 
         foreach ($arrGroups as $strGroup => $arrModules) {
             foreach ($arrModules as $strModule => $arrConfig) {
-
                 if ($this->checkUserAccess($strModule)) {
-
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
                         'name' => $strModule,
                         'label' => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
                         'description' => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
-                        'href' => $this->addToUrl('mod=' . $strModule),
+                        'href' => $this->addToUrl('mod='.$strModule),
                         'class' => $arrConfig['class'] ?? '',
                     ));
 
@@ -77,46 +72,48 @@ class Reports extends BackendOverview
 
     /**
      * Generate a summary for config
-     * @return array
      */
-    protected function getSummary($text, $data)
+    protected function getSummary($text, $data): string
     {
         $strBuffer = '';
         foreach ($data as $config_name => $config_data) {
-            $config = Config::findBy('name',$config_name);
+            $config = Config::findBy('name', $config_name);
+
             $strBuffer .= '
 <fieldset id="pal_summary_'.$config_name.'" class="tl_tbox">
-<legend onclick="AjaxRequest.toggleFieldset(this,\'summary_'.$config_name.'\',\'content\')">' . $text . ': <b>'. $config_name . '</b></legend>
-<div class="summary">';
-            $i = -1;
-            $strBuffer .= '
+<legend onclick="AjaxRequest.toggleFieldset(this,\'summary_'.$config_name.'\',\'content\')">'.$text.': <b>'.$config_name.'</b></legend>
+<div class="summary">
 <div class="tl_listing_container list_view">
     <table class="tl_listing">
     <tr>
-        <th class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales_headline'] . '</th>
-        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['orders#'] . '</th>
-        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['products#'] . '</th>
-        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales#'] . '</th>
-        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['discounts#'] . '</th>
-        <th class="tl_folder_tlist" style="text-align:right">' . $GLOBALS['TL_LANG']['ISO_REPORT']['sales_avg'] . '</th>
+        <th class="tl_folder_tlist">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales_headline'].'</th>
+        <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'].'</th>
+        <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['products#'].'</th>
+        <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'].'</th>
+        <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['discounts#'].'</th>
+        <th class="tl_folder_tlist" style="text-align:right">'.$GLOBALS['TL_LANG']['ISO_REPORT']['sales_avg'].'</th>
     </tr>';
+
+            $i = -1;
             foreach ($config_data as $time_range => $time_range_data) {
                 $strBuffer .= '
-    <tr class="row_' . ++$i . ($i % 2 ? ' odd' : ' even') . '">
-        <td class="tl_file_list">' . $time_range . '</td>
-        <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_orders'] . '</td>
-        <td class="tl_file_list" style="text-align:right">' . $time_range_data['total_items'] . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['total_sales'], true, null, true, $config) . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['total_discounts'], true, null, true, $config) . '</td>
-        <td class="tl_file_list" style="text-align:right">' . Isotope::formatPriceWithCurrency($time_range_data['average_sales'], true, null, true, $config) . '</td>
+    <tr class="row_'.++$i.($i % 2 ? ' odd' : ' even').'">
+        <td class="tl_file_list">'.$time_range.'</td>
+        <td class="tl_file_list" style="text-align:right">'.$time_range_data['total_orders'].'</td>
+        <td class="tl_file_list" style="text-align:right">'.$time_range_data['total_items'].'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['total_sales'], true, null, true, $config).'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['total_discounts'], true, null, true, $config).'</td>
+        <td class="tl_file_list" style="text-align:right">'.Isotope::formatPriceWithCurrency($time_range_data['average_sales'], true, null, true, $config).'</td>
     </tr>';
             }
+
             $strBuffer .= '
     </table>
 </div>
 </div>
 </fieldset>';
         }
+
         return $strBuffer;
     }
 
@@ -138,22 +135,22 @@ class Reports extends BackendOverview
 
             LEFT JOIN (SELECT
                             o.config_id,
-                       		COUNT(DISTINCT o.id) AS total_orders,
-                			SUM(o.tax_free_subtotal) AS total_sales,
-                			SUM(i.quantity) AS total_items,
+                            COUNT(DISTINCT o.id) AS total_orders,
+                            SUM(o.tax_free_subtotal) AS total_sales,
+                            SUM(i.quantity) AS total_items,
                             IFNULL(SUM(discounts.total_price),0) AS total_discounts
                        FROM tl_iso_product_collection o
                        INNER JOIN tl_iso_orderstatus os ON o.order_status = os.id
-            		   LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
+                       LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
                        LEFT JOIN (SELECT
                             pid,
                             total_price
-                       		FROM tl_iso_product_collection_surcharge
+                            FROM tl_iso_product_collection_surcharge
                             WHERE type = 'rule') AS discounts ON o.id=discounts.pid
                        WHERE o.type='order' AND os.paid = 1 AND o.locked>=?
                        GROUP BY o.config_id
-                " . Report::getProductProcedure('i', 'product_id') . "
-                " . Report::getConfigProcedure('o', 'config_id') . "
+                ".Report::getProductProcedure('i', 'product_id')."
+                ".Report::getConfigProcedure('o', 'config_id')."
             ) AS sub ON sub.config_id=c.id
         ")->execute(strtotime($timeRange));
 
@@ -167,6 +164,7 @@ class Reports extends BackendOverview
                 'average_sales' => $objOrders->average_sales,
             ];
         }
+
         return $data;
     }
 }
