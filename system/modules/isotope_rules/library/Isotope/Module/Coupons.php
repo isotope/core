@@ -69,9 +69,7 @@ class Coupons extends Module
         $this->Template->coupons = $coupons;
         $this->Template->inputLabel = $GLOBALS['TL_LANG']['MSC']['couponLabel'];
         $this->Template->sLabel = $GLOBALS['TL_LANG']['MSC']['couponApply'];
-
-        $strTokenName = System::getContainer()->getParameter('contao.csrf_token_name');
-        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getToken($strTokenName)->getValue();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     private function addCoupon($coupon, array &$coupons)

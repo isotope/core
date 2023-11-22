@@ -167,9 +167,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->jsonFields = json_encode($fields);
         $this->Template->formId = 'iso_filter_'.$this->id;
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
-
-        $strTokenName = System::getContainer()->getParameter('contao.csrf_token_name');
-        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getToken($strTokenName)->getValue();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     private function getRangeConfig(): array
