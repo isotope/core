@@ -19,6 +19,9 @@ use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollectionItem;
 
+/**
+ * @property bool $iso_moveFavorites
+ */
 class Favorites extends AbstractProductCollection
 {
     /**
@@ -26,18 +29,6 @@ class Favorites extends AbstractProductCollection
      * @var string
      */
     protected $strTemplate = 'mod_iso_favorites';
-
-    /**
-     * @inheritdoc
-     */
-    public function generate()
-    {
-        if ('FE' === TL_MODE && true !== FE_USER_LOGGED_IN) {
-            return '';
-        }
-
-        return parent::generate();
-    }
 
     /**
      * @inheritdoc
@@ -105,6 +96,11 @@ class Favorites extends AbstractProductCollection
                 ['jumpTo' => $item->getRelated('jumpTo')]
             );
 
+            if ($this->iso_moveFavorites) {
+                $collection->deleteItem($item);
+                $hasChanges = true;
+            }
+
             Controller::redirect(Url::removeQueryString(['add_to_cart']));
         }
 
@@ -115,9 +111,13 @@ class Favorites extends AbstractProductCollection
         ) {
             Isotope::getCart()->addProduct(
                 $item->getProduct(),
-                $quantity[$item->id] > 0 ? $quantity[$item->id] : 1,
+                ($quantity[$item->id] ?? null) > 0 ? $quantity[$item->id] : 1,
                 ['jumpTo' => $item->getRelated('jumpTo')]
             );
+
+            if ($this->iso_moveFavorites) {
+                $collection->deleteItem($item);
+            }
 
             $hasChanges = true;
         }

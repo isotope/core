@@ -14,13 +14,13 @@ namespace Isotope\Model\Product;
 use Contao\ContentElement;
 use Contao\Database;
 use Contao\Date;
-use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Hashids\Hashids;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -39,7 +39,6 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -512,9 +511,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
-        /** @var StandardGallery $currentGallery */
-        $currentGallery          = null;
-        $objTemplate->getGallery = function ($strAttribute) use ($objProduct, $arrConfig, &$currentGallery) {
+        /** @var StandardGallery|null $currentGallery */
+        $currentGallery = null;
+        $objTemplate->getGallery = static function (string $strAttribute, int $galleryId = null) use ($objProduct, $arrConfig, &$currentGallery) {
+            if ($galleryId) {
+                $arrConfig['gallery'] = $galleryId;
+
+                if ($currentGallery && $currentGallery->id != $galleryId) {
+                    $currentGallery = null;
+                }
+            }
 
             if (null === $currentGallery
                 || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
@@ -611,6 +617,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
 
             return $arrButtons;
+        };
+
+        $objTemplate->hitCountUrl = function () {
+            $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
+
+            return System::getContainer()
+                ->get('router')
+                ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
+            ;
         };
 
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);

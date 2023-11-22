@@ -1,6 +1,16 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.17 (2023-10-16)
+--------------------------
+
+- Acknowledge PayPal IPNs with unsupported payment_status
+- Fixed support for input_field_callback in tl_iso_product
+- Fixed loading address labels
+- Fixed various PHP8 issues
+- Hide multilingual fields for attribute options
+
+
 Version 2.8.16 (2023-07-31)
 --------------------------
 

@@ -99,7 +99,7 @@ class TaxRate extends Model
         $arrAddress = StringUtil::deserialize($this->address);
         if (!empty($arrAddress) && \is_array($arrAddress)) {
             foreach ($arrAddresses as $name => $objAddress) {
-                if (!\in_array($name, $arrAddress)) {
+                if (!$objAddress instanceof Address || !\in_array($name, $arrAddress, true)) {
                     continue;
                 }
 

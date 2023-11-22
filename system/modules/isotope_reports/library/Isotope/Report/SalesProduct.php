@@ -44,7 +44,7 @@ class SalesProduct extends Sales
         $blnVariants = (bool) ($arrSession[$this->name]['variants'] ?? false);
         $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
-        if ($arrSession[$this->name]['from'] == '') {
+        if (empty($arrSession[$this->name]['from'])) {
             $intStart = strtotime('-'.($intColumns - 1).' '.$strPeriod);
         } else {
             $intStart = (int) $arrSession[$this->name]['from'];

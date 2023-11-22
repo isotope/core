@@ -70,10 +70,8 @@ class Address extends Model
     {
         parent::__construct($objResult);
 
-        if (!\is_array($GLOBALS['ISO_ADR'] ?? null)) {
-            Controller::loadDataContainer(static::$strTable);
-            System::loadLanguageFile('addresses');
-        }
+        Controller::loadDataContainer(static::$strTable);
+        System::loadLanguageFile('addresses');
     }
 
     /**

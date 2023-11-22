@@ -22,6 +22,7 @@ use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -136,7 +137,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if ('FE' === TL_MODE) {
+        if (CompatibilityHelper::isFrontend()) {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }

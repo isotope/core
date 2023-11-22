@@ -11,7 +11,7 @@
 
 namespace Isotope;
 
-use Backend as Contao_Backend;
+use Contao\Backend as ContaoBackend;
 use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Exception\NoContentResponseException;
@@ -35,7 +35,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Provide methods to handle Isotope back end components.
  */
-class Backend extends Contao_Backend
+class Backend extends ContaoBackend
 {
 
     /**
@@ -303,13 +303,13 @@ class Backend extends Contao_Backend
                 Controller::reload();
                 break;
 
-            // Sort products by page
-            case 'sortByPage':
-                if (Input::post('value') > 0) {
-                    Controller::redirect(Backend::addToUrl('table=tl_iso_product_category&amp;id=' . (int) Input::post('value') . '&amp;page_id=' . (int) Input::post('value')));
-                } else {
-                    Controller::reload();
-                }
+            // Filter product collection by product
+            case 'filterProducts':
+                $filter = Session::getInstance()->get('filter');
+                $filter['tl_iso_product_collection']['iso_product'] = (int) Input::post('value');
+                Session::getInstance()->set('filter', $filter);
+                Controller::reload();
+                break;
         }
     }
 

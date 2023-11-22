@@ -248,6 +248,7 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         ),
         'tstamp' => array
         (
+            'sorting'               => true,
             'attributes'            => array('systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),
@@ -259,7 +260,15 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
         ),
         'dateAdded' => array
         (
+            'sorting'               => true,
             'eval'                  => array('rgxp'=>'datim', 'doNotCopy'=>true),
+            'attributes'            => array('fe_sorting'=>true, 'systemColumn'=>true),
+            'sql'                   => "int(10) unsigned NOT NULL default '0'",
+        ),
+        'hitCount' => array
+        (
+            'sorting'               => true,
+            'flag'                  => 12,
             'attributes'            => array('fe_sorting'=>true, 'systemColumn'=>true),
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
         ),

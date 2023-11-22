@@ -18,6 +18,7 @@ use Contao\System;
 use Contao\Template;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -363,7 +364,7 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
                 }
             }
 
-            if ('BE' === TL_MODE) {
+            if (CompatibilityHelper::isBackend()) {
                 Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
                 if ($blnNotificationError === true) {

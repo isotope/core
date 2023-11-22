@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Isotope\Model\Attribute;
 
+use Isotope\CompatibilityHelper;
 use Isotope\Model\Attribute;
 
 class QuantitySurcharge extends Attribute
@@ -30,18 +31,18 @@ class QuantitySurcharge extends Attribute
     public function isCustomerDefined(): bool
     {
         // Enable both frontend and backend widget
-        return 'BE' !== TL_MODE;
+        return !CompatibilityHelper::isBackend() ;
     }
 
     public function saveToDCA(array &$arrData): void
     {
-        $this->rgxp = 'BE' === TL_MODE ? 'price' : 'natural';
+        $this->rgxp = CompatibilityHelper::isBackend() ? 'price' : 'natural';
 
         parent::saveToDCA($arrData);
 
         $arrData['fields'][$this->field_name]['sql'] = "decimal(12,2) NOT NULL default '0.00'";
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             unset(
                 $arrData['fields'][$this->field_name]['eval']['minval'],
                 $arrData['fields'][$this->field_name]['eval']['maxval'],

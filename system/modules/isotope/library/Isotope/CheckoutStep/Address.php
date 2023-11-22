@@ -200,11 +200,25 @@ abstract class Address extends CheckoutStep
                     }
                 }
 
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                    foreach ($objWidget->dca_config['save_callback'] as $callback) {
+                        try {
+                            if (\is_array($callback)) {
+                                $this->import($callback[0]);
+                                $varValue = $this->{$callback[0]}->{$callback[1]}($varValue, $this);
+                            } elseif (\is_callable($callback)) {
+                                $varValue = $callback($varValue, $this);
+                            }
+                        } catch (\Exception $e) {
+                            $objWidget->addError($e->getMessage());
+                        }
+                    }
+                }
+
                 // Do not submit if there are errors
                 if ($objWidget->hasErrors()) {
                     $this->blnError = true;
-                } // Store current value
-                elseif ($objWidget->submitInput()) {
+                } elseif ($objWidget->submitInput()) {
                     $arrAddress[$strName] = $varValue;
                 }
 
@@ -214,6 +228,22 @@ abstract class Address extends CheckoutStep
 
                 $objValidator = clone $objWidget;
                 $objValidator->validate();
+                $varValue = (string) $objWidget->value;
+
+                if (\is_array($objWidget->dca_config['save_callback'] ?? null) && $objWidget->submitInput() && !$objWidget->hasErrors()) {
+                    foreach ($objWidget->dca_config['save_callback'] as $callback) {
+                        try {
+                            if (\is_array($callback)) {
+                                $this->import($callback[0]);
+                                $varValue = System::importStatic($callback[0])->{$callback[1]}($varValue, $this);
+                            } elseif (\is_callable($callback)) {
+                                $varValue = $callback($varValue, $this);
+                            }
+                        } catch (\Exception $e) {
+                            $this->blnError = true;
+                        }
+                    }
+                }
 
                 if ($objValidator->hasErrors()) {
                     $this->blnError = true;

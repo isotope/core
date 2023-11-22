@@ -37,6 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
             array('Isotope\Backend\ProductCollection\Callback', 'prepareOrderLog'),
+            array('Isotope\Backend\ProductCollection\Panel', 'applyAdvancedFilters'),
         ),
         'sql' => array
         (
@@ -58,8 +59,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'mode'                  => 2,
             'fields'                => array('locked DESC'),
-            'panelLayout'           => 'filter;sort,search,limit',
+            'panelLayout'           => 'iso_filters,filter;sort,search,limit',
             'filter'                => array(array('type=?', 'order'), array('order_status>?', '0'), array("locked!=?", '')),
+            'panel_callback'        => array
+            (
+                'iso_filters' => array('Isotope\Backend\ProductCollection\Panel', 'generateFilterButtons'),
+            )
         ),
         'label' => array
         (

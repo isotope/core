@@ -45,13 +45,7 @@ class Rules extends Controller
     protected function __construct()
     {
         parent::__construct();
-
-        // User object must be loaded from cart, e.g. for postsale handling
-        if (Isotope::getCart()->member > 0) {
-            $this->User = Database::getInstance()->prepare('SELECT * FROM tl_member WHERE id=?')->execute(Isotope::getCart()->member);
-        }
     }
-
 
     /**
      * Instantiate the singleton if necessary and return it
@@ -97,7 +91,7 @@ class Rules extends Controller
                         }
 
                         if (($objRules->minItemQuantity > 0 && $objRules->minItemQuantity > $intTotal) || ($objRules->maxItemQuantity > 0 && $objRules->maxItemQuantity < $intTotal)) {
-                    continue;
+                            continue;
                         }
                     }
 

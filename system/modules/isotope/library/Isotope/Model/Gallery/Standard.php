@@ -18,6 +18,7 @@ use Contao\Picture;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Image\Image;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
 use Isotope\Template;
@@ -66,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && 'FE' === TL_MODE) {
+        if ($arrData['customTpl'] != '' && CompatibilityHelper::isFrontend()) {
             $this->strTemplate = $arrData['customTpl'];
         }
 

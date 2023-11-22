@@ -15,6 +15,7 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Contao\StringUtil;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Rule;
@@ -39,7 +40,7 @@ class Coupons extends Module
     {
         $this->cart = Isotope::getCart();
 
-        if ('FE' === TL_MODE && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
+        if (CompatibilityHelper::isFrontend() && ($this->cart->isEmpty() || null === Rule::findForCartWithCoupons())) {
             return '';
         }
 

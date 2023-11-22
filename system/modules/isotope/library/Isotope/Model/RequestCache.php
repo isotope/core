@@ -14,8 +14,8 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Model;
 use Isotope\RequestCache\Filter;
-use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 use Model\Registry;
 

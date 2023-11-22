@@ -18,7 +18,6 @@ use Contao\Session;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 use Haste\Generator\RowClass;
-use Isotope\Model\ProductCollection;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 

@@ -443,6 +443,12 @@
       <trans-unit id="tl_module.iso_continueShopping.1">
         <source>Add a link to the currently added product to the cart.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.0">
+        <source>Remove when adding to cart</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_moveFavorites.1">
+        <source>Check here if products should be removed from favorites when they are added to the cart.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_address.0">
         <source>Address types</source>
       </trans-unit>
