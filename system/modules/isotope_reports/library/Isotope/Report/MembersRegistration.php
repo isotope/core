@@ -70,7 +70,6 @@ class MembersRegistration extends Sales
         $arrData['rows'] = array_reduce($arrData['rows'], function ($arrCarry, $arrItem) {
             $prevItem = sizeof($arrCarry) > 0 ? $arrCarry[sizeof($arrCarry) - 1] : null;
             if($arrItem['columns']['all_members']['value'] == 0 && $prevItem != null) {
-                echo "item:".$arrItem."|prev:".$prevItem;
                 $arrItem['columns']['all_members']['value'] = $prevItem['columns']['all_members']['value'];
             }
             $arrCarry[] = $arrItem;
