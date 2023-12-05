@@ -443,6 +443,8 @@ $GLOBALS['TL_DCA']['tl_iso_product'] = array
             (
                 'listCallback'      => array('Isotope\Backend\ProductPrice\Callback', 'generateWizardList'),
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_iso_product']['prices']['apply_and_close'],
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'delete', 'show'),
                 'tl_class'          =>'clr',
             ),
         ),

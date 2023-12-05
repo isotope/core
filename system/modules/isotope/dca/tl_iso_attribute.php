@@ -265,7 +265,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
                 'tl_class'          => 'clr',
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable_edit'],
                 'showOperations'    => true,
-                'operations'        => array('edit', 'show'),
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'new'),
             ),
         ),
         'foreignKey' => array

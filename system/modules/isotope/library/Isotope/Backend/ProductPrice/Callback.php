@@ -98,6 +98,8 @@ class Callback extends Backend
 </thead>
 <tbody>';
 
+        $operations = \is_array($objWidget->operations ?? null) ? $objWidget->operations : ['edit'];
+
         while ($objRecords->next()) {
 
             $arrTiers = array();
@@ -117,7 +119,13 @@ class Callback extends Backend
     <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ? : '-') . '</td>
     <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->start) ? : '-') . '</td>
     <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->stop) ? : '-') . '</td>
-    <td class="tl_file_list">' . $objWidget->generateRowOperation('edit', $objRecords->row()) . '</td>
+    <td class="tl_file_list tl_right_nowrap">';
+
+            foreach ($operations as $operation) {
+                $strReturn .= $objWidget->generateRowOperation($operation, $objRecords->row());
+            }
+
+            $strReturn .= '</td>
 </tr>
 ';
         }
