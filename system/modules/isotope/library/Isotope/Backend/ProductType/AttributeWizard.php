@@ -14,6 +14,7 @@ namespace Isotope\Backend\ProductType;
 use Contao\Backend;
 use Contao\Controller;
 use Contao\DataContainer;
+use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
@@ -93,6 +94,11 @@ class AttributeWizard extends Backend
                 'reference' => &$GLOBALS['TL_LANG']['MSC'],
                 'eval'      => array('style' => 'width:80px', 'includeBlankOption' => true, 'blankOptionLabel' => &$GLOBALS['TL_LANG']['tl_iso_producttype']['attributes']['default']),
             ),
+            'edit'      => array
+            (
+                'input_field_callback' => array('Isotope\Backend\ProductType\AttributeWizard', 'getEditButton'),
+                'eval'                 => array('hideHead' => true, 'tl_class' => 'mcwUpdateFields'),
+            ),
         );
     }
 
@@ -141,6 +147,34 @@ class AttributeWizard extends Backend
             $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ?? $strName,
             $strName
         );
+    }
+
+    public function getEditButton($objWidget): string
+    {
+        static $arrValues;
+        static $strWidget;
+
+        if ($objWidget->name !== $strWidget || empty($arrValues)) {
+            $strWidget = $objWidget->name;
+            $arrValues = $objWidget->value;
+        }
+
+        $arrField = array_shift($arrValues);
+        if (null === $arrField) {
+            return '';
+        }
+
+        /** @var IsotopeAttribute|IsotopeAttributeForVariants $objAttribute */
+        $objAttribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$arrField['name']] ?? null;
+
+        if (!$objAttribute->id) {
+            return Image::getHtml('edit_.svg');
+        }
+
+        $href = Backend::addToUrl('mod=attributes&table=tl_iso_attribute&id='.$objAttribute->id).'&popup=1';
+        $title = '';
+
+        return '<a href="' . StringUtil::specialcharsUrl($href) . '" title="' . StringUtil::specialchars($title) . '" onclick="Backend.openModalIframe({\'title\':\'' . StringUtil::specialchars(str_replace("'", "\\'", $title)) . '\',\'url\':this.href});return false">' . Image::getHtml('edit.svg', $title) . '</a>';
     }
 
     /**
