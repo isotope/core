@@ -157,6 +157,8 @@ class AttributeWizard extends Backend
         if ($objWidget->name !== $strWidget || empty($arrValues)) {
             $strWidget = $objWidget->name;
             $arrValues = $objWidget->value;
+
+            System::loadLanguageFile('tl_iso_attribute');
         }
 
         $arrField = array_shift($arrValues);
@@ -172,7 +174,7 @@ class AttributeWizard extends Backend
         }
 
         $href = Backend::addToUrl('mod=attributes&table=tl_iso_attribute&id='.$objAttribute->id).'&popup=1';
-        $title = '';
+        $title = sprintf($GLOBALS['TL_LANG']['tl_iso_attribute']['edit'][1], $objAttribute->id);
 
         return '<a href="' . StringUtil::specialcharsUrl($href) . '" title="' . StringUtil::specialchars($title) . '" onclick="Backend.openModalIframe({\'title\':\'' . StringUtil::specialchars(str_replace("'", "\\'", $title)) . '\',\'url\':this.href});return false">' . Image::getHtml('edit.svg', $title) . '</a>';
     }
