@@ -12,7 +12,7 @@
 /**
  * Load tl_iso_product language file for field legends
  */
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**

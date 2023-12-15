@@ -280,7 +280,7 @@ class Paypal extends Postsale
             ]);
 
             if ('VERIFIED' !== $response->getContent()) {
-                \System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
+                System::log('PayPal IPN: data rejected (' . $response->getContent() . ')', __METHOD__, TL_ERROR);
 
                 return false;
             }

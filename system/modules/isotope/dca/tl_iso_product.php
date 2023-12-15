@@ -9,7 +9,7 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-\System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
+\Contao\System::loadLanguageFile(\Isotope\Model\ProductType::getTable());
 
 /**
  * Table tl_iso_product
