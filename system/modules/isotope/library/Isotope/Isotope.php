@@ -350,14 +350,14 @@ class Isotope extends Controller
      *
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true, Config $objConfig = null)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
-        $objConfig   = static::getConfig();
+        $objConfig   = $objConfig ?: static::getConfig();
         $strCurrency = $strCurrencyCode ?: $objConfig->currency;
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
         $space       = $blnHtml ? '&nbsp;' : ' ';

@@ -200,6 +200,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->actionClear = ampersand(strtok(Environment::get('request'), '?'));
         $this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     /**

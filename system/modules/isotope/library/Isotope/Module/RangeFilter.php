@@ -13,6 +13,7 @@ namespace Isotope\Module;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\System;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CompatibilityHelper;
@@ -166,6 +167,7 @@ class RangeFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->jsonFields = json_encode($fields);
         $this->Template->formId = 'iso_filter_'.$this->id;
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     private function getRangeConfig(): array

@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
 use Contao\Module;

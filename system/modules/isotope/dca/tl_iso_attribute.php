@@ -12,7 +12,7 @@
 /**
  * Load tl_iso_product language file for field legends
  */
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -259,13 +259,15 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'dcaWizardMultilingual',
             'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
+            'foreignTable_callback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (
                 'fields'            => array('type', 'label', 'isDefault', 'published'),
                 'tl_class'          => 'clr',
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable_edit'],
                 'showOperations'    => true,
-                'operations'        => array('edit', 'show'),
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'new'),
             ),
         ),
         'foreignKey' => array
