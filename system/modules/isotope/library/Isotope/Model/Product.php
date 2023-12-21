@@ -705,7 +705,11 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // The model must never find a language record
-        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(' AND ', $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language=''";
+
+        if (!empty($arrOptions['column'])) {
+            $strQuery .= ' AND '. implode(' AND ', $arrOptions['column']);
+        }
 
         // Group by
         if (($arrOptions['group'] ?? null) !== null) {
