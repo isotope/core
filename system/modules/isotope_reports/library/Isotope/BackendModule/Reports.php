@@ -26,8 +26,8 @@ class Reports extends BackendOverview
         $summary = [];
         $periods = [
             '-24 hours' => $GLOBALS['TL_LANG']['ISO_REPORT']['24h_summary'],
-            'Y-m-01' => $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary'],
-            'Y-01-01' => $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary'],
+            date('Y-m-01') => $GLOBALS['TL_LANG']['ISO_REPORT']['month_summary'],
+            date('Y-01-01') => $GLOBALS['TL_LANG']['ISO_REPORT']['year_summary'],
         ];
 
         foreach ($periods as $time => $label) {
