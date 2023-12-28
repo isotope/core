@@ -6,45 +6,45 @@
 
 <h2 class="sub_headline"><?= $this->headline ?></h2>
 <?= \Contao\Message::generate(true) ?>
+<?php $this->showTemplateVars(); ?>
 <div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
-  <?php $this->showTemplateVars(); ?>
   <div style="width:100%; height:300px" id="report-data"></div>
   <?php $GLOBALS['TL_CSS'][] = \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/apexcharts/apexcharts.css'); ?>
   <script src="<?= \Haste\Util\Debug::uncompressedFile('system/modules/isotope_reports/assets/apexcharts/apexcharts.min.js') ?>"></script>
   <script>
-    window.addEvent('domready', function() {
-      var options = {
-        chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
+      window.addEvent('domready', function() {
+          var options = {
+              chart: {
+                  height: 350,
+                  type: 'line',
+                  zoom: {
+                      enabled: false
+                  },
+              },
+              series: <?= json_encode($this->chart['series']) ?>,
+          yaxis: {
+              title: {
+                  text: <?= json_encode($GLOBALS['TL_LANG']['ISO_REPORT']['total_sales']) ?>
+              }
           },
-        },
-        series: <?= json_encode($this->chart['series']) ?>,
-      yaxis: {
-        title: {
-          text: 'Verkäufe gesamt'
-        }
-      },
-      labels: <?= json_encode($this->chart['labels']) ?>,
-      xaxis: {
-        labels: {
-          formatter: <?= $this->periodFormat ?>,
-        },
-        legend: {
-          onItemClick: {
-            toggleDataSeries: true
-          },
-          onItemHover: {
-            highlightDataSeries: true
-          },
-        },
-      }
-    };
+          labels: <?= json_encode($this->chart['labels']) ?>,
+          xaxis: {
+              labels: {
+                  formatter: <?= $this->periodFormat ?>,
+              },
+              legend: {
+                  onItemClick: {
+                      toggleDataSeries: true
+                  },
+                  onItemHover: {
+                      highlightDataSeries: true
+                  },
+              },
+          }
+      };
 
-      new ApexCharts(document.querySelector("#report-data"), options).render();
-    });
+          new ApexCharts(document.querySelector("#report-data"), options).render();
+      });
   </script>
 
   <div class="iso_report_container">
