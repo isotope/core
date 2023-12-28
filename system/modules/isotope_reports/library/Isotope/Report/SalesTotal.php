@@ -125,7 +125,6 @@ class SalesTotal extends Sales
         // Generate format for apexcharts
         $arrChart = array_reduce($arrChartData, function ($arrCarry, $arrItem) {
             $arrCarry['series'] = array();
-            $arrCarry['labels'] = array();
             $arrCarry['series'][] = [
                 'name' => $arrItem['name'],
                 'type' => 'line',
