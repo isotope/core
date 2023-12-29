@@ -155,7 +155,6 @@ class SalesTotal extends Sales
             ];
         }
 
-        $this->Template->test         = $arrChartData;
         $this->Template->data         = $arrData;
         $this->Template->chart        = $arrChart;
         $this->Template->periodFormat = $period->getJavascriptClosure();
@@ -235,12 +234,9 @@ class SalesTotal extends Sales
                     ],
                 ],
             ];
-
             $intStart = $period->getNext($intStart);
         }
-
         RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
-
         return $arrData;
     }
 
@@ -249,7 +245,6 @@ class SalesTotal extends Sales
     {
         $arrSession  = Session::getInstance()->get('iso_reports');
         $intConfig   = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
-        //$intStart    = strtotime('first day of this month', $intStart);
 
         $arrData = array();
         $arrCurrencies = Database::getInstance()->execute("
@@ -306,7 +301,6 @@ class SalesTotal extends Sales
         if (empty($arrData['footer']['sales']['value'])) {
             $arrData['footer']['sales']['value'] = 0;
         }
-
         return $arrData;
     }
 
