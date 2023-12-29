@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/cs02/xliff-core-1.2-strict.xsd">
+  <file datatype="plaintext" original="system/modules/isotope/languages/en/tl_iso_config.xlf" source-language="en">
+    <body>
+      <trans-unit id="tl_iso_config.reports_legend">
+        <source>Reports</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.visitors_config_id.0">
+        <source>Visitor counter</source>
+      </trans-unit>
+      <trans-unit id="tl_iso_config.visitors_config_id.1">
+        <source>Choose your visitor counter for the calculation of the conversion rate.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -9,10 +9,12 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
-
-
 use Contao\Database;
+use Isotope\Backend;
+use Isotope\Model\Config;
 
+$this->loadLanguageFile(Config::getTable());
+$this->loadDataContainer(Config::getTable());
 /**
  * Extend tl_user palettes
  */
@@ -23,6 +25,7 @@ $GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default'] = str_replace('{analy
  */
 $GLOBALS['TL_DCA']['tl_iso_config']['fields']['visitors_config_id'] = array
 (
+    'label'                 => &$GLOBALS['TL_LANG']['tl_iso_config']['visitors_config_id'],
     'exclude'               => true,
     'inputType'             => 'select',
     'options_callback'      => array('ReportsConfig', 'getVisitorConfigs'),
