@@ -30,7 +30,7 @@ namespace UnitedPrototype\GoogleAnalytics\Internals\Request;
 
 use UnitedPrototype\GoogleAnalytics\SocialInteraction;
 
-class SocialinteractionRequest extends PageviewRequest {
+class SocialInteractionRequest extends PageviewRequest {
 	
 	/**
 	 * @var \UnitedPrototype\GoogleAnalytics\SocialInteraction
