@@ -262,8 +262,6 @@ class Standard extends Gallery implements IsotopeGallery
      * @param string          $strType
      * @param array           $arrFile
      * @param bool            $blnWatermark
-     *
-     * @return string
      */
     protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {

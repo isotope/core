@@ -59,6 +59,7 @@ class GoToCartAction extends AbstractButton
 
     /**
      * {@inheritdoc}
+     * @return false|void
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {

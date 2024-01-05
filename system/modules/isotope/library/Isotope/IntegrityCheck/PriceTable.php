@@ -97,8 +97,6 @@ class PriceTable extends AbstractIntegrityCheck
 
     /**
      * Try to fix the integrity issue
-     *
-     * @return bool
      */
     public function repair()
     {
