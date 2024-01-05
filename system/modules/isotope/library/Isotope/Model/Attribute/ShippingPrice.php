@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\Database\Result;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
@@ -25,7 +26,7 @@ class ShippingPrice extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(Result $objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception

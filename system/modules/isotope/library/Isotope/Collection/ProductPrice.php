@@ -14,7 +14,7 @@ namespace Isotope\Collection;
 use Isotope\Interfaces\IsotopePrice;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
-use Model\Collection;
+use Contao\Model\Collection;
 
 /**
  * @method \Isotope\Model\ProductPrice current()

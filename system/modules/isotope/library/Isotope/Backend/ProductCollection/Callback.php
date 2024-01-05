@@ -24,6 +24,7 @@ use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
 use Contao\Message;
+use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
@@ -115,7 +116,7 @@ class Callback extends Backend
         if (($config = $objOrder->getRelated('config_id')) === null
             || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
         ) {
-            $moduleModel = new \ModuleModel();
+            $moduleModel = new ModuleModel();
             $moduleModel->type = 'iso_orderdetails';
             $moduleModel->iso_collectionTpl = 'iso_collection_default';
         }

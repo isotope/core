@@ -12,7 +12,7 @@
 namespace Isotope\Collection;
 
 use Isotope\Interfaces\IsotopeProduct;
-use Model\Collection;
+use Contao\Model\Collection;
 
 
 /**

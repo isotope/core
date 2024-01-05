@@ -425,7 +425,7 @@ class MediaManager extends Widget implements \uploadable
                 if ('drag' === $button) {
                     $return .= Image::getHtml('drag.svg', '', 'class="drag-handle" title="' . sprintf($GLOBALS['TL_LANG']['MSC']['move']) . '"');
                 } else {
-                    $return .= '<a href="'.Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '').'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.\Image::getHtml($button.'.svg', $GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '', 'class="tl_listwizard_img"').'</a> ';
+                    $return .= '<a href="'.Backend::addToUrl('&amp;'.$strCommand.'='.$button.'&amp;cid='.$i.'&amp;id='.$this->currentRecord).'"' . $class . ' title="'.StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '').'" onclick="Isotope.MediaManager.act(this, \''.$button.'\',  \'ctrl_'.$this->strId.'\'); return false;">'.Image::getHtml($button.'.svg', $GLOBALS['TL_LANG']['MSC']['lw_'.$button] ?? '', 'class="tl_listwizard_img"').'</a> ';
                 }
             }
 

@@ -17,7 +17,7 @@ use Contao\DcaExtractor;
 use Contao\Model;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\RequestCache\Filter;
-use Model\Collection;
+use Contao\Model\Collection;
 
 /**
  * The basic Isotope product model

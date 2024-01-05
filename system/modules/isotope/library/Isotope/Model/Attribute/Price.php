@@ -26,7 +26,7 @@ class Price extends Attribute implements IsotopeAttributeWithRange
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(\Contao\Database\Result $objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception

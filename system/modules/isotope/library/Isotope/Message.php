@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Contao\ModuleModel;
 use Contao\System;
 use Haste\Data\Collection;
 use Haste\Data\Plain;
@@ -100,7 +101,7 @@ class Message
             return '';
         }
 
-        $objModule = new Messages(new \ModuleModel());
+        $objModule = new Messages(new ModuleModel());
         $objModule->type = 'iso_messages';
 
         return $objModule->generate();

@@ -34,7 +34,7 @@ use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\Gallery\Standard as StandardGallery;
 use Isotope\Model\ProductCollectionSurcharge\Tax;
-use Model\Registry;
+use Contao\Model\Registry;
 
 /**
  * Class ProductCollection
@@ -129,7 +129,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @param \Database\Result $objResult
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct(\Contao\Database\Result $objResult = null)
     {
         parent::__construct($objResult);
 
