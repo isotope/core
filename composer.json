@@ -59,6 +59,7 @@
         "mpay24/mpay24-php": "^4.0",
         "friendsofphp/php-cs-fixer": "^2.14",
         "phpstan/phpstan": "^1.10",
+        "terminal42/swissbilling-api": "^1.0"
     },
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
