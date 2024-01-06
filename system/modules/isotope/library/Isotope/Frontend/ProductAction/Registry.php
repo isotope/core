@@ -51,8 +51,7 @@ class Registry
         $actions = static::$actions;
 
         if ($includeButtons
-            && isset($arrConfig['buttons'], $GLOBALS['ISO_HOOKS']['buttons'])
-            && \is_array($arrConfig['buttons'])
+            && isset($GLOBALS['ISO_HOOKS']['buttons'])
             && \is_array($GLOBALS['ISO_HOOKS']['buttons'])
         ) {
             $buttons = [];
