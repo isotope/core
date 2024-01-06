@@ -233,6 +233,8 @@ abstract class AbstractProduct extends Product
         return null !== $type && $type->hasVariants();
     }
 
+    public abstract function getVariantAttributes();
+
     /**
      * @inheritdoc
      */
