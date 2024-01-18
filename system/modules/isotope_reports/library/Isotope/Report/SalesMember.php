@@ -30,24 +30,37 @@ class SalesMember extends Sales
     {
         $arrSession    = \Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
+        $intConfig = (int) $arrSession[$this->name]['iso_config'];
         $intStart  = (int) $arrSession[$this->name]['start'];
         $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
+        $intStatus = (int) $arrSession[$this->name]['iso_status'];
 
         $period   = PeriodFactory::create('day');
         $intStart = $period->getPeriodStart($intStart);
         $intStop  = $period->getPeriodEnd($intStop);
 
-        // Disable the compare view if user selected more then one year
-        $bPrevEnabled = $intStop - $intStart <= 31536000;
-
+        $bPrevEnabled = $intStop - $intStart <= 31536000; // Selected not more then a year
         $intPrevStart = $intStart - 31536000; // 1 year before
         $intPrevStop = $intStop - 31536000; // 1 year before
 
         if ('locked' === $this->strDateField) {
             $this->strDateField = $arrSession[$this->name]['date_field'];
         }
+
+        $prevSql = "
+            SELECT
+                SUM(i2.tax_free_price * i2.quantity) AS total_sales_prev
+            FROM tl_iso_product_collection o2
+            LEFT JOIN tl_iso_product_collection_item i2 ON o2.id=i2.pid
+            LEFT OUTER JOIN tl_iso_config c2 ON o2.config_id=c2.id
+            WHERE o2.type='order' AND o2.order_status>0 AND o2.{$this->strDateField} IS NOT NULL
+            " . ($intStatus > 0 ? " AND o2.order_status=".$intStatus : '') . "
+            " . static::getProductProcedure('i2', 'product_id') . "
+            " . ($intConfig > 0 ? " AND c2.id=".$intConfig : '') . "
+            " . static::getConfigProcedure('c2') . "
+            AND o2.locked >= ". $intPrevStart . " AND o2.locked <= ". $intPrevStop . "
+            AND o2.member = o.member
+        ";
 
         $objData = \Database::getInstance()->query("
             SELECT
@@ -57,26 +70,14 @@ class SalesMember extends Sales
                 tlm.firstname as firstname,
                 tlm.lastname as lastname,
                 tlm.company as company,
+                tlm.city as city,
                 COUNT(o.id) AS total_orders,
                 COUNT(i.id) AS total_products,
                 COUNT(DISTINCT o.id) AS total_orders,
                 COUNT(DISTINCT i.id) AS total_products,
                 SUM(i.quantity) AS total_items,
                 SUM(i.tax_free_price * i.quantity) AS total_sales,
-                (
-                    SELECT
-                        SUM(i2.tax_free_price * i2.quantity) AS total_sales_prev
-                    FROM tl_iso_product_collection o2
-                    LEFT JOIN tl_iso_product_collection_item i2 ON o2.id=i2.pid
-                    LEFT OUTER JOIN tl_iso_config c2 ON o2.config_id=c2.id
-                    WHERE o2.type='order' AND o2.order_status>0 AND o2.{$this->strDateField} IS NOT NULL
-                    " . ($intStatus > 0 ? " AND o2.order_status=".$intStatus : '') . "
-                    " . static::getProductProcedure('i2', 'product_id') . "
-                    " . ($intConfig > 0 ? " AND c2.id=".$intConfig : '') . "
-                    " . static::getConfigProcedure('c2') . "
-                    AND o2.locked >= ". $intPrevStart . " AND o2.locked <= ". $intPrevStop . "
-                    AND o2.member = o.member
-                ) as total_sales_prev
+                ($prevSql) as total_sales_prev
             FROM tl_iso_product_collection o
             LEFT JOIN tl_iso_product_collection_item i ON o.id=i.pid
             LEFT OUTER JOIN tl_member tlm ON o.member=tlm.id
@@ -92,12 +93,16 @@ class SalesMember extends Sales
         ");
 
         $arrCurrencies = array();
-
+        
         $arrData = ['rows' => []];
 
         $arrData['header'] = [
             [
                 'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['customer#'],
+                'header'        => true,
+            ],
+            [
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['city#'],
                 'header'        => true,
             ],
             [
@@ -125,6 +130,10 @@ class SalesMember extends Sales
         $arrData['footer'] = [
             [
                 'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
+            ],
+            [
+                'value'         => '',
+                'attributes'    => ' style="text-align:right"',
             ],
             [
                 'value'         => 0,
@@ -156,9 +165,9 @@ class SalesMember extends Sales
             $label = '';
 
             if ($objData->member == 0) {
-                $label = '<strong>' . $GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] . '</strong>';
+                $label = '<b>' . &$GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] . '</b>';
             } else if ($objData->company) {
-                $label = $objData->company;
+                $label = sprintf('%s', $objData->company);
             }
             else {
                 $label =  sprintf('%s %s', $objData->firstname, $objData->lastname);
@@ -169,6 +178,9 @@ class SalesMember extends Sales
                 'columns' => [
                     [
                         'value' => $label
+                    ],
+                    [
+                        'value' => $objData->city,
                     ],
                     [
                         'value'         => $objData->total_orders,
@@ -194,19 +206,19 @@ class SalesMember extends Sales
             ];
 
             // Summary in the footer
-            $arrData['footer'][1]['value'] += $objData->total_orders;
-            $arrData['footer'][2]['value'] += $objData->total_products;
-            $arrData['footer'][3]['value'] += $objData->total_items;
-            $arrData['footer'][4]['value'][$objData->currency] = ((float) $arrData['footer'][4]['value'][$objData->currency] + $objData->total_sales);
-            $arrData['footer'][5]['value'] = '';
+            $arrData['footer'][2]['value'] += $objData->total_orders;
+            $arrData['footer'][3]['value'] += $objData->total_products;
+            $arrData['footer'][4]['value'] += $objData->total_items;
+            $arrData['footer'][5]['value'][$objData->currency] = ((float) $arrData['footer'][5]['value'][$objData->currency] + $objData->total_sales);
+            $arrData['footer'][6]['value'] = '';
         }
 
         if (!$bPrevEnabled) {
-            unset($arrData['header'][5]);
-            unset($arrData['footer'][5]);
+            unset($arrData['header'][6]);
+            unset($arrData['footer'][6]);
 
            foreach ($arrData['rows'] as $dateGroup => $arrRow) {
-                unset($arrData['rows'][$dateGroup]['columns'][5]);
+                unset($arrData['rows'][$dateGroup]['columns'][6]);
             }
         }
 
@@ -229,46 +241,47 @@ class SalesMember extends Sales
     {
         // Format row totals
         foreach ($arrData['rows'] as $dateGroup => $arrRow) {
-            if (\is_array($arrRow['columns'][4]['value'])) {
-                foreach ($arrRow['columns'][4]['value'] as $currency => $varValue) {
+            if (\is_array($arrRow['columns'][5]['value'])) {
+                foreach ($arrRow['columns'][5]['value'] as $currency => $varValue) {
                     /** @type Config $objConfig */
                     $objConfig = Config::findByPk($arrCurrencies[$currency]);
                     Isotope::setConfig($objConfig);
 
-                    $arrData['rows'][$dateGroup]['columns'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+                    $arrData['rows'][$dateGroup]['columns'][5]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
                 }
             }
 
-            if ($arrData['rows'][$dateGroup]['columns'][5]['value'] !== null) {
-                $number = $arrData['rows'][$dateGroup]['columns'][5]['value'];
+            if ($arrData['rows'][$dateGroup]['columns'][6]['value'] !== null) {
+                $number = $arrData['rows'][$dateGroup]['columns'][6]['value'];
                 $formated = number_format($number * 100, 0);
 
+
                 if ($number > 0) {
-                    $arrData['rows'][$dateGroup]['columns'][5]['value'] =
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
                         sprintf('<span style="color:green">+%s %%</span>',  $formated);
                 }
                 else if ($number == 0) {
-                    $arrData['rows'][$dateGroup]['columns'][5]['value'] =
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
                         sprintf('%s %%',  $formated);
                 }
                 else if ($number < 0) {
-                    $arrData['rows'][$dateGroup]['columns'][5]['value'] =
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
                         sprintf('<span style="color:red">%s %%</span>',  $formated);
                 }
             }
         }
 
         // Format footer totals
-        foreach ($arrData['footer'][4]['value'] as $currency => $varValue) {
+        foreach ($arrData['footer'][5]['value'] as $currency => $varValue) {
             /** @type Config $objConfig */
             $objConfig = Config::findByPk($arrCurrencies[$currency]);
             Isotope::setConfig($objConfig);
 
-            $arrData['footer'][4]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
+            $arrData['footer'][5]['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }
 
-        if (empty($arrData['footer'][4]['value'])) {
-            $arrData['footer'][4]['value'] = 0;
+        if (empty($arrData['footer'][5]['value'])) {
+            $arrData['footer'][5]['value'] = 0;
         }
 
         return $arrData;

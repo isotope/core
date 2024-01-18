@@ -129,6 +129,10 @@
         <source>Customer</source>
         <target>Kunde</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+        <target>Ort</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.comparePrevYear#">
         <source>Prev. year</source>
         <target>Vgl. Vorjahr</target>
