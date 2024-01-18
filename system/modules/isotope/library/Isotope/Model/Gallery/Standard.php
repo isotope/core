@@ -295,7 +295,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
+                [$link, $rel] = explode('|', $arrFile['link'] ?? '', 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
