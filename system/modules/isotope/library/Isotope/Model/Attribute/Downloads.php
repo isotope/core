@@ -11,8 +11,9 @@
 
 namespace Isotope\Model\Attribute;
 
+use Contao\ContentDownloads;
+use Contao\ContentModel;
 use Isotope\Interfaces\IsotopeProduct;
-use Isotope\Model\Attribute;
 
 /**
  * Attribute to provide downloads in the product details
@@ -32,16 +33,16 @@ class Downloads extends FileTree
      */
     public function generate(IsotopeProduct $objProduct, array $arrOptions = array())
     {
-        $objContentModel = new \ContentModel();
+        $objContentModel = new ContentModel();
         $objContentModel->id = 'iso-'.$this->id.'-'.$objProduct->getId();
         $objContentModel->tstamp = time();
         $objContentModel->type = 'downloads';
         $objContentModel->multiSRC = $this->getValue($objProduct);
         $objContentModel->sortBy = $this->sortBy;
+        $objContentModel->inline = $this->inline;
         $objContentModel->orderSRC = $objProduct->{$this->field_name.'_order'};
         $objContentModel->cssID = serialize(array('', $this->field_name));
 
-        $objElement = new \ContentDownloads($objContentModel);
-        return $objElement->generate();
+        return (new ContentDownloads($objContentModel))->generate();
     }
 }

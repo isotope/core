@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     'subpalettes' => array
     (
         'storeFile'                 => 'uploadFolder,useHomeDir,doNotOverwrite',
-        'files'                     => 'extensions,filesOnly',
+        'files'                     => 'extensions,filesOnly,inline',
         'optionsSource_attribute'   => 'options',
         'optionsSource_table'       => 'optionsTable',
         'optionsSource_foreignKey'  => 'foreignKey',
@@ -473,7 +473,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50 m12'),
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'inline' => array
+        (
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'isGallery' => array

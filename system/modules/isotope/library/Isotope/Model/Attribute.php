@@ -60,6 +60,7 @@ use Isotope\Translation;
  * @property string        $fieldType
  * @property bool          $files
  * @property bool          $filesOnly
+ * @property bool          $inline
  * @property string        $sortBy
  * @property string        $path
  * @property bool          $storeFile
