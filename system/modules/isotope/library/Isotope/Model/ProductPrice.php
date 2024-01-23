@@ -48,7 +48,7 @@ class ProductPrice extends Model implements IsotopePrice
      *
      * @param Result $objResult
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 

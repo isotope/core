@@ -25,7 +25,7 @@ class BasePrice extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception

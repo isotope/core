@@ -129,7 +129,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
      *
      * @param \Database\Result $objResult
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
