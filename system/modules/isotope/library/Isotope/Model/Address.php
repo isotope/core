@@ -64,7 +64,7 @@ class Address extends Model
     /**
      * Construct the model
      *
-     * @param Result $objResult
+     * @param Result|array $objResult An optional database result or array
      */
     public function __construct($objResult = null)
     {

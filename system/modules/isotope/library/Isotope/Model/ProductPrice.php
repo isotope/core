@@ -46,7 +46,7 @@ class ProductPrice extends Model implements IsotopePrice
     /**
      * Construct the object
      *
-     * @param Result $objResult
+     * @param Result|array $objResult An optional database result or array
      */
     public function __construct($objResult = null)
     {

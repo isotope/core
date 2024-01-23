@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Attribute;
 
-use Contao\Database\Result;
 use Contao\StringUtil;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
