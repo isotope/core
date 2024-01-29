@@ -95,10 +95,12 @@ class Callback extends Backend
         );
 
         $sorting = 0;
+        $time = time();
 
         foreach ($arrStatus as $arrData) {
             $objStatus = new OrderStatus();
             $objStatus->setRow($arrData);
+            $objStatus->tstamp = $time;
             $objStatus->sorting = $sorting;
             $objStatus->save();
 
