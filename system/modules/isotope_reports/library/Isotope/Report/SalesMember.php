@@ -88,7 +88,7 @@ class SalesMember extends Sales
             " . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
             " . static::getConfigProcedure('c') . "
             AND o.locked >= ". $intStart . " AND o.locked <= ". $intStop . "
-            GROUP BY member
+            GROUP BY member, c.id
             ORDER BY total_sales DESC
         ");
 
