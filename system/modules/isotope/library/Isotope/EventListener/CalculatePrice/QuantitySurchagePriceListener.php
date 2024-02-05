@@ -41,7 +41,7 @@ class QuantitySurchagePriceListener
         );
 
         foreach ($attributes as $name) {
-            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name];
+            $attribute = $GLOBALS['TL_DCA']['tl_iso_product']['attributes'][$name] ?? null;
 
             if ($attribute instanceof QuantitySurcharge) {
                 $value = $product->{$name};

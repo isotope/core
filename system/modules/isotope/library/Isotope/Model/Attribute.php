@@ -60,6 +60,7 @@ use Isotope\Translation;
  * @property string        $fieldType
  * @property bool          $files
  * @property bool          $filesOnly
+ * @property bool          $inline
  * @property string        $sortBy
  * @property string        $path
  * @property bool          $storeFile
@@ -414,10 +415,10 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
 
         // Generate a HTML table for associative arrays
         if (!array_is_assoc($varValue) && \is_array($varValue[0])) {
-            return $arrOptions['noHtml'] ? $varValue : $this->generateTable($varValue, $objProduct);
+            return ($arrOptions['noHtml'] ?? false) ? $varValue : $this->generateTable($varValue, $objProduct);
         }
 
-        if ($arrOptions['noHtml']) {
+        if ($arrOptions['noHtml'] ?? false) {
             $result = array();
 
             foreach ($varValue as $v1) {
@@ -511,7 +512,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
     <tr>';
 
         foreach (array_keys($arrValues[0]) as $i => $name) {
-            if ($arrFormat[$name]['doNotShow']) {
+            if ($arrFormat[$name]['doNotShow'] ?? null) {
                 continue;
             }
 
@@ -533,11 +534,11 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $c = -1;
 
             foreach ($row as $name => $value) {
-                if ($arrFormat[$name]['doNotShow']) {
+                if ($arrFormat[$name]['doNotShow'] ?? null) {
                     continue;
                 }
 
-                if ('price' === $arrFormat[$name]['rgxp']) {
+                if ('price' === $arrFormat[$name]['rgxp'] ?? null) {
                     $intTax = (int) $row['tax_class'];
 
                     $value = Isotope::formatPriceWithCurrency(Isotope::calculatePrice($value, $objProduct, $this->field_name, $intTax));
@@ -602,7 +603,7 @@ abstract class Attribute extends TypeAgent implements IsotopeAttribute
             $arrDCA    = &$GLOBALS['TL_DCA']['tl_iso_product']['fields'];
 
             foreach ($arrDCA as $field => $config) {
-                if ($config['attributes']['systemColumn']) {
+                if ($config['attributes']['systemColumn'] ?? false) {
                     $arrFields[] = $field;
                 }
             }

@@ -286,30 +286,39 @@ class Rule extends Model
 
             $arrRestrictions = array("productRestrictions='none'");
             $arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='producttypes' AND object_id IN (" . implode(',', $arrTypes) . "))=0)";
+            $arrRestrictions[] = "(productRestrictions='producttypes' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='producttypes' AND NOT object_id IN (" . implode(',', $arrTypes) . "))>0)";
             $arrRestrictions[] = "(productRestrictions='products' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='products' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id IN (" . implode(',', $arrProductIds) . "))=0)";
+            $arrRestrictions[] = "(productRestrictions='products' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='products' AND object_id NOT IN (" . implode(',', $arrProductIds) . "))>0)";
             $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))>0)";
-            $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id IN (" . implode(',', $arrVariantIds) . "))=0)";
+            $arrRestrictions[] = "(productRestrictions='variants' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='variants' AND object_id NOT IN (" . implode(',', $arrVariantIds) . "))>0)";
             $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='1' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
-            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id IN (SELECT page_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))=0)";
+            $arrRestrictions[] = "(productRestrictions='pages' AND productCondition='0' AND (SELECT COUNT(*) FROM tl_iso_rule_restriction WHERE pid=r.id AND type='pages' AND object_id NOT IN (SELECT page_id FROM " . ProductCategory::getTable() . " WHERE pid IN (" . implode(',', $arrProductIds) . ")))>0)";
 
             foreach ($arrAttributes as $restriction) {
                 if (empty($restriction['values'])) {
                     continue;
                 }
 
-                $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' AND ";
+                $strRestriction = "(productRestrictions='attribute' AND attributeName='" . $restriction['attribute'] . "' AND attributeCondition='" . $restriction['condition'] . "' ";
 
                 switch ($restriction['condition']) {
                     case 'eq':
-                    case 'neq':
                         $strRestriction .= sprintf(
-                            "attributeValue %s IN (%s)",
-                            ('neq' === $restriction['condition'] ? 'NOT' : ''),
+                            "AND attributeValue IN (%s)",
                             implode(', ', array_fill(0, \count($restriction['values']), '?'))
                         );
+
                         $arrValues = array_merge($arrValues, $restriction['values']);
+                        break;
+
+                    // We cannot handle this as `attributeValue NOT IN (...)`, since we want to handle the rule if at
+                    // least one of the products in the cart does not equal the value. So if exactly one product (value)
+                    // is in the cart, it might not match. Otherwise it always matches at least one of the cart products.
+                    case 'neq':
+                        if (1 === \count($restriction['values'])) {
+                            $strRestriction .= 'AND attributeValue = ?';
+                            $arrValues = array_merge($arrValues, $restriction['values']);
+                        }
                         break;
 
                     case 'lt':
@@ -325,7 +334,7 @@ class Rule extends Model
                             );
                             $arrValues[] = $value;
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+                        $strRestriction .= 'AND (' . implode(' OR ', $arrOR) . ')';
                         break;
 
                     case 'starts':
@@ -340,7 +349,7 @@ class Rule extends Model
                             );
                             $arrValues[] = $value;
                         }
-                        $strRestriction .= '(' . implode(' OR ', $arrOR) . ')';
+                        $strRestriction .= 'AND (' . implode(' OR ', $arrOR) . ')';
                         break;
 
                     default:

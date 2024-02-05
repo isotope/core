@@ -23,6 +23,7 @@ use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Isotope\Collection\ProductPrice as ProductPriceCollection;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Attribute;
@@ -81,7 +82,7 @@ class ProductList extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -178,9 +179,16 @@ class ProductList extends Module
                 if ($blnCacheMessage !== $this->blnCacheProducts) {
                     $arrCacheMessage[$cacheKey] = $this->blnCacheProducts;
 
+                    $data = serialize($arrCacheMessage);
+
+                    // Automatically clear iso_productcache if it exceeds the blob field length
+                    if (strlen($data) > 65535) {
+                        $data = serialize([$cacheKey => $this->blnCacheProducts]);
+                    }
+
                     Database::getInstance()
                         ->prepare('UPDATE tl_module SET iso_productcache=? WHERE id=?')
-                        ->execute(serialize($arrCacheMessage), $this->id)
+                        ->execute($data, $this->id)
                     ;
                 }
 

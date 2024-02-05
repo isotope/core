@@ -13,7 +13,7 @@
  * Load tl_iso_product data container and language files
  */
 $this->loadDataContainer('tl_iso_product');
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -37,6 +37,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             array('Isotope\Backend\ProductCollection\Callback', 'checkPermission'),
             array('Isotope\Backend\ProductCollection\Callback', 'prepareOrderLog'),
+            array('Isotope\Backend\ProductCollection\Panel', 'applyAdvancedFilters'),
         ),
         'sql' => array
         (
@@ -58,8 +59,12 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         (
             'mode'                  => 2,
             'fields'                => array('locked DESC'),
-            'panelLayout'           => 'filter;sort,search,limit',
+            'panelLayout'           => 'iso_filters,filter;sort,search,limit',
             'filter'                => array(array('type=?', 'order'), array('order_status>?', '0'), array("locked!=?", '')),
+            'panel_callback'        => array
+            (
+                'iso_filters' => array('Isotope\Backend\ProductCollection\Panel', 'generateFilterButtons'),
+            )
         ),
         'label' => array
         (
@@ -258,6 +263,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         ),
         'config_id' => array
         (
+            'filter'                => true,
             'foreignKey'            => \Isotope\Model\Config::getTable().'.name',
             'sql'                   => "int(10) unsigned NOT NULL default '0'",
             'relation'              => array('type'=>'hasOne', 'load'=>'lazy'),

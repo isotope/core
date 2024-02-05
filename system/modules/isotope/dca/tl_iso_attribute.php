@@ -12,7 +12,7 @@
 /**
  * Load tl_iso_product language file for field legends
  */
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -55,10 +55,10 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         'sorting' => array
         (
-            'mode'                  => 1,
+            'mode'                  => 2,
             'fields'                => array('legend', 'name'),
             'flag'                  => 1,
-            'panelLayout'           => 'filter;search,limit'
+            'panelLayout'           => 'filter;sort,search,limit'
         ),
         'label' => array
         (
@@ -105,8 +105,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     (
         '__selector__'              => array('type', 'optionsSource', 'includeBlankOption', 'variant_option', 'multiple', 'storeFile', 'files', 'rgxp', 'checkoutRelocate', 'chunking'),
         'default'                   => '{attribute_legend},name,field_name,type,legend',
-        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search,be_filter',
-        'textdigit'                 => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_sorting,be_search,be_filter',
+        'text'                      => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
+        'textdigit'                 => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minval,maxval,step,rgxp,placeholder,mandatory,multilingual,datepicker;{search_filters_legend},fe_search,fe_filter,fe_sorting,be_search,be_filter',
         'textarea'                  => '{attribute_legend},name,field_name,type,legend,customer_defined;{description_legend:hide},description;{config_legend},minlength,maxlength,rgxp,placeholder,rte,mandatory,multilingual;{search_filters_legend},fe_search,fe_sorting,be_search',
         'select'                    => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_filter,fe_sorting,be_filter',
         'selectproduct'             => '{attribute_legend},name,field_name,type,legend,variant_option,customer_defined;{description_legend:hide},description;{options_legend},optionsSource,includeBlankOption;{config_legend},mandatory,chosen,multiple;{search_filters_legend},fe_sorting',
@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     'subpalettes' => array
     (
         'storeFile'                 => 'uploadFolder,useHomeDir,doNotOverwrite',
-        'files'                     => 'extensions,filesOnly',
+        'files'                     => 'extensions,filesOnly,inline',
         'optionsSource_attribute'   => 'options',
         'optionsSource_table'       => 'optionsTable',
         'optionsSource_foreignKey'  => 'foreignKey',
@@ -155,6 +155,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 1,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
@@ -163,6 +165,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 1,
             'inputType'             => 'text',
             'eval'                  => array('mandatory'=>true, 'maxlength'=>30, 'unique'=>true, 'doNotCopy'=>true, 'doNotSaveEmpty'=>true, 'tl_class'=>'w50'),
             'sql'                   => "varchar(30) NOT NULL default ''",
@@ -175,6 +179,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'filter'                => true,
+            'sorting'               => true,
+            'flag'                  => 11,
             'inputType'             => 'select',
             'options_callback'      => function() {
                 return \Isotope\Model\Attribute::getModelTypeOptions();
@@ -187,6 +193,8 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'search'                => true,
+            'sorting'               => true,
+            'flag'                  => 11,
             'default'               => 'options_legend',
             'inputType'             => 'select',
             'options'               => array('general_legend', 'meta_legend', 'pricing_legend', 'inventory_legend', 'shipping_legend', 'options_legend', 'media_legend', 'expert_legend', 'publish_legend'),
@@ -251,13 +259,15 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'dcaWizardMultilingual',
             'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
+            'foreignTable_callback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (
                 'fields'            => array('type', 'label', 'isDefault', 'published'),
                 'tl_class'          => 'clr',
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable_edit'],
                 'showOperations'    => true,
-                'operations'        => array('edit', 'show'),
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'new'),
             ),
         ),
         'foreignKey' => array
@@ -463,7 +473,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50 m12'),
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'inline' => array
+        (
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'isGallery' => array

@@ -13,6 +13,7 @@ namespace Isotope\Backend\ProductPrice;
 
 use Contao\Backend;
 use Contao\Database;
+use Contao\Database\Result;
 use Contao\StringUtil;
 use Haste\Util\Format;
 
@@ -26,7 +27,10 @@ class Callback extends Backend
     public function initializeDCA()
     {
         // Set default tax class
-        $GLOBALS['TL_DCA']['tl_iso_product_price']['fields']['tax_class']['default'] = (int) \Isotope\Model\TaxClass::findFallback()->id;
+        if ($taxClass = \Isotope\Model\TaxClass::findFallback())
+        {
+            $GLOBALS['TL_DCA']['tl_iso_product_price']['fields']['tax_class']['default'] = (int) $taxClass->id;
+        }
     }
 
 
@@ -72,13 +76,13 @@ class Callback extends Backend
     /**
      * Generate a list of tiers for a wizard in products
      *
-     * @param object     $objRecords
-     * @param string     $strId
-     * @param \DcaWizard $objWidget
+     * @param array|Result $rows
+     * @param string       $strId
+     * @param \DcaWizard   $objWidget
      *
      * @return string
      */
-    public function generateWizardList($objRecords, $strId, \DcaWizard $objWidget)
+    public function generateWizardList($rows, $strId, $objWidget)
     {
         $strReturn = '
 <table class="tl_listing showColumns">
@@ -95,11 +99,16 @@ class Callback extends Backend
 </thead>
 <tbody>';
 
-        while ($objRecords->next()) {
+        $operations = \is_array($objWidget->operations ?? null) ? $objWidget->operations : ['edit'];
 
+        if ($rows instanceof Result) {
+            $rows = $rows->fetchAllAssoc();
+        }
+
+        foreach ($rows as $row) {
             $arrTiers = array();
             $objTiers = Database::getInstance()->execute(
-                "SELECT * FROM tl_iso_product_pricetier WHERE pid={$objRecords->id} ORDER BY min"
+                "SELECT * FROM tl_iso_product_pricetier WHERE pid={$row['id']} ORDER BY min"
             );
 
             while ($objTiers->next()) {
@@ -109,12 +118,18 @@ class Callback extends Backend
             $strReturn .= '
 <tr>
     <td class="tl_file_list">' . implode(', ', $arrTiers) . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $objRecords->tax_class) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $objRecords->config_id) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->member_group) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->start) ? : '-') . '</td>
-    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $objRecords->stop) ? : '-') . '</td>
-    <td class="tl_file_list">' . $objWidget->generateRowOperation('edit', $objRecords->row()) . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'tax_class', $row['tax_class']) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'config_id', $row['config_id']) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['member_group']) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['start']) ? : '-') . '</td>
+    <td class="tl_file_list">' . (Format::dcaValue('tl_iso_product_price', 'member_group', $row['stop']) ? : '-') . '</td>
+    <td class="tl_file_list tl_right_nowrap">';
+
+            foreach ($operations as $operation) {
+                $strReturn .= $objWidget->generateRowOperation($operation, $row);
+            }
+
+            $strReturn .= '</td>
 </tr>
 ';
         }

@@ -32,12 +32,12 @@
         "docs": "https://docs.isotopeecommerce.org/"
     },
     "require":{
-        "php": "^7.2 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "composer-runtime-api": "^2",
-        "contao/core-bundle": "^4.9",
+        "contao/core-bundle": "^4.13",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3 || ^4.0",
-        "terminal42/dcawizard": "^2.3",
+        "terminal42/dcawizard": "^2.3 || ^3.0",
         "codefog/contao-haste": "^4.24.3",
         "menatwork/contao-multicolumnwizard-bundle": "^3.4",
         "terminal42/contao-tablelookupwizard": "^3.2 || ^4.0",
@@ -48,10 +48,10 @@
         "webmozart/path-util": "^2.2",
         "symfony/filesystem": "^4.4 || ^5.0 || ^6.0",
         "symfony/http-client": "^4.4 || ^5.0 || ^6.0",
-        "symfony/polyfill-php80": "^1.25"
+        "symfony/polyfill-php80": "^1.25",
+        "hashids/hashids": "^4.1"
     },
     "require-dev": {
-        "contao/core-bundle": "4.9.*",
         "contao/manager-plugin": "^2.0",
         "terminal42/contao-fineuploader": "^2.0 || ^3.0",
         "terminal42/contao-changelanguage": "^3.0",

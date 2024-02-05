@@ -13,6 +13,7 @@ namespace Isotope\Model;
 
 use Contao\Controller;
 use Contao\Database;
+use Contao\Database\Result;
 use Contao\MemberModel;
 use Contao\StringUtil;
 use Contao\System;
@@ -22,6 +23,7 @@ use Haste\Units\Mass\Scale;
 use Haste\Units\Mass\Weighable;
 use Haste\Units\Mass\WeightAggregate;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeAttribute;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -126,9 +128,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Constructor
      *
-     * @param \Database\Result $objResult
+     * @param Result|array $objResult An optional database result or array
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
@@ -136,7 +138,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
         // Do not use __destruct, because Database object might be destructed first
         // see http://github.com/contao/core/issues/2236
-        if ('FE' === TL_MODE) {
+        if (CompatibilityHelper::isFrontend()) {
             register_shutdown_function(array($this, 'updateDatabase'), false);
         }
     }
@@ -172,6 +174,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
                 $objItem->price          = $objItem->getPrice();
                 $objItem->tax_free_price = $objItem->getTaxFreePrice();
+                $objItem->name           = $objItem->getName();
                 $objItem->save();
             }
 

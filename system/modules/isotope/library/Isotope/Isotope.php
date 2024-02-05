@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
@@ -42,7 +43,7 @@ class Isotope extends Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.8.9';
+    const VERSION = '2.9.x-dev';
 
     /**
      * True if the system has been initialized
@@ -61,6 +62,12 @@ class Isotope extends Controller
      * @var Config
      */
     protected static $objConfig;
+
+    /**
+     * Current favorites instance
+     * @var Favorites
+     */
+    protected static $objFavorites;
 
     /**
      * Current request cache instance
@@ -113,7 +120,7 @@ class Isotope extends Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && 'FE' === TL_MODE) {
+        if (null === static::$objCart && CompatibilityHelper::isFrontend()) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();
@@ -130,7 +137,14 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        return Favorites::findForCurrentStore();
+        if (null === static::$objFavorites && CompatibilityHelper::isFrontend()) {
+            static::initialize();
+            if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
+                static::$objFavorites->mergeGuestCollection();
+            }
+        }
+
+        return static::$objFavorites;
     }
 
     /**
@@ -161,7 +175,7 @@ class Isotope extends Controller
             if (null === static::$objConfig) {
                 global $objPage;
 
-                static::$objConfig = ('FE' === TL_MODE ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
+                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
 
             // No config at all, create empty model as fallback
@@ -336,14 +350,14 @@ class Isotope extends Controller
      *
      * @return string
      */
-    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true)
+    public static function formatPriceWithCurrency($fltPrice, $blnHtml = true, $strCurrencyCode = null, $blnApplyRoundingIncrement = true, Config $objConfig = null)
     {
         // If price or override price is a string
         if (!is_numeric($fltPrice)) {
             return $fltPrice;
         }
 
-        $objConfig   = static::getConfig();
+        $objConfig   = $objConfig ?: static::getConfig();
         $strCurrency = $strCurrencyCode ?: $objConfig->currency;
         $strPrice    = static::formatPrice($fltPrice, $blnApplyRoundingIncrement);
         $space       = $blnHtml ? '&nbsp;' : ' ';

@@ -22,7 +22,7 @@ class PriceTiers extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception
@@ -52,7 +52,7 @@ class PriceTiers extends Attribute
             );
         }
 
-        $order = $arrOptions['order'];
+        $order = $arrOptions['order'] ?? '';
         if ($order != '' && \in_array($order, array_keys($arrTiers[0]))) {
 
             usort($arrTiers, function ($a, $b) use ($order) {

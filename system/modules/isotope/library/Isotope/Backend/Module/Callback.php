@@ -17,6 +17,7 @@ use Contao\Database;
 use Contao\DataContainer;
 use Contao\System;
 use Isotope\Frontend\ProductAction\Registry;
+use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
 
@@ -209,9 +210,15 @@ class Callback extends Backend
                 }
 
                 $objReflection = new \ReflectionClass($strClass);
-                if ($objReflection->implementsInterface('Isotope\Interfaces\IsotopeFilterModule')) {
+                if ($objReflection->implementsInterface(IsotopeFilterModule::class)) {
                     $arrClasses[] = $strName;
                 }
+            }
+        }
+
+        foreach (System::getContainer()->get('isotope.fragment.registry')->all() as $name => $config) {
+            if (System::getContainer()->get($config->getController()) instanceof IsotopeFilterModule) {
+                $arrClasses[] = substr($name, strrpos($name, '.')+1);
             }
         }
 

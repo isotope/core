@@ -24,7 +24,7 @@ class Weight extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception
@@ -59,7 +59,7 @@ class Weight extends Attribute
         }
 
         return sprintf(
-            $arrOptions['format'] ?: '%s %s',
+            $arrOptions['format'] ?? '%s %s',
             Isotope::formatPrice($weight->getWeightValue(), false),
             $weight->getWeightUnit()
         );

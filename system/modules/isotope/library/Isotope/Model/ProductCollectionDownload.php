@@ -22,6 +22,7 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\ProductCollection\Order;
 
@@ -63,7 +64,7 @@ class ProductCollectionDownload extends Model
      */
     protected function download($strFile)
     {
-        if ('FE' === TL_MODE && $this->downloads_remaining !== '') {
+        if (CompatibilityHelper::isFrontend() && $this->downloads_remaining !== '') {
             Database::getInstance()->prepare("UPDATE " . static::$strTable . " SET downloads_remaining=(downloads_remaining-1) WHERE id=?")->execute($this->id);
         }
 
@@ -80,9 +81,6 @@ class ProductCollectionDownload extends Model
      */
     public function getForTemplate($blnOrderPaid = false, $orderDetailsPageId = null)
     {
-        /** @var PageModel $objPage */
-        global $objPage;
-
         /** @var Download $objDownload */
         $objDownload = $this->getRelated('download_id');
 
@@ -134,15 +132,15 @@ class ProductCollectionDownload extends Model
                 $this->download($objFileModel->path);
             }
 
-            $arrMeta = Frontend::getMetaData($objFileModel->meta, $objPage->language);
+            $arrMeta = Frontend::getMetaData($objFileModel->meta, $GLOBALS['TL_LANGUAGE']);
 
             // Use the file name as title if none is given
-            if ($arrMeta['title'] == '') {
+            if (empty($arrMeta['title'])) {
                 $arrMeta['title'] = StringUtil::specialchars(str_replace('_', ' ', preg_replace('/^[0-9]+_/', '', $objFile->filename)));
             }
 
             $strHref = '';
-            if ('FE' === TL_MODE) {
+            if (CompatibilityHelper::isFrontend()) {
                 $strHref = Url::addQueryString(
                     'download=' . $objDownload->id . '&amp;file=' . $objFileModel->path,
                     $baseUrl
@@ -154,9 +152,9 @@ class ProductCollectionDownload extends Model
                 'id'            => $this->id,
                 'file'          => $objFile->path,
                 'name'          => $objFile->basename,
-                'title'         => $arrMeta['title'],
-                'link'          => $arrMeta['title'],
-                'caption'       => $arrMeta['caption'],
+                'title'         => $arrMeta['title'] ?? '',
+                'link'          => $arrMeta['title'] ?? '',
+                'caption'       => $arrMeta['caption'] ?? '',
                 'href'          => $strHref,
                 'filesize'      => System::getReadableSize($objFile->filesize, 1),
                 'icon'          => TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon,

@@ -11,7 +11,6 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Module;
 use Contao\System;
 use Isotope\Currency;

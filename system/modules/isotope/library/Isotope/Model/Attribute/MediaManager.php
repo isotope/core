@@ -13,7 +13,6 @@ namespace Isotope\Model\Attribute;
 
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Model\Attribute;
-use Isotope\Model\Gallery;
 
 /**
  * Attribute to implement additional image galleries

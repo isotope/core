@@ -17,6 +17,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeForVariants;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeProduct;
@@ -95,7 +96,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                         foreach ($options as $option) {
                             $option['label'] = Translation::get($option['label']);
 
-                            if ($option['group']) {
+                            if ($option['group'] ?? false) {
                                 $group = $option['label'];
                                 continue;
                             }
@@ -117,7 +118,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                     $arrOptions = array();
 
                 } elseif ($this->isCustomerDefined()) {
-                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
+                    $arrOptions = $objOptions->getArrayForFrontendWidget($objProduct, CompatibilityHelper::isFrontend());
 
                 } else {
                     $arrOptions = $objOptions->getArrayForBackendWidget();
@@ -125,7 +126,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 break;
 
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
+                if (CompatibilityHelper::isFrontend() && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptions if optionsSource is "product"'
                     );
@@ -138,7 +139,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
                 }
 
-                return $objOptions->getArrayForFrontendWidget($objProduct, 'FE' === TL_MODE);
+                return $objOptions->getArrayForFrontendWidget($objProduct, CompatibilityHelper::isFrontend());
 
             default:
                 $config = Widget::getAttributesFromDca($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$this->field_name], $this->field_name);
@@ -184,7 +185,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 return $this->varOptionsCache;
 
             case IsotopeAttributeWithOptions::SOURCE_PRODUCT:
-                if ('FE' === TL_MODE && !($objProduct instanceof IsotopeProduct)) {
+                if (CompatibilityHelper::isFrontend() && !($objProduct instanceof IsotopeProduct)) {
                     throw new \InvalidArgumentException(
                         'Must pass IsotopeProduct to Attribute::getOptionsFromManager if optionsSource is "product"'
                     );
@@ -327,7 +328,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         if (($options['product'] ?? null) instanceof IsotopeProduct) {
             $product = $options['product'];
-        } elseif (($item = $options['item']) instanceof ProductCollectionItem && $item->hasProduct()) {
+        } elseif (($item = ($options['item'] ?? null)) instanceof ProductCollectionItem && $item->hasProduct()) {
             $product = $item->getProduct();
         }
 
@@ -405,7 +406,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
         parent::saveToDCA($arrData);
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             if ($this->be_filter
                 && Input::get('act') == ''
                 && IsotopeAttributeWithOptions::SOURCE_TABLE === $this->optionsSource

@@ -20,9 +20,9 @@ use Contao\PageModel;
 use Contao\StringUtil;
 use Haste\Input\Input;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Isotope;
-use Isotope\RequestCache\Filter;
 
 class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModule
 {
@@ -56,7 +56,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -86,7 +86,7 @@ class CategoryFilter extends AbstractProductFilter implements IsotopeFilterModul
         }
 
         $currentIds = [];
-        $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0];
+        $filter = Isotope::getRequestCache()->getFiltersForModules([$this->id])[0] ?? null;
 
         if ($filter instanceof \Isotope\RequestCache\CategoryFilter) {
             $currentIds = $filter['value'];

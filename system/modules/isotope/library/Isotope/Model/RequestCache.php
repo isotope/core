@@ -14,8 +14,8 @@ namespace Isotope\Model;
 use Contao\Database;
 use Contao\Model;
 use Isotope\RequestCache\Filter;
-use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\FilterQueryBuilder;
+use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
 use Model\Registry;
 
@@ -257,7 +257,7 @@ class RequestCache extends Model
      */
     public function getFirstSortingFieldForModule($intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             return '';
         }
 
@@ -310,7 +310,7 @@ class RequestCache extends Model
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
     {
-        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule])) {
+        if (null === $this->arrSortings || !\is_array($this->arrSortings[$intModule] ?? null)) {
             $this->arrSortings[$intModule] = array();
         }
 

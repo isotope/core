@@ -11,7 +11,6 @@
 
 namespace Isotope\Interfaces;
 
-use Isotope\Model\ProductCollectionSurcharge;
 
 /**
  * IsotopePurchasableCollection describes a product collection that can be bought.
@@ -103,7 +102,7 @@ interface IsotopePurchasableCollection extends IsotopeOrderableCollection
     /**
      * Update the status of this order and trigger actions (email & hook)
      *
-     * @param int $intNewStatus
+     * @param int|array<string,mixed> $intNewStatus
      *
      * @return bool
      */

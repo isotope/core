@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Shipping;
 use Isotope\Template;
@@ -47,7 +48,7 @@ class ShippingCalculator extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

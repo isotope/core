@@ -12,6 +12,7 @@
 namespace Isotope\Model\ProductCollectionSurcharge;
 
 use Contao\Database;
+use Contao\System;
 use Haste\Units\Mass\Weight;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeProductCollectionSurcharge;
@@ -46,6 +47,15 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
             && $objScale->isMoreThan($maxWeight)
         ) {
             return null;
+        }
+
+        // !HOOK: modify if rule is available
+        if (isset($GLOBALS['ISO_HOOKS']['ruleAvailable']) && \is_array($GLOBALS['ISO_HOOKS']['ruleAvailable'])) {
+            foreach ($GLOBALS['ISO_HOOKS']['ruleAvailable'] as $callback) {
+                if (!System::importStatic($callback[0])->{$callback[1]}($objRule, $objCollection)) {
+                    return null;
+                }
+            }
         }
 
         $arrCollectionItems = $objCollection->getItems();

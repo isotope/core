@@ -48,7 +48,6 @@ class Callback extends Backend
         return $arrRules;
     }
 
-
     /**
      * Load rule restrictions from linked table
      */
@@ -56,20 +55,19 @@ class Callback extends Backend
     {
         $varValue = Database::getInstance()->execute("SELECT object_id FROM tl_iso_rule_restriction WHERE pid={$dc->activeRecord->id} AND type='{$dc->field}'")->fetchEach('object_id');
 
-        if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
+        if (!empty($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'])) {
             $varValue = implode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
         }
 
         return $varValue;
     }
 
-
     /**
      * Save rule restrictions to linked table. Only update what necessary to prevent the IDs from increasing on every save_callback
      */
     public function saveRestrictions($varValue, $dc)
     {
-        if ($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'] != '') {
+        if (!empty($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'])) {
             $arrNew = explode($GLOBALS['TL_DCA'][$dc->table]['fields'][$dc->field]['eval']['csv'], $varValue);
         } else {
             $arrNew = StringUtil::deserialize($varValue);
@@ -96,7 +94,6 @@ class Callback extends Backend
 
         return '';
     }
-
 
     /**
      * Return the "toggle visibility" button
@@ -128,7 +125,6 @@ class Callback extends Backend
 
         return '<a href="' . $this->addToUrl($href) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ';
     }
-
 
     /**
      * Disable/enable a user group
@@ -163,7 +159,6 @@ class Callback extends Backend
 //        $this->createNewVersion('tl_iso_rule', $intId);
     }
 
-
     /**
      * Get attributes that can be filtered
      *
@@ -175,7 +170,7 @@ class Callback extends Backend
         $arrAttributes = array();
 
         foreach ($GLOBALS['TL_DCA']['tl_iso_product']['fields'] as $attribute => $config) {
-            if ($config['attributes']['legend'] != '' && $attribute != 'pages' && $config['inputType'] != 'mediaManager') {
+            if (!empty($config['attributes']['legend']) && $attribute !== 'pages' && ($config['inputType'] ?? null) !== 'mediaManager') {
                 $arrAttributes[$attribute] = Format::dcaLabel('tl_iso_product', $attribute);
             }
         }
@@ -184,7 +179,6 @@ class Callback extends Backend
 
         return $arrAttributes;
     }
-
 
     /**
      * Initialize the attribute value field

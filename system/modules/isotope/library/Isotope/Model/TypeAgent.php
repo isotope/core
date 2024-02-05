@@ -43,7 +43,7 @@ abstract class TypeAgent extends Model
      *
      * @throws \RuntimeException if model does not have a valid type
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
@@ -193,15 +193,15 @@ abstract class TypeAgent extends Model
      *
      * @param array $arrOptions
      *
-     * @return Model|Collection|null
+     * @return Model|Collection|array|null
      */
     protected static function find(array $arrOptions)
     {
-        if (static::$strTable == '') {
-            return null;
+        if (empty(static::$strTable)) {
+            throw new \RuntimeException('Empty $strTable property on '.self::class);
         }
 
-        // if find() method is called in a specific model type, results must be of that type
+        // if the find() method is called in a specific model type, results must be of that type
         if (($strType = array_search(\get_called_class(), static::getModelTypes())) !== false) {
 
             // Convert to array if necessary
@@ -231,7 +231,7 @@ abstract class TypeAgent extends Model
 
         $arrOptions['table'] = static::$strTable;
         // @deprecated use static::buildFindQuery once we drop BC support for buildQueryString
-        $strQuery            = static::buildQueryString($arrOptions);
+        $strQuery = static::buildQueryString($arrOptions);
 
         $objStatement = Database::getInstance()->prepare($strQuery);
 
@@ -252,7 +252,7 @@ abstract class TypeAgent extends Model
         $objResult    = $objStatement->execute($arrOptions['value'] ?? null);
 
         if ($objResult->numRows < 1) {
-            return null;
+            return 'Array' === $arrOptions['return'] ? array() : null;
         }
 
         $objResult = static::postFind($objResult);
@@ -260,7 +260,10 @@ abstract class TypeAgent extends Model
         if ('Model' === $arrOptions['return']) {
             // @deprecated use static::createModelFromDbResult once we drop BC support for buildModelType
             return static::buildModelType($objResult);
+        }
 
+        if ('Array' === $arrOptions['return']) {
+            return static::createCollectionFromDbResult($objResult, static::$strTable)->getModels();
         }
 
         return static::createCollectionFromDbResult($objResult, static::$strTable);

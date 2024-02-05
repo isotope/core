@@ -18,6 +18,7 @@ use Contao\Picture;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Image\Image;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeGallery;
 use Isotope\Model\Gallery;
 use Isotope\Template;
@@ -66,7 +67,7 @@ class Standard extends Gallery implements IsotopeGallery
      */
     public function setRow(array $arrData)
     {
-        if ($arrData['customTpl'] != '' && 'FE' === TL_MODE) {
+        if ($arrData['customTpl'] != '' && CompatibilityHelper::isFrontend()) {
             $this->strTemplate = $arrData['customTpl'];
         }
 
@@ -273,10 +274,10 @@ class Standard extends Gallery implements IsotopeGallery
         $objTemplate->name       = $this->getName();
         $objTemplate->product_id = $this->product_id;
         $objTemplate->file       = $arrFile;
-        $objTemplate->src        = $arrFile[$strType];
-        $objTemplate->size       = $arrFile[$strType . '_size'];
-        $objTemplate->alt        = $arrFile['alt'];
-        $objTemplate->title      = $arrFile['desc'];
+        $objTemplate->src        = $arrFile[$strType] ?? '';
+        $objTemplate->size       = $arrFile[$strType . '_size'] ?? '';
+        $objTemplate->alt        = $arrFile['alt'] ?? '';
+        $objTemplate->title      = $arrFile['desc'] ?? '';
         $objTemplate->class      = trim(($this->arrData['class'] ?? '') . ' ' . ($arrFile['class'] ?? ''));
 
         // Add the missing data to the picture
@@ -294,7 +295,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
+                [$link, $rel] = explode('|', $arrFile['link'] ?? '', 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;

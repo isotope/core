@@ -1,6 +1,88 @@
 Isotope eCommerce Changelog
 ===========================
 
+Version 2.8.17 (2023-10-16)
+--------------------------
+
+- Acknowledge PayPal IPNs with unsupported payment_status
+- Fixed support for input_field_callback in tl_iso_product
+- Fixed loading address labels
+- Fixed various PHP8 issues
+- Hide multilingual fields for attribute options
+
+
+Version 2.8.16 (2023-07-31)
+--------------------------
+
+- Correctly generate URLs for the order confirmation page
+- Correctly load the member labels for address groups
+- Improve conversion of string to int attributes (#2480)
+- Fixed missing label in coupon template (#2443)
+- Fixed various PHP8 issues
+
+
+Version 2.8.15 (2023-07-19)
+--------------------------
+
+- Fixed encoding issues with Saferpay credentials
+- Generate correct redirects in checkout module (#2471)
+- Fixed "not equal" condition for attribute restriction in rules
+- Update database when attribute type is changed to integer (#2470)
+- Added image width and height to inline gallery template (#2473)
+- Update name of product in cart if site language is switched (#2467)
+- Support returning Array result on model queries
+- Fixed various PHP8 issues (#2466, #2476, #2478)
+
+
+Version 2.8.14 (2023-06-19)
+--------------------------
+
+- Correctly fetch items from current cart (#2465)
+- Fixed various PHP8 issues (#2460)
+
+
+Version 2.8.13 (2023-06-06)
+--------------------------
+
+- Hide protected products from autocomplete (#2454)
+- Fallback to default template for address book (#2178)
+- Ignore exceptions when generating breadcrumb (#2447)
+- Automatically clear the product list cache (#2265)
+- Fixed checking for product configuration in collection (#2435)
+- Fixed undefined variable in iso_collection_invoice template (#2458)
+- Fixed various PHP8 issues (#2446, #2456, #2457)
+
+
+Version 2.8.12 (2023-04-12)
+--------------------------
+
+- Fixed compatibility with Contao 4.9 (#2442)
+- Fixed order status log for Contao >=4.13.17 (#2437)
+- Fixed various PHP8 issues
+
+
+Version 2.8.11 (2023-03-30)
+--------------------------
+
+- Fixed rules with negative condition not being applied to cart (#1823)
+- Correctly hide unpublished variants in product filter (#2430)
+- Correctly set the current record ID to fix duplicating records (#2323)
+- Fixed multiple PHP8 issues (#2434, #2426 and others)
+- Make sure database migration has field names (#2433)
+- Only load page config if a page is found (#2427)
+
+
+Version 2.8.10 (2023-02-27)
+--------------------------
+
+- Correctly hide empty fields in address (#2370)
+- Correctly delete variants when deleting product (#2187)
+- Reload the page when updating cart (#2379)
+- Fixed the legacy registered hooks being overwritten by the annotation ones (#2418)
+- Fixed math operation on string (#2417)
+- Fixed multiple PHP8 issues (#2410, #2408, #2407)
+
+
 Version 2.8.9 (2023-01-23)
 --------------------------
 

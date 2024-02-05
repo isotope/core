@@ -9,10 +9,12 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+ use Contao\ArrayUtil;
+
 /**
  * Backend modules
  */
-array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
+ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 2, array
 (
     'reports' => array
     (

@@ -14,6 +14,7 @@ namespace Isotope\Module;
 use Contao\Database;
 use Contao\StringUtil;
 use Haste\Input\Input;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
 use Isotope\Model\Product;
@@ -50,7 +51,7 @@ class RelatedProducts extends ProductList
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -17,7 +17,6 @@ use Contao\FrontendUser;
 use Haste\Util\FileUpload;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
-use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Model\Attribute;
 use Isotope\Model\ProductCollectionItem;
 

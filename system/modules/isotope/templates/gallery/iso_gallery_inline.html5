@@ -10,7 +10,7 @@
         <a title="<?= $this->title ?>" href="<?= $this->link ?>"<?= $this->attributes ?>>
     <?php endif; ?>
 
-    <img id="g<?= $this->name ?>" src="<?= $this->src ?>" itemprop="image" alt="<?= $this->alt ?>">
+    <img id="g<?= $this->name ?>" src="<?= $this->src ?>" itemprop="image"<?php if (!empty($this->width) && !empty($this->height)): ?> width="<?= $this->width ?>" height="<?= $this->height ?>"<?php endif; ?> alt="<?= $this->alt ?>">
 
     <?php if ($this->hasLink): ?>
         </a>

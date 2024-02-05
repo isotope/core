@@ -11,13 +11,13 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\Input;
 use Contao\Message;
 use Contao\Module;
 use Contao\Request;
 use Contao\StringUtil;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeOrderStatusAware;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
@@ -176,7 +176,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
             $arrPayment = StringUtil::deserialize($objOrder->payment_data, true);
             $blnResult = $this->sendPayComplete($arrPayment['PAYCONFIRM']['ID'], $arrPayment['PAYCONFIRM']['TOKEN']);
 
-            if ('BE' === TL_MODE) {
+            if (CompatibilityHelper::isBackend()) {
                 if ($blnResult) {
                     Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusSuccess']);
                 } else {
@@ -184,7 +184,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
                 }
             }
 
-        } elseif ('cancel' === $objNewStatus->saferpay_status && 'BE' === TL_MODE) {
+        } elseif ('cancel' === $objNewStatus->saferpay_status && CompatibilityHelper::isBackend()) {
             Message::addInfo($GLOBALS['TL_LANG']['tl_iso_product_collection']['saferpayStatusCancel']);
         }
     }
@@ -426,6 +426,11 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         $objRequest->setHeader('Accept', 'application/json');
         $objRequest->setHeader('Content-Type', 'application/json; charset=utf-8');
 
+        if ($this->saferpay_username) {
+            $objRequest->username = $this->saferpay_username;
+            $objRequest->password = $this->saferpay_password;
+        }
+
         $objRequest->send($this->getApiUrl($script), json_encode($data), 'POST');
 
         if ($objRequest->code !== 200) {
@@ -469,9 +474,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
         }
 
         return sprintf(
-            'https://%s:%s@%s.saferpay.com/api/%s',
-            $this->saferpay_username,
-            $this->saferpay_password,
+            'https://%s.saferpay.com/api/%s',
             $this->debug ? 'test' : 'www',
             ltrim($script, '/')
         );

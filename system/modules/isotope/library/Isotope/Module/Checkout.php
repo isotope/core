@@ -11,7 +11,6 @@
 
 namespace Isotope\Module;
 
-use Contao\Controller;
 use Contao\CoreBundle\Exception\PageNotFoundException;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Exception\ResponseException;
@@ -23,6 +22,7 @@ use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -111,7 +111,7 @@ class Checkout extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -152,6 +152,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
         $this->Template->steps = array();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {
@@ -170,7 +171,9 @@ class Checkout extends Module
 
                 // Order already completed (see #1441)
                 if ($objOrder->checkout_complete) {
-                    Controller::redirect(Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo));
+                    throw new RedirectResponseException(
+                        PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
+                    );
                 }
 
                 $strBuffer = $objOrder->hasPayment() ? $objOrder->getPaymentMethod()->processPayment($objOrder, $this) : true;
@@ -179,8 +182,8 @@ class Checkout extends Module
                 if ($strBuffer === true) {
                     // If checkout is successful, complete order and redirect to confirmation page
                     if ($objOrder->checkout() && $objOrder->complete()) {
-                        Controller::redirect(
-                            Url::addQueryString('uid=' . $objOrder->uniqid, $this->orderCompleteJumpTo)
+                        throw new RedirectResponseException(
+                            PageModel::findByPk($this->orderCompleteJumpTo)->getAbsoluteUrl().'?uid=' . $objOrder->uniqid
                         );
                     }
 
@@ -533,10 +536,11 @@ class Checkout extends Module
                 return false;
             }
 
-            $objJump->loadDetails();
-            Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+            throw new RedirectResponseException($objJump->getAbsoluteUrl());
 
-        } elseif ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+        }
+
+        if ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
             $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
@@ -561,8 +565,7 @@ class Checkout extends Module
                 $objJump = PageModel::findPublishedById($this->iso_cart_jumpTo);
 
                 if (null !== $objJump) {
-                    $objJump->loadDetails();
-                    Controller::redirect($objJump->getFrontendUrl(null, $objJump->language));
+                    throw new RedirectResponseException($objJump->getAbsoluteUrl());
                 }
             }
 

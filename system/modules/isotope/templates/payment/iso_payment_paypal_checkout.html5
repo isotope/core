@@ -1,0 +1,22 @@
+<div id="paypal_checkout<?= $this->id ?>"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=<?= $this->client_id ?>&currency=<?= $this->currency ?>&debug=<?= $this->debug ? 'true' : 'false' ?>"></script>
+<script>
+  paypal.Buttons({
+    createOrder: function () {
+      return '<?= $this->token ?>';
+    },
+    onApprove: function (data) {
+      let url = '<?= $this->success_url ?>';
+      url = url.replace('__paymentID__', data.paymentID);
+      url = url.replace('__payerID__', data.payerID);
+
+      window.location.href = url;
+    },
+    onCancel: function () {
+      window.location.href = '<?= $this->cancel_url ?>';
+    },
+    onError: function () {
+      window.location.href = '<?= $this->cancel_url ?>';
+    }
+  }).render('#paypal_checkout<?= $this->id ?>');
+</script>

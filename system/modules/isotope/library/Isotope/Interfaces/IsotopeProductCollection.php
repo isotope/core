@@ -12,6 +12,7 @@
 namespace Isotope\Interfaces;
 
 use Contao\MemberModel;
+use Contao\Template;
 use Haste\Units\Mass\Scale;
 use Isotope\Model\Config;
 use Isotope\Model\ProductCollectionItem;
@@ -248,10 +249,10 @@ interface IsotopeProductCollection
     /**
      * Add the collection to a template
      *
-     * @param \Template $objTemplate
+     * @param Template $objTemplate
      * @param array     $arrConfig
      */
-    public function addToTemplate(\Template $objTemplate, array $arrConfig = []);
+    public function addToTemplate(Template $objTemplate, array $arrConfig = []);
 
     /**
      * Add an error message

@@ -14,13 +14,13 @@ namespace Isotope\Model\Product;
 use Contao\ContentElement;
 use Contao\Database;
 use Contao\Date;
-use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Widget;
+use Hashids\Hashids;
 use Haste\Generator\RowClass;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
@@ -39,7 +39,6 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -451,7 +450,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
 
         $this->strFormId = (($arrConfig['module'] instanceof ContentElement) ? 'cte' : 'fmd') . $arrConfig['module']->id . '_product_' . $this->getProductId();
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             $objProduct = $this->validateVariant($loadFallback);
 
             // A variant has been loaded, generate the variant
@@ -512,9 +511,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $objPrice->generate($objType->showPriceTiers(), 1, $objProduct->getOptions());
         };
 
-        /** @var StandardGallery $currentGallery */
-        $currentGallery          = null;
-        $objTemplate->getGallery = function ($strAttribute) use ($objProduct, $arrConfig, &$currentGallery) {
+        /** @var StandardGallery|null $currentGallery */
+        $currentGallery = null;
+        $objTemplate->getGallery = static function (string $strAttribute, int $galleryId = null) use ($objProduct, $arrConfig, &$currentGallery) {
+            if ($galleryId) {
+                $arrConfig['gallery'] = $galleryId;
+
+                if ($currentGallery && $currentGallery->id != $galleryId) {
+                    $currentGallery = null;
+                }
+            }
 
             if (null === $currentGallery
                 || $currentGallery->getName() !== $objProduct->getFormId() . '_' . $strAttribute
@@ -533,7 +539,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $arrProductOptions = array();
         $arrAjaxOptions    = array();
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             foreach (array_unique(array_merge($this->getType()->getAttributes(), $this->getType()->getVariantAttributes())) as $attribute) {
                 $arrData = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$attribute];
 
@@ -613,6 +619,15 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             return $arrButtons;
         };
 
+        $objTemplate->hitCountUrl = function () {
+            $hashids = new Hashids(System::getContainer()->getParameter('kernel.secret'), 8);
+
+            return System::getContainer()
+                ->get('router')
+                ->generate('isotope_product_hits', ['hashid' => $hashids->encode($this->id)])
+            ;
+        };
+
         RowClass::withKey('rowClass')->addCustom('product_option')->addFirstLast()->addEvenOdd()->applyTo($arrProductOptions);
 
         $objTemplate->actions = $actions;
@@ -629,13 +644,14 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formId = $this->getFormId();
         $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = $this->getProductId();
-        $objTemplate->module_id = $arrConfig['module']->id;
+        $objTemplate->module_id = $arrConfig['module']->id ?? null;
+        $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
-        if (!$arrConfig['jumpTo'] instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
+        if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);
         }
 
-        if (!$arrConfig['disableOptions']) {
+        if (!($arrConfig['disableOptions'] ?? false)) {
             $GLOBALS['AJAX_PRODUCTS'][] = array('formId' => $this->getFormId(), 'attributes' => $arrAjaxOptions);
         }
 
@@ -708,7 +724,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                         } else {
                             $blankOption = $k;
                         }
-                    } elseif (!\in_array($option['value'], $arrOptions) && !$option['group']) {
+                    } elseif (!\in_array($option['value'], $arrOptions) && !($option['group'] ?? false)) {
                         unset($arrField['options'][$k]);
                     }
                 }
@@ -1120,7 +1136,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     private function getCollectionItem()
     {
         if (Input::get('collection_item') > 0) {
-            $item = ProductCollectionItem::findByPk(Input::get('collection_item'));
+            $item = Isotope::getCart()->getItemById(Input::get('collection_item'));
 
             if (null !== $item
                 && $item->hasProduct()
