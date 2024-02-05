@@ -72,7 +72,6 @@ interface IsotopeProduct
     /**
      * Returns true if the product is available in the given collection
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return bool
      */
@@ -137,7 +136,6 @@ interface IsotopeProduct
     /**
      * Get product price model
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return IsotopePrice
      */
@@ -160,7 +158,6 @@ interface IsotopeProduct
     /**
      * Generate a product template
      *
-     * @param array $arrConfig
      *
      * @return string
      */

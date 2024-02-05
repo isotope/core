@@ -183,7 +183,7 @@ class Rule extends ProductCollectionSurcharge implements IsotopeProductCollectio
                         break;
 
                     default:
-                        throw new \Exception('Unknown rule condition "' . $objRule->attributeCondition . '"');
+                        throw new \RuntimeException('Unknown rule condition "' . $objRule->attributeCondition . '"');
                 }
             }
 

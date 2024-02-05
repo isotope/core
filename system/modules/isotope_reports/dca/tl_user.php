@@ -40,7 +40,7 @@ $GLOBALS['TL_DCA']['tl_user']['fields']['iso_reports'] = array
 );
 
 
-class tl_iso_reports extends Backend
+class tl_iso_reports extends \Contao\Backend
 {
 
     public function getReports()
@@ -55,7 +55,7 @@ class tl_iso_reports extends Backend
 
             foreach ($arrGroup as $strName => $arrConfig)
             {
-                $arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ? $arrConfig['label'][0] : $strName);
+                $arrReports[$strLegend][$strName] = ($arrConfig['label'][0] ?: $strName);
             }
         }
 

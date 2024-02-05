@@ -17,7 +17,7 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
-use Model\Registry;
+use Contao\Model\Registry;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model
@@ -73,7 +73,6 @@ class RequestCache extends Model
     /**
      * Get filter config for multiple modules
      *
-     * @param array $arrIds
      *
      * @return Filter[]
      */
@@ -95,7 +94,6 @@ class RequestCache extends Model
     /**
      * Set filter config for a frontend module
      *
-     * @param array $arrFilters
      * @param int   $intModule
      */
     public function setFiltersForModule(array $arrFilters, $intModule)
@@ -141,7 +139,6 @@ class RequestCache extends Model
     /**
      * Add an additional filter for a frontend module
      *
-     * @param Filter $objFilter
      * @param int    $intModule
      */
     public function addFilterForModule(Filter $objFilter, $intModule)
@@ -156,7 +153,6 @@ class RequestCache extends Model
      * Set filter by name for a frontend module
      *
      * @param string $strName
-     * @param Filter $objFilter
      * @param int    $intModule
      */
     public function setFilterForModule($strName, Filter $objFilter, $intModule)
@@ -200,7 +196,6 @@ class RequestCache extends Model
     /**
      * Get sorting configs for multiple modules
      *
-     * @param array $arrIds
      *
      * @return array
      */
@@ -222,7 +217,6 @@ class RequestCache extends Model
     /**
      * Set sorting config for a frontend module
      *
-     * @param array $arrSortings
      * @param int   $intModule
      */
     public function setSortingsForModule(array $arrSortings, $intModule)
@@ -286,7 +280,6 @@ class RequestCache extends Model
     /**
      * Add an additional sorting for a frontend module
      *
-     * @param Sort $objSort
      * @param int  $intModule
      */
     public function addSortingForModule(Sort $objSort, $intModule)
@@ -305,7 +298,6 @@ class RequestCache extends Model
      * Set sorting by name for a frontend module
      *
      * @param string $strName
-     * @param Sort   $objSort
      * @param int    $intModule
      */
     public function setSortingForModule($strName, Sort $objSort, $intModule)
@@ -357,7 +349,6 @@ class RequestCache extends Model
     /**
      * Set limit for a frontend module
      *
-     * @param Limit $objLimit
      * @param int   $intModule
      */
     public function setLimitForModule(Limit $objLimit, $intModule)
@@ -371,9 +362,7 @@ class RequestCache extends Model
     /**
      * Return the first limit we can find
      *
-     * @param array $arrIds
      * @param int $intDefault
-     *
      * @return Limit
      */
     public function getFirstLimitForModules(array $arrIds, $intDefault = 0)
@@ -437,7 +426,6 @@ class RequestCache extends Model
     /**
      * Set the current record from an array
      *
-     * @param array $arrData
      *
      * @return Model
      */
@@ -457,7 +445,6 @@ class RequestCache extends Model
     /**
      * Add object data to row
      *
-     * @param array $arrSet
      *
      * @return array
      */
@@ -477,7 +464,6 @@ class RequestCache extends Model
      *
      * @param int   $intId
      * @param int   $intStore
-     * @param array $arrOptions
      *
      * @return RequestCache|null
      */
@@ -519,10 +505,8 @@ class RequestCache extends Model
     /**
      * Generate query string for native filters
      *
-     * @param array $arrFilters
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.3, to be removed in 3.0.
      *             Use Isotope\RequestCache\FilterQueryBuilder instead.
      */

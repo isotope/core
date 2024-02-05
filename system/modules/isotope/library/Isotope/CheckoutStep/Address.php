@@ -21,7 +21,7 @@ use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Model\Registry;
+use Contao\Model\Registry;
 
 abstract class Address extends CheckoutStep
 {
@@ -40,8 +40,6 @@ abstract class Address extends CheckoutStep
 
     /**
      * Load data container and create template
-     *
-     * @param Checkout $objModule
      */
     public function __construct(Checkout $objModule)
     {
@@ -63,7 +61,7 @@ abstract class Address extends CheckoutStep
         $blnValidate = Input::post('FORM_SUBMIT') === $this->objModule->getFormId();
 
         $this->Template->class     = $this->getStepClass();
-        $this->Template->tableless = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
+        $this->Template->tableless = $this->objModule->tableless ?? true;
         $this->Template->options   = $this->generateOptions($blnValidate);
         $this->Template->fields    = $this->generateFields($blnValidate);
 
@@ -279,7 +277,7 @@ abstract class Address extends CheckoutStep
                 if (!\is_array($field['dca'])
                     || !($field['enabled'] ?? null)
                     || !($field['dca']['eval']['feEditable'] ?? null)
-                    || (($field['dca']['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
+                    || (($field['dca']['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
                 ) {
                     continue;
                 }
@@ -314,7 +312,7 @@ abstract class Address extends CheckoutStep
 
                 $objWidget->mandatory   = $field['mandatory'] ? true : false;
                 $objWidget->required    = $objWidget->mandatory;
-                $objWidget->tableless   = isset($this->objModule->tableless) ? $this->objModule->tableless : true;
+                $objWidget->tableless   = $this->objModule->tableless ?? true;
                 $objWidget->storeValues = true;
                 $objWidget->dca_config  = $field['dca'];
 
@@ -336,7 +334,7 @@ abstract class Address extends CheckoutStep
     {
         $arrOptions = array();
 
-        if (FE_USER_LOGGED_IN === true) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();
@@ -431,15 +429,12 @@ abstract class Address extends CheckoutStep
 
     /**
      * Set new address in cart
-     *
-     * @param AddressModel $objAddress
      */
     abstract protected function setAddress(AddressModel $objAddress);
 
     /**
      * Append DCA configuration to fields so it can be changed in hook.
      *
-     * @param array $fieldConfig
      *
      * @return array
      */

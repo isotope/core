@@ -76,8 +76,6 @@ class InsertTag
     /**
      * Replace insert tag for a product collection.
      *
-     * @param IsotopeProductCollection $collection
-     * @param array                    $tokens
      *
      * @return string
      */
@@ -99,10 +97,9 @@ class InsertTag
 
                 if ($intCount == 1) {
                     return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
-                } else {
-                    return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
                 }
-                break;
+
+                return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
 
             case 'quantity_label':
                 $intCount = $collection->sumItemsQuantity();
@@ -113,10 +110,9 @@ class InsertTag
 
                 if ($intCount == 1) {
                     return '(' . $GLOBALS['TL_LANG']['MSC']['productSingle'] . ')';
-                } else {
-                    return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
                 }
-                break;
+
+                return sprintf('(' . $GLOBALS['TL_LANG']['MSC']['productMultiple'] . ')', $intCount);
 
             case 'subtotal':
                 return Isotope::formatPriceWithCurrency($collection->getSubtotal());
@@ -160,9 +156,7 @@ class InsertTag
     /**
      * Replace insert tag for an address
      *
-     * @param Address     $address
      * @param string|null $attribute
-     *
      * @return string
      */
     private function getValueForAddressTag(Address $address, $attribute = null)
@@ -184,9 +178,7 @@ class InsertTag
      *                                         (Product::getActive() or GET parameter "product")
      * {{product::attribute::product_id}}    - gets the data of the specified product ID
      *
-     * @param IsotopeProduct $product
      * @param string         $attribute
-     *
      * @return string
      */
     private function getValueForProductTag(IsotopeProduct $product, $attribute)
@@ -251,9 +243,7 @@ class InsertTag
      *                                         (Product::getActive() or GET parameter "product")
      * {{productPrice::type::product_id}}    - gets the price of the specified product ID
      *
-     * @param IsotopeProduct $product
      * @param string         $type
-     *
      * @return string
      */
     private function getPriceForProductTag(IsotopeProduct $product, $type)

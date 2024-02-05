@@ -43,7 +43,7 @@ abstract class Document extends TypeAgent
     /**
      * Prepares the collection tokens
      *
-     * @param IsotopeProductCollection|\Model $objCollection
+     * @param IsotopeProductCollection|\Contao\Model $objCollection
      *
      * @return array
      */
@@ -98,6 +98,6 @@ abstract class Document extends TypeAgent
      */
     protected function sanitizeFileName($strName, $blnPreserveUppercase = true)
     {
-        return StringUtil::standardize(ampersand($strName, false), $blnPreserveUppercase);
+        return StringUtil::standardize(\Contao\StringUtil::ampersand($strName, false), $blnPreserveUppercase);
     }
 }

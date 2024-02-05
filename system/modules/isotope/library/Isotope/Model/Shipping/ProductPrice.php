@@ -22,12 +22,12 @@ use Isotope\Model\Shipping;
  */
 class ProductPrice extends Shipping
 {
-    const PRICE_HIGHEST_PRODUCT = 'highestProduct';
-    const PRICE_LOWEST_PRODUCT = 'lowestProduct';
-    const PRICE_SUM_PRODUCTS = 'sumProducts';
-    const PRICE_HIGHEST_ITEM = 'highestItem';
-    const PRICE_LOWEST_ITEM = 'lowestItem';
-    const PRICE_SUM_ITEMS = 'sumItems';
+    public const PRICE_HIGHEST_PRODUCT = 'highestProduct';
+    public const PRICE_LOWEST_PRODUCT = 'lowestProduct';
+    public const PRICE_SUM_PRODUCTS = 'sumProducts';
+    public const PRICE_HIGHEST_ITEM = 'highestItem';
+    public const PRICE_LOWEST_ITEM = 'lowestItem';
+    public const PRICE_SUM_ITEMS = 'sumItems';
 
     /**
      * @var string
@@ -133,8 +133,6 @@ class ProductPrice extends Shipping
     }
 
     /**
-     * @param IsotopeProduct $product
-     *
      * @return bool
      */
     private function hasShippingPrice(IsotopeProduct $product)

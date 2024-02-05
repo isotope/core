@@ -17,7 +17,7 @@ use Contao\DcaExtractor;
 use Contao\Model;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\RequestCache\Filter;
-use Model\Collection;
+use Contao\Model\Collection;
 
 /**
  * The basic Isotope product model
@@ -99,8 +99,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
 
     /**
      * Set product that is currently active (needed e.g. for insert tag replacement)
-     *
-     * @param IsotopeProduct $objProduct
      */
     public static function setActive(IsotopeProduct $objProduct)
     {
@@ -118,7 +116,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Find all published products
      *
-     * @param array $arrOptions
      *
      * @return Collection|Product[]|null
      */
@@ -132,7 +129,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      *
      * @param mixed $arrColumns
      * @param mixed $arrValues
-     * @param array $arrOptions
      *
      * @return Collection|Product[]|null
      */
@@ -147,7 +143,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
@@ -162,7 +158,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * Find a single product by primary key
      *
      * @param int   $intId
-     * @param array $arrOptions
      *
      * @return static|null
      */
@@ -207,8 +202,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Find products by IDs
      *
-     * @param array $arrIds
-     * @param array $arrOptions
      *
      * @return Product[]|Collection
      */
@@ -229,7 +222,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * Return collection of published product variants by product PID
      *
      * @param int   $intPid
-     * @param array $arrOptions
      *
      * @return Collection|Product[]|null
      */
@@ -241,8 +233,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Return collection of published products by categories
      *
-     * @param array $arrCategories
-     * @param array $arrOptions
      *
      * @return Collection|Product[]|null
      */
@@ -259,7 +249,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      * Find a single frontend-available product by primary key
      *
      * @param int   $intId
-     * @param array $arrOptions
      *
      * @return static|null
      */
@@ -296,8 +285,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Find frontend-available products by IDs
      *
-     * @param array $arrIds
-     * @param array $arrOptions
      *
      * @return Collection|Product[]|null
      */
@@ -328,7 +315,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      *
      * @param mixed $arrColumns
      * @param mixed $arrValues
-     * @param array $arrOptions
      *
      * @return Collection
      */
@@ -357,9 +343,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Find variant of a product
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrVariant
-     * @param array          $arrOptions
      *
      * @return Model|null
      */
@@ -391,8 +374,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Finds the default variant of a product.
      *
-     * @param IsotopeProduct $objProduct
-     * @param array          $arrOptions
      *
      * @return static|null
      */
@@ -423,7 +404,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Returns the number of published products.
      *
-     * @param array $arrOptions
      *
      * @return int
      */
@@ -437,7 +417,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
      *
      * @param mixed $arrColumns
      * @param mixed $arrValues
-     * @param array $arrOptions
      *
      * @return int
      */
@@ -452,7 +431,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
@@ -489,7 +468,6 @@ abstract class Product extends TypeAgent implements IsotopeProduct
     /**
      * Return a model or collection based on the database result type
      *
-     * @param array $arrOptions
      *
      * @return Product|Product[]|Collection|null
      */
@@ -705,7 +683,11 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // The model must never find a language record
-        $strQuery .= " WHERE {$arrOptions['table']}.language='' AND " . implode(' AND ', $arrOptions['column']);
+        $strQuery .= " WHERE {$arrOptions['table']}.language=''";
+
+        if (!empty($arrOptions['column'])) {
+            $strQuery .= ' AND '. implode(' AND ', $arrOptions['column']);
+        }
 
         // Group by
         if (($arrOptions['group'] ?? null) !== null) {

@@ -130,8 +130,6 @@ class ProductReader extends Module
 
     /**
      * Add meta header fields to the current page
-     *
-     * @param Product $objProduct
      */
     protected function addMetaTags(Product $objProduct)
     {
@@ -170,8 +168,6 @@ class ProductReader extends Module
 
     /**
      * Adds canonical product URLs to the document
-     *
-     * @param Product $objProduct
      */
     protected function addCanonicalProductUrls(Product $objProduct)
     {
@@ -218,10 +214,8 @@ class ProductReader extends Module
     /**
      * Gets the CSS ID for this product
      *
-     * @param Product $objProduct
      *
      * @return string|null
-     *
      * @deprecated Use AbstractProduct::getCssId()
      */
     protected function getCssId(Product $objProduct)
@@ -234,10 +228,8 @@ class ProductReader extends Module
     /**
      * Gets the CSS classes for this product
      *
-     * @param Product $objProduct
      *
      * @return string
-     *
      * @deprecated Use AbstractProduct::getCssClass()
      */
     protected function getCssClass(Product $objProduct)

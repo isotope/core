@@ -157,7 +157,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Get product price model
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return \Isotope\Interfaces\IsotopePrice|ProductPrice
      */
@@ -260,6 +259,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $time            = Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGuests    = false;
+            $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
             $strQuery        = '
                 SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
                 FROM tl_iso_product
@@ -271,16 +271,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     AND (stop='' OR stop>'" . ($time + 60) . "')
             ";
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = \in_array('protected', $arrAttributes, true);
                 $blnHasGuests = \in_array('guests', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && $blnHasGuests) {
+                if ($isMember && $blnHasGuests) {
                     $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
-                elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
+                elseif (!$isMember && $blnHasProtected) {
                     $strQuery .= " AND (protected=''" . ($blnHasGuests ? " OR guests='1'" : '') . ")";
                 }
             }
@@ -289,7 +289,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objVariants = Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
-                if (FE_USER_LOGGED_IN !== true
+                if (!$isMember
                     && $blnHasProtected
                     && $objVariants->protected
                     && (!$blnHasGuests || !$objVariants->guests)
@@ -297,7 +297,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     continue;
                 }
 
-                if (FE_USER_LOGGED_IN === true
+                if ($isMember
                     && $blnHasGuests
                     && $objVariants->guests
                     && (!$blnHasProtected || $objVariants->protected)
@@ -437,10 +437,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Generate a product template
      *
-     * @param array $arrConfig
      *
      * @return string
-     *
      * @throws \InvalidArgumentException
      */
     public function generate(array $arrConfig)
@@ -561,7 +559,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        /** @var ProductActionInterface[] $actions */
         $handleButtons = false;
         $actions = array_filter(
             Registry::all(true, $this),
@@ -750,7 +747,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // @deprecated Remove in Isotope 3.0, the options should match for frontend if attribute is customer defined
         if (
             \is_array($arrField['options'] ?? null)
-            && array_is_assoc($arrField['options'])
+            && \Contao\ArrayUtil::isAssoc($arrField['options'])
             && \count(
                 array_filter(
                     $arrField['options'], function($v) {
@@ -954,7 +951,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Validate data and remove non-available attributes
      *
-     * @param array $arrData
      *
      * @return $this
      */
@@ -1037,7 +1033,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * Prevent reload of the database record
      * We would need to fetch parent data etc. again, pretty useless
      *
-     * @param array $arrData
      *
      * @return $this
      */

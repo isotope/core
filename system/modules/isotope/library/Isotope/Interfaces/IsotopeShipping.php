@@ -87,7 +87,6 @@ interface IsotopeShipping
     /**
      * Get the checkout surcharge for this shipping method.
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return Shipping|null
      */

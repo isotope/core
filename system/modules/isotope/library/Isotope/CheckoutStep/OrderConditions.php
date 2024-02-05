@@ -157,7 +157,6 @@ class OrderConditions extends CheckoutStep implements IsotopeCheckoutStep, Isoto
     /**
      * Return array of tokens for notification
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return array
      */

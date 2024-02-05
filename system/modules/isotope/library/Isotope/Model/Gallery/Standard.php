@@ -117,8 +117,6 @@ class Standard extends Gallery implements IsotopeGallery
 
     /**
      * Set image files
-     *
-     * @param array $arrFiles
      */
     public function setFiles(array $arrFiles)
     {
@@ -260,10 +258,7 @@ class Standard extends Gallery implements IsotopeGallery
      *
      * @param Template|object $objTemplate
      * @param string          $strType
-     * @param array           $arrFile
      * @param bool            $blnWatermark
-     *
-     * @return string
      */
     protected function addImageToTemplate(Template $objTemplate, $strType, array $arrFile, $blnWatermark = true)
     {
@@ -295,7 +290,7 @@ class Standard extends Gallery implements IsotopeGallery
 
             case 'lightbox':
                 $arrFile = $this->getImageForType('lightbox', $arrFile, $blnWatermark);
-                [$link, $rel] = explode('|', $arrFile['link'], 2) + [null, null];
+                [$link, $rel] = explode('|', $arrFile['link'] ?? '', 2) + [null, null];
                 $attributes = ($rel ? ' data-lightbox="' . $rel . '"' : ' target="_blank"');
 
                 $objTemplate->hasLink    = true;
@@ -331,7 +326,6 @@ class Standard extends Gallery implements IsotopeGallery
      * Gets the image for a given file and given type and optionally adds a watermark to it
      *
      * @param   string $strType
-     * @param   array $arrFile
      * @param   bool  $blnWatermark
      *
      * @return  array

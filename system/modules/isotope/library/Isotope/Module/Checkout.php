@@ -47,13 +47,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class Checkout extends Module
 {
-    const STEP_ADDRESS = 'address';
-    const STEP_SHIPPING = 'shipping';
-    const STEP_PAYMENT = 'payment';
-    const STEP_REVIEW = 'review';
-    const STEP_PROCESS = 'process';
-    const STEP_COMPLETE = 'complete';
-    const STEP_FAILED = 'failed';
+    public const STEP_ADDRESS = 'address';
+    public const STEP_SHIPPING = 'shipping';
+    public const STEP_PAYMENT = 'payment';
+    public const STEP_REVIEW = 'review';
+    public const STEP_PROCESS = 'process';
+    public const STEP_COMPLETE = 'complete';
+    public const STEP_FAILED = 'failed';
 
     /**
      * Template
@@ -290,7 +290,6 @@ class Checkout extends Module
     /**
      * Run through all steps until we find the current one or one reports failure
      *
-     * @param array $arrSteps
      *
      * @return array
      */
@@ -457,7 +456,6 @@ class Checkout extends Module
     /**
      * Return the checkout information as array
      *
-     * @param array $arrSteps
      *
      * @return array
      */
@@ -491,8 +489,6 @@ class Checkout extends Module
     /**
      * Retrieve the array of notification data for parsing simple tokens
      *
-     * @param array                    $arrSteps
-     * @param IsotopeProductCollection $objOrder
      *
      * @return array
      */
@@ -523,7 +519,7 @@ class Checkout extends Module
     protected function canCheckout()
     {
         // Redirect to login page if not logged in
-        if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
+        if ('member' === $this->iso_checkout_method && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var PageModel $objJump */
             $objJump = PageModel::findPublishedById($this->iso_login_jumpTo);
@@ -540,7 +536,7 @@ class Checkout extends Module
 
         }
 
-        if ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+        if ('guest' === $this->iso_checkout_method && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];
@@ -674,7 +670,6 @@ class Checkout extends Module
     /**
      * Generate checkout step navigation
      *
-     * @param array $arrStepKeys
      *
      * @return array
      */
@@ -718,7 +713,6 @@ class Checkout extends Module
      * Redirect to given checkout step
      *
      * @param string                   $strStep
-     * @param IsotopeProductCollection $objCollection
      */
     public static function redirectToStep($strStep, IsotopeProductCollection $objCollection = null)
     {

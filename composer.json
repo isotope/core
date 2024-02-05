@@ -37,7 +37,7 @@
         "contao/core-bundle": "^4.13",
         "contao-community-alliance/composer-plugin": "^2.4 || ^3.0",
         "terminal42/contao-conditionalselectmenu":"^3.0.3 || ^4.0",
-        "terminal42/dcawizard": "^2.3",
+        "terminal42/dcawizard": "^2.3 || ^3.0",
         "codefog/contao-haste": "^4.24.3",
         "menatwork/contao-multicolumnwizard-bundle": "^3.4",
         "terminal42/contao-tablelookupwizard": "^3.2 || ^4.0",
@@ -57,7 +57,9 @@
         "terminal42/contao-changelanguage": "^3.0",
         "petschko/dhl-php-sdk": "dev-master@dev",
         "mpay24/mpay24-php": "^4.0",
-        "friendsofphp/php-cs-fixer": "^2.14"
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "terminal42/swissbilling-api": "^1.0",
+        "terminal42/contao-build-tools": "dev-main"
     },
     "suggest": {
         "terminal42/contao-fineuploader": "For file uploads in frontend using FineUploader",
@@ -86,6 +88,12 @@
         "classmap": [
             "system/modules/isotope/drivers/"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-community-alliance/composer-plugin": true,
+            "terminal42/contao-build-tools": true
+        }
     },
     "extra":{
         "contao-manager-plugin": "Isotope\\ContaoManager\\Plugin",

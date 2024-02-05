@@ -50,7 +50,7 @@ class AssetImport extends Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=import', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=import', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $GLOBALS['TL_LANG']['tl_iso_product']['import'][1] . '</h2>
@@ -90,7 +90,7 @@ class AssetImport extends Backend
      */
     protected function importFromPath($strPath)
     {
-        $arrFiles = scan(TL_ROOT . '/' . $strPath);
+        $arrFiles = \Contao\Folder::scan(TL_ROOT . '/' . $strPath);
 
         if (empty($arrFiles)) {
             Message::addError($GLOBALS['TL_LANG']['MSC']['noFilesInFolder']);
@@ -137,16 +137,14 @@ class AssetImport extends Backend
 
                 foreach ($arrMatches as $file) {
                     if (is_dir(TL_ROOT . '/' . $strPath . '/' . $file)) {
-                        $arrSubfiles = scan(TL_ROOT . '/' . $strPath . '/' . $file);
+                        $arrSubfiles = \Contao\Folder::scan(TL_ROOT . '/' . $strPath . '/' . $file);
 
-                        if (!empty($arrSubfiles)) {
-                            foreach ($arrSubfiles as $subfile) {
-                                if (is_file(TL_ROOT . '/' . $strPath . '/' . $file . '/' . $subfile)) {
-                                    $objFile = new File($strPath . '/' . $file . '/' . $subfile);
+                        foreach ($arrSubfiles as $subfile) {
+                            if (is_file(TL_ROOT . '/' . $strPath . '/' . $file . '/' . $subfile)) {
+                                $objFile = new File($strPath . '/' . $file . '/' . $subfile);
 
-                                    if ($objFile->isGdImage) {
-                                        $arrNewImages[] = $strPath . '/' . $file . '/' . $subfile;
-                                    }
+                                if ($objFile->isGdImage) {
+                                    $arrNewImages[] = $strPath . '/' . $file . '/' . $subfile;
                                 }
                             }
                         }

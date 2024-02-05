@@ -44,12 +44,10 @@ class Callback extends Backend
     /**
      * Return the paste button
      *
-     * @param DataContainer $dc
      * @param array          $row
      * @param string         $table
      * @param boolean        $cr
      * @param array|bool     $arrClipboard
-     *
      * @return string
      */
     public function pasteButton(DataContainer $dc, $row, $table, $cr, $arrClipboard = false)

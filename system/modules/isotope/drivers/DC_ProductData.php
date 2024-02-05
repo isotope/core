@@ -9,6 +9,7 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\ArrayUtil;
 use Contao\Backend;
 use Contao\BackendTemplate;
 use Contao\BackendUser;

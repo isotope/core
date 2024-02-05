@@ -89,10 +89,11 @@ class OrderDetails extends AbstractProductCollection
         }
 
         $order = Order::findOneBy('uniqid', (string) Input::get('uid'));
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
 
         // Also check owner (see #126)
         if (null === $order
-            || (FE_USER_LOGGED_IN === true
+            || ($isMember
                 && $order->member > 0
                 && FrontendUser::getInstance()->id != $order->member
             )
@@ -105,7 +106,7 @@ class OrderDetails extends AbstractProductCollection
         }
 
         // Order belongs to a member but not logged in
-        if (CompatibilityHelper::isFrontend() && $this->iso_loginRequired && $order->member > 0 && FE_USER_LOGGED_IN !== true) {
+        if (CompatibilityHelper::isFrontend() && $this->iso_loginRequired && $order->member > 0 && !$isMember) {
             throw new AccessDeniedException();
         }
 

@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
+use Contao\FrontendUser;
 use Contao\Input;
 use Contao\System;
 use Haste\Generator\RowClass;
@@ -65,7 +66,7 @@ class OrderHistory extends Module
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true || 0 === \count($this->iso_config_ids)) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || 0 === \count($this->iso_config_ids)) {
             return '';
         }
 
@@ -86,7 +87,7 @@ class OrderHistory extends Module
                 'tl_iso_product_collection.member=?',
                 'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')'
             ],
-            [\FrontendUser::getInstance()->id],
+            [FrontendUser::getInstance()->id],
             ['order' => 'locked DESC']
         );
 

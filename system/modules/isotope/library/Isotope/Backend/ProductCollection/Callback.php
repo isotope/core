@@ -24,6 +24,7 @@ use Contao\Environment;
 use Contao\Image;
 use Contao\Input;
 use Contao\Message;
+use Contao\ModuleModel;
 use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
@@ -53,7 +54,6 @@ class Callback extends Backend
      *
      * @param array          $row
      * @param string         $label
-     * @param array          $args
      *
      * @return array
      */
@@ -115,7 +115,7 @@ class Callback extends Backend
         if (($config = $objOrder->getRelated('config_id')) === null
             || ($moduleModel = $config->getRelated('orderDetailsModule')) === null
         ) {
-            $moduleModel = new \ModuleModel();
+            $moduleModel = new ModuleModel();
             $moduleModel->type = 'iso_orderdetails';
             $moduleModel->iso_collectionTpl = 'iso_collection_default';
         }
@@ -221,11 +221,9 @@ class Callback extends Backend
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -270,11 +268,9 @@ class Callback extends Backend
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -310,7 +306,6 @@ class Callback extends Backend
     /**
      * Generate address details amd return it as string
      *
-     * @param Address $objAddress
      *
      * @return string
      */
@@ -340,11 +335,9 @@ class Callback extends Backend
   </tr>';
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**
@@ -614,7 +607,7 @@ class Callback extends Backend
         // Return form
         return '
 <div id="tl_buttons">
-<a href="' . ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand($strRedirectUrl) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . sprintf($GLOBALS['TL_LANG']['tl_iso_product_collection']['print_document'][1], $dc->id) . '</h2>' . $strMessages . '
@@ -678,7 +671,6 @@ class Callback extends Backend
     /**
      * Generate the "show" action
      *
-     * @param DataContainer $dc
      *
      * @return string
      */
@@ -748,7 +740,7 @@ class Callback extends Backend
                         continue;
                     }
 
-                    $fieldConfig = isset($GLOBALS['TL_DCA'][$dc->table]['fields'][$field]) ? $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] : [];
+                    $fieldConfig = $GLOBALS['TL_DCA'][$dc->table]['fields'][$field] ?? [];
 
                     // Skip the values that did not change since last log
                     if ($previousLogModel !== null && (!isset($fieldConfig['eval']['logAlwaysVisible']) || !$fieldConfig['eval']['logAlwaysVisible'])) {
@@ -812,7 +804,7 @@ class Callback extends Backend
             $GLOBALS['TL_DCA']['tl_iso_product_collection']['edit']['buttons_callback'][] = static function () { return []; };
         }
 
-        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as $k => &$v) {
+        foreach ($GLOBALS['TL_DCA']['tl_iso_product_collection']['fields'] as &$v) {
             $v['eval']['doNotSaveEmpty'] = true;
             $v['save_callback'][] = static function ($value, DataContainer $dc) use ($v) {
                 $GLOBALS['ISO_ORDER_LOG'][$dc->field] = $value;

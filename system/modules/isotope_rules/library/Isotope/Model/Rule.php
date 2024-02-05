@@ -62,12 +62,12 @@ use Isotope\Translation;
  */
 class Rule extends Model
 {
-    const ROUND_NORMAL = 'normal';
-    const ROUND_UP = 'up';
-    const ROUND_DOWN = 'down';
+    public const ROUND_NORMAL = 'normal';
+    public const ROUND_UP = 'up';
+    public const ROUND_DOWN = 'down';
 
-    const GROUP_FIRST = 'first';
-    const GROUP_ALL = 'all';
+    public const GROUP_FIRST = 'first';
+    public const GROUP_ALL = 'all';
 
     /**
      * Name of the current table

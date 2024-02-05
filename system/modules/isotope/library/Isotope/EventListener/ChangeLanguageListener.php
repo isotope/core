@@ -19,8 +19,6 @@ class ChangeLanguageListener
 {
     /**
      * Hook callback for ChangeLangauge v3
-     *
-     * @param ChangelanguageNavigationEvent $event
      */
     public function __invoke(ChangelanguageNavigationEvent $event)
     {

@@ -66,18 +66,20 @@ class TaxRate extends Model
             return false;
         }
 
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
+
         // Tax rate is for guests only
-        if ($this->guests && FE_USER_LOGGED_IN === true && !$this->protected) {
+        if ($this->guests && $isMember && !$this->protected) {
             return false;
         }
 
         // Tax rate is protected but no member is logged in
-        if ($this->protected && FE_USER_LOGGED_IN !== true && !$this->guests) {
+        if ($this->protected && !$isMember && !$this->guests) {
             return false;
         }
 
         // Tax rate is protected and member logged in, check member groups
-        if ($this->protected && FE_USER_LOGGED_IN === true) {
+        if ($this->protected && $isMember) {
             $groups = StringUtil::deserialize($this->groups);
 
             if (!\is_array($groups) || empty($groups) || !\count(array_intersect($groups, FrontendUser::getInstance()->groups))) {

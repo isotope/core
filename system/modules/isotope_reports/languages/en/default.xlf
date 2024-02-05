@@ -74,11 +74,17 @@
       <trans-unit id="ISO_REPORT.rules_coupons.1">
         <source>Statistics about coupon usage</source>
       </trans-unit>
+        <trans-unit id="ISO_REPORT.summary">
+            <source>Sales summary</source>
+        </trans-unit>
       <trans-unit id="ISO_REPORT.24h_summary">
-        <source>Sales in the last 24 hours</source>
+        <source>last 24 hours</source>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.24h_empty">
-        <source>No orders have been placed in the last 24 hours.</source>
+      <trans-unit id="ISO_REPORT.month_summary">
+        <source>this month</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.year_summary">
+        <source>this year</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.shop_config">
         <source>Shop configuration</source>
@@ -95,8 +101,26 @@
       <trans-unit id="ISO_REPORT.items#">
         <source>Number of items</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.customer#">
+        <source>Customer</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.comparePrevYear#">
+        <source>Cf. prior year</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_headline">
+        <source>Period</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.discounts#">
+        <source>Discounts Total</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_avg">
+        <source>Sales Ø</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
@@ -163,6 +187,9 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.variants">
         <source>Variants</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guestOrders">
+        <source>Guest orders</source>
       </trans-unit>
     </body>
   </file>

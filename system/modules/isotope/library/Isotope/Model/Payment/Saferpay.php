@@ -165,9 +165,7 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * Update order on Saferpay terminal when changing order status in backend
      *
-     * @param Order       $objOrder
      * @param int         $intOldStatus
-     * @param OrderStatus $objNewStatus
      */
     public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus)
     {
@@ -192,7 +190,6 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * Generate POST data to initialize payment
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return array
      * @deprecated
@@ -321,7 +318,6 @@ class Saferpay extends Postsale implements IsotopeOrderStatusAware
     /**
      * Check XML data, add to log if debugging is enabled
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      * @deprecated

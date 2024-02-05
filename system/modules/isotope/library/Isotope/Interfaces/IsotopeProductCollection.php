@@ -165,7 +165,6 @@ interface IsotopeProductCollection
     /**
      * Search item for a specific product
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return ProductCollectionItem|null
      */
@@ -174,9 +173,7 @@ interface IsotopeProductCollection
     /**
      * Check if a given product is already in the collection
      *
-     * @param IsotopeProduct $objProduct
      * @param bool           $blnIdentical
-     *
      * @return bool
      */
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true);
@@ -184,9 +181,7 @@ interface IsotopeProductCollection
     /**
      * Add a product to the collection
      *
-     * @param IsotopeProduct $objProduct
      * @param integer        $intQuantity
-     * @param array          $arrConfig
      *
      * @return ProductCollectionItem
      */
@@ -215,7 +210,6 @@ interface IsotopeProductCollection
     /**
      * Remove item from collection
      *
-     * @param ProductCollectionItem $objItem
      *
      * @return bool
      */
@@ -240,7 +234,6 @@ interface IsotopeProductCollection
     /**
      * Add all products in the collection to the given scale
      *
-     * @param Scale $objScale
      *
      * @return Scale
      */
@@ -248,9 +241,6 @@ interface IsotopeProductCollection
 
     /**
      * Add the collection to a template
-     *
-     * @param Template $objTemplate
-     * @param array     $arrConfig
      */
     public function addToTemplate(Template $objTemplate, array $arrConfig = []);
 

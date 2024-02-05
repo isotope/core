@@ -12,7 +12,7 @@
 /**
  * Load tl_iso_product language file for field legends
  */
-\System::loadLanguageFile('tl_iso_product');
+\Contao\System::loadLanguageFile('tl_iso_product');
 
 
 /**
@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
     'subpalettes' => array
     (
         'storeFile'                 => 'uploadFolder,useHomeDir,doNotOverwrite',
-        'files'                     => 'extensions,filesOnly',
+        'files'                     => 'extensions,filesOnly,inline',
         'optionsSource_attribute'   => 'options',
         'optionsSource_table'       => 'optionsTable',
         'optionsSource_foreignKey'  => 'foreignKey',
@@ -259,13 +259,15 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
             'exclude'               => true,
             'inputType'             => 'dcaWizardMultilingual',
             'foreignTableCallback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
+            'foreignTable_callback'  => array('Isotope\Backend\Attribute\Callback', 'initializeTableOptions'),
             'eval' => array
             (
                 'fields'            => array('type', 'label', 'isDefault', 'published'),
                 'tl_class'          => 'clr',
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_iso_attribute']['optionsTable_edit'],
                 'showOperations'    => true,
-                'operations'        => array('edit', 'show'),
+                'global_operations' => array('new'),
+                'operations'        => array('edit', 'copy', 'cut', 'delete', 'toggle', 'show', 'new'),
             ),
         ),
         'foreignKey' => array
@@ -471,7 +473,14 @@ $GLOBALS['TL_DCA']['tl_iso_attribute'] = array
         (
             'exclude'               => true,
             'inputType'             => 'checkbox',
-            'eval'                  => array('tl_class'=>'w50 m12'),
+            'eval'                  => array('tl_class'=>'w50'),
+            'sql'                   => "char(1) NOT NULL default ''",
+        ),
+        'inline' => array
+        (
+            'exclude'               => true,
+            'inputType'             => 'checkbox',
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "char(1) NOT NULL default ''",
         ),
         'isGallery' => array
@@ -601,7 +610,7 @@ if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) 
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] = array
     (
-        'default'                 => 2000000,
+        'default'                 => 2_000_000,
         'exclude'                 => true,
         'inputType'               => 'text',
         'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),

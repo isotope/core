@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Template;
 use Haste\Form\Form;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -45,8 +46,6 @@ class BillpayWithSaferpay extends Saferpay
 
     /**
      * Automatically add Billpay conditions to checkout form
-     *
-     * @param Form $objForm
      */
     public static function addOrderCondition(Form $objForm)
     {
@@ -71,11 +70,8 @@ class BillpayWithSaferpay extends Saferpay
 
     /**
      * Add additional functionality for Billpay to document template
-     *
-     * @param \Template                $objTemplate
-     * @param IsotopeProductCollection $objCollection
      */
-    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection)
+    public function addToDocumentTemplate(Template $objTemplate, IsotopeProductCollection $objCollection)
     {
         $objTemplate->billpay = false;
 
@@ -104,7 +100,6 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Add BillPay-specific data to POST values
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return array
      */
@@ -140,7 +135,6 @@ class BillpayWithSaferpay extends Saferpay
     /**
      * Generate XML data for collection items
      *
-     * @param IsotopeOrderableCollection $objCollection
      *
      * @return string
      */
@@ -214,8 +208,6 @@ class BillpayWithSaferpay extends Saferpay
 
 
     /**
-     * @param IsotopeOrderableCollection $objCollection
-     *
      * @return string
      */
     private function getCollectionTotalAsXML(IsotopeOrderableCollection $objCollection)

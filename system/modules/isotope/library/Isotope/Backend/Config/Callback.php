@@ -230,7 +230,6 @@ class Callback extends Permission
     /**
      * Return the file picker wizard
      *
-     * @param DataContainer $dc
      *
      * @return string
      */
@@ -286,7 +285,7 @@ class Callback extends Permission
     {
         $return = array();
 
-        foreach (scan(TL_ROOT . '/' . $path) as $file) {
+        foreach (\Contao\Folder::scan(TL_ROOT . '/' . $path) as $file) {
             if (is_dir(TL_ROOT . '/' . $path . '/' . $file)) {
                 $return[$path . '/' . $file] = str_repeat(' &nbsp; &nbsp; ', $level) . $file;
                 $return                      = array_merge($return, $this->doGetTemplateFolders($path . '/' . $file, $level + 1));
@@ -300,7 +299,6 @@ class Callback extends Permission
      * Store if we need to update the currencies
      *
      * @param mixed          $varValue
-     * @param DataContainer $dc
      *
      * @return mixed
      */
@@ -316,8 +314,6 @@ class Callback extends Permission
 
     /**
      * Convert currencies if the settings have changed
-     *
-     * @param DataContainer $dc
      */
     public function convertCurrencies(DataContainer $dc)
     {

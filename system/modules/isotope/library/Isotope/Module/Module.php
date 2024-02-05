@@ -28,7 +28,7 @@ use Isotope\Message;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
 use Isotope\RequestCache\CategoryFilter;
-use PageModel;
+use Contao\PageModel;
 
 
 /**
@@ -67,7 +67,7 @@ abstract class Module extends AbstractFrontendModule
     /**
      * Load libraries and scripts
      *
-     * @param \ModuleModel $objModule
+     * @param \Contao\ModuleModel $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
@@ -164,7 +164,7 @@ abstract class Module extends AbstractFrontendModule
         $arrCategories = null;
         $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
-        if (!BE_USER_LOGGED_IN) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
         }
@@ -229,7 +229,6 @@ abstract class Module extends AbstractFrontendModule
     /**
      * Find jumpTo page for current category scope
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return PageModel
      */

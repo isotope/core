@@ -56,8 +56,9 @@ class Favorites extends ProductCollection
         $collection = null;
         $cookieHash = null;
         $storeId = (int) $rootPage->iso_store_id;
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
 
-        if (true === FE_USER_LOGGED_IN) {
+        if ($isMember) {
             $collection = static::findOneBy(
                 array('tl_iso_product_collection.member=?', 'store_id=?'),
                 array(FrontendUser::getInstance()->id, $storeId)
@@ -82,7 +83,7 @@ class Favorites extends ProductCollection
             // Can't call the individual rows here, it would trigger markModified and a save()
             $collection->setRow(array_merge($collection->row(), array(
                 'tstamp'    => $time,
-                'member'    => FE_USER_LOGGED_IN === true ? FrontendUser::getInstance()->id : 0,
+                'member'    => $isMember ? FrontendUser::getInstance()->id : 0,
                 'uniqid'    => $cookieHash,
                 'config_id' => $config->id,
                 'store_id'  => $storeId,
@@ -113,7 +114,7 @@ class Favorites extends ProductCollection
         $strHash = (string) Input::cookie(self::COOKIE_NAME);
 
         // Temporary cart available, move to this cart. Must be after creating a new cart!
-        if (FE_USER_LOGGED_IN === true && '' !== $strHash && $this->member > 0) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') && '' !== $strHash && $this->member > 0) {
             $objTemp = static::findOneBy(array('uniqid=?', 'store_id=?'), array($strHash, $this->store_id));
 
             if (null !== $objTemp) {
