@@ -39,7 +39,7 @@ use Isotope\Template;
  */
 abstract class PSP extends Payment implements IsotopePostsale
 {
-    protected static $arrShaOut;
+    protected static $arrShaOut = [];
 
     /**
      * @inheritdoc
