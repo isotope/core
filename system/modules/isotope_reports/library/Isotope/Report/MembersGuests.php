@@ -15,9 +15,9 @@ use Contao\Database;
 use Contao\Date;
 use Contao\Message;
 use Contao\Session;
+use Haste\Generator\RowClass;
 use Isotope\Isotope;
 use Isotope\Model\Config;
-use Haste\Generator\RowClass;
 use Isotope\Report\Period\PeriodFactory;
 use Isotope\Report\Period\PeriodInterface;
 
@@ -291,11 +291,11 @@ class MembersGuests extends Sales
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['stop'] == '') {
+        if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
@@ -308,7 +308,7 @@ class MembersGuests extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '') {
+        if (empty($arrSession[$this->name]['start'])) {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps

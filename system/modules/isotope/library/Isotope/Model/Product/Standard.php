@@ -14,7 +14,6 @@ namespace Isotope\Model\Product;
 use Contao\ContentElement;
 use Contao\Database;
 use Contao\Date;
-use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
@@ -40,7 +39,6 @@ use Isotope\Isotope;
 use Isotope\Model\Attribute;
 use Isotope\Model\Gallery;
 use Isotope\Model\Gallery\Standard as StandardGallery;
-use Isotope\Model\ProductCollectionItem;
 use Isotope\Model\ProductPrice;
 use Isotope\Model\ProductType;
 use Isotope\Template;
@@ -647,6 +645,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         $objTemplate->formSubmit = $this->getFormId();
         $objTemplate->product_id = $this->getProductId();
         $objTemplate->module_id = $arrConfig['module']->id ?? null;
+        $objTemplate->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         if (!($arrConfig['jumpTo'] ?? null) instanceof PageModel || $arrConfig['jumpTo']->iso_readerMode !== 'none') {
             $objTemplate->href = $this->generateUrl($arrConfig['jumpTo']);

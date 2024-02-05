@@ -6,7 +6,7 @@
 <div class="order_status <?= $this->orderStatusKey ?>"><?= $this->orderStatus ?></div>
 
 <?php foreach ($this->info as $type => $data): ?>
-<div class="info_container <?= $type . ' ' . $data['class'] ?>">
+<div class="info_container <?= $type . ' ' . ($data['class'] ?? '') ?>">
     <h3><?= $data['headline'] ?></h3>
     <div class="info"><?= $data['info'] ?></div>
 </div>

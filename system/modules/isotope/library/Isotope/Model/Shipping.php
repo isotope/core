@@ -17,6 +17,7 @@ use Contao\StringUtil;
 use Contao\System;
 use Haste\Units\Mass\Weight;
 use Haste\Units\Mass\WeightAggregate;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopeShipping;
@@ -104,7 +105,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
      */
     public function isAvailable()
     {
-        if (TL_MODE === 'BE') {
+        if (CompatibilityHelper::isBackend() ) {
             return true;
         }
 

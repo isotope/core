@@ -20,6 +20,7 @@ use Contao\System;
 use Haste\Frontend\AbstractFrontendModule;
 use Haste\Input\Input;
 use Haste\Util\Debug;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeProduct;
 use Isotope\Isotope;
@@ -80,7 +81,7 @@ abstract class Module extends AbstractFrontendModule
         Isotope::initialize();
 
         // Load Isotope JavaScript and style sheet
-        if ('FE' === TL_MODE) {
+        if (CompatibilityHelper::isFrontend()) {
             $GLOBALS['TL_JAVASCRIPT'][] = Debug::uncompressedFile(
                 'system/modules/isotope/assets/js/isotope.min.js|static'
             );
@@ -115,7 +116,7 @@ abstract class Module extends AbstractFrontendModule
         $strBuffer = parent::generate();
 
         // Prepend any messages to the module output
-        if ('BE' !== TL_MODE && $this->iso_includeMessages) {
+        if (!CompatibilityHelper::isBackend() && $this->iso_includeMessages) {
             $strBuffer = Message::generate() . $strBuffer;
         }
 

@@ -11,18 +11,17 @@
 
 namespace Isotope\Model\Payment;
 
-use Contao\Environment;
 use Contao\FrontendTemplate;
 use Contao\Input;
 use Contao\Module;
 use Contao\System;
 use Isotope\Interfaces\IsotopeProductCollection;
 use Isotope\Interfaces\IsotopePurchasableCollection;
+use Isotope\Model\Address;
 use Isotope\Model\ProductCollection\Order;
 use Isotope\Module\Checkout;
 use Mpay24\Mpay24Config;
 use Mpay24\Mpay24Order;
-use Isotope\Model\Address;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**

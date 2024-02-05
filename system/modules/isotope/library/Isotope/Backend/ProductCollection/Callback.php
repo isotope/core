@@ -28,6 +28,7 @@ use Contao\SelectMenu;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Util\Format;
+use Isotope\CompatibilityHelper;
 use Isotope\Frontend;
 use Isotope\Interfaces\IsotopeBackendInterface;
 use Isotope\Interfaces\IsotopePayment;
@@ -623,7 +624,7 @@ class Callback extends Backend
 <input type="hidden" name="FORM_SUBMIT" value="tl_iso_print_document">
 <input type="hidden" name="REQUEST_TOKEN" value="' . REQUEST_TOKEN . '">
 
-<div class="tl_tbox block">
+<div class="block tl_tbox">
   <div class="clr widget">
     ' . $objSelect->parse() . '
     <p class="tl_help">' . $objSelect->description . '</p>
@@ -835,7 +836,7 @@ class Callback extends Backend
         $logData = $GLOBALS['ISO_ORDER_LOG'];
         $GLOBALS['ISO_ORDER_LOG'] = [];
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             if ($order->pageId == 0) {
                 unset($GLOBALS['objPage']);
             }
@@ -905,7 +906,7 @@ class Callback extends Backend
             }
         }
 
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             Message::addConfirmation($GLOBALS['TL_LANG']['tl_iso_product_collection']['orderStatusUpdate']);
 
             if ($blnNotificationError === true) {

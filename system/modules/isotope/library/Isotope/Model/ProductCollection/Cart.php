@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\System;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeOrderableCollection;
 use Isotope\Isotope;
 use Isotope\Message;
@@ -311,7 +312,7 @@ class Cart extends ProductCollection implements IsotopeOrderableCollection
         /** @var PageModel $objPage */
         global $objPage;
 
-        if ('FE' !== TL_MODE || null === $objPage || 0 === (int) $objPage->rootId) {
+        if (!CompatibilityHelper::isFrontend() || null === $objPage || 0 === (int) $objPage->rootId) {
             return null;
         }
 

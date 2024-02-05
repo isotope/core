@@ -11,6 +11,7 @@
 
 namespace Isotope;
 
+use Isotope\CompatibilityHelper;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
@@ -119,7 +120,7 @@ class Isotope extends Controller
      */
     public static function getCart()
     {
-        if (null === static::$objCart && 'FE' === TL_MODE) {
+        if (null === static::$objCart && CompatibilityHelper::isFrontend()) {
             static::initialize();
             if ((static::$objCart = Cart::findForCurrentStore()) !== null) {
                 static::$objCart->mergeGuestCart();
@@ -136,7 +137,7 @@ class Isotope extends Controller
      */
     public static function getFavorites()
     {
-        if (null === static::$objFavorites && 'FE' === TL_MODE) {
+        if (null === static::$objFavorites && CompatibilityHelper::isFrontend()) {
             static::initialize();
             if (null !== (static::$objFavorites = Favorites::findForCurrentStore())) {
                 static::$objFavorites->mergeGuestCollection();
@@ -174,7 +175,7 @@ class Isotope extends Controller
             if (null === static::$objConfig) {
                 global $objPage;
 
-                static::$objConfig = ('FE' === TL_MODE ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
+                static::$objConfig = (CompatibilityHelper::isFrontend() ? Config::findByRootPageOrFallback($objPage->rootId) : Config::findByFallback());
             }
 
             // No config at all, create empty model as fallback

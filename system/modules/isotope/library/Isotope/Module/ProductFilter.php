@@ -22,6 +22,7 @@ use Contao\Widget;
 use Haste\Input\Input;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeAttributeWithOptions;
 use Isotope\Interfaces\IsotopeFilterModule;
 use Isotope\Interfaces\IsotopeProduct;
@@ -63,7 +64,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -199,6 +200,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
         $this->Template->actionClear = ampersand(strtok(Environment::get('request'), '?'));
         $this->Template->clearLabel = $GLOBALS['TL_LANG']['MSC']['clearFiltersLabel'];
         $this->Template->slabel = $GLOBALS['TL_LANG']['MSC']['submitLabel'];
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
     }
 
     /**
@@ -326,7 +328,7 @@ class ProductFilter extends AbstractProductFilter implements IsotopeFilterModule
                 }
 
                 // Generate options from database values (e.g. for text fields)
-                if (!\is_array($arrWidget['options'])) {
+                if (!\is_array($arrWidget['options'] ?? null)) {
                     $arrWidget['options'] = array_map(static fn ($v) => ['value' => $v, 'label' => $v], $arrValues);
                 }
 

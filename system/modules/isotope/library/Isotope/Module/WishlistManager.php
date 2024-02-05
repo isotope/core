@@ -12,11 +12,11 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
-use Contao\Environment;
 use Contao\Input;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\ProductCollection\Wishlist;
 use Isotope\Template;
@@ -58,7 +58,7 @@ class WishlistManager extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

@@ -28,7 +28,6 @@
 
 namespace UnitedPrototype\GoogleAnalytics;
 
-use UnitedPrototype\GoogleAnalytics\Internals\Util;
 
 use DateTime;
 

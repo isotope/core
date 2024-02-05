@@ -275,7 +275,7 @@ class ProductCollectionItem extends Model
     /**
      * Get product price. Automatically falls back to the collection item table if product is not found.
      *
-     * @return string
+     * @return float|null
      */
     public function getPrice()
     {
@@ -286,7 +286,7 @@ class ProductCollectionItem extends Model
         $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
-            return '';
+            return null;
         }
 
         return $objPrice->getAmount((int) $this->quantity, $this->getOptions());
@@ -295,7 +295,7 @@ class ProductCollectionItem extends Model
     /**
      * Get tax free product price. Automatically falls back to the collection item table if product is not found.
      *
-     * @return string
+     * @return float|null
      */
     public function getTaxFreePrice()
     {
@@ -306,7 +306,7 @@ class ProductCollectionItem extends Model
         $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
-            return '';
+            return null;
         }
 
         return $objPrice->getNetAmount((int) $this->quantity, $this->getOptions());
@@ -315,7 +315,7 @@ class ProductCollectionItem extends Model
     /**
      * Get original product price. Automatically falls back to the collection item table if product is not found.
      *
-     * @return string
+     * @return float|null
      */
     public function getOriginalPrice()
     {
@@ -326,7 +326,7 @@ class ProductCollectionItem extends Model
         $objPrice = $this->getProduct()->getPrice($this->getRelated('pid'));
 
         if (null === $objPrice) {
-            return '';
+            return null;
         }
 
         return $objPrice->getOriginalAmount((int) $this->quantity, $this->getOptions());
@@ -335,31 +335,43 @@ class ProductCollectionItem extends Model
     /**
      * Get product price multiplied by the requested product quantity
      *
-     * @return string
+     * @return float|null
      */
     public function getTotalPrice()
     {
-        return (string) ($this->getPrice() * (int) $this->quantity);
+        if (null === ($price = $this->getPrice())) {
+            return null;
+        }
+
+        return ($price * (int) $this->quantity);
     }
 
     /**
      * Get original product price multiplied by the requested product quantity
      *
-     * @return string
+     * @return float|null
      */
     public function getTotalOriginalPrice()
     {
-        return (string) ($this->getOriginalPrice() * (int) $this->quantity);
+        if (null === ($price = $this->getOriginalPrice())) {
+            return null;
+        }
+
+        return ($price * (int) $this->quantity);
     }
 
     /**
      * Get tax free product price multiplied by the requested product quantity
      *
-     * @return string
+     * @return float|null
      */
     public function getTaxFreeTotalPrice()
     {
-        return (string) ($this->getTaxFreePrice() * (int) $this->quantity);
+        if (null === ($price = $this->getTaxFreePrice())) {
+            return null;
+        }
+
+        return ($price * (int) $this->quantity);
     }
 
     /**

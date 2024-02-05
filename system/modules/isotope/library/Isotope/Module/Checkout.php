@@ -22,6 +22,7 @@ use Haste\Generator\RowClass;
 use Haste\Input\Input;
 use Haste\Util\Url;
 use Isotope\CheckoutStep\OrderConditions;
+use Isotope\CompatibilityHelper;
 use Isotope\Interfaces\IsotopeCheckoutStep;
 use Isotope\Interfaces\IsotopeNotificationTokens;
 use Isotope\Interfaces\IsotopeProductCollection;
@@ -110,7 +111,7 @@ class Checkout extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
@@ -151,6 +152,7 @@ class Checkout extends Module
         $this->Template->showNext = true;
         $this->Template->showForm = true;
         $this->Template->steps = array();
+        $this->Template->requestToken = System::getContainer()->get('contao.csrf.token_manager')->getDefaultTokenValue();
 
         // These steps are handled internally by the checkout module and are not in the config array
         switch ($this->strCurrentStep) {

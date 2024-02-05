@@ -17,6 +17,7 @@ use Contao\System;
 use Haste\Generator\RowClass;
 use Haste\Util\Format;
 use Haste\Util\Url;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Message;
 use Isotope\Model\ProductCollection\Order;
@@ -60,7 +61,7 @@ class OrderHistory extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 

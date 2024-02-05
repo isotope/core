@@ -14,7 +14,6 @@ namespace Isotope\Backend\Address;
 use Contao\Backend;
 use Contao\Database;
 use Contao\DataContainer;
-use Contao\System;
 use Isotope\Model\Address;
 
 class Callback extends Backend
@@ -27,8 +26,6 @@ class Callback extends Backend
      */
     public function renderLabel($arrAddress)
     {
-        System::loadLanguageFile('addresses');
-
         $objAddress = new Address();
         $objAddress->setRow($arrAddress);
         $strBuffer = $objAddress->generate();

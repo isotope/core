@@ -15,6 +15,7 @@ use Contao\Controller;
 use Contao\Environment;
 use Contao\Input;
 use Haste\Generator\RowClass;
+use Isotope\CompatibilityHelper;
 use Isotope\Isotope;
 use Isotope\Model\Config;
 
@@ -49,7 +50,7 @@ class ConfigSwitcher extends Module
      */
     public function generate()
     {
-        if ('BE' === TL_MODE) {
+        if (CompatibilityHelper::isBackend()) {
             return $this->generateWildcard();
         }
 
