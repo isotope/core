@@ -1,0 +1,46 @@
+<?php $this->insert('iso_block_panel', $this->arrData); ?>
+
+<div id="tl_buttons">
+<?php echo implode(' &nbsp; :: &nbsp ', $this->buttons); ?>
+</div>
+
+<h2 class="sub_headline"><?= $this->headline ?></h2>
+
+<?= \Contao\Message::generate(true) ?>
+
+<div class="tl_listing_container list_view mod_iso_reports <?= $this->class ?>">
+
+
+<div class="iso_report_container">
+<table class="iso_report tl_listing showColumns">
+<?php if($this->data['header']): ?>
+<thead>
+  <tr>
+<?php foreach($this->data['header'] as $col): ?>
+    <th<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if(!empty($col['class'])): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
+<?php endforeach; ?>
+  </tr>
+</thead>
+<?php endif; ?>
+<?php if($this->data['footer']): ?>
+<tfoot>
+  <tr>
+<?php foreach($this->data['footer'] as $col): ?>
+    <td<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
+<?php endforeach; ?>
+  </tr>
+</tfoot>
+<?php endif; ?>
+<tbody>
+<?php foreach($this->data['rows'] as $row): ?>
+  <tr<?php if(isset($row['class'])): ?> class="<?= $row['class'] ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
+<?php foreach($row['columns'] as $col): ?>
+    <<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
+<?php endforeach; ?>
+  </tr>
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+
+</div>

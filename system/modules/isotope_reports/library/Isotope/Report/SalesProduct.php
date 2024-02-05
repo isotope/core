@@ -229,7 +229,7 @@ class SalesProduct extends Sales
             'name' => 'variants',
             'label' => &$GLOBALS['TL_LANG']['ISO_REPORT']['variants'],
             'type' => 'radio',
-            'value' => (string) $arrSession[$this->name]['variants'],
+            'value' => (string) ($arrSession[$this->name]['variants'] ?? ''),
             'class' => 'tl_variants',
             'options' => array(
                 '1' => &$GLOBALS['TL_LANG']['MSC']['yes'],

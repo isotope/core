@@ -11,7 +11,6 @@
 
 namespace Isotope\Model;
 
-use Contao\Database\Result;
 use Contao\Environment;
 use Contao\FrontendUser;
 use Contao\Module;
@@ -86,7 +85,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     /**
      * @inheritdoc
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 

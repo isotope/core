@@ -95,6 +95,15 @@
       <trans-unit id="ISO_REPORT.items#">
         <source>Number of items</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.customer#">
+        <source>Customer</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.comparePrevYear#">
+        <source>Cf. prior year</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.sales_headline">
         <source>Period</source>
       </trans-unit>
@@ -172,6 +181,9 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.variants">
         <source>Variants</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guestOrders">
+        <source>Guest orders</source>
       </trans-unit>
     </body>
   </file>

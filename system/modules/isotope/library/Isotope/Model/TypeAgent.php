@@ -43,7 +43,7 @@ abstract class TypeAgent extends Model
      *
      * @throws \RuntimeException if model does not have a valid type
      */
-    public function __construct(Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
