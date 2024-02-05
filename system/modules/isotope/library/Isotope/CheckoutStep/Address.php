@@ -21,7 +21,7 @@ use Haste\Generator\RowClass;
 use Isotope\Model\Address as AddressModel;
 use Isotope\Module\Checkout;
 use Isotope\Template;
-use Model\Registry;
+use Contao\Model\Registry;
 
 abstract class Address extends CheckoutStep
 {

@@ -40,6 +40,7 @@ abstract class AbstractLink implements ProductCollectionActionInterface
 
     /**
      * {@inheritdoc}
+     * @return void
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {

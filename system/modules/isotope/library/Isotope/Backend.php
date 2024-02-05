@@ -225,7 +225,7 @@ class Backend extends ContaoBackend
     {
         $objUser = BackendUser::getInstance();
 
-        if (!\Database::getInstance()->tableExists(OrderStatus::getTable())
+        if (!Database::getInstance()->tableExists(OrderStatus::getTable())
             || !$objUser->hasAccess('iso_orders', 'modules')
         ) {
             return '';

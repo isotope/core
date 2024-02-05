@@ -238,7 +238,7 @@ abstract class AbstractProduct extends Product
      */
     public function hasVariantPrices()
     {
-        return $this->hasVariants() && \in_array('price', $this->getVariantAttributes(), true);
+        return $this->hasVariants() && \in_array('price', $this->getType()->getVariantAttributes(), true);
     }
 
     /**

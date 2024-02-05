@@ -17,7 +17,7 @@ use Isotope\RequestCache\Filter;
 use Isotope\RequestCache\FilterQueryBuilder;
 use Isotope\RequestCache\Limit;
 use Isotope\RequestCache\Sort;
-use Model\Registry;
+use Contao\Model\Registry;
 
 /**
  * Isotope\Model\RequestCache represents an Isotope request cache model

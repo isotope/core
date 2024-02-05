@@ -28,7 +28,7 @@ use Isotope\Message;
 use Isotope\Model\Product;
 use Isotope\Model\Product\AbstractProduct;
 use Isotope\RequestCache\CategoryFilter;
-use PageModel;
+use Contao\PageModel;
 
 
 /**

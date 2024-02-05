@@ -186,7 +186,7 @@ class Callback extends Backend
         Input::setGet('act', 'toggle');
 
         // Check permissions to publish
-        if (!BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_download::published', 'alexf')) {
             throw new AccessDeniedException('Not enough permissions to publish/unpublish download ID "' . $intId . '"');
         }
 

@@ -35,6 +35,7 @@ class UpdateCartAction extends AbstractButton
 
     /**
      * {@inheritdoc}
+     * @return false|void
      */
     public function handleSubmit(IsotopeProductCollection $collection)
     {

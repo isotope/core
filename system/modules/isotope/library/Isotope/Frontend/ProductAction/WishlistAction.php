@@ -13,6 +13,7 @@ namespace Isotope\Frontend\ProductAction;
 
 use Contao\Controller;
 use Contao\Environment;
+use Contao\FormSelectMenu;
 use Contao\Input;
 use Haste\Util\Url;
 use Isotope\Interfaces\IsotopeProduct;
@@ -60,7 +61,7 @@ class WishlistAction extends AbstractButton
             }
         }
 
-        $widget = new \FormSelectMenu(
+        $widget = new FormSelectMenu(
             array(
                 'id' => $this->getName() . '_option',
                 'name' => $this->getName() . '_option',

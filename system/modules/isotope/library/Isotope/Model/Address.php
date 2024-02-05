@@ -17,7 +17,7 @@ use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
-use Database\Result;
+use Contao\Database\Result;
 use Haste\Util\Format;
 use Isotope\Backend;
 use Isotope\Interfaces\IsotopeProductCollection;

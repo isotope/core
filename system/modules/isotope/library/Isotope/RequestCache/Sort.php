@@ -39,7 +39,7 @@ class Sort implements \ArrayAccess
     /**
      * @inheritdoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new \BadMethodCallException('Use methods to set filter config');
     }
@@ -47,7 +47,7 @@ class Sort implements \ArrayAccess
     /**
      * @inheritdoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->arrConfig[$offset]);
     }
@@ -55,7 +55,7 @@ class Sort implements \ArrayAccess
     /**
      * @inheritdoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new \BadMethodCallException('Use methods to set filter config');
     }
@@ -63,6 +63,7 @@ class Sort implements \ArrayAccess
     /**
      * @inheritdoc
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->arrConfig[$offset];

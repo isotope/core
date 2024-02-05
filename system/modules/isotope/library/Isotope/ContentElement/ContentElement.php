@@ -11,7 +11,7 @@
 
 namespace Isotope\ContentElement;
 
-use ContentElement as Contao_ContentElement;
+use Contao\ContentElement as Contao_ContentElement;
 use Haste\Util\Debug;
 use Haste\Util\RepositoryVersion;
 use Isotope\CompatibilityHelper;

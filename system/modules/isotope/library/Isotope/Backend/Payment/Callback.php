@@ -22,6 +22,7 @@ use Contao\Input;
 use Contao\Session;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Versions;
 use Isotope\Backend\Permission;
 use Isotope\Model\Payment;
 use Isotope\Model\Shipping;
@@ -243,11 +244,11 @@ class Callback extends Permission
         $this->checkPermission();
 
         // Check permissions to publish
-        if (!\BackendUser::getInstance()->isAdmin && !\BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
+        if (!BackendUser::getInstance()->isAdmin && !BackendUser::getInstance()->hasAccess('tl_iso_payment::enabled', 'alexf')) {
             throw new AccessDeniedException('Not enough permissions to enable/disable payment method ID "' . $intId . '"');
         }
 
-        $objVersions = new \Versions('tl_iso_payment', $intId);
+        $objVersions = new Versions('tl_iso_payment', $intId);
         $objVersions->initialize();
 
         // Trigger the save_callback

@@ -12,6 +12,7 @@
 namespace Isotope\Module;
 
 use Contao\Controller;
+use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Haste\Generator\RowClass;
@@ -84,7 +85,7 @@ class WishlistManager extends Module
                 'tl_iso_product_collection.member=?',
                 /*'config_id IN (' . implode(',', array_map('intval', $this->iso_config_ids)) . ')',*/
             ],
-            [\FrontendUser::getInstance()->id]
+            [FrontendUser::getInstance()->id]
         );
 
         if (null === $wishlists) {

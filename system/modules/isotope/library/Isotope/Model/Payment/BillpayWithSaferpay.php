@@ -11,6 +11,7 @@
 
 namespace Isotope\Model\Payment;
 
+use Contao\Template;
 use Haste\Form\Form;
 use Haste\Util\StringUtil;
 use Isotope\Interfaces\IsotopeOrderableCollection;
@@ -75,7 +76,7 @@ class BillpayWithSaferpay extends Saferpay
      * @param \Template                $objTemplate
      * @param IsotopeProductCollection $objCollection
      */
-    public function addToDocumentTemplate(\Template $objTemplate, IsotopeProductCollection $objCollection)
+    public function addToDocumentTemplate(Template $objTemplate, IsotopeProductCollection $objCollection)
     {
         $objTemplate->billpay = false;
 
