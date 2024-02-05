@@ -7,3 +7,5 @@ parameters:
         #- system/modules/isotope/drivers/
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+    excludePaths:
+        - system/modules/isotope/library/UnitedPrototype
