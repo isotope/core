@@ -31,7 +31,7 @@
 <div class="submit_container">
 <?php if ($this->useQuantity): ?>
 <div class="quantity_container">
-<label for="quantity_requested_<?= $this->raw['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['quantity'] ?>:</label> <input type="text" class="text" id="quantity_requested_<?= $this->raw['id'] ?>" name="quantity_requested" placeholder="<?= $this->minimum_quantity ?>" value="<?= \Contao\StringUtil::specialchars(Input::post('quantity_requested')); ?>" maxlength="10">
+<label for="quantity_requested_<?= $this->raw['id'] ?>"><?= $GLOBALS['TL_LANG']['MSC']['quantity'] ?>:</label> <input type="text" class="text" id="quantity_requested_<?= $this->raw['id'] ?>" name="quantity_requested" placeholder="<?= $this->minimum_quantity ?>" value="<?= \Contao\StringUtil::specialchars(\Contao\Input::post('quantity_requested')); ?>" maxlength="10">
 </div>
 <?php endif; ?>
 <?php foreach ($this->actions as $action) echo $action->generate($this->product); ?>

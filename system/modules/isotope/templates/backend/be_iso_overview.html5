@@ -8,7 +8,7 @@
         <?php if (isset($arrGroup['html'])): ?>
         <?= $arrGroup['html'] ?>
         <?php else: ?>
-        <?php foreach ($arrGroup['modules'] as $strModule => $arrModule): ?>
+        <?php foreach ($arrGroup['modules'] as $arrModule): ?>
         <div class="item">
             <a href="<?= $arrModule['href'] ?>" title="<?= $arrModule['description'] ?>"<?php if ($arrModule['class']): ?> class="<?= $arrModule['class'] ?>"<?php endif; ?>>
                 <img src="<?= $arrModule['icon'] ?>" alt="">

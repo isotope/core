@@ -134,11 +134,9 @@ class Callback extends Backend
 ';
         }
 
-        $strReturn .= '
+        return $strReturn . '
 </tbody>
 </table>';
-
-        return $strReturn;
     }
 
 
@@ -203,21 +201,17 @@ class Callback extends Backend
                 );
             }
 
-            if (!empty($arrUpdate)) {
-                foreach ($arrUpdate as $min => $price) {
-                    Database::getInstance()
-                        ->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid=? AND min=?")
-                        ->execute($price, $dc->id, $min)
-                    ;
-                }
+            foreach ($arrUpdate as $min => $price) {
+                Database::getInstance()
+                    ->prepare("UPDATE tl_iso_product_pricetier SET tstamp=$time, price=? WHERE pid=? AND min=?")
+                    ->execute($price, $dc->id, $min)
+                ;
             }
 
-            if (!empty($arrInsert)) {
-                foreach ($arrInsert as $min => $price) {
-                    Database::getInstance()
-                        ->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?, $time, ?, ?)")
-                        ->execute($dc->id, $min, $price);
-                }
+            foreach ($arrInsert as $min => $price) {
+                Database::getInstance()
+                    ->prepare("INSERT INTO tl_iso_product_pricetier (pid,tstamp,min,price) VALUES (?, $time, ?, ?)")
+                    ->execute($dc->id, $min, $price);
             }
         }
 

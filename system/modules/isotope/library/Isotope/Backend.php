@@ -111,9 +111,9 @@ class Backend extends ContaoBackend
         }
 
         if (\is_array($arrSubdivisions[$country])) {
-            foreach ($arrSubdivisions[$country] as $groupCode => $regionGroup) {
+            foreach ($arrSubdivisions[$country] as $regionGroup) {
                 if (\is_array($regionGroup)) {
-                    foreach ($regionGroup as $groupLabel => $regions) {
+                    foreach ($regionGroup as $regions) {
                         if (isset($regions[$subdivision])) {
                             return $regions[$subdivision];
                         }
@@ -462,7 +462,7 @@ class Backend extends ContaoBackend
             && Group::getTable() === Input::get('table')
             && 'be_main' === $objTemplate->getName()
         ) {
-            $objTemplate->managerHref = ampersand($this->Session->get('groupPickerRef'));
+            $objTemplate->managerHref = \Contao\StringUtil::ampersand($this->Session->get('groupPickerRef'));
             $objTemplate->manager     = $GLOBALS['TL_LANG']['MSC']['groupPickerHome'];
         }
     }

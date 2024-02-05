@@ -226,9 +226,7 @@ abstract class PSP extends Payment implements IsotopePostsale
     /**
      * Prepare PSP params
      *
-     * @param IsotopePurchasableCollection $objOrder
      * @param Module $objModule
-     *
      * @return  array
      */
     protected function preparePSPParams(IsotopePurchasableCollection $objOrder, $objModule)
@@ -374,7 +372,7 @@ abstract class PSP extends Payment implements IsotopePostsale
 
         $buffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment'][$this->type][0] . ')' . '</h2>
@@ -396,10 +394,8 @@ abstract class PSP extends Payment implements IsotopePostsale
             ++$i;
         }
 
-        $buffer .= '
+        return $buffer . '
 </tbody></table>
 </div>';
-
-        return $buffer;
     }
 }

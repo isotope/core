@@ -89,7 +89,6 @@ class Address extends Model
     /**
      * Check if the address has a valid VAT number
      *
-     * @param Config $config
      *
      * @return bool
      *
@@ -145,7 +144,7 @@ class Address extends Model
 
         $arrTokens  = $this->getTokens($arrFields);
 
-        return StringUtil::parseSimpleTokens($strFormat, $arrTokens);
+        return \Contao\System::getContainer()->get('contao.string.simple_token_parser')->parse($strFormat, $arrTokens);
     }
 
     /**
@@ -231,7 +230,7 @@ class Address extends Model
 
         $street = implode('<br>', array_filter([$this->street_1, $this->street_2, $this->street_3]));
 
-        $arrTokens += [
+        return $arrTokens + [
             'hcard_fn'               => $fn ? '<span class="fn">' . $fn . '</span>' : '',
             'hcard_n'                => ($arrTokens['firstname'] || $arrTokens['lastname']) ? '1' : '',
             'hcard_honorific_prefix' => $arrTokens['salutation'] ? '<span class="honorific-prefix">' . $arrTokens['salutation'] . '</span>' : '',
@@ -248,15 +247,12 @@ class Address extends Model
             'hcard_postal_code'      => $arrTokens['postal'] ? '<span class="postal-code">' . $arrTokens['postal'] . '</span>' : '',
             'hcard_country_name'     => $arrTokens['country'] ? '<div class="country-name">' . $arrTokens['country'] . '</div>' : '',
         ];
-
-        return $arrTokens;
     }
 
     /**
      * Find address for member, automatically checking the current store ID and tl_member parent table
      *
      * @param int   $intMember
-     * @param array $arrOptions
      *
      * @return Collection|null
      */
@@ -274,7 +270,6 @@ class Address extends Model
      *
      * @param int   $intId
      * @param int   $intMember
-     * @param array $arrOptions
      *
      * @return Address|null
      */
@@ -317,7 +312,6 @@ class Address extends Model
      * Find default billing address for a product collection
      *
      * @param int   $intCollection
-     * @param array $arrOptions
      *
      * @return static|null
      */
@@ -334,7 +328,6 @@ class Address extends Model
      * Find default shipping address for a product collection
      *
      * @param int   $intCollection
-     * @param array $arrOptions
      *
      * @return static|null
      */
@@ -378,11 +371,9 @@ class Address extends Model
     /**
      * Create a new address for a product collection
      *
-     * @param IsotopeProductCollection $objCollection
      * @param array|null               $arrFill an array of member fields to inherit
      * @param bool                     $blnDefaultBilling
      * @param bool                     $blnDefaultShipping
-     *
      * @return static
      */
     public static function createForProductCollection(

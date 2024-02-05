@@ -117,7 +117,6 @@ class QuickPay extends Postsale
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

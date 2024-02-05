@@ -43,7 +43,7 @@ class Isotope extends Controller
     /**
      * Isotope version
      */
-    const VERSION = '2.9.x-dev';
+    public const VERSION = '2.9.x-dev';
 
     /**
      * True if the system has been initialized
@@ -149,8 +149,6 @@ class Isotope extends Controller
 
     /**
      * Set the currently active Isotope cart
-     *
-     * @param Cart $objCart
      */
     public static function setCart(Cart $objCart)
     {
@@ -190,8 +188,6 @@ class Isotope extends Controller
 
     /**
      * Set the currently active Isotope configuration
-     *
-     * @param Config $objConfig
      */
     public static function setConfig(Config $objConfig = null)
     {
@@ -231,8 +227,6 @@ class Isotope extends Controller
      * @param object $objSource
      * @param string $strField
      * @param int    $intTaxClass
-     * @param array  $arrAddresses
-     * @param array  $arrOptions
      *
      * @return float
      */
@@ -407,10 +401,8 @@ class Isotope extends Controller
      * Callback for isoButton Hook
      *
      * @param array          $arrButtons
-     * @param IsotopeProduct $objProduct
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.5
      */
     public static function defaultButtons($arrButtons, IsotopeProduct $objProduct = null)
@@ -475,12 +467,10 @@ class Isotope extends Controller
     /**
      * Format options label and value
      *
-     * @param array  $arrData
      * @param string $strTable
      * @param bool   $blnSkipEmpty
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatOptions(array $arrData, $strTable = 'tl_iso_product', $blnSkipEmpty = true)
@@ -505,11 +495,9 @@ class Isotope extends Controller
     /**
      * Format product configuration using \Haste\Data
      *
-     * @param array                  $arrConfig
      * @param IsotopeProduct|Product $objProduct
      *
      * @return array
-     *
      * @deprecated Deprecated since Isotope 2.4, to be removed in Isotope 3.0
      */
     public static function formatProductConfiguration(array $arrConfig, IsotopeProduct $objProduct)

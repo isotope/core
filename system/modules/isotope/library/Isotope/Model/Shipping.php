@@ -61,8 +61,8 @@ use Isotope\Translation;
  */
 abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggregate
 {
-    const QUANTITY_MODE_ITEMS = 'cart_items';
-    const QUANTITY_MODE_PRODUCTS = 'cart_products';
+    public const QUANTITY_MODE_ITEMS = 'cart_items';
+    public const QUANTITY_MODE_PRODUCTS = 'cart_products';
 
     /**
      * Table name
@@ -338,7 +338,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
     {
         return '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=shipping', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=shipping', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_shipping'][$this->type][0] . ')' . '</h2>
@@ -389,8 +389,8 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             return;
         }
 
-        $pos = strrpos(\get_called_class(), '\\') ?: -1;
-        $className = substr(\get_called_class(), $pos+1);
+        $pos = strrpos(static::class, '\\') ?: -1;
+        $className = substr(static::class, $pos+1);
 
         $logFile = sprintf(
             'isotope_%s-%s.log',

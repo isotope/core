@@ -20,9 +20,7 @@ interface IsotopeOrderStatusAware
     /**
      * Handle status updates of an order
      *
-     * @param Order       $objOrder
      * @param int         $intOldStatus
-     * @param OrderStatus $objNewStatus
      */
     public function onOrderStatusUpdate(Order $objOrder, $intOldStatus, OrderStatus $objNewStatus);
 }

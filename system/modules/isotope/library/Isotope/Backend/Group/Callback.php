@@ -153,9 +153,7 @@ class Callback extends Permission
      *
      * @param array          $row
      * @param string         $label
-     * @param DataContainer $dc
      * @param string         $imageAttribute
-     *
      * @return string
      */
     public function addIcon($row, $label, DataContainer $dc = null, $imageAttribute = '')

@@ -24,8 +24,6 @@ class SubtableVersion
 
     /**
      * Remove subtable versions from backend welcome screen.
-     *
-     * @param Template $template
      */
     public function removeFromWelcomeScreen(Template $template)
     {

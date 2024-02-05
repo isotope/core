@@ -25,8 +25,6 @@ class GoToCheckoutAction extends AbstractButton
 
     /**
      * Constructor.
-     *
-     * @param Module $module
      */
     public function __construct(Module $module)
     {

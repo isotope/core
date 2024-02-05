@@ -610,7 +610,7 @@ if (\Composer\InstalledVersions::isInstalled('terminal42/contao-fineuploader')) 
 
     $GLOBALS['TL_DCA']['tl_iso_attribute']['fields']['chunkSize'] = array
     (
-        'default'                 => 2000000,
+        'default'                 => 2_000_000,
         'exclude'                 => true,
         'inputType'               => 'text',
         'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),

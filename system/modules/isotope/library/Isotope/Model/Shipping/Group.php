@@ -24,10 +24,10 @@ use Isotope\Model\Shipping;
  */
 class Group extends Shipping
 {
-    const CALCULATE_FIRST   = 'first';
-    const CALCULATE_LOWEST  = 'lowest';
-    const CALCULATE_HIGHEST = 'highest';
-    const CALCULATE_SUM     = 'summarize';
+    public const CALCULATE_FIRST   = 'first';
+    public const CALCULATE_LOWEST  = 'lowest';
+    public const CALCULATE_HIGHEST = 'highest';
+    public const CALCULATE_SUM     = 'summarize';
 
     /**
      * Shipping methods we're using.

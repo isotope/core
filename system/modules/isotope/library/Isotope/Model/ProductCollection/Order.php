@@ -51,8 +51,8 @@ use NotificationCenter\Model\Notification;
  */
 class Order extends ProductCollection implements IsotopePurchasableCollection
 {
-    const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
-    const STATUS_UPDATE_SKIP_LOG = 2;
+    public const STATUS_UPDATE_SKIP_NOTIFICATION = 1;
+    public const STATUS_UPDATE_SKIP_LOG = 2;
 
 
     /**
@@ -204,26 +204,24 @@ class Order extends ProductCollection implements IsotopePurchasableCollection
         $notificationIds = array_filter(explode(',', $this->nc_notification));
 
         // Send the notifications
-        if (\count($notificationIds) > 0) {
-            foreach ($notificationIds as $notificationId) {
-                // Generate tokens
-                $arrTokens = $this->getNotificationTokens($notificationId);
+        foreach ($notificationIds as $notificationId) {
+            // Generate tokens
+            $arrTokens = $this->getNotificationTokens($notificationId);
 
-                // Send notification
-                $blnNotificationError = true;
+            // Send notification
+            $blnNotificationError = true;
 
-                /** @var Notification $objNotification */
-                if (($objNotification = Notification::findByPk($notificationId)) !== null) {
-                    $arrResult = $objNotification->send($arrTokens, $this->language);
+            /** @var Notification $objNotification */
+            if (($objNotification = Notification::findByPk($notificationId)) !== null) {
+                $arrResult = $objNotification->send($arrTokens, $this->language);
 
-                    if (\count($arrResult) > 0 && !\in_array(false, $arrResult, true)) {
-                        $blnNotificationError = false;
-                    }
+                if (\count($arrResult) > 0 && !\in_array(false, $arrResult, true)) {
+                    $blnNotificationError = false;
                 }
+            }
 
-                if ($blnNotificationError === true) {
-                    System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
-                }
+            if ($blnNotificationError === true) {
+                System::log('Error sending new order notification for order ID ' . $this->id, __METHOD__, TL_ERROR);
             }
         }
 

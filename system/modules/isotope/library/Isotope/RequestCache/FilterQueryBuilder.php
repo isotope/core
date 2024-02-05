@@ -35,7 +35,6 @@ class FilterQueryBuilder
     /**
      * Constructor.
      *
-     * @param array $filters
      *
      * @throws \InvalidArgumentException
      */
@@ -95,8 +94,6 @@ class FilterQueryBuilder
 
     /**
      * Generate query string for native filters
-     *
-     * @param array $arrFilters
      */
     private function buildSqlFilters(array $arrFilters)
     {

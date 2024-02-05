@@ -77,10 +77,10 @@ use Isotope\Translation;
  */
 class Config extends Model
 {
-    const PRICE_DISPLAY_NET = 'net';
-    const PRICE_DISPLAY_GROSS = 'gross';
-    const PRICE_DISPLAY_FIXED = 'fixed';
-    const PRICE_DISPLAY_LEGACY = 'legacy';
+    public const PRICE_DISPLAY_NET = 'net';
+    public const PRICE_DISPLAY_GROSS = 'gross';
+    public const PRICE_DISPLAY_FIXED = 'fixed';
+    public const PRICE_DISPLAY_LEGACY = 'legacy';
 
     /**
      * Name of the current table
@@ -94,7 +94,7 @@ class Config extends Model
      */
     protected $arrCache = array();
 
-    private static $priceDisplayGroups = null;
+    private static $priceDisplayGroups;
 
     /**
      * Get translated label for the config
@@ -322,7 +322,6 @@ class Config extends Model
      * Find config set in root page or the fallback
      *
      * @param int   $intRoot
-     * @param array $arrOptions
      *
      * @return object|null
      */
@@ -346,7 +345,6 @@ class Config extends Model
     /**
      * Find the fallback config
      *
-     * @param array $arrOptions
      *
      * @return object|null
      */

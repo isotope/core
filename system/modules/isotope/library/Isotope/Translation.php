@@ -69,11 +69,7 @@ class Translation
 
         $varLabel = StringUtil::decodeEntities($varLabel);
 
-        if (isset(static::$arrLabels[$strLanguage][$varLabel])) {
-            return static::$arrLabels[$strLanguage][$varLabel];
-        }
-
-        return $varLabel;
+        return static::$arrLabels[$strLanguage][$varLabel] ?? $varLabel;
     }
 
     /**

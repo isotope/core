@@ -55,7 +55,7 @@ class Callback extends Backend
         if ('folder' === $objDownload->getRelated('singleSRC')->type) {
             $arrDownloads = array();
 
-            foreach (scan(TL_ROOT . '/' . $path) as $file) {
+            foreach (\Contao\Folder::scan(TL_ROOT . '/' . $path) as $file) {
                 if (is_file(TL_ROOT . '/' . $path . '/' . $file)) {
                     $objFile        = new File($path . '/' . $file);
                     $icon           = 'background:url(' . TL_ASSETS_URL . 'assets/contao/images/' . $objFile->icon . ') left center no-repeat; padding-left: 22px';

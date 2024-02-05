@@ -126,13 +126,11 @@ class Reports extends BackendOverview
             }
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
     </table>
 </div>
 </div>
 </fieldset>';
-
-        return $strBuffer;
     }
 
     /**

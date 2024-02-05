@@ -48,7 +48,6 @@ class PageTree extends Attribute
     /**
      * Make sure array values are unserialized.
      *
-     * @param IsotopeProduct $product
      *
      * @return mixed
      */

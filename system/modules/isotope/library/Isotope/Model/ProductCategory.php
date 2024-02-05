@@ -28,7 +28,6 @@ class ProductCategory extends Model
      * Gets the options for the query for the "findByPidForPublishedPages" method.
      *
      * @param       $intProduct
-     * @param array $arrOptions
      *
      * @return array
      */
@@ -42,7 +41,7 @@ class ProductCategory extends Model
             $having .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
         }
 
-        $arrOptions = array_merge(
+        return array_merge(
             array(
                 'column' => array("$t.pid=?"),
                 'value'  => array($intProduct),
@@ -53,15 +52,12 @@ class ProductCategory extends Model
             ),
             $arrOptions
         );
-
-        return $arrOptions;
     }
 
     /**
      * Find categories by product id if the respective page is published
      *
      * @param int   $intProduct
-     * @param array $arrOptions
      *
      * @return \Model\Collection|null
      */

@@ -137,7 +137,7 @@ class Paypal extends Postsale
                 array_walk(
                     $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . (string) $option;
+                        $option = $option['label'] . ': ' . $option;
                     }
                 );
 
@@ -227,7 +227,7 @@ class Paypal extends Postsale
 
         $strBuffer = '
 <div id="tl_buttons">
-<a href="' . ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
+<a href="' . \Contao\StringUtil::ampersand(str_replace('&key=payment', '', Environment::get('request'))) . '" class="header_back" title="' . StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['backBT']) . '">' . $GLOBALS['TL_LANG']['MSC']['backBT'] . '</a>
 </div>
 
 <h2 class="sub_headline">' . $this->name . ' (' . $GLOBALS['TL_LANG']['MODEL']['tl_iso_payment']['paypal'][0] . ')' . '</h2>
@@ -255,11 +255,9 @@ class Paypal extends Postsale
             ++$i;
         }
 
-        $strBuffer .= '
+        return $strBuffer . '
 </tbody></table>
 </div>';
-
-        return $strBuffer;
     }
 
     /**

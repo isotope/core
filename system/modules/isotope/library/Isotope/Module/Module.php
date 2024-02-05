@@ -67,7 +67,7 @@ abstract class Module extends AbstractFrontendModule
     /**
      * Load libraries and scripts
      *
-     * @param \ModuleModel $objModule
+     * @param \Contao\ModuleModel $objModule
      * @param string $strColumn
      */
     public function __construct($objModule, $strColumn = 'main')
@@ -229,7 +229,6 @@ abstract class Module extends AbstractFrontendModule
     /**
      * Find jumpTo page for current category scope
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return PageModel
      */

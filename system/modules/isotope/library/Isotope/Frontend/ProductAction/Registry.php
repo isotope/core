@@ -22,8 +22,6 @@ class Registry
 
     /**
      * Adds an action to the registry.
-     *
-     * @param ProductActionInterface $action
      */
     public static function add(ProductActionInterface $action)
     {
@@ -32,8 +30,6 @@ class Registry
 
     /**
      * Removes an action from the registry.
-     *
-     * @param ProductActionInterface $action
      */
     public static function remove(ProductActionInterface $action)
     {

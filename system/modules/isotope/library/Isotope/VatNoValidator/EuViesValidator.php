@@ -55,7 +55,6 @@ class EuViesValidator implements IsotopeVatNoValidator
     /**
      * Return true if vat number could be validated, false if not
      *
-     * @param Address $address
      *
      * @return bool
      * @throws \RuntimeException if address country does not match VAT country
@@ -87,8 +86,6 @@ class EuViesValidator implements IsotopeVatNoValidator
     /**
      * Check if tax should be exempted because of a valid tax number
      *
-     * @param Address $address
-     * @param TaxRate $tax
      *
      * @return bool
      */
@@ -165,8 +162,7 @@ class EuViesValidator implements IsotopeVatNoValidator
     {
         $vatId = substr($vatNo, 2);
         $vatId = str_replace(array(' ', '.'), '', $vatId);
-        $vatId = strtoupper($vatId);
 
-        return $vatId;
+        return strtoupper($vatId);
     }
 }

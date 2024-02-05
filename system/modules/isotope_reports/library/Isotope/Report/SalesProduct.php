@@ -132,8 +132,8 @@ class SalesProduct extends Sales
 
                 foreach (StringUtil::deserialize($objProducts->product_configuration, true) as $strName => $strValue) {
                     if (isset($GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName])) {
-                        $strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] : $strValue;
-                        $strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ? $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] : $strName;
+                        $strValue = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['options'][$strValue] ?: $strValue;
+                        $strName = $GLOBALS['TL_DCA']['tl_iso_product']['fields'][$strName]['label'][0] ?: $strName;
                     }
 
                     $arrOptions[] = '<span class="variant">'.$strName.': '.$strValue.'</span>';

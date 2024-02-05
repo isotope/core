@@ -27,9 +27,7 @@ class AttributeOption extends Collection
     /**
      * Get array structure suitable for a frontend widget
      *
-     * @param IsotopeProduct $objProduct
      * @param bool           $blnPriceInLabel
-     *
      * @return array
      */
     public function getArrayForFrontendWidget(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)

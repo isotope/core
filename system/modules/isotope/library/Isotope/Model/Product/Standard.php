@@ -157,7 +157,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Get product price model
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return \Isotope\Interfaces\IsotopePrice|ProductPrice
      */
@@ -437,10 +436,8 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Generate a product template
      *
-     * @param array $arrConfig
      *
      * @return string
-     *
      * @throws \InvalidArgumentException
      */
     public function generate(array $arrConfig)
@@ -561,7 +558,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             }
         }
 
-        /** @var ProductActionInterface[] $actions */
         $handleButtons = false;
         $actions = array_filter(
             Registry::all(true, $this),
@@ -750,7 +746,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
         // @deprecated Remove in Isotope 3.0, the options should match for frontend if attribute is customer defined
         if (
             \is_array($arrField['options'] ?? null)
-            && array_is_assoc($arrField['options'])
+            && \Contao\ArrayUtil::isAssoc($arrField['options'])
             && \count(
                 array_filter(
                     $arrField['options'], function($v) {
@@ -954,7 +950,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
     /**
      * Validate data and remove non-available attributes
      *
-     * @param array $arrData
      *
      * @return $this
      */
@@ -1037,7 +1032,6 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
      * Prevent reload of the database record
      * We would need to fetch parent data etc. again, pretty useless
      *
-     * @param array $arrData
      *
      * @return $this
      */

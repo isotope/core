@@ -37,9 +37,7 @@ class AttributeOption extends Multilingual
     /**
      * Get array representation of the attribute option
      *
-     * @param IsotopeProduct $objProduct
      * @param bool           $blnPriceInLabel
-     *
      * @return array
      */
     public function getAsArray(IsotopeProduct $objProduct = null, $blnPriceInLabel = true)
@@ -85,7 +83,6 @@ class AttributeOption extends Multilingual
     /**
      * Check if we show from price for option
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return bool
      */
@@ -128,10 +125,8 @@ class AttributeOption extends Multilingual
     /**
      * Return calculated price for this attribute option
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return float
-     *
      * @deprecated Deprecated since Isotope 2.2.6, to be removed in 3.0.
      *             This method can result in an endless loop, use getAmount() instead.
      */
@@ -192,7 +187,6 @@ class AttributeOption extends Multilingual
     /**
      * Get formatted label for the attribute option
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return string
      */
@@ -290,8 +284,6 @@ class AttributeOption extends Multilingual
     /**
      * Find all options by attribute
      *
-     * @param IsotopeProduct              $objProduct
-     * @param IsotopeAttributeWithOptions $objAttribute
      *
      * @return \Isotope\Collection\AttributeOption|null
      *
@@ -328,8 +320,6 @@ class AttributeOption extends Multilingual
     /**
      * Find published attribute options by IDs
      *
-     * @param array $arrIds
-     * @param array $arrOptions
      *
      * @return \Isotope\Collection\AttributeOption|null
      */

@@ -23,14 +23,14 @@ use Isotope\Model\Product;
  */
 class Filter implements \ArrayAccess
 {
-    const CONTAINS      = 'like';
-    const IN_ARRAY      = 'in';
-    const EQUAL         = 'eq';
-    const NOT_EQUAL     = 'neq';
-    const GREATER_THAN  = 'gt';
-    const GREATER_EQUAL = 'gte';
-    const SMALLER_THAN  = 'lt';
-    const SMALLER_EQUAL = 'lte';
+    public const CONTAINS      = 'like';
+    public const IN_ARRAY      = 'in';
+    public const EQUAL         = 'eq';
+    public const NOT_EQUAL     = 'neq';
+    public const GREATER_THAN  = 'gt';
+    public const GREATER_EQUAL = 'gte';
+    public const SMALLER_THAN  = 'lt';
+    public const SMALLER_EQUAL = 'lte';
 
     /**
      * Filter config
@@ -88,7 +88,6 @@ class Filter implements \ArrayAccess
     /**
      * Verify if filter value is a valid option
      *
-     * @param array $arrValues
      *
      * @return bool
      */
@@ -204,10 +203,8 @@ class Filter implements \ArrayAccess
     /**
      * Check if product matches the filter
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return bool
-     *
      * @throws \UnexpectedValueException
      */
     public function matches(IsotopeProduct $objProduct)
@@ -238,13 +235,8 @@ class Filter implements \ArrayAccess
         foreach ($varValues as $varValue) {
             switch ($this->arrConfig['operator']) {
                 case static::CONTAINS:
-                    if (stripos($varValue, $this->arrConfig['value']) !== false) {
-                        return true;
-                    }
-                    break;
-
                 case static::IN_ARRAY:
-                    if (stripos($varValue, $this->arrConfig['value']) !== false) {
+                    if (stripos($varValue, (string) $this->arrConfig['value']) !== false) {
                         return true;
                     }
                     break;

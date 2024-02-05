@@ -40,9 +40,7 @@ class Callback extends Backend
             $strBuffer .= ', ' . $GLOBALS['TL_LANG']['tl_iso_address']['isDefaultShipping'][0];
         }
 
-        $strBuffer .= '</div>';
-
-        return $strBuffer;
+        return $strBuffer . '</div>';
     }
 
 

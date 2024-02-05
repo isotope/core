@@ -58,7 +58,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Get options of attribute from database
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return array|mixed
      *
@@ -166,7 +165,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Get AttributeOption models for current attribute
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return \Isotope\Collection\AttributeOption
      *
@@ -220,10 +218,8 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Get options for the frontend product filter widget
      *
-     * @param array $arrValues
      *
      * @return array
-     *
      * @throws \UnexpectedValueException on invalid options source
      */
     public function getOptionsForProductFilter(array $arrValues)
@@ -296,7 +292,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
     /**
      * Make sure array values are unserialized and CSV values are splitted.
      *
-     * @param IsotopeProduct $product
      *
      * @return mixed
      */
@@ -384,8 +379,6 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
 
     /**
      * Adjust DCA field for this attribute
-     *
-     * @param array $arrData
      */
     public function saveToDCA(array &$arrData)
     {

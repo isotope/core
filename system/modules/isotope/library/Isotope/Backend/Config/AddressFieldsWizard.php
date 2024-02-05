@@ -90,7 +90,7 @@ class AddressFieldsWizard extends Backend
                 continue;
             }
 
-            $mandatory = isset($arrField['eval']['mandatory']) ? $arrField['eval']['mandatory'] : null;
+            $mandatory = $arrField['eval']['mandatory'] ?? null;
 
             $arrFields[$strName] = array(
                 'name'      => $strName,

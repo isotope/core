@@ -61,7 +61,6 @@ class TaxClass extends Model
      * Calculate a price, removing tax if included but not applicable
      *
      * @param float $fltPrice
-     * @param array $arrAddresses
      *
      * @return float
      */
@@ -106,7 +105,6 @@ class TaxClass extends Model
      * Calculate a price, add all applicable taxes
      *
      * @param float $fltPrice
-     * @param array $arrAddresses
      *
      * @return float
      */
@@ -145,7 +143,6 @@ class TaxClass extends Model
      * Calculate a price like it was in Isotope < 2.3
      *
      * @param float $fltPrice
-     * @param array $arrAddresses
      *
      * @return float
      */
@@ -171,7 +168,6 @@ class TaxClass extends Model
     /**
      * Find fallback product type
      *
-     * @param array $arrOptions
      *
      * @return TaxClass|null
      */

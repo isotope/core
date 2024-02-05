@@ -159,7 +159,6 @@ class EPay extends Payment implements IsotopePostsale
     /**
      * Validate input parameters and hash
      *
-     * @param IsotopeProductCollection $objOrder
      *
      * @return bool
      */

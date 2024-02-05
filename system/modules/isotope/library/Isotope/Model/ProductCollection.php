@@ -305,8 +305,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Set payment method for this collection
-     *
-     * @param IsotopePayment $objPayment
      */
     public function setPaymentMethod(IsotopePayment $objPayment = null)
     {
@@ -364,8 +362,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Set shipping method for this collection
-     *
-     * @param IsotopeShipping $objShipping
      */
     public function setShippingMethod(IsotopeShipping $objShipping = null)
     {
@@ -431,8 +427,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Set billing address for collection
-     *
-     * @param Address $objAddress
      */
     public function setBillingAddress(Address $objAddress = null)
     {
@@ -486,8 +480,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Set shipping address for collection
-     *
-     * @param Address $objAddress
      */
     public function setShippingAddress(Address $objAddress = null)
     {
@@ -587,7 +579,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Load settings from database field
      *
-     * @param array $arrData
      *
      * @return $this
      */
@@ -979,7 +970,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Search item for a specific product
      *
-     * @param IsotopeProduct $objProduct
      *
      * @return ProductCollectionItem|null
      */
@@ -987,12 +977,10 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     {
         $strClass = array_search(\get_class($objProduct), Product::getModelTypes(), true);
 
-        $objItem = ProductCollectionItem::findOneBy(
+        return ProductCollectionItem::findOneBy(
             array('pid=?', 'type=?', 'product_id=?', 'configuration=?'),
             array($this->id, $strClass, $objProduct->getId(), serialize($objProduct->getOptions()))
         );
-
-        return $objItem;
     }
 
     /**
@@ -1016,9 +1004,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Check if a given product is already in the collection
      *
-     * @param IsotopeProduct $objProduct
      * @param bool           $blnIdentical
-     *
      * @return bool
      */
     public function hasProduct(IsotopeProduct $objProduct, $blnIdentical = true)
@@ -1043,9 +1029,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Add a product to the collection
      *
-     * @param IsotopeProduct $objProduct
      * @param int            $intQuantity
-     * @param array          $arrConfig
      *
      * @return ProductCollectionItem|false
      */
@@ -1125,8 +1109,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Update product details for a collection item.
      *
-     * @param IsotopeProduct        $objProduct
-     * @param ProductCollectionItem $objItem
      *
      * @return bool
      */
@@ -1254,7 +1236,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Remove item from collection
      *
-     * @param ProductCollectionItem $objItem
      *
      * @return bool
      */
@@ -1340,10 +1321,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Copy product collection items from another collection to this one (e.g. Cart to Order)
      *
-     * @param IsotopeProductCollection $objSource
      *
      * @return int[]
-     *
      * @throws \BadMethodCallException if the product collection is locked.
      */
     public function copyItemsFrom(IsotopeProductCollection $objSource)
@@ -1409,8 +1388,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Copy product collection surcharges from another collection to this one (e.g. Cart to Order)
      *
-     * @param IsotopeProductCollection $objSource
-     * @param array                    $arrItemMap
      *
      * @return int[]
      *
@@ -1662,7 +1639,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Generate item array for template
      *
-     * @param ProductCollectionItem $objItem
      *
      * @return array
      */
@@ -1752,7 +1728,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         try {
             if ($this->arrData['document_number'] == '') {
                 $strPrefix = Controller::replaceInsertTags($strPrefix, false);
-                $intPrefix = utf8_strlen($strPrefix);
+                $intPrefix = mb_strlen($strPrefix);
 
                 // Lock tables so no other order can get the same ID
                 Database::getInstance()->lockTables(array(static::$strTable => 'WRITE'));
@@ -1772,7 +1748,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
                     ')
                     ->limit(1)
                     ->execute(
-                        array_search(\get_called_class(), static::getModelTypes(), true),
+                        array_search(static::class, static::getModelTypes(), true),
                         $this->store_id
                     )
                 ;
@@ -1935,8 +1911,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
     /**
      * Mark existing addresses as not default if the new address is default
-     *
-     * @param Address $objAddress
      */
     protected function updateDefaultAddress(Address $objAddress)
     {
@@ -1975,7 +1949,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Initialize a new collection and duplicate everything from the source
      *
-     * @param IsotopeProductCollection $objSource
      *
      * @return static
      */
@@ -2035,11 +2008,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         if ('asc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
-                    if ($objItem1->$attribute == $objItem2->$attribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$attribute < $objItem2->$attribute ? -1 : 1;
+                    return $objItem1->$attribute <=> $objItem2->$attribute;
                 });
 
                 return $arrItems;
@@ -2050,11 +2019,7 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
         if ('desc' === $direction) {
             return function ($arrItems) use ($attribute) {
                 uasort($arrItems, function ($objItem1, $objItem2) use ($attribute) {
-                    if ($objItem1->$attribute == $objItem2->$attribute) {
-                        return 0;
-                    }
-
-                    return $objItem1->$attribute > $objItem2->$attribute ? -1 : 1;
+                    return $objItem2->$attribute <=> $objItem1->$attribute;
                 });
 
                 return $arrItems;
@@ -2065,8 +2030,6 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     }
 
     /**
-     * @param IsotopeProduct        $product
-     * @param ProductCollectionItem $item
      * @param int                   $quantity
      */
     private function setProductForItem(IsotopeProduct $product, ProductCollectionItem $item, $quantity)

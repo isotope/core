@@ -85,7 +85,6 @@ class Download extends Model
     /**
      * Finds downloads for a given product or variant.
      *
-     * @param IsotopeProduct $product
      *
      * @return Download[]|\Model\Collection|null
      */

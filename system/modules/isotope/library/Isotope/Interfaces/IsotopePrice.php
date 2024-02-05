@@ -28,7 +28,6 @@ interface IsotopePrice
      * Return price
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -38,7 +37,6 @@ interface IsotopePrice
      * Return original price
      *
      * @param int $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -48,7 +46,6 @@ interface IsotopePrice
      * Return net price (without taxes)
      *
      * @param int $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -58,7 +55,6 @@ interface IsotopePrice
      * Return gross price (with all taxes)
      *
      * @param int $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -69,7 +65,6 @@ interface IsotopePrice
      *
      * @param bool  $blnShowTiers
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return string
      */

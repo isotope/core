@@ -22,9 +22,6 @@ use Isotope\Model\ProductCollectionItem;
 
 class PostCheckoutUploads
 {
-    /**
-     * @param IsotopeOrderableCollection $order
-     */
     public function onPostCheckout(IsotopeOrderableCollection $order)
     {
         $items    = $order->getItems();
@@ -69,13 +66,11 @@ class PostCheckoutUploads
     }
 
     /**
-     * @param IsotopeOrderableCollection $order
      * @param ProductCollectionItem    $item
      * @param int                      $position
      * @param int                      $total
      * @param Attribute                $attribute
      * @param string                   $source
-     *
      * @return array
      */
     private function generateTokens(IsotopeOrderableCollection $order, $item, $position, $total, $attribute, $source)

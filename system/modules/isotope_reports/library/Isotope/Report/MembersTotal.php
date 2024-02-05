@@ -41,9 +41,9 @@ class MembersTotal extends Sales
         $intStart = $period->getPeriodStart($intStart);
         $intStop = $period->getPeriodEnd($intStop);
 
-        $bPrevEnabled = $intStop - $intStart <= 31536000; // Selected not more then a year
-        $intPrevStart = $intStart - 31536000; // 1 year before
-        $intPrevStop = $intStop - 31536000; // 1 year before
+        $bPrevEnabled = $intStop - $intStart <= 31_536_000; // Selected not more then a year
+        $intPrevStart = $intStart - 31_536_000; // 1 year before
+        $intPrevStop = $intStop - 31_536_000; // 1 year before
 
         if ('locked' === $this->strDateField) {
             $this->strDateField = $arrSession[$this->name]['date_field'];

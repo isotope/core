@@ -25,8 +25,6 @@ class GoToCartAction extends AbstractButton
 
     /**
      * Constructor.
-     *
-     * @param Module $module
      */
     public function __construct(Module $module)
     {

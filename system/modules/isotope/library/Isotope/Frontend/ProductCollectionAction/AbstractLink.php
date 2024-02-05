@@ -50,7 +50,6 @@ abstract class AbstractLink implements ProductCollectionActionInterface
     /**
      * Gets the link label.
      *
-     * @param IsotopeProductCollection $collection
      *
      * @return string
      */

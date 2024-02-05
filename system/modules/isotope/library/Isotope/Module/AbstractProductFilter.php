@@ -37,8 +37,8 @@ use Isotope\Model\ProductType;
  */
 abstract class AbstractProductFilter extends Module
 {
-    const FILTER_NEW = 'show_new';
-    const FILTER_OLD = 'show_old';
+    public const FILTER_NEW = 'show_new';
+    public const FILTER_OLD = 'show_old';
 
     /**
      * Constructor.
@@ -72,10 +72,8 @@ abstract class AbstractProductFilter extends Module
      * Returns an array of attribute values found in the product table
      *
      * @param string $attribute
-     * @param array  $categories
      * @param string $newFilter
      * @param string $sqlWhere
-     *
      * @return array
      */
     protected function getUsedValuesForAttribute($attribute, array $categories, $newFilter = '', $sqlWhere = '')
@@ -97,7 +95,7 @@ abstract class AbstractProductFilter extends Module
         $time           = Date::floorToMinute();
 
         if ('' !== (string) $sqlWhere) {
-            $sqlWhere = ' AND ' . (string) $sqlWhere;
+            $sqlWhere = ' AND ' . $sqlWhere;
         }
 
         // Apply new/old product filter

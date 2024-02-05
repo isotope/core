@@ -42,7 +42,6 @@ abstract class AbstractButton implements ProductActionInterface
     /**
      * Gets the CSS class(es) for this button.
      *
-     * @param IsotopeProduct $product
      *
      * @return string
      */

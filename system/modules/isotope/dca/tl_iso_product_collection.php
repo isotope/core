@@ -327,7 +327,7 @@ $GLOBALS['TL_DCA']['tl_iso_product_collection'] = array
         'language' => array
         (
             'options_callback' => static function () {
-                return \Contao\System::getLanguages();
+                return \Contao\System::getContainer()->get('contao.intl.locales')->getLocales(null, true);
             },
             'sql'                   => "varchar(5) NOT NULL default ''"
         ),

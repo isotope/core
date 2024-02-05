@@ -530,5 +530,5 @@ $GLOBALS['TL_AUTO_ITEM'][] = 'step';
 /**
  * Default configuration
  */
-$GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2592000;
+$GLOBALS['TL_CONFIG']['iso_cartTimeout'] = 2_592_000;
 $GLOBALS['TL_CONFIG']['iso_orderTimeout'] = 604800;

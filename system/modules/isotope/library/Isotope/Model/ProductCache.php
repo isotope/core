@@ -55,7 +55,6 @@ class ProductCache extends Model
     /**
      * Set array of products IDs for this cache
      *
-     * @param array $arrIds
      *
      * @return $this
      */
@@ -70,7 +69,6 @@ class ProductCache extends Model
      * Find cache by unique ID (including current environment)
      *
      * @param string $uniqid     A 32 char unique key (usually MD5)
-     * @param array  $arrOptions
      *
      * @return static
      */
@@ -142,10 +140,8 @@ class ProductCache extends Model
      *
      * @param int   $intPage
      * @param int   $intModule
-     * @param array $arrOptions
      *
      * @return static
-     *
      * @deprecated Deprecated since version 2.3, to be removed in 3.0.
      *             Use a findByUniqid() instead.
      */

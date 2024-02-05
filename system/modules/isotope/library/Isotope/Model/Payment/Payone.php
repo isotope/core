@@ -142,7 +142,7 @@ class Payone extends Postsale
                 array_walk(
                     $arrConfig,
                     function(&$option) {
-                        $option = $option['label'] . ': ' . (string) $option;
+                        $option = $option['label'] . ': ' . $option;
                     }
                 );
 

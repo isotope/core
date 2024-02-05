@@ -153,7 +153,7 @@ abstract class Sales extends Report
             'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['status'],
             'type'      => 'filter',
             'value'     => $varValue,
-            'active'    => ($varValue != ''),
+            'active'    => (bool) $varValue,
             'class'     => 'iso_status',
             'options'   => $arrStatus,
         ];

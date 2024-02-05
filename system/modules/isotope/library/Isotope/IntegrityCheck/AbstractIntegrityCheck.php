@@ -21,7 +21,7 @@ abstract class AbstractIntegrityCheck implements IsotopeIntegrityCheck
      */
     public function getId()
     {
-        $className = \get_called_class();
+        $className = static::class;
 
         if (($pos = strrpos($className, '\\')) !== false) {
             $className = substr($className, $pos+1);

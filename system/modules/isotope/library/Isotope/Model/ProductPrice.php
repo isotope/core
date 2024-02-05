@@ -74,7 +74,6 @@ class ProductPrice extends Model implements IsotopePrice
      * Return price
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -87,7 +86,6 @@ class ProductPrice extends Model implements IsotopePrice
      * Return original price
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -100,7 +98,6 @@ class ProductPrice extends Model implements IsotopePrice
      * Return net price (without taxes)
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -120,7 +117,6 @@ class ProductPrice extends Model implements IsotopePrice
      * Return gross price (with all taxes)
      *
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -139,7 +135,6 @@ class ProductPrice extends Model implements IsotopePrice
     /**
      * Get lowest amount of all tiers
      *
-     * @param array $arrOptions
      *
      * @return float
      */
@@ -200,7 +195,6 @@ class ProductPrice extends Model implements IsotopePrice
      *
      * @param bool  $blnShowTiers
      * @param int   $intQuantity
-     * @param array $arrOptions
      *
      * @return string
      */
@@ -245,9 +239,7 @@ class ProductPrice extends Model implements IsotopePrice
     /**
      * Find prices for a given product and collection
      *
-     * @param IsotopeProduct                             $objProduct
      * @param IsotopeProductCollection|ProductCollection $objCollection
-     * @param array                                      $arrOptions
      *
      * @return IsotopePrice
      */
@@ -293,7 +285,6 @@ class ProductPrice extends Model implements IsotopePrice
 
     /**
      * @param int   $intProduct
-     * @param array $arrOptions
      *
      * @return ProductPrice|null
      * @deprecated use findPrimaryByProductId
@@ -307,7 +298,6 @@ class ProductPrice extends Model implements IsotopePrice
      * Find primary price for a product
      *
      * @param int   $intProduct
-     * @param array $arrOptions
      *
      * @return ProductPrice|null
      */
@@ -336,8 +326,6 @@ class ProductPrice extends Model implements IsotopePrice
     /**
      * Find primary price for multiple product/variant IDs
      *
-     * @param array $arrIds
-     * @param array $arrOptions
      *
      * @return Collection|null
      */
@@ -367,9 +355,7 @@ class ProductPrice extends Model implements IsotopePrice
     /**
      * Find advanced price for multiple product/variant IDs
      *
-     * @param array                                      $arrIds
      * @param IsotopeProductCollection|ProductCollection $objCollection
-     *
      * @return Collection|null
      */
     public static function findAdvancedByProductIdsAndCollection(array $arrIds, IsotopeProductCollection $objCollection = null)
@@ -460,13 +446,11 @@ class ProductPrice extends Model implements IsotopePrice
         $from  = substr($query, strpos($query, '*')+1);
         $query = "SELECT tl_iso_product_price.*, GROUP_CONCAT(tl_iso_product_pricetier.min) AS tier_keys, GROUP_CONCAT(tl_iso_product_pricetier.price) AS tier_values" . $from;
 
-        $query = str_replace(
+        return str_replace(
             'FROM tl_iso_product_price',
             'FROM tl_iso_product_price LEFT JOIN tl_iso_product_pricetier ON tl_iso_product_pricetier.pid = tl_iso_product_price.id',
             $query
         );
-
-        return $query;
     }
 
     /**

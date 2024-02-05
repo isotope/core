@@ -173,8 +173,6 @@ class ProductCollectionDownload extends Model
     /**
      * Find all downloads that belong to items of a given collection
      *
-     * @param IsotopeProductCollection $objCollection
-     * @param array                    $arrOptions
      *
      * @return Collection|null
      */
@@ -195,7 +193,6 @@ class ProductCollectionDownload extends Model
     /**
      * Create ProductCollectionDownload for all product downloads in the given collection
      *
-     * @param IsotopeProductCollection $objCollection
      *
      * @return static[]
      */

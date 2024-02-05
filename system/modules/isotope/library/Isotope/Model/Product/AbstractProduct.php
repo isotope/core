@@ -126,7 +126,7 @@ abstract class AbstractProduct extends Product
             }
         }
 
-        if (BE_USER_LOGGED_IN !== true && !$this->isPublished()) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode() && !$this->isPublished()) {
             return false;
         }
 

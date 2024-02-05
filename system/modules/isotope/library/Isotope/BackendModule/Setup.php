@@ -61,8 +61,6 @@ class Setup extends BackendOverview
 
     /**
      * Adds first steps and fundraising hints
-     *
-     * @param array $return
      */
     protected function addIntroduction(array &$return)
     {
