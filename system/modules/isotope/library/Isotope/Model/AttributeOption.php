@@ -306,7 +306,7 @@ class AttributeOption extends Multilingual
         $t = static::getTable();
         $productId = $objProduct->id;
 
-        if ($objProduct->isVariant() && !\in_array($objAttribute->field_name, $objProduct->getVariantAttributes())) {
+        if ($objProduct->isVariant() && !\in_array($objAttribute->field_name, $objProduct->getType()->getVariantAttributes())) {
             $productId = $objProduct->getProductId();
         }
 

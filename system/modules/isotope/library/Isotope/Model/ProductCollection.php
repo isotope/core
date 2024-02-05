@@ -1509,8 +1509,8 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
 
             $objProduct = $objItem->getProduct();
 
-            return \in_array($strAttribute, $objProduct->getAttributes(), true)
-                || \in_array($strAttribute, $objProduct->getVariantAttributes(), true);
+            return \in_array($strAttribute, $objProduct->getType()->getAttributes(), true)
+                || \in_array($strAttribute, $objProduct->getType()->getVariantAttributes(), true);
         };
 
         $objTemplate->generateAttribute = function (

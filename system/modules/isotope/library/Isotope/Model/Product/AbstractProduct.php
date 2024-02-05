@@ -233,14 +233,12 @@ abstract class AbstractProduct extends Product
         return null !== $type && $type->hasVariants();
     }
 
-    public abstract function getVariantAttributes();
-
     /**
      * @inheritdoc
      */
     public function hasVariantPrices()
     {
-        return $this->hasVariants() && \in_array('price', $this->getVariantAttributes(), true);
+        return $this->hasVariants() && \in_array('price', $this->getType()->getVariantAttributes(), true);
     }
 
     /**

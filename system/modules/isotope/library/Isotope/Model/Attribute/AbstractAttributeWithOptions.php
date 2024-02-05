@@ -194,7 +194,7 @@ abstract class AbstractAttributeWithOptions extends Attribute implements Isotope
                 $productId = $objProduct->getId();
 
                 if ($objProduct->isVariant()
-                    && !\in_array($this->field_name, $objProduct->getVariantAttributes(), true)
+                    && !\in_array($this->field_name, $objProduct->getType()->getVariantAttributes(), true)
                 ) {
                     $productId = $objProduct->getProductId();
                 }
