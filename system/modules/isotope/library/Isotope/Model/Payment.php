@@ -85,7 +85,7 @@ abstract class Payment extends TypeAgent implements IsotopePayment
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 

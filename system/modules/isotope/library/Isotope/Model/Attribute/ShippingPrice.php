@@ -25,7 +25,7 @@ class ShippingPrice extends Attribute
     /**
      * @inheritdoc
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         // This class should not be registered
         // Set type or ModelType would throw an exception

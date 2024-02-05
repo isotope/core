@@ -13,6 +13,7 @@ namespace Isotope\Model;
 
 use Contao\Controller;
 use Contao\Database;
+use Contao\Database\Result;
 use Contao\MemberModel;
 use Contao\StringUtil;
 use Contao\System;
@@ -127,9 +128,9 @@ abstract class ProductCollection extends TypeAgent implements IsotopeProductColl
     /**
      * Constructor
      *
-     * @param \Database\Result $objResult
+     * @param Result|array $objResult An optional database result or array
      */
-    public function __construct(\Database\Result $objResult = null)
+    public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
