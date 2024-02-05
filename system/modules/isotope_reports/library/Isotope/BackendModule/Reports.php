@@ -52,8 +52,8 @@ class Reports extends BackendOverview
                     $arrReturn[$strGroup]['modules'][$strModule] = array_merge($arrConfig, array
                     (
                         'name' => $strModule,
-                        'label' => StringUtil::specialchars(($arrConfig['label'][0] ?: $strModule)),
-                        'description' => StringUtil::specialchars(strip_tags($arrConfig['label'][1])),
+                        'label' => StringUtil::specialchars(($arrConfig['label'][0] ?? $strModule)),
+                        'description' => StringUtil::specialchars(strip_tags($arrConfig['label'][1] ?? '')),
                         'href' => $this->addToUrl('mod='.$strModule),
                         'class' => $arrConfig['class'] ?? '',
                     ));
