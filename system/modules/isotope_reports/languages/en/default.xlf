@@ -26,6 +26,12 @@
       <trans-unit id="ISO_REPORT.sales_product.1">
         <source>Sales per product</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_member.0">
+        <source>Per member</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.sales_member.1">
+        <source>Sales per member</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.members_total.0">
         <source>Total</source>
       </trans-unit>
@@ -88,6 +94,15 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.items#">
         <source>Number of items</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.customer#">
+        <source>Customer</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.city#">
+        <source>City</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.comparePrevYear#">
+        <source>Cf. prior year</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
@@ -157,6 +172,9 @@
       </trans-unit>
       <trans-unit id="ISO_REPORT.variants">
         <source>Variants</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.guestOrders">
+        <source>Guest orders</source>
       </trans-unit>
     </body>
   </file>
