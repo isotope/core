@@ -9,10 +9,21 @@
  * @license    https://opensource.org/licenses/lgpl-3.0.html
  */
 
+use Contao\BackendUser;
+use Contao\Config;
 use Contao\CoreBundle\Exception\InternalServerErrorException;
+use Contao\Database;
+use Contao\Date;
+use Contao\DC_Table;
+use Contao\Encryption;
+use Contao\FilesModel;
+use Contao\Image;
+use Contao\Input;
+use Contao\Message;
 use Contao\StringUtil;
+use Contao\System;
 
-class DC_TablePageId extends \DC_Table
+class DC_TablePageId extends DC_Table
 {
 
     /**

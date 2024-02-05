@@ -245,7 +245,7 @@ $GLOBALS['TL_DCA']['tl_iso_config'] = array
             'filter'                => true,
             'sorting'               => true,
             'inputType'             => 'select',
-            'default'               => (string) BackendUser::getInstance()->country,
+            'default'               => (string) \Contao\BackendUser::getInstance()->country,
             'options_callback'      => function() {
                 return \Contao\System::getCountries();
             },
