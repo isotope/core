@@ -45,20 +45,20 @@ array_insert($GLOBALS['BE_MOD']['isotope'], 2, array
                         array('getSortingPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
-                'sales_member' => array
+            ),
+            'member' => array
+            (
+                'members_total' => array
                 (
-                    'callback'          => 'Isotope\Report\SalesMember',
-                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales_member'],
-                    'icon'              => 'system/modules/isotope_reports/assets/sales_member.png',
+                    'callback'          => 'Isotope\Report\MembersTotal',
+                    'label'             => &$GLOBALS['TL_LANG']['ISO_REPORT']['members_total'],
+                    'icon'              => 'system/modules/isotope_reports/assets/members_total.png',
                     'panels' => array
                     (
                         array('getSelectStopPanel', 'getSelectStartPanel'),
                         array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
-            ),
-            'member' => array
-            (
                 'members_guests' => array
                 (
                     'callback'          => 'Isotope\Report\MembersGuests',
