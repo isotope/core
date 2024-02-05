@@ -1,11 +1,7 @@
 parameters:
     level: 0
-    paths:
-        - system/modules/isotope/library
-        #- system/modules/isotope_reports/library
-        #- system/modules/isotope_rules/library
-        #- system/modules/isotope/drivers/
     ignoreErrors:
         - '#Unsafe usage of new static\(\)\.#'
+        - '#Function file_exists is unsafe to use#'
     excludePaths:
         - system/modules/isotope/library/UnitedPrototype
