@@ -30,10 +30,10 @@ class SalesMember extends Sales
     {
         $arrSession    = \Session::getInstance()->get('iso_reports');
 
-        $intConfig = (int) $arrSession[$this->name]['iso_config'];
-        $intStart  = (int) $arrSession[$this->name]['start'];
-        $intStop   = (int) $arrSession[$this->name]['stop'];
-        $intStatus = (int) $arrSession[$this->name]['iso_status'];
+        $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
+        $intStart  = (int) ($arrSession[$this->name]['start'] ?? 0);
+        $intStop   = (int) ($arrSession[$this->name]['stop'] ?? 0);
+        $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
         $period   = PeriodFactory::create('day');
         $intStart = $period->getPeriodStart($intStart);
@@ -93,7 +93,7 @@ class SalesMember extends Sales
         ");
 
         $arrCurrencies = array();
-        
+
         $arrData = ['rows' => []];
 
         $arrData['header'] = [
@@ -165,7 +165,7 @@ class SalesMember extends Sales
             $label = '';
 
             if ($objData->member == 0) {
-                $label = '<b>' . &$GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] . '</b>';
+                $label = '<b>' . ($GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] ?? '') . '</b>';
             } else if ($objData->company) {
                 $label = sprintf('%s', $objData->company);
             }
@@ -209,7 +209,7 @@ class SalesMember extends Sales
             $arrData['footer'][2]['value'] += $objData->total_orders;
             $arrData['footer'][3]['value'] += $objData->total_products;
             $arrData['footer'][4]['value'] += $objData->total_items;
-            $arrData['footer'][5]['value'][$objData->currency] = ((float) $arrData['footer'][5]['value'][$objData->currency] + $objData->total_sales);
+            $arrData['footer'][5]['value'][$objData->currency] = ((float) ($arrData['footer'][5]['value'][$objData->currency] ?? 0) + $objData->total_sales);
             $arrData['footer'][6]['value'] = '';
         }
 
@@ -251,21 +251,21 @@ class SalesMember extends Sales
                 }
             }
 
-            if ($arrData['rows'][$dateGroup]['columns'][6]['value'] !== null) {
+            if (!empty($arrData['rows'][$dateGroup]['columns'][6]['value'])) {
                 $number = $arrData['rows'][$dateGroup]['columns'][6]['value'];
                 $formated = number_format($number * 100, 0);
 
 
                 if ($number > 0) {
-                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] =
                         sprintf('<span style="color:green">+%s %%</span>',  $formated);
                 }
                 else if ($number == 0) {
-                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] =
                         sprintf('%s %%',  $formated);
                 }
                 else if ($number < 0) {
-                    $arrData['rows'][$dateGroup]['columns'][6]['value'] = 
+                    $arrData['rows'][$dateGroup]['columns'][6]['value'] =
                         sprintf('<span style="color:red">%s %%</span>',  $formated);
                 }
             }
@@ -293,7 +293,7 @@ class SalesMember extends Sales
         // Set default session data
         $arrSession = \Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['stop'] == '') {
+        if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
@@ -306,7 +306,7 @@ class SalesMember extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '') {
+        if (empty($arrSession[$this->name]['start'])) {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps

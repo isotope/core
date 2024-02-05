@@ -33,7 +33,7 @@
 <?php endif; ?>
 <tbody>
 <?php foreach($this->data['rows'] as $row): ?>
-	<tr<?php if($row['class']): ?> class="<?= $row['class'] ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
+	<tr<?php if(isset($row['class'])): ?> class="<?= $row['class'] ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
 <?php foreach($row['columns'] as $col): ?>
 		<<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
 <?php endforeach; ?>
