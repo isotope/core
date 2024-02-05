@@ -168,7 +168,7 @@ class PaymentMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrColumns[] = "enabled='1'";
             }
 

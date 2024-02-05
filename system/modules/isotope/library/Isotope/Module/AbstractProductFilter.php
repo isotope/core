@@ -93,6 +93,7 @@ abstract class AbstractProductFilter extends Module
         $categoryWhere  = '';
         $published      = '';
         $time           = Date::floorToMinute();
+        $isPreviewModel = \Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode();
 
         if ('' !== (string) $sqlWhere) {
             $sqlWhere = ' AND ' . $sqlWhere;
@@ -105,7 +106,7 @@ abstract class AbstractProductFilter extends Module
             $sqlWhere .= ' AND tl_iso_product.dateAdded<' . Isotope::getConfig()->getNewProductLimit();
         }
 
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!$isPreviewModel) {
             $published = "
                 AND tl_iso_product.published='1'
                 AND (tl_iso_product.start='' OR tl_iso_product.start<'$time')
@@ -126,7 +127,7 @@ abstract class AbstractProductFilter extends Module
                                     WHERE page_id IN (' . implode(',', $categories) . ')
                                 )';
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!$isPreviewModel) {
                 $published .= " AND (
                     tl_iso_product.pid=0 OR (
                         translation.published='1'

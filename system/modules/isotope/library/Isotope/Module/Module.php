@@ -164,7 +164,7 @@ abstract class Module extends AbstractFrontendModule
         $arrCategories = null;
         $strWhere = "$t.type!='error_403' AND $t.type!='error_404'";
 
-        if (!BE_USER_LOGGED_IN) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             $strWhere .= " AND ($t.start='' OR $t.start<'$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "') AND $t.published='1'";
         }

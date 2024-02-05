@@ -143,7 +143,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,
@@ -431,7 +431,7 @@ abstract class Product extends TypeAgent implements IsotopeProduct
         }
 
         // Add publish check to $arrColumns as the first item to enable SQL keys
-        if (BE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             array_unshift(
                 $arrColumns,

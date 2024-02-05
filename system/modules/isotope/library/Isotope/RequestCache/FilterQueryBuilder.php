@@ -147,7 +147,7 @@ class FilterQueryBuilder
                 $t         = Product::getTable();
                 $protected = '';
 
-                if (BE_USER_LOGGED_IN !== true) {
+                if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                     $protected = "
                         AND $t.published='1'
                         AND ($t.start='' OR $t.start<'$time')

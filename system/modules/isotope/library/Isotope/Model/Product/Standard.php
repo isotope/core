@@ -259,6 +259,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $time            = Date::floorToMinute();
             $blnHasProtected = false;
             $blnHasGuests    = false;
+            $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
             $strQuery        = '
                 SELECT tl_iso_product.id, tl_iso_product.protected, tl_iso_product.groups
                 FROM tl_iso_product
@@ -270,16 +271,16 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     AND (stop='' OR stop>'" . ($time + 60) . "')
             ";
 
-            if (BE_USER_LOGGED_IN !== true) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrAttributes   = $this->getType()->getVariantAttributes();
                 $blnHasProtected = \in_array('protected', $arrAttributes, true);
                 $blnHasGuests = \in_array('guests', $arrAttributes, true);
 
                 // Hide guests-only products when logged in
-                if (FE_USER_LOGGED_IN === true && $blnHasGuests) {
+                if ($isMember && $blnHasGuests) {
                     $strQuery .= " AND (guests=''" . ($blnHasProtected ? " OR protected='1'" : '') . ')';
                 } // Hide protected if no user is logged in
-                elseif (FE_USER_LOGGED_IN !== true && $blnHasProtected) {
+                elseif (!$isMember && $blnHasProtected) {
                     $strQuery .= " AND (protected=''" . ($blnHasGuests ? " OR guests='1'" : '') . ")";
                 }
             }
@@ -288,7 +289,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
             $objVariants = Database::getInstance()->query($strQuery);
 
             while ($objVariants->next()) {
-                if (FE_USER_LOGGED_IN !== true
+                if (!$isMember
                     && $blnHasProtected
                     && $objVariants->protected
                     && (!$blnHasGuests || !$objVariants->guests)
@@ -296,7 +297,7 @@ class Standard extends AbstractProduct implements WeightAggregate, IsotopeProduc
                     continue;
                 }
 
-                if (FE_USER_LOGGED_IN === true
+                if ($isMember
                     && $blnHasGuests
                     && $objVariants->guests
                     && (!$blnHasProtected || $objVariants->protected)

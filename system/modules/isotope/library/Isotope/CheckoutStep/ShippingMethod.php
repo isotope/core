@@ -168,7 +168,7 @@ class ShippingMethod extends CheckoutStep implements IsotopeCheckoutStep
         if (!empty($arrIds) && \is_array($arrIds)) {
             $arrColumns = array('id IN (' . implode(',', $arrIds) . ')');
 
-            if (true !== BE_USER_LOGGED_IN) {
+            if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
                 $arrColumns[] = "enabled='1'";
             }
 

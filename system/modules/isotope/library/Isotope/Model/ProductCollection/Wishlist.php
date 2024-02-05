@@ -50,7 +50,7 @@ class Wishlist extends ProductCollection
 
     public static function findByIdForCurrentUser($id)
     {
-        if (!CompatibilityHelper::isFrontend() || true !== FE_USER_LOGGED_IN || ($storeId = static::getCurrentStoreId()) === null) {
+        if (!CompatibilityHelper::isFrontend() || !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || ($storeId = static::getCurrentStoreId()) === null) {
             return null;
         }
 
@@ -65,7 +65,7 @@ class Wishlist extends ProductCollection
      */
     public static function findAllForCurrentUser()
     {
-        if (!CompatibilityHelper::isFrontend() || true !== FE_USER_LOGGED_IN || ($storeId = static::getCurrentStoreId()) === null) {
+        if (!CompatibilityHelper::isFrontend() || !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || ($storeId = static::getCurrentStoreId()) === null) {
             return null;
         }
 

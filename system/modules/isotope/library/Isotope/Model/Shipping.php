@@ -109,7 +109,7 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             return true;
         }
 
-        if (!$this->enabled && BE_USER_LOGGED_IN !== true) {
+        if (!$this->enabled && !\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             return false;
         }
 
@@ -126,7 +126,9 @@ abstract class Shipping extends TypeAgent implements IsotopeShipping, WeightAggr
             }
         }
 
-        if (($this->guests && FE_USER_LOGGED_IN === true) || ($this->protected && FE_USER_LOGGED_IN !== true)) {
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
+
+        if (($this->guests && $isMember) || ($this->protected && !$isMember)) {
             return false;
         }
 

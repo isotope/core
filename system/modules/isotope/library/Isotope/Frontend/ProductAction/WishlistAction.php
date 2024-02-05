@@ -44,7 +44,7 @@ class WishlistAction extends AbstractButton
      */
     public function isAvailable(IsotopeProduct $product, array $config = [])
     {
-        return true === FE_USER_LOGGED_IN;
+        return \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
     }
 
     /**

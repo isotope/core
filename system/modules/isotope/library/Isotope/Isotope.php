@@ -412,7 +412,7 @@ class Isotope extends Controller
             new CartAction(),
         ];
 
-        if (true === FE_USER_LOGGED_IN) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $actions[] = new FavoriteAction();
         }
 

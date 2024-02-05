@@ -34,7 +34,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
      */
     public function isSkippable()
     {
-        return true === FE_USER_LOGGED_IN && $this->objModule->canSkipStep('billing_address');
+        return \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') && $this->objModule->canSkipStep('billing_address');
     }
 
     /**
@@ -60,7 +60,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
             return $this->Template->parse();
         }
 
-        $this->Template->message  = (FE_USER_LOGGED_IN === true ? $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
+        $this->Template->message  = (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') ? $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_message'] : $GLOBALS['TL_LANG']['MSC'][($requiresPayment ? 'billing' : 'customer') . '_address_guest_message']);
 
         return parent::generate();
     }
@@ -209,7 +209,7 @@ class BillingAddress extends Address implements IsotopeCheckoutStep
     {
         $address = $this->getDefaultAddress();
 
-        if ($address->id > 0 && true === FE_USER_LOGGED_IN) {
+        if ($address->id > 0 && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $data = AddressModel::getAddressDataForMember(
                 Isotope::getCart()->getMember(),
                 Isotope::getConfig()->getBillingFields()

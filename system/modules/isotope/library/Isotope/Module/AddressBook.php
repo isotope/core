@@ -65,7 +65,7 @@ class AddressBook extends Module
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             return '';
         }
 

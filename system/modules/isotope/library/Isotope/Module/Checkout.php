@@ -519,7 +519,7 @@ class Checkout extends Module
     protected function canCheckout()
     {
         // Redirect to login page if not logged in
-        if ('member' === $this->iso_checkout_method && true !== FE_USER_LOGGED_IN) {
+        if ('member' === $this->iso_checkout_method && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var PageModel $objJump */
             $objJump = PageModel::findPublishedById($this->iso_login_jumpTo);
@@ -536,7 +536,7 @@ class Checkout extends Module
 
         }
 
-        if ('guest' === $this->iso_checkout_method && true === FE_USER_LOGGED_IN) {
+        if ('guest' === $this->iso_checkout_method && \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             $this->Template          = new Template('mod_message');
             $this->Template->type    = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['checkoutNotAllowed'];

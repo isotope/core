@@ -241,7 +241,7 @@ class ProductCache extends Model
         if (null === $groups) {
             $groups = '';
 
-            if (FE_USER_LOGGED_IN === true) {
+            if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
                 $user = FrontendUser::getInstance();
                 $arrGroups = $user->groups;
 

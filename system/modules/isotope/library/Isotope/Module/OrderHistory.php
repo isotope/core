@@ -66,7 +66,7 @@ class OrderHistory extends Module
             return $this->generateWildcard();
         }
 
-        if (FE_USER_LOGGED_IN !== true || 0 === \count($this->iso_config_ids)) {
+        if (!\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER') || 0 === \count($this->iso_config_ids)) {
             return '';
         }
 

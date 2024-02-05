@@ -120,11 +120,13 @@ abstract class Payment extends TypeAgent implements IsotopePayment
             return true;
         }
 
-        if (!$this->enabled && true !== BE_USER_LOGGED_IN) {
+        if (!$this->enabled && !\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             return false;
         }
 
-        if (($this->guests && true === FE_USER_LOGGED_IN) || ($this->protected && true !== FE_USER_LOGGED_IN)) {
+        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
+
+        if (($this->guests && $isMember) || ($this->protected && !$isMember)) {
             return false;
         }
 

@@ -277,7 +277,7 @@ abstract class Address extends CheckoutStep
                 if (!\is_array($field['dca'])
                     || !($field['enabled'] ?? null)
                     || !($field['dca']['eval']['feEditable'] ?? null)
-                    || (($field['dca']['eval']['membersOnly'] ?? null) && FE_USER_LOGGED_IN !== true)
+                    || (($field['dca']['eval']['membersOnly'] ?? null) && !\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER'))
                 ) {
                     continue;
                 }
@@ -334,7 +334,7 @@ abstract class Address extends CheckoutStep
     {
         $arrOptions = array();
 
-        if (FE_USER_LOGGED_IN === true) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
 
             /** @var AddressModel[] $arrAddresses */
             $arrAddresses = $this->getAddresses();

@@ -36,7 +36,7 @@ class ProductCategory extends Model
         $t = static::getTable();
         $having = "page_id__type!='error_403' AND page_id__type!='error_404'";
 
-        if (!BE_USER_LOGGED_IN) {
+        if (!\Contao\System::getContainer()->get('contao.security.token_checker')->isPreviewMode()) {
             $time = Date::floorToMinute();
             $having .= " AND (page_id__start='' OR page_id__start<'$time') AND (page_id__stop='' OR page_id__stop>'" . ($time + 60) . "') AND page_id__published='1'";
         }

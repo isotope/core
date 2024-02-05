@@ -20,7 +20,6 @@ return static function (RectorConfig $rectorConfig): void {
         InsertTagsServiceRector::class,
         ConstantToServiceParameterRector::class,
         StringClassNameToClassConstantRector::class,
-        LoginConstantsToSymfonySecurityRector::class,
         RemoveEmptyClassMethodRector::class => ['system/modules/isotope_rules/library/Isotope/Rules.php'],
         RemoveDeadZeroAndOneOperationRector::class => ['system/modules/isotope/library/Isotope/Upgrade.php'],
         RemoveExtraParametersRector::class => ['system/modules/isotope/library/Isotope/Model/ProductCollection.php'],

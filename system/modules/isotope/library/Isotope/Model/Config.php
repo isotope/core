@@ -270,7 +270,7 @@ class Config extends Model
     {
         $format = $this->priceDisplay;
 
-        if (true === FE_USER_LOGGED_IN) {
+        if (\Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER')) {
             if (null === self::$priceDisplayGroups) {
                 self::$priceDisplayGroups = Database::getInstance()
                     ->execute("SELECT id, iso_priceDisplay FROM tl_member_group WHERE iso_priceDisplay!=''")
