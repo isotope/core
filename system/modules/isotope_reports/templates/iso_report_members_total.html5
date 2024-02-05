@@ -15,29 +15,29 @@
 <table class="iso_report tl_listing showColumns">
 <?php if($this->data['header']): ?>
 <thead>
-	<tr>
+  <tr>
 <?php foreach($this->data['header'] as $col): ?>
-		<th<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if(!empty($col['class'])): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
+    <th<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if(!empty($col['class'])): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></th>
 <?php endforeach; ?>
-	</tr>
+  </tr>
 </thead>
 <?php endif; ?>
 <?php if($this->data['footer']): ?>
 <tfoot>
-	<tr>
+  <tr>
 <?php foreach($this->data['footer'] as $col): ?>
-		<td<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
+    <td<?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_folder_tlist<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></td>
 <?php endforeach; ?>
-	</tr>
+  </tr>
 </tfoot>
 <?php endif; ?>
 <tbody>
 <?php foreach($this->data['rows'] as $row): ?>
-	<tr<?php if(isset($row['class'])): ?> class="<?= $row['class'] ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
+  <tr<?php if(isset($row['class'])): ?> class="<?= $row['class'] ?> hover-row"<?php endif; ?><?= $col['attributes'] ?? '' ?>>
 <?php foreach($row['columns'] as $col): ?>
-		<<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
+    <<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?><?php if(!empty($col['colspan'])): ?> colspan="<?= $col['colspan'] ?>"<?php endif; ?> class="tl_file_list<?php if($col['class'] ?? null): ?> <?= $col['class'] ?><?php endif; ?>"<?= $col['attributes'] ?? '' ?>><?php echo is_array($col['value']) ? implode('<br>', $col['value']) : $col['value']; ?></<?php echo ($col['header'] ?? false) ? 'th' : 'td'; ?>>
 <?php endforeach; ?>
-	</tr>
+  </tr>
 <?php endforeach; ?>
 </tbody>
 </table>

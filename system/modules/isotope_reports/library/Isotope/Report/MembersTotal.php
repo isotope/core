@@ -30,16 +30,16 @@ class MembersTotal extends Sales
 
     protected function compile()
     {
-        $arrSession    = Session::getInstance()->get('iso_reports');
+        $arrSession = Session::getInstance()->get('iso_reports');
 
         $intConfig = (int) ($arrSession[$this->name]['iso_config'] ?? 0);
-        $intStart  = (int) ($arrSession[$this->name]['start'] ?? 0);
-        $intStop   = (int) ($arrSession[$this->name]['stop'] ?? 0);
+        $intStart = (int) ($arrSession[$this->name]['start'] ?? 0);
+        $intStop = (int) ($arrSession[$this->name]['stop'] ?? 0);
         $intStatus = (int) ($arrSession[$this->name]['iso_status'] ?? 0);
 
-        $period   = PeriodFactory::create('day');
+        $period = PeriodFactory::create('day');
         $intStart = $period->getPeriodStart($intStart);
-        $intStop  = $period->getPeriodEnd($intStop);
+        $intStop = $period->getPeriodEnd($intStop);
 
         $bPrevEnabled = $intStop - $intStart <= 31536000; // Selected not more then a year
         $intPrevStart = $intStart - 31536000; // 1 year before
@@ -56,11 +56,11 @@ class MembersTotal extends Sales
             LEFT JOIN tl_iso_product_collection_item i2 ON o2.id=i2.pid
             LEFT OUTER JOIN tl_iso_config c2 ON o2.config_id=c2.id
             WHERE o2.type='order' AND o2.order_status>0 AND o2.{$this->strDateField} IS NOT NULL
-            " . ($intStatus > 0 ? " AND o2.order_status=".$intStatus : '') . "
-            " . static::getProductProcedure('i2', 'product_id') . "
-            " . ($intConfig > 0 ? " AND c2.id=".$intConfig : '') . "
-            " . static::getConfigProcedure('c2') . "
-            AND o2.locked >= ". $intPrevStart . " AND o2.locked <= ". $intPrevStop . "
+            ".($intStatus > 0 ? " AND o2.order_status=".$intStatus : '')."
+            ".static::getProductProcedure('i2', 'product_id')."
+            ".($intConfig > 0 ? " AND c2.id=".$intConfig : '')."
+            ".static::getConfigProcedure('c2')."
+            AND o2.locked >= ".$intPrevStart." AND o2.locked <= ".$intPrevStop."
             AND o2.member = o.member
         ";
 
@@ -85,11 +85,11 @@ class MembersTotal extends Sales
             LEFT OUTER JOIN tl_member tlm ON o.member=tlm.id
             LEFT OUTER JOIN tl_iso_config c ON o.config_id=c.id
             WHERE o.type='order' AND o.order_status>0 AND o.{$this->strDateField} IS NOT NULL
-            " . ($intStatus > 0 ? " AND o.order_status=".$intStatus : '') . "
-            " . static::getProductProcedure('i', 'product_id') . "
-            " . ($intConfig > 0 ? " AND c.id=".$intConfig : '') . "
-            " . static::getConfigProcedure('c') . "
-            AND o.locked >= ". $intStart . " AND o.locked <= ". $intStop . "
+            ".($intStatus > 0 ? " AND o.order_status=".$intStatus : '')."
+            ".static::getProductProcedure('i', 'product_id')."
+            ".($intConfig > 0 ? " AND c.id=".$intConfig : '')."
+            ".static::getConfigProcedure('c')."
+            AND o.locked >= ".$intStart." AND o.locked <= ".$intStop."
             GROUP BY member, c.id
             ORDER BY total_sales DESC
         ");
@@ -100,62 +100,62 @@ class MembersTotal extends Sales
 
         $arrData['header'] = [
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['customer#'],
-                'header'        => true,
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['customer#'],
+                'header' => true,
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['city#'],
-                'header'        => true,
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['city#'],
+                'header' => true,
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
-                'attributes'    => ' style="text-align:right"',
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['orders#'],
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
-                'attributes'    => ' style="text-align:right"',
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['products#'],
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
-                'attributes'    => ' style="text-align:right"',
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['items#'],
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
-                'attributes'    => ' style="text-align:right"',
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['sales#'],
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['comparePrevYear#'],
-                'attributes'    => ' style="text-align:right"',
+                'value' => &$GLOBALS['TL_LANG']['ISO_REPORT']['comparePrevYear#'],
+                'attributes' => ' style="text-align:right"',
             ],
         ];
 
         $arrData['footer'] = [
             [
-                'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
+                'value' => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
             ],
             [
-                'value'         => '',
-                'attributes'    => ' style="text-align:right"',
+                'value' => '',
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => 0,
-                'attributes'    => ' style="text-align:right"',
+                'value' => 0,
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => 0,
-                'attributes'    => ' style="text-align:right"',
+                'value' => 0,
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => 0,
-                'attributes'    => ' style="text-align:right"',
+                'value' => 0,
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => [],
-                'attributes'    => ' style="text-align:right"',
+                'value' => [],
+                'attributes' => ' style="text-align:right"',
             ],
             [
-                'value'         => [],
-                'attributes'    => ' style="text-align:right"',
+                'value' => [],
+                'attributes' => ' style="text-align:right"',
             ],
         ];
 
@@ -164,45 +164,41 @@ class MembersTotal extends Sales
         while ($objData->next()) {
             $arrCurrencies[$objData->currency] = $objData->config_id;
 
-            $label = '';
-
             if ($objData->member == 0) {
-                $label = '<b>' . ($GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] ?? '') . '</b>';
-            } else if ($objData->company) {
+                $label = '<b>'.($GLOBALS['TL_LANG']['ISO_REPORT']['guestOrders'] ?? '').'</b>';
+            } elseif ($objData->company) {
                 $label = sprintf('%s', $objData->company);
+            } else {
+                $label = sprintf('%s %s', $objData->firstname, $objData->lastname);
             }
-            else {
-                $label =  sprintf('%s %s', $objData->firstname, $objData->lastname);
-            }
-
 
             $arrData['rows'][] = [
                 'columns' => [
                     [
-                        'value' => $label
+                        'value' => $label,
                     ],
                     [
                         'value' => $objData->city,
                     ],
                     [
-                        'value'         => $objData->total_orders,
-                        'attributes'    => ' style="text-align:right"',
+                        'value' => $objData->total_orders,
+                        'attributes' => ' style="text-align:right"',
                     ],
                     [
-                        'value'         => $objData->total_products,
-                        'attributes'    => ' style="text-align:right"',
+                        'value' => $objData->total_products,
+                        'attributes' => ' style="text-align:right"',
                     ],
                     [
-                        'value'         => $objData->total_items,
-                        'attributes'    => ' style="text-align:right"',
+                        'value' => $objData->total_items,
+                        'attributes' => ' style="text-align:right"',
                     ],
                     [
-                        'value'         => [$objData->currency => $objData->total_sales],
-                        'attributes'    => ' style="text-align:right"',
+                        'value' => [$objData->currency => $objData->total_sales],
+                        'attributes' => ' style="text-align:right"',
                     ],
                     [
-                        'value'         => $this->calculateTrendPercentage($objData->total_sales, $objData->total_sales_prev),
-                        'attributes'    => ' style="text-align:right"',
+                        'value' => $this->calculateTrendPercentage($objData->total_sales, $objData->total_sales_prev),
+                        'attributes' => ' style="text-align:right"',
                     ],
                 ],
             ];
@@ -219,7 +215,7 @@ class MembersTotal extends Sales
             unset($arrData['header'][6]);
             unset($arrData['footer'][6]);
 
-           foreach ($arrData['rows'] as $dateGroup => $arrRow) {
+            foreach ($arrData['rows'] as $dateGroup => $arrRow) {
                 unset($arrData['rows'][$dateGroup]['columns'][6]);
             }
         }
@@ -227,11 +223,12 @@ class MembersTotal extends Sales
         // Apply formatting
         $arrData = $this->formatValues($arrData, $arrCurrencies);
 
-        $this->Template->data         = $arrData;
+        $this->Template->data = $arrData;
         $this->Template->periodFormat = $period->getJavascriptClosure();
     }
 
-    protected function calculateTrendPercentage($currentValue, $prevValue) {
+    protected function calculateTrendPercentage($currentValue, $prevValue)
+    {
         if (!$prevValue || $prevValue <= 0) {
             return null;
         }
@@ -260,15 +257,13 @@ class MembersTotal extends Sales
 
                 if ($number > 0) {
                     $arrData['rows'][$dateGroup]['columns'][6]['value'] =
-                        sprintf('<span style="color:green">+%s %%</span>',  $formated);
-                }
-                else if ($number == 0) {
+                        sprintf('<span style="color:green">+%s %%</span>', $formated);
+                } elseif ($number == 0) {
                     $arrData['rows'][$dateGroup]['columns'][6]['value'] =
-                        sprintf('%s %%',  $formated);
-                }
-                else if ($number < 0) {
+                        sprintf('%s %%', $formated);
+                } elseif ($number < 0) {
                     $arrData['rows'][$dateGroup]['columns'][6]['value'] =
-                        sprintf('<span style="color:red">%s %%</span>',  $formated);
+                        sprintf('<span style="color:red">%s %%</span>', $formated);
                 }
             }
         }
