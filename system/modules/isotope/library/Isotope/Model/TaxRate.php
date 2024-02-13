@@ -3,7 +3,7 @@
 /*
  * Isotope eCommerce for Contao Open Source CMS
  *
- * Copyright (C) 2009 - 2019 terminal42 gmbh & Isotope eCommerce Workgroup
+ * Copyright (C) 2009 - 2024 terminal42 gmbh & Isotope eCommerce Workgroup
  *
  * @link       https://isotopeecommerce.org
  * @license    https://opensource.org/licenses/lgpl-3.0.html
@@ -103,11 +103,11 @@ class TaxRate extends Model
                     continue;
                 }
 
-                if ($this->countries != '' && !\in_array($objAddress->country, StringUtil::trimsplit(',', $this->countries))) {
+                if ($this->countries != '' && !\in_array($objAddress->country, StringUtil::trimsplit(',', $this->countries ?? ''))) {
                     continue;
                 }
 
-                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, StringUtil::trimsplit(',', $this->subdivisions))) {
+                if ($this->subdivisions != '' && !\in_array($objAddress->subdivision, StringUtil::trimsplit(',', $this->subdivisions ?? ''))) {
                     continue;
                 }
 
