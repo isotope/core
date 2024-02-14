@@ -140,6 +140,12 @@
       <trans-unit id="tl_module.iso_forward_review.1">
         <source>Forward the user to the review page if no data is required on any step.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.0">
+        <source>Show skipped steps</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_show_skipped.1">
+        <source>Show skipped steps in the checkout step navigation to keep the layout consistent.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_checkout_skippable.0">
         <source>Skip checkout steps</source>
       </trans-unit>

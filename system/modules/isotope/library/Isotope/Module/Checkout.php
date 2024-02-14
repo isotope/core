@@ -39,6 +39,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @property array $iso_payment_modules
  * @property array $iso_shipping_modules
  * @property bool  $iso_forward_review
+ * @property bool  $iso_show_skipped
  * @property array $iso_notifications
  * @property bool  $iso_addToAddressbook
  * @property array $iso_checkout_skippable
@@ -342,7 +343,7 @@ class Checkout extends Module
                 }
             }
 
-            if ($this->skippableSteps[$step] ?? false) {
+            if (!$this->iso_show_skipped && $this->skippableSteps[$step] ?? false) {
                 unset($arrStepKeys[array_search($step, $arrStepKeys)]);
                 $intCurrentStep -= 1;
                 $intTotalSteps -= 1;
@@ -467,7 +468,7 @@ class Checkout extends Module
 
         $arrCheckoutInfo = array();
 
-        // Run trough all steps to collect checkout information
+        // Run through all steps to collect checkout information
         /** @var IsotopeCheckoutStep[] $arrModules */
         foreach ($arrSteps as $arrModules) {
             foreach ($arrModules as $objModule) {
@@ -689,7 +690,7 @@ class Checkout extends Module
                 $blnActive = true;
                 $class .= ' active';
             } elseif ($blnPassed) {
-                $href = static::generateUrlForStep($step);
+                $href = ($this->skippableSteps[$step] ?? false) ? '' : static::generateUrlForStep($step);
                 $class .= ' passed';
             }
 
