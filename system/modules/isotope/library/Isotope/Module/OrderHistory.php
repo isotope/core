@@ -26,6 +26,7 @@ use Isotope\Template;
 
 
 /**
+ * @property int $iso_orderdetails_module
  * @property int $iso_cart_jumpTo
  */
 class OrderHistory extends Module
@@ -101,6 +102,7 @@ class OrderHistory extends Module
         }
 
         $reorder = (int) Input::get('reorder');
+        $previousUid = Input::get('uid');
 
         foreach ($objOrders as $objOrder) {
             if ($this->iso_cart_jumpTo && $reorder === (int) $objOrder->id) {
@@ -108,6 +110,12 @@ class OrderHistory extends Module
             }
 
             Isotope::setConfig($objOrder->getConfig());
+            $details = '';
+
+            if ($this->iso_orderdetails_module) {
+                Input::setGet('uid', $objOrder->uniqid);
+                $details = Controller::getFrontendModule($this->iso_orderdetails_module);
+            }
 
             $arrOrders[] = [
                 'collection' => $objOrder,
@@ -118,10 +126,13 @@ class OrderHistory extends Module
                 'grandTotal' => Isotope::formatPriceWithCurrency($objOrder->getTotal()),
                 'status'     => $objOrder->getStatusLabel(),
                 'link'       => $this->jumpTo ? (Url::addQueryString('uid=' . $objOrder->uniqid, $this->jumpTo)) : '',
+                'details'    => $details,
                 'reorder'    => $this->iso_cart_jumpTo ? (Url::addQueryString('reorder=' . $objOrder->id)) : '',
                 'class'      => $objOrder->getStatusAlias(),
             ];
         }
+
+        Input::setGet('uid', $previousUid);
 
         RowClass::withKey('class')->addFirstLast()->addEvenOdd()->applyTo($arrOrders);
 

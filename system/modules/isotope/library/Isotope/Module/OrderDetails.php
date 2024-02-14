@@ -16,6 +16,7 @@ use Contao\FrontendUser;
 use Contao\Input;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use Haste\Util\Format;
 use Isotope\CompatibilityHelper;
 use Isotope\Frontend\ProductCollectionAction\ReorderAction;
@@ -82,14 +83,8 @@ class OrderDetails extends AbstractProductCollection
      */
     protected function getCollection()
     {
-        static $order = false;
-
-        if (false !== $order) {
-            return $order;
-        }
-
         $order = Order::findOneBy('uniqid', (string) Input::get('uid'));
-        $isMember = \Contao\System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
+        $isMember = System::getContainer()->get('security.helper')->isGranted('ROLE_MEMBER');
 
         // Also check owner (see #126)
         if (null === $order

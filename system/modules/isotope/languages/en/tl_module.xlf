@@ -473,6 +473,12 @@
       <trans-unit id="tl_module.iso_addressFields.1">
         <source>Choose the available address fields you would like to display.</source>
       </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.0">
+        <source>Render list with details</source>
+      </trans-unit>
+      <trans-unit id="tl_module.iso_orderdetails_module.1">
+        <source>Select an order details module to render the details of each order in the list.</source>
+      </trans-unit>
       <trans-unit id="tl_module.iso_tsid.0">
         <source>Trusted Shops ID</source>
       </trans-unit>
