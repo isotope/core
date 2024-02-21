@@ -30,7 +30,7 @@ class Download extends Model
     /**
      * Gets array of files for this download (could be multiple for folder selection).
      *
-     * @return array
+     * @return array<FilesModel>
      */
     public function getFiles()
     {
