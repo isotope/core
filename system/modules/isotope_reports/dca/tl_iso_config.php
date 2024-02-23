@@ -18,7 +18,7 @@ $this->loadDataContainer(Config::getTable());
 /**
  * Extend tl_user palettes
  */
-$GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default'] = str_replace('{analytics_legend},ga_enable;', '{analytics_legend},ga_enable;{reports_legend},visitors_config_id;', $GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default'] = str_replace('{analytics_legend},ga_enable', '{analytics_legend},ga_enable;{reports_legend},visitors_config_id;', $GLOBALS['TL_DCA']['tl_iso_config']['palettes']['default']);
 
 /**
  * Add fields to tl_iso_config
