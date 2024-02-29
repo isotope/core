@@ -95,6 +95,9 @@
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors_config">
+        <source>Visitor Counter</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.all">
         <source>All</source>
       </trans-unit>

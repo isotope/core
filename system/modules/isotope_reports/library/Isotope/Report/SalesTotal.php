@@ -32,8 +32,36 @@ class SalesTotal extends Sales
      */
     protected $strTemplate = 'iso_report_sales_total';
 
-    private array $visitorData = array();
+    protected function getVisitorsPanel()
+    {
 
+        $tableVisitorsExists = Database::getInstance()->tableExists('tl_visitors');
+        $arrVisitorConfigs = array();
+        if($tableVisitorsExists){
+            $objData = Database::getInstance()->query("
+            SELECT id, visitors_name
+            FROM tl_visitors
+            ");
+
+            while ($objData->next()) {
+                $arrVisitorConfigs[$objData->id] = $objData->visitors_name;
+            }
+        }
+
+        $arrVisitorConfigs[0] = 'keiner';
+        $arrSession = Session::getInstance()->get('iso_reports');
+        $varValue = (string) ($arrSession[$this->name]['visitors_config'] ?? 0);
+
+        return [
+            'name'      => 'visitors_config',
+            'label'     => &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors_config'],
+            'type'      => 'filter',
+            'value'     => $varValue,
+            'active'    => ($varValue != 0),
+            'class'     => 'visitors_config',
+            'options'   => $arrVisitorConfigs,
+        ];
+    }
 
     protected function compile()
     {
@@ -51,6 +79,8 @@ class SalesTotal extends Sales
         $dateFrom = $period->getKey($intStart);
         $dateTo   = $period->getKey($intStop);
 
+        $visitorsConfigId = (int) ($arrSession[$this->name]['visitors_config'] ?? 0);
+
         if ('locked' === $this->strDateField) {
             $this->strDateField = $arrSession[$this->name]['date_field'];
         }
@@ -61,7 +91,6 @@ class SalesTotal extends Sales
             SELECT
                 c.id AS config_id,
                 c.currency,
-                c.visitors_config_id,
                 COUNT(o.id) AS total_orders,
                 COUNT(i.id) AS total_products,
                 COUNT(DISTINCT o.id) AS total_orders,
@@ -85,27 +114,13 @@ class SalesTotal extends Sales
         $arrCurrencies = array();
         $arrData = $this->initializeData($period, $intStart, $intStop);
         $arrChartData = $this->initializeChart($period, $intStart, $intStop);
-        $showVisitors = false;
 
         while ($objData->next()) {
             $arrCurrencies[$objData->currency] = $objData->config_id;
-            $showVisitors = $showVisitors || $objData->visitors_config_id > 0;
 
             $arrData['rows'][$objData->dateGroup]['columns']['orders']['value'] = $objData->total_orders;
             $arrData['rows'][$objData->dateGroup]['columns']['products']['value'] = $objData->total_products;
             $arrData['rows'][$objData->dateGroup]['columns']['items']['value'] = $objData->total_items;
-
-            if($showVisitors) {
-                if (!\is_array($arrData['rows'][$objData->dateGroup]['columns']['visitors']['value'])) {
-                    $arrData['rows'][$objData->dateGroup]['columns']['visitors']['value'] = array();
-                    $arrData['rows'][$objData->dateGroup]['columns']['cr']['value'] = array();
-                }
-                $visitorData = $this->getVisitorDataForId($objData->visitors_config_id, $period, $dateFrom, $dateTo);
-                $arrData['rows'][$objData->dateGroup]['columns']['visitors']['value'][$objData->currency] = $visitorData[$objData->dateGroup];
-
-                $orders = $arrData['rows'][$objData->dateGroup]['columns']['orders']['value'];
-                $arrData['rows'][$objData->dateGroup]['columns']['cr']['value'][$objData->currency] = $this->calculateConversationRate($visitorData[$objData->dateGroup], $orders);
-            }
 
             if (!\is_array($arrData['rows'][$objData->dateGroup]['columns']['sales']['value'])) {
                 $arrData['rows'][$objData->dateGroup]['columns']['sales']['value'] = array();
@@ -116,22 +131,37 @@ class SalesTotal extends Sales
             $arrData['footer']['orders']['value'] += $objData->total_orders;
             $arrData['footer']['products']['value'] += $objData->total_products;
             $arrData['footer']['items']['value'] += $objData->total_items;
-            if($showVisitors) {
-                $arrData['footer']['visitors']['value'][$objData->currency] += $visitorData[$objData->dateGroup];
-                $arrData['footer']['cr']['value'][$objData->currency] = $this->calculateConversationRate($arrData['footer']['visitors']['value'][$objData->currency], $arrData['footer']['orders']['value'][$objData->currency]);
-            }
             $arrData['footer']['sales']['value'][$objData->currency] = ((float) ($arrData['footer']['sales']['value'][$objData->currency] ?? 0) + $objData->total_sales);
 
             // Generate chart data
             $arrChartData[$objData->currency]['data'][$objData->dateGroup][1] = ((float) $arrChartData[$objData->currency]['data'][$objData->dateGroup][1] + $objData->total_sales);
         }
 
-        if($showVisitors){
-            $this->fillEmptyVisitorData($arrData, $period, $intStart, $intStop);
+        if($visitorsConfigId > 0) {
+            $dateGroupVisitor = $period->getSqlField('visitors_date', false);
+            $objVisitorData = Database::getInstance()->query("
+            SELECT
+                sum(visitors_visit) as visitors,
+                $dateGroupVisitor AS dateGroup
+            FROM `tl_visitors_counter`
+            WHERE vid = $visitorsConfigId
+            GROUP BY dateGroup
+            HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
+            ");
+
+            while ($objVisitorData->next()) {
+                $arrData['rows'][$objVisitorData->dateGroup]['columns']['visitors']['value'] = $objVisitorData->visitors;
+
+                $orders = $arrData['rows'][$objVisitorData->dateGroup]['columns']['orders']['value'];
+                $arrData['rows'][$objVisitorData->dateGroup]['columns']['cr']['value'] = $this->calculateConversationRate($objVisitorData->visitors, $orders);
+
+                $arrData['footer']['visitors']['value'] += $objVisitorData->visitors;
+                $arrData['footer']['cr']['value'] = $this->calculateConversationRate($arrData['footer']['visitors']['value'], $arrData['footer']['orders']['value']);
+            }
         }
 
         // Apply formatting
-        $arrData = $this->formatValues($arrData, $arrCurrencies, $showVisitors);
+        $arrData = $this->formatValues($arrData, $arrCurrencies, $visitorsConfigId > 0);
         // Generate format for apexcharts
         $arrChart = array_reduce($arrChartData, function ($carry, $item) {
             $carry['series'][] = [
@@ -145,7 +175,8 @@ class SalesTotal extends Sales
             return $carry;
         }, array());
 
-        if($showVisitors) {
+        if($visitorsConfigId > 0) {
+            $this->fillEmptyVisitorData($arrData, $period, $intStart, $intStop);
             $arrChart['series'][] = [
                 'name' => $GLOBALS['TL_LANG']['ISO_REPORT']['visitors'],
                 'type' => 'column',
@@ -274,7 +305,8 @@ class SalesTotal extends Sales
         // Format row totals
         foreach ($arrData['rows'] as $dateGroup => $arrRow) {
             if($showVisitors){
-                $arrData['rows'][$dateGroup]['columns']['cr']['value'] = number_format($arrData['rows'][$dateGroup]['columns']['cr']['value'],2,',','.') . " %";
+                // Use Method to format cr value in %
+                $arrData['rows'][$dateGroup]['columns']['cr']['value'] = Isotope::formatPrice($arrData['rows'][$dateGroup]['columns']['cr']['value']). " %";
             }
             if (\is_array($arrRow['columns']['sales']['value'])) {
                 foreach ($arrRow['columns']['sales']['value'] as $currency => $varValue) {
@@ -288,13 +320,14 @@ class SalesTotal extends Sales
         }
 
         // Format footer totals
+        if($showVisitors){
+            // Use Method to format cr value in %
+            $arrData['footer']['cr']['value'] = Isotope::formatPrice($arrData['footer']['cr']['value']) . " %";
+        }
         foreach ($arrData['footer']['sales']['value'] as $currency => $varValue) {
             /** @type Config $objConfig */
             $objConfig = Config::findByPk($arrCurrencies[$currency]);
             Isotope::setConfig($objConfig);
-            if($showVisitors){
-                $arrData['footer']['cr']['value'] = number_format($arrData['footer']['cr']['value'],2,',','.') . " %";
-            }
             $arrData['footer']['sales']['value'][$currency] = Isotope::formatPriceWithCurrency($varValue);
         }
 
@@ -350,27 +383,6 @@ class SalesTotal extends Sales
         return  $visitors > 0 ?  $orders * 100 / $visitors : 0;
     }
 
-    private function getVisitorDataForId($visitorsConfigId, $period, $dateFrom, $dateTo){
-        $dateGroupVisitor = $period->getSqlField('visitors_date', false);
-        if(!isset($this->visitorData[$visitorsConfigId])){
-            $sqlResult = Database::getInstance()->query("
-            SELECT
-                sum(visitors_visit) as visitors,
-                $dateGroupVisitor AS dateGroup
-            FROM `tl_visitors_counter`
-            WHERE vid = $visitorsConfigId
-            GROUP BY dateGroup
-            HAVING dateGroup>=$dateFrom AND dateGroup<=$dateTo
-            ");
-            $result = array_reduce($sqlResult->fetchAllAssoc(), function ($carry, $item) {
-                $carry[$item['dateGroup']] = $item['visitors'];
-                return $carry;
-            }, []);
-            $this->visitorData[$visitorsConfigId] = $result;
-        }
-        return $this->visitorData[$visitorsConfigId];
-    }
-
     private function fillEmptyVisitorData(array &$arrData, $period, $intStart, $intStop): void
     {
         if ($arrData['header'] && !array_key_exists("visitors", $arrData['header'])) {
@@ -385,7 +397,8 @@ class SalesTotal extends Sales
         }
         if ($arrData['footer'] && !array_key_exists("visitors", $arrData['footer'])) {
             $arrData['footer']['visitors']['value'] = 0;
-            $arrData['footer']['cr']['value'] = 0;
+            // Use Method to format cr value in %
+            $arrData['footer']['cr']['value'] = Isotope::formatPrice(0) . " %";
         }
         $arrData['footer']['visitors']['attributes'] = ' style="text-align:right"';
         $arrData['footer']['cr']['attributes'] = ' style="text-align:right"';
@@ -395,7 +408,8 @@ class SalesTotal extends Sales
             if($arrColumns){
                 if(!array_key_exists("visitors", $arrColumns)){
                     $arrColumns['visitors']['value'] = 0;
-                    $arrColumns['cr']['value'] = 0;
+                    // Use Method to format cr value in %
+                    $arrColumns['cr']['value'] = Isotope::formatPrice(0) . " %";
                 }
                 $arrColumns['visitors']['attributes'] = ' style="text-align:right"';
                 $arrColumns['cr']['attributes'] = ' style="text-align:right"';
