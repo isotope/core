@@ -29,14 +29,14 @@
       <trans-unit id="ISO_REPORT.members_total.0">
         <source>Total</source>
       </trans-unit>
-      <trans-unit id="ISO_REPORT.members_reg_new">
-        <source>New Members</source>
-      </trans-unit>
-      <trans-unit id="ISO_REPORT.members_reg_total">
-        <source>Members Total</source>
-      </trans-unit>
       <trans-unit id="ISO_REPORT.members_total.1">
         <source>Sales statistics by member</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_new">
+        <source>New Members</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.members_total">
+        <source>Members Total</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.members_currency">
         <source>%s - Members</source>
