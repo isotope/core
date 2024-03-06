@@ -77,11 +77,13 @@ class MembersRegistration extends Sales
         }, array());
 
         // Switch from associative array to index based for apexcharts
-        for ($i = 0; $i < count($arrChart['series']); $i++) {
+        for ($i = 0, $iMax = count($arrChart['series']); $i < $iMax; $i++) {
             $arrChart['series'][$i]['data'] = is_array($arrChart['series'][$i]['data']) ? array_values($arrChart['series'][$i]['data']): [];
         }
-        for ($i = 0; $i < count($arrChart['series'][0]['data']); $i++) {
-            $arrChart['series'][0]['data'][$i] == 0 && $i > 0 ? $arrChart['series'][0]['data'][$i] = $arrChart['series'][0]['data'][$i-1] : null;
+        for ($i = 0, $iMax = count($arrChart['series'][0]['data']); $i < $iMax; $i++) {
+            if ($arrChart['series'][0]['data'][$i] == 0 && $i > 0) {
+                $arrChart['series'][0]['data'][$i] = $arrChart['series'][0]['data'][$i - 1];
+            }
         }
 
         $this->Template->chart        = $arrChart;
@@ -159,11 +161,11 @@ class MembersRegistration extends Sales
         // Set default session data
         $arrSession = Session::getInstance()->get('iso_reports');
 
-        if ($arrSession[$this->name]['period'] == '') {
+        if (empty($arrSession[$this->name]['period'])) {
             $arrSession[$this->name]['period'] = 'month';
         }
 
-        if ($arrSession[$this->name]['stop'] == '') {
+        if (empty($arrSession[$this->name]['stop'])) {
             $arrSession[$this->name]['stop'] = time();
         } elseif (!is_numeric($arrSession[$this->name]['stop'])) {
             // Convert date formats into timestamps
@@ -176,7 +178,7 @@ class MembersRegistration extends Sales
             }
         }
 
-        if ($arrSession[$this->name]['start'] == '') {
+        if (empty($arrSession[$this->name]['start'])) {
             $arrSession[$this->name]['start'] = strtotime('-6 months');
         } elseif (!is_numeric($arrSession[$this->name]['start'])) {
             // Convert date formats into timestamps
@@ -194,4 +196,3 @@ class MembersRegistration extends Sales
         parent::initializeDefaultValues();
     }
 }
-
