@@ -32,7 +32,7 @@ ArrayUtil::arrayInsert($GLOBALS['BE_MOD']['isotope'], 2, array
                     'icon'              => 'system/modules/isotope_reports/assets/sales_total.png',
                     'panels' => array
                     (
-                        array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel'),
+                        array('getSelectStopPanel', 'getSelectStartPanel', 'getSelectPeriodPanel', 'getVisitorsPanel'),
                         array('getSortingPanel', 'getFilterByConfigPanel', 'getStatusPanel', 'getDateFieldPanel')
                     )
                 ),
