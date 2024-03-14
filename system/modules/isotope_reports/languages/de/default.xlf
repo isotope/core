@@ -125,6 +125,22 @@
         <source>Shop-Config</source>
         <target>Shop-Konfiguration</target>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.conversation_rate">
+        <source>Conversation Rate</source>
+        <target>Conversation Rate</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors">
+        <source>Visitors</source>
+        <target>Besucher</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors_config">
+        <source>Visitor Counter</source>
+        <target>Besucherzähler</target>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors_config_no_choice">
+        <source>no counter</source>
+        <target>kein Besucherzähler</target>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.all">
         <source>All</source>
         <target>Alle</target>

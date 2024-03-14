@@ -92,11 +92,20 @@
       <trans-unit id="ISO_REPORT.sales#">
         <source>Sales Total</source>
       </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors">
+        <source>Visitors</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.conversation_rate">
+        <source>Conversation Rate</source>
+      </trans-unit>
       <trans-unit id="ISO_REPORT.filter_config">
         <source>Shop-Config</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.visitors_config">
         <source>Visitor Counter</source>
+      </trans-unit>
+      <trans-unit id="ISO_REPORT.visitors_config_no_choice">
+        <source>no counter</source>
       </trans-unit>
       <trans-unit id="ISO_REPORT.all">
         <source>All</source>

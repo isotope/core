@@ -48,7 +48,7 @@ class SalesTotal extends Sales
             }
         }
 
-        $arrVisitorConfigs[0] = 'keiner';
+        $arrVisitorConfigs[0] = &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors_config_no_choice'];
         $arrSession = Session::getInstance()->get('iso_reports');
         $varValue = (string) ($arrSession[$this->name]['visitors_config'] ?? 0);
 
@@ -112,7 +112,7 @@ class SalesTotal extends Sales
         ");
 
         $arrCurrencies = array();
-        $arrData = $this->initializeData($period, $intStart, $intStop);
+        $arrData = $this->initializeData($period, $intStart, $intStop, $visitorsConfigId);
         $arrChartData = $this->initializeChart($period, $intStart, $intStop);
 
         while ($objData->next()) {
@@ -192,7 +192,7 @@ class SalesTotal extends Sales
     }
 
 
-    protected function initializeData(PeriodInterface $period, $intStart, $intStop): array
+    protected function initializeData(PeriodInterface $period, $intStart, $intStop, $visitorsConfigId): array
     {
         $arrData = ['rows' => []];
 
@@ -219,6 +219,17 @@ class SalesTotal extends Sales
             ],
         ];
 
+        if($visitorsConfigId > 0){
+            $arrData['header']['visitors'] = [
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['visitors'],
+                'attributes'    => ' style="text-align:right"',
+            ];
+            $arrData['header']['cr'] = [
+                'value'         => &$GLOBALS['TL_LANG']['ISO_REPORT']['conversation_rate'],
+                'attributes'    => ' style="text-align:right"',
+            ];
+        }
+
         $arrData['footer'] = [
             "period" => [
                 'value'         => $GLOBALS['TL_LANG']['ISO_REPORT']['sums'],
@@ -240,6 +251,17 @@ class SalesTotal extends Sales
                 'attributes'    => ' style="text-align:right"',
             ],
         ];
+
+        if($visitorsConfigId > 0){
+            $arrData['footer']['visitors'] = [
+                'value'         => 0,
+                'attributes'    => ' style="text-align:right"',
+            ];
+            $arrData['footer']['cr'] = [
+                'value'         => 0,
+                'attributes'    => ' style="text-align:right"',
+            ];
+        }
 
         while ($intStart <= $intStop) {
             $arrData['rows'][$period->getKey($intStart)] = [
@@ -265,6 +287,16 @@ class SalesTotal extends Sales
                     ],
                 ],
             ];
+            if($visitorsConfigId){
+                $arrData['rows'][$period->getKey($intStart)]['columns']['visitors'] = [
+                    'value'         => 0,
+                    'attributes'    => ' style="text-align:right"',
+                ];
+                $arrData['rows'][$period->getKey($intStart)]['columns']['cr'] = [
+                    'value'         => 0,
+                    'attributes'    => ' style="text-align:right"',
+                ];
+            }
             $intStart = $period->getNext($intStart);
         }
         RowClass::withKey('class')->addEvenOdd()->applyTo($arrData['rows']);
